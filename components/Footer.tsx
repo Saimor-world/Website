@@ -1,15 +1,18 @@
-import Link from 'next/link';
+type Props = { locale: 'de' | 'en' };
 
-export default function Footer({ locale }: { locale: 'de'|'en' }) {
+export default function Footer({ locale }: Props) {
   return (
-    <footer className="border-t border-white/10">
-      <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-white/60 flex flex-col md:flex-row items-center justify-between gap-3">
-        <p>© {new Date().getFullYear()} Saimôr</p>
-        <nav className="flex gap-4">
-          <Link href={`/${locale}`}>Home</Link>
-          <a href="mailto:contact@saimor.world">contact@saimor.world</a>
-          <Link href="/de#kontakt">Kontakt</Link>
-        </nav>
+    <footer className="band-bottom bg-[#0B1020] text-[#A7AFBC] py-12 mt-24">
+      <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <span>© {new Date().getFullYear()} Saimôr</span>
+        <div className="flex gap-6">
+          <a href="/rechtliches/impressum" className="hover:underline">
+            {locale === 'de' ? 'Impressum' : 'Imprint'}
+          </a>
+          <a href="/rechtliches/datenschutz" className="hover:underline">
+            {locale === 'de' ? 'Datenschutz' : 'Privacy'}
+          </a>
+        </div>
       </div>
     </footer>
   );
