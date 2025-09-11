@@ -1,13 +1,18 @@
-import { NextResponse } from 'next/server';
+export const runtime = 'nodejs';
+import { z } from 'zod';
+
+const Body = z.object({
+  name: z.string().trim().max(200).optional(),
+  email: z.string().email().optional(),
+  message: z.string().trim().max(5000).optional(),
+  licht: z.boolean().optional(),
+});
 
 export async function POST(req: Request) {
-  const form = await req.formData();
-  const name = String(form.get('name')||'');
-  const email = String(form.get('email')||'');
-  const message = String(form.get('message')||'');
-
-  // TODO: Plug in email service (Resend, SMTP) or webhook
-  console.log('Contact form:', { name, email, message });
-
-  return NextResponse.json({ ok: true });
+  const json = await req.json().catch(() => ({}));
+  if (!Body.safeParse(json).success) {
+    return new Response('Bad Request', { status: 400 });
+  }
+  // Kein Mailversand – Cal.com übernimmt die Terminbuchung
+  return new Response('OK', { status: 200 });
 }
