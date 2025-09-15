@@ -1,7 +1,9 @@
 import Hero from '@/components/Hero';
 import UserStories from '@/components/UserStories';
 import Sections from '@/components/Sections';
-import AIAgent from '@/components/AIAgent';
+import dynamic from 'next/dynamic';
+
+const AIAgent = dynamic(() => import('@/components/AIAgent'), { ssr: false });
 
 export default function Page() {
   return (

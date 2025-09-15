@@ -45,8 +45,9 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
   return (
     <>
       {/* Offers Section */}
-      <section id="leistungen" className="mx-auto max-w-7xl px-4 py-20 md:py-32">
-        <div className="grid md:grid-cols-3 gap-8">
+      <section id="leistungen" className="bg-navy py-16 sm:py-24 md:py-40">
+        <div className="mx-auto max-w-7xl px-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {cards.map(({ icon: Icon, key }, i) => (
             <motion.div
               key={key}
@@ -58,7 +59,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                 y: -6,
                 transition: { duration: 0.2 }
               }}
-              className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-8 shadow-xl hover:shadow-2xl hover:border-[#FFCE45]/40 transition-all duration-300 backdrop-blur-sm"
+              className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 shadow-xl hover:shadow-2xl hover:border-[#FFCE45]/40 transition-all duration-300 backdrop-blur-sm"
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)'
               }}
@@ -69,26 +70,30 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               <div className="relative z-10">
                 <Icon className="mb-6 w-10 h-10 text-[#FFCE45] group-hover:scale-110 transition-transform duration-300" />
 
-                <h3 className="font-serif text-3xl mb-3 text-[#F9F9F6] group-hover:text-[#FFCE45] transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                <h3 className="font-serif text-2xl sm:text-3xl mb-3 text-[#F9F9F6] group-hover:text-[#FFCE45] transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                   {(translations.offers[key as keyof typeof translations.offers] as any).title}
                 </h3>
 
-                <h4 className="text-xl font-medium mb-4 text-[#F9F9F6]/90">
+                <h4 className="text-lg sm:text-xl font-medium mb-4 text-[#F9F9F6]/90">
                   {(translations.offers[key as keyof typeof translations.offers] as any).subtitle}
                 </h4>
 
-                <p className="text-[#F9F9F6]/70 mb-8 leading-relaxed text-lg">
+                <p className="text-[#F9F9F6]/70 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
                   {(translations.offers[key as keyof typeof translations.offers] as any).text}
                 </p>
 
-                <motion.button
+                <motion.a
+                  href="https://cal.com/saimor/30min"
+                  target="_blank"
+                  rel="noreferrer"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full px-6 py-4 rounded-xl border-2 border-[#FFCE45]/30 text-[#FFCE45] font-semibold text-lg hover:bg-[#FFCE45] hover:text-[#0E1526] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden group/btn"
+                  className="block w-full px-6 py-4 rounded-xl border-2 border-[#FFCE45]/30 text-[#FFCE45] font-semibold text-lg hover:bg-[#FFCE45] hover:text-[#0E1526] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden group/btn text-center"
+                  aria-label={`${(translations.offers[key as keyof typeof translations.offers] as any).cta} - Book via Cal.com (opens in new tab)`}
                 >
                   <span className="relative z-10">{(translations.offers[key as keyof typeof translations.offers] as any).cta}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#FFCE45] to-[#FFD700] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-200" />
-                </motion.button>
+                </motion.a>
 
                 <p className="text-xs text-[#F9F9F6]/50 mt-3 text-center">
                   {translations.offers.ctaHint}
@@ -97,21 +102,22 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
             </motion.div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Mission Section */}
       <section
         id="mission"
-        className="relative border-t border-[#FFCE45] bg-gradient-to-b from-[#FFCE45]/5 via-transparent to-transparent"
+        className="relative border-t-2 border-[#FFCE45] bg-gradient-to-b from-bone via-bone-dark to-bone"
       >
-        <div className="mx-auto max-w-7xl px-4 py-20 md:py-32">
-          <div className="flex items-center gap-6 mb-8">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:py-24 md:py-40">
+          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-8 mb-8 sm:mb-12 text-center sm:text-left">
             <motion.h2
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="font-serif text-4xl md:text-5xl text-[#F9F9F6]"
+              className="font-serif text-3xl sm:text-4xl md:text-5xl text-navy"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               {translations.mission.title}
@@ -131,25 +137,35 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-[#F9F9F6]/90 max-w-4xl leading-relaxed"
+            className="text-lg sm:text-xl md:text-2xl text-navy/80 max-w-4xl leading-relaxed mb-6 text-center sm:text-left"
           >
             {translations.mission.text}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-lg text-navy/60 font-medium bg-gold/10 px-6 py-3 rounded-full inline-block"
+          >
+            {translations.mission.subtitle}
           </motion.p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="kontakt" className="mx-auto max-w-7xl px-4 py-20 md:py-32">
+      <section id="kontakt" className="mx-auto max-w-7xl px-4 py-16 sm:py-20 md:py-32">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-serif text-4xl md:text-5xl mb-4 text-[#F9F9F6]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-4 text-[#F9F9F6]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
             {translations.contact.title}
           </h2>
-          <p className="text-xl text-[#F9F9F6]/80 mb-12 max-w-3xl">
+          <p className="text-lg sm:text-xl text-[#F9F9F6]/80 mb-8 sm:mb-12 max-w-3xl">
             {translations.contact.subtitle}
           </p>
         </motion.div>

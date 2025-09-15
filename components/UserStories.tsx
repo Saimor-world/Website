@@ -65,16 +65,17 @@ export default function UserStories({ locale }: UserStoriesProps) {
   }[locale];
 
   return (
-    <section className="bg-bone py-20 md:py-32">
+    <section className="bg-bone py-16 sm:py-24 md:py-40" role="region" aria-labelledby="user-stories-title">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-20 md:mb-24">
           <motion.h2
+            id="user-stories-title"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="font-serif text-4xl md:text-5xl text-navy mb-6"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl text-navy mb-6"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
             {content.title}
@@ -84,14 +85,14 @@ export default function UserStories({ locale }: UserStoriesProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl text-navy/80 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-navy/80 max-w-3xl mx-auto"
           >
             {content.subtitle}
           </motion.p>
         </div>
 
         {/* Stories Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {content.stories.map((story, index) => (
             <motion.div
               key={story.title}
@@ -99,37 +100,51 @@ export default function UserStories({ locale }: UserStoriesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="group bg-paper rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-navy/5"
+              whileHover={{
+                y: -12,
+                rotateY: 2,
+                scale: 1.02,
+                transition: { type: "spring", stiffness: 400, damping: 17 }
+              }}
+              className="group bg-paper rounded-2xl p-6 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300 border border-navy/5 hover:border-gold/20"
             >
               {/* Icon */}
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-gold/20 to-gold/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <story.icon className="w-8 h-8 text-gold" />
+              <div className="mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-gold/25 to-gold/10 rounded-3xl flex items-center justify-center group-hover:scale-115 group-hover:rotate-3 transition-all duration-300 shadow-md">
+                  <story.icon className="w-10 h-10 text-gold" />
                 </div>
               </div>
 
               {/* Content */}
-              <h3 className="font-serif text-2xl text-navy mb-3" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <h3 className="font-serif text-xl sm:text-2xl text-navy mb-3" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 {story.title}
               </h3>
 
-              <h4 className="text-lg font-semibold text-navy/70 mb-4">
+              <h4 className="text-base sm:text-lg font-semibold text-navy/70 mb-4">
                 {story.challenge}
               </h4>
 
-              <p className="text-navy/60 leading-relaxed mb-8">
+              <p className="text-navy/60 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base">
                 {story.solution}
               </p>
 
               {/* CTA */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full px-6 py-4 rounded-xl bg-navy text-paper font-medium hover:bg-navy-light transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              <motion.a
+                href="https://cal.com/saimor/30min"
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{
+                  scale: 1.03,
+                  y: -2,
+                  boxShadow: "0 8px 20px rgba(14, 21, 38, 0.3)"
+                }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="block w-full px-8 py-5 rounded-2xl bg-gradient-to-br from-navy to-navy-light text-paper font-semibold hover:from-navy-light hover:to-navy transition-all duration-300 focus-visible:ring-4 focus-visible:ring-gold/50 focus-visible:ring-offset-2 shadow-lg text-center"
+                aria-label={`${story.cta} for ${story.title} - Book via Cal.com (opens in new tab)`}
               >
                 {story.cta}
-              </motion.button>
+              </motion.a>
             </motion.div>
           ))}
         </div>

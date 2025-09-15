@@ -2,8 +2,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
-import BrandSun from './BrandSun';
-import Orbits from './Orbits';
+import dynamic from 'next/dynamic';
+
+const BrandSun = dynamic(() => import('./BrandSun'), { ssr: false });
+const Orbits = dynamic(() => import('./Orbits'), { ssr: false });
 
 type Locale = 'de' | 'en';
 
@@ -53,6 +55,16 @@ export default function Hero({
         ? `#${contactHashId}`
         : `/${locale === 'en' ? 'en' : 'de'}/kontakt`;
 
+  const smoothScrollTo = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <section
       ref={ref}
@@ -65,6 +77,8 @@ export default function Hero({
           linear-gradient(180deg, #0E1526 0%, #1A2332 100%)
         `
       }}
+      role="banner"
+      aria-label="Hero section with main call-to-action"
     >
       {/* Orbital Background */}
       <motion.div
@@ -87,9 +101,9 @@ export default function Hero({
       <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-gold/40 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
       <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-gold/20 rounded-full animate-pulse" style={{ animationDelay: '3s' }} />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-32 md:py-40 text-center z-10">
+      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-32 md:py-40 text-center z-10">
         {/* Brand Sun + Heading */}
-        <div className="flex items-center justify-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <motion.div
             style={{ y: brandSunY, rotate: brandSunRotate }}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -97,14 +111,16 @@ export default function Hero({
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex-shrink-0"
           >
-            <BrandSun className="w-10 h-10 md:w-12 md:h-12" />
+            <BrandSun className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight text-[#F9F9F6] leading-tight"
+            className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight text-[#F9F9F6] leading-tight"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            role="heading"
+            aria-level={1}
           >
             {heroText.heading}
           </motion.h1>
@@ -115,12 +131,12 @@ export default function Hero({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-          className="max-w-3xl mx-auto mb-12"
+          className="max-w-3xl mx-auto mb-8 sm:mb-12 px-2"
         >
-          <p className="text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90 mb-2">
+          <p className="text-lg sm:text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90 mb-2">
             {heroText.subheading1}
           </p>
-          <p className="text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90">
+          <p className="text-lg sm:text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90">
             {heroText.subheading2}
           </p>
         </motion.div>
@@ -130,7 +146,7 @@ export default function Hero({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full max-w-lg sm:max-w-none mx-auto"
         >
           {/* Primary CTA */}
           <motion.a
@@ -138,29 +154,38 @@ export default function Hero({
             target="_blank"
             rel="noreferrer"
             whileHover={{
-              scale: 1.02,
-              y: -2,
-              boxShadow: "0 10px 25px rgba(255, 206, 69, 0.3)"
+              scale: 1.05,
+              y: -6,
+              rotateY: 5,
+              boxShadow: "0 20px 40px rgba(255, 206, 69, 0.4)"
             }}
-            whileTap={{ scale: 0.98 }}
-            className="group px-10 py-5 rounded-2xl bg-[#FFCE45] text-[#0E1526] font-semibold text-lg hover:brightness-110 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden"
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="group w-full sm:w-auto px-8 sm:px-12 py-5 sm:py-6 rounded-2xl bg-gradient-to-br from-[#FFCE45] via-[#FFD700] to-[#FFCE45] text-[#0E1526] font-bold text-lg sm:text-xl hover:brightness-110 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-[#FFCE45]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden shadow-lg text-center min-h-[56px] flex items-center justify-center"
+            aria-label="Book a light conversation via Cal.com (opens in new tab)"
+            role="button"
           >
-            <span className="relative z-10">{heroText.ctaPrimary}</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FFCE45] to-[#FFD700] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            <span className="relative z-10 drop-shadow-sm">{heroText.ctaPrimary}</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700] to-[#FFEB3B] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.a>
 
           {/* Secondary CTA */}
-          <motion.a
-            href="#leistungen"
+          <motion.button
+            onClick={() => smoothScrollTo('leistungen')}
             whileHover={{
-              scale: 1.02,
-              y: -2
+              scale: 1.03,
+              y: -4,
+              rotateY: -3,
+              boxShadow: "0 15px 30px rgba(249, 249, 246, 0.15)"
             }}
-            whileTap={{ scale: 0.98 }}
-            className="px-10 py-5 rounded-2xl border-2 border-[#F9F9F6]/20 text-[#F9F9F6] font-semibold text-lg hover:border-[#FFCE45]/60 hover:text-[#FFCE45] hover:bg-[#FFCE45]/5 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526]"
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="group w-full sm:w-auto px-8 sm:px-12 py-5 sm:py-6 rounded-2xl border-2 border-[#F9F9F6]/25 text-[#F9F9F6] font-semibold text-lg sm:text-xl hover:border-[#FFCE45]/70 hover:text-[#FFCE45] hover:bg-[#FFCE45]/8 backdrop-blur-sm transition-all duration-300 focus-visible:ring-4 focus-visible:ring-[#FFCE45]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden min-h-[56px] flex items-center justify-center"
+            aria-label="Scroll to services section"
           >
-            {heroText.ctaSecondary}
-          </motion.a>
+            <span className="relative z-10">{heroText.ctaSecondary}</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FFCE45]/10 to-[#FFD700]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </motion.button>
         </motion.div>
       </div>
     </section>

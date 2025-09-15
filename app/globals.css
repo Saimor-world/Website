@@ -6,7 +6,31 @@
   color-scheme: light;
 }
 
-html, body { height: 100%; background: #0E1526; }
+/* Smooth scrolling for the entire site */
+html, body {
+  height: 100%;
+  background: #0E1526;
+  scroll-behavior: smooth;
+}
 
-/* Smooth focus */
-*:focus-visible { outline: 2px solid #FFCE45; outline-offset: 2px; }
+/* Enhanced focus visibility */
+*:focus-visible {
+  outline: 3px solid #FFCE45;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
