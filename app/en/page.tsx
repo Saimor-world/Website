@@ -1,16 +1,15 @@
 import Hero from '@/components/Hero';
+import UserStories from '@/components/UserStories';
 import Sections from '@/components/Sections';
+import AIAgent from '@/components/AIAgent';
 
 export default function Page() {
   return (
     <div>
-      <Hero
-        heading="Saimôr – Clarity in Change"
-        sub="More clarity. More direction. More impact."
-        cta="Book an intro call"
-        locale="en"
-      />
+      <Hero locale="en" />
+      <UserStories locale="en" />
       <Sections locale="en" />
+      <AIAgent locale="en" />
     </div>
   )
 }
