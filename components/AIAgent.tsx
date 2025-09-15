@@ -1,16 +1,28 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, ExternalLink, ArrowDown } from 'lucide-react';
+import { MessageCircle, X, ExternalLink, ArrowDown, Send, Loader2 } from 'lucide-react';
 import BrandSun from './BrandSun';
 
 interface AIAgentProps {
   locale: 'de' | 'en';
 }
 
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'agent';
+  timestamp: Date;
+  suggestions?: string[];
+}
+
 export default function AIAgent({ locale }: AIAgentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<'welcome' | 'chat'>('welcome');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const content = {
     de: {
@@ -23,7 +35,9 @@ export default function AIAgent({ locale }: AIAgentProps) {
         askQuestion: 'Frage stellen'
       },
       chatPlaceholder: 'Deine Frage...',
-      send: 'Senden'
+      send: 'Senden',
+      backToOptions: '← Zurück zu den Optionen',
+      chatHelper: 'Stelle deine Frage und ich helfe dir gerne weiter.'
     },
     en: {
       greeting: 'Hello, I am the Saimôr Guide.',
@@ -35,7 +49,9 @@ export default function AIAgent({ locale }: AIAgentProps) {
         askQuestion: 'Ask question'
       },
       chatPlaceholder: 'Your question...',
-      send: 'Send'
+      send: 'Send',
+      backToOptions: '← Back to options',
+      chatHelper: 'Ask your question and I\'ll be happy to help.'
     }
   }[locale];
 
@@ -52,6 +68,82 @@ export default function AIAgent({ locale }: AIAgentProps) {
 
   const handleAskQuestion = () => {
     setCurrentStep('chat');
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputValue,
+          locale
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      const data = await response.json();
+
+      const agentMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: data.response,
+        sender: 'agent',
+        timestamp: new Date(),
+        suggestions: data.suggestions
+      };
+
+      setMessages(prev => [...prev, agentMessage]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: locale === 'de'
+          ? 'Entschuldigung, es gab einen Fehler. Bitte versuche es erneut oder kontaktiere uns direkt.'
+          : 'Sorry, there was an error. Please try again or contact us directly.',
+        sender: 'agent',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputValue(suggestion);
   };
 
   return (
@@ -173,20 +265,72 @@ export default function AIAgent({ locale }: AIAgentProps) {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-4"
                   >
+                    {/* Chat Messages */}
                     <div className="h-60 bg-bone-dark rounded-xl p-4 overflow-y-auto">
-                      <div className="text-center text-navy/60 text-sm py-8">
-                        Stelle deine Frage und ich verbinde dich mit dem passenden Ansprechpartner.
-                      </div>
+                      {messages.length === 0 ? (
+                        <div className="text-center text-navy/60 text-sm py-8">
+                          {content.chatHelper}
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {messages.map((message) => (
+                            <div
+                              key={message.id}
+                              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                            >
+                              <div
+                                className={`max-w-[80%] p-3 rounded-lg text-sm ${
+                                  message.sender === 'user'
+                                    ? 'bg-navy text-paper ml-4'
+                                    : 'bg-paper border border-navy/10 text-navy mr-4'
+                                }`}
+                              >
+                                <p>{message.text}</p>
+                                {message.suggestions && (
+                                  <div className="mt-2 space-y-1">
+                                    {message.suggestions.map((suggestion, index) => (
+                                      <button
+                                        key={index}
+                                        onClick={() => handleSuggestionClick(suggestion)}
+                                        className="block w-full text-left px-2 py-1 text-xs bg-gold/10 hover:bg-gold/20 rounded border border-gold/20 transition-colors"
+                                      >
+                                        {suggestion}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                          {isLoading && (
+                            <div className="flex justify-start">
+                              <div className="bg-paper border border-navy/10 text-navy p-3 rounded-lg mr-4">
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              </div>
+                            </div>
+                          )}
+                          <div ref={messagesEndRef} />
+                        </div>
+                      )}
                     </div>
 
+                    {/* Input */}
                     <div className="flex gap-2">
                       <input
                         type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyPress={handleKeyPress}
                         placeholder={content.chatPlaceholder}
                         className="flex-1 p-3 border border-navy/20 rounded-xl focus:border-gold focus:outline-none transition-colors"
+                        disabled={isLoading}
                       />
-                      <button className="px-4 py-3 bg-gold text-navy rounded-xl hover:brightness-110 transition-all">
-                        {content.send}
+                      <button
+                        onClick={sendMessage}
+                        disabled={isLoading || !inputValue.trim()}
+                        className="px-4 py-3 bg-gold text-navy rounded-xl hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                       </button>
                     </div>
 
@@ -194,7 +338,7 @@ export default function AIAgent({ locale }: AIAgentProps) {
                       onClick={() => setCurrentStep('welcome')}
                       className="text-sm text-navy/60 hover:text-navy transition-colors"
                     >
-                      ← Zurück zu den Optionen
+                      {content.backToOptions}
                     </button>
                   </motion.div>
                 )}
