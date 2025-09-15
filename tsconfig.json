@@ -1,9 +1,35 @@
 {
   "compilerOptions": {
-    "types": ["node", "react", "react-dom", "vitest/globals"],
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "vitest/globals"
+    ],
     "strict": true,
     "noEmit": true,
-    "moduleResolution": "Bundler"
+    "moduleResolution": "bundler",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "module": "preserve",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -13,5 +39,8 @@
     ".next/types/**/*.ts",
     "tests/**/*.ts",
     "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
