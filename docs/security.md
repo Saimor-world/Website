@@ -1,0 +1,4 @@
+- CSP, X-Frame-Options=DENY, X-Content-Type-Options=nosniff, Referrer-Policy=strict-origin, restriktive Permissions-Policy.
+- Kein `http://` in fetch/axios; nur HTTPS.
+- Kontakt-API: Zod-Validierung; optional Rate-Limit (Edge/Redis).
+- Matomo: disableCookies; nur Site-ID; keine Profile.

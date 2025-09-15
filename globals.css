@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Farben als CSS-Variablen */
+:root{
+  --navy:#0E1526;
+  --gold:#FFCE45;
+  --off:#F8F7F3;
+  --ink:#DDE1EA;
+  --line:#1b2640;
+}
+
+/* Grundfarben global */
+html,body{ background:var(--navy); color:var(--off); }
+
+/* Leichte Intro-Animation */
+@keyframes s-fadein {
+  from { opacity: 0; transform: translateY(6px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.s-appear { animation: s-fadein 160ms ease-out both; }
+
+/* Trenner */
+.hr-line{ height:1px; background:linear-gradient(to right,transparent,rgba(221,225,234,.18),transparent); }
+
+/* Orbit-Stroke */
+.orbit-stroke{ stroke:var(--gold); opacity:.22 }
+
+/* Section-Rhythmus */
+.section{ padding:4.5rem 0; }
+@media (min-width:768px){ .section{ padding:6.5rem 0; } }
+
+/* Warmes Band im Hero */
+.bg-band{
+  background:
+    radial-gradient(1200px 600px at 85% 20%, rgba(255,206,69,0.08), transparent 70%),
+    linear-gradient(to bottom, rgba(255,250,230,0.10), rgba(255,229,163,0.06), transparent 70%);
+}
+
+/* Goldschimmer am Seitenende */
+.band-bottom{
+  background: radial-gradient(900px 280px at 50% 100%, rgba(255,206,69,.10), transparent 70%);
+}
+
+/* Sticky-Header Blur */
+.nav-blur{
+  backdrop-filter: blur(8px);
+  background: linear-gradient(to bottom, rgba(14,21,38,.85), rgba(14,21,38,.65));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* --------- NEU: Cards, Chips, Orbits, Reveal --------- */
+
+/* dezente Glow-Karten */
+.s-card{
+  position: relative;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+}
+.s-card:hover{
+  transform: translateY(-4px);
+  border-color: rgba(255,206,69,.32);
+  box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,206,69,.12) inset;
+  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
+}
+
+/* goldene Kapseln (Prinzipien) */
+.s-pill{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.55rem .9rem; border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  color: var(--ink);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+.s-pill::before{
+  content:""; width:.5rem; height:.5rem; border-radius:999px;
+  background: rgba(255,206,69,.85);
+  box-shadow: 0 0 0 4px rgba(255,206,69,.18);
+}
+.s-pill:hover{ transform: translateY(-2px); border-color: rgba(255,206,69,.28); }
+
+/* Orbit-Hinterleger für Sektionen */
+.section-orbits{
+  position:absolute; inset:0; pointer-events:none; z-index:-1;
+}
+.section-orbits .stroke{ stroke: var(--gold); opacity:.18 }
+
+/* sanfter Reveal */
+@keyframes fade-up {
+  from { opacity:0; transform: translateY(8px) }
+  to   { opacity:1; transform: translateY(0) }
+}
+.reveal { animation: fade-up .45s ease both; }
+
+/* Parallax-Container optimieren */
+.parallax-container{ will-change: transform; }
+
+/* (Schon drin?) Orbits in Sektionen */
+.section-orbits{ position:absolute; inset:0; pointer-events:none; z-index:-1; }
+.section-orbits .stroke{ stroke: var(--gold); opacity:.18 }
+
+/* Reveal-Animation (falls noch nicht drin) */
+@keyframes fade-up { from {opacity:0; transform:translateY(8px)} to {opacity:1; transform:none} }
+.reveal { animation: fade-up .45s ease both; }
