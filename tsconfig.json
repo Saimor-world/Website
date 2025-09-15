@@ -1,48 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
-    "jsx": "preserve",
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
+    "types": ["node", "react", "react-dom", "vitest/globals"],
     "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "types": [
-      "node",
-      "react",
-      "react-dom",
-      "vitest/globals"
-    ],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "allowJs": true,
-    "incremental": true
+    "moduleResolution": "Bundler"
   },
   "include": [
     "next-env.d.ts",
+    "env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    ".next/types/**/*.ts",
     "tests/**/*.ts",
-    "tests/**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
+    "tests/**/*.tsx"
   ]
 }
