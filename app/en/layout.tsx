@@ -28,8 +28,16 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en" className="bg-navy text-paper">
       <body className={inter.className}>
         <div className="min-h-screen bg-radial-orbit">
+          {/* Skip to main content link for screen readers */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gold text-navy px-4 py-2 rounded-md z-50 font-semibold"
+            tabIndex={1}
+          >
+            Skip to main content
+          </a>
           <Navbar locale="en" />
-          <main className="">{children}</main>
+          <main id="main-content" className="" role="main">{children}</main>
           <Footer locale="en" />
         </div>
       </body>

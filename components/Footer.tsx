@@ -5,8 +5,20 @@ import BrandSun from './BrandSun';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
   const footerText = {
-    de: { imprint: 'Impressum', privacy: 'Datenschutz', made: 'Made with Klarheit', year: 'Saimôr 2025' },
-    en: { imprint: 'Imprint', privacy: 'Privacy', made: 'Made with Clarity', year: 'Saimôr 2025' }
+    de: {
+      imprint: 'Impressum',
+      privacy: 'Datenschutz',
+      made: 'Made with Klarheit',
+      year: 'Saimôr 2025',
+      copyright: 'Alle Rechte vorbehalten.'
+    },
+    en: {
+      imprint: 'Imprint',
+      privacy: 'Privacy',
+      made: 'Made with Clarity',
+      year: 'Saimôr 2025',
+      copyright: 'All rights reserved.'
+    }
   }[locale];
 
   return (
@@ -56,7 +68,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
         {/* Bottom: Copyright */}
         <div className="mt-12 pt-8 border-t border-paper/10 text-center">
           <p className="text-paper/50">
-            © {new Date().getFullYear()} Saimôr. Alle Rechte vorbehalten.
+            © {new Date().getFullYear()} Saimôr. {footerText.copyright}
           </p>
         </div>
       </div>
