@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { Zap, Database, Orbit } from 'lucide-react';
 import BrandSun from './BrandSun';
+import ContactFormEnhanced from './ContactFormEnhanced';
 
 
 export default function Sections({ locale }: { locale: 'de'|'en' }) {
@@ -170,62 +171,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-4xl"
-        >
-          <form className="grid md:grid-cols-2 gap-6 mb-8" action={`/api/contact`} method="post">
-            <input
-              className="px-6 py-4 rounded-xl bg-white/[0.06] border border-white/20 text-[#F9F9F6] placeholder-[#F9F9F6]/50 focus:border-[#FFCE45]/60 focus:outline-none focus:ring-2 focus:ring-[#FFCE45]/20 transition-all duration-200"
-              name="name"
-              placeholder={translations.contact.name}
-              required
-            />
-            <input
-              className="px-6 py-4 rounded-xl bg-white/[0.06] border border-white/20 text-[#F9F9F6] placeholder-[#F9F9F6]/50 focus:border-[#FFCE45]/60 focus:outline-none focus:ring-2 focus:ring-[#FFCE45]/20 transition-all duration-200"
-              name="email"
-              type="email"
-              placeholder={translations.contact.email}
-              required
-            />
-            <textarea
-              className="md:col-span-2 px-6 py-4 rounded-xl bg-white/[0.06] border border-white/20 text-[#F9F9F6] placeholder-[#F9F9F6]/50 focus:border-[#FFCE45]/60 focus:outline-none focus:ring-2 focus:ring-[#FFCE45]/20 transition-all duration-200 resize-none"
-              name="message"
-              placeholder={translations.contact.message}
-              rows={6}
-              required
-            />
-          </form>
-
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 rounded-xl border-2 border-[#F9F9F6]/20 text-[#F9F9F6] font-semibold hover:border-[#FFCE45]/60 hover:text-[#FFCE45] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526]"
-            >
-              {translations.contact.send}
-            </motion.button>
-
-            <motion.a
-              href="https://cal.com/saimor/30min"
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 rounded-xl bg-[#FFCE45] text-[#0E1526] font-semibold hover:brightness-110 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] text-center"
-            >
-              {translations.contact.book}
-            </motion.a>
-          </div>
-
-          <p className="text-sm text-[#F9F9F6]/60 leading-relaxed">
-            {translations.contact.disclaimer}
-          </p>
-        </motion.div>
+        <ContactFormEnhanced locale={locale} />
       </section>
     </>
   );

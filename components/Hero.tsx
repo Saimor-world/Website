@@ -22,18 +22,16 @@ export default function Hero({
 }: Props) {
   const heroText = {
     de: {
-      heading: 'Saimôr — Klarheit im Wandel',
-      subheading1: 'Ein Resonanzraum für Klarheit.',
-      subheading2: 'Brücke zwischen Menschen, Daten und Wandel.',
+      heading: 'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
+      claim: 'Klarheit im Wandel – Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
       ctaPrimary: 'Lichtgespräch buchen',
-      ctaSecondary: 'Angebot entdecken'
+      ctaSecondary: 'Angebot ansehen'
     },
     en: {
-      heading: 'Saimôr — Clarity in Change',
-      subheading1: 'A resonance space for clarity.',
-      subheading2: 'A bridge between people, data, and change.',
-      ctaPrimary: 'Book Light Conversation',
-      ctaSecondary: 'Discover Offering'
+      heading: 'Saimôr is a digital space for what remains when everything else gets loud.',
+      claim: 'Clarity in transformation – guidance for people and organizations when systems waver.',
+      ctaPrimary: 'Book light conversation',
+      ctaSecondary: 'View offering'
     }
   }[locale];
 
@@ -68,17 +66,17 @@ export default function Hero({
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden min-h-screen flex items-center bg-navy"
+      className="relative overflow-hidden min-h-screen flex items-center"
       style={{
         background: `
-          radial-gradient(ellipse 1000px 800px at 50% 30%, rgba(255, 206, 69, 0.12) 0%, transparent 60%),
-          radial-gradient(ellipse 1400px 1000px at 20% 80%, rgba(255, 206, 69, 0.08) 0%, transparent 50%),
-          radial-gradient(ellipse 800px 600px at 80% 20%, rgba(255, 206, 69, 0.06) 0%, transparent 40%),
-          linear-gradient(180deg, #0E1526 0%, #1A2332 100%)
+          radial-gradient(ellipse 1200px 900px at 50% 40%, rgba(255, 252, 240, 0.4) 0%, transparent 70%),
+          radial-gradient(ellipse 800px 600px at 20% 80%, rgba(240, 238, 230, 0.3) 0%, transparent 60%),
+          radial-gradient(ellipse 600px 400px at 80% 20%, rgba(248, 246, 238, 0.2) 0%, transparent 50%),
+          linear-gradient(135deg, #faf9f6 0%, #f5f4f0 30%, #f0ede5 100%)
         `
       }}
       role="banner"
-      aria-label="Hero section with main call-to-action"
+      aria-label="A space for clarity and transformation"
     >
       {/* Orbital Background */}
       <motion.div
@@ -102,42 +100,39 @@ export default function Hero({
       <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-gold/20 rounded-full animate-pulse" style={{ animationDelay: '3s' }} />
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-32 md:py-40 text-center z-10">
-        {/* Brand Sun + Heading */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <motion.div
-            style={{ y: brandSunY, rotate: brandSunRotate }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex-shrink-0"
-          >
-            <BrandSun className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight text-[#F9F9F6] leading-tight"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            role="heading"
-            aria-level={1}
-          >
-            {heroText.heading}
-          </motion.h1>
-        </div>
+        {/* Brand Sun */}
+        <motion.div
+          style={{ y: brandSunY, rotate: brandSunRotate }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex justify-center mb-8"
+        >
+          <BrandSun className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+        </motion.div>
 
-        {/* Subheadline */}
+        {/* Main Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+          className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide text-slate-800 leading-tight font-light max-w-5xl mx-auto mb-8"
+          style={{ fontFamily: 'Cormorant Garamond, serif', letterSpacing: '0.02em' }}
+          role="heading"
+          aria-level={1}
+        >
+          {heroText.heading}
+        </motion.h1>
+
+        {/* Claim Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-          className="max-w-3xl mx-auto mb-8 sm:mb-12 px-2"
+          className="max-w-3xl mx-auto mb-12 px-2"
         >
-          <p className="text-lg sm:text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90 mb-2">
-            {heroText.subheading1}
-          </p>
           <p className="text-lg sm:text-xl md:text-2xl leading-relaxed text-[#F9F9F6]/90">
-            {heroText.subheading2}
+            {heroText.claim}
           </p>
         </motion.div>
 
@@ -171,7 +166,7 @@ export default function Hero({
 
           {/* Secondary CTA */}
           <motion.button
-            onClick={() => smoothScrollTo('leistungen')}
+            onClick={() => smoothScrollTo('angebot')}
             whileHover={{
               scale: 1.03,
               y: -4,
@@ -181,7 +176,7 @@ export default function Hero({
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             className="group w-full sm:w-auto px-8 sm:px-12 py-5 sm:py-6 rounded-2xl border-2 border-[#F9F9F6]/25 text-[#F9F9F6] font-semibold text-lg sm:text-xl hover:border-[#FFCE45]/70 hover:text-[#FFCE45] hover:bg-[#FFCE45]/8 backdrop-blur-sm transition-all duration-300 focus-visible:ring-4 focus-visible:ring-[#FFCE45]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden min-h-[56px] flex items-center justify-center"
-            aria-label="Scroll to services section"
+            aria-label="Scroll to offering section"
           >
             <span className="relative z-10">{heroText.ctaSecondary}</span>
             <div className="absolute inset-0 bg-gradient-to-r from-[#FFCE45]/10 to-[#FFD700]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

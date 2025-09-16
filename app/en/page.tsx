@@ -1,5 +1,8 @@
 import Hero from '@/components/Hero';
-import UserStories from '@/components/UserStories';
+import Services from '@/components/Services';
+import Values from '@/components/Values';
+import TargetGroups from '@/components/TargetGroups';
+import VisionMindset from '@/components/VisionMindset';
 import Sections from '@/components/Sections';
 import dynamic from 'next/dynamic';
 
@@ -9,7 +12,10 @@ export default function Page() {
   return (
     <div>
       <Hero locale="en" />
-      <UserStories locale="en" />
+      <Services locale="en" />
+      <Values locale="en" />
+      <TargetGroups locale="en" />
+      <VisionMindset locale="en" />
       <Sections locale="en" />
       <AIAgent locale="en" />
     </div>
