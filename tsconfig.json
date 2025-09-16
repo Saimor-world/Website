@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "types": [
-      "node",
-      "react",
-      "react-dom",
-      "vitest/globals"
-    ],
+    "types": ["node", "react", "react-dom"],
     "strict": true,
     "noEmit": true,
     "moduleResolution": "bundler",
@@ -33,12 +28,9 @@
   },
   "include": [
     "next-env.d.ts",
-    "env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
