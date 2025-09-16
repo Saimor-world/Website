@@ -41,58 +41,94 @@ export default function Services({ locale }: Props) {
         <h2 className="text-[26px] md:text-[30px] font-medium mb-8">{t('Angebot', 'Offering')}</h2>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {items.map((it) => (
-            <article
-              key={it.key}
-              className="relative group p-8 flex flex-col gap-6 rounded-3xl backdrop-blur-sm border border-white/20 bg-white/10 hover:bg-white/15 transition-all duration-300 min-h-[280px] overflow-hidden"
-              style={{
-                background: `
-                  linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-                  url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M200,50 Q350,200 200,350 Q50,200 200,50' fill='none' stroke='rgba(255,206,69,0.1)' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat
-                `
-              }}
-            >
-              {/* Unsplash placeholder background image */}
-              <div
-                className="absolute inset-0 opacity-5 bg-cover bg-center"
+          {items.map((it, index) => {
+            const backgroundImages = [
+              "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop&auto=format&q=80", // Orbit - space/systems
+              "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=400&fit=crop&auto=format&q=80", // Pulse - energy waves
+              "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop&auto=format&q=80"  // Systems - neural networks
+            ];
+
+            return (
+              <article
+                key={it.key}
+                className="relative group overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 min-h-[420px] cursor-pointer hover:-translate-y-2 hover:scale-105"
                 style={{
-                  backgroundImage: `url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format&q=80")`
+                  background: 'linear-gradient(145deg, #ffffff 0%, #fefefe 100%)',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)'
                 }}
-              />
+              >
+                {/* Background Image */}
+                <div
+                  className="absolute inset-0 opacity-15 bg-cover bg-center transition-all duration-500 group-hover:opacity-25 group-hover:scale-105"
+                  style={{
+                    backgroundImage: `url("${backgroundImages[index]}")`,
+                    filter: 'blur(0.5px) saturate(1.2)'
+                  }}
+                />
 
-              {/* Orbit line decoration */}
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-20">
-                <svg viewBox="0 0 48 48" className="w-full h-full">
-                  <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" strokeWidth="1" className="text-yellow-500" />
-                  <circle cx="24" cy="4" r="2" fill="currentColor" className="text-yellow-500" />
-                </svg>
-              </div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/50 via-transparent to-yellow-100/30" />
 
-              <div className="relative z-10 flex-1">
-                <h3 className="text-xl font-semibold mb-3 text-slate-800">{it.title}</h3>
-                <p className="text-base leading-relaxed text-slate-700">{it.desc}</p>
-              </div>
+                {/* Orbit Decoration */}
+                <div className="absolute top-6 right-6 w-16 h-16 opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-spin-slow">
+                  <svg viewBox="0 0 64 64" className="w-full h-full">
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#F59E0B" strokeWidth="2" strokeDasharray="4 4" />
+                    <circle cx="32" cy="4" r="3" fill="#F59E0B" />
+                    <circle cx="60" cy="32" r="2" fill="#FBBF24" />
+                    <circle cx="32" cy="60" r="2" fill="#FDE047" />
+                  </svg>
+                </div>
 
-              <div className="relative z-10 flex flex-col gap-3">
-                <Link
-                  href={it.href}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-medium border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-500 hover:text-slate-900 transition-all duration-200"
-                >
-                  {it.cta}
-                  <svg aria-hidden width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M9.5 3.5L13 7l-3.5 3.5-.7-.7 2.1-2.1H3v-1h7.9L8.8 4.2l.7-.7z"/></svg>
-                </Link>
+                {/* Content */}
+                <div className="relative z-10 p-8 h-full flex flex-col">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-4 text-slate-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                      {it.title}
+                    </h3>
+                    <p className="text-slate-700 leading-relaxed mb-6 text-lg">
+                      {it.desc}
+                    </p>
+                  </div>
 
-                <Link
-                  href={it.secondaryHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-medium bg-yellow-500 text-slate-900 hover:bg-yellow-400 transition-all duration-200"
-                >
-                  {it.secondaryCta}
-                </Link>
-              </div>
-            </article>
-          ))}
+                  {/* CTAs */}
+                  <div className="space-y-4">
+                    <div className="transform transition-all duration-300 hover:scale-105 active:scale-95">
+                      <Link
+                        href={it.href}
+                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold border-2 border-slate-300 bg-white/80 text-slate-800 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 shadow-md hover:shadow-lg"
+                      >
+                        <span>{it.cta}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                          <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </Link>
+                    </div>
+
+                    <div className="transform transition-all duration-300 hover:scale-105 active:scale-95">
+                      <Link
+                        href={it.secondaryHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-bold bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        style={{
+                          boxShadow: '0 8px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                        }}
+                      >
+                        <span>{it.secondaryCta}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.48.9 6.08 2.38" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hover Glow Effect */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
