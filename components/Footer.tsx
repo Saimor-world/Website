@@ -28,13 +28,13 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
           {/* Left: Legal Links */}
           <nav className="flex gap-6 order-2 md:order-1">
             <Link
-              href={`/${locale}/impressum`}
+              href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'}
               className="hover:text-gold transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold after:transition-all after:duration-200 hover:after:w-full"
             >
               {footerText.imprint}
             </Link>
             <Link
-              href={`/${locale}/datenschutz`}
+              href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'}
               className="hover:text-gold transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold after:transition-all after:duration-200 hover:after:w-full"
             >
               {footerText.privacy}

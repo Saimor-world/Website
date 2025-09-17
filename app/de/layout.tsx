@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 import { Inter, Cormorant_Garamond } from 'next/font/google';
@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   title: 'Saimôr – Klarheit im Wandel',
   description: 'Ein Resonanzraum für Klarheit. Brücke zwischen Menschen, Daten und Wandel.',
   metadataBase: new URL('https://saimor.world'),
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',
@@ -23,6 +22,11 @@ export const metadata: Metadata = {
     locale: 'de-DE',
     type: 'website'
   }
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

@@ -11,7 +11,10 @@
       "Bash(git pull:*)",
       "Bash(npm run build:*)",
       "Read(//c/Users/mf4hr/OneDrive/Dokumente/Screenshots/**)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

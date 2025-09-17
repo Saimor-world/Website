@@ -1,18 +1,23 @@
-import Hero from '../components/Hero';
-import Principles from '../components/Principles';
-import Services from '../components/Services';
-import CallToAction from '../components/CallToAction';
-import Footer from '../components/Footer';
+import Hero from '@/components/Hero';
+import Services from '@/components/Services';
+import Values from '@/components/Values';
+import TargetGroups from '@/components/TargetGroups';
+import VisionMindset from '@/components/VisionMindset';
+import Sections from '@/components/Sections';
+import dynamic from 'next/dynamic';
+
+const AIAgent = dynamic(() => import('@/components/AIAgent'), { ssr: false });
 
 export default function Page() {
   return (
-    <>
-      {/* Root-Fallback zum Debuggen. /de bleibt unverändert. */}
+    <div>
       <Hero locale="de" />
-      <Principles locale="de" />
       <Services locale="de" />
-      <CallToAction locale="de" />
-      <Footer locale="de" />
-    </>
+      <Values locale="de" />
+      <TargetGroups locale="de" />
+      <VisionMindset locale="de" />
+      <Sections locale="de" />
+      <AIAgent locale="de" />
+    </div>
   );
 }
