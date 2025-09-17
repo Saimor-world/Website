@@ -14,7 +14,13 @@
       "Bash(git commit:*)",
       "Bash(mkdir:*)",
       "Bash(curl:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(npx vercel env add:*)",
+      "Bash(echo:*)",
+      "Bash(npx vercel deploy:*)",
+      "Bash(npx vercel domains:*)",
+      "Bash(npx vercel link:*)",
+      "Bash(npx vercel remove:*)"
     ],
     "deny": [],
     "ask": []

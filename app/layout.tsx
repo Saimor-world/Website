@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
 import './globals.css'
-import Navbar from '../components/Navbar'
 import MatomoTracker from '../components/MatomoTracker'
 
 export const metadata: Metadata = {
@@ -38,7 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de" data-saimor="pb-1.2">
       <body className="bg-[#0E1526] text-[#F8F7F3] antialiased">
         <MatomoTracker />
-        <Navbar locale="de" />
         {children}
       </body>
     </html>
