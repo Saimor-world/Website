@@ -3,36 +3,27 @@ import { useEffect } from 'react';
 
 export default function MatomoTracker() {
   useEffect(() => {
-    // Only load Matomo if environment variables are set
-    const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
-    const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
-
-    if (!matomoUrl || !siteId) {
-      console.log('Matomo not configured - tracking disabled');
-      return;
-    }
-
-    // Initialize Matomo tracking
+    // Initialize Matomo tracking with saimorworld.matomo.cloud
     (window as any)._paq = (window as any)._paq || [];
     const _paq = (window as any)._paq;
 
-    // Tracker configuration for privacy compliance
+    // Tracker configuration
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
-    _paq.push(['setTrackerUrl', matomoUrl + 'matomo.php']);
-    _paq.push(['setSiteId', siteId]);
+    _paq.push(['setTrackerUrl', 'https://saimorworld.matomo.cloud/matomo.php']);
+    _paq.push(['setSiteId', '1']);
 
     // Create and append script
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
-    script.src = matomoUrl + 'matomo.js';
+    script.src = 'https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js';
     document.head.appendChild(script);
 
     // Cleanup function
     return () => {
       // Remove script on component unmount
-      const existingScript = document.querySelector(`script[src="${matomoUrl}matomo.js"]`);
+      const existingScript = document.querySelector('script[src="https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js"]');
       if (existingScript) {
         existingScript.remove();
       }

@@ -2,9 +2,24 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      // Wenn nötig, hier deine Domains freigeben:
-      allowedOrigins: ["https://saimor.world", "https://www.saimor.world"]
+      allowedOrigins: [
+        "https://saimor.world",
+        "https://www.saimor.world",
+        "https://saimor-site-improved.vercel.app"
+      ]
     },
+  },
+  images: {
+    domains: ['images.unsplash.com']
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/de',
+        permanent: true,
+      },
+    ]
   },
 };
 
