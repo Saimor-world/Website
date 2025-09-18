@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
-import BrandSun from './BrandSun';
 
 export default function Navbar({ locale }: { locale: 'de'|'en' }) {
   const [open, setOpen] = useState(false);
@@ -20,7 +19,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
     <header className="sticky top-0 z-30 backdrop-blur border-b border-white/10 bg-navy/60">
       <nav className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-3 group">
-          <BrandSun className="h-7 w-7 transition-transform group-hover:scale-110" />
+          <div className="h-7 w-7 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold transition-transform group-hover:scale-110">S</div>
           <span className="font-serif text-xl tracking-wide" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
         </Link>
         <div className="hidden md:flex items-center gap-8">

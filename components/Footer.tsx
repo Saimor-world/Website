@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import BrandSun from './BrandSun';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
   const footerText = {
@@ -51,7 +50,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
               ease: "linear"
             }}
           >
-            <BrandSun className="w-8 h-8" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold">S</div>
           </motion.div>
 
           {/* Right: Made with Clarity */}

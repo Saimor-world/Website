@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink } from 'lucide-react';
-import BrandSun from './BrandSun';
 
 interface AIAgentProps {
   locale: 'de' | 'en';
@@ -83,7 +82,7 @@ export default function AIAgent({ locale }: AIAgentProps) {
           boxShadow: '0 8px 25px rgba(255, 206, 69, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2)'
         }}
       >
-        <BrandSun className="w-8 h-8 text-yellow-500" />
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold text-lg">?</div>
       </motion.button>
 
       {/* FAQ Panel */}
@@ -118,7 +117,7 @@ export default function AIAgent({ locale }: AIAgentProps) {
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
-                    <BrandSun className="w-6 h-6 text-yellow-600" />
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold text-sm">i</div>
                   </div>
                   <div>
                     <h3 className="font-serif text-xl text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>

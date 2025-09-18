@@ -1,8 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Zap, Database, Orbit } from 'lucide-react';
-import BrandSun from './BrandSun';
-import ContactFormEnhanced from './ContactFormEnhanced';
+import ContactForm from './ContactForm';
 
 
 export default function Sections({ locale }: { locale: 'de'|'en' }) {
@@ -129,7 +128,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <BrandSun className="w-8 h-8 md:w-10 md:h-10" />
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold">M</div>
             </motion.div>
           </div>
 
@@ -171,7 +170,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
           </p>
         </motion.div>
 
-        <ContactFormEnhanced locale={locale} />
+        <ContactForm locale={locale} />
       </section>
     </>
   );

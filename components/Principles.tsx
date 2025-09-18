@@ -1,7 +1,7 @@
 'use client';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import ParallaxOrbits from "./ParallaxOrbits";
+import Orbits from "./Orbits";
 
 type Props = { locale: 'de' | 'en' }
 
@@ -45,14 +45,14 @@ export default function Principles({ locale }: Props) {
   return (
     <section id="prinzipien" className="section relative">
       {/* parallax hinterlegt */}
-      <ParallaxOrbits strength={0.18}>
+      <div className="absolute inset-0 opacity-20">
         <svg className="section-orbits" viewBox="0 0 1440 400" preserveAspectRatio="none">
           <g fill="none" className="stroke">
             <path d="M0 200 Q720 60 1440 200" />
             <ellipse cx="960" cy="240" rx="420" ry="120" />
           </g>
         </svg>
-      </ParallaxOrbits>
+      </div>
 
       <div className="mx-auto max-w-6xl px-6" ref={ref}>
         <div className="h-px w-full bg-white/10 mb-8" />

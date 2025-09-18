@@ -8,6 +8,15 @@ export const metadata: Metadata = {
   title: 'Saimôr – Klarheit im Wandel',
   description:
     'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32', type: 'image/x-icon' },
+      { url: '/favicon.png', sizes: '192x192', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' }
+    ]
+  },
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',
     description: 'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
