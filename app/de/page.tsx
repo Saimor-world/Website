@@ -7,6 +7,7 @@ import Sections from '@/components/Sections';
 import dynamic from 'next/dynamic';
 
 const AIAgent = dynamic(() => import('@/components/AIAgent'), { ssr: false });
+const LiveChat = dynamic(() => import('@/components/LiveChat'), { ssr: false });
 
 export default function Page() {
   return (
@@ -18,6 +19,7 @@ export default function Page() {
       <VisionMindset locale="de" />
       <Sections locale="de" />
       <AIAgent locale="de" />
+      <LiveChat />
     </div>
   )
 }
