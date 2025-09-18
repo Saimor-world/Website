@@ -7,10 +7,15 @@ export default function MatomoTracker() {
     (window as any)._paq = (window as any)._paq || [];
     const _paq = (window as any)._paq;
 
-    // Tracker configuration
-    _paq.push(['trackPageView']);
+    // Privacy-focused tracker configuration
+    _paq.push(['setDoNotTrack', true]);
+    _paq.push(['disableCookies']);
+    _paq.push(['anonymizeIp']);
     _paq.push(['enableLinkTracking']);
-    _paq.push(['setTrackerUrl', 'https://saimorworld.matomo.cloud/matomo.php']);
+
+    // Tracker URL and site configuration
+    const u = 'https://saimorworld.matomo.cloud/';
+    _paq.push(['setTrackerUrl', u + 'matomo.php']);
     _paq.push(['setSiteId', '1']);
 
     // Create and append script
@@ -18,7 +23,13 @@ export default function MatomoTracker() {
     script.type = 'text/javascript';
     script.async = true;
     script.src = 'https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js';
-    document.head.appendChild(script);
+
+    const firstScript = document.getElementsByTagName('script')[0];
+    if (firstScript && firstScript.parentNode) {
+      firstScript.parentNode.insertBefore(script, firstScript);
+    } else {
+      document.head.appendChild(script);
+    }
 
     // Cleanup function
     return () => {
