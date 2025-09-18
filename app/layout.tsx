@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import MatomoTracker from '../components/MatomoTracker'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[#0E1526] text-[#F8F7F3] antialiased">
         <MatomoTracker />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   )
