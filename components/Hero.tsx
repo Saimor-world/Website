@@ -3,8 +3,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
-const BrandSun = dynamic(() => import('./BrandSun'), { ssr: false });
 const Orbits = dynamic(() => import('./Orbits'), { ssr: false });
 
 type Locale = 'de' | 'en';
@@ -108,7 +108,14 @@ export default function Hero({
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex justify-center mb-8 will-change-transform"
         >
-          <BrandSun className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+          <Image
+            src="/Logo neu.png"
+            alt="Saimôr Logo"
+            width={80}
+            height={80}
+            className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain"
+            priority
+          />
         </motion.div>
 
         {/* Main Heading */}
