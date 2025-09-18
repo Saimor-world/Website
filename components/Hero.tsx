@@ -42,7 +42,7 @@ export default function Hero({
   });
 
   const brandSunY = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const brandSunRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const brandSunRotate = useTransform(scrollYProgress, [0, 1], [0, 0]);
   const orbitsY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   const cal = calUrl ?? process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min';
@@ -375,6 +375,50 @@ export default function Hero({
               </motion.svg>
             </span>
           </motion.button>
+        </motion.div>
+
+        {/* Email Contact Option */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-8 text-center"
+        >
+          <motion.p
+            className="text-slate-600 mb-4 text-lg"
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+          >
+            {locale === 'de'
+              ? 'Oder schreiben Sie mir direkt:'
+              : 'Or write to me directly:'
+            }
+          </motion.p>
+
+          <motion.a
+            href="mailto:kontakt@saimor.world"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-slate-700 font-medium text-lg hover:text-slate-900 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%)',
+              backdropFilter: 'blur(15px)',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)'
+            }}
+          >
+            <motion.svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2"/>
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2"/>
+            </motion.svg>
+            kontakt@saimor.world
+          </motion.a>
         </motion.div>
       </div>
     </section>

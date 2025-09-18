@@ -42,10 +42,10 @@ export default function Services({ locale }: Props) {
 
         <div className="grid md:grid-cols-3 gap-8">
           {items.map((it, index) => {
-            const backgroundImages = [
-              "https://picsum.photos/600/400?random=1&blur=1", // Orbit - space/systems
-              "https://picsum.photos/600/400?random=2&blur=1", // Pulse - energy waves
-              "https://picsum.photos/600/400?random=3&blur=1"  // Systems - neural networks
+            const gradientBackgrounds = [
+              'linear-gradient(135deg, rgba(255, 215, 102, 0.15) 0%, rgba(251, 191, 36, 0.1) 50%, rgba(217, 119, 6, 0.05) 100%)', // Orbit - warm golds
+              'linear-gradient(135deg, rgba(254, 240, 138, 0.15) 0%, rgba(255, 206, 69, 0.1) 50%, rgba(251, 191, 36, 0.05) 100%)', // Pulse - bright yellows
+              'linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(255, 183, 77, 0.1) 50%, rgba(254, 215, 102, 0.05) 100%)'  // Systems - mixed golds
             ];
 
             return (
@@ -59,10 +59,10 @@ export default function Services({ locale }: Props) {
               >
                 {/* Background Image */}
                 <div
-                  className="absolute inset-0 opacity-15 bg-cover bg-center transition-all duration-500 group-hover:opacity-25 group-hover:scale-105"
+                  className="absolute inset-0 opacity-40 transition-all duration-500 group-hover:opacity-60"
                   style={{
-                    backgroundImage: `url("${backgroundImages[index]}")`,
-                    filter: 'blur(0.5px) saturate(1.2)'
+                    background: gradientBackgrounds[index],
+                    backdropFilter: 'blur(20px)'
                   }}
                 />
 

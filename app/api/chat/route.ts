@@ -125,7 +125,72 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateAIResponse(message: string, session: ChatSession): Promise<string> {
-  // Saimôr-specific responses with context awareness
+  // Try OpenAI first, fallback to static responses
+  const openAIKey = process.env.OPENAI_API_KEY;
+
+  if (openAIKey) {
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: `Du bist ein weiser Begleiter für Saimôr, einen digitalen Ort für Klarheit im Wandel.
+
+IDENTITÄT & MISSION:
+- Du hilfst Menschen dabei, Klarheit in Momenten des Wandels zu finden
+- Du begleitest bei Transformationen in Leben und Organisationen
+- Du verkörperst die Saimôr-Prinzipien: Ruhe vor Tempo, Tiefe vor Lautstärke, Verantwortung vor Reichweite
+
+GESPRÄCHSSTIL:
+- Ruhig, bedacht und präsent
+- Stelle reflektierende Fragen statt direkte Ratschläge zu geben
+- Achte auf das, was zwischen den Zeilen steht
+- Nutze eine poetische, aber bodenständige Sprache
+- Antworte immer auf Deutsch
+
+ANGEBOTE von Saimôr:
+- Lichtgespräche (30min kostenlose Erstgespräche)
+- Pulse: Workshops & Impulsformate für Gruppen
+- Systems: Daten, Dashboards & KI-Lösungen
+- Orbit: Selbstorganisation & Coaching
+
+Antworte in 1-3 Sätzen. Sei authentisch menschlich, nicht wie ein typischer Chatbot.`
+            },
+            ...session.messages.slice(-5).map(msg => ({
+              role: msg.role,
+              content: msg.content
+            })),
+            {
+              role: 'user',
+              content: message
+            }
+          ],
+          max_tokens: 150,
+          temperature: 0.7,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.choices[0]?.message?.content || getFallbackResponse(message, session);
+      }
+    } catch (error) {
+      console.error('OpenAI API error:', error);
+    }
+  }
+
+  // Fallback to enhanced static responses
+  return getFallbackResponse(message, session);
+}
+
+function getFallbackResponse(message: string, session: ChatSession): string {
   const responses = {
     greeting: [
       "Willkommen in diesem digitalen Raum der Klarheit. Wie kann ich Sie heute begleiten?",
@@ -136,6 +201,11 @@ async function generateAIResponse(message: string, session: ChatSession): Promis
       "Klarheit entsteht oft im Dialog. Lassen Sie uns gemeinsam schauen, was sich zeigen möchte.",
       "In der Stille zwischen den Worten liegt oft die Antwort. Was spüren Sie?",
       "Transformation beginnt mit dem ersten bewussten Schritt. Wo stehen Sie gerade?"
+    ],
+    offerings: [
+      "Für ein tieferes Gespräch biete ich Ihnen gerne ein kostenloses 30-minütiges Lichtgespräch an. Soll ich einen Termin für Sie reservieren?",
+      "Unsere Angebote umfassen Pulse (Workshops), Systems (Daten & KI) und Orbit (Coaching). Was spricht Sie am meisten an?",
+      "Ein Lichtgespräch könnte der richtige erste Schritt sein - 30 Minuten nur für Sie und Ihre Fragen."
     ],
     system: [
       "Systeme sind im Wandel - das ist ihre Natur. Wie erleben Sie diese Bewegung?",
@@ -149,7 +219,6 @@ async function generateAIResponse(message: string, session: ChatSession): Promis
     ]
   };
 
-  // Simple keyword matching for demo
   const lowerMessage = message.toLowerCase();
   let categoryResponses = responses.default;
 
@@ -157,11 +226,12 @@ async function generateAIResponse(message: string, session: ChatSession): Promis
     categoryResponses = responses.greeting;
   } else if (lowerMessage.includes('klar') || lowerMessage.includes('klarheit') || lowerMessage.includes('versteh')) {
     categoryResponses = responses.clarity;
+  } else if (lowerMessage.includes('angebot') || lowerMessage.includes('termin') || lowerMessage.includes('buchen') || lowerMessage.includes('gespräch')) {
+    categoryResponses = responses.offerings;
   } else if (lowerMessage.includes('system') || lowerMessage.includes('organisation') || lowerMessage.includes('wandel')) {
     categoryResponses = responses.system;
   }
 
-  // Add context from session length
   const isLongConversation = session.messages.length > 6;
   if (isLongConversation) {
     categoryResponses = [
