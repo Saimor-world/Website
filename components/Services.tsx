@@ -43,9 +43,9 @@ export default function Services({ locale }: Props) {
         <div className="grid md:grid-cols-3 gap-8">
           {items.map((it, index) => {
             const backgroundImages = [
-              "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop&auto=format&q=80", // Orbit - space/systems
-              "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=400&fit=crop&auto=format&q=80", // Pulse - energy waves
-              "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop&auto=format&q=80"  // Systems - neural networks
+              "https://picsum.photos/600/400?random=1&blur=1", // Orbit - space/systems
+              "https://picsum.photos/600/400?random=2&blur=1", // Pulse - energy waves
+              "https://picsum.photos/600/400?random=3&blur=1"  // Systems - neural networks
             ];
 
             return (

@@ -10,7 +10,7 @@ const nextConfig = {
     },
   },
   images: {
-    domains: ['images.unsplash.com']
+    domains: ['picsum.photos']
   },
   async redirects() {
     return [
