@@ -81,7 +81,7 @@ export default function Hero({
       {/* Orbital Background */}
       <motion.div
         style={{ y: orbitsY }}
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-20 will-change-transform"
       >
         <Orbits className="w-full h-full" />
       </motion.div>
@@ -106,7 +106,7 @@ export default function Hero({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex justify-center mb-8"
+          className="flex justify-center mb-8 will-change-transform"
         >
           <BrandSun className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
         </motion.div>
@@ -167,7 +167,7 @@ export default function Hero({
             }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            className="group w-full sm:w-auto px-10 sm:px-14 py-6 sm:py-7 rounded-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-slate-900 font-bold text-lg sm:text-xl hover:brightness-110 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-yellow-500/50 focus-visible:ring-offset-2 relative overflow-hidden shadow-2xl text-center min-h-[64px] flex items-center justify-center"
+            className="group w-full sm:w-auto px-10 sm:px-14 py-6 sm:py-7 rounded-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-slate-900 font-bold text-lg sm:text-xl hover:brightness-110 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-yellow-500/50 focus-visible:ring-offset-2 relative overflow-hidden shadow-2xl text-center min-h-[64px] flex items-center justify-center will-change-transform"
             style={{
               background: 'linear-gradient(45deg, #FBBF24, #F59E0B, #D97706)',
               boxShadow: '0 10px 25px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
@@ -195,7 +195,7 @@ export default function Hero({
             }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            className="group w-full sm:w-auto px-10 sm:px-14 py-6 sm:py-7 rounded-full border-2 border-slate-300 bg-white/80 backdrop-blur-sm text-slate-800 font-semibold text-lg sm:text-xl hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-yellow-500/50 focus-visible:ring-offset-2 relative overflow-hidden shadow-lg text-center min-h-[64px] flex items-center justify-center"
+            className="group w-full sm:w-auto px-10 sm:px-14 py-6 sm:py-7 rounded-full border-2 border-slate-300 bg-white/80 backdrop-blur-sm text-slate-800 font-semibold text-lg sm:text-xl hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-yellow-500/50 focus-visible:ring-offset-2 relative overflow-hidden shadow-lg text-center min-h-[64px] flex items-center justify-center will-change-transform"
             aria-label="Scroll to offering section"
           >
             <span className="relative z-10 flex items-center gap-2">

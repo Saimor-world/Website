@@ -18,11 +18,16 @@ export default function MatomoTracker() {
     _paq.push(['setTrackerUrl', u + 'matomo.php']);
     _paq.push(['setSiteId', '1']);
 
-    // Create and append script
+    // Create and append script with error handling
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
     script.src = 'https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js';
+
+    // Handle script load errors gracefully (e.g., blocked by ad blockers)
+    script.onerror = () => {
+      console.log('Matomo script blocked by ad blocker or network issue');
+    };
 
     const firstScript = document.getElementsByTagName('script')[0];
     if (firstScript && firstScript.parentNode) {

@@ -20,7 +20,8 @@
       "Bash(npx vercel deploy:*)",
       "Bash(npx vercel domains:*)",
       "Bash(npx vercel link:*)",
-      "Bash(npx vercel remove:*)"
+      "Bash(npx vercel remove:*)",
+      "Bash(npm start)"
     ],
     "deny": [],
     "ask": []

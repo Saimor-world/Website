@@ -34,3 +34,69 @@ html, body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Color variables */
+:root {
+  --navy: #0E1526;
+  --gold: #FFCE45;
+  --off: #F8F7F3;
+  --ink: #DDE1EA;
+  --line: #1b2640;
+}
+
+/* Golden pills (Principles) */
+.s-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+  color: var(--ink);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.s-pill::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 206, 69, 0.85);
+  box-shadow: 0 0 0 4px rgba(255, 206, 69, 0.18);
+}
+
+.s-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 206, 69, 0.28);
+}
+
+/* Section orbits background */
+.section-orbits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.section-orbits .stroke {
+  stroke: var(--gold);
+  opacity: 0.18;
+}
+
+/* Reveal animation with GPU acceleration */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+.reveal {
+  animation: fade-up 0.45s ease both;
+  will-change: transform, opacity;
+}

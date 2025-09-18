@@ -1,9 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
 import './globals.css'
-import MatomoTracker from '../components/MatomoTracker'
-import MatomoPageViews from '../components/MatomoPageViews'
-import { SpeedInsights } from '@vercel/speed-insights/next'
+import ClientProviders from '../components/ClientProviders'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -38,10 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" data-saimor="pb-1.2">
       <body className="bg-[#0E1526] text-[#F8F7F3] antialiased">
-        <MatomoTracker />
-        <MatomoPageViews />
+        <ClientProviders />
         {children}
-        <SpeedInsights />
       </body>
     </html>
   )

@@ -7,6 +7,7 @@ const config: Config = {
         navy: "#0E1526",
         "navy-light": "#1A2332",
         gold: "#FFCE45",
+        ink: "#DDE1EA",
         paper: "#F9F9F6",
         bone: "#F7F5F3",
         "bone-dark": "#F0EDE8"
