@@ -111,9 +111,9 @@ export default function Hero({
           <Image
             src="/Logo neu.png"
             alt="Saimôr Logo"
-            width={80}
-            height={80}
-            className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain"
+            width={400}
+            height={120}
+            className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto object-contain"
             priority
           />
         </motion.div>
