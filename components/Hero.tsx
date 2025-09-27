@@ -190,7 +190,7 @@ export default function Hero({
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-32 md:py-40 text-center z-10">
         {/* Brand Sun */}
         <motion.div
-          style={{ y: brandSunY, rotate: brandSunRotate }}
+          style={{ y: brandSunY }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
