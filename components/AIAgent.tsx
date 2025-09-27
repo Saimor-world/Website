@@ -17,10 +17,10 @@ export default function AIAgent({ locale }: AIAgentProps) {
 
   const content = {
     de: {
-      title: 'Häufige Fragen',
+      title: 'Weisheit - Ihr Begleiter',
       faqs: [
         {
-          question: 'Was ist ein Lichtgespräch?',
+          question: 'Was ist ein Klarheitsgespräch?',
           answer: 'Ein 30-minütiges, kostenfreies Online-Gespräch zur Klärung Ihrer Situation – ohne Verkauf, nur Klarheit. Es dient der ersten Orientierung und dem gegenseitigen Kennenlernen.'
         },
         {
@@ -29,17 +29,17 @@ export default function AIAgent({ locale }: AIAgentProps) {
         },
         {
           question: 'Wie kann ich Kontakt aufnehmen?',
-          answer: 'Am einfachsten über ein Lichtgespräch via Cal.com oder über unser Kontaktformular. Alle Anfragen werden DSGVO-konform behandelt.'
+          answer: 'Am einfachsten über ein Klarheitsgespräch via Cal.com oder über unser Kontaktformular. Alle Anfragen werden DSGVO-konform behandelt.'
         }
       ],
-      bookCall: 'Lichtgespräch buchen',
+      bookCall: 'Klarheitsgespräch buchen',
       contactForm: 'Zum Kontaktformular'
     },
     en: {
-      title: 'Frequently Asked Questions',
+      title: 'Wisdom - Your Guide',
       faqs: [
         {
-          question: 'What is a light conversation?',
+          question: 'What is a clarity conversation?',
           answer: 'A 30-minute, free online conversation to clarify your situation – no sales, just clarity. It serves as initial orientation and mutual acquaintance.'
         },
         {
@@ -48,10 +48,10 @@ export default function AIAgent({ locale }: AIAgentProps) {
         },
         {
           question: 'How can I get in touch?',
-          answer: 'Easiest via a light conversation through Cal.com or through our contact form. All inquiries are handled in compliance with GDPR.'
+          answer: 'Easiest via a clarity conversation through Cal.com or through our contact form. All inquiries are handled in compliance with GDPR.'
         }
       ],
-      bookCall: 'Book light conversation',
+      bookCall: 'Book clarity conversation',
       contactForm: 'To contact form'
     }
   }[locale];

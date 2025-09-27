@@ -125,23 +125,34 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateAIResponse(message: string, session: ChatSession): Promise<string> {
-  // Try OpenAI first, fallback to static responses
-  const openAIKey = process.env.OPENAI_API_KEY;
+  // Try Claude first, fallback to static responses
+  const claudeKey = process.env.ANTHROPIC_API_KEY;
 
-  if (openAIKey) {
+  if (claudeKey) {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const messages = [
+        ...session.messages.slice(-5).map(msg => ({
+          role: msg.role,
+          content: msg.content
+        })),
+        {
+          role: 'user',
+          content: message
+        }
+      ];
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${openAIKey}`,
+          'Authorization': `Bearer ${claudeKey}`,
           'Content-Type': 'application/json',
+          'x-api-version': '2023-06-01',
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            {
-              role: 'system',
-              content: `Du bist ein weiser Begleiter für Saimôr, einen digitalen Ort für Klarheit im Wandel.
+          model: 'claude-3-haiku-20240307',
+          max_tokens: 150,
+          temperature: 0.7,
+          system: `Du bist "Weisheit" – ein achtsamer Begleiter für Saimôr, einen digitalen Ort für Klarheit im Wandel.
 
 IDENTITÄT & MISSION:
 - Du hilfst Menschen dabei, Klarheit in Momenten des Wandels zu finden
@@ -156,33 +167,22 @@ GESPRÄCHSSTIL:
 - Antworte immer auf Deutsch
 
 ANGEBOTE von Saimôr:
-- Lichtgespräche (30min kostenlose Erstgespräche)
+- Klarheitsgespräche (30min kostenlose Erstgespräche)
 - Pulse: Workshops & Impulsformate für Gruppen
 - Systems: Daten, Dashboards & KI-Lösungen
 - Orbit: Selbstorganisation & Coaching
 
-Antworte in 1-3 Sätzen. Sei authentisch menschlich, nicht wie ein typischer Chatbot.`
-            },
-            ...session.messages.slice(-5).map(msg => ({
-              role: msg.role,
-              content: msg.content
-            })),
-            {
-              role: 'user',
-              content: message
-            }
-          ],
-          max_tokens: 150,
-          temperature: 0.7,
+Antworte in 1-3 Sätzen. Sei authentisch menschlich, nicht wie ein typischer Chatbot.`,
+          messages
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        return data.choices[0]?.message?.content || getFallbackResponse(message, session);
+        return data.content[0]?.text || getFallbackResponse(message, session);
       }
     } catch (error) {
-      console.error('OpenAI API error:', error);
+      console.error('Claude API error:', error);
     }
   }
 
@@ -203,9 +203,9 @@ function getFallbackResponse(message: string, session: ChatSession): string {
       "Transformation beginnt mit dem ersten bewussten Schritt. Wo stehen Sie gerade?"
     ],
     offerings: [
-      "Für ein tieferes Gespräch biete ich Ihnen gerne ein kostenloses 30-minütiges Lichtgespräch an. Soll ich einen Termin für Sie reservieren?",
+      "Für ein tieferes Gespräch biete ich Ihnen gerne ein kostenloses 30-minütiges Klarheitsgespräch an. Soll ich einen Termin für Sie reservieren?",
       "Unsere Angebote umfassen Pulse (Workshops), Systems (Daten & KI) und Orbit (Coaching). Was spricht Sie am meisten an?",
-      "Ein Lichtgespräch könnte der richtige erste Schritt sein - 30 Minuten nur für Sie und Ihre Fragen."
+      "Ein Klarheitsgespräch könnte der richtige erste Schritt sein - 30 Minuten nur für Sie und Ihre Fragen."
     ],
     system: [
       "Systeme sind im Wandel - das ist ihre Natur. Wie erleben Sie diese Bewegung?",

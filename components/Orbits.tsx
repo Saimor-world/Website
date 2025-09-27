@@ -19,7 +19,7 @@ export default function Orbits({ className = "absolute inset-0" }: OrbitsProps) 
         cx="400"
         cy="300"
         r="200"
-        stroke="#FFCE45"
+        stroke="#F9E79F"
         strokeWidth="1"
         fill="none"
         opacity="0.1"
@@ -31,7 +31,7 @@ export default function Orbits({ className = "absolute inset-0" }: OrbitsProps) 
         cx="400"
         cy="300"
         r="120"
-        stroke="#FFCE45"
+        stroke="#F9E79F"
         strokeWidth="1"
         fill="none"
         opacity="0.15"
@@ -43,14 +43,14 @@ export default function Orbits({ className = "absolute inset-0" }: OrbitsProps) 
         cx="400"
         cy="300"
         r="60"
-        stroke="#FFCE45"
+        stroke="#F9E79F"
         strokeWidth="1"
         fill="none"
         opacity="0.2"
       />
 
       {/* Orbital dots */}
-      <circle cx="600" cy="300" r="2" fill="#FFCE45" opacity="0.6">
+      <circle cx="600" cy="300" r="2" fill="#F9E79F" opacity="0.6">
         <animateTransform
           attributeName="transform"
           type="rotate"
@@ -60,7 +60,7 @@ export default function Orbits({ className = "absolute inset-0" }: OrbitsProps) 
         />
       </circle>
 
-      <circle cx="520" cy="300" r="1.5" fill="#FFCE45" opacity="0.4">
+      <circle cx="520" cy="300" r="1.5" fill="#F9E79F" opacity="0.4">
         <animateTransform
           attributeName="transform"
           type="rotate"
@@ -70,7 +70,7 @@ export default function Orbits({ className = "absolute inset-0" }: OrbitsProps) 
         />
       </circle>
 
-      <circle cx="460" cy="300" r="1" fill="#FFCE45" opacity="0.3">
+      <circle cx="460" cy="300" r="1" fill="#F9E79F" opacity="0.3">
         <animateTransform
           attributeName="transform"
           type="rotate"

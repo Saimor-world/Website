@@ -7,7 +7,7 @@ export async function GET() {
       <div style={{
         width: "100%", height: "100%", display: "flex",
         alignItems: "center", justifyContent: "center",
-        background: "#0E1526", color: "#FFCE45", fontSize: 64,
+        background: "#85A389", color: "#F9E79F", fontSize: 64,
         fontFamily: "Inter, system-ui"
       }}>
         Saimôr – Klarheit im Wandel

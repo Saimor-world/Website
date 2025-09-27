@@ -1,0 +1,251 @@
+version: '3.8'
+
+networks:
+  saimor_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  caddy_data:
+  caddy_config:
+  n8n_data:
+
+services:
+  # 🚀 FastAPI Gateway - Core API
+  gateway:
+    build:
+      context: ./saimor-ai-business/gateway
+      dockerfile: Dockerfile
+    container_name: saimor_gateway
+    environment:
+      - DATABASE_URL=postgresql://saimor_user:${POSTGRES_PASSWORD}@postgres:5432/saimor_ai
+      - REDIS_URL=redis://redis:6379
+      - QDRANT_URL=http://qdrant:6333
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ENVIRONMENT=production
+      - DOMAIN=${DOMAIN:-api.saimor.world}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    networks:
+      - saimor_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # 🐘 PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: saimor_postgres
+    environment:
+      - POSTGRES_DB=saimor_ai
+      - POSTGRES_USER=saimor_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./saimor-ai-business/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - saimor_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saimor_user -d saimor_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # 🔴 Redis Cache & Sessions
+  redis:
+    image: redis:7-alpine
+    container_name: saimor_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - ./saimor-ai-business/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - saimor_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # 🔍 Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    container_name: saimor_qdrant
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - saimor_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # 🔄 N8N Workflow Automation
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: saimor_n8n
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=saimor_ai
+      - DB_POSTGRESDB_USER=saimor_user
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      - N8N_HOST=${DOMAIN:-api.saimor.world}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://${DOMAIN:-api.saimor.world}/n8n/
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - saimor_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 🔒 Caddy Reverse Proxy + SSL
+  caddy:
+    image: caddy:2-alpine
+    container_name: saimor_caddy
+    environment:
+      - DOMAIN=${DOMAIN:-api.saimor.world}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./saimor-ai-business/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - saimor_network
+    depends_on:
+      - gateway
+    restart: unless-stopped
+
+  # 📊 Monitoring & Health Checks
+  monitoring:
+    build:
+      context: ./saimor-ai-business/monitoring
+      dockerfile: Dockerfile
+    container_name: saimor_monitoring
+    environment:
+      - POSTGRES_URL=postgresql://saimor_user:${POSTGRES_PASSWORD}@postgres:5432/saimor_ai
+      - REDIS_URL=redis://redis:6379
+      - GATEWAY_URL=http://gateway:8000
+      - QDRANT_URL=http://qdrant:6333
+    networks:
+      - saimor_network
+    depends_on:
+      - gateway
+      - postgres
+      - redis
+      - qdrant
+    restart: unless-stopped
+
+  # 🤖 Document Agent
+  document_agent:
+    build:
+      context: ./saimor-ai-business/agents/document_agent
+      dockerfile: Dockerfile
+    container_name: saimor_document_agent
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - QDRANT_URL=http://qdrant:6333
+      - GATEWAY_URL=http://gateway:8000
+    networks:
+      - saimor_network
+    depends_on:
+      - qdrant
+      - gateway
+    restart: unless-stopped
+
+  # 📧 Email Agent
+  email_agent:
+    build:
+      context: ./saimor-ai-business/agents/email_agent
+      dockerfile: Dockerfile
+    container_name: saimor_email_agent
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - GATEWAY_URL=http://gateway:8000
+    networks:
+      - saimor_network
+    depends_on:
+      - gateway
+    restart: unless-stopped
+
+  # 📅 Schedule Agent
+  schedule_agent:
+    build:
+      context: ./saimor-ai-business/agents/schedule_agent
+      dockerfile: Dockerfile
+    container_name: saimor_schedule_agent
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CAL_COM_API_KEY=${CAL_COM_API_KEY}
+      - GATEWAY_URL=http://gateway:8000
+    networks:
+      - saimor_network
+    depends_on:
+      - gateway
+    restart: unless-stopped
+
+  # 📈 Analytics Agent
+  analytics_agent:
+    build:
+      context: ./saimor-ai-business/agents/analytics_agent
+      dockerfile: Dockerfile
+    container_name: saimor_analytics_agent
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=postgresql://saimor_user:${POSTGRES_PASSWORD}@postgres:5432/saimor_ai
+      - GATEWAY_URL=http://gateway:8000
+    networks:
+      - saimor_network
+    depends_on:
+      - postgres
+      - gateway
+    restart: unless-stopped
+
+  # 💬 Chat Agent (Website Integration)
+  chat_agent:
+    build:
+      context: ./saimor-ai-business/agents/chat_agent
+      dockerfile: Dockerfile
+    container_name: saimor_chat_agent
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - GATEWAY_URL=http://gateway:8000
+    networks:
+      - saimor_network
+    depends_on:
+      - redis
+      - gateway
+    restart: unless-stopped

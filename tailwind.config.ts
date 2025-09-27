@@ -4,13 +4,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Legacy colors for compatibility
         navy: "#0E1526",
         "navy-light": "#1A2332",
         gold: "#FFCE45",
         ink: "#DDE1EA",
         paper: "#F9F9F6",
         bone: "#F7F5F3",
-        "bone-dark": "#F0EDE8"
+        "bone-dark": "#F0EDE8",
+
+        // New Logo-inspired Green Palette
+        "saimor-green": "#4A6741",      // Main logo green
+        "saimor-green-light": "#5D7C54", // Lighter variant
+        "saimor-green-dark": "#3A5231",  // Darker variant
+        "saimor-accent": "#669966",      // Accent dot green
+        "saimor-gold": "#D4B483",        // Logo golden line
+        "saimor-gold-light": "#E6C897",  // Light gold variant
+
+        // Refined Pastell palette
+        "gold-primary": "#D4B483",
+        "gold-secondary": "#E6C897",
+        "gold-dark": "#C2A270",
+        "forest-primary": "#4A6741",
+        "forest-secondary": "#5D7C54",
+        "sage-green": "#B8D4BA",
+        "warm-beige": "#FAF0E6",
+        "neutral-gray": "#9CA3AF",
+        "light-gray": "#F8FAF9",
+        "text-dark": "#4A5568",
+
+        // Glass-morphism colors
+        "glass-white": "rgba(255, 255, 255, 0.1)",
+        "glass-green": "rgba(74, 103, 65, 0.1)",
+        "glass-gold": "rgba(212, 180, 131, 0.1)"
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', "serif"],
