@@ -119,43 +119,80 @@ export default function Values({ locale }: Props) {
                 scale: 1.02,
                 transition: { duration: 0.3, ease: "easeOut" }
               }}
-              className="group text-center"
+              className="group text-center relative"
             >
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-yellow-200/30 shadow-xl hover:shadow-2xl transition-all duration-500 h-full">
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border shadow-xl hover:shadow-2xl transition-all duration-500 h-full relative overflow-hidden"
+                   style={{
+                     borderColor: 'rgba(212, 180, 131, 0.25)'
+                   }}>
+                {/* Gradient overlay on hover */}
                 <motion.div
-                  whileHover={{
-                    scale: 1.1,
-                    rotate: [0, -10, 10, 0],
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 17,
-                    rotate: { duration: 0.6 }
-                  }}
-                  className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-3xl pointer-events-none"
                   style={{
-                    boxShadow: '0 8px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                    background: 'radial-gradient(ellipse at top, rgba(74, 103, 65, 0.06) 0%, transparent 60%)'
                   }}
-                >
-                  <value.icon className="w-10 h-10 text-slate-900" />
-                </motion.div>
-
-                <h3 className="font-bold text-2xl mb-4 text-slate-900 group-hover:text-yellow-700 transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  {value.title}
-                </h3>
-
-                <p className="text-slate-700 leading-relaxed text-lg">
-                  {value.desc}
-                </p>
-
-                {/* Decorative element */}
-                <motion.div
-                  className="w-12 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full mx-auto mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: 48 }}
-                  transition={{ delay: i * 0.1 + 0.5, duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                 />
+
+                {/* Organic glow */}
+                <motion.div
+                  className="absolute -top-16 -right-16 w-32 h-32 rounded-full opacity-0 group-hover:opacity-30 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(212, 180, 131, 0.5) 0%, transparent 70%)',
+                    filter: 'blur(30px)'
+                  }}
+                  transition={{ duration: 0.5 }}
+                />
+
+                <div className="relative z-10">
+                  <motion.div
+                    whileHover={{
+                      scale: 1.1,
+                      rotate: [0, -10, 10, 0],
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 17,
+                      rotate: { duration: 0.6 }
+                    }}
+                    className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300 relative"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.85) 0%, rgba(93, 124, 84, 0.8) 50%, rgba(212, 180, 131, 0.7) 100%)',
+                      boxShadow: '0 8px 20px rgba(74, 103, 65, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                    }}
+                  >
+                    {/* Icon glow */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100"
+                      style={{
+                        background: 'radial-gradient(circle, rgba(212, 180, 131, 0.4) 0%, transparent 70%)',
+                        filter: 'blur(12px)'
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <value.icon className="w-10 h-10 text-white relative z-10" />
+                  </motion.div>
+
+                  <h3 className="font-bold text-2xl mb-4 text-slate-900 group-hover:text-saimor-green transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    {value.title}
+                  </h3>
+
+                  <p className="text-slate-700 leading-relaxed text-lg">
+                    {value.desc}
+                  </p>
+
+                  {/* Decorative element */}
+                  <motion.div
+                    className="w-12 h-1 rounded-full mx-auto mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: 'linear-gradient(90deg, rgba(74, 103, 65, 0.8) 0%, rgba(212, 180, 131, 0.9) 50%, rgba(74, 103, 65, 0.8) 100%)'
+                    }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: 48 }}
+                    transition={{ delay: i * 0.1 + 0.5, duration: 0.6 }}
+                  />
+                </div>
               </div>
             </motion.div>
           ))}

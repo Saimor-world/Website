@@ -45,8 +45,25 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
   return (
     <>
       {/* Offers Section */}
-      <section id="leistungen" className="bg-navy py-16 sm:py-24 md:py-40">
-        <div className="mx-auto max-w-7xl px-4">
+      <section id="leistungen" className="py-16 sm:py-24 md:py-40 relative overflow-hidden"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(14, 21, 38, 0.98) 0%, rgba(26, 35, 50, 0.95) 100%)'
+               }}>
+        {/* Subtle organic background elements */}
+        <motion.div
+          className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-5 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.4) 0%, transparent 70%)',
+            filter: 'blur(80px)'
+          }}
+          animate={{
+            y: [-30, 30, -30],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {cards.map(({ icon: Icon, key }, i) => (
             <motion.div
@@ -65,13 +82,21 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               }}
             >
               {/* Glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#FFCE45]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative z-10">
-                <Icon className="mb-6 w-10 h-10 text-[#FFCE45] group-hover:scale-110 transition-transform duration-300" />
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <Icon className="mb-6 w-10 h-10 text-saimor-gold group-hover:drop-shadow-lg transition-all duration-300" />
+                </motion.div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl mb-3 text-[#F9F9F6] group-hover:text-[#FFCE45] transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  {(translations.offers[key as keyof typeof translations.offers] as any).title}
+                <h3 className="font-serif text-2xl sm:text-3xl mb-3 text-[#F9F9F6] transition-colors duration-300"
+                    style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  <span className="group-hover:bg-gradient-to-r group-hover:from-saimor-gold group-hover:to-saimor-gold-light group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    {(translations.offers[key as keyof typeof translations.offers] as any).title}
+                  </span>
                 </h3>
 
                 <h4 className="text-lg sm:text-xl font-medium mb-4 text-[#F9F9F6]/90">
@@ -86,13 +111,17 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                   href="https://cal.com/saimor/30min"
                   target="_blank"
                   rel="noreferrer"
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="block w-full px-6 py-4 rounded-xl border-2 border-[#FFCE45]/30 text-[#FFCE45] font-semibold text-lg hover:bg-[#FFCE45] hover:text-[#0E1526] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#FFCE45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden group/btn text-center"
+                  className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden group/btn text-center text-white hover:border-saimor-gold/60"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)',
+                    border: '2px solid rgba(212, 180, 131, 0.3)'
+                  }}
                   aria-label={`${(translations.offers[key as keyof typeof translations.offers] as any).cta} - Book via Cal.com (opens in new tab)`}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-saimor-gold/90 to-saimor-gold-light/85 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">{(translations.offers[key as keyof typeof translations.offers] as any).cta}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#FFCE45] to-[#FFD700] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-200" />
                 </motion.a>
 
                 <p className="text-xs text-[#F9F9F6]/50 mt-3 text-center">
@@ -108,17 +137,41 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
       {/* Mission Section */}
       <section
         id="mission"
-        className="relative border-t-2 border-[#FFCE45] bg-gradient-to-b from-bone via-bone-dark to-bone"
+        className="relative border-t-2 overflow-hidden"
+        style={{
+          borderColor: 'rgba(212, 180, 131, 0.4)',
+          background: 'linear-gradient(135deg, #f8faf9 0%, #faf8f6 50%, #f7f5f3 100%)'
+        }}
       >
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:py-24 md:py-40">
+        {/* Background elements */}
+        <motion.div
+          className="absolute top-1/3 left-1/5 w-64 h-64 rounded-full opacity-10 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%)',
+            filter: 'blur(60px)'
+          }}
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:py-24 md:py-40">
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-8 mb-8 sm:mb-12 text-center sm:text-left">
             <motion.h2
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="font-serif text-3xl sm:text-4xl md:text-5xl text-navy"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
+              className="font-serif text-3xl sm:text-4xl md:text-5xl"
+              style={{
+                fontFamily: 'Cormorant Garamond, serif',
+                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
             >
               {translations.mission.title}
             </motion.h2>
@@ -127,8 +180,15 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
+              whileHover={{
+                scale: 1.1,
+                rotate: [0, -10, 10, 0]
+              }}
             >
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 font-bold">M</div>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                   style={{
+                     background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.9) 0%, rgba(212, 180, 131, 0.85) 100%)'
+                   }}>M</div>
             </motion.div>
           </div>
 
@@ -137,7 +197,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg sm:text-xl md:text-2xl text-navy/80 max-w-4xl leading-relaxed mb-6 text-center sm:text-left"
+            className="text-lg sm:text-xl md:text-2xl text-slate-700 max-w-4xl leading-relaxed mb-6 text-center sm:text-left"
           >
             {translations.mission.text}
           </motion.p>
@@ -147,7 +207,12 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg text-navy/60 font-medium bg-gold/10 px-6 py-3 rounded-full inline-block"
+            whileHover={{ scale: 1.05 }}
+            className="text-lg text-slate-700 font-medium px-6 py-3 rounded-full inline-block"
+            style={{
+              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.1) 100%)',
+              border: '1px solid rgba(212, 180, 131, 0.3)'
+            }}
           >
             {translations.mission.subtitle}
           </motion.p>
@@ -162,10 +227,18 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-4 text-[#F9F9F6]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-4"
+              style={{
+                fontFamily: 'Cormorant Garamond, serif',
+                background: 'linear-gradient(135deg, #D4B483 0%, #E6C897 50%, #D4B483 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                textShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              }}>
             {translations.contact.title}
           </h2>
-          <p className="text-lg sm:text-xl text-[#F9F9F6]/80 mb-8 sm:mb-12 max-w-3xl">
+          <p className="text-lg sm:text-xl text-slate-700 mb-8 sm:mb-12 max-w-3xl">
             {translations.contact.subtitle}
           </p>
         </motion.div>

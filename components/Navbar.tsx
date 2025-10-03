@@ -1,11 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
-import { useState } from 'react';
+import { Menu, User, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar({ locale }: { locale: 'de'|'en' }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const switchLocale = locale === 'de' ? 'en' : 'de';
   const switchHref = `/${switchLocale}`;
@@ -15,13 +17,26 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
     en: { services: 'Services', mission: 'Mission', contact: 'Contact' }
   }[locale];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <header
-      className="sticky top-0 z-30 backdrop-blur-md border-b"
+      className="sticky top-0 z-30 transition-all duration-500 border-b"
       style={{
-        background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.85) 0%, rgba(93, 124, 84, 0.8) 100%)',
-        border: '1px solid rgba(212, 180, 131, 0.3)',
-        boxShadow: '0 4px 12px rgba(74, 103, 65, 0.15)'
+        background: scrolled
+          ? 'linear-gradient(135deg, rgba(74, 103, 65, 0.9) 0%, rgba(93, 124, 84, 0.85) 100%)'
+          : 'linear-gradient(135deg, rgba(74, 103, 65, 0.75) 0%, rgba(93, 124, 84, 0.7) 100%)',
+        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'blur(10px)',
+        border: `1px solid rgba(212, 180, 131, ${scrolled ? '0.4' : '0.2'})`,
+        boxShadow: scrolled
+          ? '0 8px 32px rgba(74, 103, 65, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+          : '0 4px 12px rgba(74, 103, 65, 0.1)'
       }}
     >
       <nav className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
@@ -35,19 +50,11 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
           <a href="#kontakt" className="relative text-white hover:text-saimor-gold-light transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{nav.contact}</a>
           <Link
             href={switchHref}
-            className="px-5 py-2.5 rounded-full font-semibold text-white transition-all duration-300 backdrop-blur-sm"
+            className="px-5 py-2.5 rounded-full font-semibold text-white transition-all duration-300 backdrop-blur-sm hover:scale-105 hover:bg-saimor-gold-light/30"
             style={{
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(212, 180, 131, 0.2) 100%)',
               border: '1px solid rgba(212, 180, 131, 0.4)',
               textShadow: '0 1px 2px rgba(0,0,0,0.2)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(212, 180, 131, 0.3) 0%, rgba(230, 200, 151, 0.4) 100%)';
-              e.currentTarget.style.transform = 'scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(212, 180, 131, 0.2) 100%)';
-              e.currentTarget.style.transform = 'scale(1)';
             }}
           >
             {locale === 'de' ? 'EN' : 'DE'}

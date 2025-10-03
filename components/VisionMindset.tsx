@@ -26,12 +26,55 @@ export default function VisionMindset({ locale }: Props) {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-slate-900 to-slate-800 text-white relative overflow-hidden">
+    <section className="py-16 sm:py-24 relative overflow-hidden text-white"
+             style={{
+               background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(58, 82, 49, 0.95) 50%, rgba(74, 103, 65, 0.98) 100%)'
+             }}>
       {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-yellow-400 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full bg-yellow-300 blur-3xl"></div>
+      <div className="absolute inset-0 opacity-10">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, transparent 70%)' }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full blur-3xl"
+          style={{ background: 'radial-gradient(circle, rgba(230, 200, 151, 0.5) 0%, transparent 70%)' }}
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.6, 0.4]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
+
+      {/* Floating particles */}
+      {[...Array(12)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1.5 h-1.5 rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.7) 0%, transparent 70%)',
+            left: `${5 + i * 8}%`,
+            top: `${15 + (i % 4) * 20}%`
+          }}
+          animate={{
+            y: [-15, 15, -15],
+            opacity: [0.2, 0.5, 0.2],
+            scale: [1, 1.5, 1]
+          }}
+          transition={{
+            duration: 3 + i * 0.4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.2
+          }}
+        />
+      ))}
 
       <div className="relative mx-auto max-w-7xl px-4">
         <motion.div
@@ -65,13 +108,23 @@ export default function VisionMindset({ locale }: Props) {
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 360 }}
                 transition={{ duration: 0.5 }}
-                className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 relative"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(230, 200, 151, 0.8) 100%)',
+                  boxShadow: '0 4px 12px rgba(212, 180, 131, 0.4)'
+                }}
               >
-                <ArrowRight className="w-6 h-6 text-slate-900" />
+                <ArrowRight className="w-6 h-6 text-saimor-green-dark" />
               </motion.div>
 
               <div className="text-left md:flex-1">
-                <h3 className="text-2xl sm:text-3xl font-semibold text-yellow-400 mb-3">
+                <h3 className="text-2xl sm:text-3xl font-semibold mb-3"
+                    style={{
+                      background: 'linear-gradient(135deg, #D4B483 0%, #E6C897 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
                   {transformation.to}
                 </h3>
                 <p className="text-slate-300 text-lg max-w-md">
@@ -90,19 +143,51 @@ export default function VisionMindset({ locale }: Props) {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-center"
         >
-          <div className="inline-block p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-            <blockquote className="font-serif text-2xl sm:text-3xl md:text-4xl italic leading-relaxed mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              {t(
-                '&ldquo;Saimôr ist kein Tool, sondern ein Resonanzraum.&rdquo;',
-                '&ldquo;Saimôr is not a tool, but a resonance space.&rdquo;'
-              )}
-            </blockquote>
-            <p className="text-lg text-slate-300">
-              {t(
-                'Ein Ort, wo Menschen, Systeme und Veränderung aufeinandertreffen – mit Klarheit statt Verwirrung.',
-                'A place where people, systems and change meet – with clarity instead of confusion.'
-              )}
-            </p>
+          <div className="inline-block p-10 rounded-3xl relative overflow-hidden"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.12) 100%)',
+                 backdropFilter: 'blur(20px)',
+                 border: '1px solid rgba(212, 180, 131, 0.25)'
+               }}>
+            {/* Glow effect */}
+            <motion.div
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: 'radial-gradient(ellipse at center, rgba(212, 180, 131, 0.2) 0%, transparent 70%)'
+              }}
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            <div className="relative z-10">
+              <blockquote className="font-serif text-2xl sm:text-3xl md:text-4xl italic leading-relaxed mb-6" style={{ fontFamily: 'Cormorant Garamond, serif', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
+                {t(
+                  '&ldquo;Saimôr ist kein Tool, sondern ein Resonanzraum.&rdquo;',
+                  '&ldquo;Saimôr is not a tool, but a resonance space.&rdquo;'
+                )}
+              </blockquote>
+
+              <motion.div
+                className="w-16 h-1 rounded-full mx-auto mb-6"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(212, 180, 131, 0.6) 0%, rgba(230, 200, 151, 0.8) 50%, rgba(212, 180, 131, 0.6) 100%)'
+                }}
+                initial={{ width: 0 }}
+                whileInView={{ width: 64 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+              />
+
+              <p className="text-lg text-white/80">
+                {t(
+                  'Ein Ort, wo Menschen, Systeme und Veränderung aufeinandertreffen – mit Klarheit statt Verwirrung.',
+                  'A place where people, systems and change meet – with clarity instead of confusion.'
+                )}
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -36,16 +36,45 @@ export default function Services({ locale }: Props) {
   ];
 
   return (
-    <section id="angebot" className="section">
-      <div className="mx-auto max-w-6xl px-6">
-        <h2 className="text-[26px] md:text-[30px] font-medium mb-8">{t('Angebot', 'Offering')}</h2>
+    <section id="angebot" className="section relative overflow-hidden">
+      {/* Organic background elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute top-20 left-1/4 w-64 h-64 rounded-full opacity-20"
+          style={{
+            background: 'radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%)',
+            filter: 'blur(60px)'
+          }}
+        />
+        <div
+          className="absolute bottom-32 right-1/5 w-48 h-48 rounded-full opacity-15"
+          style={{
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.4) 0%, transparent 70%)',
+            filter: 'blur(50px)'
+          }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6">
+        <h2
+          className="text-[26px] md:text-[30px] font-medium mb-8"
+          style={{
+            fontFamily: 'Cormorant Garamond, serif',
+            background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}
+        >
+          {t('Angebot', 'Offering')}
+        </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
           {items.map((it, index) => {
             const gradientBackgrounds = [
-              'linear-gradient(135deg, rgba(255, 215, 102, 0.15) 0%, rgba(251, 191, 36, 0.1) 50%, rgba(217, 119, 6, 0.05) 100%)', // Orbit - warm golds
-              'linear-gradient(135deg, rgba(254, 240, 138, 0.15) 0%, rgba(255, 206, 69, 0.1) 50%, rgba(251, 191, 36, 0.05) 100%)', // Pulse - bright yellows
-              'linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(255, 183, 77, 0.1) 50%, rgba(254, 215, 102, 0.05) 100%)'  // Systems - mixed golds
+              'linear-gradient(135deg, rgba(74, 103, 65, 0.12) 0%, rgba(212, 180, 131, 0.15) 50%, rgba(93, 124, 84, 0.08) 100%)', // Orbit - green/gold
+              'linear-gradient(135deg, rgba(212, 180, 131, 0.18) 0%, rgba(102, 153, 102, 0.1) 50%, rgba(212, 180, 131, 0.12) 100%)', // Pulse - gold/accent
+              'linear-gradient(135deg, rgba(93, 124, 84, 0.15) 0%, rgba(212, 180, 131, 0.12) 50%, rgba(74, 103, 65, 0.1) 100%)'  // Systems - green variations
             ];
 
             return (
@@ -53,8 +82,10 @@ export default function Services({ locale }: Props) {
                 key={it.key}
                 className="relative group overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 min-h-[420px] cursor-pointer hover:-translate-y-2 hover:scale-105"
                 style={{
-                  background: 'linear-gradient(145deg, #ffffff 0%, #fefefe 100%)',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8)'
+                  background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 249, 0.9) 100%)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(212, 180, 131, 0.25)',
+                  boxShadow: '0 20px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)'
                 }}
               >
                 {/* Background Image */}
@@ -67,22 +98,27 @@ export default function Services({ locale }: Props) {
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/50 via-transparent to-yellow-100/30" />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'radial-gradient(ellipse at top left, rgba(74, 103, 65, 0.05) 0%, transparent 60%)'
+                  }}
+                />
 
                 {/* Orbit Decoration */}
                 <div className="absolute top-6 right-6 w-16 h-16 opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-spin-slow">
                   <svg viewBox="0 0 64 64" className="w-full h-full">
-                    <circle cx="32" cy="32" r="28" fill="none" stroke="#F59E0B" strokeWidth="2" strokeDasharray="4 4" />
-                    <circle cx="32" cy="4" r="3" fill="#F59E0B" />
-                    <circle cx="60" cy="32" r="2" fill="#FBBF24" />
-                    <circle cx="32" cy="60" r="2" fill="#FDE047" />
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#4A6741" strokeWidth="2" strokeDasharray="4 4" />
+                    <circle cx="32" cy="4" r="3" fill="#4A6741" />
+                    <circle cx="60" cy="32" r="2" fill="#D4B483" />
+                    <circle cx="32" cy="60" r="2" fill="#5D7C54" />
                   </svg>
                 </div>
 
                 {/* Content */}
                 <div className="relative z-10 p-8 h-full flex flex-col">
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-4 text-slate-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    <h3 className="text-2xl font-bold mb-4 text-slate-900 group-hover:text-saimor-green transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                       {it.title}
                     </h3>
                     <p className="text-slate-700 leading-relaxed mb-6 text-lg">
@@ -95,7 +131,10 @@ export default function Services({ locale }: Props) {
                     <div className="transform transition-all duration-300 hover:scale-105 active:scale-95">
                       <Link
                         href={it.href}
-                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold border-2 border-slate-300 bg-white/80 text-slate-800 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 shadow-md hover:shadow-lg"
+                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold border-2 bg-white/80 text-slate-800 transition-all duration-300 shadow-md hover:shadow-lg hover:border-saimor-green/60 hover:bg-saimor-green/5"
+                        style={{
+                          borderColor: 'rgba(212, 180, 131, 0.4)',
+                        }}
                       >
                         <span>{it.cta}</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -109,12 +148,13 @@ export default function Services({ locale }: Props) {
                         href={it.secondaryHref}
                         target="_blank"
                         rel="noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-bold bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        className="w-full inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-bold text-white transition-all duration-300 shadow-lg hover:shadow-xl group/cta"
                         style={{
-                          boxShadow: '0 8px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                          background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
+                          boxShadow: '0 8px 20px rgba(74, 103, 65, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                         }}
                       >
-                        <span>{it.secondaryCta}</span>
+                        <span className="group-hover/cta:scale-105 transition-transform duration-200">{it.secondaryCta}</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                           <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.48.9 6.08 2.38" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -125,7 +165,12 @@ export default function Services({ locale }: Props) {
                 </div>
 
                 {/* Hover Glow Effect */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle at center, rgba(212, 180, 131, 0.15) 0%, transparent 70%)'
+                  }}
+                />
               </article>
             );
           })}

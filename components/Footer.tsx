@@ -1,19 +1,34 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Mail, Linkedin, Github } from 'lucide-react';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
   const footerText = {
     de: {
+      quickLinks: 'Navigation',
+      services: 'Leistungen',
+      mission: 'Mission',
+      contact: 'Kontakt',
+      legal: 'Rechtliches',
       imprint: 'Impressum',
       privacy: 'Datenschutz',
+      connect: 'Verbinden',
+      tagline: 'Klarheit im Wandel – Ein Ort für das, was bleibt.',
       made: 'Made with Klarheit',
       year: 'Saimôr 2025',
       copyright: 'Alle Rechte vorbehalten.'
     },
     en: {
+      quickLinks: 'Quick Links',
+      services: 'Services',
+      mission: 'Mission',
+      contact: 'Contact',
+      legal: 'Legal',
       imprint: 'Imprint',
       privacy: 'Privacy',
+      connect: 'Connect',
+      tagline: 'Clarity in transformation – A space for what remains.',
       made: 'Made with Clarity',
       year: 'Saimôr 2025',
       copyright: 'All rights reserved.'
@@ -49,56 +64,173 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-16 text-sm text-white/80 z-10" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Left: Legal Links */}
-          <nav className="flex gap-6 order-2 md:order-1">
-            <Link
-              href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'}
-              className="hover:text-saimor-gold-light transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {footerText.imprint}
-            </Link>
-            <Link
-              href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'}
-              className="hover:text-saimor-gold-light transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {footerText.privacy}
-            </Link>
-          </nav>
+      {/* Floating particles */}
+      {[...Array(8)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, transparent 70%)',
+            left: `${10 + i * 12}%`,
+            top: `${20 + (i % 3) * 30}%`
+          }}
+          animate={{
+            y: [-20, 20, -20],
+            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.3, 1]
+          }}
+          transition={{
+            duration: 4 + i * 0.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.3
+          }}
+        />
+      ))}
 
-          {/* Center: Animated Brand Circle */}
+      <div className="relative mx-auto max-w-7xl px-4 py-20 z-10">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          {/* Column 1: Brand */}
           <motion.div
-            className="order-1 md:order-2"
-            animate={{
-              rotate: 360,
-              scale: [1, 1.1, 1]
-            }}
-            transition={{
-              rotate: { duration: 60, repeat: Infinity, ease: "linear" },
-              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="md:col-span-2"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-saimor-gold to-saimor-gold-light flex items-center justify-center text-saimor-green-dark font-bold text-lg shadow-lg">S</div>
+            <div className="flex items-center gap-3 mb-6">
+              <motion.div
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-saimor-gold to-saimor-gold-light flex items-center justify-center text-saimor-green-dark font-bold text-xl shadow-lg"
+                animate={{
+                  rotate: 360,
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{
+                  rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
+                S
+              </motion.div>
+              <span className="font-serif text-2xl text-white tracking-wide" style={{ fontFamily: 'Cormorant Garamond, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                Saimôr
+              </span>
+            </div>
+            <p className="text-white/70 text-base leading-relaxed mb-6 max-w-md" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+              {footerText.tagline}
+            </p>
+
+            {/* Social Links */}
+            <div className="flex gap-4">
+              <motion.a
+                href="mailto:contact@saimor.world"
+                whileHover={{ scale: 1.1, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(212, 180, 131, 0.15) 100%)',
+                  border: '1px solid rgba(212, 180, 131, 0.3)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <Mail size={18} />
+              </motion.a>
+              <motion.a
+                href="https://linkedin.com/company/saimor"
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ scale: 1.1, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(212, 180, 131, 0.15) 100%)',
+                  border: '1px solid rgba(212, 180, 131, 0.3)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <Linkedin size={18} />
+              </motion.a>
+            </div>
           </motion.div>
 
-          {/* Right: Made with Clarity */}
-          <div className="order-3 text-right">
-            <p className="text-white/60">
-              {footerText.made}
-            </p>
-            <p className="text-white/90 font-medium">
-              {footerText.year}
-            </p>
-          </div>
+          {/* Column 2: Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h3 className="font-semibold text-white mb-6 text-base" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+              {footerText.quickLinks}
+            </h3>
+            <nav className="flex flex-col gap-3">
+              <a
+                href="#leistungen"
+                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {footerText.services}
+              </a>
+              <a
+                href="#mission"
+                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {footerText.mission}
+              </a>
+              <a
+                href="#kontakt"
+                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {footerText.contact}
+              </a>
+            </nav>
+          </motion.div>
+
+          {/* Column 3: Legal */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h3 className="font-semibold text-white mb-6 text-base" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+              {footerText.legal}
+            </h3>
+            <nav className="flex flex-col gap-3">
+              <Link
+                href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'}
+                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {footerText.imprint}
+              </Link>
+              <Link
+                href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'}
+                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {footerText.privacy}
+              </Link>
+            </nav>
+          </motion.div>
         </div>
 
-        {/* Bottom: Copyright */}
-        <div className="mt-12 pt-8 border-t text-center" style={{ borderColor: 'rgba(212, 180, 131, 0.2)' }}>
-          <p className="text-white/60">
+        {/* Bottom Bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4"
+          style={{ borderColor: 'rgba(212, 180, 131, 0.2)' }}
+        >
+          <p className="text-white/60 text-sm" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
             © {new Date().getFullYear()} Saimôr. {footerText.copyright}
           </p>
-        </div>
+          <div className="text-center md:text-right">
+            <p className="text-white/50 text-sm">
+              {footerText.made}
+            </p>
+          </div>
+        </motion.div>
       </div>
     </footer>
   );
