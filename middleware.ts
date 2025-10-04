@@ -7,12 +7,12 @@ export function middleware(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://saimorworld.matomo.cloud",
-    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://saimorworld.matomo.cloud https://js.hcaptcha.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https:",
-    "font-src 'self' data:",
-    "connect-src 'self' https://cal.com https://api.cal.com https://saimorworld.matomo.cloud https://vitals.vercel-insights.com",
-    "frame-src https://cal.com https://embed.cal.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "connect-src 'self' https://cal.com https://api.cal.com https://saimorworld.matomo.cloud https://vitals.vercel-insights.com https://api.saimor.world https://hcaptcha.com https://api.anthropic.com",
+    "frame-src https://cal.com https://embed.cal.com https://newassets.hcaptcha.com",
     "frame-ancestors 'none'",
     "base-uri 'self'"
   ].join('; ');

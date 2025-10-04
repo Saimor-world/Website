@@ -9,34 +9,52 @@ export default function Services({ locale }: Props) {
     {
       key: 'orbit',
       title: t('Orbit', 'Orbit'),
-      desc: t('Systematische Begleitung für wiederkehrende Transformation – Rhythmus statt Meetings.', 'Systematic guidance for recurring transformation – rhythm instead of meetings.'),
-      href: '#kontakt',
-      cta: t('Anfrage', 'Enquire'),
-      secondaryCta: t('Lichtgespräch buchen', 'Book light conversation'),
-      secondaryHref: process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min',
+      subtitle: t('Selbstorganisation & Coaching', 'Self-organization & Coaching'),
+      desc: t('Persönliche Klarheit und nachhaltige Strukturen für Einzelne und Teams.', 'Personal clarity and sustainable structures for individuals and teams.'),
+      benefits: [
+        t('Regelmäßiger Rhythmus statt Meeting-Chaos', 'Regular rhythm instead of meeting chaos'),
+        t('Nachhaltige Veränderung in 3-6 Monaten', 'Sustainable change in 3-6 months'),
+        t('Individuelle + Team-Klarheit kombiniert', 'Individual + team clarity combined')
+      ],
+      href: '/orbit',
+      cta: t('Mehr erfahren', 'Learn more'),
+      secondaryCta: t('Klarheitsgespräch buchen', 'Book clarity call'),
+      secondaryHref: 'https://cal.com/saimor/30min',
     },
     {
       key: 'pulse',
       title: t('Pulse', 'Pulse'),
-      desc: t('Impulse für punktuelle Klärung – Workshops, Keynotes, stille Formate.', 'Impulses for focused clarity – workshops, keynotes, silent formats.'),
-      href: '#kontakt',
-      cta: t('Formate anfragen', 'Request formats'),
-      secondaryCta: t('Lichtgespräch buchen', 'Book light conversation'),
-      secondaryHref: process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min',
+      subtitle: t('Workshops & Impulsformate', 'Workshops & Impulse Formats'),
+      desc: t('Gemeinsam Klarheit im Wandel erzeugen und Menschen in Veränderungen mitnehmen.', 'Create clarity in change together and bring people along in transformations.'),
+      benefits: [
+        t('Sofortige Klarheit in 3h Workshops', 'Immediate clarity in 3h workshops'),
+        t('Alle Stimmen gehört, konkrete Schritte definiert', 'All voices heard, concrete steps defined'),
+        t('Formate: Keynotes (30min) bis Deep Dives (90min)', 'Formats: Keynotes (30min) to deep dives (90min)')
+      ],
+      href: '/pulse',
+      cta: t('Mehr erfahren', 'Learn more'),
+      secondaryCta: t('Impulse entdecken', 'Discover impulses'),
+      secondaryHref: 'https://cal.com/saimor/30min',
     },
     {
       key: 'systems',
       title: t('Systems', 'Systems'),
-      desc: t('Strukturelle Klarheit für komplexe Organisationen – von Daten zu Entscheidungen.', 'Structural clarity for complex organizations – from data to decisions.'),
-      href: locale === 'de' ? '/de/kontakt' : '/en/contact',
-      cta: t('Anfrage', 'Enquire'),
-      secondaryCta: t('Lichtgespräch buchen', 'Book light conversation'),
-      secondaryHref: process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min',
+      subtitle: t('Daten, Dashboards & KI', 'Data, Dashboards & AI'),
+      desc: t('Verständliche Datenlösungen, die Menschen befähigen statt überfordern.', 'Understandable data solutions that empower rather than overwhelm.'),
+      benefits: [
+        t('Von Datenflut zu 3-12 klaren KPIs', 'From data flood to 3-12 clear KPIs'),
+        t('EU-Hosting, DSGVO-konform, keine Profile', 'EU hosting, GDPR-compliant, no profiles'),
+        t('Dashboard-Zugang in 2 Wochen', 'Dashboard access in 2 weeks')
+      ],
+      href: '/systems',
+      cta: t('Mehr erfahren', 'Learn more'),
+      secondaryCta: t('Einblick erhalten', 'Get insights'),
+      secondaryHref: 'https://cal.com/saimor/30min',
     },
   ];
 
   return (
-    <section id="angebot" className="section relative overflow-hidden">
+    <section id="angebot" className="py-16 sm:py-20 relative overflow-hidden">
       {/* Organic background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
@@ -80,7 +98,7 @@ export default function Services({ locale }: Props) {
             return (
               <article
                 key={it.key}
-                className="relative group overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 min-h-[420px] cursor-pointer hover:-translate-y-2 hover:scale-105"
+                className="relative group overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer hover:-translate-y-2 hover:scale-105"
                 style={{
                   background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 249, 0.9) 100%)',
                   backdropFilter: 'blur(10px)',
@@ -118,12 +136,24 @@ export default function Services({ locale }: Props) {
                 {/* Content */}
                 <div className="relative z-10 p-8 h-full flex flex-col">
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-4 text-slate-900 group-hover:text-saimor-green transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    <h3 className="text-2xl font-bold mb-2 text-slate-900 group-hover:text-saimor-green transition-colors duration-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                       {it.title}
                     </h3>
-                    <p className="text-slate-700 leading-relaxed mb-6 text-lg">
-                      {it.desc}
-                    </p>
+                    <h4 className="text-base font-semibold mb-4 text-saimor-green/80">
+                      {it.subtitle}
+                    </h4>
+
+                    {/* 3-Bullet Value Props */}
+                    <ul className="space-y-2.5 mb-6">
+                      {it.benefits.map((benefit, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                          <svg className="w-4 h-4 text-saimor-green flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span className="leading-snug">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   {/* CTAs */}
@@ -144,7 +174,7 @@ export default function Services({ locale }: Props) {
                     </div>
 
                     <div className="transform transition-all duration-300 hover:scale-105 active:scale-95">
-                      <Link
+                      <a
                         href={it.secondaryHref}
                         target="_blank"
                         rel="noreferrer"
@@ -159,7 +189,10 @@ export default function Services({ locale }: Props) {
                           <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.48.9 6.08 2.38" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
-                      </Link>
+                      </a>
+                      <p className="text-xs text-slate-500 mt-2 text-center">
+                        {t('Ruhiger Erstkontakt über Cal.com', 'Calm first contact via Cal.com')}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -47,13 +47,13 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
       {/* Offers Section */}
       <section id="leistungen" className="py-16 sm:py-24 md:py-40 relative overflow-hidden"
                style={{
-                 background: 'linear-gradient(135deg, rgba(14, 21, 38, 0.98) 0%, rgba(26, 35, 50, 0.95) 100%)'
+                 background: 'linear-gradient(135deg, rgba(248,245,240,0.98) 0%, rgba(250,240,230,0.95) 100%)'
                }}>
         {/* Subtle organic background elements */}
         <motion.div
-          className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-5 pointer-events-none"
+          className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-15 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.4) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%)',
             filter: 'blur(80px)'
           }}
           animate={{
@@ -61,6 +61,18 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
             scale: [1, 1.1, 1]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-40 left-1/5 w-72 h-72 rounded-full opacity-10 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.4) 0%, transparent 70%)',
+            filter: 'blur(70px)'
+          }}
+          animate={{
+            y: [30, -30, 30],
+            scale: [1, 1.15, 1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="relative mx-auto max-w-7xl px-4">
@@ -76,13 +88,14 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                 y: -6,
                 transition: { duration: 0.2 }
               }}
-              className="group relative rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 shadow-xl hover:shadow-2xl hover:border-[#FFCE45]/40 transition-all duration-300 backdrop-blur-sm"
+              className="group relative rounded-2xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)'
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
+                borderColor: 'rgba(212,180,131,0.25)'
               }}
             >
               {/* Glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/15 to-saimor-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative z-10">
                 <motion.div
@@ -92,18 +105,22 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                   <Icon className="mb-6 w-10 h-10 text-saimor-gold group-hover:drop-shadow-lg transition-all duration-300" />
                 </motion.div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl mb-3 text-[#F9F9F6] transition-colors duration-300"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  <span className="group-hover:bg-gradient-to-r group-hover:from-saimor-gold group-hover:to-saimor-gold-light group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                    {(translations.offers[key as keyof typeof translations.offers] as any).title}
-                  </span>
+                <h3 className="font-serif text-2xl sm:text-3xl mb-3 transition-colors duration-300"
+                    style={{
+                      fontFamily: 'Cormorant Garamond, serif',
+                      background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
+                  {(translations.offers[key as keyof typeof translations.offers] as any).title}
                 </h3>
 
-                <h4 className="text-lg sm:text-xl font-medium mb-4 text-[#F9F9F6]/90">
+                <h4 className="text-lg sm:text-xl font-medium mb-4 text-saimor-green/90">
                   {(translations.offers[key as keyof typeof translations.offers] as any).subtitle}
                 </h4>
 
-                <p className="text-[#F9F9F6]/70 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
+                <p className="text-slate-700 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
                   {(translations.offers[key as keyof typeof translations.offers] as any).text}
                 </p>
 
@@ -113,18 +130,19 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                   rel="noreferrer"
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E1526] relative overflow-hidden group/btn text-center text-white hover:border-saimor-gold/60"
+                  className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)',
-                    border: '2px solid rgba(212, 180, 131, 0.3)'
+                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
+                    border: '2px solid rgba(212, 180, 131, 0.4)',
+                    boxShadow: '0 8px 25px rgba(74, 103, 65, 0.25)'
                   }}
                   aria-label={`${(translations.offers[key as keyof typeof translations.offers] as any).cta} - Book via Cal.com (opens in new tab)`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-saimor-gold/90 to-saimor-gold-light/85 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-saimor-green/95 to-saimor-gold-light/90 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">{(translations.offers[key as keyof typeof translations.offers] as any).cta}</span>
                 </motion.a>
 
-                <p className="text-xs text-[#F9F9F6]/50 mt-3 text-center">
+                <p className="text-xs text-slate-600 mt-3 text-center">
                   {translations.offers.ctaHint}
                 </p>
               </div>

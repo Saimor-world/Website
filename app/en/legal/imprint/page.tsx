@@ -10,11 +10,14 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Information according to § 5 TMG</h2>
           <div className="mb-8 p-6 bg-slate-50 rounded-xl">
             <p className="text-slate-700 mb-2">
-              <strong>Saimôr</strong><br />
-              [Business form will be added upon registration]<br />
-              [Address will be added upon business registration]
+              <strong>NextChapter</strong><br />
+              Brand: Saimôr<br />
+              Owner: Marius Fahrländer<br />
+              Wallmerstraße 30<br />
+              70327 Stuttgart<br />
+              Germany
             </p>
-            <p className="text-slate-700">
+            <p className="text-slate-700 mt-4">
               <strong>Contact:</strong><br />
               E-Mail: contact@saimor.world
             </p>
@@ -22,8 +25,9 @@ export default function Page() {
 
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Responsible for content according to § 55 Para. 2 RStV</h2>
           <p className="mb-8 text-slate-700">
-            [Name of responsible person will be added]<br />
-            [Address as above]
+            Marius Fahrländer<br />
+            Wallmerstraße 30<br />
+            70327 Stuttgart
           </p>
 
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">EU Dispute Resolution</h2>
@@ -63,7 +67,7 @@ export default function Page() {
 
           <div className="mt-8 p-4 bg-slate-100 rounded-xl">
             <p className="text-sm text-slate-600">
-              Status: September 2024 | This imprint will be completed upon business registration.
+              Status: January 2025
             </p>
           </div>
         </div>

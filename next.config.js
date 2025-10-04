@@ -5,7 +5,8 @@ const nextConfig = {
       allowedOrigins: [
         "https://saimor.world",
         "https://www.saimor.world",
-        "https://saimor-site-improved.vercel.app"
+        "https://saimor-site-improved.vercel.app",
+        "https://api.saimor.world"
       ]
     },
   },

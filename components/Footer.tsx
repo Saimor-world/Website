@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Mail, Linkedin, Github } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
   const footerText = {
@@ -135,21 +135,6 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
                 }}
               >
                 <Mail size={18} />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com/company/saimor"
-                target="_blank"
-                rel="noreferrer"
-                whileHover={{ scale: 1.1, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all duration-300"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(212, 180, 131, 0.15) 100%)',
-                  border: '1px solid rgba(212, 180, 131, 0.3)',
-                  backdropFilter: 'blur(10px)'
-                }}
-              >
-                <Linkedin size={18} />
               </motion.a>
             </div>
           </motion.div>

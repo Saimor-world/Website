@@ -13,13 +13,17 @@ const config: Config = {
         bone: "#F7F5F3",
         "bone-dark": "#F0EDE8",
 
-        // New Logo-inspired Green Palette
-        "saimor-green": "#4A6741",      // Main logo green
-        "saimor-green-light": "#5D7C54", // Lighter variant
+        // New Logo-inspired Green Palette (Primary Brand Colors)
+        "saimor-green": "#4A6741",       // Main logo green (--saimor-green-700)
+        "saimor-green-light": "#5D7C54", // Lighter variant (--saimor-green-600)
         "saimor-green-dark": "#3A5231",  // Darker variant
+        "saimor-green-200": "#EAF1EC",   // Light background (--saimor-green-200)
         "saimor-accent": "#669966",      // Accent dot green
-        "saimor-gold": "#D4B483",        // Logo golden line
+        "saimor-gold": "#D4B483",        // Logo golden line (--saimor-gold-500)
         "saimor-gold-light": "#E6C897",  // Light gold variant
+        "saimor-gold-600": "#C6A36C",    // Gold hover/focus (--saimor-gold-600)
+        "saimor-ink": "#0E1A1B",         // Dark depths (--saimor-ink-900)
+        "saimor-cream": "#F8F5F0",       // Off-White (--saimor-cream)
 
         // Refined Pastell palette
         "gold-primary": "#D4B483",

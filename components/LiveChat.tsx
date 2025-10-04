@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface ChatMessage {
   id: string;
@@ -15,11 +17,15 @@ interface LiveChatProps {
 }
 
 export default function LiveChat({ className = '' }: LiveChatProps) {
+  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [sessionInfo, setSessionInfo] = useState<{remaining: number; requiresAuth: boolean; authMessage?: string} | null>(null);
+  const [requiresCaptcha, setRequiresCaptcha] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -50,14 +56,63 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: content,
-          sessionId
+          sessionId,
+          captchaToken
         })
       });
 
-      if (!response.ok) throw new Error('Chat request failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        if (response.status === 429) {
+          if (errorData.requiresAuth) {
+            // Session limit reached
+            const errorMessage: ChatMessage = {
+              id: `msg_${Date.now()}_error`,
+              content: errorData.message + ' Für erweiterten Zugang können Sie sich kostenlos anmelden.',
+              role: 'assistant',
+              timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+            setSessionInfo({ remaining: 0, requiresAuth: true });
+          } else {
+            // Rate limit
+            const errorMessage: ChatMessage = {
+              id: `msg_${Date.now()}_error`,
+              content: 'Bitte warten Sie einen Moment, bevor Sie die nächste Nachricht senden.',
+              role: 'assistant',
+              timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+          }
+        } else if (errorData.requiresCaptcha) {
+          setRequiresCaptcha(true);
+          const errorMessage: ChatMessage = {
+            id: `msg_${Date.now()}_error`,
+            content: errorData.message,
+            role: 'assistant',
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, errorMessage]);
+        } else {
+          throw new Error(errorData.error || 'Chat request failed');
+        }
+        return;
+      }
 
       const data = await response.json();
       setMessages(prev => [...prev, data.message]);
+
+      // Update session info for public users
+      if (data.sessionInfo) {
+        setSessionInfo(data.sessionInfo);
+      }
+
+      // Reset captcha if successful
+      if (captchaToken) {
+        setRequiresCaptcha(false);
+        setCaptchaToken(null);
+      }
 
     } catch (error) {
       console.error('Chat error:', error);
@@ -239,6 +294,59 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
                           }}
                         />
                       ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Session Info for Public Users */}
+              {sessionInfo && !session && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mx-4 mb-2"
+                >
+                  <div className="bg-yellow-50/80 border border-yellow-200/50 rounded-xl p-3 backdrop-blur-sm">
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-yellow-700">
+                        {sessionInfo.remaining > 0
+                          ? `Noch ${sessionInfo.remaining} Nachrichten übrig`
+                          : 'Nachrichtenlimit erreicht'
+                        }
+                      </span>
+                    </div>
+                    {sessionInfo.requiresAuth && (
+                      <div className="mt-2 pt-2 border-t border-yellow-200/50">
+                        <Link
+                          href="/login"
+                          className="text-xs bg-yellow-500 text-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 transition-colors"
+                        >
+                          Kostenlos anmelden für vollständigen Zugang
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Auth Status for Logged In Users */}
+              {session && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mx-4 mb-2"
+                >
+                  <div className="bg-green-50/80 border border-green-200/50 rounded-xl p-3 backdrop-blur-sm">
+                    <div className="flex items-center gap-2 text-sm text-green-700">
+                      <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                      Angemeldet als {session.user?.email}
+                      {session.user?.role === 'pro' ? ' (Pro)' : ' (Free)'}
+                    </div>
+                    <div className="text-xs text-green-600 mt-1">
+                      {session.user?.role === 'pro'
+                        ? 'Unbegrenzte Nachrichten + Vollständiger Verlauf'
+                        : 'Erweiterte Limits + Anmelde-Funktionen'
+                      }
                     </div>
                   </div>
                 </motion.div>

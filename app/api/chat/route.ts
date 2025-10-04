@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
+import { getServerSession } from 'next-auth';
+import { getToken } from 'next-auth/jwt';
+import { authOptions } from '@/lib/auth';
+import { publicChatLimiter, authChatLimiter, getClientIP } from '@/lib/rate-limit';
+import { SessionStore } from '@/lib/session-store';
 
 interface ChatMessage {
   id: string;
@@ -22,7 +27,7 @@ const chatSessions = new Map<string, ChatSession>();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, sessionId } = body;
+    const { message, sessionId, captchaToken } = body;
 
     if (!message || typeof message !== 'string') {
       return NextResponse.json(
@@ -31,16 +36,93 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get session and client IP
+    const session = await getServerSession(authOptions);
+    const clientIP = getClientIP(request);
+
+    // Apply rate limiting
+    if (session?.user) {
+      // Authenticated user rate limiting
+      const rateLimitResult = await authChatLimiter.check(request, `user:${session.user.email}`);
+      if (!rateLimitResult.success) {
+        return NextResponse.json(
+          {
+            error: 'Rate limit exceeded',
+            retryAfter: rateLimitResult.reset.getTime() - Date.now(),
+            limit: rateLimitResult.limit,
+            remaining: rateLimitResult.remaining
+          },
+          { status: 429 }
+        );
+      }
+    } else {
+      // Public user rate limiting and session limits
+      const rateLimitResult = await publicChatLimiter.check(request, `ip:${clientIP}`);
+      if (!rateLimitResult.success) {
+        return NextResponse.json(
+          {
+            error: 'Rate limit exceeded',
+            retryAfter: rateLimitResult.reset.getTime() - Date.now(),
+            limit: rateLimitResult.limit,
+            remaining: rateLimitResult.remaining
+          },
+          { status: 429 }
+        );
+      }
+
+      // Check session-based message limits
+      const sessionLimits = SessionStore.checkMessageLimit(sessionId);
+      if (!sessionLimits.allowed) {
+        return NextResponse.json(
+          {
+            error: 'Session message limit exceeded',
+            limit: 5,
+            remaining: sessionLimits.remaining,
+            requiresAuth: true,
+            message: 'Sie haben das Limit für öffentliche Nachrichten erreicht. Melden Sie sich an für erweiterten Zugang.'
+          },
+          { status: 429 }
+        );
+      }
+
+      // Check captcha requirement
+      if (sessionLimits.requiresCaptcha && !captchaToken) {
+        return NextResponse.json(
+          {
+            error: 'Captcha required',
+            requiresCaptcha: true,
+            message: 'Bitte lösen Sie das Captcha, um fortzufahren.'
+          },
+          { status: 400 }
+        );
+      }
+
+      // Verify captcha if provided
+      if (captchaToken) {
+        const captchaValid = await verifyCaptcha(captchaToken);
+        if (!captchaValid) {
+          return NextResponse.json(
+            { error: 'Invalid captcha' },
+            { status: 400 }
+          );
+        }
+        SessionStore.resetCaptchaRequirement(sessionId);
+      }
+
+      // Increment message count for public users
+      SessionStore.incrementMessageCount(sessionId);
+    }
+
     // Create or get session
-    let session = chatSessions.get(sessionId);
-    if (!session) {
-      session = {
+    let chatSession = chatSessions.get(sessionId);
+    if (!chatSession) {
+      chatSession = {
         id: sessionId,
         messages: [],
         createdAt: new Date(),
         lastActivity: new Date()
       };
-      chatSessions.set(sessionId, session);
+      chatSessions.set(sessionId, chatSession);
     }
 
     // Add user message
@@ -51,10 +133,33 @@ export async function POST(request: NextRequest) {
       timestamp: new Date(),
       sessionId
     };
-    session.messages.push(userMessage);
+    chatSession.messages.push(userMessage);
 
-    // Simulate AI response (replace with actual AI service)
-    const aiResponse = await generateAIResponse(message, session);
+    // Route to appropriate AI service based on authentication
+    let aiResponse: string;
+    let isBackendResponse = false;
+
+    if (session?.user?.role === 'pro') {
+      // Pro users: Try backend first, fallback to Sonnet
+      try {
+        // Get JWT token for backend authentication
+        const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+        if (!token) {
+          throw new Error('No JWT token available');
+        }
+
+        const backendResponse = await callBackendAPI(message, sessionId, token);
+        aiResponse = backendResponse.content;
+        isBackendResponse = true;
+      } catch (error) {
+        console.warn('Backend unavailable, using direct Sonnet:', error);
+        aiResponse = await generateSonnetResponse(message, chatSession);
+        aiResponse += '\n\n_Hinweis: Antwort via direkten KI-Zugang (Backend temporär nicht verfügbar)._';
+      }
+    } else {
+      // Public users: Claude Haiku with limits
+      aiResponse = await generateHaikuResponse(message, chatSession);
+    }
 
     const assistantMessage: ChatMessage = {
       id: `msg_${Date.now()}_assistant`,
@@ -63,8 +168,8 @@ export async function POST(request: NextRequest) {
       timestamp: new Date(),
       sessionId
     };
-    session.messages.push(assistantMessage);
-    session.lastActivity = new Date();
+    chatSession.messages.push(assistantMessage);
+    chatSession.lastActivity = new Date();
 
     // Send to n8n webhook if configured
     await sendToN8N('chat_message', {
@@ -72,18 +177,35 @@ export async function POST(request: NextRequest) {
       userMessage,
       assistantMessage,
       sessionContext: {
-        messageCount: session.messages.length,
-        duration: Date.now() - session.createdAt.getTime()
+        messageCount: chatSession.messages.length,
+        duration: Date.now() - chatSession.createdAt.getTime(),
+        isAuthenticated: !!session?.user,
+        userRole: session?.user?.role || 'public',
+        isBackendResponse
       }
     });
 
-    return NextResponse.json({
+    const responseData: any = {
       message: assistantMessage,
       session: {
-        id: session.id,
-        messageCount: session.messages.length
+        id: chatSession.id,
+        messageCount: chatSession.messages.length
       }
-    });
+    };
+
+    // Add session info for public users
+    if (!session?.user) {
+      const sessionLimits = SessionStore.checkMessageLimit(sessionId);
+      responseData.sessionInfo = {
+        remaining: sessionLimits.remaining,
+        requiresAuth: sessionLimits.remaining <= 1,
+        authMessage: sessionLimits.remaining <= 1 ? 'Nur noch eine Nachricht übrig. Melden Sie sich an für unbegrenzten Zugang!' : undefined
+      };
+    }
+
+    responseData.isBackendResponse = isBackendResponse;
+
+    return NextResponse.json(responseData);
 
   } catch (error) {
     console.error('Chat API error:', error);
@@ -124,7 +246,136 @@ export async function GET(request: NextRequest) {
   });
 }
 
-async function generateAIResponse(message: string, session: ChatSession): Promise<string> {
+// Call backend API for authenticated pro users
+async function callBackendAPI(message: string, sessionId: string, jwtToken: any): Promise<{ content: string }> {
+  const backendUrl = process.env.BACKEND_BASE_URL;
+  if (!backendUrl) {
+    throw new Error('Backend URL not configured');
+  }
+
+  // Create JWT string from token payload
+  const tokenString = await createJWTString(jwtToken);
+
+  // Prepare messages array (single message for now, backend will handle history)
+  const messages = [
+    {
+      role: 'user',
+      content: message
+    }
+  ];
+
+  const response = await fetch(`${backendUrl}/v1/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${tokenString}`,
+    },
+    body: JSON.stringify({
+      sessionId,
+      messages,
+      metadata: {
+        source: 'website',
+        timestamp: new Date().toISOString()
+      }
+    }),
+    signal: AbortSignal.timeout(10000) // 10 second timeout
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Backend API error: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return {
+    content: data.message?.content || data.content || 'Antwort konnte nicht verarbeitet werden'
+  };
+}
+
+// Create JWT string from NextAuth token payload
+async function createJWTString(tokenPayload: any): Promise<string> {
+  const jwt = await import('jsonwebtoken');
+
+  // Prepare JWT payload matching backend expectations
+  const payload = {
+    sub: tokenPayload.sub || tokenPayload.email,
+    email: tokenPayload.email,
+    role: tokenPayload.role || 'free',
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + (60 * 60) // 1 hour
+  };
+
+  return jwt.sign(payload, process.env.NEXTAUTH_SECRET!, { algorithm: 'HS256' });
+}
+
+// Generate response using Claude Sonnet for pro users (fallback)
+async function generateSonnetResponse(message: string, session: ChatSession): Promise<string> {
+  const claudeKey = process.env.ANTHROPIC_API_KEY;
+  if (!claudeKey) {
+    return getFallbackResponse(message, session);
+  }
+
+  try {
+    const messages = [
+      ...session.messages.slice(-10).map(msg => ({
+        role: msg.role,
+        content: msg.content
+      })),
+      {
+        role: 'user',
+        content: message
+      }
+    ];
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${claudeKey}`,
+        'Content-Type': 'application/json',
+        'x-api-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 1000,
+        temperature: 0.7,
+        system: `Du bist "Weisheit" – ein achtsamer Begleiter für Saimôr, einen digitalen Ort für Klarheit im Wandel.
+
+IDENTITÄT & MISSION:
+- Du hilfst Menschen dabei, Klarheit in Momenten des Wandels zu finden
+- Du begleitest bei Transformationen in Leben und Organisationen
+- Du verkörperst die Saimôr-Prinzipien: Ruhe vor Tempo, Tiefe vor Lautstärke, Verantwortung vor Reichweite
+
+GESPRÄCHSSTIL:
+- Ruhig, bedacht und präsent
+- Stelle reflektierende Fragen statt direkte Ratschläge zu geben
+- Achte auf das, was zwischen den Zeilen steht
+- Nutze eine poetische, aber bodenständige Sprache
+- Antworte immer auf Deutsch
+
+ANGEBOTE von Saimôr:
+- Klarheitsgespräche (30min kostenlose Erstgespräche)
+- Pulse: Workshops & Impulsformate für Gruppen
+- Systems: Daten, Dashboards & KI-Lösungen
+- Orbit: Selbstorganisation & Coaching
+
+Du hast Zugang zu erweiterten Funktionen für angemeldete Premium-Nutzer.`,
+        messages
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.content[0]?.text || getFallbackResponse(message, session);
+    }
+  } catch (error) {
+    console.error('Claude Sonnet API error:', error);
+  }
+
+  return getFallbackResponse(message, session);
+}
+
+// Generate response using Claude Haiku for public users
+async function generateHaikuResponse(message: string, session: ChatSession): Promise<string> {
   // Try Claude first, fallback to static responses
   const claudeKey = process.env.ANTHROPIC_API_KEY;
 
@@ -150,7 +401,7 @@ async function generateAIResponse(message: string, session: ChatSession): Promis
         },
         body: JSON.stringify({
           model: 'claude-3-haiku-20240307',
-          max_tokens: 150,
+          max_tokens: 600,
           temperature: 0.7,
           system: `Du bist "Weisheit" – ein achtsamer Begleiter für Saimôr, einen digitalen Ort für Klarheit im Wandel.
 
@@ -172,7 +423,7 @@ ANGEBOTE von Saimôr:
 - Systems: Daten, Dashboards & KI-Lösungen
 - Orbit: Selbstorganisation & Coaching
 
-Antworte in 1-3 Sätzen. Sei authentisch menschlich, nicht wie ein typischer Chatbot.`,
+Dies ist ein öffentlicher Chat mit begrenzten Nachrichten. Antworte in 1-3 Sätzen prägnant und lade zur Anmeldung für erweiterten Zugang ein.`,
           messages
         }),
       });
@@ -268,5 +519,33 @@ async function sendToN8N(eventType: string, data: any) {
     });
   } catch (error) {
     console.error('N8N webhook error:', error);
+  }
+}
+
+// Verify hCaptcha token
+async function verifyCaptcha(token: string): Promise<boolean> {
+  const secretKey = process.env.HCAPTCHA_SECRET;
+  if (!secretKey) {
+    console.warn('hCaptcha secret not configured, skipping verification');
+    return true; // Allow in development
+  }
+
+  try {
+    const response = await fetch('https://hcaptcha.com/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: secretKey,
+        response: token,
+      }),
+    });
+
+    const data = await response.json();
+    return data.success === true;
+  } catch (error) {
+    console.error('Captcha verification error:', error);
+    return false;
   }
 }

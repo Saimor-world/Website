@@ -2,12 +2,13 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import ClientProviders from '../components/ClientProviders'
+import AuthProvider from '../components/AuthProvider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
   title: 'Saimôr – Klarheit im Wandel',
   description:
-    'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
+    'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '16x16 32x32', type: 'image/x-icon' },
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',
-    description: 'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
+    description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
     url: 'https://saimor.world',
     siteName: 'Saimôr',
     images: [
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Saimôr – Klarheit im Wandel',
-    description: 'Saimôr ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
+    description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
     images: ['/og'],
   },
 }
@@ -45,8 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de" data-saimor="pb-1.2">
       <body className="bg-forest-primary text-warm-beige antialiased">
-        <ClientProviders />
-        {children}
+        <AuthProvider>
+          <ClientProviders />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

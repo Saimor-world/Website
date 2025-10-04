@@ -6,17 +6,17 @@
 
 /* Farben als CSS-Variablen */
 :root{
-  --navy:#0E1526;
-  --gold:#FFCE45;
-  --off:#F8F7F3;
-  --ink:#DDE1EA;
-  --line:#1b2640;
+  --saimor-green:#4A6741;
+  --saimor-gold:#D4B483;
+  --saimor-cream:#F8F5F0;
+  --warm-beige:#FAF0E6;
+  --forest-primary:#4A6741;
 }
 
 /* Grundfarben global & Font-Optimierung */
 html,body{
-  background:var(--navy);
-  color:var(--off);
+  background:var(--saimor-cream);
+  color:var(--forest-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -30,10 +30,10 @@ html,body{
 .s-appear { animation: s-fadein 160ms ease-out both; }
 
 /* Trenner */
-.hr-line{ height:1px; background:linear-gradient(to right,transparent,rgba(221,225,234,.18),transparent); }
+.hr-line{ height:1px; background:linear-gradient(to right,transparent,rgba(212,180,131,.25),transparent); }
 
 /* Orbit-Stroke */
-.orbit-stroke{ stroke:var(--gold); opacity:.22 }
+.orbit-stroke{ stroke:var(--saimor-gold); opacity:.3 }
 
 /* Section-Rhythmus */
 .section{ padding:4.5rem 0; }
@@ -42,20 +42,20 @@ html,body{
 /* Warmes Band im Hero */
 .bg-band{
   background:
-    radial-gradient(1200px 600px at 85% 20%, rgba(255,206,69,0.08), transparent 70%),
-    linear-gradient(to bottom, rgba(255,250,230,0.10), rgba(255,229,163,0.06), transparent 70%);
+    radial-gradient(1200px 600px at 85% 20%, rgba(74,103,65,0.08), transparent 70%),
+    linear-gradient(to bottom, rgba(212,180,131,0.10), rgba(230,200,151,0.06), transparent 70%);
 }
 
 /* Goldschimmer am Seitenende */
 .band-bottom{
-  background: radial-gradient(900px 280px at 50% 100%, rgba(255,206,69,.10), transparent 70%);
+  background: radial-gradient(900px 280px at 50% 100%, rgba(212,180,131,.15), transparent 70%);
 }
 
 /* Sticky-Header Blur */
 .nav-blur{
   backdrop-filter: blur(8px);
-  background: linear-gradient(to bottom, rgba(14,21,38,.85), rgba(14,21,38,.65));
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(to bottom, rgba(74,103,65,.85), rgba(93,124,84,.65));
+  border-bottom: 1px solid rgba(212,180,131,.15);
 }
 
 /* --------- NEU: Cards, Chips, Orbits, Reveal --------- */
@@ -63,40 +63,40 @@ html,body{
 /* dezente Glow-Karten */
 .s-card{
   position: relative;
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(212,180,131,.2);
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
-  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(248,245,240,.9));
+  box-shadow: 0 12px 30px rgba(74,103,65,.15);
   transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
 }
 .s-card:hover{
   transform: translateY(-4px);
-  border-color: rgba(255,206,69,.32);
-  box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,206,69,.12) inset;
-  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
+  border-color: rgba(212,180,131,.5);
+  box-shadow: 0 30px 60px rgba(74,103,65,.25), 0 0 0 1px rgba(212,180,131,.2) inset;
+  background: linear-gradient(180deg, rgba(255,255,255,1), rgba(248,245,240,.95));
 }
 
 /* goldene Kapseln (Prinzipien) */
 .s-pill{
   display:inline-flex; align-items:center; gap:.5rem;
   padding:.55rem .9rem; border-radius:999px;
-  border:1px solid rgba(255,255,255,.08);
-  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
-  color: var(--ink);
+  border:1px solid rgba(212,180,131,.25);
+  background: linear-gradient(180deg, rgba(212,180,131,.1), rgba(212,180,131,.05));
+  color: var(--forest-primary);
   transition: transform .18s ease, border-color .18s ease, background .18s ease;
 }
 .s-pill::before{
   content:""; width:.5rem; height:.5rem; border-radius:999px;
-  background: rgba(255,206,69,.85);
-  box-shadow: 0 0 0 4px rgba(255,206,69,.18);
+  background: rgba(74,103,65,.85);
+  box-shadow: 0 0 0 4px rgba(74,103,65,.15);
 }
-.s-pill:hover{ transform: translateY(-2px); border-color: rgba(255,206,69,.28); }
+.s-pill:hover{ transform: translateY(-2px); border-color: rgba(212,180,131,.5); }
 
 /* Orbit-Hinterleger für Sektionen */
 .section-orbits{
   position:absolute; inset:0; pointer-events:none; z-index:-1;
 }
-.section-orbits .stroke{ stroke: var(--gold); opacity:.18 }
+.section-orbits .stroke{ stroke: var(--saimor-gold); opacity:.2 }
 
 /* sanfter Reveal */
 @keyframes fade-up {
@@ -108,9 +108,6 @@ html,body{
 /* Parallax-Container optimieren */
 .parallax-container{ will-change: transform; }
 
-/* (Schon drin?) Orbits in Sektionen */
-.section-orbits{ position:absolute; inset:0; pointer-events:none; z-index:-1; }
-.section-orbits .stroke{ stroke: var(--gold); opacity:.18 }
 
 /* Reveal-Animation (falls noch nicht drin) */
 @keyframes fade-up { from {opacity:0; transform:translateY(8px)} to {opacity:1; transform:none} }

@@ -23,7 +23,8 @@
       "Bash(npx vercel remove:*)",
       "Bash(npm start)",
       "WebFetch(domain:website-4aj9apibx-marius-projects-20aa51eb.vercel.app)",
-      "Bash(npx vercel:*)"
+      "Bash(npx vercel:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []

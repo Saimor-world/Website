@@ -22,14 +22,14 @@ export default function Hero({
 }: Props) {
   const heroText = {
     de: {
-      heading: '... ist ein digitaler Ort für das, was bleibt, wenn alles andere laut wird.',
-      claim: 'Klarheit im Wandel – Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
+      heading: 'Klarheit im Wandel',
+      claim: 'Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
       ctaPrimary: 'Klarheitsgespräch buchen',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
-      heading: '... is a digital space for what remains when everything else gets loud.',
-      claim: 'Clarity in transformation – guidance for people and organizations when systems waver.',
+      heading: 'Clarity in Transformation',
+      claim: 'Guidance for people and organizations when systems waver.',
       ctaPrimary: 'Book clarity conversation',
       ctaSecondary: 'View offering'
     }
@@ -196,117 +196,59 @@ export default function Hero({
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex justify-center mb-8 will-change-transform"
         >
-          <Image
-            src="/Logo neu.png"
-            alt="Saimôr Logo"
-            width={600}
-            height={180}
-            className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain drop-shadow-2xl"
-            priority
-          />
+          <div className="relative">
+            {/* Enhanced backdrop for better logo visibility */}
+            <div className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-3xl"
+                 style={{
+                   transform: 'scale(1.15)',
+                   filter: 'blur(25px)',
+                   zIndex: -1
+                 }}
+            />
+            <Image
+              src="/Logo neu.png"
+              alt="Saimôr Logo"
+              width={600}
+              height={180}
+              className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
+              style={{
+                filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,255,255,0.6)) contrast(1.15) brightness(1.1)',
+              }}
+              priority
+            />
+          </div>
         </motion.div>
 
         {/* Main Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-          className="max-w-6xl mx-auto mb-8 px-4"
+          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+          className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
           <h1
-            className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl tracking-wide leading-tight font-medium text-slate-900"
+            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide leading-tight font-bold text-white mb-4"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              letterSpacing: '0.01em',
-              textShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              textShadow: '0 4px 12px rgba(0,0,0,0.4)'
             }}
-            role="heading"
-            aria-level={1}
           >
             {heroText.heading}
           </h1>
-        </motion.div>
-
-        {/* Claim Section - Organic Glass Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.4, duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-          whileHover={{
-            y: -12,
-            scale: 1.03,
-            transition: { duration: 0.4, ease: "easeOut" }
-          }}
-          className="max-w-5xl mx-auto mb-16 px-4 group"
-        >
-          <motion.div
-            className="relative overflow-hidden rounded-[3rem] p-12 shadow-2xl border"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(212, 180, 131, 0.1) 50%, rgba(74, 103, 65, 0.05) 100%)',
-              backdropFilter: 'blur(30px)',
-              border: '1px solid rgba(212, 180, 131, 0.4)',
-              boxShadow: '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
-            }}
-            animate={{
-              boxShadow: [
-                '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                '0 30px 80px rgba(74, 103, 65, 0.25), inset 0 2px 0 rgba(212, 180, 131, 0.4)',
-                '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
-              ]
-            }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            {/* Organic gradient overlay */}
-            <motion.div
-              className="absolute inset-0 opacity-25 rounded-[3rem]"
-              animate={{
-                background: [
-                  'radial-gradient(ellipse at 20% 30%, rgba(212, 180, 131, 0.2) 0%, transparent 60%)',
-                  'radial-gradient(ellipse at 80% 70%, rgba(74, 103, 65, 0.15) 0%, transparent 60%)',
-                  'radial-gradient(ellipse at 50% 20%, rgba(102, 153, 102, 0.1) 0%, transparent 60%)',
-                  'radial-gradient(ellipse at 20% 30%, rgba(212, 180, 131, 0.2) 0%, transparent 60%)'
-                ]
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            />
-
-            <p className="relative text-xl sm:text-2xl md:text-3xl leading-relaxed text-white font-medium z-10"
-               style={{
-                 textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                 fontFamily: 'Cormorant Garamond, serif'
-               }}>
-              {heroText.claim}
-            </p>
-
-            {/* Organic floating elements inside card */}
-            <motion.div
-              className="absolute top-6 right-8 w-3 h-3 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(212, 180, 131, 0.8) 0%, rgba(230, 200, 151, 0.6) 100%)' }}
-              animate={{
-                y: [0, -15, 0],
-                scale: [1, 1.3, 1],
-                opacity: [0.6, 1, 0.6]
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute bottom-8 left-10 w-2 h-2 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(102, 153, 102, 0.7) 0%, rgba(74, 103, 65, 0.5) 100%)' }}
-              animate={{
-                y: [0, 12, 0],
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.9, 0.5]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-            />
-          </motion.div>
+          <p className="text-xl sm:text-2xl text-white/90 leading-relaxed"
+             style={{
+               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+               fontFamily: 'Cormorant Garamond, serif'
+             }}>
+            {heroText.claim}
+          </p>
         </motion.div>
 
         {/* Futuristic CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.8, duration: 1, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ delay: 0.6, duration: 1, ease: [0.23, 1, 0.32, 1] }}
           className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center w-full max-w-2xl mx-auto"
         >
           {/* Organic Green Primary CTA */}
@@ -425,56 +367,6 @@ export default function Hero({
           </motion.button>
         </motion.div>
 
-        {/* Email Contact Option */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="mt-12 text-center"
-        >
-          <motion.p
-            className="text-white/90 mb-6 text-lg"
-            style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              textShadow: '0 1px 3px rgba(0,0,0,0.3)'
-            }}
-          >
-            {locale === 'de'
-              ? 'Oder schreiben Sie mir direkt:'
-              : 'Or write to me directly:'
-            }
-          </motion.p>
-
-          <motion.a
-            href="mailto:contact@saimor.world"
-            whileHover={{ scale: 1.05, y: -4 }}
-            whileTap={{ scale: 0.96 }}
-            className="inline-flex items-center gap-4 px-10 py-5 rounded-3xl text-white font-medium text-lg transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(212, 180, 131, 0.15) 50%, rgba(255, 255, 255, 0.1) 100%)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(212, 180, 131, 0.3)',
-              boxShadow: '0 8px 25px rgba(74, 103, 65, 0.1)',
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)'
-            }}
-          >
-            <motion.svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              animate={{
-                rotate: [0, 8, -8, 0],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2"/>
-              <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2"/>
-            </motion.svg>
-            contact@saimor.world
-          </motion.a>
-        </motion.div>
       </div>
 
       {/* Organic Golden Transition Element */}

@@ -10,11 +10,14 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Angaben gemäß § 5 TMG</h2>
           <div className="mb-8 p-6 bg-slate-50 rounded-xl">
             <p className="text-slate-700 mb-2">
-              <strong>Saimôr</strong><br />
-              [Unternehmensform wird bei Registrierung ergänzt]<br />
-              [Adresse wird bei Unternehmensregistrierung ergänzt]
+              <strong>NextChapter</strong><br />
+              Marke: Saimôr<br />
+              Inhaber: Marius Fahrländer<br />
+              Wallmerstraße 30<br />
+              70327 Stuttgart<br />
+              Deutschland
             </p>
-            <p className="text-slate-700">
+            <p className="text-slate-700 mt-4">
               <strong>Kontakt:</strong><br />
               E-Mail: contact@saimor.world
             </p>
@@ -22,8 +25,9 @@ export default function Page() {
 
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
           <p className="mb-8 text-slate-700">
-            [Name der verantwortlichen Person wird ergänzt]<br />
-            [Adresse wie oben]
+            Marius Fahrländer<br />
+            Wallmerstraße 30<br />
+            70327 Stuttgart
           </p>
 
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">EU-Streitschlichtung</h2>
@@ -63,7 +67,7 @@ export default function Page() {
 
           <div className="mt-8 p-4 bg-slate-100 rounded-xl">
             <p className="text-sm text-slate-600">
-              Stand: September 2024 | Dieses Impressum wird bei Unternehmensregistrierung vervollständigt.
+              Stand: Januar 2025
             </p>
           </div>
         </div>
