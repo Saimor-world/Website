@@ -14,9 +14,11 @@ interface ChatMessage {
 
 interface LiveChatProps {
   className?: string;
+  hetznerUrl?: string; // Optional Hetzner server URL for agent integration
+  useHetzner?: boolean; // Toggle between local API and Hetzner
 }
 
-export default function LiveChat({ className = '' }: LiveChatProps) {
+export default function LiveChat({ className = '', hetznerUrl, useHetzner = false }: LiveChatProps) {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -26,7 +28,9 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
   const [sessionInfo, setSessionInfo] = useState<{remaining: number; requiresAuth: boolean; authMessage?: string} | null>(null);
   const [requiresCaptcha, setRequiresCaptcha] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [mode, setMode] = useState<'local' | 'hetzner'>(useHetzner ? 'hetzner' : 'local');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -49,6 +53,21 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
+
+    // If using Hetzner mode, post message to iframe
+    if (mode === 'hetzner' && iframeRef.current && hetznerUrl) {
+      try {
+        iframeRef.current.contentWindow?.postMessage(
+          { type: 'chat_message', message: content },
+          hetznerUrl
+        );
+        setIsLoading(false);
+        return;
+      } catch (error) {
+        console.error('Hetzner iframe error:', error);
+        // Fall back to local API
+      }
+    }
 
     try {
       const response = await fetch('/api/chat', {
@@ -206,6 +225,19 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
                   transition={{ duration: 2, repeat: Infinity }}
                 />
                 <h3 className="font-semibold text-slate-800">Lichtgespräch</h3>
+
+                {/* Mode Toggle (wenn Hetzner verfügbar) */}
+                {hetznerUrl && (
+                  <div className="flex items-center gap-2 ml-2">
+                    <button
+                      onClick={() => setMode(mode === 'local' ? 'hetzner' : 'local')}
+                      className="text-xs px-2 py-1 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+                      title={mode === 'local' ? 'Zu Hetzner-Agent wechseln' : 'Zu lokalem Chat wechseln'}
+                    >
+                      {mode === 'local' ? '🌐' : '🖥️'}
+                    </button>
+                  </div>
+                )}
               </div>
 
               <motion.button
@@ -220,6 +252,22 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[360px]">
+              {/* Hetzner Iframe Mode */}
+              {mode === 'hetzner' && hetznerUrl && (
+                <div className="h-full w-full">
+                  <iframe
+                    ref={iframeRef}
+                    src={hetznerUrl}
+                    className="w-full h-full border-0 rounded-lg"
+                    title="Hetzner Agent Chat"
+                    sandbox="allow-same-origin allow-scripts allow-forms"
+                  />
+                </div>
+              )}
+
+              {/* Local Chat Mode */}
+              {mode === 'local' && (
+                <>
               {messages.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -353,9 +401,12 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
               )}
 
               <div ref={messagesEndRef} />
+                </>
+              )}
             </div>
 
-            {/* Input */}
+            {/* Input - nur im local mode */}
+            {mode === 'local' && (
             <form onSubmit={handleSubmit} className="p-4 border-t border-white/20">
               <div className="flex gap-2">
                 <input
@@ -389,6 +440,7 @@ export default function LiveChat({ className = '' }: LiveChatProps) {
                 </motion.button>
               </div>
             </form>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

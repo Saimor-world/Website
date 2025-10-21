@@ -2,6 +2,9 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Database, TrendingUp, Brain, Shield } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const DataDashboard = dynamic(() => import('@/components/DataDashboard'), { ssr: false });
 
 export default function SystemsPage() {
   const benefits = [
@@ -140,6 +143,11 @@ export default function SystemsPage() {
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Interactive Dashboard Preview */}
+          <div className="mb-16">
+            <DataDashboard />
           </div>
 
           {/* Privacy Notice */}

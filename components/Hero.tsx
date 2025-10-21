@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
 const Orbits = dynamic(() => import('./Orbits'), { ssr: false });
+const DataJungle = dynamic(() => import('./DataJungle'), { ssr: false });
 
 type Locale = 'de' | 'en';
 
@@ -69,6 +70,9 @@ export default function Hero({
       role="banner"
       aria-label="A space for clarity and transformation"
     >
+      {/* Data Jungle Layer - Cookies & Licht */}
+      <DataJungle />
+
       {/* Unsplash Background with Overlay */}
       <div className="absolute inset-0 z-0">
         <div
