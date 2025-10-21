@@ -24,7 +24,8 @@
       "Bash(npm start)",
       "WebFetch(domain:website-4aj9apibx-marius-projects-20aa51eb.vercel.app)",
       "Bash(npx vercel:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "WebFetch(domain:api.saimor.world)"
     ],
     "deny": [],
     "ask": []
