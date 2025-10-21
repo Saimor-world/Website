@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
   icons: {
     icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: '16x16 32x32', type: 'image/x-icon' },
       { url: '/favicon.png', sizes: '192x192', type: 'image/png' }
     ],
     apple: [
       { url: '/favicon.png', sizes: '180x180', type: 'image/png' }
-    ]
+    ],
+    shortcut: '/favicon.svg',
   },
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',

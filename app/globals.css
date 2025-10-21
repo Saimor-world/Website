@@ -11,6 +11,48 @@ html, body {
   height: 100%;
   background: #85A389;
   scroll-behavior: smooth;
+  /* Mobile Performance Optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Prevent text size adjustment on orientation change */
+  -webkit-text-size-adjust: 100%;
+  /* Enable smooth scrolling with momentum on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* GPU Acceleration for Smooth Animations */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Optimize Transforms for Mobile */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Prevent layout shift */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch optimizations */
+button, a, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth momentum scrolling on iOS */
+.scroll-smooth {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Enhanced focus visibility */
@@ -35,19 +77,95 @@ html, body {
   }
 }
 
-/* Color variables */
+/* 🎨 SAIMÔR Design Tokens - Harmonized Color System */
 :root {
-  --saimor-green: #4A6741;
-  --saimor-green-light: #5D7C54;
-  --saimor-green-dark: #3A5231;
+  /* Primary Greens - Jungle Theme */
+  --saimor-green-900: #1a2e1a;      /* Darkest forest */
+  --saimor-green-800: #2d4a2d;      /* Deep forest */
+  --saimor-green-700: #4A6741;      /* Primary green (header, accents) */
+  --saimor-green-600: #5D7C54;      /* Mid green */
+  --saimor-green-500: #6B8E5F;      /* Light green */
+  --saimor-green-400: #88A885;      /* Pale green */
+  --saimor-green-300: #A8C3A5;      /* Very light */
+  --saimor-green-200: #EAF1EC;      /* Ultra light (backgrounds) */
+  --saimor-green-100: #F5F9F6;      /* Almost white */
+
+  /* Gold/Brass - Accent & CTAs */
+  --saimor-gold-700: #B89B6B;       /* Dark gold */
+  --saimor-gold-600: #C6A36C;       /* CTA hover */
+  --saimor-gold-500: #D4B483;       /* Primary gold */
+  --saimor-gold-400: #E6C897;       /* Light gold */
+  --saimor-gold-300: #F0D7B0;       /* Pale gold */
+  --saimor-gold-200: #F8E8D4;       /* Very pale */
+  --saimor-gold-100: #FCF5EB;       /* Almost white */
+
+  /* Neutrals */
+  --saimor-ink-900: #0E1A1B;        /* Darkest (text) */
+  --saimor-ink-800: #1b2640;        /* Dark blue-black */
+  --saimor-ink-700: #2D3748;        /* Charcoal */
+  --saimor-cream: #F8F7F3;          /* Warm off-white */
+  --saimor-white: #FFFFFF;          /* Pure white */
+
+  /* Legacy aliases (for backwards compatibility) */
+  --saimor-green: var(--saimor-green-700);
+  --saimor-green-light: var(--saimor-green-600);
+  --saimor-green-dark: var(--saimor-green-800);
   --saimor-accent: #669966;
-  --saimor-gold: #D4B483;
-  --saimor-gold-light: #E6C897;
-  --forest-primary: #4A6741;
-  --gold-primary: #D4B483;
-  --off: #F8F7F3;
+  --saimor-gold: var(--saimor-gold-500);
+  --saimor-gold-light: var(--saimor-gold-400);
+  --forest-primary: var(--saimor-green-700);
+  --gold-primary: var(--saimor-gold-500);
+  --off: var(--saimor-cream);
   --ink: #DDE1EA;
-  --line: #1b2640;
+  --line: var(--saimor-ink-800);
+
+  /* Spacing Scale (8px base) */
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-6: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-12: 6rem;    /* 96px */
+  --space-16: 8rem;    /* 128px */
+
+  /* Border Radius Scale */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;   /* Pills */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(14, 26, 27, 0.05);
+  --shadow-md: 0 4px 6px rgba(14, 26, 27, 0.07);
+  --shadow-lg: 0 10px 15px rgba(14, 26, 27, 0.1);
+  --shadow-xl: 0 20px 25px rgba(14, 26, 27, 0.15);
+  --shadow-glow: 0 0 20px rgba(212, 180, 131, 0.3);
+
+  /* Typography Scale */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+
+  /* Easing Curves */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Golden pills (Principles) */
