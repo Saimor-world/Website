@@ -25,7 +25,11 @@
       "WebFetch(domain:website-4aj9apibx-marius-projects-20aa51eb.vercel.app)",
       "Bash(npx vercel:*)",
       "Bash(pkill:*)",
-      "WebFetch(domain:api.saimor.world)"
+      "WebFetch(domain:api.saimor.world)",
+      "Bash(for file in Hero.tsx Services.tsx TrustProof.tsx Education.tsx FAQ.tsx ContactSection.tsx)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(done)",
+      "Bash(bash:*)"
     ],
     "deny": [],
     "ask": []
