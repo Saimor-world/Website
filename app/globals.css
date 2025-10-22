@@ -224,3 +224,32 @@ button, a, [role="button"] {
   animation: fade-up 0.45s ease both;
   will-change: transform, opacity;
 }
+
+/* Custom Scrollbar Styles - Jungle Theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(212, 180, 131, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #D4B483 0%, #E6C897 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #C6A36C 0%, #D4B483 100%);
+  box-shadow: 0 0 6px rgba(212, 180, 131, 0.5);
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #D4B483 rgba(212, 180, 131, 0.05);
+}

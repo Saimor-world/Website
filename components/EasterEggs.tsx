@@ -43,7 +43,7 @@ export default function EasterEggs() {
   useEffect(() => {
     setAchievements(achievementManager.current.getAll());
     const unsubscribe = achievementManager.current.subscribe(setAchievements);
-    return unsubscribe;
+    return () => { unsubscribe(); };
   }, []);
 
   // Helper to unlock achievement
