@@ -2,8 +2,16 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
+  const [year, setYear] = useState('2025'); // Default to avoid hydration mismatch
+
+  useEffect(() => {
+    // Set actual year client-side only
+    setYear(new Date().getFullYear().toString());
+  }, []);
+
   const footerText = {
     de: {
       quickLinks: 'Navigation',
@@ -208,7 +216,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
           style={{ borderColor: 'rgba(212, 180, 131, 0.2)' }}
         >
           <p className="text-white/60 text-sm" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-            © {new Date().getFullYear()} Saimôr. {footerText.copyright}
+            © {year} Saimôr. {footerText.copyright}
           </p>
           <div className="text-center md:text-right">
             <p className="text-white/50 text-sm">
