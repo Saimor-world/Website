@@ -34,9 +34,6 @@ export default function EasterEggs() {
   const [konamiSequence, setKonamiSequence] = useState<string[]>([]);
   const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [typedChars, setTypedChars] = useState('');
-  const [logoClickCount, setLogoClickCount] = useState(0);
-  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
-  const startTimeRef = useRef<number>(Date.now());
 
   // Secret patterns
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
@@ -178,53 +175,76 @@ export default function EasterEggs() {
 
   // === TIME-BASED ACHIEVEMENTS (Nachteule/Frühaufsteher) ===
   useEffect(() => {
-    const hour = new Date().getHours();
+    // Client-only check to prevent hydration mismatch
+    if (typeof window === 'undefined') return;
 
-    // Nachteule: 00:00 - 06:00
-    if (hour >= 0 && hour < 6) {
-      setTimeout(() => {
-        unlockAchievement('night-owl');
-        setShowMessage('🦉 NACHTEULE ENTDECKT! 🦉');
-        setTimeout(() => setShowMessage(''), 3000);
-      }, 2000);
-    }
+    const checkTimeAchievements = () => {
+      const hour = new Date().getHours();
 
-    // Frühaufsteher: 05:00 - 07:00
-    if (hour >= 5 && hour < 7) {
-      setTimeout(() => {
-        unlockAchievement('early-bird');
-        setShowMessage('🌅 FRÜHAUFSTEHER! 🌅');
-        setTimeout(() => setShowMessage(''), 3000);
-      }, 2500);
-    }
+      // Nachteule: 00:00 - 06:00
+      if (hour >= 0 && hour < 6) {
+        setTimeout(() => {
+          unlockAchievement('night-owl');
+          setShowMessage('🦉 NACHTEULE ENTDECKT! 🦉');
+          setTimeout(() => setShowMessage(''), 3000);
+        }, 2000);
+      }
+
+      // Frühaufsteher: 05:00 - 07:00
+      if (hour >= 5 && hour < 7) {
+        setTimeout(() => {
+          unlockAchievement('early-bird');
+          setShowMessage('🌅 FRÜHAUFSTEHER! 🌅');
+          setTimeout(() => setShowMessage(''), 3000);
+        }, 2500);
+      }
+    };
+
+    // Run after hydration
+    const timer = setTimeout(checkTimeAchievements, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   // === LOGO-CLICK TRACKING ===
   useEffect(() => {
-    const handleLogoClick = () => {
-      const newCount = logoClickCount + 1;
-      setLogoClickCount(newCount);
+    if (typeof window === 'undefined') return;
 
-      if (newCount === 3) {
+    let clickCount = 0;
+    let resetTimer: NodeJS.Timeout;
+
+    const handleLogoClick = () => {
+      clickCount++;
+      clearTimeout(resetTimer);
+
+      if (clickCount === 3) {
         unlockAchievement('logo-lover');
         setShowMessage('🎯 LOGO-LIEBHABER! 🎯');
         createParticleExplosion(window.innerWidth / 2, 100, 25);
         setTimeout(() => setShowMessage(''), 3000);
-        setLogoClickCount(0); // Reset
+        clickCount = 0;
+      } else {
+        // Reset nach 2 Sekunden
+        resetTimer = setTimeout(() => {
+          clickCount = 0;
+        }, 2000);
       }
-
-      // Reset nach 2 Sekunden
-      setTimeout(() => setLogoClickCount(0), 2000);
     };
 
     window.addEventListener('saimor-logo-click', handleLogoClick);
-    return () => window.removeEventListener('saimor-logo-click', handleLogoClick);
-  }, [logoClickCount]);
+    return () => {
+      window.removeEventListener('saimor-logo-click', handleLogoClick);
+      clearTimeout(resetTimer);
+    };
+  }, []); // No dependencies - use local counter
 
   // === SCROLL TRACKING ===
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let hasUnlocked = false;
+
     const handleScroll = () => {
-      if (hasScrolledToBottom) return;
+      if (hasUnlocked) return;
 
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight;
@@ -232,7 +252,7 @@ export default function EasterEggs() {
 
       // 95% der Seite gescrollt
       if (scrollTop + clientHeight >= scrollHeight * 0.95) {
-        setHasScrolledToBottom(true);
+        hasUnlocked = true;
         unlockAchievement('scroll-champion');
         setShowMessage('🔄 SCROLL-CHAMPION! 🔄');
         createGoldenRain();
@@ -242,18 +262,19 @@ export default function EasterEggs() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasScrolledToBottom]);
+  }, []); // No dependencies - use local flag
 
   // === DURATION TRACKING (5 Minuten) ===
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const timer = setTimeout(() => {
-      const elapsedMinutes = (Date.now() - startTimeRef.current) / 60000;
-      if (elapsedMinutes >= 5) {
-        unlockAchievement('patient-visitor');
-        setShowMessage('⏰ GEDULDIGER ENTDECKER! ⏰');
+      unlockAchievement('patient-visitor');
+      setShowMessage('⏰ GEDULDIGER ENTDECKER! ⏰');
+      if (typeof window !== 'undefined') {
         createFireworks(window.innerWidth / 2, window.innerHeight / 2);
-        setTimeout(() => setShowMessage(''), 3000);
       }
+      setTimeout(() => setShowMessage(''), 3000);
     }, 5 * 60 * 1000); // 5 Minuten
 
     return () => clearTimeout(timer);

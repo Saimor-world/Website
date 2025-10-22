@@ -140,11 +140,12 @@ export default function JungleElements() {
         {/* Data Particles flowing through lianas */}
         {particles.map((particle) => {
           const path = lianaPaths[particle.path];
+          const radius = (particle.size || 5) * 1.5; // Safe fallback
           return (
             <motion.circle
               key={particle.id}
-              r={particle.size * 1.5}
-              fill={particle.color}
+              r={radius}
+              fill={particle.color || '#D4B483'}
               opacity={0.8}
               filter="url(#glow)"
               style={{
@@ -160,10 +161,10 @@ export default function JungleElements() {
               }}
             >
               <animateMotion
-                dur={`${20 / particle.speed}s`}
+                dur={`${20 / (particle.speed || 0.025)}s`}
                 repeatCount="indefinite"
                 path={path}
-                keyPoints={`${particle.position};${(particle.position + 0.5) % 1};${particle.position}`}
+                keyPoints={`${particle.position || 0};${((particle.position || 0) + 0.5) % 1};${particle.position || 0}`}
                 keyTimes="0;0.5;1"
               />
             </motion.circle>
