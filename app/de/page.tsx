@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
-const Lichtgespraech = dynamic(() => import('@/components/Lichtgespraech'), { ssr: false });
+const MoraChat = dynamic(() => import('@/components/MoraChat'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 
 export const metadata = {
@@ -39,7 +39,7 @@ export default function Page() {
         <Education locale="de" />
         <FAQ locale="de" />
         <ContactSection locale="de" />
-        <Lichtgespraech />
+        <MoraChat />
       </div>
     </>
   )
