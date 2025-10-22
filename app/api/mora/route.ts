@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get backend URL from env
+    // Get backend URL from env - NEW Môra Chat endpoint!
     const backendUrl = process.env.BACKEND_API_URL || 'https://api.saimor.world';
-    const chatEndpoint = `${backendUrl}/api/v1/chat`;
+    const chatEndpoint = `${backendUrl}/api/v1/mora/chat`; // Updated to new endpoint!
 
     // Forward request to backend
     const response = await fetch(chatEndpoint, {
@@ -29,12 +29,10 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         message,
-        conversationId,
-        sessionId,
+        session_id: sessionId || `web-${Date.now()}`,
         context: {
           source: 'website',
-          page: request.headers.get('referer') || '',
-          timestamp: new Date().toISOString()
+          page: request.headers.get('referer') || ''
         }
       })
     });
@@ -52,9 +50,10 @@ export async function POST(request: NextRequest) {
     const data = await response.json();
 
     return NextResponse.json({
-      reply: data.reply || data.message || 'Ich habe verstanden. Wie kann ich dir weiterhelfen?',
-      conversationId: data.conversationId || conversationId,
-      suggestions: data.suggestions || []
+      reply: data.response || data.reply || 'Ich habe verstanden. Wie kann ich dir weiterhelfen?',
+      conversationId: data.session_id || sessionId,
+      suggestions: data.suggestions || [],
+      metadata: data.metadata || {} // Include cost tracking metadata
     });
 
   } catch (error) {
