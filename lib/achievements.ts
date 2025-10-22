@@ -101,6 +101,56 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '🔐',
     unlocked: false,
     secret: true
+  },
+  {
+    id: 'logo-lover',
+    name: 'Logo Lover',
+    nameDE: 'Logo-Liebhaber',
+    description: 'Clicked the logo 3 times',
+    descriptionDE: '3x auf das Logo geklickt',
+    icon: '🎯',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'night-owl',
+    name: 'Night Owl',
+    nameDE: 'Nachteule',
+    description: 'Visited between midnight and 6am',
+    descriptionDE: 'Besuch zwischen 00:00 und 06:00 Uhr',
+    icon: '🦉',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'early-bird',
+    name: 'Early Bird',
+    nameDE: 'Frühaufsteher',
+    description: 'Visited between 5am and 7am',
+    descriptionDE: 'Besuch zwischen 05:00 und 07:00 Uhr',
+    icon: '🌅',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'patient-visitor',
+    name: 'Patient Explorer',
+    nameDE: 'Geduldiger Entdecker',
+    description: 'Spent 5+ minutes exploring',
+    descriptionDE: '5+ Minuten auf der Seite verbracht',
+    icon: '⏰',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'scroll-champion',
+    name: 'Scroll Champion',
+    nameDE: 'Scroll-Champion',
+    description: 'Scrolled through the entire page',
+    descriptionDE: 'Die gesamte Seite durchgescrollt',
+    icon: '🔄',
+    unlocked: false,
+    secret: true
   }
 ];
 

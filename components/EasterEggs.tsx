@@ -34,10 +34,21 @@ export default function EasterEggs() {
   const [konamiSequence, setKonamiSequence] = useState<string[]>([]);
   const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [typedChars, setTypedChars] = useState('');
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const startTimeRef = useRef<number>(Date.now());
 
   // Secret patterns
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   const secretWords = ['klarheit', 'saimor', 'wandel'];
+
+  // Haptic Feedback (Vibration) for mobile
+  const triggerHapticFeedback = () => {
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      // Pattern: short-pause-short (celebration pattern)
+      navigator.vibrate([50, 30, 50]);
+    }
+  };
 
   // Load achievements on mount
   useEffect(() => {
@@ -46,10 +57,11 @@ export default function EasterEggs() {
     return () => { unsubscribe(); };
   }, []);
 
-  // Helper to unlock achievement
+  // Helper to unlock achievement with haptic feedback
   const unlockAchievement = (id: string) => {
     const achievement = achievementManager.current.unlock(id);
     if (achievement) {
+      triggerHapticFeedback(); // 📳 Vibration für Mobile!
       setNewAchievement(achievement);
       setTimeout(() => setNewAchievement(null), 5000);
     }
@@ -162,6 +174,89 @@ export default function EasterEggs() {
       window.removeEventListener('devicemotion', handleDeviceMotion);
       clearTimeout(shakeTimeout);
     };
+  }, []);
+
+  // === TIME-BASED ACHIEVEMENTS (Nachteule/Frühaufsteher) ===
+  useEffect(() => {
+    const hour = new Date().getHours();
+
+    // Nachteule: 00:00 - 06:00
+    if (hour >= 0 && hour < 6) {
+      setTimeout(() => {
+        unlockAchievement('night-owl');
+        setShowMessage('🦉 NACHTEULE ENTDECKT! 🦉');
+        setTimeout(() => setShowMessage(''), 3000);
+      }, 2000);
+    }
+
+    // Frühaufsteher: 05:00 - 07:00
+    if (hour >= 5 && hour < 7) {
+      setTimeout(() => {
+        unlockAchievement('early-bird');
+        setShowMessage('🌅 FRÜHAUFSTEHER! 🌅');
+        setTimeout(() => setShowMessage(''), 3000);
+      }, 2500);
+    }
+  }, []);
+
+  // === LOGO-CLICK TRACKING ===
+  useEffect(() => {
+    const handleLogoClick = () => {
+      const newCount = logoClickCount + 1;
+      setLogoClickCount(newCount);
+
+      if (newCount === 3) {
+        unlockAchievement('logo-lover');
+        setShowMessage('🎯 LOGO-LIEBHABER! 🎯');
+        createParticleExplosion(window.innerWidth / 2, 100, 25);
+        setTimeout(() => setShowMessage(''), 3000);
+        setLogoClickCount(0); // Reset
+      }
+
+      // Reset nach 2 Sekunden
+      setTimeout(() => setLogoClickCount(0), 2000);
+    };
+
+    window.addEventListener('saimor-logo-click', handleLogoClick);
+    return () => window.removeEventListener('saimor-logo-click', handleLogoClick);
+  }, [logoClickCount]);
+
+  // === SCROLL TRACKING ===
+  useEffect(() => {
+    const handleScroll = () => {
+      if (hasScrolledToBottom) return;
+
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+
+      // 95% der Seite gescrollt
+      if (scrollTop + clientHeight >= scrollHeight * 0.95) {
+        setHasScrolledToBottom(true);
+        unlockAchievement('scroll-champion');
+        setShowMessage('🔄 SCROLL-CHAMPION! 🔄');
+        createGoldenRain();
+        setTimeout(() => setShowMessage(''), 3000);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasScrolledToBottom]);
+
+  // === DURATION TRACKING (5 Minuten) ===
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const elapsedMinutes = (Date.now() - startTimeRef.current) / 60000;
+      if (elapsedMinutes >= 5) {
+        unlockAchievement('patient-visitor');
+        setShowMessage('⏰ GEDULDIGER ENTDECKER! ⏰');
+        createFireworks(window.innerWidth / 2, window.innerHeight / 2);
+        setTimeout(() => setShowMessage(''), 3000);
+      }
+    }, 5 * 60 * 1000); // 5 Minuten
+
+    return () => clearTimeout(timer);
   }, []);
 
   // === ACTIVATION FUNCTIONS ===

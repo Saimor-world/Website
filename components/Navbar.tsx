@@ -51,7 +51,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
     <>
       {/* FLOATING CENTRAL ORB - komplett anders! */}
       <motion.div
-        className="fixed top-6 left-1/2 z-50 pointer-events-auto"
+        className="fixed top-8 left-1/2 z-50 pointer-events-auto"
         initial={{ y: -100, x: '-50%', scale: 0.8, opacity: 0 }}
         animate={{
           y: scrolled ? -8 : 0,
@@ -106,7 +106,12 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
             <Link
               href={`/${locale}`}
               className="flex items-center gap-2.5 group"
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                setMenuOpen(false);
+                // Fire custom event for achievement tracking
+                const event = new CustomEvent('saimor-logo-click');
+                window.dispatchEvent(event);
+              }}
             >
               {/* Animated S Logo */}
               <motion.div
