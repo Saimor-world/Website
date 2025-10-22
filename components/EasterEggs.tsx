@@ -2,6 +2,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Zap, Heart, Star, Crown, Rocket } from 'lucide-react';
+import { getAchievementManager, type Achievement } from '@/lib/achievements';
+import AchievementToast from './AchievementToast';
+import AchievementMenu from './AchievementMenu';
 
 interface Particle {
   id: number;
@@ -15,77 +18,108 @@ interface Particle {
 }
 
 export default function EasterEggs() {
+  // Achievement System
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
+  const [showAchievementMenu, setShowAchievementMenu] = useState(false);
+  const [secretMenuSequence, setSecretMenuSequence] = useState<string[]>([]);
+  const achievementManager = useRef(getAchievementManager());
+
   // Easter Egg States
   const [konamiActivated, setKonamiActivated] = useState(false);
-  const [tripleClickActivated, setTripleClickActivated] = useState(false);
-  const [shakeActivated, setShakeActivated] = useState(false);
-  const [secretWordActivated, setSecretWordActivated] = useState(false);
-  const [clickComboActivated, setClickComboActivated] = useState(false);
-
-  // UI States
   const [showMessage, setShowMessage] = useState('');
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [fireworks, setFireworks] = useState<Particle[]>([]);
 
   // Tracking
   const [konamiSequence, setKonamiSequence] = useState<string[]>([]);
-  const [clickCount, setClickCount] = useState(0);
   const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [typedChars, setTypedChars] = useState('');
-  const lastClickRef = useRef(0);
 
   // Secret patterns
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   const secretWords = ['klarheit', 'saimor', 'wandel'];
 
-  // === 1. KONAMI CODE ===
+  // Load achievements on mount
+  useEffect(() => {
+    setAchievements(achievementManager.current.getAll());
+    const unsubscribe = achievementManager.current.subscribe(setAchievements);
+    return unsubscribe;
+  }, []);
+
+  // Helper to unlock achievement
+  const unlockAchievement = (id: string) => {
+    const achievement = achievementManager.current.unlock(id);
+    if (achievement) {
+      setNewAchievement(achievement);
+      setTimeout(() => setNewAchievement(null), 5000);
+    }
+  };
+
+  // === KONAMI CODE & SECRET WORDS ===
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Konami Code
       const newSequence = [...konamiSequence, e.key].slice(-konamiCode.length);
       setKonamiSequence(newSequence);
 
-      // Check Konami Code
       if (JSON.stringify(newSequence) === JSON.stringify(konamiCode)) {
         activateKonami();
+        unlockAchievement('konami');
       }
 
-      // Track typed characters for secret word
+      // Secret Words
       const newTyped = (typedChars + e.key.toLowerCase()).slice(-20);
       setTypedChars(newTyped);
 
-      // Check for secret words
       secretWords.forEach(word => {
         if (newTyped.includes(word)) {
           activateSecretWord(word);
+          if (word === 'klarheit') unlockAchievement('secret-klarheit');
+          if (word === 'saimor') unlockAchievement('secret-saimor');
+          if (word === 'wandel') unlockAchievement('secret-wandel');
           setTypedChars('');
         }
       });
+
+      // Secret Menu (AAA)
+      const menuSequence = [...secretMenuSequence, e.key.toLowerCase()].slice(-3);
+      setSecretMenuSequence(menuSequence);
+
+      if (menuSequence.join('') === 'aaa') {
+        setShowAchievementMenu(true);
+        unlockAchievement('secret-menu');
+        setSecretMenuSequence([]);
+      }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [konamiSequence, typedChars]);
+  }, [konamiSequence, typedChars, secretMenuSequence]);
 
-  // === 2. TRIPLE CLICK ===
+  // === TRIPLE CLICK ===
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const now = Date.now();
-      setClickTimes(prev => [...prev, now].slice(-3));
+      const newClickTimes = [...clickTimes, now].slice(-5);
+      setClickTimes(newClickTimes);
 
-      // Check triple click (within 1 second)
-      if (clickTimes.length >= 2) {
-        const timeDiff = now - clickTimes[clickTimes.length - 3];
+      // Triple click
+      if (newClickTimes.length >= 3) {
+        const timeDiff = now - newClickTimes[newClickTimes.length - 3];
         if (timeDiff < 1000) {
           activateTripleClick(e.clientX, e.clientY);
+          unlockAchievement('triple-click');
         }
       }
 
-      // === 5. CLICK COMBO (5 rapid clicks) ===
-      const rapidClickWindow = 800;
-      const recentClicks = clickTimes.filter(t => now - t < rapidClickWindow);
-      if (recentClicks.length >= 4) {
-        activateClickCombo(e.clientX, e.clientY);
-        setClickTimes([]);
+      // Click Combo (5 rapid)
+      if (newClickTimes.length >= 5) {
+        const rapidWindow = now - newClickTimes[0];
+        if (rapidWindow < 800) {
+          activateClickCombo(e.clientX, e.clientY);
+          unlockAchievement('click-combo');
+          setClickTimes([]);
+        }
       }
     };
 
@@ -93,7 +127,7 @@ export default function EasterEggs() {
     return () => window.removeEventListener('click', handleClick);
   }, [clickTimes]);
 
-  // === 3. SHAKE DETECTION ===
+  // === SHAKE DETECTION ===
   useEffect(() => {
     let shakeTimeout: NodeJS.Timeout;
     let lastX = 0, lastY = 0, lastZ = 0;
@@ -114,6 +148,7 @@ export default function EasterEggs() {
         clearTimeout(shakeTimeout);
         shakeTimeout = setTimeout(() => {
           activateShake();
+          unlockAchievement('shake');
         }, 100);
       }
 
@@ -137,24 +172,19 @@ export default function EasterEggs() {
     document.body.style.animation = 'rainbow 5s linear infinite';
     createMatrixRain();
     createParticleExplosion(window.innerWidth / 2, window.innerHeight / 2, 50);
-
     setTimeout(() => setShowMessage(''), 4000);
   };
 
   const activateTripleClick = (x: number, y: number) => {
-    setTripleClickActivated(true);
     setShowMessage('💥 TRIPLE CLICK EXPLOSION! 💥');
     createParticleExplosion(x, y, 30);
     createShockwave(x, y);
-
     setTimeout(() => setShowMessage(''), 3000);
   };
 
   const activateShake = () => {
-    setShakeActivated(true);
     setShowMessage('🌍 EARTHQUAKE MODE! 🌍');
     document.body.style.animation = 'shake 0.5s ease-in-out 3';
-
     setTimeout(() => {
       setShowMessage('');
       document.body.style.animation = '';
@@ -162,7 +192,6 @@ export default function EasterEggs() {
   };
 
   const activateSecretWord = (word: string) => {
-    setSecretWordActivated(true);
     const messages: {[key: string]: string} = {
       'klarheit': '✨ KLARHEIT GEFUNDEN! ✨',
       'saimor': '🌿 SAIMÔR ERWACHT! 🌿',
@@ -170,15 +199,12 @@ export default function EasterEggs() {
     };
     setShowMessage(messages[word] || '🎉 SECRET UNLOCKED! 🎉');
     createGoldenRain();
-
     setTimeout(() => setShowMessage(''), 3000);
   };
 
   const activateClickCombo = (x: number, y: number) => {
-    setClickComboActivated(true);
     setShowMessage('🎆 FIREWORKS COMBO! 🎆');
     createFireworks(x, y);
-
     setTimeout(() => setShowMessage(''), 3000);
   };
 
@@ -201,7 +227,6 @@ export default function EasterEggs() {
     });
 
     setParticles(prev => [...prev, ...newParticles]);
-
     setTimeout(() => {
       setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
     }, 2000);
@@ -231,7 +256,6 @@ export default function EasterEggs() {
     }));
 
     setParticles(prev => [...prev, ...newParticles]);
-
     setTimeout(() => {
       setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
     }, 3000);
@@ -323,6 +347,19 @@ export default function EasterEggs() {
 
   return (
     <>
+      {/* Achievement Toast */}
+      <AchievementToast
+        achievement={newAchievement}
+        onClose={() => setNewAchievement(null)}
+      />
+
+      {/* Achievement Menu */}
+      <AchievementMenu
+        achievements={achievements}
+        isOpen={showAchievementMenu}
+        onClose={() => setShowAchievementMenu(false)}
+      />
+
       {/* Activation Message */}
       <AnimatePresence>
         {showMessage && (
@@ -443,6 +480,17 @@ export default function EasterEggs() {
           ))}
         </div>
       )}
+
+      {/* Secret Hint - AAA for achievements */}
+      <motion.div
+        className="fixed bottom-20 left-4 z-40 px-3 py-1.5 rounded-full text-xs font-medium bg-black/60 text-white/60 backdrop-blur-sm"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 0.5, x: 0 }}
+        transition={{ delay: 5 }}
+        whileHover={{ opacity: 1, scale: 1.05 }}
+      >
+        💡 Press AAA for achievements
+      </motion.div>
     </>
   );
 }
