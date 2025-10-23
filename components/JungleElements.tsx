@@ -16,8 +16,8 @@ export default function JungleElements() {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Initialize data particles
-    const initialParticles: DataParticle[] = Array.from({ length: 12 }, (_, i) => ({
+    // Initialize data particles - reduced to 8 for better performance
+    const initialParticles: DataParticle[] = Array.from({ length: 8 }, (_, i) => ({
       id: `particle-${i}`,
       path: i % 3, // 3 different liana paths
       position: Math.random(),
@@ -31,17 +31,27 @@ export default function JungleElements() {
   useEffect(() => {
     if (particles.length === 0) return;
 
-    const interval = setInterval(() => {
-      setParticles(prev =>
-        prev.map(p => ({
-          ...p,
-          position: (p.position + p.speed) % 1
-        }))
-      );
-    }, 50);
+    let animationFrameId: number;
+    let lastUpdate = Date.now();
 
-    return () => clearInterval(interval);
-  }, [particles]);
+    const animate = () => {
+      const now = Date.now();
+      // Update only every 100ms for better performance
+      if (now - lastUpdate > 100) {
+        setParticles(prev =>
+          prev.map(p => ({
+            ...p,
+            position: (p.position + p.speed) % 1
+          }))
+        );
+        lastUpdate = now;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [particles.length]);
 
   // SVG path definitions for lianas (vines)
   const lianaPaths = [
@@ -249,8 +259,8 @@ export default function JungleElements() {
         </motion.div>
       )}
 
-      {/* Depth particles (bokeh effect) */}
-      {Array.from({ length: 8 }).map((_, i) => (
+      {/* Depth particles (bokeh effect) - reduced to 5 for better performance */}
+      {Array.from({ length: 5 }).map((_, i) => (
         <motion.div
           key={`depth-${i}`}
           className="absolute w-2 h-2 rounded-full"

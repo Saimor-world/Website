@@ -28,10 +28,17 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
   }[locale];
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -51,7 +58,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
     <>
       {/* FLOATING CENTRAL ORB - komplett anders! */}
       <motion.div
-        className="fixed top-8 left-1/2 z-50 pointer-events-auto"
+        className="fixed top-12 left-1/2 z-50 pointer-events-auto"
         initial={{ y: -100, x: '-50%', scale: 0.8, opacity: 0 }}
         animate={{
           y: scrolled ? -8 : 0,
@@ -59,7 +66,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
           scale: scrolled ? 0.85 : 1,
           opacity: 1
         }}
-        transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         {/* Ambient Glow */}
         <motion.div
