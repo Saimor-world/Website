@@ -10,3 +10,10 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .vercel
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Package manager locks (only npm)
+pnpm-lock.yaml
+yarn.lock
