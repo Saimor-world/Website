@@ -1,0 +1,950 @@
+{
+  "system_name": "Core-Môra Backend System",
+  "version": "2.0",
+  "generated_at": "2025-10-27",
+  "purpose": "Vollständiges Mapping aller Backend-Logiken, KPIs, APIs und Events für Frontend-Integration",
+
+  "kpis": {
+    "description": "Key Performance Indicators die das Backend bereitstellt",
+    "metrics": [
+      {
+        "name": "Klarheitsindex",
+        "key": "clarity_index",
+        "einheit": "Prozent",
+        "wertebereich": "0-100%",
+        "bedeutung": "Qualität der Gespräche basierend auf Verständlichkeit und Zielerreichung",
+        "update_frequenz": "Nach jedem Voice Call",
+        "berechnung": "Basiert auf: Gesprächsdauer, Tool-Nutzung, User-Feedback, Lernfortschritt",
+        "historie_verfügbar": false,
+        "datenquelle": "mora_usage + learning_brain metrics",
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "Kosten Heute",
+        "key": "cost_today",
+        "einheit": "USD",
+        "wertebereich": "0.00-∞",
+        "bedeutung": "API-Kosten für den aktuellen Tag (OpenAI + Anthropic)",
+        "update_frequenz": "Nach jeder API-Anfrage",
+        "berechnung": "SUM(cost_usd) WHERE DATE(timestamp) = CURRENT_DATE",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/costs/today"
+      },
+      {
+        "name": "Kosten Woche",
+        "key": "cost_week",
+        "einheit": "USD",
+        "wertebereich": "0.00-∞",
+        "bedeutung": "API-Kosten der letzten 7 Tage",
+        "update_frequenz": "Nach jeder API-Anfrage",
+        "berechnung": "SUM(cost_usd) WHERE timestamp >= NOW() - INTERVAL '7 days'",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/costs/today"
+      },
+      {
+        "name": "Kosten Monat",
+        "key": "cost_month",
+        "einheit": "USD",
+        "wertebereich": "0.00-∞",
+        "bedeutung": "API-Kosten für den aktuellen Monat",
+        "update_frequenz": "Nach jeder API-Anfrage",
+        "berechnung": "SUM(cost_usd) WHERE DATE(timestamp) >= first day of month",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/costs/today"
+      },
+      {
+        "name": "Voice Calls Heute",
+        "key": "voice_calls_today",
+        "einheit": "Anzahl",
+        "wertebereich": "0-∞",
+        "bedeutung": "Anzahl der Voice-Anrufe heute",
+        "update_frequenz": "Nach jedem Voice Call",
+        "berechnung": "COUNT(*) FROM mora_usage WHERE DATE(timestamp) = CURRENT_DATE",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "Memory Facts",
+        "key": "memory_facts",
+        "einheit": "Anzahl",
+        "wertebereich": "0-∞",
+        "bedeutung": "Anzahl gespeicherter Fakten im strukturierten Gedächtnis",
+        "update_frequenz": "Bei jedem Fact-Insert/Update",
+        "berechnung": "COUNT(*) FROM mem_facts",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "Episodic Memories",
+        "key": "episodic_memories",
+        "einheit": "Anzahl",
+        "wertebereich": "0-∞",
+        "bedeutung": "Anzahl episodischer Erinnerungen (Gespräche, Zusammenfassungen)",
+        "update_frequenz": "Nach jedem Voice/Chat-Interaction",
+        "berechnung": "COUNT(*) FROM mem_episodic",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "Pending Learnings",
+        "key": "pending_learnings",
+        "einheit": "Anzahl",
+        "wertebereich": "0-∞",
+        "bedeutung": "Anzahl der Learnings die auf Review warten (high-risk)",
+        "update_frequenz": "Bei jedem Learning Brain Insight",
+        "berechnung": "COUNT(*) FROM mem_review_queue WHERE status = 'pending'",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "System Health",
+        "key": "health_status",
+        "einheit": "Status",
+        "wertebereich": "ok | warning | error",
+        "bedeutung": "Gesamtzustand des Systems (Services, DB, APIs)",
+        "update_frequenz": "Alle 60 Sekunden (health_monitor.py)",
+        "berechnung": "Kombiniert: Voice Service, Chat Service, Database, Redis",
+        "historie_verfügbar": false,
+        "api_endpoint": "/api/dashboard/status"
+      },
+      {
+        "name": "Response Time",
+        "key": "response_time_ms",
+        "einheit": "Millisekunden",
+        "wertebereich": "0-∞",
+        "bedeutung": "Durchschnittliche API-Antwortzeit",
+        "update_frequenz": "Nach jeder API-Anfrage",
+        "berechnung": "AVG(stt_duration_sec) * 1000",
+        "historie_verfügbar": true,
+        "api_endpoint": "/api/dashboard/stats/overview"
+      },
+      {
+        "name": "Active Sessions",
+        "key": "active_sessions",
+        "einheit": "Anzahl",
+        "wertebereich": "0-∞",
+        "bedeutung": "Anzahl aktiver Voice/Chat-Sessions",
+        "update_frequenz": "Real-time",
+        "berechnung": "COUNT(DISTINCT call_sid) für aktive Calls",
+        "historie_verfügbar": false,
+        "api_endpoint": "/api/dashboard/status"
+      },
+      {
+        "name": "Uptime",
+        "key": "uptime_seconds",
+        "einheit": "Sekunden",
+        "wertebereich": "0-∞",
+        "bedeutung": "Zeit seit letztem System-Restart",
+        "update_frequenz": "Real-time",
+        "berechnung": "NOW() - startup_time",
+        "historie_verfügbar": false,
+        "api_endpoint": "/api/dashboard/status"
+      }
+    ]
+  },
+
+  "mora_outputs": {
+    "description": "Môra-Ausgaben und deren Triggerlogik",
+    "text_outputs": {
+      "beschreibung": "Môra erzeugt Text-Responses basierend auf User-Input",
+      "kanäle": ["Voice (Twilio)", "Chat (Website)", "Dashboard Chat"],
+      "modelle": {
+        "voice": "claude-3-5-sonnet-20241022",
+        "chat": "claude-3-5-haiku-20241022",
+        "dashboard": "claude-3-haiku-20240307"
+      },
+      "trigger": [
+        {
+          "name": "User Voice Call",
+          "beschreibung": "User ruft +1 815-680-2973 an",
+          "auslöser": "Eingehender Twilio-Call",
+          "flow": "Twilio → OpenAI Realtime → Môra System Prompt → Response → TTS"
+        },
+        {
+          "name": "Website Chat Message",
+          "beschreibung": "User sendet Nachricht über Website-Chat",
+          "auslöser": "POST /mora/chat mit message",
+          "flow": "FAQ Check → (wenn kein Match) → Claude API → Response"
+        },
+        {
+          "name": "Dashboard Chat Message",
+          "beschreibung": "Admin chattet mit Môra über Dashboard",
+          "auslöser": "POST /api/dashboard/chat/message",
+          "flow": "Claude API + Tools (Memory, Learning Queue) → Response"
+        }
+      ]
+    },
+
+    "emotionale_tonalität": {
+      "verfügbar": true,
+      "beschreibung": "Môra passt Tonalität basierend auf Kontext an",
+      "tonalitäten": [
+        {
+          "name": "calm",
+          "trigger": "Normale Gespräche, Status-Updates",
+          "beispiel": "Alles läuft rund. Deine Costs heute: $2.45"
+        },
+        {
+          "name": "alert",
+          "trigger": "Wichtige Ereignisse, Grenzwerte überschritten",
+          "beispiel": "⚠️ Achtung: Costs haben $5/Tag überschritten!"
+        },
+        {
+          "name": "focused",
+          "trigger": "Lernsituationen, Review Queue",
+          "beispiel": "Ich habe 3 neue Insights - lass uns die durchgehen."
+        },
+        {
+          "name": "curious",
+          "trigger": "High-risk Learning Brain Events",
+          "beispiel": "Soll ich das als Fakt speichern: 'Preis für Workshop: €500'?"
+        }
+      ],
+      "implementierung": "System Prompts enthalten Tonalitäts-Anweisungen",
+      "dashboard_reaktion": true,
+      "beschreibung_reaktion": "Môra kann auf Dashboard-Werte reagieren (z.B. 'Deine Memory ist voll')"
+    }
+  },
+
+  "achievement_system": {
+    "description": "Learning Brain als Achievement-System",
+    "status": "Teilweise implementiert",
+    "konzept": "Learning Brain fungiert als autonomes Lernsystem mit Review-Queue",
+
+    "triggers": {
+      "tastenkombinationen": [],
+      "schlüsselwörter": [
+        {
+          "wort": "merke dir",
+          "action": "Erstellt Learning Brain Insight",
+          "risk_level": "high",
+          "beispiel": "User: 'Merke dir: Mein Lieblingskaffee ist Cappuccino'"
+        },
+        {
+          "wort": "lerne",
+          "action": "Erstellt Learning Brain Insight",
+          "risk_level": "auto",
+          "beispiel": "User: 'Lerne, dass ich morgens fokussierter bin'"
+        }
+      ],
+      "events": [
+        {
+          "name": "voice_call_complete",
+          "beschreibung": "Nach jedem Voice Call wird Zusammenfassung erstellt",
+          "action": "Episodic Memory wird gespeichert (mem_episodic)",
+          "achievement_potential": true
+        },
+        {
+          "name": "learning_approved",
+          "beschreibung": "Admin approved ein Learning aus Review Queue",
+          "action": "Insight wird zu mem_facts committet",
+          "achievement_potential": true
+        },
+        {
+          "name": "memory_milestone",
+          "beschreibung": "100, 500, 1000 Facts erreicht",
+          "action": "Bisher nur Zählung, keine UI-Notification",
+          "achievement_potential": true
+        }
+      ]
+    },
+
+    "achievements_vordefiniert": [
+      {
+        "id": "first_learning",
+        "name": "Erste Lektion",
+        "beschreibung": "Môra hat ihr erstes Learning gespeichert",
+        "trigger": "Erstes approved Learning",
+        "implementiert": false
+      },
+      {
+        "id": "memory_master_100",
+        "name": "Memory Master",
+        "beschreibung": "100 Facts im Gedächtnis",
+        "trigger": "mem_facts COUNT >= 100",
+        "implementiert": false
+      },
+      {
+        "id": "conversation_veteran",
+        "name": "Gesprächsprofi",
+        "beschreibung": "50 Voice Calls geführt",
+        "trigger": "mora_usage COUNT >= 50",
+        "implementiert": false
+      },
+      {
+        "id": "cost_conscious",
+        "name": "Sparsam",
+        "beschreibung": "Unter $3/Tag Costs für 7 Tage",
+        "trigger": "cost_today < 3 für 7 aufeinanderfolgende Tage",
+        "implementiert": false
+      }
+    ],
+
+    "mora_reaktion": {
+      "beschreibung": "Môra kann auf Achievements reagieren",
+      "beispiel": "🎉 Glückwunsch! Du hast 100 Facts im Gedächtnis erreicht!",
+      "implementiert": false
+    }
+  },
+
+  "nutzer_modi": {
+    "description": "Session- und User-Management",
+
+    "dashboard": {
+      "auth_typ": "Token-basiert (Bearer Token)",
+      "token_speicher": "localStorage (Frontend)",
+      "validation": "security.py → admin_auth()",
+      "session_tracking": false,
+      "fortschritt_speicher": "Nein (stateless)"
+    },
+
+    "website_chat": {
+      "auth_typ": "Public (rate-limited)",
+      "rate_limits": {
+        "requests_per_minute": 10,
+        "api_calls_per_session": 15
+      },
+      "session_tracking": true,
+      "session_speicher": "In-Memory (SESSIONS dict)",
+      "session_ttl": "30 Minuten",
+      "fortschritt_speicher": "Temporär (nur während Session)",
+      "beschreibung": "FAQ-System für kostenfreie Antworten, Claude API nur bei komplexen Fragen"
+    },
+
+    "voice": {
+      "auth_typ": "Twilio Call ID",
+      "session_tracking": true,
+      "session_speicher": "Database (mora_usage.call_sid)",
+      "fortschritt_speicher": "Permanent (episodic memory + usage logs)",
+      "beschreibung": "Jeder Call wird vollständig geloggt mit Transcript, Tools, Costs"
+    }
+  },
+
+  "api_schnittstellen": {
+    "description": "Vollständige API-Endpunkte und Event-System",
+
+    "base_urls": {
+      "dashboard_api": "https://voice.saimor.world/api/dashboard",
+      "chat_api": "https://voice.saimor.world/mora",
+      "gateway_api": "http://localhost:8080/api/v1"
+    },
+
+    "endpoints": [
+      {
+        "path": "/api/dashboard/status",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "beschreibung": "System-Status (Health, Services, Uptime)",
+        "response_format": {
+          "status": "online | offline | degraded",
+          "health": "ok | warning | error",
+          "last_activity": "ISO timestamp",
+          "uptime_seconds": "number",
+          "services": {
+            "voice": "online | offline",
+            "chat": "online | offline",
+            "database": "ok | error",
+            "redis": "ok | error"
+          }
+        }
+      },
+      {
+        "path": "/api/dashboard/costs/today",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "beschreibung": "Kosten für heute, Woche, Monat",
+        "response_format": {
+          "today": "float (USD)",
+          "week": "float (USD)",
+          "month": "float (USD)",
+          "currency": "USD"
+        }
+      },
+      {
+        "path": "/api/dashboard/stats/overview",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "beschreibung": "Gesamt-Statistiken (Calls, Costs, Memory)",
+        "response_format": {
+          "today": {
+            "total_calls": "number",
+            "total_cost": "float",
+            "avg_latency": "float",
+            "unique_sessions": "number"
+          },
+          "memory": {
+            "facts": "number",
+            "episodes": "number",
+            "pending_learnings": "number"
+          }
+        }
+      },
+      {
+        "path": "/api/dashboard/learnings",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "date": "today | YYYY-MM-DD"
+        },
+        "beschreibung": "Learnings für bestimmten Tag",
+        "response_format": {
+          "date": "string",
+          "learnings": [
+            {
+              "id": "number",
+              "content": "string",
+              "type": "memory | knowledge_base | preference | fact",
+              "timestamp": "ISO timestamp",
+              "source": "string",
+              "confidence": "float (0-1)"
+            }
+          ],
+          "total_today": "number"
+        }
+      },
+      {
+        "path": "/api/dashboard/activity",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "limit": "number (1-50)"
+        },
+        "beschreibung": "Letzte Aktivitäten (Voice Calls, Chat)",
+        "response_format": {
+          "items": [
+            {
+              "call_sid": "string",
+              "timestamp": "ISO timestamp",
+              "type": "voice_call | chat",
+              "summary": "string",
+              "duration_seconds": "number",
+              "tools_used": ["string"]
+            }
+          ],
+          "count": "number",
+          "last_ts": "ISO timestamp"
+        }
+      },
+      {
+        "path": "/api/dashboard/voice-calls",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "limit": "number (1-50)"
+        },
+        "beschreibung": "Letzte Voice Calls mit Details",
+        "response_format": {
+          "calls": [
+            {
+              "call_sid": "string",
+              "timestamp": "ISO timestamp",
+              "pipeline": "openai_realtime | custom",
+              "mode": "string",
+              "transcript": "string",
+              "response": "string",
+              "cost_usd": "float",
+              "duration_seconds": "number",
+              "tools_used": ["string"]
+            }
+          ],
+          "total": "number"
+        }
+      },
+      {
+        "path": "/api/dashboard/memory/facts",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "limit": "number (1-200)"
+        },
+        "beschreibung": "Strukturierte Fakten aus Memory",
+        "response_format": {
+          "facts": [
+            {
+              "id": "number",
+              "key": "string",
+              "value": "string | JSON",
+              "metadata": "JSON"
+            }
+          ],
+          "total": "number"
+        }
+      },
+      {
+        "path": "/api/dashboard/memory/episodic",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "limit": "number (1-100)"
+        },
+        "beschreibung": "Episodische Erinnerungen (Gespräche)",
+        "response_format": {
+          "episodes": [
+            {
+              "id": "number",
+              "summary": "string",
+              "timestamp": "ISO timestamp",
+              "source": "voice | chat | voice_learn",
+              "metadata": "JSON",
+              "call_sid": "string"
+            }
+          ],
+          "total": "number"
+        }
+      },
+      {
+        "path": "/api/dashboard/learning-brain/queue",
+        "method": "GET",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "status": "pending | approved | rejected"
+        },
+        "beschreibung": "Learning Brain Review Queue",
+        "response_format": {
+          "queue": [
+            {
+              "id": "number",
+              "insight": "string",
+              "category": "preference | fact | goal | price | policy",
+              "risk_level": "low | high",
+              "status": "pending | approved | rejected",
+              "created_at": "ISO timestamp",
+              "reviewed_at": "ISO timestamp | null",
+              "reviewer": "string | null",
+              "notes": "string | null"
+            }
+          ],
+          "total": "number"
+        }
+      },
+      {
+        "path": "/api/dashboard/learning-brain/review/{item_id}",
+        "method": "POST",
+        "auth": "Bearer Token erforderlich",
+        "query_params": {
+          "action": "approve | reject",
+          "notes": "string (optional)"
+        },
+        "beschreibung": "Approve oder Reject Learning Item",
+        "response_format": {
+          "success": "boolean",
+          "item_id": "number",
+          "status": "approved | rejected"
+        }
+      },
+      {
+        "path": "/api/dashboard/chat/message",
+        "method": "POST",
+        "auth": "Bearer Token erforderlich",
+        "body": {
+          "message": "string",
+          "session_id": "string (optional)"
+        },
+        "beschreibung": "Chat mit Dashboard-Môra (mit Tool-Zugriff)",
+        "response_format": {
+          "response": "string",
+          "tool_uses": [
+            {
+              "tool": "string",
+              "input": "JSON",
+              "result": "JSON"
+            }
+          ],
+          "session_id": "string"
+        }
+      },
+      {
+        "path": "/mora/chat",
+        "method": "POST",
+        "auth": "Public (rate-limited)",
+        "body": {
+          "message": "string",
+          "session_id": "string (optional)",
+          "history": "array (optional)"
+        },
+        "beschreibung": "Website Chat mit Môra",
+        "response_format": {
+          "response": "string",
+          "session_id": "string",
+          "metadata": {
+            "cached": "boolean (true wenn FAQ match)",
+            "model": "string",
+            "tokens_used": "object",
+            "timestamp": "ISO timestamp"
+          }
+        }
+      },
+      {
+        "path": "/mora/health",
+        "method": "GET",
+        "auth": "None",
+        "beschreibung": "Health Check für Chat Service",
+        "response_format": {
+          "status": "healthy",
+          "service": "mora-chat",
+          "model": "string",
+          "sessions_active": "number",
+          "timestamp": "ISO timestamp"
+        }
+      }
+    ],
+
+    "websocket_events": {
+      "verfügbar": false,
+      "beschreibung": "Aktuell keine WebSocket-Implementierung",
+      "alternative": "Polling (30s Interval im Dashboard Frontend)"
+    },
+
+    "n8n_webhooks": {
+      "beschreibung": "n8n-Integration für Workflow-Automation",
+      "webhooks": [
+        {
+          "name": "knowledge-sync",
+          "url": "https://n8n.voice.saimor.world/webhook/knowledge-sync",
+          "trigger": "Dashboard Button oder Môra Tool",
+          "beschreibung": "Synchronisiert Knowledge Base aus externen Quellen"
+        },
+        {
+          "name": "learning-brain-update",
+          "url": "https://n8n.voice.saimor.world/webhook/learning-brain-update",
+          "trigger": "Dashboard Button",
+          "beschreibung": "Triggert Learning Brain Processing"
+        }
+      ]
+    },
+
+    "events_sendbar": [
+      {
+        "name": "kpi_updated",
+        "beschreibung": "KPI-Wert hat sich geändert",
+        "implementiert": false,
+        "vorschlag": "WebSocket oder SSE für Real-Time Updates"
+      },
+      {
+        "name": "achievement_unlocked",
+        "beschreibung": "User hat Achievement erreicht",
+        "implementiert": false,
+        "vorschlag": "Dashboard zeigt Toast-Notification"
+      },
+      {
+        "name": "mora_speaks",
+        "beschreibung": "Môra hat eine proaktive Nachricht",
+        "implementiert": false,
+        "vorschlag": "Dashboard Chat zeigt neue Nachricht"
+      },
+      {
+        "name": "learning_pending",
+        "beschreibung": "Neues Learning wartet auf Review",
+        "implementiert": "Teilweise (nur via Polling sichtbar)",
+        "vorschlag": "Push-Notification an Dashboard"
+      }
+    ]
+  },
+
+  "mora_interaktion": {
+    "description": "Wie Môra auf Interaktionen reagiert",
+
+    "hover_click_feedback": {
+      "implementiert": false,
+      "vorschlag": "Môra Avatar im Dashboard könnte auf Hover reagieren",
+      "beispiele": [
+        "Hover → Augen folgen Cursor",
+        "Click → Môra sagt 'Hey! Was kann ich für dich tun?'",
+        "Long-press → Zeigt Quick Actions"
+      ]
+    },
+
+    "aktiver_kontextbezug": {
+      "implementiert": "Ja (im Dashboard Chat)",
+      "beschreibung": "Dashboard-Môra hat Zugriff auf Live-KPIs via Tools",
+      "beispiel": "User: 'Wie viel habe ich heute ausgegeben?' → Môra: 'Heute: $2.45' (via get_usage_stats tool)"
+    },
+
+    "proaktive_nachrichten": {
+      "implementiert": false,
+      "konzept": "Môra könnte proaktiv Nachrichten senden basierend auf Events",
+      "beispiele": [
+        "Costs > $5/Tag → 'Hey, deine Costs sind heute höher als üblich'",
+        "10 Pending Learnings → 'Du hast 10 Learnings zum Reviewen'",
+        "Memory > 1000 Facts → '🎉 1000 Facts erreicht!'"
+      ]
+    },
+
+    "audioausgabe": {
+      "implementiert": "Ja (nur Voice Calls)",
+      "text2speech_modul": "OpenAI Realtime API (automatisch)",
+      "beschreibung": "Voice Calls haben automatisch Audio-Output",
+      "dashboard_audio": false,
+      "vorschlag": "Dashboard könnte optional TTS aktivieren"
+    }
+  },
+
+  "dashboard_tools": {
+    "description": "Tools die Dashboard-Môra zur Verfügung stehen",
+    "tools": [
+      {
+        "name": "get_memory_facts",
+        "beschreibung": "Liest faktuale Memories",
+        "parameter": {
+          "limit": "number (default: 10, max: 50)",
+          "search_key": "string (optional)"
+        }
+      },
+      {
+        "name": "add_memory_fact",
+        "beschreibung": "Fügt neuen Fakt hinzu",
+        "parameter": {
+          "key": "string (unique ID)",
+          "value": "string",
+          "category": "string (optional)"
+        }
+      },
+      {
+        "name": "get_episodic_memories",
+        "beschreibung": "Liest episodische Erinnerungen",
+        "parameter": {
+          "limit": "number (default: 5, max: 20)"
+        }
+      },
+      {
+        "name": "get_learning_queue",
+        "beschreibung": "Holt Learning Brain Review Queue",
+        "parameter": {
+          "status": "pending | approved | rejected"
+        }
+      },
+      {
+        "name": "approve_learning",
+        "beschreibung": "Approved Learning Item",
+        "parameter": {
+          "item_id": "number",
+          "notes": "string (optional)"
+        }
+      },
+      {
+        "name": "get_usage_stats",
+        "beschreibung": "Holt Usage-Statistiken",
+        "parameter": {
+          "period": "today | week | month"
+        }
+      },
+      {
+        "name": "trigger_knowledge_sync",
+        "beschreibung": "Triggert n8n Knowledge Sync Workflow",
+        "parameter": {}
+      }
+    ]
+  },
+
+  "voice_tools": {
+    "description": "Tools die Voice-Môra zur Verfügung stehen",
+    "tools": [
+      {
+        "name": "search_knowledge",
+        "beschreibung": "Durchsucht Saimôr Knowledge Base",
+        "quelle": "knowledge_tools.py"
+      },
+      {
+        "name": "calendar_create",
+        "beschreibung": "Erstellt Google Calendar Termin",
+        "quelle": "integration_tools.py"
+      },
+      {
+        "name": "notion_create",
+        "beschreibung": "Erstellt Notion-Notiz",
+        "quelle": "integration_tools.py"
+      },
+      {
+        "name": "weather_get",
+        "beschreibung": "Holt Wetter-Informationen",
+        "quelle": "integration_tools.py"
+      },
+      {
+        "name": "web_search",
+        "beschreibung": "Sucht im Internet",
+        "quelle": "integration_tools.py"
+      }
+    ]
+  },
+
+  "datenbank_schema": {
+    "description": "PostgreSQL Schema (n8n_voice DB)",
+    "tabellen": [
+      {
+        "name": "mora_usage",
+        "beschreibung": "Logs aller Voice/Chat Interactions mit Costs",
+        "spalten": {
+          "call_sid": "string (unique)",
+          "timestamp": "timestamp",
+          "pipeline": "openai_realtime | custom",
+          "mode": "string",
+          "transcript": "text",
+          "response": "text",
+          "cost_usd": "decimal",
+          "metadata": "jsonb",
+          "stt_duration_sec": "float"
+        }
+      },
+      {
+        "name": "mem_facts",
+        "beschreibung": "Strukturierte Fakten (Key-Value Store)",
+        "spalten": {
+          "id": "serial primary key",
+          "key": "text unique",
+          "value": "jsonb",
+          "source": "text",
+          "confidence": "float",
+          "metadata": "jsonb",
+          "updated_at": "timestamp"
+        }
+      },
+      {
+        "name": "mem_episodic",
+        "beschreibung": "Episodische Erinnerungen (Gespräche)",
+        "spalten": {
+          "id": "serial primary key",
+          "summary": "text",
+          "ts": "timestamp",
+          "source": "text",
+          "tags": "text[]",
+          "metadata": "jsonb",
+          "call_sid": "text"
+        }
+      },
+      {
+        "name": "mem_review_queue",
+        "beschreibung": "Learning Brain Review Queue",
+        "spalten": {
+          "id": "serial primary key",
+          "insight": "text",
+          "category": "text",
+          "risk_level": "text (low | high)",
+          "status": "text (pending | approved | rejected)",
+          "created_at": "timestamp",
+          "reviewed_at": "timestamp",
+          "reviewer": "text",
+          "notes": "text"
+        }
+      }
+    ]
+  },
+
+  "system_prompts": {
+    "description": "Môra's Persönlichkeit & Verhalten",
+    "voice_system_prompt": {
+      "datei": "voice-realtime/server.py",
+      "kernidentität": "Môra - Voice-Assistentin für Saimôr (Marius' digitale Begleiterin)",
+      "tonalität": "Ruhig, klar, resonant - erwachsen und reflektiert",
+      "sprachstil": "Deutsch, natürlich, präzise, keine übermäßigen Emojis"
+    },
+    "chat_system_prompt": {
+      "datei": "gateway/app/api/mora_chat.py",
+      "kernidentität": "Môra - Website-Assistentin für Saimôr-Besucher",
+      "tonalität": "Freundlich, hilfsbereit, professionell",
+      "sprachstil": "Kurze, prägnante Antworten (2-4 Sätze)"
+    },
+    "dashboard_system_prompt": {
+      "datei": "voice-realtime/dashboard_chat_api.py",
+      "kernidentität": "Môra - Dashboard-Assistentin mit Tool-Zugriff",
+      "tonalität": "Neugierig, lernwillig, proaktiv",
+      "sprachstil": "Erklärt was sie gerade macht"
+    }
+  },
+
+  "deployment_info": {
+    "production_url": "https://voice.saimor.world",
+    "dashboard_url": "https://voice.saimor.world/api/dashboard/",
+    "voice_number": "+1 815-680-2973",
+    "hosting": "Hetzner VPS",
+    "database": "PostgreSQL (n8n_voice)",
+    "redis": "Für Caching & Rate Limiting",
+    "docker": true
+  },
+
+  "frontend_integration_guide": {
+    "beschreibung": "Wie das Frontend diese Daten nutzen sollte",
+    "schritte": [
+      {
+        "schritt": 1,
+        "titel": "Authentication Flow implementieren",
+        "details": "Login Modal mit Token-Eingabe → Bearer Token in localStorage → authFetch() Wrapper"
+      },
+      {
+        "schritt": 2,
+        "titel": "KPI Cards mit Live-Daten füllen",
+        "details": "Polling (30s) → /api/dashboard/status + /costs/today + /stats/overview → Update UI"
+      },
+      {
+        "schritt": 3,
+        "titel": "Activity Feed implementieren",
+        "details": "/api/dashboard/activity → Liste der letzten Voice Calls/Chat Sessions → Timeline UI"
+      },
+      {
+        "schritt": 4,
+        "titel": "Learning Brain Review Queue",
+        "details": "/api/dashboard/learning-brain/queue?status=pending → Cards mit Approve/Reject Buttons"
+      },
+      {
+        "schritt": 5,
+        "titel": "Môra Chat Widget",
+        "details": "/api/dashboard/chat/message → Tool Results anzeigen → Refresh Dashboard bei Write-Operations"
+      },
+      {
+        "schritt": 6,
+        "titel": "Achievement System (Optional)",
+        "details": "Frontend tracked KPIs → Zeigt Toast bei Milestones → Môra gratuliert"
+      },
+      {
+        "schritt": 7,
+        "titel": "n8n Workflow Buttons",
+        "details": "Buttons für Knowledge Sync / Learning Brain Update → POST zu n8n Webhooks"
+      }
+    ]
+  },
+
+  "empfohlene_ui_komponenten": {
+    "framework": "React + Tailwind CSS",
+    "komponenten": [
+      {
+        "name": "StatusCard",
+        "beschreibung": "Zeigt System Health (ok/warning/error) mit Icon",
+        "datenquelle": "/api/dashboard/status"
+      },
+      {
+        "name": "KPICard",
+        "beschreibung": "Zeigt einzelnen KPI (Kosten, Calls, Memory)",
+        "datenquelle": "/api/dashboard/costs/today + /stats/overview"
+      },
+      {
+        "name": "ActivityFeed",
+        "beschreibung": "Timeline der letzten Aktivitäten",
+        "datenquelle": "/api/dashboard/activity"
+      },
+      {
+        "name": "LearningReviewCard",
+        "beschreibung": "Card für Learning Brain Item mit Approve/Reject",
+        "datenquelle": "/api/dashboard/learning-brain/queue"
+      },
+      {
+        "name": "MoraChatWidget",
+        "beschreibung": "Chat-Interface mit Môra",
+        "datenquelle": "/api/dashboard/chat/message"
+      },
+      {
+        "name": "CostTrendChart",
+        "beschreibung": "Line Chart für Cost Trends über 7 Tage",
+        "datenquelle": "/api/dashboard/costs/trend"
+      },
+      {
+        "name": "MemoryExplorer",
+        "beschreibung": "Browse Facts & Episodic Memories",
+        "datenquelle": "/api/dashboard/memory/facts + /memory/episodic"
+      },
+      {
+        "name": "AchievementToast",
+        "beschreibung": "Toast Notification für erreichte Meilensteine",
+        "trigger": "Frontend-seitig basierend auf KPI-Änderungen"
+      }
+    ]
+  }
+}
