@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import MoraIntro from '@/components/MoraIntro';
+import DashboardPreview from '@/components/DashboardPreview';
 import TrustProof from '@/components/TrustProof';
 import Education from '@/components/Education';
 import FAQ from '@/components/FAQ';
@@ -37,8 +38,8 @@ export default function Page() {
         <Hero locale="de" />
         <Services locale="de" />
         <MoraIntro locale="de" />
+        <DashboardPreview locale="de" />
         <TrustProof locale="de" />
-        <Education locale="de" />
         <FAQ locale="de" />
         <ContactSection locale="de" />
         <MoraChat />

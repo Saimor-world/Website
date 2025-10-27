@@ -174,24 +174,44 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
             <div className="h-8 w-px bg-gradient-to-b from-transparent via-[#D4B483]/40 to-transparent" />
 
             {/* Desktop Quick Links */}
-            <div className="hidden md:flex items-center gap-3">
-              {navItems.slice(1, 3).map((item) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  className="relative px-3 py-1.5 text-sm text-white/90 hover:text-white rounded-lg transition-colors group"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="relative z-10">{item.label}</span>
-                  <motion.div
-                    className="absolute inset-0 bg-white/10 rounded-lg"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  />
-                </motion.a>
+            <div className="hidden lg:flex items-center gap-2">
+              {navItems.slice(1, 3).map((item, index) => (
+                <div key={item.href} className="flex items-center gap-2">
+                  <motion.a
+                    href={item.href}
+                    className="relative px-3 py-1.5 text-sm text-white/90 hover:text-white rounded-lg transition-colors group"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                    <motion.div
+                      className="absolute inset-0 bg-white/10 rounded-lg"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                    />
+                  </motion.a>
+                  {index < navItems.slice(1, 3).length - 1 && (
+                    <span className="text-[#D4B483]/30 text-xs">|</span>
+                  )}
+                </div>
               ))}
             </div>
+
+            {/* CTA Button - Desktop only */}
+            <motion.a
+              href="https://cal.com/saimor/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-[#D4B483] to-[#E6C897] shadow-lg hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>{locale === 'de' ? 'Gespräch buchen' : 'Book Call'}</span>
+            </motion.a>
 
             {/* Menu Button */}
             <motion.button

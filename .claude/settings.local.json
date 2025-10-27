@@ -29,7 +29,8 @@
       "Bash(for file in Hero.tsx Services.tsx TrustProof.tsx Education.tsx FAQ.tsx ContactSection.tsx)",
       "Bash(do echo \"=== $file ===\")",
       "Bash(done)",
-      "Bash(bash:*)"
+      "Bash(bash:*)",
+      "Bash(\")  \n✅ Prominenter CTA-Button \"Gespräch buchen\" im Header\n✅ Gold-Gradient Button mit Sparkles-Icon\n✅ Responsive: lg:flex für Links, md:flex für CTA\n\nDashboard-Preview Komponente (Option D):\n✅ Interaktives Tab-Widget (Nova/Horizon/Solara)\n✅ Animierte KPI-Cards mit Progress Bars\n✅ Trend-Indicators (up/down mit %)\n✅ Môra-Insight Button (aufklappbar)\n✅ Floating Môra Orb (pulsierend)\n✅ Live-Demo Feeling mit Framer Motion\n✅ Zweisprachig (DE/EN)\n✅ CTA zu /systems\n\nHomepage Cleanup:\n📍 Education von Startseite entfernt (→ eigene Seite geplant)\n📍 DashboardPreview nach MoraIntro platziert\n📍 Fokus auf Core-Angebote\n\nPerformance:\n⚡ Startseite bleibt bei 169 kB (keine Größenänderung)\n⚡ Build erfolgreich, nur ESLint warnings\n\nNächste Schritte:\n- Systems-Seite komplett neu mit Môra\n- Education-Unterseite\n- Hero Storytelling\n- Community-Sektion\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
