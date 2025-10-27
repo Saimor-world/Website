@@ -2,8 +2,8 @@ import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import MoraIntro from '@/components/MoraIntro';
 import DashboardPreview from '@/components/DashboardPreview';
+import SystemsSection from '@/components/SystemsSection';
 import TrustProof from '@/components/TrustProof';
-import Education from '@/components/Education';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import dynamic from 'next/dynamic';
@@ -39,6 +39,7 @@ export default function Page() {
         <Services locale="de" />
         <MoraIntro locale="de" />
         <DashboardPreview locale="de" />
+        <SystemsSection locale="de" />
         <TrustProof locale="de" />
         <FAQ locale="de" />
         <ContactSection locale="de" />

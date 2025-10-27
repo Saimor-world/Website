@@ -64,13 +64,21 @@ export default function MoraIntro({ locale }: MoraIntroProps) {
 
   return (
     <section className="relative py-24 overflow-hidden">
-      {/* Background gradient */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.03) 0%, rgba(212, 180, 131, 0.05) 100%)'
-        }}
-      />
+      {/* Unsplash background with overlay */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-5"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2560&auto=format&fit=crop')"
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.03) 0%, rgba(212, 180, 131, 0.05) 100%)'
+          }}
+        />
+      </div>
 
       {/* Ambient orbs */}
       <motion.div
@@ -121,15 +129,33 @@ export default function MoraIntro({ locale }: MoraIntroProps) {
 
         {/* Main content */}
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Animated Orb Avatar */}
+          {/* Left: Animated Orb Avatar - ENHANCED */}
           <motion.div
             className="relative flex items-center justify-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.8, rotateY: -180 }}
+            whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, type: 'spring' }}
+            transition={{ duration: 1.2, type: 'spring', stiffness: 80 }}
+            style={{ perspective: '1000px' }}
           >
-            {/* Outer glow rings */}
+            {/* Mega outer glow rings - multiple layers */}
+            <motion.div
+              className="absolute w-96 h-96 rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(212, 180, 131, 0.3) 0%, rgba(74, 103, 65, 0.15) 50%, transparent 70%)',
+                filter: 'blur(60px)'
+              }}
+              animate={{
+                scale: [1, 1.4, 1],
+                opacity: [0.2, 0.5, 0.2],
+                rotate: 360
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: 'linear'
+              }}
+            />
             <motion.div
               className="absolute w-80 h-80 rounded-full"
               style={{

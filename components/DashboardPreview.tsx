@@ -297,7 +297,7 @@ export default function DashboardPreview({ locale }: DashboardPreviewProps) {
           </motion.div>
         </motion.div>
 
-        {/* CTA */}
+        {/* CTA - Scroll to Systems section */}
         <motion.div
           className="text-center mt-12"
           initial={{ opacity: 0, y: 10 }}
@@ -305,15 +305,20 @@ export default function DashboardPreview({ locale }: DashboardPreviewProps) {
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          <motion.a
-            href="/systems"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483] shadow-xl hover:shadow-2xl transition-all"
+          <motion.button
+            onClick={() => {
+              const systemsSection = document.getElementById('systems');
+              if (systemsSection) {
+                systemsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483] shadow-xl hover:shadow-2xl transition-all cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             {content.cta}
             <ChevronRight className="w-5 h-5" />
-          </motion.a>
+          </motion.button>
           <p className="text-xs text-gray-500 mt-4 italic">{content.note}</p>
         </motion.div>
       </div>
