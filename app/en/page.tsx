@@ -4,11 +4,14 @@ import MoraShowcase from '@/components/MoraShowcase';
 import TrustProof from '@/components/TrustProof';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
+import CommunityBanner from '@/components/CommunityBanner';
+import WaitlistForm from '@/components/WaitlistForm';
 import dynamic from 'next/dynamic';
 
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const MoraChat = dynamic(() => import('@/components/MoraChat'), { ssr: false });
+const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 
 export const metadata = {
@@ -31,12 +34,15 @@ export default function Page() {
     <>
       <ScrollProgress />
       <EasterEggs />
+      <MoraAvatar locale="en" />
       <CookieBanner />
       <div>
         <Hero locale="en" />
         <Services locale="en" />
         <MoraShowcase locale="en" />
         <TrustProof locale="en" />
+        <CommunityBanner locale="en" />
+        <WaitlistForm locale="en" />
         <FAQ locale="en" />
         <ContactSection locale="en" />
         <MoraChat />

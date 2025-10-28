@@ -75,11 +75,14 @@ export default function Hero({
 
       {/* Unsplash Background with Overlay */}
       <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop')`,
-          }}
+        <Image
+          src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
+          alt="Natural forest background"
+          fill
+          className="object-cover"
+          quality={85}
+          priority={false}
+          sizes="100vw"
         />
 
         {/* Green Gradient Overlay for Integration */}

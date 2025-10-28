@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Sparkles, TrendingUp, Users, Target, BarChart3, MessageSquare, Send, Loader2, CheckCircle2, ChevronRight, Zap, DollarSign } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -16,7 +16,7 @@ interface BusinessKPIs {
   budgetEfficiency: number;
 }
 
-export default function MoraShowcase({ locale }: MoraShowcaseProps) {
+const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
   const [kpis, setKpis] = useState<BusinessKPIs>({
     teamProductivity: 87,
     projectProgress: 73,
@@ -197,12 +197,14 @@ export default function MoraShowcase({ locale }: MoraShowcaseProps) {
     <section id="mora-showcase" className="relative py-24 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.04]"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop')"
-          }}
-        />
+        <div className="absolute inset-0 opacity-[0.04]">
+          <img
+            src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop"
+            alt=""
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
+        </div>
         <motion.div
           className="absolute inset-0"
           animate={{
@@ -593,4 +595,6 @@ export default function MoraShowcase({ locale }: MoraShowcaseProps) {
       </div>
     </section>
   );
-}
+});
+
+export default MoraShowcase;

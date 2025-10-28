@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { memo } from 'react';
 
 type Props = { locale: 'de' | 'en' };
 
-export default function Services({ locale }: Props) {
+const Services = memo(function Services({ locale }: Props) {
   const t = (de: string, en: string) => (locale === 'de' ? de : en);
 
   const items = [
@@ -211,4 +212,6 @@ export default function Services({ locale }: Props) {
       </div>
     </section>
   );
-}
+});
+
+export default Services;
