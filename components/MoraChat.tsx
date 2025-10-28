@@ -61,6 +61,13 @@ export default function MoraChat() {
     }
   }, [isOpen, messages.length]);
 
+  // Listen for open event from MoraShowcase
+  useEffect(() => {
+    const handleOpenChat = () => setIsOpen(true);
+    window.addEventListener('openMoraChat', handleOpenChat);
+    return () => window.removeEventListener('openMoraChat', handleOpenChat);
+  }, []);
+
   const sendMessage = async (text: string = input.trim()) => {
     if (!text || isLoading) return;
 
