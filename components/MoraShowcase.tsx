@@ -128,7 +128,7 @@ export default function MoraShowcase({ locale }: MoraShowcaseProps) {
     setShowSuccess(false);
     const startTime = Date.now();
 
-    // Animate KPIs (simulate analysis)
+    // Animate KPIs during analysis
     const interval = setInterval(() => {
       setKpis(prev => ({
         teamProductivity: Math.max(0, Math.min(100, prev.teamProductivity + (Math.random() - 0.5) * 3)),
@@ -138,48 +138,54 @@ export default function MoraShowcase({ locale }: MoraShowcaseProps) {
       }));
     }, 150);
 
-    try {
-      const response = await fetch('/api/mora', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: q,
-          context: 'business-demo',
-          locale
-        })
-      });
+    // Demo responses (kosteneffizient für Demo)
+    const demoResponses = locale === 'de' ? {
+      'team-produktivität': 'Basierend auf deinen aktuellen KPIs (87% Produktivität) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
+      'budget': 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Mit Systems Dashboard hast du alle Zahlen im Blick.',
+      'projekt': 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+      'default': 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
+    } : {
+      'team-productivity': 'Based on your current KPIs (87% productivity), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
+      'budget': 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. With Systems Dashboard, you have all numbers at a glance.',
+      'project': 'Project progress: 73%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
+      'default': 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
+    };
 
-      const data = await response.json();
-      const endTime = Date.now();
-      const duration = ((endTime - startTime) / 1000).toFixed(1);
+    // Match question to response
+    const qLower = q.toLowerCase();
+    let response = demoResponses.default;
 
-      setMoraResponse(data.response || data.message || 'Ich bin bereit, deine Business-Fragen zu beantworten!');
-      setResponseTime(parseFloat(duration));
-      setShowSuccess(true);
-
-      // Final KPI adjustment based on response
-      setTimeout(() => {
-        clearInterval(interval);
-        setKpis({
-          teamProductivity: 89,
-          projectProgress: 76,
-          employeeSatisfaction: 4.3,
-          budgetEfficiency: 92
-        });
-      }, 200);
-
-    } catch (error) {
-      console.error('Môra error:', error);
-      clearInterval(interval);
-      setMoraResponse(locale === 'de'
-        ? 'Ich bin Môra, deine KI-Begleiterin. Buche einen Call, um mich vollständig zu erleben!'
-        : 'I\'m Môra, your AI companion. Book a call to experience my full capabilities!');
-      setResponseTime(0.8);
-      setShowSuccess(true);
-    } finally {
-      setIsAsking(false);
-      setUserQuestion('');
+    if (qLower.includes('produktiv') || qLower.includes('team') || qLower.includes('productiv')) {
+      response = demoResponses['team-produktivität'] || demoResponses['team-productivity'];
+    } else if (qLower.includes('budget') || qLower.includes('kosten') || qLower.includes('cost')) {
+      response = demoResponses['budget'];
+    } else if (qLower.includes('projekt') || qLower.includes('project') || qLower.includes('fortschritt') || qLower.includes('progress')) {
+      response = demoResponses['projekt'] || demoResponses['project'];
     }
+
+    // Simulate API delay (400-900ms)
+    await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 500));
+
+    const endTime = Date.now();
+    const duration = ((endTime - startTime) / 1000).toFixed(1);
+
+    setMoraResponse(response);
+    setResponseTime(parseFloat(duration));
+    setShowSuccess(true);
+
+    // Final KPI adjustment
+    setTimeout(() => {
+      clearInterval(interval);
+      setKpis({
+        teamProductivity: 89,
+        projectProgress: 76,
+        employeeSatisfaction: 4.3,
+        budgetEfficiency: 92
+      });
+    }, 200);
+
+    setIsAsking(false);
+    setUserQuestion('');
   };
 
   const openMoraChat = () => {
