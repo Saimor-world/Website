@@ -1,36 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc:*)",
-      "Bash(npm run lint)",
-      "mcp__ide__getDiagnostics",
-      "Bash(npm install:*)",
-      "Bash(npm run dev:*)",
+      "Read(//c/Users/mf4hr/saimor-core/**)",
       "Bash(git add:*)",
-      "Bash(git push:*)",
-      "Bash(git pull:*)",
-      "Bash(npm run build:*)",
-      "Read(//c/Users/mf4hr/OneDrive/Dokumente/Screenshots/**)",
       "Bash(git commit:*)",
-      "Bash(mkdir:*)",
-      "Bash(curl:*)",
-      "Bash(git rm:*)",
-      "Bash(npx vercel env add:*)",
-      "Bash(echo:*)",
-      "Bash(npx vercel deploy:*)",
-      "Bash(npx vercel domains:*)",
-      "Bash(npx vercel link:*)",
-      "Bash(npx vercel remove:*)",
-      "Bash(npm start)",
-      "WebFetch(domain:website-4aj9apibx-marius-projects-20aa51eb.vercel.app)",
-      "Bash(npx vercel:*)",
-      "Bash(pkill:*)",
-      "WebFetch(domain:api.saimor.world)",
-      "Bash(for file in Hero.tsx Services.tsx TrustProof.tsx Education.tsx FAQ.tsx ContactSection.tsx)",
-      "Bash(do echo \"=== $file ===\")",
-      "Bash(done)",
-      "Bash(bash:*)",
-      "Bash(\")  \n✅ Prominenter CTA-Button \"Gespräch buchen\" im Header\n✅ Gold-Gradient Button mit Sparkles-Icon\n✅ Responsive: lg:flex für Links, md:flex für CTA\n\nDashboard-Preview Komponente (Option D):\n✅ Interaktives Tab-Widget (Nova/Horizon/Solara)\n✅ Animierte KPI-Cards mit Progress Bars\n✅ Trend-Indicators (up/down mit %)\n✅ Môra-Insight Button (aufklappbar)\n✅ Floating Môra Orb (pulsierend)\n✅ Live-Demo Feeling mit Framer Motion\n✅ Zweisprachig (DE/EN)\n✅ CTA zu /systems\n\nHomepage Cleanup:\n📍 Education von Startseite entfernt (→ eigene Seite geplant)\n📍 DashboardPreview nach MoraIntro platziert\n📍 Fokus auf Core-Angebote\n\nPerformance:\n⚡ Startseite bleibt bei 169 kB (keine Größenänderung)\n⚡ Build erfolgreich, nur ESLint warnings\n\nNächste Schritte:\n- Systems-Seite komplett neu mit Môra\n- Education-Unterseite\n- Hero Storytelling\n- Community-Sektion\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
