@@ -12,7 +12,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showInfoPopup, setShowInfoPopup] = useState(false);
 
   // Hydration fix: only run client-side code after mount
   useEffect(() => {
@@ -21,24 +21,42 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
   const content = {
     de: {
-      hover: 'Hey! Klick mich an 👋',
-      greeting: 'Hallo! Ich bin Môra',
+      hover: 'Klick mich! (Long-press für Menü)',
+      greeting: 'Hallo! Ich bin Môra 🌱',
       subtitle: 'Deine KI-Begleiterin für Klarheit',
+      infoTitle: 'Môra erwacht bald!',
+      infoText: 'Ich bin deine KI-Assistentin für Business-Klarheit. Gerade lerne ich noch im Backend (85% fertig). Bald kann ich dir helfen mit:',
+      infoFeatures: [
+        '📊 Echtzeit-Analysen deiner Business-Daten',
+        '🎯 Klare Antworten statt Datenflut',
+        '🔐 DSGVO-konform, EU-Hosting',
+        '🌀 Cross-Channel (Web, Voice, Dashboard)'
+      ],
+      infoCTA: 'Komm auf die Warteliste',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 Chat starten',
+        chat: '💬 Über Môra',
         about: '📚 Über Saimôr',
         services: '🎯 Services',
         close: '✕ Schließen'
       }
     },
     en: {
-      hover: 'Hey! Click me 👋',
-      greeting: 'Hello! I\'m Môra',
+      hover: 'Click me! (Long-press for menu)',
+      greeting: 'Hello! I\'m Môra 🌱',
       subtitle: 'Your AI companion for clarity',
+      infoTitle: 'Môra is waking up soon!',
+      infoText: 'I\'m your AI assistant for business clarity. Currently learning in the backend (85% ready). Soon I can help you with:',
+      infoFeatures: [
+        '📊 Real-time analysis of your business data',
+        '🎯 Clear answers instead of data overload',
+        '🔐 GDPR-compliant, EU hosting',
+        '🌀 Cross-channel (Web, Voice, Dashboard)'
+      ],
+      infoCTA: 'Join the waitlist',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 Start chat',
+        chat: '💬 About Môra',
         about: '📚 About Saimôr',
         services: '🎯 Services',
         close: '✕ Close'
@@ -86,15 +104,15 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   const eyePos = calculateEyePosition();
 
   const handleClick = () => {
-    // Scroll to waitlist
-    window.location.hash = '#waitlist';
+    // Open info popup
+    setShowInfoPopup(true);
     setShowQuickActions(false);
   };
 
   const handleQuickAction = (action: string) => {
     switch (action) {
       case 'chat':
-        window.location.hash = '#waitlist';
+        setShowInfoPopup(true);
         break;
       case 'about':
         window.location.hash = '#angebot';
@@ -229,6 +247,123 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                   {content.hover}
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a1f16] rotate-45 border-r border-b border-[#D4B483]/20" />
                 </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Info Popup */}
+          <AnimatePresence>
+            {showInfoPopup && (
+              <motion.div
+                className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowInfoPopup(false)}
+              >
+                {/* Backdrop */}
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+                {/* Popup */}
+                <motion.div
+                  className="relative bg-gradient-to-br from-white to-[#F8F5F0] rounded-3xl shadow-2xl max-w-md w-full border-2 border-[#D4B483]/30 overflow-hidden"
+                  initial={{ scale: 0.8, y: 50 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.8, y: 50 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Header with Môra */}
+                  <div className="relative bg-gradient-to-br from-[#4A6741] to-[#D4B483] p-8 text-white text-center overflow-hidden">
+                    {/* Animated sparkles */}
+                    <motion.div
+                      className="absolute top-4 right-4"
+                      animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      <Sparkles className="w-6 h-6" />
+                    </motion.div>
+
+                    <motion.div
+                      className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center"
+                      style={{ background: 'rgba(255,255,255,0.2)' }}
+                      animate={{ rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                    >
+                      {/* Môra Face */}
+                      <div className="relative">
+                        <div className="flex gap-3">
+                          <div className="w-3 h-4 bg-white rounded-full" />
+                          <div className="w-3 h-4 bg-white rounded-full" />
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                      {content.infoTitle}
+                    </h3>
+                    <p className="text-white/90 text-sm">
+                      {content.infoText}
+                    </p>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="space-y-3 mb-6">
+                      {content.infoFeatures.map((feature, i) => (
+                        <motion.div
+                          key={i}
+                          className="flex items-start gap-3 text-sm text-slate-700"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          <span className="text-lg">{feature.split(' ')[0]}</span>
+                          <span>{feature.substring(feature.indexOf(' ') + 1)}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Progress */}
+                    <div className="bg-[#4A6741]/10 rounded-xl p-4 mb-6">
+                      <div className="flex justify-between text-xs mb-2 text-slate-600">
+                        <span>Backend</span>
+                        <span>85%</span>
+                      </div>
+                      <div className="w-full bg-white rounded-full h-2 overflow-hidden">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-[#4A6741] to-[#D4B483]"
+                          initial={{ width: 0 }}
+                          animate={{ width: '85%' }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* CTA */}
+                    <motion.button
+                      onClick={() => {
+                        setShowInfoPopup(false);
+                        setTimeout(() => window.location.hash = '#waitlist', 300);
+                      }}
+                      className="w-full py-4 rounded-2xl font-bold text-white shadow-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                      }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {content.infoCTA}
+                    </motion.button>
+                  </div>
+
+                  {/* Close button */}
+                  <button
+                    onClick={() => setShowInfoPopup(false)}
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition"
+                  >
+                    <X size={16} />
+                  </button>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
