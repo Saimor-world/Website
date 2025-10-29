@@ -154,7 +154,7 @@ export default function JungleElements() {
           return (
             <motion.circle
               key={particle.id}
-              r={radius}
+              r={radius || 7.5}
               fill={particle.color || '#D4B483'}
               opacity={0.8}
               filter="url(#glow)"
