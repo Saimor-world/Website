@@ -18,12 +18,20 @@ interface Particle {
 }
 
 export default function EasterEggs() {
+  // Hydration fix: only run client-side code after mount
+  const [mounted, setMounted] = useState(false);
+
   // Achievement System
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
   const [showAchievementMenu, setShowAchievementMenu] = useState(false);
   const [secretMenuSequence, setSecretMenuSequence] = useState<string[]>([]);
   const achievementManager = useRef(getAchievementManager());
+
+  // Mount detection
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Easter Egg States
   const [konamiActivated, setKonamiActivated] = useState(false);
@@ -66,6 +74,8 @@ export default function EasterEggs() {
 
   // === KONAMI CODE & SECRET WORDS ===
   useEffect(() => {
+    if (!mounted) return;
+
     const handleKeyPress = (e: KeyboardEvent) => {
       // Konami Code
       const newSequence = [...konamiSequence, e.key].slice(-konamiCode.length);
@@ -103,10 +113,12 @@ export default function EasterEggs() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [konamiSequence, typedChars, secretMenuSequence]);
+  }, [mounted, konamiSequence, typedChars, secretMenuSequence]);
 
   // === TRIPLE CLICK ===
   useEffect(() => {
+    if (!mounted) return;
+
     const handleClick = (e: MouseEvent) => {
       const now = Date.now();
       const newClickTimes = [...clickTimes, now].slice(-5);
@@ -134,10 +146,12 @@ export default function EasterEggs() {
 
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
-  }, [clickTimes]);
+  }, [mounted, clickTimes]);
 
   // === SHAKE DETECTION ===
   useEffect(() => {
+    if (!mounted) return;
+
     let shakeTimeout: NodeJS.Timeout;
     let lastX = 0, lastY = 0, lastZ = 0;
 
@@ -171,12 +185,11 @@ export default function EasterEggs() {
       window.removeEventListener('devicemotion', handleDeviceMotion);
       clearTimeout(shakeTimeout);
     };
-  }, []);
+  }, [mounted]);
 
   // === TIME-BASED ACHIEVEMENTS (Nachteule/Frühaufsteher) ===
   useEffect(() => {
-    // Client-only check to prevent hydration mismatch
-    if (typeof window === 'undefined') return;
+    if (!mounted) return;
 
     const checkTimeAchievements = () => {
       const hour = new Date().getHours();
@@ -203,11 +216,11 @@ export default function EasterEggs() {
     // Run after hydration
     const timer = setTimeout(checkTimeAchievements, 1000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [mounted]);
 
   // === LOGO-CLICK TRACKING ===
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!mounted) return;
 
     let clickCount = 0;
     let resetTimer: NodeJS.Timeout;
@@ -235,11 +248,11 @@ export default function EasterEggs() {
       window.removeEventListener('saimor-logo-click', handleLogoClick);
       clearTimeout(resetTimer);
     };
-  }, []); // No dependencies - use local counter
+  }, [mounted]);
 
   // === SCROLL TRACKING ===
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!mounted) return;
 
     let hasUnlocked = false;
 
@@ -262,11 +275,11 @@ export default function EasterEggs() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // No dependencies - use local flag
+  }, [mounted]);
 
   // === DURATION TRACKING (5 Minuten) ===
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!mounted) return;
 
     const timer = setTimeout(() => {
       unlockAchievement('patient-visitor');
@@ -278,7 +291,7 @@ export default function EasterEggs() {
     }, 5 * 60 * 1000); // 5 Minuten
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [mounted]);
 
   // === ACTIVATION FUNCTIONS ===
 
@@ -426,6 +439,8 @@ export default function EasterEggs() {
 
   // Inject animations
   useEffect(() => {
+    if (!mounted) return;
+
     const style = document.createElement('style');
     style.id = 'easter-egg-animations';
     style.textContent = `
@@ -443,7 +458,7 @@ export default function EasterEggs() {
     if (!document.getElementById('easter-egg-animations')) {
       document.head.appendChild(style);
     }
-  }, []);
+  }, [mounted]);
 
   // Animate particles
   useEffect(() => {

@@ -8,10 +8,16 @@ interface MoraAvatarProps {
 }
 
 export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
+  const [mounted, setMounted] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
+  // Hydration fix: only run client-side code after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const content = {
     de: {
@@ -42,12 +48,14 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
   // Track mouse for eye movement
   useEffect(() => {
+    if (!mounted) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [mounted]);
 
   // Calculate eye rotation based on mouse position
   const calculateEyePosition = useCallback(() => {

@@ -4,17 +4,25 @@ import { useState, useEffect } from 'react';
 import { Cookie, Shield, X } from 'lucide-react';
 
 export default function CookieBanner() {
+  const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
+  // Hydration fix: only run client-side code after mount
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     // Check if user already accepted/rejected cookies
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
       // Show banner after 2 seconds
       setTimeout(() => setIsVisible(true), 2000);
     }
-  }, []);
+  }, [mounted]);
 
   const acceptAll = () => {
     localStorage.setItem('cookie_consent', 'all');
