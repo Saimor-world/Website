@@ -8,7 +8,7 @@
 
 ## 🚨 KRITISCH - Production Errors (JETZT)
 
-### **Problem 1: React Hydration Errors (#418, #423)**
+### **Problem 1: React Hydration Errors (#418, #423)** ✅ FIXED
 
 **Fehler:**
 ```
@@ -18,21 +18,22 @@ Uncaught Error: Minified React error #423
 
 **Ursache:**
 - Client/Server Render-Mismatch
-- Wahrscheinlich in client-only Components mit window/document Access
+- client-only Components mit window/document Access
 
-**Betroffene Components (Vermutung):**
-- EasterEggs.tsx (window access, localStorage)
-- MoraAvatar.tsx (window.addEventListener)
-- DataJungle.tsx (window access)
+**Betroffene Components:**
 - CookieBanner.tsx (localStorage)
+- MoraAvatar.tsx (window.addEventListener)
+- EasterEggs.tsx (alle window/document Hooks)
+- DataJungle.tsx (nicht betroffen)
 
-**Fix-Strategie:**
-1. ✅ Alle `useEffect` mit window/document wrappen
-2. ✅ Initial State auf `null` setzen, dann in useEffect füllen
-3. ✅ Conditional Rendering: `{mounted && <Component />}`
+**Fix (commit debb90b):**
+1. ✅ Mounted State Pattern implementiert
+2. ✅ Alle useEffect mit `if (!mounted) return` geschützt
+3. ✅ window/document nur nach Client-Mount
 
-**Aufwand:** 30-45 Min
-**Priorität:** 🔥 KRITISCH
+**Aufwand:** 45 Min (erledigt)
+**Status:** ✅ Committed, pushed, deploying
+**Priorität:** 🔥 KRITISCH → ERLEDIGT
 
 ---
 
@@ -60,7 +61,7 @@ There is a problem with the server configuration
 
 ---
 
-### **Problem 3: SVG Circle Error**
+### **Problem 3: SVG Circle Error** ✅ FIXED
 
 **Fehler:**
 ```
@@ -68,15 +69,18 @@ Error: <circle> attribute r: Expected length, "undefined"
 ```
 
 **Ursache:**
-- Irgendwo ein dynamischer radius-Wert = undefined
-- Wahrscheinlich in Services.tsx Orbit-Decoration
+- JungleElements.tsx:157 - dynamischer radius konnte undefined werden
+- Fallback vorhanden, aber nicht bulletproof
 
-**Fix:**
-- Default-Wert für radius setzen
-- Optional chaining verwenden
+**Fix (commit 1860337):**
+```typescript
+// Vorher: r={radius}
+// Nachher: r={radius || 7.5}
+```
 
-**Aufwand:** 10 Min
-**Priorität:** ⚠️ Mittel (nicht blockierend)
+**Aufwand:** 10 Min (erledigt)
+**Status:** ✅ Committed, pushed, deploying
+**Priorität:** ⚠️ Mittel → ERLEDIGT
 
 ---
 
@@ -257,14 +261,14 @@ GET {CORE_URL}/v1/session/{id}
 
 ## 🎯 ZEITPLAN & PRIORITÄTEN
 
-### **HEUTE (28.10, Abend):**
+### **HEUTE (29.10, Mittag):**
 
-**Phase 1: Production Fixes (1-2h)**
-- [ ] React Hydration Errors fixen
-- [ ] NextAuth Check (Marius: Vercel ENV setzen)
-- [ ] SVG Circle Error fixen
-- [ ] Build & Deploy
-- [ ] Production testen
+**Phase 1: Production Fixes (1-2h)** ✅ ERLEDIGT
+- [x] React Hydration Errors fixen (commit debb90b)
+- [ ] NextAuth Check (⏳ wartet auf Marius: Vercel ENV setzen)
+- [x] SVG Circle Error fixen (commit 1860337)
+- [x] Build & Deploy (Vercel deploying)
+- [ ] Production testen (⏳ nach Vercel deployment)
 
 **Phase 2: n8n Webhook (30 Min)**
 - [ ] Webhook URL klären (Backend-Claude #3 / Marius)
