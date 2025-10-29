@@ -86,16 +86,15 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   const eyePos = calculateEyePosition();
 
   const handleClick = () => {
-    // Open MoraChat
-    const event = new CustomEvent('openMoraChat');
-    window.dispatchEvent(event);
+    // Scroll to waitlist
+    window.location.hash = '#waitlist';
     setShowQuickActions(false);
   };
 
   const handleQuickAction = (action: string) => {
     switch (action) {
       case 'chat':
-        handleClick();
+        window.location.hash = '#waitlist';
         break;
       case 'about':
         window.location.hash = '#angebot';

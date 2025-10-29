@@ -66,7 +66,7 @@ export default function JungleElements() {
   return (
     <div
       className="absolute inset-0 pointer-events-none overflow-hidden"
-      style={{ zIndex: 5, mixBlendMode: 'soft-light' }}
+      style={{ zIndex: 5 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -75,7 +75,7 @@ export default function JungleElements() {
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 500 900"
         preserveAspectRatio="xMidYMid slice"
-        style={{ opacity: isHovered ? 0.5 : 0.35 }}
+        style={{ opacity: isHovered ? 0.8 : 0.6 }}
       >
         <defs>
           {/* Gradient for lianas */}
