@@ -44,7 +44,6 @@ export default function Page() {
         <WaitlistForm locale="de" />
         <FAQ locale="de" />
         <ContactSection locale="de" />
-        <MoraChat />
       </div>
     </>
   )
