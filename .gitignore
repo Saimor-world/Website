@@ -17,3 +17,16 @@ Thumbs.db
 # Package manager locks (only npm)
 pnpm-lock.yaml
 yarn.lock
+.opencode/
+.cache/
+node_modules/
+.env.local
+.env
+.DS_Store
+
+.opencode/
+.cache/
+node_modules/
+.env.local
+.env
+.DS_Store
