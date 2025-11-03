@@ -12,6 +12,7 @@ const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ss
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
+const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
 
 export const metadata = {
   title: 'Saimôr – Klarheit im Wandel',
@@ -31,11 +32,12 @@ export const metadata = {
 export default function Page() {
   return (
     <>
+      <MyceliumNetwork />
       <ScrollProgress />
       <EasterEggs />
       <MoraAvatar locale="de" />
       <CookieBanner />
-      <div>
+      <div className="relative z-10">
         <HeroNew locale="de" />
         <Services locale="de" />
         <MoraShowcase locale="de" />

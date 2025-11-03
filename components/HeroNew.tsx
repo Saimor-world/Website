@@ -1,7 +1,7 @@
 'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Sparkles } from 'lucide-react';
 
 type Locale = 'de' | 'en';
 
@@ -13,17 +13,19 @@ export default function HeroNew({ locale }: Props) {
   const content = {
     de: {
       headline: 'Klarheit im Wandel',
-      subline: 'KI-gestützte Begleitung für Business-Entscheidungen',
-      description: 'Saimôr verbindet menschliche Tiefe mit technischer Präzision. Môra, deine KI-Assistentin, navigiert mit dir durch Datenflut zur klaren Handlung.',
-      cta: 'Early Access sichern',
-      scroll: 'Entdecken'
+      subline: 'Môra begleitet dich durch Komplexität',
+      description: 'Deine KI-Begleiterin verbindet menschliche Tiefe mit technischer Präzision – navigiert mit dir durch Datenflut zur klaren Handlung.',
+      cta: 'Môra kennenlernen',
+      scroll: 'Entdecken',
+      badge: 'Môra Backend 85% ⋅ Jetzt verfügbar'
     },
     en: {
       headline: 'Clarity in Transformation',
-      subline: 'AI-powered guidance for business decisions',
-      description: 'Saimôr connects human depth with technical precision. Môra, your AI assistant, navigates with you through data overload to clear action.',
-      cta: 'Get Early Access',
-      scroll: 'Discover'
+      subline: 'Môra guides you through complexity',
+      description: 'Your AI companion combines human depth with technical precision – navigates with you through data overload to clear action.',
+      cta: 'Meet Môra',
+      scroll: 'Discover',
+      badge: 'Môra Backend 85% ⋅ Available Now'
     }
   }[locale];
 
@@ -41,140 +43,205 @@ export default function HeroNew({ locale }: Props) {
       ref={ref}
       className="relative overflow-hidden min-h-screen flex items-center justify-center"
       style={{
-        background: 'linear-gradient(180deg, #0A1612 0%, #1A2E26 50%, #0A1612 100%)'
+        background: 'linear-gradient(180deg, rgba(10, 22, 18, 0.98) 0%, rgba(15, 30, 24, 0.95) 25%, rgba(26, 46, 38, 0.92) 50%, rgba(15, 30, 24, 0.95) 75%, rgba(10, 22, 18, 0.98) 100%)',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2560&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'multiply'
       }}
     >
-      {/* Animated Orbs Background */}
+      {/* Animated Mycelium Orbs */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
             style={{
-              width: 300 + i * 100,
-              height: 300 + i * 100,
-              background: `radial-gradient(circle, rgba(212, 180, 131, ${0.08 - i * 0.015}) 0%, transparent 70%)`,
-              left: `${20 + i * 15}%`,
-              top: `${10 + i * 20}%`,
-              filter: 'blur(60px)'
+              width: 250 + i * 80,
+              height: 250 + i * 80,
+              background: `radial-gradient(circle, rgba(212, 180, 131, ${0.12 - i * 0.018}) 0%, rgba(139, 181, 129, ${0.08 - i * 0.012}) 50%, transparent 70%)`,
+              left: `${15 + i * 12}%`,
+              top: `${5 + i * 15}%`,
+              filter: 'blur(50px)',
+              border: `1px solid rgba(212, 180, 131, ${0.1 - i * 0.015})`,
             }}
             animate={{
-              x: [0, 30, 0],
-              y: [0, -40, 0],
-              scale: [1, 1.1, 1],
+              x: [0, 40 + i * 10, 0],
+              y: [0, -50 + i * 8, 0],
+              scale: [1, 1.15, 1],
+              opacity: [0.6, 0.8, 0.6]
             }}
             transition={{
-              duration: 15 + i * 2,
+              duration: 18 + i * 3,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.5
+              delay: i * 0.8
             }}
           />
         ))}
       </div>
 
-      {/* Content */}
+      {/* Liquid Glass Content Container */}
       <motion.div
-        className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+        className="relative z-10 max-w-6xl mx-auto px-6 text-center"
         style={{ opacity, scale }}
       >
-        {/* Badge */}
+        {/* Badge with Glassmorphism */}
         <motion.div
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 border border-[#D4B483]/30"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full mb-8 backdrop-blur-xl"
           style={{
-            background: 'rgba(212, 180, 131, 0.08)',
-            backdropFilter: 'blur(10px)'
+            background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+            border: '1px solid rgba(212, 180, 131, 0.3)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
           }}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="w-2 h-2 rounded-full bg-[#D4B483] animate-pulse" />
-          <span className="text-sm text-[#D4B483] font-medium">
-            {locale === 'de' ? 'Môra Backend 85% ⋅ Early Access' : 'Môra Backend 85% ⋅ Early Access'}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360]
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            <Sparkles className="w-4 h-4 text-[#D4B483]" />
+          </motion.div>
+          <span className="text-sm font-semibold text-[#E6C897]">
+            {content.badge}
           </span>
         </motion.div>
 
-        {/* Main Headline */}
+        {/* Main Headline - Massive Typography */}
         <motion.h1
-          className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight"
+          className="text-7xl md:text-8xl lg:text-9xl font-bold mb-6 leading-[0.9]"
           style={{
             fontFamily: 'Cormorant Garamond, serif',
-            background: 'linear-gradient(135deg, #FFFFFF 0%, #D4B483 50%, #FFFFFF 100%)',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #D4B483 25%, #8BB581 50%, #D4B483 75%, #FFFFFF 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            textShadow: '0 0 80px rgba(212, 180, 131, 0.3)'
+            backgroundSize: '200% 200%',
+            textShadow: '0 0 60px rgba(212, 180, 131, 0.3)'
           }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+          }}
+          transition={{
+            opacity: { duration: 1, delay: 0.4 },
+            y: { duration: 1, delay: 0.4 },
+            backgroundPosition: { duration: 8, repeat: Infinity, ease: "linear" }
+          }}
         >
           {content.headline}
         </motion.h1>
 
-        {/* Subline */}
+        {/* Subline with organic glow */}
         <motion.p
-          className="text-xl md:text-2xl text-[#D4B483]/90 mb-4 font-light tracking-wide"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          className="text-2xl md:text-3xl lg:text-4xl mb-8 font-medium"
+          style={{
+            color: '#8BB581',
+            textShadow: '0 0 30px rgba(139, 181, 129, 0.4)',
+            fontFamily: 'Cormorant Garamond, serif'
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
         >
           {content.subline}
         </motion.p>
 
-        {/* Description */}
-        <motion.p
-          className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          {content.description}
-        </motion.p>
-
-        {/* CTA */}
+        {/* Description in Liquid Glass Card */}
         <motion.div
-          className="flex flex-col items-center gap-8"
+          className="max-w-3xl mx-auto mb-12 p-6 rounded-3xl backdrop-blur-xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.05) 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(212, 180, 131, 0.1)'
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <motion.button
-            onClick={() => window.location.hash = '#waitlist'}
-            className="group relative px-12 py-5 rounded-full text-lg font-bold text-white overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
-              boxShadow: '0 10px 40px rgba(212, 180, 131, 0.3)'
-            }}
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 60px rgba(212, 180, 131, 0.5)' }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {/* Shine effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-              initial={{ x: '-100%' }}
-              animate={{ x: '200%' }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-            />
-            <span className="relative z-10">{content.cta}</span>
-          </motion.button>
-
-          {/* Scroll Indicator */}
-          <motion.button
-            onClick={() => document.getElementById('angebot')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center gap-2 text-white/60 hover:text-[#D4B483] transition-colors cursor-pointer group"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-sm font-medium">{content.scroll}</span>
-            <ChevronDown className="w-6 h-6 group-hover:scale-110 transition-transform" />
-          </motion.button>
+          <p className="text-lg md:text-xl text-gray-200 leading-relaxed">
+            {content.description}
+          </p>
         </motion.div>
+
+        {/* CTA with enhanced glassmorphism */}
+        <motion.button
+          onClick={() => window.location.hash = '#mora-showcase'}
+          className="group relative px-12 py-6 rounded-full text-lg font-bold text-white overflow-hidden backdrop-blur-xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(139, 181, 129, 0.85) 50%, rgba(74, 103, 65, 0.9) 100%)',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 20px 60px rgba(212, 180, 131, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.3)'
+          }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 1 }}
+          whileHover={{
+            scale: 1.08,
+            boxShadow: '0 30px 80px rgba(212, 180, 131, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 2px rgba(212, 180, 131, 0.5)'
+          }}
+          whileTap={{ scale: 0.96 }}
+        >
+          {/* Animated shine effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            initial={{ x: '-200%' }}
+            animate={{ x: '200%' }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+          />
+
+          {/* Glowing border animation */}
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)'
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          />
+
+          <span className="relative z-10 flex items-center gap-3">
+            <Sparkles className="w-5 h-5" />
+            {content.cta}
+          </span>
+        </motion.button>
       </motion.div>
 
-      {/* Gradient fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/5 to-transparent pointer-events-none" />
+      {/* Scroll Indicator with organic animation */}
+      <motion.div
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+          });
+        }}
+      >
+        <span className="text-sm text-gray-400 font-medium">{content.scroll}</span>
+        <motion.div
+          animate={{
+            y: [0, 10, 0]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <ChevronDown className="w-6 h-6 text-[#8BB581]" style={{
+            filter: 'drop-shadow(0 0 8px rgba(139, 181, 129, 0.6))'
+          }} />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

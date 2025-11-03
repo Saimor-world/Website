@@ -9,7 +9,8 @@
       "WebFetch(domain:orange.studio)",
       "WebFetch(domain:igloo.inc)",
       "WebFetch(domain:epiminds.com)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
