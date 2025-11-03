@@ -10,7 +10,8 @@
       "WebFetch(domain:igloo.inc)",
       "WebFetch(domain:epiminds.com)",
       "Bash(git push:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(components/Services.tsx.old)"
     ],
     "deny": [],
     "ask": []

@@ -1,4 +1,4 @@
-import HeroNew from '@/components/HeroNew';
+import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import MoraShowcase from '@/components/MoraShowcase';
 import TrustProof from '@/components/TrustProof';
@@ -38,7 +38,7 @@ export default function Page() {
       <MoraAvatar locale="en" />
       <CookieBanner />
       <div className="relative z-10">
-        <HeroNew locale="en" />
+        <Hero locale="en" />
         <Services locale="en" />
         <MoraShowcase locale="en" />
         <TrustProof locale="en" />
