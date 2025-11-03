@@ -8,7 +8,8 @@
       "Bash(npm run build)",
       "WebFetch(domain:orange.studio)",
       "WebFetch(domain:igloo.inc)",
-      "WebFetch(domain:epiminds.com)"
+      "WebFetch(domain:epiminds.com)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

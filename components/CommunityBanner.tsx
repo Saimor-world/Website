@@ -43,7 +43,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   }[locale];
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-20 sm:py-24 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#4A6741]/5 via-[#D4B483]/10 to-[#4A6741]/5" />
 

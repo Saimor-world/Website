@@ -71,7 +71,7 @@ const Services = memo(function Services({ locale }: Props) {
   ];
 
   return (
-    <section id="angebot" className="py-16 sm:py-20 relative overflow-hidden">
+    <section id="angebot" className="py-20 sm:py-24 relative overflow-hidden">
       {/* Organic background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
@@ -90,19 +90,24 @@ const Services = memo(function Services({ locale }: Props) {
         />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6">
-        <h2
-          className="text-[26px] md:text-[30px] font-medium mb-8"
-          style={{
-            fontFamily: 'Cormorant Garamond, serif',
-            background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}
-        >
-          {t('Angebot', 'Offering')}
-        </h2>
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="text-center mb-16">
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+            style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%, #E6C897 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}
+          >
+            {t('Angebot', 'Offering')}
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            {t('Klarheit im Wandel – mit menschlicher Tiefe & technischer Präzision.', 'Clarity in transformation – with human depth & technical precision.')}
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {items.map((it, index) => {
