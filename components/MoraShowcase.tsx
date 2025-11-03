@@ -194,7 +194,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
   };
 
   return (
-    <section id="mora-showcase" className="relative py-24 overflow-hidden">
+    <section id="mora-showcase" className="relative py-20 sm:py-24 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-[0.04]">

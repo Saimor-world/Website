@@ -101,7 +101,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   };
 
   return (
-    <section id="waitlist" className="relative py-20">
+    <section id="waitlist" className="relative py-20 sm:py-24">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
           className="bg-white rounded-3xl shadow-2xl border-2 border-[#D4B483]/30 overflow-hidden"
