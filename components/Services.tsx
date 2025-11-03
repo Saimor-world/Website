@@ -8,14 +8,30 @@ const Services = memo(function Services({ locale }: Props) {
 
   const items = [
     {
+      key: 'mora',
+      title: t('Môra', 'Môra'),
+      subtitle: t('KI-Assistentin für Business-Klarheit', 'AI Assistant for Business Clarity'),
+      desc: t('Deine persönliche KI-Begleiterin navigiert mit dir durch Komplexität zur klaren Handlung – über Dashboard, Web & Voice.', 'Your personal AI companion navigates with you through complexity to clear action – via Dashboard, Web & Voice.'),
+      benefits: [
+        t('Cross-Channel: Dashboard, Web-Chat & Voice', 'Cross-Channel: Dashboard, Web Chat & Voice'),
+        t('Real-time KPI-Insights mit Handlungsempfehlungen', 'Real-time KPI insights with action recommendations'),
+        t('Backend 85% fertig – Early Access verfügbar', 'Backend 85% ready – Early Access available')
+      ],
+      href: '#waitlist',
+      cta: t('Early Access sichern', 'Get Early Access'),
+      secondaryCta: t('Mehr über Môra', 'Learn about Môra'),
+      secondaryHref: '#mora-showcase',
+      featured: true,
+    },
+    {
       key: 'orbit',
       title: t('Orbit', 'Orbit'),
-      subtitle: t('Selbstorganisation & Coaching', 'Self-organization & Coaching'),
-      desc: t('Persönliche Klarheit und nachhaltige Strukturen für Einzelne und Teams.', 'Personal clarity and sustainable structures for individuals and teams.'),
+      subtitle: t('Rhythmus statt Meetings', 'Rhythm instead of Meetings'),
+      desc: t('Systematische Begleitung für wiederkehrende Transformation. Regelmäßige Orientierung statt Meeting-Overload.', 'Systematic guidance for recurring transformation. Regular orientation instead of meeting overload.'),
       benefits: [
-        t('Regelmäßiger Rhythmus statt Meeting-Chaos', 'Regular rhythm instead of meeting chaos'),
-        t('Nachhaltige Veränderung in 3-6 Monaten', 'Sustainable change in 3-6 months'),
-        t('Individuelle + Team-Klarheit kombiniert', 'Individual + team clarity combined')
+        t('Verlässlicher Resonanzraum für Entscheidungen', 'Reliable resonance space for decisions'),
+        t('Tiefe statt Hektik – nachhaltige Veränderung', 'Depth instead of rush – sustainable change'),
+        t('1-6 Monate Begleitung im klaren Takt', '1-6 months guidance in clear rhythm')
       ],
       href: '/orbit',
       cta: t('Mehr erfahren', 'Learn more'),
@@ -25,31 +41,31 @@ const Services = memo(function Services({ locale }: Props) {
     {
       key: 'pulse',
       title: t('Pulse', 'Pulse'),
-      subtitle: t('Workshops & Impulsformate', 'Workshops & Impulse Formats'),
-      desc: t('Gemeinsam Klarheit im Wandel erzeugen und Menschen in Veränderungen mitnehmen.', 'Create clarity in change together and bring people along in transformations.'),
+      subtitle: t('Impulse für Klarheit im Moment', 'Impulses for Clarity in the Moment'),
+      desc: t('Gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Klarheit genau dort, wo sie gebraucht wird.', 'Targeted impulse formats: Workshops, keynotes or silent spaces. Clarity exactly where it is needed.'),
       benefits: [
-        t('Sofortige Klarheit in 3h Workshops', 'Immediate clarity in 3h workshops'),
-        t('Alle Stimmen gehört, konkrete Schritte definiert', 'All voices heard, concrete steps defined'),
-        t('Formate: Keynotes (30min) bis Deep Dives (90min)', 'Formats: Keynotes (30min) to deep dives (90min)')
+        t('Energie & Fokus in Veränderungssituationen', 'Energy & focus in change situations'),
+        t('Punktuelle Klärung statt Dauerbelastung', 'Targeted clarification instead of ongoing strain'),
+        t('Workshop (3h) · Keynote (45min) · Stilles Format (90min)', 'Workshop (3h) · Keynote (45min) · Silent format (90min)')
       ],
       href: '/pulse',
       cta: t('Mehr erfahren', 'Learn more'),
-      secondaryCta: t('Impulse entdecken', 'Discover impulses'),
+      secondaryCta: t('Pulse-Format anfragen', 'Request pulse format'),
       secondaryHref: 'https://cal.com/saimor/30min',
     },
     {
       key: 'systems',
       title: t('Systems', 'Systems'),
-      subtitle: t('Daten, Dashboards & KI', 'Data, Dashboards & AI'),
-      desc: t('Verständliche Datenlösungen, die Menschen befähigen statt überfordern.', 'Understandable data solutions that empower rather than overwhelm.'),
+      subtitle: t('Daten, die Klarheit schaffen', 'Data that Creates Clarity'),
+      desc: t('Dashboards & KI-Integration – immer menschenzentriert. Môra macht aus Daten verständliche Insights für Entscheidungen.', 'Dashboards & AI integration – always human-centered. Môra transforms data into understandable insights for decisions.'),
       benefits: [
-        t('Von Datenflut zu 3-12 klaren KPIs', 'From data flood to 3-12 clear KPIs'),
-        t('EU-Hosting, DSGVO-konform, keine Profile', 'EU hosting, GDPR-compliant, no profiles'),
-        t('Dashboard-Zugang in 2 Wochen', 'Dashboard access in 2 weeks')
+        t('3-12 KPIs statt Datenflut – aggregierte Insights', '3-12 KPIs instead of data flood – aggregated insights'),
+        t('EU-Hosting, DSGVO-Guardrails, keine Profile', 'EU hosting, GDPR guardrails, no profiles'),
+        t('Nova · Horizon · Solara Packages verfügbar', 'Nova · Horizon · Solara packages available')
       ],
       href: '/systems',
       cta: t('Mehr erfahren', 'Learn more'),
-      secondaryCta: t('Einblick erhalten', 'Get insights'),
+      secondaryCta: t('Einblick in Systems erhalten', 'Get insights into Systems'),
       secondaryHref: 'https://cal.com/saimor/30min',
     },
   ];
@@ -88,9 +104,10 @@ const Services = memo(function Services({ locale }: Props) {
           {t('Angebot', 'Offering')}
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {items.map((it, index) => {
             const gradientBackgrounds = [
+              'linear-gradient(135deg, rgba(212, 180, 131, 0.25) 0%, rgba(255, 215, 0, 0.15) 50%, rgba(212, 180, 131, 0.2) 100%)', // Môra - gold prominent (featured)
               'linear-gradient(135deg, rgba(74, 103, 65, 0.12) 0%, rgba(212, 180, 131, 0.15) 50%, rgba(93, 124, 84, 0.08) 100%)', // Orbit - green/gold
               'linear-gradient(135deg, rgba(212, 180, 131, 0.18) 0%, rgba(102, 153, 102, 0.1) 50%, rgba(212, 180, 131, 0.12) 100%)', // Pulse - gold/accent
               'linear-gradient(135deg, rgba(93, 124, 84, 0.15) 0%, rgba(212, 180, 131, 0.12) 50%, rgba(74, 103, 65, 0.1) 100%)'  // Systems - green variations
@@ -103,8 +120,12 @@ const Services = memo(function Services({ locale }: Props) {
                 style={{
                   background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 249, 0.9) 100%)',
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(212, 180, 131, 0.25)',
-                  boxShadow: '0 20px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)'
+                  border: it.featured
+                    ? '2px solid rgba(212, 180, 131, 0.5)'
+                    : '1px solid rgba(212, 180, 131, 0.25)',
+                  boxShadow: it.featured
+                    ? '0 25px 50px rgba(212, 180, 131, 0.25), inset 0 1px 0 rgba(255,255,255,0.8), 0 0 0 1px rgba(212, 180, 131, 0.2)'
+                    : '0 20px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)'
                 }}
               >
                 {/* Background Image */}
