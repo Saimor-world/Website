@@ -85,31 +85,30 @@ export default function Hero({
           sizes="100vw"
         />
 
-        {/* Green Gradient Overlay for Integration */}
+        {/* Modern Dark Overlay - Epiminds Style */}
         <div
           className="absolute inset-0"
           style={{
             background: `
-              linear-gradient(135deg,
-                rgba(74, 103, 65, 0.85) 0%,
-                rgba(93, 124, 84, 0.75) 25%,
-                rgba(212, 180, 131, 0.3) 50%,
-                rgba(74, 103, 65, 0.65) 75%,
-                rgba(58, 82, 49, 0.9) 100%
+              linear-gradient(180deg,
+                rgba(10, 22, 18, 0.96) 0%,
+                rgba(15, 30, 24, 0.92) 30%,
+                rgba(26, 46, 38, 0.88) 60%,
+                rgba(15, 30, 24, 0.92) 85%,
+                rgba(10, 22, 18, 0.96) 100%
               )
-            `
+            `,
+            backgroundBlendMode: 'multiply'
           }}
         />
 
-        {/* Organic Glass Morphism Layer */}
+        {/* Subtle Liquid Glass Layer */}
         <div
-          className="absolute inset-0 backdrop-blur-sm"
+          className="absolute inset-0 backdrop-blur-[2px]"
           style={{
             background: `
-              radial-gradient(ellipse 1200px 800px at 25% 30%, rgba(74, 103, 65, 0.2) 0%, transparent 60%),
-              radial-gradient(ellipse 1000px 600px at 75% 70%, rgba(212, 180, 131, 0.15) 0%, transparent 50%),
-              radial-gradient(ellipse 800px 1200px at 10% 80%, rgba(102, 153, 102, 0.1) 0%, transparent 40%),
-              radial-gradient(ellipse 1400px 900px at 90% 20%, rgba(212, 180, 131, 0.08) 0%, transparent 45%)
+              radial-gradient(ellipse 1000px 600px at 30% 40%, rgba(139, 181, 129, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 800px 500px at 70% 60%, rgba(212, 180, 131, 0.06) 0%, transparent 55%)
             `
           }}
         />
@@ -233,31 +232,32 @@ export default function Hero({
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-          {/* AI Badge */}
+          {/* Môra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
+            className="inline-flex items-center gap-3 px-6 py-3 mb-6 rounded-full backdrop-blur-xl"
+            style={{
+              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+              border: '1px solid rgba(212, 180, 131, 0.3)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            }}
           >
             <motion.div
               animate={{
-                rotate: 360,
-                scale: [1, 1.1, 1]
+                scale: [1, 1.2, 1],
+                rotate: [0, 180, 360]
               }}
-              transition={{
-                rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 2, repeat: Infinity }
-              }}
-              className="w-5 h-5 rounded-full bg-gradient-to-br from-[#D4B483] to-[#E6C897] flex items-center justify-center"
+              transition={{ duration: 3, repeat: Infinity }}
             >
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-[#D4B483]" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 7H7v6h6V7z"/>
                 <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </svg>
             </motion.div>
-            <span className="text-sm font-semibold text-white/90 tracking-wide">
-              {locale === 'de' ? 'KI-gestützte Begleitung' : 'AI-powered Guidance'}
+            <span className="text-sm font-semibold text-[#E6C897]">
+              {locale === 'de' ? 'Môra Backend 85% ⋅ Jetzt verfügbar' : 'Môra Backend 85% ⋅ Available Now'}
             </span>
           </motion.div>
 
@@ -279,126 +279,85 @@ export default function Hero({
           </p>
         </motion.div>
 
-        {/* Futuristic CTAs */}
+        {/* Single Modern CTA - Minimalist like Epiminds */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.6, duration: 1, ease: [0.23, 1, 0.32, 1] }}
-          className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center w-full max-w-2xl mx-auto"
+          className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto"
         >
-          {/* Organic Green Primary CTA */}
+          {/* Single Primary CTA - Liquid Glass */}
           <motion.a
-            href={cal}
-            target="_blank"
-            rel="noreferrer"
+            href="#waitlist"
+            onClick={(e) => {
+              e.preventDefault();
+              smoothScrollTo('waitlist');
+            }}
             whileHover={{
-              scale: 1.1,
-              y: -15,
-              rotateY: 10,
-              rotateX: 8
+              scale: 1.05,
+              boxShadow: '0 30px 80px rgba(212, 180, 131, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 2px rgba(212, 180, 131, 0.4)'
             }}
-            whileTap={{ scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="group relative w-full sm:w-auto px-14 sm:px-18 py-8 sm:py-9 rounded-[2.5rem] text-white font-bold text-xl sm:text-2xl overflow-hidden text-center min-h-[80px] flex items-center justify-center will-change-transform"
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center backdrop-blur-xl"
             style={{
-              background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.8) 100%)',
-              backdropFilter: 'blur(25px)',
-              border: '2px solid rgba(212, 180, 131, 0.5)',
-              boxShadow: '0 25px 50px rgba(74, 103, 65, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3), inset 0 -2px 0 rgba(0, 0, 0, 0.1)'
+              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(139, 181, 129, 0.85) 50%, rgba(74, 103, 65, 0.9) 100%)',
+              border: '2px solid rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
             }}
-            aria-label="Book a clarity conversation via Cal.com (opens in new tab)"
-            role="button"
+            aria-label="Join Môra waitlist"
           >
-            {/* Organic flowing background */}
+            {/* Animated shine effect */}
             <motion.div
-              className="absolute inset-0 rounded-[2.5rem]"
-              animate={{
-                background: [
-                  'radial-gradient(ellipse at 20% 30%, rgba(74, 103, 65, 0.9) 0%, rgba(212, 180, 131, 0.7) 100%)',
-                  'radial-gradient(ellipse at 80% 70%, rgba(93, 124, 84, 0.85) 0%, rgba(230, 200, 151, 0.75) 100%)',
-                  'radial-gradient(ellipse at 50% 50%, rgba(102, 153, 102, 0.9) 0%, rgba(212, 180, 131, 0.8) 100%)',
-                  'radial-gradient(ellipse at 20% 30%, rgba(74, 103, 65, 0.9) 0%, rgba(212, 180, 131, 0.7) 100%)'
-                ]
-              }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              initial={{ x: '-200%' }}
+              animate={{ x: '200%' }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
             />
 
-            {/* Golden shimmer wave */}
-            <motion.div
-              className="absolute inset-0 rounded-[2.5rem]"
-              style={{
-                background: 'linear-gradient(45deg, transparent 30%, rgba(212, 180, 131, 0.8) 50%, transparent 70%)'
-              }}
-              animate={{
-                x: ['-100%', '200%']
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
-            />
-
-            <span className="relative z-10 flex items-center gap-4">
-              <span style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>{heroText.ctaPrimary}</span>
+            <span className="relative z-10 flex items-center justify-center gap-3">
               <motion.svg
-                width="26"
-                height="26"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
-                fill="none"
+                fill="currentColor"
                 animate={{
                   rotate: [0, 360],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.15, 1]
                 }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 3, repeat: Infinity }}
               >
-                <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.35 0 4.48.9 6.08 2.38" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13 7H7v6h6V7z"/>
+                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </motion.svg>
+              <span>{locale === 'de' ? 'Môra kennenlernen' : 'Meet Môra'}</span>
             </span>
           </motion.a>
 
-          {/* Glass Secondary CTA */}
+          {/* Scroll Indicator */}
           <motion.button
-            onClick={() => smoothScrollTo('leistungen')}
-            whileHover={{
-              scale: 1.08,
-              y: -12,
-              rotateY: -8,
-              rotateX: 5
-            }}
-            whileTap={{ scale: 0.94 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="group relative w-full sm:w-auto px-14 sm:px-18 py-8 sm:py-9 rounded-[2.5rem] text-white font-semibold text-xl sm:text-2xl overflow-hidden text-center min-h-[80px] flex items-center justify-center will-change-transform"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(212, 180, 131, 0.2) 50%, rgba(255, 255, 255, 0.1) 100%)',
-              backdropFilter: 'blur(25px)',
-              border: '2px solid rgba(212, 180, 131, 0.4)',
-              boxShadow: '0 15px 35px rgba(74, 103, 65, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.4)'
-            }}
-            aria-label="Scroll to offering section"
+            onClick={() => smoothScrollTo('angebot')}
+            className="flex flex-col items-center gap-2 text-gray-400 hover:text-[#8BB581] transition-colors cursor-pointer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            aria-label="Scroll to offering"
           >
-            {/* Organic hover glow effect */}
-            <motion.div
-              className="absolute inset-0 rounded-[2.5rem] opacity-0 group-hover:opacity-100"
-              style={{
-                background: 'radial-gradient(ellipse at center, rgba(212, 180, 131, 0.3) 0%, transparent 70%)'
-              }}
-              transition={{ duration: 0.4 }}
-            />
-
-            <span className="relative z-10 flex items-center gap-4">
-              <span style={{ textShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>{heroText.ctaSecondary}</span>
-              <motion.svg
-                width="26"
-                height="26"
-                viewBox="0 0 24 24"
-                fill="none"
-                animate={{
-                  y: [0, -5, 0],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <path d="M7 13l3 3 7-7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </motion.svg>
-            </span>
+            <span className="text-sm font-medium">{locale === 'de' ? 'Entdecken' : 'Discover'}</span>
+            <motion.svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </motion.svg>
           </motion.button>
         </motion.div>
 
