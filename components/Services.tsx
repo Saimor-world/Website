@@ -10,12 +10,12 @@ const Services = memo(function Services({ locale }: Props) {
     {
       key: 'mora',
       title: t('Môra', 'Môra'),
-      subtitle: t('KI-Assistentin für Business-Klarheit', 'AI Assistant for Business Clarity'),
-      desc: t('Deine persönliche KI-Begleiterin navigiert mit dir durch Komplexität zur klaren Handlung – über Dashboard, Web & Voice.', 'Your personal AI companion navigates with you through complexity to clear action – via Dashboard, Web & Voice.'),
+      subtitle: t('Deine KI-Begleiterin für Klarheit', 'Your AI Companion for Clarity'),
+      desc: t('Môra navigiert mit dir durch Komplexität zur klaren Handlung. Dashboard-Intelligence, Web-Chat, Voice-Assistent – alles in einem. Dual Mode (Ordner ↔ Feld), Workflow-Runner, echte Business-Insights.', 'Môra navigates with you through complexity to clear action. Dashboard intelligence, web chat, voice assistant – all in one. Dual mode (Folder ↔ Field), workflow runner, real business insights.'),
       benefits: [
-        t('Cross-Channel: Dashboard, Web-Chat & Voice', 'Cross-Channel: Dashboard, Web Chat & Voice'),
-        t('Real-time KPI-Insights mit Handlungsempfehlungen', 'Real-time KPI insights with action recommendations'),
-        t('Backend 85% fertig – Early Access verfügbar', 'Backend 85% ready – Early Access available')
+        t('Dashboard, Web & Voice – Cross-Channel', 'Dashboard, Web & Voice – Cross-Channel'),
+        t('Dual Mode: Ordner-Ansicht ↔ Feld-Ansicht', 'Dual Mode: Folder View ↔ Field View'),
+        t('Backend 85% ready – Jetzt Early Access', 'Backend 85% ready – Early Access now')
       ],
       href: '#waitlist',
       cta: t('Early Access sichern', 'Get Early Access'),
@@ -27,11 +27,11 @@ const Services = memo(function Services({ locale }: Props) {
       key: 'orbit',
       title: t('Orbit', 'Orbit'),
       subtitle: t('Rhythmus statt Meetings', 'Rhythm instead of Meetings'),
-      desc: t('Systematische Begleitung für wiederkehrende Transformation. Regelmäßige Orientierung statt Meeting-Overload.', 'Systematic guidance for recurring transformation. Regular orientation instead of meeting overload.'),
+      desc: t('Systematische Begleitung für wiederkehrende Transformation. Regelmäßige Orientierung statt Meeting-Overload. Verlässlicher Resonanzraum für Entscheidungen – mit Môra als intelligente Unterstützung.', 'Systematic guidance for recurring transformation. Regular orientation instead of meeting overload. Reliable resonance space for decisions – with Môra as intelligent support.'),
       benefits: [
-        t('Verlässlicher Resonanzraum für Entscheidungen', 'Reliable resonance space for decisions'),
+        t('Resonanzraum für klare Entscheidungen', 'Resonance space for clear decisions'),
         t('Tiefe statt Hektik – nachhaltige Veränderung', 'Depth instead of rush – sustainable change'),
-        t('1-6 Monate Begleitung im klaren Takt', '1-6 months guidance in clear rhythm')
+        t('1-6 Monate · Môra-unterstützt', '1-6 months · Môra-supported')
       ],
       href: '/orbit',
       cta: t('Mehr erfahren', 'Learn more'),
@@ -42,30 +42,15 @@ const Services = memo(function Services({ locale }: Props) {
       key: 'pulse',
       title: t('Pulse', 'Pulse'),
       subtitle: t('Impulse für Klarheit im Moment', 'Impulses for Clarity in the Moment'),
-      desc: t('Gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Klarheit genau dort, wo sie gebraucht wird.', 'Targeted impulse formats: Workshops, keynotes or silent spaces. Clarity exactly where it is needed.'),
+      desc: t('Gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Klarheit genau dort, wo sie gebraucht wird. Môra bereitet vor, wertet aus, begleitet nach.', 'Targeted impulse formats: Workshops, keynotes or silent spaces. Clarity exactly where it is needed. Môra prepares, evaluates, follows up.'),
       benefits: [
         t('Energie & Fokus in Veränderungssituationen', 'Energy & focus in change situations'),
-        t('Punktuelle Klärung statt Dauerbelastung', 'Targeted clarification instead of ongoing strain'),
-        t('Workshop (3h) · Keynote (45min) · Stilles Format (90min)', 'Workshop (3h) · Keynote (45min) · Silent format (90min)')
+        t('Workshop (3h) · Keynote (45min) · Stilles Format (90min)', 'Workshop (3h) · Keynote (45min) · Silent format (90min)'),
+        t('Môra-Vorbereitung & Follow-up', 'Môra preparation & follow-up')
       ],
       href: '/pulse',
       cta: t('Mehr erfahren', 'Learn more'),
       secondaryCta: t('Pulse-Format anfragen', 'Request pulse format'),
-      secondaryHref: 'https://cal.com/saimor/30min',
-    },
-    {
-      key: 'systems',
-      title: t('Systems', 'Systems'),
-      subtitle: t('Daten, die Klarheit schaffen', 'Data that Creates Clarity'),
-      desc: t('Dashboards & KI-Integration – immer menschenzentriert. Môra macht aus Daten verständliche Insights für Entscheidungen.', 'Dashboards & AI integration – always human-centered. Môra transforms data into understandable insights for decisions.'),
-      benefits: [
-        t('3-12 KPIs statt Datenflut – aggregierte Insights', '3-12 KPIs instead of data flood – aggregated insights'),
-        t('EU-Hosting, DSGVO-Guardrails, keine Profile', 'EU hosting, GDPR guardrails, no profiles'),
-        t('Nova · Horizon · Solara Packages verfügbar', 'Nova · Horizon · Solara packages available')
-      ],
-      href: '/systems',
-      cta: t('Mehr erfahren', 'Learn more'),
-      secondaryCta: t('Einblick in Systems erhalten', 'Get insights into Systems'),
       secondaryHref: 'https://cal.com/saimor/30min',
     },
   ];
@@ -109,13 +94,12 @@ const Services = memo(function Services({ locale }: Props) {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((it, index) => {
             const gradientBackgrounds = [
               'linear-gradient(135deg, rgba(212, 180, 131, 0.25) 0%, rgba(255, 215, 0, 0.15) 50%, rgba(212, 180, 131, 0.2) 100%)', // Môra - gold prominent (featured)
               'linear-gradient(135deg, rgba(74, 103, 65, 0.12) 0%, rgba(212, 180, 131, 0.15) 50%, rgba(93, 124, 84, 0.08) 100%)', // Orbit - green/gold
               'linear-gradient(135deg, rgba(212, 180, 131, 0.18) 0%, rgba(102, 153, 102, 0.1) 50%, rgba(212, 180, 131, 0.12) 100%)', // Pulse - gold/accent
-              'linear-gradient(135deg, rgba(93, 124, 84, 0.15) 0%, rgba(212, 180, 131, 0.12) 50%, rgba(74, 103, 65, 0.1) 100%)'  // Systems - green variations
             ];
 
             return (

@@ -1,0 +1,381 @@
+# 🎯 Frontend TODO - Für nächsten Claude Code
+
+**Last Update:** 2025-11-04 11:35
+**Status:** 🟢 PRODUCTION READY - Weitere Features geplant
+
+---
+
+## ✅ Was heute erledigt wurde (Session 5 - 04.11.2025)
+
+### 1. Hero modernisiert (Epiminds-Style)
+- ✅ **NUR 1 CTA Button** ("Môra kennenlernen") statt 2
+- ✅ **Scroll-Indicator** statt zweitem Button
+- ✅ **Dunkler Hintergrund** (moderne Overlay wie Epiminds)
+- ✅ **Dschungel-Bild** subtil integriert mit multiply blend
+- ✅ **Saimor Logo** prominent sichtbar
+- ✅ **Môra Badge** "Backend 85% · Jetzt verfügbar" mit Animation
+- ✅ **Liquid Glass Effects** überall
+- ✅ **MyceliumNetwork** Hintergrund läuft perfekt
+
+**Files Changed:**
+- `components/Hero.tsx` - Modernized with 1 CTA + dark Epiminds-style overlay
+
+### 2. Services Section aktualisiert (3 statt 4)
+- ✅ **Systems entfernt** - Nova/Horizon/Solara sind jetzt Môra integriert
+- ✅ **Môra Vision aktualisiert:**
+  - Dual Mode (Ordner ↔ Feld) erwähnt
+  - Dashboard Intelligence betont
+  - Web, Voice, Workflow-Runner Integration
+- ✅ **Grid-Layout:** `lg:grid-cols-3` (war 4)
+- ✅ **Orbit & Pulse:** "Môra-unterstützt" betont
+
+**Files Changed:**
+- `components/Services.tsx` - Removed Systems, updated Môra vision, 3-column grid
+
+### 3. Balance: SAIMOR + Môra
+- ✅ **Saimor Logo** im Hero prominent
+- ✅ **Môra Badge** im Hero für Early Access
+- ✅ **Services:** Menschen (Saimor) machen Workshops, Môra ist Tool
+- ✅ **MyceliumNetwork:** Organischer Hintergrund für "Universum" Feeling
+
+**Build Status:** Exit Code 0 ✅ (31 pages, 177 kB)
+
+---
+
+## 📋 NEXT STEPS - Prioritized
+
+### 🔴 HIGH PRIORITY (Nächste Session)
+
+#### 1. Môra Disney Intro implementieren
+**Warum:** First-visit Animation für "Universum" Feeling
+**Plan:** Bereits vollständig in `MORA_DISNEY_INTRO_PLAN.md` dokumentiert
+**Aufwand:** 2-3 Stunden
+**Files:**
+- Create: `components/MoraIntroAnimation.tsx`
+- Update: `app/de/page.tsx` & `app/en/page.tsx`
+
+**Implementation Guide:**
+```typescript
+// 1. Create MoraIntroAnimation.tsx (see MORA_DISNEY_INTRO_PLAN.md)
+// 2. Add to pages:
+import MoraIntroAnimation from '@/components/MoraIntroAnimation';
+
+export default function Page() {
+  return (
+    <>
+      <MoraIntroAnimation locale="de" />
+      {/* rest of page */}
+    </>
+  )
+}
+```
+
+#### 2. Liquid Glass Effects auf ALLEN Sections
+**Warum:** User wollte "radikalen Politur über die ganze Website"
+**Noch zu polieren:**
+- `components/MoraShowcase.tsx` - Liquid glass cards
+- `components/TrustProof.tsx` - Glass effect auf Trust cards
+- `components/CommunityBanner.tsx` - Backdrop blur verbessern
+- `components/WaitlistForm.tsx` - Form inputs mit glass effect
+- `components/FAQ.tsx` - Accordion items mit glass
+
+**Pattern:**
+```tsx
+style={{
+  background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(212, 180, 131, 0.3)',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+}}
+```
+
+#### 3. /systems Page entfernen oder umleiten
+**Problem:** Services.tsx hat Systems entfernt, aber `/systems` Page existiert noch
+**Options:**
+- A) Delete `app/systems/page.tsx` komplett
+- B) Redirect zu Môra Showcase: `redirect('/de#mora-showcase')`
+- C) Umbauen zu "Môra Dashboard" Demo-Page
+
+**Recommendation:** Option B (Redirect)
+
+---
+
+### 🟡 MEDIUM PRIORITY (Diese Woche)
+
+#### 4. Dashboard Login Integration vorbereiten
+**Context:** Shared Auth zwischen Website & Dashboard (siehe SHARED_CONTEXT.md)
+**Backend Status:** Dashboard API @ voice.saimor.world hat Bearer Token Auth
+**Tasks:**
+- [ ] NextAuth Config erweitern (Custom Provider für Dashboard API)
+- [ ] Protected Routes Setup (`/dashboard/*`)
+- [ ] User Context Provider erstellen
+- [ ] Login Flow UI (Modal oder separate /login page)
+
+**Reference:** Backend-Claude #1 hat Auth System (ADMIN_TOKEN in .env)
+
+#### 5. Môra Intelligence Layer
+**Vision:** Môra auf Website wird "intelligent" (echte AI, nicht Demo)
+**Requirements:**
+- Dashboard API Integration (voice.saimor.world)
+- Real-time KPI Updates
+- Chat mit echter Claude AI
+- User-spezifische Empfehlungen
+
+**Tasks:**
+- [ ] API Client für Dashboard Endpoints erstellen
+- [ ] Môra Chat Component mit real API anbinden
+- [ ] KPI Display Component (real data)
+- [ ] WebSocket Integration für Real-time Updates
+
+---
+
+### 🟢 LOW PRIORITY (Später)
+
+#### 6. Mobile Optimization Pass
+**Current Status:** Responsive, aber könnte besser sein
+**Focus Areas:**
+- Hero CTA: Touch-optimiert? (aktuell schon gut)
+- Services Cards: Swipe gesture für mobile?
+- MyceliumNetwork: Performance auf Mobile (Canvas heavy)
+
+#### 7. Performance Optimization
+**Current:** 177 kB First Load JS - sehr gut!
+**Potential Wins:**
+- Image optimization (Dschungel-Bild von Unsplash)
+- Code splitting für Easter Eggs (nicht critical path)
+- MyceliumNetwork: RequestAnimationFrame throttling
+
+#### 8. A11y Audit
+**Status:** Basics sind da (aria-labels), aber nicht komplett
+**Tasks:**
+- [ ] Keyboard Navigation testen
+- [ ] Screen Reader Test
+- [ ] Color Contrast Check (WCAG AA)
+- [ ] Focus States überall
+
+---
+
+## 🎨 Design System Tokens (Für Konsistenz)
+
+### Colors (bereits im Einsatz)
+```css
+--saimor-green-700: #4A6741;  /* Header/Footer/Dark surfaces */
+--saimor-green-600: #557351;  /* Hover states */
+--saimor-green-200: #EAF1EC;  /* Light cards/backgrounds */
+--saimor-gold-500:  #D4B483;  /* Primary CTA/Icons */
+--saimor-gold-600:  #C6A36C;  /* CTA Hover */
+--saimor-ink-900:   #0E1A1B;  /* Deep dark (Vision blocks) */
+--saimor-cream:     #F8F5F0;  /* Off-white */
+```
+
+### Typography
+```css
+/* Headlines */
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2.5rem, 5vw, 4rem); /* Responsive */
+
+/* Body */
+font-size: 1rem (16px) base
+line-height: 1.5 (24px)
+
+/* Section Headlines */
+text-4xl md:text-5xl lg:text-6xl (konsistent!)
+```
+
+### Spacing
+```css
+/* Section Padding */
+py-20 sm:py-24 (konsistent überall!)
+
+/* Container Max Width */
+max-w-7xl (Services, FAQ, etc.)
+max-w-5xl (Hero content)
+max-w-3xl (Intro texts)
+```
+
+### Animations
+```typescript
+// Framer Motion Variants (Standard)
+initial: { opacity: 0, y: 30 }
+animate: { opacity: 1, y: 0 }
+transition: { duration: 0.8, ease: "easeOut" }
+
+// Hover States
+whileHover: { scale: 1.05, y: -8 }
+whileTap: { scale: 0.98 }
+```
+
+---
+
+## 🔗 Integration Points (Backend Koordination)
+
+### 1. Dashboard API (Backend-Claude #1)
+**Base URL:** `https://voice.saimor.world/api/v1/dashboard/`
+**Auth:** Bearer Token (ADMIN_TOKEN in .env)
+**Endpoints Ready:**
+- `/status` - System health
+- `/overview` - Dashboard KPIs
+- `/costs` - Cost tracking
+- `/activity` - Recent activity
+- `/chat/message` - Môra chat (POST)
+
+**CORS:** Backend needs to whitelist `saimor.world` origin!
+
+### 2. Core API (Backend-Claude #3)
+**Base URL:** `http://localhost:8081/v1/`
+**Status:** 100% deployed, Docker containers healthy
+**Use Case:** Business actions (later phase)
+**Endpoints:**
+- `/actions/execute` - Execute business action
+- `/actions/confirm` - 2FA confirmation
+- `/actions/undo` - 5-min undo window
+
+### 3. Môra UI (neue separate App)
+**Location:** `C:/mora-ui`
+**Status:** Kickoff läuft (andere Claude Instance)
+**Vision:** Dual Mode (Ordner ↔ Feld), Workflow-Runner, Broadcast
+**Integration:** Später als Demo-Widget auf Website einbetten?
+
+---
+
+## 📦 Current Website Architecture
+
+### Pages
+```
+/de                  → Main page (Hero, Services, Môra Showcase, etc.)
+/en                  → English version
+/orbit               → Orbit service page
+/pulse               → Pulse service page
+/systems             → ⚠️ DEPRECATED - needs redirect or removal
+/de/kontakt          → Contact page
+/de/rechtliches/*    → Legal pages
+```
+
+### Key Components
+```
+components/
+├── Hero.tsx                 ✅ Modernized (Epiminds-style, 1 CTA)
+├── Services.tsx             ✅ Updated (3 services, Môra vision)
+├── MoraShowcase.tsx         🔄 Needs liquid glass polish
+├── TrustProof.tsx           🔄 Needs liquid glass polish
+├── CommunityBanner.tsx      🔄 Needs backdrop blur improve
+├── WaitlistForm.tsx         🔄 Needs glass effect on inputs
+├── FAQ.tsx                  🔄 Needs glass on accordion
+├── MoraAvatar.tsx           ✅ Working (popup on click)
+├── MyceliumNetwork.tsx      ✅ Perfect (organic background)
+├── DataJungle.tsx           ✅ Working (jungle elements)
+├── ScrollProgress.tsx       ✅ Working
+├── EasterEggs.tsx           ✅ Working (achievement system)
+└── CookieBanner.tsx         ✅ Working (GDPR compliant)
+```
+
+### API Routes
+```
+/api/waitlist         ✅ Working (ready for n8n)
+/api/contact          ⚠️ Email not connected yet
+/api/auth/*           ⚠️ NextAuth needs NEXTAUTH_SECRET in Vercel
+/api/dashboard/*      🔄 Proxies to Dashboard API (needs implementation)
+/api/mora             🔄 Future: Môra Intelligence Layer
+```
+
+---
+
+## 🐛 Known Issues
+
+### 1. NextAuth 500 Error (Vercel)
+**Problem:** Missing `NEXTAUTH_SECRET` in Vercel ENV
+**Fix:** Add to Vercel ENV vars
+**Impact:** Auth routes fail in production
+
+### 2. n8n Webhook not connected
+**Problem:** Waitlist form doesn't trigger n8n workflow
+**Status:** API route works, webhook URL needs Marius setup
+**URL (probable):** `https://n8n.voice.saimor.world/webhook/waitlist`
+
+### 3. ESLint Warnings (non-critical)
+**Files:** DataDashboard.tsx, EasterEggs.tsx, MoraShowcase.tsx
+**Issue:** React Hook dependencies, img tag instead of Image
+**Impact:** None (best practices only)
+
+---
+
+## 🎯 Vision: "Das wird kein Landing Page - ein kleines Universum"
+
+### Current Progress (85% ready)
+- ✅ **Organic Background:** MyceliumNetwork + DataJungle
+- ✅ **Modern Hero:** Epiminds-inspired, 1 CTA, liquid glass
+- ✅ **Services:** 3 clear offerings (Môra, Orbit, Pulse)
+- ✅ **Môra Prominent:** Badge, featured card, avatar
+- ✅ **Early Access:** Waitlist form ready
+- 🔄 **Intelligence:** Dashboard integration pending
+- 🔄 **Disney Intro:** Plan ready, implementation pending
+
+### Next Phase: "Universum lebendig machen"
+1. Môra Disney Intro (first visit magic)
+2. Dashboard Login (users can log in)
+3. Real-time KPI Display (live data)
+4. Intelligent Môra Chat (real AI responses)
+5. User Context (personalized experience)
+
+---
+
+## 📚 Documentation References
+
+### Internal Docs
+- `CLAUDE.md` - Development commands, architecture overview
+- `MORA_DISNEY_INTRO_PLAN.md` - Complete intro animation spec
+- `MASTER_PLAN.md` - Original action plan with security
+- `VERCEL_CHECKLIST.md` - Deployment verification
+
+### External (saimor-core)
+- `C:/Users/mf4hr/saimor-core/SHARED_CONTEXT.md` - Inter-Claude communication
+- `MORA_CORE_SYSTEM_MAPPING.json` - Backend API spec (12 KPIs, 15+ APIs)
+- `MORA_SYSTEM_OVERVIEW.md` - KPI tables, code examples
+
+---
+
+## ⚠️ Important Notes for Next Claude Code
+
+### Context to Remember
+1. **Systems = Môra** - Nova/Horizon/Solara packages are now integrated into Môra
+2. **SAIMOR im Fokus** - Menschen (Saimor team) do workshops, Môra is the AI tool
+3. **Balance** - Logo + Môra both prominent, not "Môra-lastig"
+4. **Epiminds-Style** - Minimalist, modern, motion-first (user's reference)
+5. **Liquid Glass** - User wants this aesthetic across ALL components
+
+### Don't Break
+- ✅ MyceliumNetwork background (working perfectly)
+- ✅ Hero with 1 CTA (user approved)
+- ✅ 3 Services layout (Môra, Orbit, Pulse)
+- ✅ Saimor Logo in Hero
+- ✅ DataJungle elements
+
+### User Preferences
+- ❌ NO 2 CTAs in Hero (just 1 + scroll indicator)
+- ❌ NO emojis (unless explicitly requested)
+- ❌ NO Systems as separate service (it's Môra now)
+- ✅ YES minimalist & professional
+- ✅ YES liquid glass everywhere
+- ✅ YES organic animations
+
+---
+
+## 🚀 Quick Start Commands
+
+```bash
+# Development
+npm run dev              # http://localhost:3000
+
+# Build & Deploy
+npm run build           # Test build
+git add -A
+git commit -m "..."
+git push origin main    # Auto-deploys to Vercel
+
+# Check live site
+open https://saimor.world
+```
+
+---
+
+**End of Document** - Ready for next Claude Code session! 🎯
