@@ -13,6 +13,7 @@ const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false
 const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
+const MoraIntroAnimation = dynamic(() => import('@/components/MoraIntroAnimation'), { ssr: false });
 
 export const metadata = {
   title: 'Saimôr – Clarity in Transformation',
@@ -32,6 +33,7 @@ export const metadata = {
 export default function Page() {
   return (
     <>
+      <MoraIntroAnimation locale="en" />
       <MyceliumNetwork />
       <ScrollProgress />
       <EasterEggs />

@@ -105,20 +105,26 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           </p>
         </motion.div>
 
-        {/* Features Grid */}
+        {/* Features Grid with Liquid Glass */}
         <div className="grid md:grid-cols-2 gap-6 mb-10">
           {content.features.map((feature, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm border-2 border-[#D4B483]/20 hover:border-[#D4B483]/40 transition-all hover:shadow-lg"
+              className="p-6 rounded-2xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(212, 180, 131, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+              }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 + index * 0.1 }}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -4, scale: 1.02 }}
             >
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center`}>
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg`}>
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-lg font-medium text-gray-800">
@@ -129,9 +135,14 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           ))}
         </div>
 
-        {/* Transparency Banner */}
+        {/* Transparency Banner with Liquid Glass */}
         <motion.div
-          className="mb-8 p-4 rounded-xl bg-gradient-to-r from-[#4A6741]/10 to-[#D4B483]/10 border border-[#D4B483]/30"
+          className="mb-8 p-4 rounded-xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.08) 0%, rgba(212, 180, 131, 0.12) 100%)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(212, 180, 131, 0.25)'
+          }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
