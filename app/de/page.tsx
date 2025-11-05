@@ -8,6 +8,8 @@ import CommunityBanner from '@/components/CommunityBanner';
 import WaitlistForm from '@/components/WaitlistForm';
 import dynamic from 'next/dynamic';
 
+const MoraWorkbench = dynamic(() => import('@/components/MoraWorkbench'), { ssr: false });
+
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
@@ -41,6 +43,7 @@ export default function Page() {
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="de" />
+        <MoraWorkbench locale="de" />
         <Services locale="de" />
         <MoraShowcase locale="de" />
         <TrustProof locale="de" />
