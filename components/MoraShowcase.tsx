@@ -565,11 +565,10 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                     boxShadow: '0 6px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                   }}
                   initial={{ opacity: 0, scale: 0.9 }}
-                  whileHover={{ scale: 1.03, boxShadow: '0 10px 36px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)' }}
+                  whileHover={{ scale: 1.03, y: -4, boxShadow: '0 10px 36px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)' }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -4 }}
                 >
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483]">
                     {pkg.badge}
