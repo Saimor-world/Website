@@ -166,7 +166,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                 >
-                  {/* Name */}
+                  {/* Name with Liquid Glass */}
                   <div>
                     <input
                       type="text"
@@ -174,11 +174,17 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setName(e.target.value)}
                       placeholder={content.namePlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#D4B483] focus:outline-none text-gray-800"
+                      className="w-full px-6 py-4 rounded-xl text-gray-800 focus:outline-none"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.06) 0%, rgba(74, 103, 65, 0.04) 100%)',
+                        backdropFilter: 'blur(16px)',
+                        border: '1px solid rgba(212, 180, 131, 0.2)',
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                      }}
                     />
                   </div>
 
-                  {/* Email */}
+                  {/* Email with Liquid Glass */}
                   <div>
                     <input
                       type="email"
@@ -186,7 +192,13 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={content.emailPlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#D4B483] focus:outline-none text-gray-800"
+                      className="w-full px-6 py-4 rounded-xl text-gray-800 focus:outline-none"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.06) 0%, rgba(74, 103, 65, 0.04) 100%)',
+                        backdropFilter: 'blur(16px)',
+                        border: '1px solid rgba(212, 180, 131, 0.2)',
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                      }}
                     />
                   </div>
 
@@ -201,11 +213,19 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                           key={item.id}
                           type="button"
                           onClick={() => toggleInterest(item.id)}
-                          className={`p-3 rounded-xl border-2 transition-all text-left ${
-                            interest.includes(item.id)
-                              ? 'border-[#D4B483] bg-[#D4B483]/10'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                          className="p-3 rounded-xl transition-all text-left"
+                          style={{
+                            background: interest.includes(item.id)
+                              ? 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)'
+                              : 'linear-gradient(135deg, rgba(212, 180, 131, 0.04) 0%, rgba(74, 103, 65, 0.02) 100%)',
+                            backdropFilter: 'blur(12px)',
+                            border: interest.includes(item.id)
+                              ? '1px solid rgba(212, 180, 131, 0.4)'
+                              : '1px solid rgba(212, 180, 131, 0.15)',
+                            boxShadow: interest.includes(item.id)
+                              ? '0 6px 20px rgba(212, 180, 131, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                              : '0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                          }}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >

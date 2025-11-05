@@ -333,18 +333,24 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               </motion.div>
             </div>
 
-            {/* Quick Questions */}
+            {/* Quick Questions with Liquid Glass */}
             <div className="space-y-3">
               {content.quickQuestions.map((question, index) => (
                 <motion.button
                   key={index}
                   onClick={() => handleAskMora(question)}
-                  className="w-full p-4 rounded-xl border-2 border-[#D4B483]/20 bg-white text-left hover:border-[#D4B483] hover:bg-gradient-to-r hover:from-[#D4B483]/5 hover:to-transparent transition-all group"
+                  className="w-full p-4 rounded-xl text-left group"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.08) 0%, rgba(74, 103, 65, 0.05) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(212, 180, 131, 0.25)',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ x: 4 }}
+                  whileHover={{ x: 4, scale: 1.02 }}
                   disabled={isAsking}
                 >
                   <div className="flex items-center gap-3">
@@ -502,7 +508,13 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               ].map((kpi, index) => (
                 <motion.div
                   key={kpi.label}
-                  className={`p-6 rounded-2xl bg-gradient-to-br ${kpi.bgColor} border-2 border-white shadow-lg relative overflow-hidden`}
+                  className="p-6 rounded-2xl relative overflow-hidden"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(212, 180, 131, 0.12) 0%, rgba(74, 103, 65, 0.08) 100%)`,
+                    backdropFilter: 'blur(24px)',
+                    border: '1px solid rgba(212, 180, 131, 0.3)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                  }}
                   layout
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
@@ -545,8 +557,15 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               {content.packages.map((pkg, index) => (
                 <motion.div
                   key={pkg.name}
-                  className="p-4 rounded-xl border-2 border-[#D4B483]/30 bg-gradient-to-br from-white to-slate-50 relative hover:shadow-lg transition-shadow"
+                  className="p-4 rounded-xl relative"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.10) 0%, rgba(74, 103, 65, 0.08) 100%)',
+                    backdropFilter: 'blur(18px)',
+                    border: '1px solid rgba(212, 180, 131, 0.25)',
+                    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                  }}
                   initial={{ opacity: 0, scale: 0.9 }}
+                  whileHover={{ scale: 1.03, boxShadow: '0 10px 36px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)' }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
