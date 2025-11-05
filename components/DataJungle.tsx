@@ -79,6 +79,8 @@ export default function DataJungle() {
             {[0.2, 0.4, 0.6, 0.8].map((offset, j) => (
               <g key={`cookie-${i}-${j}`}>
                 <circle
+                  cx="0"
+                  cy="0"
                   r="8"
                   fill="#D4B483"
                   opacity="0.6"
@@ -107,6 +109,8 @@ export default function DataJungle() {
                 </circle>
                 {/* Cookie-Bites (kleine Delle) */}
                 <circle
+                  cx="0"
+                  cy="0"
                   r="3"
                   fill="rgba(0,0,0,0.2)"
                   opacity="0.3"
@@ -293,6 +297,8 @@ export default function DataJungle() {
         {[0, 1, 2].map((i) => (
           <motion.circle
             key={`bridge-particle-${i}`}
+            cx="0"
+            cy="0"
             r="4"
             fill="#D4B483"
             filter="url(#glow)"

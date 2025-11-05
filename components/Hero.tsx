@@ -102,9 +102,9 @@ export default function Hero({
           }}
         />
 
-        {/* Subtle Liquid Glass Layer */}
+        {/* Subtle Liquid Glass Layer - Removed blur for performance */}
         <div
-          className="absolute inset-0 backdrop-blur-[2px]"
+          className="absolute inset-0"
           style={{
             background: `
               radial-gradient(ellipse 1000px 600px at 30% 40%, rgba(139, 181, 129, 0.08) 0%, transparent 60%),
@@ -113,14 +113,15 @@ export default function Hero({
           }}
         />
       </div>
-      {/* Organic Floating Elements */}
+      {/* Organic Floating Elements - Blur reduced for performance */}
       <motion.div
         className="absolute top-1/4 left-1/6 w-40 h-40 rounded-full z-10"
         style={{
           background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)',
-          backdropFilter: 'blur(25px)',
+          backdropFilter: 'blur(10px)',
           border: '1px solid rgba(212, 180, 131, 0.3)',
-          boxShadow: '0 8px 32px rgba(74, 103, 65, 0.1)'
+          boxShadow: '0 8px 32px rgba(74, 103, 65, 0.1)',
+          willChange: 'transform'
         }}
         animate={{
           y: [0, -40, 0],
@@ -135,9 +136,10 @@ export default function Hero({
         className="absolute top-2/3 right-1/5 w-24 h-24 rounded-full z-10"
         style={{
           background: 'linear-gradient(45deg, rgba(102, 153, 102, 0.25) 0%, rgba(212, 180, 131, 0.2) 100%)',
-          backdropFilter: 'blur(20px)',
+          backdropFilter: 'blur(8px)',
           border: '1px solid rgba(102, 153, 102, 0.2)',
-          boxShadow: '0 6px 24px rgba(102, 153, 102, 0.08)'
+          boxShadow: '0 6px 24px rgba(102, 153, 102, 0.08)',
+          willChange: 'transform'
         }}
         animate={{
           y: [0, 35, 0],
@@ -152,10 +154,11 @@ export default function Hero({
         className="absolute top-1/2 right-1/3 w-32 h-32 z-10"
         style={{
           background: 'linear-gradient(225deg, rgba(74, 103, 65, 0.15) 0%, rgba(230, 200, 151, 0.2) 100%)',
-          backdropFilter: 'blur(18px)',
+          backdropFilter: 'blur(8px)',
           border: '1px solid rgba(230, 200, 151, 0.25)',
           clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-          boxShadow: '0 4px 20px rgba(74, 103, 65, 0.06)'
+          boxShadow: '0 4px 20px rgba(74, 103, 65, 0.06)',
+          willChange: 'transform'
         }}
         animate={{
           y: [0, -25, 0],
@@ -203,11 +206,11 @@ export default function Hero({
           className="flex justify-center mb-8 will-change-transform"
         >
           <div className="relative">
-            {/* Enhanced backdrop for better logo visibility */}
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-3xl"
+            {/* Dark backdrop for crisp logo contrast */}
+            <div className="absolute inset-0 bg-black/40 rounded-3xl"
                  style={{
-                   transform: 'scale(1.15)',
-                   filter: 'blur(25px)',
+                   transform: 'scale(1.2)',
+                   filter: 'blur(30px)',
                    zIndex: -1
                  }}
             />
@@ -218,7 +221,7 @@ export default function Hero({
               height={180}
               className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,255,255,0.6)) contrast(1.15) brightness(1.1)',
+                filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(212,180,131,0.4)) contrast(1.3) brightness(1.25) saturate(1.1)',
               }}
               priority
             />
@@ -237,9 +240,9 @@ export default function Hero({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex items-center gap-3 px-6 py-3 mb-6 rounded-full backdrop-blur-xl"
+            className="inline-flex items-center gap-3 px-6 py-3 mb-6 rounded-full"
             style={{
-              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.2) 0%, rgba(74, 103, 65, 0.18) 100%)',
               border: '1px solid rgba(212, 180, 131, 0.3)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
             }}
@@ -286,7 +289,7 @@ export default function Hero({
           transition={{ delay: 0.6, duration: 1, ease: [0.23, 1, 0.32, 1] }}
           className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto"
         >
-          {/* Single Primary CTA - Liquid Glass */}
+          {/* Single Primary CTA - Solid gradient for performance */}
           <motion.a
             href="#waitlist"
             onClick={(e) => {
@@ -299,11 +302,12 @@ export default function Hero({
             }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center backdrop-blur-xl"
+            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center"
             style={{
-              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(139, 181, 129, 0.85) 50%, rgba(74, 103, 65, 0.9) 100%)',
+              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.95) 0%, rgba(139, 181, 129, 0.9) 50%, rgba(74, 103, 65, 0.95) 100%)',
               border: '2px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
+              boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)',
+              willChange: 'transform'
             }}
             aria-label="Join Môra waitlist"
           >

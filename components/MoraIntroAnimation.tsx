@@ -10,12 +10,18 @@ interface Props {
 }
 
 export default function MoraIntroAnimation({ locale = 'de' }: Props) {
+  const [mounted, setMounted] = useState(false);
   const [show, setShow] = useState(false);
   const [phase, setPhase] = useState(0);
 
+  // First mount - prevent hydration mismatch
   useEffect(() => {
-    // Only run on client
-    if (typeof window === 'undefined') return;
+    setMounted(true);
+  }, []);
+
+  // Then check localStorage only after mounted
+  useEffect(() => {
+    if (!mounted) return;
 
     const seen = localStorage.getItem('mora-intro-seen');
     if (!seen) {
@@ -30,7 +36,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
         localStorage.setItem('mora-intro-seen', 'true');
       }, 4000);
     }
-  }, []);
+  }, [mounted]);
 
   // Handle skip (ESC key or click)
   useEffect(() => {
