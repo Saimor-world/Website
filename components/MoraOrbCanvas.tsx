@@ -13,10 +13,12 @@ interface Props {
 }
 
 export default function MoraOrbCanvas({ onComplete }: Props) {
-  const [phase, setPhase] = useState<'flight' | 'landing' | 'breathing'>('flight');
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'flight' | 'landing' | 'breathing'>('breathing');
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -26,11 +28,16 @@ export default function MoraOrbCanvas({ onComplete }: Props) {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+
     if (prefersReducedMotion) {
       setPhase('breathing');
       onComplete?.();
       return;
     }
+
+    // Start with flight animation
+    setPhase('flight');
 
     // Animation sequence
     const flightTimer = setTimeout(() => setPhase('landing'), 2000);
@@ -43,7 +50,7 @@ export default function MoraOrbCanvas({ onComplete }: Props) {
       clearTimeout(flightTimer);
       clearTimeout(landingTimer);
     };
-  }, [prefersReducedMotion, onComplete]);
+  }, [mounted, prefersReducedMotion, onComplete]);
 
   return (
     <div className="relative flex items-center justify-center h-[400px]" aria-label="Môra presence">

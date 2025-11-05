@@ -17,10 +17,12 @@ const paths = [
 ];
 
 export default function SyntaxOverlay() {
+  const [mounted, setMounted] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [activePaths, setActivePaths] = useState<number[]>([]);
 
   useEffect(() => {
+    setMounted(true);
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -30,7 +32,7 @@ export default function SyntaxOverlay() {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (!mounted || prefersReducedMotion) return;
 
     const interval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * paths.length);

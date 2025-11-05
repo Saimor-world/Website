@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
  * Rein CSS-basiert (kein Video), optimiert für Performance
  */
 export default function HeroAmbient() {
+  const [mounted, setMounted] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -17,6 +19,28 @@ export default function HeroAmbient() {
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              linear-gradient(135deg,
+                rgba(14, 26, 27, 0.98) 0%,
+                rgba(26, 46, 38, 0.95) 20%,
+                rgba(15, 30, 24, 0.97) 50%,
+                rgba(26, 46, 38, 0.95) 80%,
+                rgba(14, 26, 27, 0.98) 100%
+              )
+            `
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
