@@ -3,8 +3,15 @@ import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import dynamic from 'next/dynamic';
 
-// Filmische Components - lazy loaded für Performance
-const HeroAmbient = dynamic(() => import('./HeroAmbient'), { ssr: false });
+// Filmische Components - lazy loaded für Performance, NO SSR
+const HeroAmbient = dynamic(() => import('./HeroAmbient'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0" style={{
+      background: 'linear-gradient(135deg, rgba(14, 26, 27, 0.98) 0%, rgba(26, 46, 38, 0.95) 50%, rgba(14, 26, 27, 0.98) 100%)'
+    }} />
+  )
+});
 const MoraOrbCanvas = dynamic(() => import('./MoraOrbCanvas'), { ssr: false });
 const SyntaxOverlay = dynamic(() => import('./SyntaxOverlay'), { ssr: false });
 
