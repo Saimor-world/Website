@@ -94,12 +94,17 @@ export default function MoraChat() {
         })
       });
 
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => ({}));
+        throw new Error(errorPayload?.error || 'Môra ist gerade nicht erreichbar');
+      }
+
       const data = await response.json();
 
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
-        content: data.reply || 'Ich habe verstanden. Wie kann ich dir weiterhelfen?',
+        content: data.reply || data.response || 'Ich habe verstanden. Wie kann ich dir weiterhelfen?',
         timestamp: Date.now()
       };
 
@@ -110,12 +115,13 @@ export default function MoraChat() {
       }
 
       if (data.suggestions && data.suggestions.length > 0) {
-        setSuggestions(data.suggestions.map((s: string, i: number) => ({
-          id: `sug-${i}`,
-          text: s
-        })));
+        setSuggestions(
+          data.suggestions.map((s: string, i: number) => ({
+            id: `sug-${i}`,
+            text: s
+          }))
+        );
       }
-
     } catch (error) {
       console.error('Chat error:', error);
 

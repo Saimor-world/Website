@@ -1,7 +1,8 @@
-'use client';
+﻿'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
+import type { CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
@@ -16,16 +17,32 @@ type Props = {
   contactHashId?: string;
 };
 
+const logoPanelStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(6, 15, 11, 0.96) 0%, rgba(10, 24, 18, 0.94) 45%, rgba(25, 52, 43, 0.9) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  boxShadow:
+    '0 24px 70px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+  backdropFilter: 'blur(28px)'
+};
+
+const logoInnerGlow: CSSProperties = {
+  background:
+    'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 60%)',
+  filter: 'blur(24px)'
+};
+
 export default function Hero({
   locale,
   calUrl,
   contactHashId = 'kontakt',
 }: Props) {
+
   const heroText = {
     de: {
       heading: 'Klarheit im Wandel',
-      claim: 'Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
-      ctaPrimary: 'Klarheitsgespräch buchen',
+      claim: 'Begleitung fÃ¼r Menschen und Organisationen, wenn Systeme schwanken.',
+      ctaPrimary: 'KlarheitsgesprÃ¤ch buchen',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
@@ -202,14 +219,22 @@ export default function Hero({
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex justify-center mb-8 will-change-transform"
         >
-          <div className="relative">
-            {/* Enhanced backdrop for better logo visibility */}
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-3xl"
-                 style={{
-                   transform: 'scale(1.15)',
-                   filter: 'blur(25px)',
-                   zIndex: -1
-                 }}
+          <div
+            className="relative px-8 sm:px-10 py-6 rounded-[36px]"
+            style={logoPanelStyle}
+            aria-label="Saimôr Logo"
+          >
+            <div
+              className="absolute inset-0 rounded-[36px] opacity-80 pointer-events-none"
+              style={logoInnerGlow}
+            />
+            <div
+              className="absolute -inset-6 rounded-[48px] opacity-70 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(212, 180, 131, 0.25) 0%, rgba(0,0,0,0) 65%)',
+                filter: 'blur(32px)'
+              }}
             />
             <Image
               src="/Logo neu.png"
@@ -218,7 +243,9 @@ export default function Hero({
               height={180}
               className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.4)) drop-shadow(0 0 40px rgba(255,255,255,0.6)) contrast(1.15) brightness(1.1)',
+                filter:
+                  'drop-shadow(0 12px 28px rgba(0,0,0,0.6)) drop-shadow(0 0 50px rgba(255,255,255,0.65)) contrast(1.25) brightness(1.15)',
+                mixBlendMode: 'normal'
               }}
               priority
             />
@@ -232,7 +259,7 @@ export default function Hero({
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-          {/* Môra Badge - Prominent */}
+          {/* MÃ´ra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -257,7 +284,7 @@ export default function Hero({
               </svg>
             </motion.div>
             <span className="text-sm font-semibold text-[#E6C897]">
-              {locale === 'de' ? 'Môra Backend 85% ⋅ Jetzt verfügbar' : 'Môra Backend 85% ⋅ Available Now'}
+              {locale === 'de' ? 'MÃ´ra Backend 85% â‹… Jetzt verfÃ¼gbar' : 'MÃ´ra Backend 85% â‹… Available Now'}
             </span>
           </motion.div>
 
@@ -305,7 +332,7 @@ export default function Hero({
               border: '2px solid rgba(255, 255, 255, 0.2)',
               boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
             }}
-            aria-label="Join Môra waitlist"
+            aria-label="Join MÃ´ra waitlist"
           >
             {/* Animated shine effect */}
             <motion.div
@@ -330,7 +357,7 @@ export default function Hero({
                 <path d="M13 7H7v6h6V7z"/>
                 <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </motion.svg>
-              <span>{locale === 'de' ? 'Môra kennenlernen' : 'Meet Môra'}</span>
+              <span>{locale === 'de' ? 'MÃ´ra kennenlernen' : 'Meet MÃ´ra'}</span>
             </span>
           </motion.a>
 
@@ -390,3 +417,6 @@ export default function Hero({
     </section>
   );
 }
+
+
+

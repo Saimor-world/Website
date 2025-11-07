@@ -1,12 +1,31 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Sparkles, Users, Heart, Rocket } from 'lucide-react';
+import type { CSSProperties } from 'react';
 
 type Locale = 'de' | 'en';
 
 interface CommunityBannerProps {
   locale: Locale;
 }
+
+const glassPanelStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(10, 22, 18, 0.65) 0%, rgba(10, 22, 18, 0.35) 100%)',
+  backdropFilter: 'blur(30px)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  boxShadow:
+    '0 30px 80px rgba(10, 22, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+};
+
+const glassTileStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  backdropFilter: 'blur(18px)',
+  boxShadow:
+    '0 18px 40px rgba(10, 22, 18, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+};
 
 export default function CommunityBanner({ locale }: CommunityBannerProps) {
   const content = {
@@ -67,7 +86,10 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
         transition={{ duration: 10, repeat: Infinity }}
       />
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
+      <div
+        className="max-w-5xl mx-auto px-6 py-10 lg:py-12 relative z-10 rounded-[32px]"
+        style={glassPanelStyle}
+      >
         {/* Badge */}
         <motion.div
           className="flex justify-center mb-6"
@@ -100,7 +122,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           >
             {content.title}
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-white/80 max-w-3xl mx-auto">
             {content.subtitle}
           </p>
         </motion.div>
@@ -110,7 +132,8 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           {content.features.map((feature, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm border-2 border-[#D4B483]/20 hover:border-[#D4B483]/40 transition-all hover:shadow-lg"
+              className="p-6 rounded-2xl transition-all hover:-translate-y-1"
+              style={glassTileStyle}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -121,7 +144,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center`}>
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-lg font-medium text-gray-800">
+                <span className="text-lg font-medium text-white">
                   {feature.text}
                 </span>
               </div>
@@ -131,19 +154,20 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
 
         {/* Transparency Banner */}
         <motion.div
-          className="mb-8 p-4 rounded-xl bg-gradient-to-r from-[#4A6741]/10 to-[#D4B483]/10 border border-[#D4B483]/30"
+          className="mb-8 p-4 rounded-xl text-white"
+          style={glassTileStyle}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-700 mb-2">
+            <p className="text-sm font-medium text-white mb-2">
               {content.transparency}
             </p>
-            <div className="flex items-center justify-center gap-4 text-xs text-gray-600">
+            <div className="flex items-center justify-center gap-4 text-xs text-white/80">
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 {content.status}
               </span>
             </div>

@@ -2,12 +2,29 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Check, Loader2, Heart, Sparkles } from 'lucide-react';
+import type { CSSProperties } from 'react';
 
 type Locale = 'de' | 'en';
 
 interface WaitlistFormProps {
   locale: Locale;
 }
+
+const glassPanelStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(10, 22, 18, 0.85) 0%, rgba(10, 22, 18, 0.55) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  backdropFilter: 'blur(32px)',
+  boxShadow:
+    '0 35px 80px rgba(10, 22, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+};
+
+const glassFieldStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.3)',
+  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+};
 
 export default function WaitlistForm({ locale }: WaitlistFormProps) {
   const [email, setEmail] = useState('');
@@ -104,7 +121,8 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
     <section id="waitlist" className="relative py-20 sm:py-24">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
-          className="bg-white rounded-3xl shadow-2xl border-2 border-[#D4B483]/30 overflow-hidden"
+          className="rounded-3xl overflow-hidden"
+          style={glassPanelStyle}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -127,7 +145,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
           </div>
 
           {/* Form */}
-          <div className="p-8">
+          <div className="p-8 text-white">
             <AnimatePresence mode="wait">
               {status === 'success' ? (
                 <motion.div
@@ -144,14 +162,14 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                   >
                     <Check className="w-10 h-10 text-white" />
                   </motion.div>
-                  <h4 className="text-2xl font-bold text-gray-800 mb-3">
+                  <h4 className="text-2xl font-bold text-white mb-3">
                     {content.successTitle}
                   </h4>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-white/80 mb-6">
                     {content.successMessage}
                   </p>
                   <motion.div
-                    className="flex items-center justify-center gap-2 text-[#4A6741]"
+                    className="flex items-center justify-center gap-2 text-[#D4B483]"
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
@@ -174,7 +192,8 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setName(e.target.value)}
                       placeholder={content.namePlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#D4B483] focus:outline-none text-gray-800"
+                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30"
+                      style={glassFieldStyle}
                     />
                   </div>
 
@@ -186,40 +205,50 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={content.emailPlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-[#D4B483] focus:outline-none text-gray-800"
+                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30"
+                      style={glassFieldStyle}
                     />
                   </div>
 
                   {/* Interests */}
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-3">
+                    <p className="text-sm font-medium text-white/80 mb-3">
                       {content.interestTitle}
                     </p>
                     <div className="grid grid-cols-2 gap-3">
-                      {content.interests.map((item) => (
-                        <motion.button
-                          key={item.id}
-                          type="button"
-                          onClick={() => toggleInterest(item.id)}
-                          className={`p-3 rounded-xl border-2 transition-all text-left ${
-                            interest.includes(item.id)
-                              ? 'border-[#D4B483] bg-[#D4B483]/10'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="text-xl">{item.emoji}</span>
-                            <span className="text-sm font-medium text-gray-700">
-                              {item.label}
-                            </span>
-                            {interest.includes(item.id) && (
-                              <Check className="w-4 h-4 ml-auto text-[#4A6741]" />
-                            )}
-                          </div>
-                        </motion.button>
-                      ))}
+                      {content.interests.map((item) => {
+                        const isActive = interest.includes(item.id);
+                        return (
+                          <motion.button
+                            key={item.id}
+                            type="button"
+                            onClick={() => toggleInterest(item.id)}
+                            className="p-3 rounded-xl transition-all text-left"
+                            style={{
+                              ...glassFieldStyle,
+                              ...(isActive
+                                ? {
+                                    borderColor: 'rgba(212, 180, 131, 0.6)',
+                                    background:
+                                      'linear-gradient(135deg, rgba(212, 180, 131, 0.25) 0%, rgba(74, 103, 65, 0.2) 100%)'
+                                  }
+                                : {})
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <div className="flex items-center gap-2 text-white">
+                              <span className="text-xl">{item.emoji}</span>
+                              <span className="text-sm font-medium">
+                                {item.label}
+                              </span>
+                              {isActive && (
+                                <Check className="w-4 h-4 ml-auto text-[#D4B483]" />
+                              )}
+                            </div>
+                          </motion.button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -256,7 +285,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                   )}
 
                   {/* Privacy */}
-                  <p className="text-xs text-gray-500 text-center">
+                  <p className="text-xs text-white/60 text-center">
                     {content.privacy}
                   </p>
                 </motion.form>

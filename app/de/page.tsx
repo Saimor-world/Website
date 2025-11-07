@@ -12,6 +12,7 @@ const MoraIntroAnimation = dynamic(() => import('@/components/MoraIntroAnimation
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
+const MoraChat = dynamic(() => import('@/components/MoraChat'), { ssr: false });
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
 
@@ -38,6 +39,7 @@ export default function Page() {
       <ScrollProgress />
       <EasterEggs />
       <MoraAvatar locale="de" />
+      <MoraChat />
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="de" />

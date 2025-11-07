@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 
-// Môra Chat API Route - Proxy to api.saimor.world
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -13,37 +12,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get backend URL from env - NEW Môra Chat endpoint!
-    const backendUrl = process.env.BACKEND_API_URL || 'https://api.saimor.world';
-    const chatEndpoint = `${backendUrl}/api/v1/mora/chat`; // Updated to new endpoint!
+    const backendUrl =
+      process.env.BACKEND_BASE_URL ||
+      process.env.BACKEND_API_URL ||
+      'https://voice.saimor.world';
+    const chatEndpoint = new URL('/mora/chat', backendUrl).toString();
+    const apiToken = process.env.MORA_API_TOKEN || process.env.BACKEND_API_KEY;
 
-    // Forward request to backend
+    const payload = {
+      message,
+      session_id: conversationId || sessionId || `web-${Date.now()}`,
+      context: {
+        source: 'website',
+        page: request.headers.get('referer') || ''
+      }
+    };
+
     const response = await fetch(chatEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add API key if needed
-        ...(process.env.BACKEND_API_KEY && {
-          'Authorization': `Bearer ${process.env.BACKEND_API_KEY}`
+        ...(apiToken && {
+          'Authorization': `Bearer ${apiToken}`
         })
       },
-      body: JSON.stringify({
-        message,
-        session_id: sessionId || `web-${Date.now()}`,
-        context: {
-          source: 'website',
-          page: request.headers.get('referer') || ''
-        }
-      })
+      cache: 'no-store',
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
       console.error('Backend API error:', response.status, response.statusText);
+      let errorDetails: any = null;
+      try {
+        errorDetails = await response.json();
+      } catch (err) {
+        errorDetails = null;
+      }
 
-      // Fallback response
       return NextResponse.json({
-        reply: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuche es später noch einmal oder kontaktiere uns direkt über Cal.com.',
-        error: true
+        reply: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuche es spaeter noch einmal oder kontaktiere uns direkt ueber Cal.com.',
+        error: true,
+        details: errorDetails?.error || 'backend_unavailable'
       }, { status: 500 });
     }
 
@@ -51,16 +60,16 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       reply: data.response || data.reply || 'Ich habe verstanden. Wie kann ich dir weiterhelfen?',
-      conversationId: data.session_id || sessionId,
+      conversationId: data.session_id || payload.session_id,
       suggestions: data.suggestions || [],
-      metadata: data.metadata || {} // Include cost tracking metadata
+      metadata: data.metadata || {}
     });
 
   } catch (error) {
-    console.error('Môra Chat API error:', error);
+    console.error('Mora Chat API error:', error);
 
     return NextResponse.json({
-      reply: 'Es tut mir leid, aber ich kann gerade nicht antworten. Bitte versuche es später noch einmal.',
+      reply: 'Es tut mir leid, aber ich kann gerade nicht antworten. Bitte versuche es spaeter noch einmal.',
       error: true
     }, { status: 500 });
   }
@@ -70,7 +79,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     status: 'ok',
-    service: 'Môra Chat API',
+    service: 'Mora Chat API',
     version: '1.0.0'
   });
 }

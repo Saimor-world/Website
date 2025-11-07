@@ -83,10 +83,10 @@ export default function TrustProof({ locale }: Props) {
               }}
               className="group relative rounded-3xl p-8 overflow-hidden text-center"
               style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 245, 243, 0.8) 100%)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(212, 180, 131, 0.3)',
-                boxShadow: '0 10px 30px rgba(74, 103, 65, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+                background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
+                backdropFilter: 'blur(24px)',
+                border: '1px solid rgba(212, 180, 131, 0.35)',
+                boxShadow: '0 20px 55px rgba(10, 22, 18, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
               }}
             >
               {/* Gradient overlay on hover */}

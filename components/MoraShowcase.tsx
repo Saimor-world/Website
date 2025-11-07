@@ -1,7 +1,20 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, memo } from 'react';
-import { Sparkles, TrendingUp, Users, Target, BarChart3, MessageSquare, Send, Loader2, CheckCircle2, ChevronRight, Zap, DollarSign } from 'lucide-react';
+import { useState, memo, CSSProperties } from 'react';
+import {
+  Sparkles,
+  TrendingUp,
+  Users,
+  Target,
+  BarChart3,
+  MessageSquare,
+  Send,
+  Loader2,
+  CheckCircle2,
+  ChevronRight,
+  Zap,
+  DollarSign
+} from 'lucide-react';
 
 type Locale = 'de' | 'en';
 
@@ -15,6 +28,24 @@ interface BusinessKPIs {
   employeeSatisfaction: number;
   budgetEfficiency: number;
 }
+
+const glassPanelStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(10, 22, 18, 0.85) 0%, rgba(10, 22, 18, 0.55) 100%)',
+  backdropFilter: 'blur(28px)',
+  border: '1px solid rgba(212, 180, 131, 0.32)',
+  boxShadow:
+    '0 30px 70px rgba(10, 22, 18, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+};
+
+const glassTileStyle: CSSProperties = {
+  background:
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.3)',
+  backdropFilter: 'blur(18px)',
+  boxShadow:
+    '0 16px 40px rgba(10, 22, 18, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+};
 
 const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
   const [kpis, setKpis] = useState<BusinessKPIs>({
@@ -262,7 +293,8 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {/* LEFT: Môra Chat Interface */}
           <motion.div
-            className="space-y-6"
+            className="space-y-6 rounded-3xl p-8 shadow-xl"
+            style={glassPanelStyle}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -339,7 +371,8 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 <motion.button
                   key={index}
                   onClick={() => handleAskMora(question)}
-                  className="w-full p-4 rounded-xl border-2 border-[#D4B483]/20 bg-white text-left hover:border-[#D4B483] hover:bg-gradient-to-r hover:from-[#D4B483]/5 hover:to-transparent transition-all group"
+                  className="w-full p-4 rounded-2xl text-left transition-all group disabled:opacity-50"
+                  style={glassTileStyle}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -349,7 +382,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 >
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4B483] transition-colors" />
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                    <span className="text-sm font-medium text-gray-100 group-hover:text-white">
                       {question}
                     </span>
                   </div>
@@ -371,7 +404,8 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
                 placeholder={content.inputPlaceholder}
                 disabled={isAsking}
-                className="w-full px-6 py-4 pr-14 rounded-2xl border-2 border-[#D4B483]/30 bg-white focus:border-[#D4B483] focus:outline-none focus:ring-2 focus:ring-[#D4B483]/20 text-gray-800 placeholder-gray-400 disabled:opacity-50"
+                className="w-full px-6 py-4 pr-14 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30 disabled:opacity-50 bg-transparent"
+                style={glassTileStyle}
               />
               <motion.button
                 onClick={() => handleAskMora()}
@@ -392,7 +426,12 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
             <AnimatePresence>
               {moraResponse && (
                 <motion.div
-                  className="p-6 rounded-2xl bg-gradient-to-br from-[#4A6741]/10 via-white to-[#D4B483]/10 border-2 border-[#D4B483]/30 shadow-lg"
+                  className="p-6 rounded-2xl"
+                  style={{
+                    ...glassTileStyle,
+                    background:
+                      'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)'
+                  }}
                   initial={{ opacity: 0, height: 0, y: -20 }}
                   animate={{ opacity: 1, height: 'auto', y: 0 }}
                   exit={{ opacity: 0, height: 0, y: -20 }}
@@ -408,10 +447,10 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                     </motion.div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-[#4A6741]">Môra</h4>
+                        <h4 className="font-bold text-white">Môra</h4>
                         {showSuccess && (
                           <motion.div
-                            className="flex items-center gap-1 text-xs text-green-600"
+                            className="flex items-center gap-1 text-xs text-emerald-300"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                           >
@@ -429,7 +468,12 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   {/* Link to Full Chat */}
                   <motion.button
                     onClick={openMoraChat}
-                    className="w-full mt-4 py-2 rounded-lg bg-gradient-to-r from-[#4A6741]/5 to-[#D4B483]/5 border border-[#D4B483]/20 text-sm font-medium text-[#4A6741] hover:from-[#4A6741]/10 hover:to-[#D4B483]/10 transition-all flex items-center justify-center gap-2"
+                    className="w-full mt-4 py-3 rounded-xl text-sm font-medium text-white transition-all flex items-center justify-center gap-2"
+                    style={{
+                      ...glassTileStyle,
+                      background:
+                        'linear-gradient(135deg, rgba(74, 103, 65, 0.4) 0%, rgba(212, 180, 131, 0.35) 100%)'
+                    }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -444,7 +488,8 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
           {/* RIGHT: Live Business Dashboard */}
           <motion.div
-            className="space-y-6"
+            className="space-y-6 rounded-3xl p-8 shadow-xl"
+            style={glassPanelStyle}
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -474,62 +519,68 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   icon: Users,
                   label: content.kpis.productivity,
                   value: `${Math.round(kpis.teamProductivity)}%`,
-                  color: 'from-blue-500 to-cyan-500',
-                  bgColor: 'from-blue-50 to-cyan-50'
+                  gradient:
+                    'linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(6, 182, 212, 0.18) 100%)',
+                  iconGradient: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%)'
                 },
                 {
                   icon: Target,
                   label: content.kpis.progress,
                   value: `${Math.round(kpis.projectProgress)}%`,
-                  color: 'from-purple-500 to-indigo-500',
-                  bgColor: 'from-purple-50 to-indigo-50'
+                  gradient:
+                    'linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(99, 102, 241, 0.18) 100%)',
+                  iconGradient: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)'
                 },
                 {
                   icon: Sparkles,
                   label: content.kpis.satisfaction,
                   value: kpis.employeeSatisfaction.toFixed(1),
                   suffix: '/5',
-                  color: 'from-amber-500 to-orange-500',
-                  bgColor: 'from-amber-50 to-orange-50'
+                  gradient:
+                    'linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(249, 115, 22, 0.18) 100%)',
+                  iconGradient: 'linear-gradient(135deg, #F59E0B 0%, #F97316 100%)'
                 },
                 {
                   icon: BarChart3,
                   label: content.kpis.budget,
                   value: `${Math.round(kpis.budgetEfficiency)}%`,
-                  color: 'from-green-500 to-emerald-500',
-                  bgColor: 'from-green-50 to-emerald-50'
+                  gradient:
+                    'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.18) 100%)',
+                  iconGradient: 'linear-gradient(135deg, #22C55E 0%, #10B981 100%)'
                 }
-              ].map((kpi, index) => (
+              ].map((kpi) => (
                 <motion.div
                   key={kpi.label}
-                  className={`p-6 rounded-2xl bg-gradient-to-br ${kpi.bgColor} border-2 border-white shadow-lg relative overflow-hidden`}
+                  className="p-6 rounded-2xl relative overflow-hidden text-white"
+                  style={{ ...glassTileStyle, background: kpi.gradient }}
                   layout
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
-                  <div className="absolute top-0 right-0 opacity-10">
-                    <kpi.icon className="w-24 h-24 text-gray-400" strokeWidth={1} />
+                  <div className="absolute top-0 right-0 opacity-20">
+                    <kpi.icon className="w-24 h-24 text-white" strokeWidth={1} />
                   </div>
 
                   <div className="relative z-10 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600 mb-2">{kpi.label}</p>
+                      <p className="text-sm font-medium text-white/70 mb-2">{kpi.label}</p>
                       <div className="flex items-baseline gap-1">
                         <motion.p
-                          className="text-4xl font-bold text-gray-900"
+                          className="text-4xl font-bold text-white"
                           key={kpi.value}
                           initial={{ scale: 1.2, color: '#D4B483' }}
-                          animate={{ scale: 1, color: '#111827' }}
+                          animate={{ scale: 1, color: '#ffffff' }}
                           transition={{ duration: 0.4 }}
                         >
                           {kpi.value}
                         </motion.p>
                         {kpi.suffix && (
-                          <span className="text-lg font-medium text-gray-600">{kpi.suffix}</span>
+                          <span className="text-lg font-medium text-white/70">{kpi.suffix}</span>
                         )}
                       </div>
                     </div>
                     <motion.div
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${kpi.color} flex items-center justify-center shadow-lg`}
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      style={{ background: kpi.iconGradient }}
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
                     >
@@ -540,34 +591,38 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               ))}
             </div>
 
-            {/* Packages Preview */}
-            <div className="grid grid-cols-2 gap-4 pt-6">
-              {content.packages.map((pkg, index) => (
-                <motion.div
-                  key={pkg.name}
-                  className="p-4 rounded-xl border-2 border-[#D4B483]/30 bg-gradient-to-br from-white to-slate-50 relative hover:shadow-lg transition-shadow"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -4 }}
+          {/* Packages Preview */}
+          <div className="grid grid-cols-2 gap-4 pt-6">
+            {content.packages.map((pkg, index) => (
+              <motion.div
+                key={pkg.name}
+                className="p-4 rounded-2xl relative overflow-hidden transition-shadow"
+                style={glassTileStyle}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+              >
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483]">
+                  {pkg.badge}
+                </div>
+                <h4
+                  className="font-bold text-lg text-center mb-3 mt-2 text-white"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483]">
-                    {pkg.badge}
-                  </div>
-                  <h4 className="font-bold text-lg text-center mb-3 mt-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                    {pkg.name}
-                  </h4>
-                  <div className="space-y-2">
-                    {pkg.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-[#4A6741]" />
-                        <span className="text-xs text-gray-600">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+                  {pkg.name}
+                </h4>
+                <div className="space-y-2">
+                  {pkg.features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4B483]" />
+                      <span className="text-xs text-white/70">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
             </div>
           </motion.div>
         </div>

@@ -33,9 +33,10 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
         '🌀 Cross-Channel (Web, Voice, Dashboard)'
       ],
       infoCTA: 'Komm auf die Warteliste',
+      infoChatCTA: 'Mit MA\'ra chatten',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 Über Môra',
+        chat: '💬 Mit Môra chatten',
         about: '📚 Über Saimôr',
         services: '🎯 Services',
         close: '✕ Schließen'
@@ -54,15 +55,21 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
         '🌀 Cross-channel (Web, Voice, Dashboard)'
       ],
       infoCTA: 'Join the waitlist',
+      infoChatCTA: 'Chat with MA\'ra',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 About Môra',
+        chat: '💬 Chat with Môra',
         about: '📚 About Saimôr',
         services: '🎯 Services',
         close: '✕ Close'
       }
     }
   }[locale];
+
+  const openChatOverlay = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new Event('openMoraChat'));
+  }, []);
 
   // Track mouse for eye movement
   useEffect(() => {
@@ -112,7 +119,8 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   const handleQuickAction = (action: string) => {
     switch (action) {
       case 'chat':
-        setShowInfoPopup(true);
+        openChatOverlay();
+        setShowInfoPopup(false);
         break;
       case 'about':
         window.location.hash = '#angebot';
@@ -340,20 +348,34 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                     </div>
 
                     {/* CTA */}
-                    <motion.button
-                      onClick={() => {
-                        setShowInfoPopup(false);
-                        setTimeout(() => window.location.hash = '#waitlist', 300);
-                      }}
-                      className="w-full py-4 rounded-2xl font-bold text-white shadow-lg"
-                      style={{
-                        background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
-                      }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {content.infoCTA}
-                    </motion.button>
+                    <div className="space-y-3">
+                      <motion.button
+                        onClick={() => {
+                          setShowInfoPopup(false);
+                          setTimeout(() => window.location.hash = '#waitlist', 300);
+                        }}
+                        className="w-full py-4 rounded-2xl font-bold text-white shadow-lg"
+                        style={{
+                          background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                        }}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {content.infoCTA}
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => {
+                          setShowInfoPopup(false);
+                          openChatOverlay();
+                        }}
+                        className="w-full py-4 rounded-2xl font-semibold text-[#4A6741] border border-[#D4B483]/40 bg-white/95 shadow-lg"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {content.infoChatCTA}
+                      </motion.button>
+                    </div>
                   </div>
 
                   {/* Close button */}
