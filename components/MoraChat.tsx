@@ -148,98 +148,21 @@ export default function MoraChat() {
   };
 
   return (
-    <>
-      {/* Floating Chat Button */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-[#4A6741] to-[#D4B483] shadow-2xl flex items-center justify-center text-white group"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{
-          boxShadow: '0 8px 32px rgba(212, 180, 131, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.2)'
-        }}
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.5 }}
-      >
-        {/* Pulsing Rings */}
+    <AnimatePresence>
+      {isOpen && (
         <motion.div
-          className="absolute inset-0 rounded-full border-2 border-[#D4B483]"
-          animate={{
-            scale: [1, 1.4, 1],
-            opacity: [0.6, 0, 0.6]
+          className="fixed bottom-24 right-6 z-50 w-[400px] h-[600px] max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+          style={{
+            background: 'linear-gradient(135deg, rgba(248, 247, 243, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
+            backdropFilter: 'blur(20px)',
+            border: '2px solid rgba(212, 180, 131, 0.3)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
           }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeOut'
-          }}
-        />
-        <motion.div
-          className="absolute inset-0 rounded-full border-2 border-[#D4B483]"
-          animate={{
-            scale: [1, 1.6, 1],
-            opacity: [0.4, 0, 0.4]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeOut',
-            delay: 0.4
-          }}
-        />
-
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-            >
-              <X className="w-7 h-7" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-            >
-              <Sparkles className="w-7 h-7" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Notification Badge */}
-        {!isOpen && messages.length === 0 && (
-          <motion.div
-            className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-xs font-bold"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 1 }}
-          >
-            !
-          </motion.div>
-        )}
-      </motion.button>
-
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="fixed bottom-24 right-6 z-50 w-[400px] h-[600px] max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
-            style={{
-              background: 'linear-gradient(135deg, rgba(248, 247, 243, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
-              backdropFilter: 'blur(20px)',
-              border: '2px solid rgba(212, 180, 131, 0.3)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-            }}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-          >
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+        >
             {/* Header */}
             <div
               className="relative p-4 border-b"
@@ -376,8 +299,7 @@ export default function MoraChat() {
               </div>
             </form>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      )}
+    </AnimatePresence>
   );
 }
