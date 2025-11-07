@@ -41,8 +41,8 @@ export default function Hero({
   const heroText = {
     de: {
       heading: 'Klarheit im Wandel',
-      claim: 'Begleitung fÃ¼r Menschen und Organisationen, wenn Systeme schwanken.',
-      ctaPrimary: 'KlarheitsgesprÃ¤ch buchen',
+      claim: 'Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
+      ctaPrimary: 'Klarheitsgespräch buchen',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
@@ -259,7 +259,7 @@ export default function Hero({
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-          {/* MÃ´ra Badge - Prominent */}
+        {/* Môra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -284,7 +284,7 @@ export default function Hero({
               </svg>
             </motion.div>
             <span className="text-sm font-semibold text-[#E6C897]">
-              {locale === 'de' ? 'MÃ´ra Backend 85% â‹… Jetzt verfÃ¼gbar' : 'MÃ´ra Backend 85% â‹… Available Now'}
+              {locale === 'de' ? 'Môra Backend 85% ⋅ Jetzt verfügbar' : 'Môra Backend 85% ⋅ Available Now'}
             </span>
           </motion.div>
 
@@ -332,7 +332,7 @@ export default function Hero({
               border: '2px solid rgba(255, 255, 255, 0.2)',
               boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
             }}
-            aria-label="Join MÃ´ra waitlist"
+            aria-label="Join Môra waitlist"
           >
             {/* Animated shine effect */}
             <motion.div
@@ -357,7 +357,7 @@ export default function Hero({
                 <path d="M13 7H7v6h6V7z"/>
                 <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </motion.svg>
-              <span>{locale === 'de' ? 'MÃ´ra kennenlernen' : 'Meet MÃ´ra'}</span>
+              <span>{locale === 'de' ? 'Môra kennenlernen' : 'Meet Môra'}</span>
             </span>
           </motion.a>
 
@@ -417,6 +417,7 @@ export default function Hero({
     </section>
   );
 }
+
 
 
 
