@@ -41,40 +41,41 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
       emailPlaceholder: 'deine@email.de',
       interestTitle: 'Was interessiert dich? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra KI-Assistentin', emoji: '🤖' },
+        { id: 'mora-ai', label: 'Môra KI-Assistentin', emoji: '✨' },
         { id: 'dashboards', label: 'Dashboards & Analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎯' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
         { id: 'orbit', label: 'Orbit Coaching', emoji: '🌀' }
       ],
       submit: 'Auf Warteliste setzen',
-      submitting: 'Wird gesendet...',
-      successTitle: 'Willkommen in der Community! 🎉',
-      successMessage: 'Du erhältst in Kürze eine Bestätigungs-E-Mail. Wir melden uns, sobald Môra bereit ist!',
-      errorMessage: 'Etwas ist schief gelaufen. Bitte versuche es erneut oder schreib uns direkt.',
-      privacy: 'Deine Daten werden nur für Early-Access verwendet. Keine Newsletter ohne deine Zustimmung.',
+      submitting: 'Wird gesendet…',
+      successTitle: 'Willkommen in der Community! 🌿',
+      successMessage: 'Du erhältst in Kürze eine Bestätigung. Wir melden uns, sobald Môra bereit ist.',
+      errorMessage: 'Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt.',
+      privacy: 'Deine Daten werden nur für Early Access verwendet. Kein Newsletter ohne Zustimmung.',
       position: 'Wartelisten-Position wird nach Anmeldung angezeigt'
     },
     en: {
       title: 'Early Access Waitlist',
       subtitle: 'Get exclusive access to Môra and help shape the future of Saimôr.',
-      namePlaceholder: 'Your Name',
+      namePlaceholder: 'Your name',
       emailPlaceholder: 'your@email.com',
       interestTitle: 'What interests you? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra AI Assistant', emoji: '🤖' },
-        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎯' },
-        { id: 'orbit', label: 'Orbit Coaching', emoji: '🌀' }
+        { id: 'mora-ai', label: 'Môra AI assistant', emoji: '✨' },
+        { id: 'dashboards', label: 'Dashboards & analytics', emoji: '📊' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
+        { id: 'orbit', label: 'Orbit coaching', emoji: '🌀' }
       ],
-      submit: 'Join Waitlist',
-      submitting: 'Sending...',
-      successTitle: 'Welcome to the Community! 🎉',
-      successMessage: 'You\'ll receive a confirmation email shortly. We\'ll reach out when Môra is ready!',
+      submit: 'Join waitlist',
+      submitting: 'Sending…',
+      successTitle: 'Welcome to the community! 🌿',
+      successMessage: 'You’ll receive a confirmation email shortly. We’ll reach out as soon as Môra is ready.',
       errorMessage: 'Something went wrong. Please try again or contact us directly.',
       privacy: 'Your data is only used for early access. No newsletters without your consent.',
       position: 'Waitlist position will be shown after signup'
     }
   }[locale];
+
 
   const toggleInterest = (id: string) => {
     setInterest(prev =>

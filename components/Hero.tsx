@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import type { CSSProperties } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import CommunityNote from './CommunityNote';
 
 const Orbits = dynamic(() => import('./Orbits'), { ssr: false });
 const DataJungle = dynamic(() => import('./DataJungle'), { ssr: false });
@@ -387,6 +388,8 @@ export default function Hero({
             </motion.svg>
           </motion.button>
         </motion.div>
+
+        <CommunityNote locale={locale} className="mt-12 max-w-4xl mx-auto px-4" />
 
       </div>
 

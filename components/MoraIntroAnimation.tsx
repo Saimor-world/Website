@@ -27,11 +27,11 @@ export default function MoraIntroAnimation({ locale }: Props) {
       // Phase timings
       const timer1 = setTimeout(() => setPhase(1), 1000);  // Awakening
       const timer2 = setTimeout(() => setPhase(2), 2000);  // Connection
-      const timer3 = setTimeout(() => setPhase(3), 3000);  // Exit
+      const timer3 = setTimeout(() => setPhase(3), 3000);  // Exit - Flight to Avatar
       const timer4 = setTimeout(() => {
         setShow(false);
         localStorage.setItem('mora-intro-seen', 'true');
-      }, 4500);
+      }, 5200); // Extended to finish flight animation
 
       return () => {
         clearTimeout(timer1);
@@ -143,14 +143,14 @@ export default function MoraIntroAnimation({ locale }: Props) {
           className="relative flex items-center justify-center"
           initial={{ scale: 0, opacity: 0 }}
           animate={{
-            scale: phase === 0 ? 1 : phase === 1 ? [1, 1.3, 1] : phase === 3 ? 0.3 : 1,
-            x: phase === 3 ? windowSize.width * 0.35 : 0,
-            y: phase === 3 ? windowSize.height * 0.35 : 0,
-            opacity: phase === 3 ? 0 : 1
+            scale: phase === 0 ? 1 : phase === 1 ? [1, 1.3, 1] : phase === 3 ? 0.25 : 1,
+            x: phase === 3 ? (windowSize.width / 2) - 70 : 0,
+            y: phase === 3 ? (windowSize.height / 2) - 70 : 0,
+            opacity: phase === 3 ? 1 : 1
           }}
           transition={{
-            duration: phase === 1 ? 1 : 0.8,
-            ease: phase === 3 ? [0.43, 0.13, 0.23, 0.96] : "easeOut"
+            duration: phase === 1 ? 1 : phase === 3 ? 1.8 : 0.8,
+            ease: phase === 3 ? [0.22, 1, 0.36, 1] : "easeOut"
           }}
         >
           {/* Outer Glow */}

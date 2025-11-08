@@ -48,6 +48,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" data-saimor="pb-1.2">
+      <head>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+      </head>
       <body className="bg-forest-primary text-warm-beige antialiased">
         {/* Cache Buster - Force clear old chunks */}
         <Script
