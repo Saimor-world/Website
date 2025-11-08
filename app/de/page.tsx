@@ -1,6 +1,5 @@
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
-import MoraShowcase from '@/components/MoraShowcase';
 import TrustProof from '@/components/TrustProof';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
@@ -9,6 +8,7 @@ import WaitlistForm from '@/components/WaitlistForm';
 import dynamic from 'next/dynamic';
 
 const MoraWorkbench = dynamic(() => import('@/components/MoraWorkbench'), { ssr: false });
+const InteractiveMoraDashboard = dynamic(() => import('@/components/InteractiveMoraDashboard'), { ssr: false });
 
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
@@ -45,7 +45,7 @@ export default function Page() {
         <Hero locale="de" />
         <MoraWorkbench locale="de" />
         <Services locale="de" />
-        <MoraShowcase locale="de" />
+        <InteractiveMoraDashboard locale="de" />
         <TrustProof locale="de" />
         <CommunityBanner locale="de" />
         <WaitlistForm locale="de" />
