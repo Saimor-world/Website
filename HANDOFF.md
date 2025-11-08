@@ -24,6 +24,9 @@ Die Website wurde von einer **Marketing-Landingpage** zu einem **filmischen Raum
 | `88a728d` | **Filmischer Hero** (Môra Orb, HeroAmbient, SyntaxOverlay, MoraWorkbench) | 🎬 **BREAKING CHANGE** |
 | `1f4152b` | **Hydration Fixes** (SSR/CSR Mismatch behoben) | 🐛 Critical Fix |
 | `8484cb1` | **Loading State** für HeroAmbient | 🔧 Performance |
+| `f4de7f5` | **English Systems page** (/en/systems) | ✅ i18n Complete |
+| `7d528f1` | **HANDOFF.md update** (Systems EN done) | 📝 Documentation |
+| `37b6c0f` | **English Orbit + Pulse pages** (/en/orbit, /en/pulse) | ✅ i18n Complete |
 
 ---
 
@@ -107,17 +110,22 @@ Die Website wurde von einer **Marketing-Landingpage** zu einem **filmischen Raum
 
 ## 🎯 **VOLLSTÄNDIGE ZWISCHENSEITEN**
 
-### **/orbit** (DE + EN)
-- ✅ Vollständige Landing-Page
-- Hero, Benefits, Format-Info, Callout, CTAs
+### **/orbit** (DE + EN) ✅ **COMPLETE**
+- ✅ Vollständige Landing-Page (DE + EN)
+- Hero: "Rhythm instead of Meetings"
+- Benefits, Format-Info, Callout, CTAs
 - Design: konsistent mit Gesamt-Ästhetik
+- English version: Commit 37b6c0f
 
-### **/pulse** (DE + EN)
-- ✅ Vollständige Landing-Page
-- Hero, Benefits, Format-Beispiele, Callout, CTAs
+### **/pulse** (DE + EN) ✅ **COMPLETE**
+- ✅ Vollständige Landing-Page (DE + EN)
+- Hero: "Impulses for Clarity in the Moment"
+- Benefits, Format-Beispiele (Workshop, Keynote, Silent), CTAs
+- English version: Commit 37b6c0f
 
-### **/systems** (DE + EN)
-- ✅ **NEU:** Vollständige Landing-Page (DE + EN)
+### **/systems** (DE + EN) ✅ **COMPLETE**
+- ✅ Vollständige Landing-Page (DE + EN)
+- Hero: "Data that creates clarity"
 - Hero, Benefits, 3 Packages (Nova, Horizon, Solara)
 - DSGVO-Callout mit Shield-Icon
 - ✅ **DONE:** Englische Version erstellt (`/en/systems`)
@@ -234,7 +242,10 @@ Alle Farben bereits harmonisiert in `app/globals.css`:
 
 ### **Kurzfristig (diese Woche):**
 1. **Lokal testen** um Hydration-Errors zu verifizieren
-2. ✅ **Englische Systems-Seite** erstellt (`/en/systems`) - Commit f4de7f5
+2. ✅ **Englische Zwischenseiten** erstellt - Commits f4de7f5, 37b6c0f
+   - ✅ `/en/systems`
+   - ✅ `/en/orbit`
+   - ✅ `/en/pulse`
 3. **Mobile Testing** (Hero-Animationen auf kleineren Screens)
 4. **Performance-Optimierung** wenn nötig
 
