@@ -225,15 +225,47 @@ export default function InteractiveMoraDashboard({ locale }: Props) {
                     </div>
                   </div>
 
-                  {/* Resonanz-Linie */}
+                  {/* Enhanced Resonanz-Linie with glow */}
                   {activeKPI === i && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 h-1 rounded-full"
-                      style={{ background: kpi.color }}
-                      initial={{ width: 0 }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: 0.5 }}
-                    />
+                    <>
+                      {/* Glow layer */}
+                      <motion.div
+                        className="absolute bottom-0 left-0 h-2 rounded-full"
+                        style={{
+                          background: kpi.color,
+                          filter: 'blur(8px)',
+                          opacity: 0.6
+                        }}
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.5 }}
+                      />
+                      {/* Main line */}
+                      <motion.div
+                        className="absolute bottom-0 left-0 h-1 rounded-full overflow-hidden"
+                        style={{ background: kpi.color }}
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {/* Animated shimmer */}
+                        <motion.div
+                          className="absolute inset-0 h-full"
+                          style={{
+                            background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)`,
+                            width: '50%'
+                          }}
+                          animate={{
+                            x: ['0%', '200%']
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: 'linear'
+                          }}
+                        />
+                      </motion.div>
+                    </>
                   )}
                 </motion.div>
               ))}
@@ -284,20 +316,79 @@ export default function InteractiveMoraDashboard({ locale }: Props) {
                     whileHover={{ scale: 1.2 }}
                     onClick={() => setActiveKPI(activeKPI === i ? null : i)}
                   >
-                    {/* Connection line */}
+                    {/* Connection line with enhanced resonance */}
                     <svg className="absolute top-1/2 left-1/2 pointer-events-none"
                          style={{ width: radius * 2, height: radius * 2, transform: 'translate(-50%, -50%)' }}>
+                      <defs>
+                        <linearGradient id={`lineGradient-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor={kpi.color} stopOpacity="0.8" />
+                          <stop offset="100%" stopColor={kpi.color} stopOpacity="0.2" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Main connection line */}
                       <motion.line
                         x1="50%"
                         y1="50%"
                         x2={`${50 + (x / radius) * 50}%`}
                         y2={`${50 + (y / radius) * 50}%`}
-                        stroke={kpi.color}
-                        strokeWidth={activeKPI === i ? "3" : "1"}
-                        opacity={activeKPI === i || pulseActive ? 0.8 : 0.3}
+                        stroke={`url(#lineGradient-${i})`}
+                        strokeWidth={activeKPI === i ? "3" : "1.5"}
+                        opacity={activeKPI === i || pulseActive ? 1 : 0.4}
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
                         transition={{ duration: 1 }}
+                      />
+
+                      {/* Glow effect on active */}
+                      {activeKPI === i && (
+                        <motion.line
+                          x1="50%"
+                          y1="50%"
+                          x2={`${50 + (x / radius) * 50}%`}
+                          y2={`${50 + (y / radius) * 50}%`}
+                          stroke={kpi.color}
+                          strokeWidth="6"
+                          opacity="0.3"
+                          filter="blur(4px)"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 1 }}
+                        />
+                      )}
+
+                      {/* Animated particle */}
+                      {(activeKPI === i || pulseActive) && (
+                        <motion.circle
+                          r="4"
+                          fill={kpi.color}
+                          initial={{
+                            cx: '50%',
+                            cy: '50%',
+                            opacity: 0
+                          }}
+                          animate={{
+                            cx: `${50 + (x / radius) * 50}%`,
+                            cy: `${50 + (y / radius) * 50}%`,
+                            opacity: [0, 1, 0]
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: 'easeInOut'
+                          }}
+                        />
+                      )}
+
+                      {/* Connection dot at endpoint */}
+                      <motion.circle
+                        cx={`${50 + (x / radius) * 50}%`}
+                        cy={`${50 + (y / radius) * 50}%`}
+                        r={activeKPI === i ? "5" : "3"}
+                        fill={kpi.color}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.8 }}
                       />
                     </svg>
 
