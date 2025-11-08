@@ -30,11 +30,11 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
       // Phase timings
       setTimeout(() => setPhase(1), 1000);  // Awakening
       setTimeout(() => setPhase(2), 2000);  // Connection
-      setTimeout(() => setPhase(3), 3000);  // Exit
+      setTimeout(() => setPhase(3), 3000);  // Flight to bottom-right
       setTimeout(() => {
         setShow(false);
         localStorage.setItem('mora-intro-seen', 'true');
-      }, 4000);
+      }, 4500); // Extended to let flight animation complete
     }
   }, [mounted]);
 
@@ -99,11 +99,17 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
             className="relative pointer-events-none"
             initial={{ scale: 0, opacity: 0 }}
             animate={{
-              scale: phase === 0 ? 1 : phase === 1 ? [1, 1.3, 1] : phase === 3 ? 0.3 : 1,
-              x: phase === 3 ? (typeof window !== 'undefined' ? window.innerWidth * 0.4 : 400) : 0,
-              y: phase === 3 ? (typeof window !== 'undefined' ? window.innerHeight * 0.4 : 300) : 0,
+              scale: phase === 0 ? 1 : phase === 1 ? [1, 1.3, 1] : phase === 3 ? 0.4 : 1,
+              x: phase === 3 ? (typeof window !== 'undefined' ? window.innerWidth / 2 - 64 : 400) : 0,
+              y: phase === 3 ? (typeof window !== 'undefined' ? window.innerHeight / 2 - 64 : 300) : 0,
             }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{
+              duration: 1.2,
+              ease: [0.34, 1.56, 0.64, 1], // Disney-style elastic ease out
+              type: "spring",
+              stiffness: 80,
+              damping: 15
+            }}
           >
             {/* Glow - pulsing effect */}
             <motion.div
