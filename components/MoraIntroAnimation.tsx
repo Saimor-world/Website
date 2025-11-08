@@ -57,12 +57,14 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
   const content = {
     de: {
-      greeting: 'Hallo, ich bin Môra',
-      subtitle: 'Deine KI-Begleiterin für Klarheit'
+      greeting: 'Hallo, ich bin Môra 🌱',
+      subtitle: 'Deine KI-Begleiterin für Klarheit',
+      skip: 'ESC oder Klick zum Überspringen'
     },
     en: {
-      greeting: 'Hello, I\'m Môra',
-      subtitle: 'Your AI companion for clarity'
+      greeting: 'Hello, I\'m Môra 🌱',
+      subtitle: 'Your AI companion for clarity',
+      skip: 'ESC or click to skip'
     }
   }[locale];
 
@@ -83,14 +85,14 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
           aria-label="Môra introduction animation"
         >
           {/* Skip hint */}
-          <motion.div
-            className="absolute top-8 right-8 text-white/60 text-sm"
+          <motion.p
+            className="absolute top-8 right-8 text-sm text-white/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 0.5 }}
           >
-            {locale === 'de' ? 'ESC oder Klick zum Überspringen' : 'ESC or click to skip'}
-          </motion.div>
+            {content.skip}
+          </motion.p>
 
           {/* Orb */}
           <motion.div
@@ -103,14 +105,27 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
             }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
           >
-            {/* Glow */}
-            <div
-              className="absolute inset-0 rounded-full"
+            {/* Glow - pulsing effect */}
+            <motion.div
+              className="absolute inset-0 rounded-full pointer-events-none"
               style={{
                 width: 200,
                 height: 200,
-                background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, transparent 70%)',
-                filter: 'blur(40px)'
+                background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, rgba(212, 180, 131, 0.2) 50%, transparent 70%)',
+                filter: 'blur(40px)',
+                transform: 'translate(-50%, -50%)',
+                top: '50%',
+                left: '50%'
+              }}
+              animate={{
+                scale: phase === 1 ? [1, 1.2, 1] : 1,
+                opacity: phase === 1 ? [0.6, 0.9, 0.6] : 0.6
+              }}
+              transition={{
+                duration: 2,
+                repeat: phase === 1 ? Infinity : 0,
+                repeatType: 'mirror',
+                ease: 'easeInOut'
               }}
             />
 
@@ -118,7 +133,8 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
             <div
               className="relative w-[200px] h-[200px] rounded-full flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 100%)',
+                boxShadow: '0 0 60px rgba(212, 180, 131, 0.5), inset 0 2px 20px rgba(255,255,255,0.3)'
               }}
             >
               {/* Eyes */}
@@ -135,22 +151,29 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
                 />
               </div>
 
-              {/* Sparkles */}
+              {/* Sparkles - Disney magic! */}
               {phase >= 1 && (
                 <>
                   <motion.div
                     className="absolute top-4 right-4"
                     animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                   >
-                    <Sparkles className="w-8 h-8 text-white" />
+                    <Sparkles className="w-8 h-8 text-white/80" />
                   </motion.div>
                   <motion.div
-                    className="absolute bottom-4 left-4"
+                    className="absolute bottom-6 left-5"
                     animate={{ rotate: -360, scale: [1, 1.3, 1] }}
-                    transition={{ duration: 2.5, repeat: Infinity }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
                   >
-                    <Sparkles className="w-6 h-6 text-[#D4B483]" />
+                    <Sparkles className="w-6 h-6 text-[#D4B483]/70" />
+                  </motion.div>
+                  <motion.div
+                    className="absolute top-8 left-6"
+                    animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Sparkles className="w-5 h-5 text-white/60" />
                   </motion.div>
                 </>
               )}
@@ -167,40 +190,83 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
               transition={{ duration: 0.5 }}
             >
               <h2
-                className="text-4xl md:text-5xl font-bold text-white mb-2"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                className="text-4xl sm:text-5xl font-bold text-white mb-3"
+                style={{
+                  fontFamily: 'Cormorant Garamond, serif',
+                  textShadow: '0 4px 20px rgba(0,0,0,0.5)'
+                }}
               >
                 {content.greeting}
               </h2>
-              <p className="text-lg md:text-xl text-[#D4B483]/80">
+              <p
+                className="text-lg sm:text-xl"
+                style={{
+                  color: 'rgba(212, 180, 131, 0.9)',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+                }}
+              >
                 {content.subtitle}
               </p>
             </motion.div>
           )}
 
-          {/* Connection Lines */}
+          {/* Connection Lines - 6 lines like mycelium network */}
           {phase === 2 && (
-            <svg className="absolute inset-0 w-full h-full pointer-events-none">
-              {[0, 90, 180, 270].map((angle, i) => (
-                <motion.line
-                  key={i}
-                  x1="50%"
-                  y1="50%"
-                  x2={`${50 + Math.cos(angle * Math.PI / 180) * 30}%`}
-                  y2={`${50 + Math.sin(angle * Math.PI / 180) * 30}%`}
-                  stroke="url(#connectionGradient)"
-                  strokeWidth="2"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                />
-              ))}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: -1 }}>
               <defs>
-                <linearGradient id="connectionGradient">
-                  <stop offset="0%" stopColor="#D4B483" />
-                  <stop offset="100%" stopColor="#4A6741" />
+                <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#D4B483" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#4A6741" stopOpacity="0.4" />
                 </linearGradient>
               </defs>
+              {[0, 60, 120, 180, 240, 300].map((angle, i) => {
+                const x1 = 50;
+                const y1 = 50;
+                const x2 = 50 + Math.cos(angle * Math.PI / 180) * 35;
+                const y2 = 50 + Math.sin(angle * Math.PI / 180) * 35;
+
+                return (
+                  <motion.line
+                    key={i}
+                    x1={`${x1}%`}
+                    y1={`${y1}%`}
+                    x2={`${x2}%`}
+                    y2={`${y2}%`}
+                    stroke="url(#connectionGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    exit={{ pathLength: 0, opacity: 0 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: i * 0.08,
+                      ease: 'easeOut'
+                    }}
+                  />
+                );
+              })}
+              {/* Connection dots at endpoints */}
+              {[0, 60, 120, 180, 240, 300].map((angle, i) => {
+                const x = 50 + Math.cos(angle * Math.PI / 180) * 35;
+                const y = 50 + Math.sin(angle * Math.PI / 180) * 35;
+
+                return (
+                  <motion.circle
+                    key={`dot-${i}`}
+                    cx={`${x}%`}
+                    cy={`${y}%`}
+                    r="4"
+                    fill="#D4B483"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.8 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: 0.5 + i * 0.08
+                    }}
+                  />
+                );
+              })}
             </svg>
           )}
         </motion.div>
