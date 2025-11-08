@@ -8,6 +8,17 @@ import Image from 'next/image';
 const Orbits = dynamic(() => import('./Orbits'), { ssr: false });
 const DataJungle = dynamic(() => import('./DataJungle'), { ssr: false });
 
+// Filmische Atmosphäre - als zusätzliche Layer
+const HeroAmbient = dynamic(() => import('./HeroAmbient'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0" style={{
+      background: 'linear-gradient(135deg, rgba(14, 26, 27, 0.98) 0%, rgba(26, 46, 38, 0.95) 50%, rgba(14, 26, 27, 0.98) 100%)'
+    }} />
+  )
+});
+const SyntaxOverlay = dynamic(() => import('./SyntaxOverlay'), { ssr: false });
+
 type Locale = 'de' | 'en';
 
 type Props = {
@@ -70,11 +81,9 @@ export default function Hero({
       role="banner"
       aria-label="A space for clarity and transformation"
     >
-      {/* Data Jungle Layer - Cookies & Licht */}
-      <DataJungle />
-
-      {/* Unsplash Background with Overlay */}
+      {/* Filmische Atmosphäre - kombiniert mit Unsplash */}
       <div className="absolute inset-0 z-0">
+        {/* Unsplash Background */}
         <Image
           src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
           alt="Natural forest background"
@@ -85,34 +94,17 @@ export default function Hero({
           sizes="100vw"
         />
 
-        {/* Modern Dark Overlay - Epiminds Style */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              linear-gradient(180deg,
-                rgba(10, 22, 18, 0.96) 0%,
-                rgba(15, 30, 24, 0.92) 30%,
-                rgba(26, 46, 38, 0.88) 60%,
-                rgba(15, 30, 24, 0.92) 85%,
-                rgba(10, 22, 18, 0.96) 100%
-              )
-            `,
-            backgroundBlendMode: 'multiply'
-          }}
-        />
-
-        {/* Subtle Liquid Glass Layer - Removed blur for performance */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 1000px 600px at 30% 40%, rgba(139, 181, 129, 0.08) 0%, transparent 60%),
-              radial-gradient(ellipse 800px 500px at 70% 60%, rgba(212, 180, 131, 0.06) 0%, transparent 55%)
-            `
-          }}
-        />
+        {/* Filmische Overlay - reduzierte Opacity damit Unsplash durchkommt */}
+        <div className="absolute inset-0" style={{ opacity: 0.7 }}>
+          <HeroAmbient />
+        </div>
       </div>
+
+      {/* Syntax Overlays - Pfadästhetik über allem */}
+      <SyntaxOverlay />
+
+      {/* Data Jungle Layer - Cookies & Licht */}
+      <DataJungle />
       {/* Organic Floating Elements - Blur reduced for performance */}
       <motion.div
         className="absolute top-1/4 left-1/6 w-40 h-40 rounded-full z-10"
