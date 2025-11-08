@@ -31,20 +31,20 @@ interface BusinessKPIs {
 
 const glassPanelStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(10, 22, 18, 0.85) 0%, rgba(10, 22, 18, 0.55) 100%)',
-  backdropFilter: 'blur(28px)',
-  border: '1px solid rgba(212, 180, 131, 0.32)',
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 249, 0.75) 100%)',
+  backdropFilter: 'blur(32px)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
   boxShadow:
-    '0 30px 70px rgba(10, 22, 18, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+    '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
 };
 
 const glassTileStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(212, 180, 131, 0.15) 100%)',
   border: '1px solid rgba(212, 180, 131, 0.3)',
-  backdropFilter: 'blur(18px)',
+  backdropFilter: 'blur(24px)',
   boxShadow:
-    '0 16px 40px rgba(10, 22, 18, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+    '0 12px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
 };
 
 const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
