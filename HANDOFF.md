@@ -116,11 +116,11 @@ Die Website wurde von einer **Marketing-Landingpage** zu einem **filmischen Raum
 - ✅ Vollständige Landing-Page
 - Hero, Benefits, Format-Beispiele, Callout, CTAs
 
-### **/systems** (DE only, EN fehlt noch!)
-- ✅ **NEU:** Vollständige Landing-Page
+### **/systems** (DE + EN)
+- ✅ **NEU:** Vollständige Landing-Page (DE + EN)
 - Hero, Benefits, 3 Packages (Nova, Horizon, Solara)
 - DSGVO-Callout mit Shield-Icon
-- **TODO:** Englische Version erstellen
+- ✅ **DONE:** Englische Version erstellt (`/en/systems`)
 
 ---
 
@@ -234,7 +234,7 @@ Alle Farben bereits harmonisiert in `app/globals.css`:
 
 ### **Kurzfristig (diese Woche):**
 1. **Lokal testen** um Hydration-Errors zu verifizieren
-2. **Englische Systems-Seite** erstellen (`/en/systems`)
+2. ✅ **Englische Systems-Seite** erstellt (`/en/systems`) - Commit f4de7f5
 3. **Mobile Testing** (Hero-Animationen auf kleineren Screens)
 4. **Performance-Optimierung** wenn nötig
 
