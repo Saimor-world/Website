@@ -5,29 +5,29 @@ import { useEffect, useState } from 'react';
 export default function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 50,
+    damping: 40,
     restDelta: 0.001
   });
 
   const [particles, setParticles] = useState<Array<{ id: number; position: number }>>([]);
 
   useEffect(() => {
-    // Create flowing particles along the progress bar
+    // Create flowing particles along the progress bar (ruhiger)
     const interval = setInterval(() => {
       setParticles(prev => {
         const newParticles = prev
-          .map(p => ({ ...p, position: p.position + 0.02 }))
+          .map(p => ({ ...p, position: p.position + 0.008 }))
           .filter(p => p.position < 1);
 
-        // Add new particle occasionally
-        if (Math.random() > 0.7) {
+        // Add new particle occasionally (weniger häufig)
+        if (Math.random() > 0.85) {
           newParticles.push({ id: Date.now(), position: 0 });
         }
 
-        return newParticles.slice(-5); // Keep max 5 particles
+        return newParticles.slice(-3); // Keep max 3 particles (weniger)
       });
-    }, 100);
+    }, 200);
 
     return () => clearInterval(interval);
   }, []);
@@ -64,11 +64,11 @@ export default function ScrollProgress() {
             marginTop: '-5px'
           }}
           animate={{
-            scale: [1, 1.5, 1],
-            opacity: [0.5, 1, 0.5]
+            scale: [1, 1.3, 1],
+            opacity: [0.4, 0.8, 0.4]
           }}
           transition={{
-            duration: 1,
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut"
           }}

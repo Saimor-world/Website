@@ -18,7 +18,7 @@ export default function AchievementToast({ achievement, onClose }: Props) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -100, scale: 0.8 }}
         className="fixed top-24 right-6 z-[10001] max-w-sm"
-        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        transition={{ type: 'spring', stiffness: 80, damping: 25 }}
       >
         <motion.div
           className="relative rounded-2xl p-5 shadow-2xl overflow-hidden"
@@ -35,7 +35,7 @@ export default function AchievementToast({ achievement, onClose }: Props) {
               '0 20px 60px rgba(212, 180, 131, 0.4)'
             ]
           }}
-          transition={{ duration: 2, repeat: Infinity }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
           {/* Shine Effect */}
           <motion.div
@@ -47,9 +47,9 @@ export default function AchievementToast({ achievement, onClose }: Props) {
               x: ['-200%', '200%']
             }}
             transition={{
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
-              repeatDelay: 1
+              repeatDelay: 2
             }}
           />
 
@@ -67,12 +67,13 @@ export default function AchievementToast({ achievement, onClose }: Props) {
             <motion.div
               className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4B483] to-[#E6C897] shadow-lg"
               animate={{
-                scale: [1, 1.1, 1],
-                rotate: [0, 10, -10, 0]
+                scale: [1, 1.05, 1],
+                rotate: [0, 5, -5, 0]
               }}
               transition={{
-                duration: 0.6,
-                repeat: 3
+                duration: 1.2,
+                repeat: 2,
+                ease: "easeInOut"
               }}
             >
               {achievement.icon}
