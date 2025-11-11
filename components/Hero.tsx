@@ -285,7 +285,7 @@ export default function Hero({
               </svg>
             </motion.div>
             <span className="text-sm font-semibold text-[#E6C897]">
-              {locale === 'de' ? 'Môra Backend 85% ⋅ Jetzt verfügbar' : 'Môra Backend 85% ⋅ Available Now'}
+              {locale === 'de' ? 'MVP-Prototyp ⋅ Entwicklung' : 'MVP Prototype ⋅ In Development'}
             </span>
           </motion.div>
 

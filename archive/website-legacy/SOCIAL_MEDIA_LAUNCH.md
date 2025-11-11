@@ -1,3 +1,4 @@
+Archived on 2025-11-11 after integration into WEBSITE_MASTER.md. For historical reference only.
 # 📱 Social Media Launch - Saimôr Community
 
 ## 🎯 Launch-Strategie
@@ -426,3 +427,4 @@ Marius & Môra
 
 **Launch Ready:** ✅
 **Go Live:** Nach Vercel Deployment + n8n Setup
+

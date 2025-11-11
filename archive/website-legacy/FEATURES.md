@@ -1,3 +1,4 @@
+Archived on 2025-11-11 after integration into WEBSITE_MASTER.md. For historical reference only.
 # 🚀 SAIMOR - Krasse Features Übersicht
 
 **Production Live:** https://website-mqjlwquiy-marius-projects-20aa51eb.vercel.app
@@ -267,3 +268,4 @@ Route (app)                    Size     First Load JS
 **🔥 DIE WEBSITE IST JETZT RICHTIG RICHTIG KRASS! 🔥**
 
 Viel Spaß beim Testen! 🚀
+

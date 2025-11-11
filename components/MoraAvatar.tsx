@@ -25,7 +25,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       greeting: 'Hallo! Ich bin Môra 🌱',
       subtitle: 'Deine KI-Begleiterin für Klarheit',
       infoTitle: 'Môra erwacht bald!',
-      infoText: 'Ich bin deine KI-Assistentin für Business-Klarheit. Gerade lerne ich noch im Backend (85% fertig). Bald kann ich dir helfen mit:',
+      infoText: 'Ich bin deine KI-Assistentin für Business-Klarheit. Momentan wird der MVP-Prototyp entwickelt. Bald kann ich dir helfen mit:',
       infoFeatures: [
         '📊 Echtzeit-Analysen deiner Business-Daten',
         '🎯 Klare Antworten statt Datenflut',
@@ -47,7 +47,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       greeting: 'Hello! I\'m Môra 🌱',
       subtitle: 'Your AI companion for clarity',
       infoTitle: 'Môra is waking up soon!',
-      infoText: 'I\'m your AI assistant for business clarity. Currently learning in the backend (85% ready). Soon I can help you with:',
+      infoText: 'I\'m your AI assistant for business clarity. The MVP prototype is currently in development. Soon I can help you with:',
       infoFeatures: [
         '📊 Real-time analysis of your business data',
         '🎯 Clear answers instead of data overload',
@@ -334,14 +334,14 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                     {/* Progress */}
                     <div className="bg-[#4A6741]/10 rounded-xl p-4 mb-6">
                       <div className="flex justify-between text-xs mb-2 text-slate-600">
-                        <span>Backend</span>
-                        <span>85%</span>
+                        <span>MVP-Entwicklung</span>
+                        <span>In Arbeit</span>
                       </div>
                       <div className="w-full bg-white rounded-full h-2 overflow-hidden">
                         <motion.div
                           className="h-full bg-gradient-to-r from-[#4A6741] to-[#D4B483]"
                           initial={{ width: 0 }}
-                          animate={{ width: '85%' }}
+                          animate={{ width: '60%' }}
                           transition={{ duration: 1, delay: 0.5 }}
                         />
                       </div>

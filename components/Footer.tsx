@@ -19,6 +19,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
       mission: 'Mission',
       contact: 'Kontakt',
       legal: 'Rechtliches',
+      trust: 'Trust & Sicherheit',
       imprint: 'Impressum',
       privacy: 'Datenschutz',
       connect: 'Verbinden',
@@ -33,6 +34,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
       mission: 'Mission',
       contact: 'Contact',
       legal: 'Legal',
+      trust: 'Trust & Security',
       imprint: 'Imprint',
       privacy: 'Privacy',
       connect: 'Connect',
@@ -191,16 +193,16 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             </h3>
             <nav className="flex flex-col gap-3">
               <Link
-                href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'}
+                href="/trust"
                 className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
               >
-                {footerText.imprint}
+                {footerText.trust}
               </Link>
               <Link
-                href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'}
+                href="/legal"
                 className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
               >
-                {footerText.privacy}
+                {footerText.imprint} & {footerText.privacy}
               </Link>
             </nav>
           </motion.div>

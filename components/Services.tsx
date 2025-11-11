@@ -15,7 +15,7 @@ const Services = memo(function Services({ locale }: Props) {
       benefits: [
         t('Dashboard, Web & Voice – Cross-Channel', 'Dashboard, Web & Voice – Cross-Channel'),
         t('Dual Mode: Ordner-Ansicht ↔ Feld-Ansicht', 'Dual Mode: Folder View ↔ Field View'),
-        t('Backend 85% ready – Jetzt Early Access', 'Backend 85% ready – Early Access now')
+        t('MVP-Prototyp – Entwicklung läuft', 'MVP Prototype – In Development')
       ],
       href: '#waitlist',
       cta: t('Early Access sichern', 'Get Early Access'),

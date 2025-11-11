@@ -1,3 +1,4 @@
+Archived on 2025-11-11 after integration into WEBSITE_MASTER.md. For historical reference only.
 # 🚀 SAIMOR Complete System Deployment Guide
 
 ## ✅ Was wurde implementiert

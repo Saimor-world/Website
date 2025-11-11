@@ -3,6 +3,7 @@ import Services from '@/components/Services';
 import MoraShowcase from '@/components/MoraShowcase';
 import InteractiveMoraDashboard from '@/components/InteractiveMoraDashboard';
 import TrustProof from '@/components/TrustProof';
+import FundingSection from '@/components/FundingSection';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import CommunityBanner from '@/components/CommunityBanner';
@@ -48,6 +49,7 @@ export default function Page() {
         <MoraShowcase locale="de" />
         <InteractiveMoraDashboard locale="de" />
         <TrustProof locale="de" />
+        <FundingSection locale="de" />
         <CommunityBanner locale="de" />
         <WaitlistForm locale="de" />
         <FAQ locale="de" />
