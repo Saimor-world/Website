@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Shield, Database, Server, Users, Lock, Eye, CheckCircle } from 'lucide-react';
+import { Shield, Database, Server, Users, Lock, Eye, CheckCircle, AlertCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Trust & Sicherheit – Saimôr',
