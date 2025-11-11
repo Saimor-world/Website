@@ -1,11 +1,99 @@
 # 🎯 Frontend TODO - Für nächsten Claude Code
 
-**Last Update:** 2025-11-04 11:35
+**Last Update:** 2025-11-11 (Session 6)
 **Status:** 🟢 PRODUCTION READY - Weitere Features geplant
 
 ---
 
-## ✅ Was heute erledigt wurde (Session 5 - 04.11.2025)
+## ✅ Was heute erledigt wurde (Session 6 - 11.11.2025)
+
+### 1. Easter Eggs komplett refactored (Silent Mode)
+- ✅ **Laute Effekte entfernt:** Triple-click Explosions, Fireworks, Matrix Rain, Rainbow
+- ✅ **Stille Achievements hinzugefügt:**
+  - Klarheitsfunke (4x Click auf Hero Logo)
+  - Leiser Beobachter (12s in Hero Section)
+  - Klarheitsnavigator (Trust/Legal/Home besucht)
+- ✅ **Konami Code → Resonanzmodus:** Subtile goldene Shimmer statt lautem Effekt
+- ✅ **TypeScript Set Bug gefixt:** `Array.from(prev).concat(item)` statt spread
+- ✅ **Deutsche poetische Messages:** "Du hast einen stillen Moment entdeckt..."
+
+**Files Changed:**
+- `components/EasterEggs.tsx` - Komplette Refactoring zu stillen, poetischen Achievements
+- `lib/achievements.ts` - Neue Achievement Definitionen
+
+### 2. Radikale Content-Bereinigung
+- ✅ **Pre-Seed Funding Section:** Auskommentiert in DE/EN pages (TODO für CEO)
+- ✅ **Horizon/Solara/Nova Packages:** Komplett aus MoraShowcase entfernt (89 lines)
+- ✅ **SystemsSection.tsx:** Komplette Datei gelöscht (317 lines)
+- ✅ **Testimonials:** "Horizon-Paket" → "Môra Dashboard" aktualisiert
+- ✅ **FAQ:** Konkrete Preise & Launch-Daten entfernt, MVP-Kontext hinzugefügt
+
+**Reason:** User forderte "radikales Denken - alle veralteten Inhalte raus"
+
+**Files Changed:**
+- `app/de/page.tsx` & `app/en/page.tsx` - FundingSection commented out
+- `components/MoraShowcase.tsx` - Packages entfernt, nur Môra Features
+- `components/SystemsSection.tsx` - DELETED
+- `components/Testimonials.tsx` - Horizon → Môra
+- `components/FAQ.tsx` - Preise/Daten raus
+
+### 3. MoraShowcase Lesbarkeit Fix
+- ✅ **Text Colors:** white → gray-700/800/900 (besser lesbar)
+- ✅ **Glass Panels:** Höhere Opazität für besseren Kontrast
+- ✅ **Demo Responses:** "Systems Dashboard" → "Môra" aktualisiert
+
+**Problem:** User sagte "kann man nicht gut lesen weil weiße Schrift"
+**Solution:** Dunkle Grautöne auf hellen Liquid Glass Panels
+
+**Files Changed:**
+- `components/MoraShowcase.tsx` - Text colors & glass panel opacity
+
+### 4. InteractiveMoraDashboard MVP-Kontext
+- ✅ **Demo Label:** "Demo-Dashboard (simulierte Daten)" hinzugefügt
+- ✅ **Info Tooltip:** Erklärt dass es lokale Demo-Daten sind
+- ✅ **Hover State:** Tooltip erscheint on hover auf Info Icon
+
+**Files Changed:**
+- `components/InteractiveMoraDashboard.tsx` - MVP Context Banner
+
+### 5. Hero Logo Visibility verbessert
+- ✅ **Dunklerer Hintergrund:** Besserer Kontrast für Logo
+- ✅ **Stärkerer Border:** 2px solid rgba gold
+- ✅ **Enhanced Shadows:** Tiefere Schatten für 3D-Effekt
+- ✅ **Golden Glow:** Subtiles Leuchten um Logo
+
+**Files Changed:**
+- `components/Hero.tsx` - Logo panel styling
+
+### 6. Môra ↔ Dashboard Visual Connection (NEW)
+- ✅ **Component erstellt:** `MoraDashboardConnection.tsx`
+- ✅ **Floating Particles:** 5 goldene Partikel fliegen von Orb zu Dashboard
+- ✅ **Subtle Glow:** Pulsierender Glow um Môra Orb
+- ✅ **Tooltip:** "Mit Dashboard verbunden" wenn Dashboard in View
+- ✅ **IntersectionObserver:** Trigger nur wenn Dashboard sichtbar
+
+**Reason:** User wollte visuelle Verbindung zwischen Môra Chat Orb und Dashboard
+
+**Files Added:**
+- `components/MoraDashboardConnection.tsx` (133 lines)
+
+**Files Changed:**
+- `app/de/page.tsx` & `app/en/page.tsx` - Component integriert
+
+### 7. TrustProof Liquid Glass Polish ✅
+- ✅ **Card Backgrounds:** White-based liquid glass statt gold/green tint
+- ✅ **Backdrop Blur:** 24px → 32px für stärkeren Effekt
+- ✅ **Icon Containers:** Liquid glass mit backdrop blur
+- ✅ **Box Shadows:** Konsistente Schatten mit Rest der Site
+
+**Files Changed:**
+- `components/TrustProof.tsx` - Liquid glass polish
+
+**Build Status:** Alle Commits pushed ✅
+
+---
+
+## ✅ Was erledigt wurde (Session 5 - 04.11.2025)
 
 ### 1. Hero modernisiert (Epiminds-Style)
 - ✅ **NUR 1 CTA Button** ("Môra kennenlernen") statt 2
@@ -70,22 +158,27 @@ export default function Page() {
 }
 ```
 
-#### 2. Liquid Glass Effects auf ALLEN Sections
+#### 2. Liquid Glass Effects auf restlichen Sections
 **Warum:** User wollte "radikalen Politur über die ganze Website"
+**✅ Bereits erledigt:**
+- `components/MoraShowcase.tsx` - Session 6 ✅
+- `components/TrustProof.tsx` - Session 6 ✅
+
 **Noch zu polieren:**
-- `components/MoraShowcase.tsx` - Liquid glass cards
-- `components/TrustProof.tsx` - Glass effect auf Trust cards
 - `components/CommunityBanner.tsx` - Backdrop blur verbessern
 - `components/WaitlistForm.tsx` - Form inputs mit glass effect
 - `components/FAQ.tsx` - Accordion items mit glass
 
+**Aufwand:** ~45 min (3 Components à 15 min)
+
 **Pattern:**
 ```tsx
+// Liquid Glass Style (White-based für bessere Lesbarkeit)
 style={{
-  background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
-  backdropFilter: 'blur(20px)',
-  border: '1px solid rgba(212, 180, 131, 0.3)',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
+  backdropFilter: 'blur(32px)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  boxShadow: '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
 }}
 ```
 
