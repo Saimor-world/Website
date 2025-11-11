@@ -83,10 +83,10 @@ export default function TrustProof({ locale }: Props) {
               }}
               className="group relative rounded-3xl p-8 overflow-hidden text-center"
               style={{
-                background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
-                backdropFilter: 'blur(24px)',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
+                backdropFilter: 'blur(32px)',
                 border: '1px solid rgba(212, 180, 131, 0.35)',
-                boxShadow: '0 20px 55px rgba(10, 22, 18, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+                boxShadow: '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
               }}
             >
               {/* Gradient overlay on hover */}
@@ -112,8 +112,10 @@ export default function TrustProof({ locale }: Props) {
                 <motion.div
                   className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.15) 0%, rgba(212, 180, 131, 0.2) 100%)',
-                    border: '1px solid rgba(212, 180, 131, 0.3)'
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(248, 250, 249, 0.5) 100%)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(212, 180, 131, 0.4)',
+                    boxShadow: '0 4px 12px rgba(74, 103, 65, 0.1)'
                   }}
                   whileHover={{
                     scale: 1.1,
