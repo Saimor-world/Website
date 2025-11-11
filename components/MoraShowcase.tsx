@@ -11,9 +11,7 @@ import {
   Send,
   Loader2,
   CheckCircle2,
-  ChevronRight,
-  Zap,
-  DollarSign
+  ChevronRight
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -31,7 +29,7 @@ interface BusinessKPIs {
 
 const glassPanelStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 249, 0.75) 100%)',
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
   backdropFilter: 'blur(32px)',
   border: '1px solid rgba(212, 180, 131, 0.35)',
   boxShadow:
@@ -40,7 +38,7 @@ const glassPanelStyle: CSSProperties = {
 
 const glassTileStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(212, 180, 131, 0.15) 100%)',
+    'linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(212, 180, 131, 0.2) 100%)',
   border: '1px solid rgba(212, 180, 131, 0.3)',
   backdropFilter: 'blur(24px)',
   boxShadow:
@@ -89,20 +87,6 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
       chatLink: 'Für tiefere Analysen',
       chatButton: 'Môra Chat öffnen',
-
-      packages: [
-        {
-          name: 'Horizon',
-          features: ['6 Business-KPIs', 'Wöchentliche Insights', 'Môra Analysen'],
-          badge: 'BELIEBT'
-        },
-        {
-          name: 'Solara',
-          features: ['12+ KPIs', 'Tägliche Updates', 'Live Môra Chat', 'Alerts'],
-          badge: 'PREMIUM'
-        }
-      ],
-
       cta: 'Kostenlos testen'
     },
     en: {
@@ -132,20 +116,6 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
       chatLink: 'For deeper analysis',
       chatButton: 'Open Môra Chat',
-
-      packages: [
-        {
-          name: 'Horizon',
-          features: ['6 Business KPIs', 'Weekly Insights', 'Môra Analysis'],
-          badge: 'POPULAR'
-        },
-        {
-          name: 'Solara',
-          features: ['12+ KPIs', 'Daily Updates', 'Live Môra Chat', 'Alerts'],
-          badge: 'PREMIUM'
-        }
-      ],
-
       cta: 'Try for free'
     }
   }[locale];
@@ -169,15 +139,15 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
       }));
     }, 150);
 
-    // Demo responses (kosteneffizient für Demo)
+    // Demo responses
     const demoResponses = locale === 'de' ? {
       team: 'Basierend auf deinen aktuellen KPIs (87% Produktivität) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
-      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Mit Systems Dashboard hast du alle Zahlen im Blick.',
+      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Môra zeigt dir alle Zahlen im Blick.',
       project: 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
       default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
     } : {
       team: 'Based on your current KPIs (87% productivity), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
-      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. With Systems Dashboard, you have all numbers at a glance.',
+      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. Môra shows you all numbers at a glance.',
       project: 'Project progress: 73%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
       default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
     };
@@ -382,7 +352,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 >
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4B483] transition-colors" />
-                    <span className="text-sm font-medium text-gray-100 group-hover:text-white">
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
                       {question}
                     </span>
                   </div>
@@ -404,7 +374,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
                 placeholder={content.inputPlaceholder}
                 disabled={isAsking}
-                className="w-full px-6 py-4 pr-14 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30 disabled:opacity-50 bg-transparent"
+                className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30 disabled:opacity-50 bg-transparent"
                 style={glassTileStyle}
               />
               <motion.button
@@ -430,7 +400,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   style={{
                     ...glassTileStyle,
                     background:
-                      'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)'
+                      'linear-gradient(135deg, rgba(74, 103, 65, 0.15) 0%, rgba(212, 180, 131, 0.1) 100%)'
                   }}
                   initial={{ opacity: 0, height: 0, y: -20 }}
                   animate={{ opacity: 1, height: 'auto', y: 0 }}
@@ -447,10 +417,10 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                     </motion.div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-white">Môra</h4>
+                        <h4 className="font-bold text-gray-900">Môra</h4>
                         {showSuccess && (
                           <motion.div
-                            className="flex items-center gap-1 text-xs text-emerald-300"
+                            className="flex items-center gap-1 text-xs text-emerald-600"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                           >
@@ -468,11 +438,11 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   {/* Link to Full Chat */}
                   <motion.button
                     onClick={openMoraChat}
-                    className="w-full mt-4 py-3 rounded-xl text-sm font-medium text-white transition-all flex items-center justify-center gap-2"
+                    className="w-full mt-4 py-3 rounded-xl text-sm font-medium text-gray-900 transition-all flex items-center justify-center gap-2"
                     style={{
                       ...glassTileStyle,
                       background:
-                        'linear-gradient(135deg, rgba(74, 103, 65, 0.4) 0%, rgba(212, 180, 131, 0.35) 100%)'
+                        'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)'
                     }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -499,7 +469,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 Business Dashboard
               </h3>
               <motion.div
-                className="flex items-center gap-2 text-sm text-gray-500"
+                className="flex items-center gap-2 text-sm text-gray-600"
                 animate={{ opacity: isAsking ? [1, 0.5, 1] : 1 }}
                 transition={{ duration: 1, repeat: isAsking ? Infinity : 0 }}
               >
@@ -551,30 +521,30 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               ].map((kpi) => (
                 <motion.div
                   key={kpi.label}
-                  className="p-6 rounded-2xl relative overflow-hidden text-white"
+                  className="p-6 rounded-2xl relative overflow-hidden"
                   style={{ ...glassTileStyle, background: kpi.gradient }}
                   layout
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
-                  <div className="absolute top-0 right-0 opacity-20">
-                    <kpi.icon className="w-24 h-24 text-white" strokeWidth={1} />
+                  <div className="absolute top-0 right-0 opacity-10">
+                    <kpi.icon className="w-24 h-24 text-gray-800" strokeWidth={1} />
                   </div>
 
                   <div className="relative z-10 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-white/70 mb-2">{kpi.label}</p>
+                      <p className="text-sm font-medium text-gray-600 mb-2">{kpi.label}</p>
                       <div className="flex items-baseline gap-1">
                         <motion.p
-                          className="text-4xl font-bold text-white"
+                          className="text-4xl font-bold text-gray-900"
                           key={kpi.value}
                           initial={{ scale: 1.2, color: '#D4B483' }}
-                          animate={{ scale: 1, color: '#ffffff' }}
+                          animate={{ scale: 1, color: '#1f2937' }}
                           transition={{ duration: 0.4 }}
                         >
                           {kpi.value}
                         </motion.p>
                         {kpi.suffix && (
-                          <span className="text-lg font-medium text-white/70">{kpi.suffix}</span>
+                          <span className="text-lg font-medium text-gray-600">{kpi.suffix}</span>
                         )}
                       </div>
                     </div>
@@ -589,40 +559,6 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   </div>
                 </motion.div>
               ))}
-            </div>
-
-          {/* Packages Preview */}
-          <div className="grid grid-cols-2 gap-4 pt-6">
-            {content.packages.map((pkg, index) => (
-              <motion.div
-                key={pkg.name}
-                className="p-4 rounded-2xl relative overflow-hidden transition-shadow"
-                style={glassTileStyle}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -4 }}
-              >
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483]">
-                  {pkg.badge}
-                </div>
-                <h4
-                  className="font-bold text-lg text-center mb-3 mt-2 text-white"
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                >
-                  {pkg.name}
-                </h4>
-                <div className="space-y-2">
-                  {pkg.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4B483]" />
-                      <span className="text-xs text-white/70">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
             </div>
           </motion.div>
         </div>
