@@ -263,11 +263,11 @@ export default function EasterEggs() {
     // Track current page
     const path = window.location.pathname;
     if (path.includes('/trust')) {
-      setVisitedSections(prev => new Set([...prev, 'trust']));
+      setVisitedSections(prev => new Set(Array.from(prev).concat('trust')));
     } else if (path.includes('/legal')) {
-      setVisitedSections(prev => new Set([...prev, 'legal']));
+      setVisitedSections(prev => new Set(Array.from(prev).concat('legal')));
     } else if (path === '/' || path.includes('/de') || path.includes('/en')) {
-      setVisitedSections(prev => new Set([...prev, 'home']));
+      setVisitedSections(prev => new Set(Array.from(prev).concat('home')));
     }
 
     checkSectionVisits();
