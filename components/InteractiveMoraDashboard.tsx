@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import {
   TrendingUp, TrendingDown, Users, Clock, Sparkles,
-  Activity, AlertCircle, CheckCircle, LayoutGrid, Folder
+  Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -35,6 +35,8 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
     de: {
       title: 'Môra Dashboard',
       subtitle: 'Dual Mode: Ordner ↔ Feld Ansicht',
+      demoLabel: 'Demo-Dashboard (simulierte Daten)',
+      demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten.',
       folderView: 'Ordner-Ansicht',
       fieldView: 'Feld-Ansicht',
       moraInsight: '💡 Môra Insight',
@@ -61,6 +63,8 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
     en: {
       title: 'Môra Dashboard',
       subtitle: 'Dual Mode: Folder ↔ Field View',
+      demoLabel: 'Demo Dashboard (simulated data)',
+      demoTooltip: 'All values are currently based on locally generated demo data. No real customer data.',
       folderView: 'Folder View',
       fieldView: 'Field View',
       moraInsight: '💡 Môra Insight',
@@ -222,7 +226,36 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
           >
             {content.title}
           </h2>
-          <p className="text-lg text-gray-600 mb-6">{content.subtitle}</p>
+          <p className="text-lg text-gray-600 mb-4">{content.subtitle}</p>
+
+          {/* Demo Label + Tooltip */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl group relative"
+              style={{
+                background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(212, 180, 131, 0.08) 100%)',
+                border: '1px solid rgba(212, 180, 131, 0.4)'
+              }}
+            >
+              <span className="text-sm font-medium text-gray-700">{content.demoLabel}</span>
+              <div className="relative">
+                <Info className="w-4 h-4 text-[#D4B483] cursor-help" />
+                {/* Tooltip */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300 whitespace-nowrap"
+                     style={{
+                       background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(93, 124, 84, 0.95) 100%)',
+                       border: '1px solid rgba(212, 180, 131, 0.4)',
+                       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
+                     }}>
+                  <p className="text-sm text-white">{content.demoTooltip}</p>
+                  {/* Tooltip arrow */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                    <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,180,131,0.4)]" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* View Mode Toggle */}
           <div className="flex items-center justify-center gap-4">
