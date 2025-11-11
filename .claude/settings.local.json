@@ -16,7 +16,9 @@
       "Bash(SHARED_CONTEXT.md)",
       "Bash(cat:*)",
       "Bash(rm:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []

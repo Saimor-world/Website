@@ -35,7 +35,7 @@ export default function Testimonials({ locale }: Props) {
       title: t('Daten-Dashboard für Entscheider', 'Data Dashboard for Decision-Makers'),
       organization: t('Sozialer Träger (120 Mitarbeitende)', 'Social organization (120 employees)'),
       challenge: t('Datenflut aus 5 Systemen – niemand versteht die Gesamtsicht', 'Data flood from 5 systems – no one understands the big picture'),
-      solution: t('Systems: KPI-Workshop + individuelles Dashboard (Horizon-Paket)', 'Systems: KPI workshop + custom dashboard (Horizon package)'),
+      solution: t('Môra: KPI-Workshop + individuelles Dashboard', 'Môra: KPI workshop + custom dashboard'),
       result: t('6 Kern-KPIs live, monatliche Klarheit statt Excel-Chaos', '6 core KPIs live, monthly clarity instead of Excel chaos'),
       quote: t('"Wir treffen jetzt Entscheidungen auf Basis von Fakten, nicht Bauchgefühl."', '"We now make decisions based on facts, not gut feeling."'),
       role: t('Geschäftsführerin', 'Managing Director'),
