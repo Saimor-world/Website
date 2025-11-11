@@ -20,17 +20,17 @@ type Props = {
 
 const logoPanelStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(212, 180, 131, 0.12) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.4)',
+    'linear-gradient(135deg, rgba(26, 46, 26, 0.78) 0%, rgba(10, 22, 18, 0.88) 50%, rgba(212, 180, 131, 0.35) 100%)',
+  border: '2px solid rgba(212, 180, 131, 0.65)',
   boxShadow:
-    '0 18px 48px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-  backdropFilter: 'blur(32px)'
+    '0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.4)',
+  backdropFilter: 'blur(48px)'
 };
 
 const logoInnerGlow: CSSProperties = {
   background:
-    'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 70%)',
-  filter: 'blur(20px)'
+    'radial-gradient(circle at 50% 50%, rgba(212, 180, 131, 0.15) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 70%)',
+  filter: 'blur(24px)'
 };
 
 export default function Hero({
