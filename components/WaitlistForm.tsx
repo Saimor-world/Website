@@ -23,6 +23,7 @@ const glassFieldStyle: CSSProperties = {
   background:
     'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
   border: '1px solid rgba(212, 180, 131, 0.3)',
+  backdropFilter: 'blur(16px)',
   boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12)'
 };
 

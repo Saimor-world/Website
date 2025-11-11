@@ -104,12 +104,12 @@ export default function FAQ({ locale }: Props) {
               transition={{ delay: i * 0.1 }}
               className="rounded-2xl overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%)',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
                 border: '1px solid rgba(212, 180, 131, 0.35)',
-                backdropFilter: 'blur(24px)',
+                backdropFilter: 'blur(32px)',
                 boxShadow: openIndex === i
-                  ? '0 20px 50px rgba(10, 22, 18, 0.2)'
-                  : '0 8px 20px rgba(10, 22, 18, 0.12)'
+                  ? '0 20px 60px rgba(74, 103, 65, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+                  : '0 8px 24px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
               }}
             >
               <button

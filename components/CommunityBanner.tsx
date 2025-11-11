@@ -12,19 +12,19 @@ interface CommunityBannerProps {
 const glassPanelStyle: CSSProperties = {
   background:
     'linear-gradient(135deg, rgba(10, 22, 18, 0.65) 0%, rgba(10, 22, 18, 0.35) 100%)',
-  backdropFilter: 'blur(30px)',
+  backdropFilter: 'blur(32px)',
   border: '1px solid rgba(212, 180, 131, 0.35)',
   boxShadow:
-    '0 30px 80px rgba(10, 22, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+    '0 20px 60px rgba(74, 103, 65, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
 };
 
 const glassTileStyle: CSSProperties = {
   background:
     'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
   border: '1px solid rgba(212, 180, 131, 0.35)',
-  backdropFilter: 'blur(18px)',
+  backdropFilter: 'blur(20px)',
   boxShadow:
-    '0 18px 40px rgba(10, 22, 18, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+    '0 12px 32px rgba(74, 103, 65, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
 };
 
 export default function CommunityBanner({ locale }: CommunityBannerProps) {
