@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Zap, Heart, Star, Crown, Rocket } from 'lucide-react';
+import { Sparkles, Star, Heart, Crown } from 'lucide-react';
 import { getAchievementManager, type Achievement } from '@/lib/achievements';
 import AchievementToast from './AchievementToast';
 import AchievementMenu from './AchievementMenu';
@@ -34,7 +34,7 @@ export default function EasterEggs() {
   }, []);
 
   // Easter Egg States
-  const [konamiActivated, setKonamiActivated] = useState(false);
+  const [resonanzModeActive, setResonanzModeActive] = useState(false);
   const [showMessage, setShowMessage] = useState('');
   const [particles, setParticles] = useState<Particle[]>([]);
 
@@ -42,6 +42,8 @@ export default function EasterEggs() {
   const [konamiSequence, setKonamiSequence] = useState<string[]>([]);
   const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [typedChars, setTypedChars] = useState('');
+  const [heroTimeStart, setHeroTimeStart] = useState<number | null>(null);
+  const [visitedSections, setVisitedSections] = useState<Set<string>>(new Set());
 
   // Secret patterns
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
@@ -66,7 +68,7 @@ export default function EasterEggs() {
   const unlockAchievement = (id: string) => {
     const achievement = achievementManager.current.unlock(id);
     if (achievement) {
-      triggerHapticFeedback(); // 📳 Vibration für Mobile!
+      triggerHapticFeedback();
       setNewAchievement(achievement);
       setTimeout(() => setNewAchievement(null), 5000);
     }
@@ -82,7 +84,7 @@ export default function EasterEggs() {
       setKonamiSequence(newSequence);
 
       if (JSON.stringify(newSequence) === JSON.stringify(konamiCode)) {
-        activateKonami();
+        activateResonanzMode();
         unlockAchievement('konami');
       }
 
@@ -115,7 +117,7 @@ export default function EasterEggs() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [mounted, konamiSequence, typedChars, secretMenuSequence]);
 
-  // === TRIPLE CLICK ===
+  // === QUADRUPLE CLICK (4x oder mehr - "Klarheitsfunke") ===
   useEffect(() => {
     if (!mounted) return;
 
@@ -124,22 +126,13 @@ export default function EasterEggs() {
       const newClickTimes = [...clickTimes, now].slice(-5);
       setClickTimes(newClickTimes);
 
-      // Triple click
-      if (newClickTimes.length >= 3) {
-        const timeDiff = now - newClickTimes[newClickTimes.length - 3];
+      // Quadruple click (4x in 1 second) - "Klarheitsfunke"
+      if (newClickTimes.length >= 4) {
+        const timeDiff = now - newClickTimes[newClickTimes.length - 4];
         if (timeDiff < 1000) {
-          activateTripleClick(e.clientX, e.clientY);
-          unlockAchievement('triple-click');
-        }
-      }
-
-      // Click Combo (5 rapid)
-      if (newClickTimes.length >= 5) {
-        const rapidWindow = now - newClickTimes[0];
-        if (rapidWindow < 800) {
-          activateClickCombo(e.clientX, e.clientY);
-          unlockAchievement('click-combo');
-          setClickTimes([]);
+          activateKlarheitsfunke(e.clientX, e.clientY);
+          unlockAchievement('clarity-spark');
+          setClickTimes([]); // Reset
         }
       }
     };
@@ -148,7 +141,7 @@ export default function EasterEggs() {
     return () => window.removeEventListener('click', handleClick);
   }, [mounted, clickTimes]);
 
-  // === SHAKE DETECTION ===
+  // === SHAKE DETECTION (Mobile) ===
   useEffect(() => {
     if (!mounted) return;
 
@@ -198,8 +191,8 @@ export default function EasterEggs() {
       if (hour >= 0 && hour < 6) {
         setTimeout(() => {
           unlockAchievement('night-owl');
-          setShowMessage('🦉 NACHTEULE ENTDECKT! 🦉');
-          setTimeout(() => setShowMessage(''), 3000);
+          setShowMessage('Nachteule entdeckt – Klarheit kennt keine Uhrzeit.');
+          setTimeout(() => setShowMessage(''), 4000);
         }, 2000);
       }
 
@@ -207,8 +200,8 @@ export default function EasterEggs() {
       if (hour >= 5 && hour < 7) {
         setTimeout(() => {
           unlockAchievement('early-bird');
-          setShowMessage('🌅 FRÜHAUFSTEHER! 🌅');
-          setTimeout(() => setShowMessage(''), 3000);
+          setShowMessage('Frühaufsteher – der Tag beginnt mit Klarheit.');
+          setTimeout(() => setShowMessage(''), 4000);
         }, 2500);
       }
     };
@@ -217,6 +210,78 @@ export default function EasterEggs() {
     const timer = setTimeout(checkTimeAchievements, 1000);
     return () => clearTimeout(timer);
   }, [mounted]);
+
+  // === NEW: "LEISER BEOBACHTER" - Hero Time Tracking ===
+  useEffect(() => {
+    if (!mounted) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.target.id === 'hero-section') {
+            if (!heroTimeStart) {
+              setHeroTimeStart(Date.now());
+            }
+          } else if (heroTimeStart && entry.target.id === 'hero-section') {
+            const duration = Date.now() - heroTimeStart;
+            if (duration >= 12000) { // 12 seconds
+              unlockAchievement('silent-observer');
+              setShowMessage('Du nimmst dir Zeit zum Hinschauen. Genau hier beginnt Klarheit.');
+              setTimeout(() => setShowMessage(''), 5000);
+            }
+            setHeroTimeStart(null);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    // TODO(Team): Add id="hero-section" to Hero component
+    const heroElement = document.querySelector('section[role="banner"]');
+    if (heroElement) {
+      observer.observe(heroElement);
+    }
+
+    return () => observer.disconnect();
+  }, [mounted, heroTimeStart]);
+
+  // === NEW: "KLARHEITSNAVIGATOR" - Section Visit Tracking ===
+  useEffect(() => {
+    if (!mounted) return;
+
+    const checkSectionVisits = () => {
+      const requiredSections = ['home', 'trust', 'legal'];
+      const allVisited = requiredSections.every(s => visitedSections.has(s));
+
+      if (allVisited && !achievementManager.current.getAll().find(a => a.id === 'clarity-navigator' && a.unlocked)) {
+        unlockAchievement('clarity-navigator');
+        setShowMessage('Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
+        setTimeout(() => setShowMessage(''), 5000);
+      }
+    };
+
+    // Track current page
+    const path = window.location.pathname;
+    if (path.includes('/trust')) {
+      setVisitedSections(prev => new Set([...prev, 'trust']));
+    } else if (path.includes('/legal')) {
+      setVisitedSections(prev => new Set([...prev, 'legal']));
+    } else if (path === '/' || path.includes('/de') || path.includes('/en')) {
+      setVisitedSections(prev => new Set([...prev, 'home']));
+    }
+
+    checkSectionVisits();
+  }, [mounted, visitedSections]);
+
+  // === TODO: "FELDFORSCHER" - Dashboard View Switch ===
+  // Requires Dashboard component integration
+  // useEffect(() => {
+  //   window.addEventListener('mora-dashboard-view-switch', () => {
+  //     unlockAchievement('field-explorer');
+  //     setShowMessage('Du betrachtest Systeme aus mehreren Perspektiven. Stark.');
+  //     setTimeout(() => setShowMessage(''), 5000);
+  //   });
+  // }, [mounted]);
 
   // === LOGO-CLICK TRACKING ===
   useEffect(() => {
@@ -231,9 +296,9 @@ export default function EasterEggs() {
 
       if (clickCount === 3) {
         unlockAchievement('logo-lover');
-        setShowMessage('🎯 LOGO-LIEBHABER! 🎯');
-        createParticleExplosion(window.innerWidth / 2, 100, 25);
-        setTimeout(() => setShowMessage(''), 3000);
+        setShowMessage('Logo-Liebhaber – du erkennst die Essenz.');
+        createGoldenRain();
+        setTimeout(() => setShowMessage(''), 4000);
         clickCount = 0;
       } else {
         // Reset nach 2 Sekunden
@@ -267,9 +332,9 @@ export default function EasterEggs() {
       if (scrollTop + clientHeight >= scrollHeight * 0.95) {
         hasUnlocked = true;
         unlockAchievement('scroll-champion');
-        setShowMessage('🔄 SCROLL-CHAMPION! 🔄');
+        setShowMessage('Scroll-Champion – du hast alles gesehen.');
         createGoldenRain();
-        setTimeout(() => setShowMessage(''), 3000);
+        setTimeout(() => setShowMessage(''), 4000);
       }
     };
 
@@ -283,104 +348,101 @@ export default function EasterEggs() {
 
     const timer = setTimeout(() => {
       unlockAchievement('patient-visitor');
-      setShowMessage('⏰ GEDULDIGER ENTDECKER! ⏰');
-      if (typeof window !== 'undefined') {
-        createFireworks(window.innerWidth / 2, window.innerHeight / 2);
-      }
-      setTimeout(() => setShowMessage(''), 3000);
+      setShowMessage('Geduldiger Entdecker – Zeit ist eine Form von Aufmerksamkeit.');
+      createSubtleFireworks();
+      setTimeout(() => setShowMessage(''), 5000);
     }, 5 * 60 * 1000); // 5 Minuten
 
     return () => clearTimeout(timer);
   }, [mounted]);
 
-  // === ACTIVATION FUNCTIONS ===
+  // === ACTIVATION FUNCTIONS (REFACTORED) ===
 
-  const activateKonami = () => {
-    setKonamiActivated(true);
-    setShowMessage('🎮 KONAMI CODE ACTIVATED! 🎮');
-    document.body.style.animation = 'rainbow 5s linear infinite';
-    createMatrixRain();
-    createParticleExplosion(window.innerWidth / 2, window.innerHeight / 2, 50);
-    setTimeout(() => setShowMessage(''), 4000);
-  };
+  const activateResonanzMode = () => {
+    setResonanzModeActive(true);
+    setShowMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.');
 
-  const activateTripleClick = (x: number, y: number) => {
-    setShowMessage('💥 TRIPLE CLICK EXPLOSION! 💥');
-    createParticleExplosion(x, y, 30);
-    createShockwave(x, y);
-    setTimeout(() => setShowMessage(''), 3000);
-  };
+    // Subtle golden shimmer effect
+    document.body.style.animation = 'goldenShimmer 8s ease-in-out';
 
-  const activateShake = () => {
-    setShowMessage('🌍 EARTHQUAKE MODE! 🌍');
-    document.body.style.animation = 'shake 0.5s ease-in-out 3';
+    createGoldenRain();
+
     setTimeout(() => {
       setShowMessage('');
       document.body.style.animation = '';
-    }, 2000);
+      setResonanzModeActive(false);
+    }, 8000);
+  };
+
+  const activateKlarheitsfunke = (x: number, y: number) => {
+    setShowMessage('Klarheitsfunke entdeckt.');
+    createSubtleParticles(x, y, 15);
+    setTimeout(() => setShowMessage(''), 4000);
+  };
+
+  const activateShake = () => {
+    setShowMessage('Bewegung erkannt – Systeme reagieren.');
+    createGoldenRain();
+    setTimeout(() => {
+      setShowMessage('');
+    }, 3000);
   };
 
   const activateSecretWord = (word: string) => {
     const messages: {[key: string]: string} = {
-      'klarheit': '✨ KLARHEIT GEFUNDEN! ✨',
-      'saimor': '🌿 SAIMÔR ERWACHT! 🌿',
-      'wandel': '🔄 WANDEL BEGINNT! 🔄'
+      'klarheit': 'Klarheit gefunden – sie war immer da.',
+      'saimor': 'Saimôr erwacht – Resonanz beginnt.',
+      'wandel': 'Wandel beginnt – mit jedem Schritt.'
     };
-    setShowMessage(messages[word] || '🎉 SECRET UNLOCKED! 🎉');
+    setShowMessage(messages[word] || 'Geheimnis entdeckt.');
     createGoldenRain();
-    setTimeout(() => setShowMessage(''), 3000);
+    setTimeout(() => setShowMessage(''), 4000);
   };
 
-  const activateClickCombo = (x: number, y: number) => {
-    setShowMessage('🎆 FIREWORKS COMBO! 🎆');
-    createFireworks(x, y);
-    setTimeout(() => setShowMessage(''), 3000);
-  };
+  // === PARTICLE EFFECTS (REFINED) ===
 
-  // === PARTICLE EFFECTS ===
-
-  const createParticleExplosion = (x: number, y: number, count: number) => {
+  const createSubtleParticles = (x: number, y: number, count: number) => {
     const newParticles: Particle[] = Array.from({ length: count }, (_, i) => {
       const angle = (i / count) * Math.PI * 2;
-      const velocity = 5 + Math.random() * 5;
+      const velocity = 2 + Math.random() * 3;
       return {
         id: Date.now() + i,
         x,
         y,
         vx: Math.cos(angle) * velocity,
         vy: Math.sin(angle) * velocity,
-        color: ['#D4B483', '#E6C897', '#6B8E5F', '#4A6741'][Math.floor(Math.random() * 4)],
-        size: 4 + Math.random() * 8,
-        icon: [Sparkles, Star, Heart, Zap][Math.floor(Math.random() * 4)]
+        color: ['#D4B483', '#E6C897'][Math.floor(Math.random() * 2)],
+        size: 4 + Math.random() * 6,
+        icon: [Sparkles, Star][Math.floor(Math.random() * 2)]
       };
     });
 
     setParticles(prev => [...prev, ...newParticles]);
     setTimeout(() => {
       setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
-    }, 2000);
+    }, 2500);
   };
 
-  const createFireworks = (x: number, y: number) => {
-    for (let i = 0; i < 5; i++) {
+  const createSubtleFireworks = () => {
+    for (let i = 0; i < 3; i++) {
       setTimeout(() => {
-        const randomX = x + (Math.random() - 0.5) * 400;
-        const randomY = y + (Math.random() - 0.5) * 300;
-        createParticleExplosion(randomX, randomY, 20);
-      }, i * 200);
+        const randomX = window.innerWidth * (0.3 + Math.random() * 0.4);
+        const randomY = window.innerHeight * (0.3 + Math.random() * 0.4);
+        createSubtleParticles(randomX, randomY, 12);
+      }, i * 400);
     }
   };
 
   const createGoldenRain = () => {
-    const count = 40;
+    const count = 25;
     const newParticles: Particle[] = Array.from({ length: count }, (_, i) => ({
       id: Date.now() + i + 1000,
       x: Math.random() * window.innerWidth,
       y: -20,
-      vx: (Math.random() - 0.5) * 2,
-      vy: 3 + Math.random() * 4,
+      vx: (Math.random() - 0.5) * 1,
+      vy: 2 + Math.random() * 3,
       color: '#D4B483',
-      size: 6 + Math.random() * 6,
+      size: 5 + Math.random() * 5,
       icon: Crown
     }));
 
@@ -390,53 +452,6 @@ export default function EasterEggs() {
     }, 3000);
   };
 
-  const createMatrixRain = () => {
-    const style = document.createElement('style');
-    style.id = 'matrix-rain-style';
-    style.textContent = `
-      @keyframes matrixDrop {
-        0% { transform: translateY(-100%); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(100vh); opacity: 0; }
-      }
-    `;
-    if (!document.getElementById('matrix-rain-style')) {
-      document.head.appendChild(style);
-    }
-  };
-
-  const createShockwave = (x: number, y: number) => {
-    const shockwave = document.createElement('div');
-    shockwave.style.cssText = `
-      position: fixed;
-      left: ${x}px;
-      top: ${y}px;
-      width: 0;
-      height: 0;
-      border: 3px solid #D4B483;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      animation: shockwaveExpand 1s ease-out forwards;
-    `;
-
-    const shockwaveStyle = document.createElement('style');
-    shockwaveStyle.textContent = `
-      @keyframes shockwaveExpand {
-        0% { width: 0; height: 0; margin-left: 0; margin-top: 0; opacity: 1; }
-        100% { width: 600px; height: 600px; margin-left: -300px; margin-top: -300px; opacity: 0; }
-      }
-    `;
-    if (!document.querySelector('#shockwave-style')) {
-      shockwaveStyle.id = 'shockwave-style';
-      document.head.appendChild(shockwaveStyle);
-    }
-
-    document.body.appendChild(shockwave);
-    setTimeout(() => shockwave.remove(), 1000);
-  };
-
   // Inject animations
   useEffect(() => {
     if (!mounted) return;
@@ -444,15 +459,13 @@ export default function EasterEggs() {
     const style = document.createElement('style');
     style.id = 'easter-egg-animations';
     style.textContent = `
-      @keyframes rainbow {
-        0% { filter: hue-rotate(0deg) brightness(1.1); }
-        100% { filter: hue-rotate(360deg) brightness(1.1); }
-      }
-
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-        20%, 40%, 60%, 80% { transform: translateX(10px); }
+      @keyframes goldenShimmer {
+        0%, 100% {
+          filter: brightness(1) saturate(1);
+        }
+        50% {
+          filter: brightness(1.08) saturate(1.15) hue-rotate(5deg);
+        }
       }
     `;
     if (!document.getElementById('easter-egg-animations')) {
@@ -468,7 +481,7 @@ export default function EasterEggs() {
           ...p,
           x: p.x + p.vx,
           y: p.y + p.vy,
-          vy: p.vy + 0.2 // gravity
+          vy: p.vy + 0.15 // gentle gravity
         }))
       );
     }, 16);
@@ -491,63 +504,34 @@ export default function EasterEggs() {
         onClose={() => setShowAchievementMenu(false)}
       />
 
-      {/* Activation Message */}
+      {/* Activation Message (Refined) */}
       <AnimatePresence>
         {showMessage && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5, y: -100 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 100 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 z-[10000] pointer-events-none"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[10000] pointer-events-none"
           >
             <motion.div
-              className="px-8 py-6 rounded-3xl text-center text-2xl md:text-4xl font-bold"
+              className="px-6 py-4 rounded-2xl text-center text-sm md:text-base font-medium max-w-md"
               style={{
-                background: 'linear-gradient(135deg, rgba(26, 46, 26, 0.98) 0%, rgba(74, 103, 65, 0.95) 50%, rgba(212, 180, 131, 0.9) 100%)',
+                background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(212, 180, 131, 0.9) 100%)',
                 backdropFilter: 'blur(24px)',
-                border: '3px solid #D4B483',
-                boxShadow: '0 20px 60px rgba(212, 180, 131, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(212, 180, 131, 0.6)',
+                boxShadow: '0 8px 32px rgba(212, 180, 131, 0.3)',
                 color: '#fff',
-                textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 0 20px rgba(212, 180, 131, 0.8)'
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
               }}
               animate={{
-                rotate: [0, -3, 3, -3, 0],
-                scale: [1, 1.05, 1, 1.05, 1]
+                scale: [1, 1.02, 1]
               }}
               transition={{
-                duration: 0.6,
-                repeat: 2
+                duration: 2,
+                repeat: 1
               }}
             >
               {showMessage}
-
-              {/* Sparkle particles around message */}
-              {Array.from({ length: 8 }).map((_, i) => {
-                const angle = (i / 8) * Math.PI * 2;
-                const distance = 60;
-                return (
-                  <motion.div
-                    key={i}
-                    className="absolute"
-                    style={{
-                      left: `calc(50% + ${Math.cos(angle) * distance}px)`,
-                      top: `calc(50% + ${Math.sin(angle) * distance}px)`
-                    }}
-                    animate={{
-                      scale: [0, 1, 0],
-                      rotate: [0, 360],
-                      opacity: [0, 1, 0]
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      delay: i * 0.1
-                    }}
-                  >
-                    <Sparkles className="w-4 h-4 text-[#D4B483]" />
-                  </motion.div>
-                );
-              })}
             </motion.div>
           </motion.div>
         )}
@@ -566,61 +550,47 @@ export default function EasterEggs() {
               width: particle.size,
               height: particle.size
             }}
-            initial={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0.8, scale: 1 }}
             animate={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: 2.5, ease: "easeOut" }}
           >
             <Icon
               className="w-full h-full"
               style={{
                 color: particle.color,
-                filter: `drop-shadow(0 0 ${particle.size}px ${particle.color})`
+                filter: `drop-shadow(0 0 ${particle.size * 0.5}px ${particle.color})`
               }}
             />
           </motion.div>
         );
       })}
 
-      {/* Matrix Rain Effect (when Konami activated) */}
-      {konamiActivated && (
-        <div className="fixed inset-0 pointer-events-none z-[9998] overflow-hidden">
-          {Array.from({ length: 30 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-[#D4B483] font-mono text-xs"
-              style={{
-                left: `${(i / 30) * 100}%`,
-                top: -20
-              }}
-              animate={{
-                y: ['0vh', '110vh']
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: 'linear'
-              }}
-            >
-              {Array.from({ length: 20 }).map((_, j) => (
-                <div key={j} style={{ opacity: 0.3 + Math.random() * 0.7 }}>
-                  {String.fromCharCode(0x30A0 + Math.random() * 96)}
-                </div>
-              ))}
-            </motion.div>
-          ))}
+      {/* Resonanzmodus subtle overlay */}
+      {resonanzModeActive && (
+        <div className="fixed inset-0 pointer-events-none z-[9998]">
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(212, 180, 131, 0.08) 0%, transparent 60%)',
+              backdropFilter: 'blur(1px)'
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+          />
         </div>
       )}
 
       {/* Secret Hint - AAA for achievements */}
       <motion.div
-        className="fixed bottom-20 left-4 z-40 px-3 py-1.5 rounded-full text-xs font-medium bg-black/60 text-white/60 backdrop-blur-sm"
+        className="fixed bottom-20 left-4 z-40 px-3 py-1.5 rounded-full text-xs font-medium bg-black/40 text-white/50 backdrop-blur-sm"
         initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 0.5, x: 0 }}
-        transition={{ delay: 5 }}
-        whileHover={{ opacity: 1, scale: 1.05 }}
+        animate={{ opacity: 0.4, x: 0 }}
+        transition={{ delay: 8 }}
+        whileHover={{ opacity: 0.8, scale: 1.05 }}
       >
-        💡 Press AAA for achievements
+        💡 AAA für Achievements
       </motion.div>
     </>
   );

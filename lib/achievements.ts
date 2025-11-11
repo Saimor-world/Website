@@ -14,21 +14,41 @@ export interface Achievement {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'konami',
-    name: 'Old School Gamer',
-    nameDE: 'Klassischer Spieler',
-    description: 'Entered the legendary Konami Code',
-    descriptionDE: 'Konami Code eingegeben',
-    icon: '🎮',
+    name: 'Resonance Mode',
+    nameDE: 'Resonanzmodus',
+    description: 'You found an old path',
+    descriptionDE: 'Du hast einen alten Pfad gefunden',
+    icon: '🌟',
     unlocked: false,
     secret: false
   },
   {
-    id: 'triple-click',
-    name: 'Click Master',
-    nameDE: 'Klick-Meister',
-    description: 'Triple clicked for explosion',
-    descriptionDE: 'Dreifach-Klick Explosion ausgelöst',
-    icon: '💥',
+    id: 'clarity-spark',
+    name: 'Clarity Spark',
+    nameDE: 'Klarheitsfunke',
+    description: 'Discovered the spark of clarity',
+    descriptionDE: 'Den Klarheitsfunken entdeckt',
+    icon: '✨',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'silent-observer',
+    name: 'Silent Observer',
+    nameDE: 'Leiser Beobachter',
+    description: 'You take time to look closely',
+    descriptionDE: 'Du nimmst dir Zeit zum Hinschauen',
+    icon: '👁️',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'clarity-navigator',
+    name: 'Clarity Navigator',
+    nameDE: 'Klarheitsnavigator',
+    description: 'You examine the foundations',
+    descriptionDE: 'Du prüfst die Basis',
+    icon: '🧭',
     unlocked: false,
     secret: true
   },
@@ -69,16 +89,6 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: 'Discovered "wandel"',
     descriptionDE: '"wandel" entdeckt',
     icon: '🔄',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'click-combo',
-    name: 'Speed Clicker',
-    nameDE: 'Schnell-Klicker',
-    description: '5 rapid clicks - Fireworks!',
-    descriptionDE: '5 schnelle Klicks - Feuerwerk!',
-    icon: '🎆',
     unlocked: false,
     secret: true
   },
