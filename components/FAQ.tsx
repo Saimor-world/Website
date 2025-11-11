@@ -11,45 +11,45 @@ export default function FAQ({ locale }: Props) {
 
   const faqs = [
     {
-      q: t('Was unterscheidet Saimôr von klassischen Beratungen?', 'What distinguishes Saimôr from traditional consulting?'),
+      q: t('Was ist Saimôr?', 'What is Saimôr?'),
       a: t(
-        'Wir verkaufen keine Standardlösungen, sondern schaffen Resonanzräume für Klarheit. Statt auf Effizienz und Optimierung setzen wir auf Verstehen und nachhaltige Veränderung. Unsere Formate (Orbit, Pulse, Systems) kombinieren persönliche Begleitung mit systemischer Methodik – ohne Verkaufsdruck, ohne Profile.',
-        'We don\'t sell standard solutions, but create resonance spaces for clarity. Instead of focusing on efficiency and optimization, we emphasize understanding and sustainable change. Our formats (Orbit, Pulse, Systems) combine personal guidance with systemic methodology – without sales pressure, without profiling.'
+        'Saimôr begleitet Menschen und Organisationen im Wandel. Wir schaffen Resonanzräume für Klarheit – durch persönliche Begleitung (Orbit, Pulse) und technische Unterstützung (Môra OS). Kein Verkaufsdruck, keine Profile, keine Standardlösungen.',
+        'Saimôr accompanies people and organizations in transformation. We create resonance spaces for clarity – through personal guidance (Orbit, Pulse) and technical support (Môra OS). No sales pressure, no profiling, no standard solutions.'
+      )
+    },
+    {
+      q: t('Was ist Môra?', 'What is Môra?'),
+      a: t(
+        'Môra ist unsere KI-Begleiterin – Dashboard-Intelligence, Web-Chat und Voice-Assistent. Aktuell läuft Môra als MVP-Prototyp mit lokal generierten Demo-Daten. Keine Kundendaten, keine externen Clouds. Môra navigiert mit dir durch Komplexität zur klaren Handlung.',
+        'Môra is our AI companion – dashboard intelligence, web chat, and voice assistant. Currently running as MVP prototype with locally generated demo data. No customer data, no external clouds. Môra navigates with you through complexity to clear action.'
+      )
+    },
+    {
+      q: t('Wie läuft die Demo-/Erstphase?', 'How does the demo/early phase work?'),
+      a: t(
+        'Aktuell entwickeln wir gemeinsam mit Pilot-Partnern. Alle Dashboard-Daten sind simuliert, die Adapter-Schicht zeigt Potenzial ohne echte Kundendaten. Orbit und Pulse sind bereits buchbar. Môra-Warteliste über die Website.',
+        'Currently developing together with pilot partners. All dashboard data is simulated, the adapter layer shows potential without real customer data. Orbit and Pulse are already bookable. Môra waitlist via website.'
+      )
+    },
+    {
+      q: t('Wie geht ihr mit Daten & Datenschutz um?', 'How do you handle data & privacy?'),
+      a: t(
+        'DSGVO-Guardrails: EU-Hosting, keine Profile, kein Tracking, aggregierte Geschäftsdaten (keine Einzelpersonen-Metriken). In der Demo-Phase: Ausschließlich lokale Simulations-Daten. Transparenz ist Pflicht, Datensouveränität ist Standard.',
+        'GDPR guardrails: EU hosting, no profiles, no tracking, aggregated business data (no individual-level metrics). In demo phase: Exclusively local simulation data. Transparency is mandatory, data sovereignty is standard.'
       )
     },
     {
       q: t('Für wen ist Saimôr geeignet?', 'Who is Saimôr suitable for?'),
       a: t(
-        'Saimôr begleitet vier Zielgruppen: (1) Öffentlicher Sektor (Kommunen, Verwaltungen), (2) Wachsende Unternehmen (15-150 Mitarbeitende), (3) Persönliche Entwicklung (Einzelpersonen, Teams), (4) B2B-Kooperationen (Agenturen, Beratungen). Gemeinsam: Alle stehen an einem Punkt, wo bisherige Strukturen nicht mehr passen.',
-        'Saimôr accompanies four target groups: (1) Public sector (municipalities, administrations), (2) Growing companies (15-150 employees), (3) Personal development (individuals, teams), (4) B2B cooperations (agencies, consultancies). Common thread: All are at a point where existing structures no longer fit.'
+        'Organisationen und Menschen, die an einem Punkt stehen, wo bisherige Strukturen nicht mehr passen. Kommunen, wachsende Unternehmen, Teams, Einzelpersonen – alle, die Klarheit vor Komplexität setzen.',
+        'Organizations and people at a point where existing structures no longer fit. Municipalities, growing companies, teams, individuals – anyone who prioritizes clarity over complexity.'
       )
     },
     {
-      q: t('Wie läuft ein Klarheitsgespräch ab?', 'How does a clarity call work?'),
+      q: t('Wie kann ich mitwirken?', 'How can I participate?'),
       a: t(
-        '30 Minuten kostenlos, ohne Verkaufsdruck. Wir hören zu, stellen Fragen und klären gemeinsam, ob und wie Saimôr für Sie Sinn ergibt. Danach entscheiden Sie in Ruhe. Buchung über Cal.com, DSGVO-konform, keine Datenprofile.',
-        '30 minutes free, without sales pressure. We listen, ask questions, and clarify together whether and how Saimôr makes sense for you. Afterward, you decide at your own pace. Booking via Cal.com, GDPR-compliant, no data profiles.'
-      )
-    },
-    {
-      q: t('Was kostet Saimôr?', 'What does Saimôr cost?'),
-      a: t(
-        'Die Investition hängt vom Format ab: Pulse-Workshops ab €1.200, Orbit-Begleitung ab €2.500/Monat (3-6 Monate), Systems-Dashboards ab €3.500 (Nova-Paket). Alle Preise verstehen sich zzgl. MwSt. Im Klarheitsgespräch besprechen wir konkrete Bedarfe und Budgets.',
-        'Investment depends on the format: Pulse workshops from €1,200, Orbit accompaniment from €2,500/month (3-6 months), Systems dashboards from €3,500 (Nova package). All prices excl. VAT. In the clarity call, we discuss specific needs and budgets.'
-      )
-    },
-    {
-      q: t('Wie sieht Datenschutz & Sicherheit aus?', 'What about data privacy & security?'),
-      a: t(
-        'Alle Daten werden EU-basiert gehostet (DSGVO-konform). Wir erstellen keine Profile, verkaufen keine Daten, nutzen keine Tracking-Tools. Bei Systems-Dashboards: End-to-End Verschlüsselung, granulare Zugriffsrechte, jederzeit Daten-Export möglich.',
-        'All data is hosted in the EU (GDPR-compliant). We don\'t create profiles, sell data, or use tracking tools. For Systems dashboards: End-to-end encryption, granular access rights, data export available anytime.'
-      )
-    },
-    {
-      q: t('Wann starten wir?', 'When do we start?'),
-      a: t(
-        'Nach dem Klarheitsgespräch definieren wir gemeinsam einen Startzeitpunkt. Pulse-Workshops sind kurzfristig buchbar (2-4 Wochen Vorlauf), Orbit-Prozesse starten idealerweise zu Monats-/Quartalsbeginn, Systems-Dashboards benötigen 2-3 Wochen Setup. Start: 1. September 2025.',
-        'After the clarity call, we define a start date together. Pulse workshops can be booked at short notice (2-4 weeks lead time), Orbit processes ideally start at month/quarter beginning, Systems dashboards require 2-3 weeks setup. Launch: September 1, 2025.'
+        'Klarheitsgespräch buchen (30 Min., kostenlos), Môra-Warteliste beitreten, oder direkt ein Orbit/Pulse-Format anfragen. Wir klären gemeinsam, was Sinn ergibt – ohne Druck, mit Tiefe.',
+        'Book a clarity call (30 min, free), join the Môra waitlist, or directly request an Orbit/Pulse format. We clarify together what makes sense – without pressure, with depth.'
       )
     }
   ];
