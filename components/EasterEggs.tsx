@@ -46,6 +46,9 @@ export default function EasterEggs() {
   const [visitedSections, setVisitedSections] = useState<Set<string>>(new Set());
   const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const achievementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dashboardVisitedRef = useRef<Set<string>>(new Set());
+  const dashboardViewSwitchRef = useRef(0);
+  const feldforscherUnlockedRef = useRef(false);
   const dismissAchievement = useCallback(() => {
     setNewAchievement(null);
     if (achievementTimeoutRef.current) {
@@ -85,7 +88,7 @@ export default function EasterEggs() {
   }, []);
 
   // Helper to unlock achievement with haptic feedback
-  const unlockAchievement = (id: string) => {
+  const unlockAchievement = useCallback((id: string) => {
     const achievement = achievementManager.current.unlock(id);
     if (achievement) {
       triggerHapticFeedback();
@@ -98,7 +101,7 @@ export default function EasterEggs() {
         achievementTimeoutRef.current = null;
       }, 3600);
     }
-  };
+  }, []);
   const showTransientMessage = useCallback((text: string, duration = 3500) => {
     if (messageTimeoutRef.current) {
       clearTimeout(messageTimeoutRef.current);
@@ -110,6 +113,21 @@ export default function EasterEggs() {
       messageTimeoutRef.current = null;
     }, duration);
   }, []);
+
+  const tryUnlockFeldforscher = useCallback(() => {
+    if (feldforscherUnlockedRef.current) return;
+    const alreadyUnlocked = achievementManager
+      .current
+      .getAll()
+      .some((a) => a.id === 'field-explorer' && a.unlocked);
+    if (alreadyUnlocked) {
+      feldforscherUnlockedRef.current = true;
+      return;
+    }
+    feldforscherUnlockedRef.current = true;
+    unlockAchievement('field-explorer');
+    showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
+  }, [showTransientMessage, unlockAchievement]);
 
   // === KONAMI CODE & SECRET WORDS ===
   useEffect(() => {
@@ -306,14 +324,35 @@ export default function EasterEggs() {
     checkSectionVisits();
   }, [mounted, visitedSections]);
 
-  // === TODO: "FELDFORSCHER" - Dashboard View Switch ===
-  // Requires Dashboard component integration
-  // useEffect(() => {
-  //   window.addEventListener('mora-dashboard-view-switch', () => {
-  //     unlockAchievement('field-explorer');
-  //     showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
-  //   });
-  // }, [mounted]);
+  // === "FELDFORSCHER" - Dashboard Exploration Tracking ===
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleCardVisited = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail;
+      if (!detail) return;
+      dashboardVisitedRef.current.add(detail);
+      if (dashboardVisitedRef.current.size >= 3) {
+        tryUnlockFeldforscher();
+      }
+    };
+
+    const handleViewSwitch = (event: Event) => {
+      const count = Number((event as CustomEvent<number>).detail ?? 0);
+      dashboardViewSwitchRef.current = count;
+      if (count >= 2) {
+        tryUnlockFeldforscher();
+      }
+    };
+
+    window.addEventListener('mora-dashboard-card-visited', handleCardVisited as EventListener);
+    window.addEventListener('mora-dashboard-view-switch', handleViewSwitch as EventListener);
+
+    return () => {
+      window.removeEventListener('mora-dashboard-card-visited', handleCardVisited as EventListener);
+      window.removeEventListener('mora-dashboard-view-switch', handleViewSwitch as EventListener);
+    };
+  }, [mounted, tryUnlockFeldforscher]);
 
   // === SCROLL TRACKING ===
   useEffect(() => {

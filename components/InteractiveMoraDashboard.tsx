@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useId, useCallback } from 'react';
+import { useState, useEffect, useId, useCallback, useRef } from 'react';
 import {
   TrendingUp, TrendingDown, Users, Clock, Sparkles,
   Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info
@@ -30,15 +30,31 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
   const [moraInsight, setMoraInsight] = useState(false);
   const [connections, setConnections] = useState<Array<[string, string]>>([]);
+  const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
+  const demoTooltipId = useId();
+  const visitedCardsRef = useRef<Set<string>>(new Set());
+  const viewSwitchCountRef = useRef(0);
+
   const sendDashboardHoverEvent = useCallback((state: boolean) => {
     if (typeof window === 'undefined') return;
     window.dispatchEvent(new CustomEvent('mora-dashboard-card-hover', { detail: state }));
   }, []);
 
   useEffect(() => () => sendDashboardHoverEvent(false), [sendDashboardHoverEvent]);
-  const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
-  const demoTooltipId = useId();
 
+  const emitCardVisited = useCallback((id: string) => {
+    if (visitedCardsRef.current.has(id) || typeof window === 'undefined') return;
+    visitedCardsRef.current.add(id);
+    window.dispatchEvent(new CustomEvent('mora-dashboard-card-visited', { detail: id }));
+  }, []);
+
+  const emitViewSwitch = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    viewSwitchCountRef.current += 1;
+    window.dispatchEvent(
+      new CustomEvent('mora-dashboard-view-switch', { detail: viewSwitchCountRef.current })
+    );
+  }, []);
   const content = {
     de: {
       title: 'Môra Dashboard',
@@ -281,7 +297,10 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
           {/* View Mode Toggle */}
           <div className="flex items-center justify-center gap-4">
             <motion.button
-              onClick={() => setViewMode('folder')}
+              onClick={() => {
+                setViewMode('folder');
+                emitViewSwitch();
+              }}
               className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all"
               style={{
                 background: viewMode === 'folder'
@@ -298,7 +317,10 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
             </motion.button>
 
             <motion.button
-              onClick={() => setViewMode('field')}
+              onClick={() => {
+                setViewMode('field');
+                emitViewSwitch();
+              }}
               className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all"
               style={{
                 background: viewMode === 'field'
@@ -347,6 +369,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       onMouseEnter={() => {
                         setHoveredPoint(point.id);
                         sendDashboardHoverEvent(true);
+                        emitCardVisited(point.id);
                       }}
                       onMouseLeave={() => {
                         setHoveredPoint(null);
@@ -355,6 +378,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       onFocus={() => {
                         setHoveredPoint(point.id);
                         sendDashboardHoverEvent(true);
+                        emitCardVisited(point.id);
                       }}
                       onBlur={() => {
                         setHoveredPoint(null);
@@ -522,6 +546,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       onMouseEnter={() => {
                         setHoveredPoint(point.id);
                         sendDashboardHoverEvent(true);
+                        emitCardVisited(point.id);
                       }}
                       onMouseLeave={() => {
                         setHoveredPoint(null);
@@ -530,6 +555,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       onFocus={() => {
                         setHoveredPoint(point.id);
                         sendDashboardHoverEvent(true);
+                        emitCardVisited(point.id);
                       }}
                       onBlur={() => {
                         setHoveredPoint(null);
