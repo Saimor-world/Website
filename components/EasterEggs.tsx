@@ -132,6 +132,94 @@ export default function EasterEggs() {
     showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
   }, [showTransientMessage, unlockAchievement]);
 
+  // === PARTICLE & ACTIVATION HELPERS (DECLARE EARLY TO AVOID TDZ) ===
+
+  const createSubtleParticles = useCallback((x: number, y: number, count: number) => {
+    const newParticles: Particle[] = Array.from({ length: count }, (_, i) => {
+      const angle = (i / count) * Math.PI * 2;
+      const velocity = 2 + Math.random() * 3;
+      return {
+        id: Date.now() + i,
+        x,
+        y,
+        vx: Math.cos(angle) * velocity,
+        vy: Math.sin(angle) * velocity,
+        color: ['#D4B483', '#E6C897'][Math.floor(Math.random() * 2)],
+        size: 4 + Math.random() * 6,
+        icon: [Sparkles, Star][Math.floor(Math.random() * 2)]
+      };
+    });
+
+    setParticles(prev => [...prev, ...newParticles]);
+    setTimeout(() => {
+      setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
+    }, 2500);
+  }, []);
+
+  const createSubtleFireworks = useCallback(() => {
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const randomX = window.innerWidth * (0.3 + Math.random() * 0.4);
+        const randomY = window.innerHeight * (0.3 + Math.random() * 0.4);
+        createSubtleParticles(randomX, randomY, 12);
+      }, i * 400);
+    }
+  }, [createSubtleParticles]);
+
+  const createGoldenRain = useCallback(() => {
+    const count = 25;
+    const newParticles: Particle[] = Array.from({ length: count }, (_, i) => ({
+      id: Date.now() + i + 1000,
+      x: Math.random() * window.innerWidth,
+      y: -20,
+      vx: (Math.random() - 0.5) * 1,
+      vy: 2 + Math.random() * 3,
+      color: '#D4B483',
+      size: 5 + Math.random() * 5,
+      icon: Crown
+    }));
+
+    setParticles(prev => [...prev, ...newParticles]);
+    setTimeout(() => {
+      setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
+    }, 3000);
+  }, []);
+
+  const activateResonanzMode = useCallback(() => {
+    setResonanzModeActive(true);
+    showTransientMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.', 4000);
+
+    // Subtle golden shimmer effect
+    document.body.style.animation = 'goldenShimmer 8s ease-in-out';
+
+    createGoldenRain();
+
+    setTimeout(() => {
+      document.body.style.animation = '';
+      setResonanzModeActive(false);
+    }, 8000);
+  }, [createGoldenRain, showTransientMessage]);
+
+  const activateKlarheitsfunke = useCallback((x: number, y: number) => {
+    showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.');
+    createSubtleParticles(x, y, 15);
+  }, [createSubtleParticles, showTransientMessage]);
+
+  const activateShake = useCallback(() => {
+    showTransientMessage('Bewegung erkannt – Systeme reagieren.');
+    createGoldenRain();
+  }, [createGoldenRain, showTransientMessage]);
+
+  const activateSecretWord = useCallback((word: string) => {
+    const messages: { [key: string]: string } = {
+      klarheit: 'Klarheit gefunden – sie war immer da.',
+      saimor: 'Saimôr erwacht – Resonanz beginnt.',
+      wandel: 'Wandel beginnt – mit jedem Schritt.'
+    };
+    showTransientMessage(messages[word] || 'Geheimnis entdeckt.');
+    createGoldenRain();
+  }, [createGoldenRain, showTransientMessage]);
+
   // === KONAMI CODE & SECRET WORDS ===
   useEffect(() => {
     if (!mounted) return;
@@ -405,96 +493,6 @@ export default function EasterEggs() {
 
     return () => clearTimeout(timer);
   }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
-
-  // === ACTIVATION FUNCTIONS (REFACTORED) ===
-
-  const activateResonanzMode = useCallback(() => {
-    setResonanzModeActive(true);
-    showTransientMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.', 4000);
-
-    // Subtle golden shimmer effect
-    document.body.style.animation = 'goldenShimmer 8s ease-in-out';
-
-    createGoldenRain();
-
-    setTimeout(() => {
-      document.body.style.animation = '';
-      setResonanzModeActive(false);
-    }, 8000);
-  }, [createGoldenRain, showTransientMessage]);
-
-  const activateKlarheitsfunke = useCallback((x: number, y: number) => {
-    showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.');
-    createSubtleParticles(x, y, 15);
-  }, [createSubtleParticles, showTransientMessage]);
-
-  const activateShake = useCallback(() => {
-    showTransientMessage('Bewegung erkannt – Systeme reagieren.');
-    createGoldenRain();
-  }, [createGoldenRain, showTransientMessage]);
-
-  const activateSecretWord = useCallback((word: string) => {
-    const messages: {[key: string]: string} = {
-      'klarheit': 'Klarheit gefunden – sie war immer da.',
-      'saimor': 'Saimôr erwacht – Resonanz beginnt.',
-      'wandel': 'Wandel beginnt – mit jedem Schritt.'
-    };
-    showTransientMessage(messages[word] || 'Geheimnis entdeckt.');
-    createGoldenRain();
-  }, [createGoldenRain, showTransientMessage]);
-
-  // === PARTICLE EFFECTS (REFINED) ===
-
-  const createSubtleParticles = useCallback((x: number, y: number, count: number) => {
-    const newParticles: Particle[] = Array.from({ length: count }, (_, i) => {
-      const angle = (i / count) * Math.PI * 2;
-      const velocity = 2 + Math.random() * 3;
-      return {
-        id: Date.now() + i,
-        x,
-        y,
-        vx: Math.cos(angle) * velocity,
-        vy: Math.sin(angle) * velocity,
-        color: ['#D4B483', '#E6C897'][Math.floor(Math.random() * 2)],
-        size: 4 + Math.random() * 6,
-        icon: [Sparkles, Star][Math.floor(Math.random() * 2)]
-      };
-    });
-
-    setParticles(prev => [...prev, ...newParticles]);
-    setTimeout(() => {
-      setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
-    }, 2500);
-  }, []);
-
-  const createSubtleFireworks = useCallback(() => {
-    for (let i = 0; i < 3; i++) {
-      setTimeout(() => {
-        const randomX = window.innerWidth * (0.3 + Math.random() * 0.4);
-        const randomY = window.innerHeight * (0.3 + Math.random() * 0.4);
-        createSubtleParticles(randomX, randomY, 12);
-      }, i * 400);
-    }
-  }, [createSubtleParticles]);
-
-  const createGoldenRain = useCallback(() => {
-    const count = 25;
-    const newParticles: Particle[] = Array.from({ length: count }, (_, i) => ({
-      id: Date.now() + i + 1000,
-      x: Math.random() * window.innerWidth,
-      y: -20,
-      vx: (Math.random() - 0.5) * 1,
-      vy: 2 + Math.random() * 3,
-      color: '#D4B483',
-      size: 5 + Math.random() * 5,
-      icon: Crown
-    }));
-
-    setParticles(prev => [...prev, ...newParticles]);
-    setTimeout(() => {
-      setParticles(prev => prev.filter(p => !newParticles.some(np => np.id === p.id)));
-    }, 3000);
-  }, []);
 
   // Inject animations
   useEffect(() => {
