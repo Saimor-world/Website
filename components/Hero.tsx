@@ -19,12 +19,10 @@ type Props = {
 };
 
 const logoPanelStyle: CSSProperties = {
-  background:
-    'linear-gradient(135deg, rgba(26, 46, 26, 0.78) 0%, rgba(10, 22, 18, 0.88) 50%, rgba(212, 180, 131, 0.35) 100%)',
-  border: '2px solid rgba(212, 180, 131, 0.65)',
-  boxShadow:
-    '0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.4)',
-  backdropFilter: 'blur(48px)'
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  boxShadow: '0 18px 42px rgba(14, 26, 27, 0.55), inset 0 0 0 1px rgba(14, 26, 27, 0.4)',
+  backdropFilter: 'blur(16px)'
 };
 
 const logoInnerGlow: CSSProperties = {
@@ -43,13 +41,13 @@ export default function Hero({
     de: {
       heading: 'Klarheit im Wandel',
       claim: 'Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
-      ctaPrimary: 'Klarheitsgespräch buchen',
+      ctaPrimary: 'Ruhigen Erstkontakt starten',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
       heading: 'Clarity in Transformation',
       claim: 'Guidance for people and organizations when systems waver.',
-      ctaPrimary: 'Book clarity conversation',
+      ctaPrimary: 'Start a calm first contact',
       ctaSecondary: 'View offering'
     }
   }[locale];
@@ -333,7 +331,7 @@ export default function Hero({
               border: '2px solid rgba(255, 255, 255, 0.2)',
               boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
             }}
-            aria-label="Join Môra waitlist"
+            aria-label={locale === 'de' ? 'Ruhigen Erstkontakt starten' : 'Start a calm first contact'}
           >
             {/* Animated shine effect */}
             <motion.div
@@ -358,9 +356,16 @@ export default function Hero({
                 <path d="M13 7H7v6h6V7z"/>
                 <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </motion.svg>
-              <span>{locale === 'de' ? 'Môra kennenlernen' : 'Meet Môra'}</span>
+              <span>
+                {locale === 'de' ? 'Ruhigen Erstkontakt starten' : 'Start a calm first contact'}
+              </span>
             </span>
           </motion.a>
+          <p className="text-sm text-white/80 text-center max-w-sm">
+            {locale === 'de'
+              ? 'Kurze Nachricht – wir melden uns in Ruhe zurück.'
+              : 'Leave a short note – we’ll respond with calm clarity.'}
+          </p>
 
           {/* Scroll Indicator */}
           <motion.button
