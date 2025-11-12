@@ -369,6 +369,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                   const StatusIcon = getStatusIcon(point.status);
                   return (
                     <motion.div
+                      data-mora-node="true"
                       key={point.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}

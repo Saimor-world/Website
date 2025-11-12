@@ -74,6 +74,8 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
     }
   }[locale];
 
+  const orbAriaLabel = locale === 'de' ? 'Môra – verbunden mit dem Dashboard' : 'Môra – connected to the dashboard';
+
   const openChatOverlay = useCallback(() => {
     if (typeof window === 'undefined') return;
     window.dispatchEvent(new Event('openMoraChat'));
@@ -183,6 +185,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
           <motion.div
             id="mora-avatar"
             className="relative w-20 h-20 rounded-full cursor-pointer group"
+            data-mora-orb="true"
             style={{
               background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
               boxShadow: '0 8px 32px rgba(74, 103, 65, 0.3)'
@@ -194,7 +197,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onClick={handleClick}
-            aria-label={locale === 'de' ? 'Môra – Chat öffnen' : 'Môra – open chat'}
+            aria-label={orbAriaLabel}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             animate={{
