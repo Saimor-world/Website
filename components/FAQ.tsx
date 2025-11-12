@@ -13,45 +13,31 @@ export default function FAQ({ locale }: Props) {
     {
       q: t('Was ist Saimôr?', 'What is Saimôr?'),
       a: t(
-        'Saimôr begleitet Menschen und Organisationen im Wandel. Wir schaffen Resonanzräume für Klarheit – durch persönliche Begleitung (Orbit, Pulse) und technische Unterstützung (Môra OS). Kein Verkaufsdruck, keine Profile, keine Standardlösungen.',
-        'Saimôr accompanies people and organizations in transformation. We create resonance spaces for clarity – through personal guidance (Orbit, Pulse) and technical support (Môra OS). No sales pressure, no profiling, no standard solutions.'
-      )
+        'Saimôr ist ein ruhiger Resonanzraum für Klarheit in Veränderung. Wir verbinden menschliche Tiefe mit präziser Technologie – immer ohne Druck, immer mit Zeit zum Verstehen.',
+        'Saimôr is a calm resonance space for clarity in change. We combine human depth with precise technology—always without pressure, always with time to understand.'
+      ),
     },
     {
       q: t('Was ist Môra?', 'What is Môra?'),
       a: t(
-        'Môra ist unsere KI-Begleiterin – Dashboard-Intelligence, Web-Chat und Voice-Assistent. Aktuell läuft Môra als MVP-Prototyp mit lokal generierten Demo-Daten. Keine Kundendaten, keine externen Clouds. Môra navigiert mit dir durch Komplexität zur klaren Handlung.',
-        'Môra is our AI companion – dashboard intelligence, web chat, and voice assistant. Currently running as MVP prototype with locally generated demo data. No customer data, no external clouds. Môra navigates with you through complexity to clear action.'
-      )
+        'Môra ist die KI-Begleiterin im Saimôr-Ökosystem. Im Prototyp zeigt sie Dashboard-Beispiele und reagiert im Chat – aktuell mit simulierten Daten, ohne externe Clouds.',
+        'Môra is the AI companion inside the Saimôr ecosystem. In the prototype she shows dashboard examples and responds in chat—currently with simulated data and no external clouds.'
+      ),
     },
     {
-      q: t('Wie läuft die Demo-/Erstphase?', 'How does the demo/early phase work?'),
+      q: t('Wie kann ich es ausprobieren?', 'How can I try it?'),
       a: t(
-        'Aktuell entwickeln wir gemeinsam mit Pilot-Partnern. Alle Dashboard-Daten sind simuliert, die Adapter-Schicht zeigt Potenzial ohne echte Kundendaten. Orbit und Pulse sind bereits buchbar. Môra-Warteliste über die Website.',
-        'Currently developing together with pilot partners. All dashboard data is simulated, the adapter layer shows potential without real customer data. Orbit and Pulse are already bookable. Môra waitlist via website.'
-      )
+        'Schreib uns kurz. Wir zeigen dir die Demo in Ruhe und besprechen, ob und wie Saimôr zu deinem Kontext passt.',
+        'Send us a short note. We will walk you through the demo calmly and discuss if and how Saimôr fits your context.'
+      ),
     },
     {
-      q: t('Wie geht ihr mit Daten & Datenschutz um?', 'How do you handle data & privacy?'),
+      q: t('Wie geht ihr mit Daten & Sicherheit um?', 'How do you handle data & security?'),
       a: t(
-        'DSGVO-Guardrails: EU-Hosting, keine Profile, kein Tracking, aggregierte Geschäftsdaten (keine Einzelpersonen-Metriken). In der Demo-Phase: Ausschließlich lokale Simulations-Daten. Transparenz ist Pflicht, Datensouveränität ist Standard.',
-        'GDPR guardrails: EU hosting, no profiles, no tracking, aggregated business data (no individual-level metrics). In demo phase: Exclusively local simulation data. Transparency is mandatory, data sovereignty is standard.'
-      )
+        'In der Demo nutzen wir ausschließlich lokal generierte Beispiel-Daten. Keine Profilbildung, kein Tracking, EU-Recht als Basis. Bei echten Projekten gilt: Datensparsamkeit, klare Rollen, Export jederzeit.',
+        'In the demo we use only locally generated sample data. No profiling, no tracking, EU law as the baseline. For real projects we apply data minimization, clear roles, and export on request at any time.'
+      ),
     },
-    {
-      q: t('Für wen ist Saimôr geeignet?', 'Who is Saimôr suitable for?'),
-      a: t(
-        'Organisationen und Menschen, die an einem Punkt stehen, wo bisherige Strukturen nicht mehr passen. Kommunen, wachsende Unternehmen, Teams, Einzelpersonen – alle, die Klarheit vor Komplexität setzen.',
-        'Organizations and people at a point where existing structures no longer fit. Municipalities, growing companies, teams, individuals – anyone who prioritizes clarity over complexity.'
-      )
-    },
-    {
-      q: t('Wie kann ich mitwirken?', 'How can I participate?'),
-      a: t(
-        'Klarheitsgespräch buchen (30 Min., kostenlos), Môra-Warteliste beitreten, oder direkt ein Orbit/Pulse-Format anfragen. Wir klären gemeinsam, was Sinn ergibt – ohne Druck, mit Tiefe.',
-        'Book a clarity call (30 min, free), join the Môra waitlist, or directly request an Orbit/Pulse format. We clarify together what makes sense – without pressure, with depth.'
-      )
-    }
   ];
 
   return (
