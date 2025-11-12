@@ -261,7 +261,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 border: '1px solid rgba(212, 180, 131, 0.4)'
               }}
             >
-              <span className="text-sm font-medium text-gray-700">{content.demoLabel}</span>
+              <span
+                className="text-sm font-medium text-gray-700"
+                role="status"
+                aria-live="polite"
+                title={content.demoTooltip}
+              >
+                {content.demoLabel}
+              </span>
               <button
                 type="button"
                 className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B483]/50"
