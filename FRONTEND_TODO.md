@@ -1,28 +1,54 @@
-## o. Session 7C - Polish II (13.11.2025)
-
-- o. **Achievements:** Feldforscher triggert nach 3 Cards oder 2 View-Switches, Texte bleiben im Silent Mode.
-- o. **Lint & Semantik:** useEffect-Dependencies geschlossen, Haptics/Particles via useCallback, Showcase-BG via <Image>.
-- o. **Trust Copy:** Neue Demo-Erklaerung auf /trust und /en/trust inkl. Link zu DATA_FLOW_EXPLAINED.
-- o. **Hero Panel:** Glass-Panel enger am Logo (blur 18px, softer shadow), CTA unveraendert.
-- o. **Mora Bridge:** Hover-Throttling (100ms) + Intersection 0.25, Orb reagiert smoother, Reduced-Motion respektiert.
-- o. **Mora Avatar:** Hover-Dispatcher registriert bevor Cleanup laeuft, keine TDZ-Warnungen.
-
-**Files touched:** components/EasterEggs.tsx, lib/achievements.ts, components/KonamiCode.tsx, components/Lichtgespraech.tsx, components/MoraShowcase.tsx, components/MoraAvatar.tsx, app/trust/page.tsx, app/en/trust/page.tsx, components/Hero.tsx, components/MoraDashboardConnection.tsx.
-
-**Offen:** Lighthouse Mobile >= 90 erneut pruefen nach Deployment; API /api/dashboard/* meldet weiter Dynamic-Server-Warning.
-
----
-
-## o. Session 7B – Polish (12.11.2025)
+## o. Session 7F - Final Polish & Deploy Review (13.11.2025)
 
-- o. **Hero:** Logo-Kontrast via neues Glass-Panel + CTA-Kopie „Ruhigen Erstkontakt starten“ mit Subtext.
-- o. **Dashboard:** Badge jetzt „Demo-Dashboard (simulierte Daten)“ inkl. Tooltip + Hover-Events für Orb-Brücke.
-- o. **FAQ:** Vier neue Antworten (Demo-Fokus) und Accordion mit größeren Touch-Zielen & ARIA.
+- o. **Build pipeline:** `pnpm install`, `pnpm lint`, `pnpm build` laufen sauber; bekannte `/api/dashboard/*` Dynamic-Server-Warnings bestehen (unverÃ¤ndert, dokumentiert).
+- o. **Lighthouse:** Automatischer Abruf via Google PSI (CLI & REST) mehrfach mit TLS/429-Fehler beendet â†’ keine frischen Scores; erneut anstoÃŸen sobald das Kontingent wieder frei ist.
+- o. **Manual QA:** Hero-Panel erfÃ¼llt AA-Kontrast (logoPanelStyle), Demo-Badge trÃ¤gt `role="status"`+`title`, Orbâ†”Dashboard-Link schaltet zwischen Pfad/Glow (reduced-motion) und 4Ã—-Logo-Achievement feuert genau einmal/Sitzung (SessionStorage + R-Motion Guard).
+- o. **Focus / Keyboard:** CTA, FAQ, Badge-Buttons behalten sichtbare `focus-visible` Outlines, Tab-Reihenfolge konsistent; reduzierte Bewegung wird in Intro, Bridge und Achievements respektiert.
+
+**Offen:** Lighthouse Mobile â‰¥90 / Desktop â‰¥95 erneut erfassen (PSI 429). Monitoring der Edge-runtime Warnungen bleibt bestehen.
+
+---
+
+## o. Session 7C - Polish II (13.11.2025)
+
+
+
+- o. **Achievements:** Feldforscher triggert nach 3 Cards oder 2 View-Switches, Texte bleiben im Silent Mode.
+
+- o. **Lint & Semantik:** useEffect-Dependencies geschlossen, Haptics/Particles via useCallback, Showcase-BG via <Image>.
+
+- o. **Trust Copy:** Neue Demo-Erklaerung auf /trust und /en/trust inkl. Link zu DATA_FLOW_EXPLAINED.
+
+- o. **Hero Panel:** Glass-Panel enger am Logo (blur 18px, softer shadow), CTA unveraendert.
+
+- o. **Mora Bridge:** Hover-Throttling (100ms) + Intersection 0.25, Orb reagiert smoother, Reduced-Motion respektiert.
+
+- o. **Mora Avatar:** Hover-Dispatcher registriert bevor Cleanup laeuft, keine TDZ-Warnungen.
+
+
+
+**Files touched:** components/EasterEggs.tsx, lib/achievements.ts, components/KonamiCode.tsx, components/Lichtgespraech.tsx, components/MoraShowcase.tsx, components/MoraAvatar.tsx, app/trust/page.tsx, app/en/trust/page.tsx, components/Hero.tsx, components/MoraDashboardConnection.tsx.
+
+
+
+**Offen:** Lighthouse Mobile >= 90 erneut pruefen nach Deployment; API /api/dashboard/* meldet weiter Dynamic-Server-Warning.
+
+
+
+---
+
+
+
+## o. Session 7B  Polish (12.11.2025)
+
+- o. **Hero:** Logo-Kontrast via neues Glass-Panel + CTA-Kopie Ruhigen Erstkontakt starten mit Subtext.
+- o. **Dashboard:** Badge jetzt Demo-Dashboard (simulierte Daten) inkl. Tooltip + Hover-Events fr Orb-Brcke.
+- o. **FAQ:** Vier neue Antworten (Demo-Fokus) und Accordion mit greren Touch-Zielen & ARIA.
 - o. **Footer:** Tote Links entfernt/auf Anker gesetzt, nur Trust & Legal bleiben.
 - o. **Achievements:** Silent-Mode finalisiert (Texte, Timer 3,5s, aria-live, Feldforscher-Achievement vorbereitet).
-- o. **Môra ? Dashboard:** Orb sendet Hover-Events, neues SVG-Liane/Observer respektiert Reduced-Motion.
-- o. **FundingSection:** Komplett neutralisiert („Förderoptionen werden geprüft…“), keine Prozentclaims mehr.
-- o. **A11y/Mobile:** Focus-Styles & 44px Targets (FAQ, CTA, Cards), `loading="lazy"` fürs Hero-BG, Orb `aria-label`.
+- o. **Mra ? Dashboard:** Orb sendet Hover-Events, neues SVG-Liane/Observer respektiert Reduced-Motion.
+- o. **FundingSection:** Komplett neutralisiert (Frderoptionen werden geprft), keine Prozentclaims mehr.
+- o. **A11y/Mobile:** Focus-Styles & 44px Targets (FAQ, CTA, Cards), `loading="lazy"` frs Hero-BG, Orb `aria-label`.
 
 **Offen:** Feldforscher-Achievement wird aktiviert, sobald Dashboard View Switch Event implementiert ist; FundingSection bleibt deaktiviert bis CEO-Freigabe.
 
@@ -38,10 +64,10 @@
 
 ## o. Was heute erledigt wurde (Session 7 - 12.11.2025)
 
-### 1. Môra Disney Intro (First-Visit Animation)
+### 1. Mra Disney Intro (First-Visit Animation)
 - o. **Neue Component:** `components/MoraIntroAnimation.tsx` (Framer Motion Sequenzen + localStorage Guard)
 - o. **Ablauf:** Fade-In Overlay ? Orb Awakening ? Daten-Lianen ? Exit zum Avatar (10s gesamt)
-- o. **Skip:** ESC oder Click auf Overlay + Button („Überspringen“)
+- o. **Skip:** ESC oder Click auf Overlay + Button (berspringen)
 - o. **Storage:** Flag `mora-intro-seen` verhindert Wiederholung, respektiert Reduced Motion
 - o. **Integration:** Bereits in `app/de/page.tsx` & `app/en/page.tsx` aktiv (SSR off)
 
