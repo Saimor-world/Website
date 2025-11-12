@@ -51,6 +51,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="bg-forest-primary text-warm-beige antialiased">
         {/* Cache Buster - Force clear old chunks */}
