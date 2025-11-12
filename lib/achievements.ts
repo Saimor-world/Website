@@ -152,6 +152,16 @@ export const ACHIEVEMENTS: Achievement[] = [
     unlocked: false,
     secret: true
   }
+  {
+    id: 'field-explorer',
+    name: 'Field Researcher',
+    nameDE: 'Feldforscher',
+    description: 'Multiple perspectives — powerful for real decisions.',
+    descriptionDE: 'Mehrere Perspektiven – stark für echte Entscheidungen.',
+    icon: '🔭',
+    unlocked: false,
+    secret: true
+  },
 ];
 
 const STORAGE_KEY = 'saimor-achievements';
