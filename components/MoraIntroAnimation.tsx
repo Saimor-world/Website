@@ -1,340 +1,273 @@
 'use client';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+
+import { AnimatePresence, motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState, useId } from 'react';
+
+type Locale = 'de' | 'en';
 
 type Props = {
-  locale: 'de' | 'en';
+  locale?: Locale;
 };
 
-export default function MoraIntroAnimation({ locale }: Props) {
-  const [show, setShow] = useState(false);
+const COPY: Record<Locale, { greeting: string; subtitle: string; badge: string; skip: string }> = {
+  de: {
+    greeting: 'Hallo, ich bin Môra 🌱',
+    subtitle: 'Deine Begleiterin für Klarheit im Wandel.',
+    badge: 'Môra erwacht …',
+    skip: 'Überspringen',
+  },
+  en: {
+    greeting: "Hello, I'm Môra 🌱",
+    subtitle: 'Your companion for clarity in transformation.',
+    badge: 'Môra is waking up…',
+    skip: 'Skip intro',
+  },
+};
+
+const CONNECTION_ANGLES = [15, 110, 220, 310];
+
+export default function MoraIntroAnimation({ locale = 'de' }: Props) {
+  const [isVisible, setIsVisible] = useState(false);
   const [phase, setPhase] = useState(0);
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [ready, setReady] = useState(false);
+  const timeouts = useRef<number[]>([]);
+  const gradientId = useId();
 
-  useEffect(() => {
-    // Set window size for exit animation
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
+  const copy = useMemo(() => COPY[locale] ?? COPY.de, [locale]);
 
-    // Check if user has seen intro before
-    const seen = localStorage.getItem('mora-intro-seen');
-    if (!seen) {
-      setShow(true);
-
-      // Phase timings
-      const timer1 = setTimeout(() => setPhase(1), 1000);  // Awakening
-      const timer2 = setTimeout(() => setPhase(2), 2000);  // Connection
-      const timer3 = setTimeout(() => setPhase(3), 3000);  // Exit - Flight to Avatar
-      const timer4 = setTimeout(() => {
-        setShow(false);
-        localStorage.setItem('mora-intro-seen', 'true');
-      }, 5200); // Extended to finish flight animation
-
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        clearTimeout(timer3);
-        clearTimeout(timer4);
-      };
-    }
+  const clearTimers = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    timeouts.current.forEach((id) => window.clearTimeout(id));
+    timeouts.current = [];
   }, []);
 
-  // Skip intro on ESC or click
-  const skipIntro = () => {
-    setShow(false);
-    localStorage.setItem('mora-intro-seen', 'true');
-  };
+  const markSeen = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('mora-intro-seen', 'true');
+  }, []);
+
+  const endIntro = useCallback(
+    (delay = 500) => {
+      if (typeof window === 'undefined') return;
+      clearTimers();
+      markSeen();
+      const exitId = window.setTimeout(() => setIsVisible(false), delay);
+      timeouts.current.push(exitId);
+    },
+    [clearTimers, markSeen],
+  );
+
+  const skipIntro = useCallback(() => {
+    setPhase(3);
+    endIntro(350);
+  }, [endIntro]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && show) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const seen = window.localStorage.getItem('mora-intro-seen');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    setReady(true);
+
+    if (seen || prefersReducedMotion) {
+      markSeen();
+      return;
+    }
+
+    setIsVisible(true);
+    setPhase(0);
+
+    const schedule = (handler: () => void, delay: number) => {
+      const id = window.setTimeout(handler, delay);
+      timeouts.current.push(id);
+    };
+
+    schedule(() => setPhase(1), 1100);
+    schedule(() => setPhase(2), 2200);
+    schedule(() => setPhase(3), 3500);
+    schedule(() => endIntro(650), 4300);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
         skipIntro();
       }
     };
 
-    if (show) {
-      document.addEventListener('keydown', handleKeyDown);
-      // Prevent scrolling during intro
-      document.body.style.overflow = 'hidden';
-    }
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      clearTimers();
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [show]);
+  }, [clearTimers, endIntro, markSeen, skipIntro]);
 
-  const content = {
-    de: {
-      greeting: 'Hallo, ich bin Môra',
-      subtitle: 'Deine KI-Begleiterin für Klarheit',
-      skip: 'Überspringen (ESC)'
-    },
-    en: {
-      greeting: 'Hello, I\'m Môra',
-      subtitle: 'Your AI companion for clarity',
-      skip: 'Skip (ESC)'
+  const orbAnimation = useMemo(() => {
+    if (phase === 3) {
+      return {
+        scale: 0.32,
+        opacity: 0.9,
+        x: '32vw',
+        y: '30vh',
+      };
     }
-  }[locale];
 
-  if (!show) return null;
+    if (phase === 1) {
+      return {
+        scale: [1, 1.22, 1],
+        opacity: 1,
+      };
+    }
+
+    return {
+      scale: 1,
+      opacity: 1,
+      x: 0,
+      y: 0,
+    };
+  }, [phase]);
+
+  const orbTransition = useMemo(() => {
+    if (phase === 1) {
+      return { duration: 1.4, ease: 'easeInOut', times: [0, 0.5, 1] };
+    }
+
+    if (phase === 3) {
+      return { duration: 0.9, ease: 'easeInOut' };
+    }
+
+    return { duration: 0.8, ease: 'easeOut' };
+  }, [phase]);
+
+  if (!ready) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[10000] flex items-center justify-center cursor-pointer"
-        style={{
-          background: 'linear-gradient(135deg, #0A1612 0%, #0E1A1B 50%, #0A1612 100%)'
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={skipIntro}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Skip button */}
-        <motion.button
-          className="absolute top-8 right-8 text-white/60 hover:text-white text-sm font-medium transition-colors z-[10001] px-4 py-2 rounded-full backdrop-blur-sm"
-          style={{
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            background: 'rgba(255, 255, 255, 0.05)'
-          }}
+      {isVisible && (
+        <motion.div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-[#050b0c]/95"
+          onClick={skipIntro}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          exit={{ opacity: 0 }}
+          role="dialog"
+          aria-label="Môra Intro Animation"
         >
-          {content.skip}
-        </motion.button>
-
-        {/* Ambient background orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%)',
-            filter: 'blur(80px)'
-          }}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 4, repeat: Infinity }}
-        />
-
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.3) 0%, transparent 70%)',
-            filter: 'blur(70px)'
-          }}
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-        />
-
-        {/* Main Orb Container */}
-        <motion.div
-          className="relative flex items-center justify-center"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{
-            scale: phase === 0 ? 1 : phase === 1 ? [1, 1.3, 1] : phase === 3 ? 0.25 : 1,
-            x: phase === 3 ? (windowSize.width / 2) - 70 : 0,
-            y: phase === 3 ? (windowSize.height / 2) - 70 : 0,
-            opacity: phase === 3 ? 1 : 1
-          }}
-          transition={{
-            duration: phase === 1 ? 1 : phase === 3 ? 1.8 : 0.8,
-            ease: phase === 3 ? [0.22, 1, 0.36, 1] : "easeOut"
-          }}
-        >
-          {/* Outer Glow */}
-          <motion.div
-            className="absolute inset-0 rounded-full pointer-events-none"
-            style={{
-              width: 240,
-              height: 240,
-              background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, rgba(212, 180, 131, 0.3) 40%, transparent 70%)',
-              filter: 'blur(50px)'
-            }}
-            animate={{
-              scale: phase >= 1 ? [1, 1.2, 1] : 1,
-              opacity: phase >= 1 ? [0.6, 0.8, 0.6] : 0.6
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-
-          {/* Core Orb */}
-          <motion.div
-            className="relative w-[200px] h-[200px] rounded-full flex items-center justify-center overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%, #E6C897 100%)',
-              boxShadow: '0 20px 60px rgba(212, 180, 131, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.3)'
+          <button
+            type="button"
+            className="absolute top-6 right-6 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white/80 transition hover:bg-white/10"
+            onClick={(event) => {
+              event.stopPropagation();
+              skipIntro();
             }}
           >
-            {/* Animated shine effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-              initial={{ x: '-200%' }}
-              animate={{ x: '200%' }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+            {copy.skip}
+          </button>
+
+          <motion.div
+            className="relative flex items-center justify-center"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={orbAnimation}
+            transition={orbTransition}
+          >
+            <div
+              className="absolute rounded-full blur-[70px]"
+              style={{
+                width: 220,
+                height: 220,
+                background: 'radial-gradient(circle, rgba(212, 180, 131, 0.75) 0%, transparent 70%)',
+              }}
             />
 
-            {/* Môra Icon (simplified CPU/grid icon) */}
-            <motion.svg
-              width="80"
-              height="80"
-              viewBox="0 0 20 20"
-              fill="white"
-              className="relative z-10"
-              animate={phase >= 1 ? {
-                rotate: [0, 360],
-                scale: [1, 1.1, 1]
-              } : {}}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <path d="M13 7H7v6h6V7z"/>
-              <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
-            </motion.svg>
-
-            {/* Sparkles around orb */}
-            {phase >= 1 && (
-              <>
-                {[0, 90, 180, 270].map((angle, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute"
-                    style={{
-                      top: '50%',
-                      left: '50%',
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-120px)`
-                    }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                      scale: [0, 1, 0],
-                      rotate: [0, 180, 360]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.2
-                    }}
-                  >
-                    <Sparkles className="w-6 h-6 text-white" />
-                  </motion.div>
-                ))}
-              </>
-            )}
-          </motion.div>
-        </motion.div>
-
-        {/* Text Content */}
-        {phase >= 1 && phase < 3 && (
-          <motion.div
-            className="absolute top-[60%] text-center max-w-2xl px-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold text-white mb-3"
+            <div
+              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/40 shadow-[0_0_25px_rgba(212,180,131,0.6)]"
               style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                textShadow: '0 4px 20px rgba(212, 180, 131, 0.5)'
+                background: 'linear-gradient(140deg, #4A6741 0%, #D4B483 100%)',
               }}
-              animate={{
-                textShadow: [
-                  '0 4px 20px rgba(212, 180, 131, 0.5)',
-                  '0 4px 30px rgba(212, 180, 131, 0.8)',
-                  '0 4px 20px rgba(212, 180, 131, 0.5)'
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
             >
-              {content.greeting}
-            </motion.h2>
-            <motion.p
-              className="text-lg md:text-xl text-white/80"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              {content.subtitle}
-            </motion.p>
+              <div className="flex gap-6">
+                <div className="h-8 w-6 rounded-full bg-white/90" />
+                <div className="h-8 w-6 rounded-full bg-white/90" />
+              </div>
+
+              {phase >= 1 && (
+                <motion.div
+                  className="absolute -top-2 -right-2 text-white"
+                  animate={{ rotate: 360, scale: [1, 1.15, 1] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'linear' }}
+                >
+                  <Sparkles className="h-9 w-9" />
+                </motion.div>
+              )}
+            </div>
           </motion.div>
-        )}
 
-        {/* Connection Lines (Lianen) */}
-        {phase === 2 && (
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 9999 }}>
-            <defs>
-              <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(212, 180, 131, 0.8)" />
-                <stop offset="100%" stopColor="rgba(74, 103, 65, 0.6)" />
-              </linearGradient>
-            </defs>
-            {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-              const centerX = 50;
-              const centerY = 50;
-              const length = 35;
-              const endX = centerX + Math.cos((angle * Math.PI) / 180) * length;
-              const endY = centerY + Math.sin((angle * Math.PI) / 180) * length;
+          {phase >= 1 && phase < 3 && (
+            <motion.div
+              className="absolute top-2/3 text-center"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -24 }}
+            >
+              <h2
+                className="mb-3 text-4xl font-semibold text-white"
+                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+              >
+                {copy.greeting}
+              </h2>
+              <p className="text-base text-white/80">{copy.subtitle}</p>
+            </motion.div>
+          )}
 
-              return (
-                <motion.line
-                  key={i}
-                  x1={`${centerX}%`}
-                  y1={`${centerY}%`}
-                  x2={`${endX}%`}
-                  y2={`${endY}%`}
-                  stroke="url(#connectionGradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: i * 0.08,
-                    ease: "easeOut"
-                  }}
-                />
-              );
-            })}
+          {phase === 2 && (
+            <motion.div
+              className="absolute bottom-24 left-1/2 -translate-x-1/2 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/90 backdrop-blur-xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              {copy.badge}
+            </motion.div>
+          )}
 
-            {/* Connection endpoints (nodes) */}
-            {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-              const centerX = 50;
-              const centerY = 50;
-              const length = 35;
-              const endX = centerX + Math.cos((angle * Math.PI) / 180) * length;
-              const endY = centerY + Math.sin((angle * Math.PI) / 180) * length;
+          {phase >= 2 && (
+            <svg className="pointer-events-none absolute inset-0 h-full w-full">
+              {CONNECTION_ANGLES.map((angle, index) => {
+                const radius = 28;
+                const x2 = 50 + Math.cos((angle * Math.PI) / 180) * radius;
+                const y2 = 50 + Math.sin((angle * Math.PI) / 180) * radius;
 
-              return (
-                <motion.circle
-                  key={`node-${i}`}
-                  cx={`${endX}%`}
-                  cy={`${endY}%`}
-                  r="6"
-                  fill="#D4B483"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.4,
-                    delay: i * 0.08 + 0.3
-                  }}
-                />
-              );
-            })}
-          </svg>
-        )}
-      </motion.div>
+                return (
+                  <motion.line
+                    key={angle}
+                    x1="50%"
+                    y1="50%"
+                    x2={`${x2}%`}
+                    y2={`${y2}%`}
+                    stroke={`url(#${gradientId})`}
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: [0, 1, 0.4] }}
+                    transition={{ duration: 0.8, delay: index * 0.12 }}
+                  />
+                );
+              })}
+
+              <defs>
+                <linearGradient id={gradientId}>
+                  <stop offset="0%" stopColor="#D4B483" />
+                  <stop offset="100%" stopColor="#4A6741" />
+                </linearGradient>
+              </defs>
+            </svg>
+          )}
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }

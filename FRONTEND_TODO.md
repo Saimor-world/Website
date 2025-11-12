@@ -1,7 +1,20 @@
 # ðŸŽ¯ Frontend TODO - FÃ¼r nÃ¤chsten Claude Code
 
-**Last Update:** 2025-11-11 (Session 6)
+**Last Update:** 2025-11-12 (Session 7)
 **Status:** ðŸŸ¢ PRODUCTION READY - Weitere Features geplant
+
+---
+
+## o. Was heute erledigt wurde (Session 7 - 12.11.2025)
+
+### 1. Môra Disney Intro (First-Visit Animation)
+- o. **Neue Component:** `components/MoraIntroAnimation.tsx` (Framer Motion Sequenzen + localStorage Guard)
+- o. **Ablauf:** Fade-In Overlay ? Orb Awakening ? Daten-Lianen ? Exit zum Avatar (10s gesamt)
+- o. **Skip:** ESC oder Click auf Overlay + Button („Überspringen“)
+- o. **Storage:** Flag `mora-intro-seen` verhindert Wiederholung, respektiert Reduced Motion
+- o. **Integration:** Bereits in `app/de/page.tsx` & `app/en/page.tsx` aktiv (SSR off)
+
+**Next:** Optional Sound/Timing-Polish nach User-Feedback.
 
 ---
 
