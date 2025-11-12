@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import {
   TrendingUp, TrendingDown, Users, Clock, Sparkles,
   Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info
@@ -30,6 +30,8 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
   const [moraInsight, setMoraInsight] = useState(false);
   const [connections, setConnections] = useState<Array<[string, string]>>([]);
+  const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
+  const demoTooltipId = useId();
 
   const content = {
     de: {
@@ -238,22 +240,35 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
               }}
             >
               <span className="text-sm font-medium text-gray-700">{content.demoLabel}</span>
-              <div className="relative">
-                <Info className="w-4 h-4 text-[#D4B483] cursor-help" />
+              <button
+                type="button"
+                className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B483]/50"
+                onMouseEnter={() => setDemoTooltipVisible(true)}
+                onMouseLeave={() => setDemoTooltipVisible(false)}
+                onFocus={() => setDemoTooltipVisible(true)}
+                onBlur={() => setDemoTooltipVisible(false)}
+                aria-describedby={demoTooltipId}
+              >
+                <Info className="w-4 h-4 text-[#D4B483]" />
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300 whitespace-nowrap"
-                     style={{
-                       background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(93, 124, 84, 0.95) 100%)',
-                       border: '1px solid rgba(212, 180, 131, 0.4)',
-                       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
-                     }}>
+                <div
+                  id={demoTooltipId}
+                  role="tooltip"
+                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 rounded-lg transition duration-300 whitespace-nowrap ${
+                    isDemoTooltipVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'
+                  }`}
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(93, 124, 84, 0.95) 100%)',
+                    border: '1px solid rgba(212, 180, 131, 0.4)',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
+                  }}
+                >
                   <p className="text-sm text-white">{content.demoTooltip}</p>
-                  {/* Tooltip arrow */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
                     <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,180,131,0.4)]" />
                   </div>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
 
