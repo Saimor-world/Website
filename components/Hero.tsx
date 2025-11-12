@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -19,11 +19,13 @@ type Props = {
 };
 
 const logoPanelStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.4)',
-  boxShadow: '0 14px 40px rgba(74, 103, 65, 0.22), inset 0 0 0 1px rgba(14, 26, 27, 0.15)',
-  backdropFilter: 'blur(18px)',
-  maxWidth: 'min(90vw, 620px)'
+  maxWidth: 'min(90vw, 300px)',
+  padding: '12px 18px',
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(248,250,249,0.88) 100%)',
+  backdropFilter: 'blur(16px)',
+  border: '1px solid rgba(212, 180, 131, 0.35)',
+  boxShadow: '0 14px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
+  borderRadius: '20px'
 };
 
 const logoInnerGlow: CSSProperties = {
@@ -221,7 +223,7 @@ export default function Hero({
           className="flex justify-center mb-8 will-change-transform"
         >
           <div
-            className="relative inline-flex px-6 sm:px-8 py-3 rounded-2xl"
+            className="relative inline-flex rounded-2xl justify-center"
             style={logoPanelStyle}
             aria-label="Saimôr Logo"
           >
