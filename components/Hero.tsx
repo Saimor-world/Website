@@ -19,10 +19,11 @@ type Props = {
 };
 
 const logoPanelStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.35)',
-  boxShadow: '0 18px 42px rgba(14, 26, 27, 0.55), inset 0 0 0 1px rgba(14, 26, 27, 0.4)',
-  backdropFilter: 'blur(16px)'
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.4)',
+  boxShadow: '0 14px 40px rgba(74, 103, 65, 0.22), inset 0 0 0 1px rgba(14, 26, 27, 0.15)',
+  backdropFilter: 'blur(18px)',
+  maxWidth: 'min(90vw, 620px)'
 };
 
 const logoInnerGlow: CSSProperties = {
@@ -220,16 +221,20 @@ export default function Hero({
           className="flex justify-center mb-8 will-change-transform"
         >
           <div
-            className="relative px-8 sm:px-10 py-6 rounded-[36px]"
+            className="relative inline-flex px-6 sm:px-8 py-3 rounded-2xl"
             style={logoPanelStyle}
             aria-label="Saimôr Logo"
           >
             <div
-              className="absolute inset-0 rounded-[36px] opacity-80 pointer-events-none"
+              className="absolute inset-0 rounded-2xl pointer-events-none"
+              style={{ border: '1px solid rgba(14, 26, 27, 0.15)' }}
+            />
+            <div
+              className="absolute inset-0 rounded-2xl opacity-80 pointer-events-none"
               style={logoInnerGlow}
             />
             <div
-              className="absolute -inset-6 rounded-[48px] opacity-70 pointer-events-none"
+              className="absolute -inset-4 rounded-[32px] opacity-70 pointer-events-none"
               style={{
                 background:
                   'radial-gradient(circle, rgba(212, 180, 131, 0.25) 0%, rgba(0,0,0,0) 65%)',
