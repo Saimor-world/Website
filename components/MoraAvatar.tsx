@@ -20,6 +20,11 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
     setMounted(true);
   }, []);
 
+  const sendOrbHoverEvent = useCallback((state: boolean) => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('mora-orb-hover', { detail: state }));
+  }, []);
+
   useEffect(() => () => sendOrbHoverEvent(false), [sendOrbHoverEvent]);
 
   const content = {
@@ -68,11 +73,6 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       }
     }
   }[locale];
-
-  const sendOrbHoverEvent = useCallback((state: boolean) => {
-    if (typeof window === 'undefined') return;
-    window.dispatchEvent(new CustomEvent('mora-orb-hover', { detail: state }));
-  }, []);
 
   const openChatOverlay = useCallback(() => {
     if (typeof window === 'undefined') return;
