@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MoraDashboardConnection() {
@@ -8,6 +8,8 @@ export default function MoraDashboardConnection() {
   const [dashboardInView, setDashboardInView] = useState(false);
   const [orbHovering, setOrbHovering] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const hoverThrottleRef = useRef<number | null>(null);
+  const latestHoverRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -29,11 +31,24 @@ export default function MoraDashboardConnection() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const handleOrbHover = (event: Event) => {
-      const detail = (event as CustomEvent<boolean>).detail;
-      setOrbHovering(Boolean(detail));
+      const detail = Boolean((event as CustomEvent<boolean>).detail);
+      latestHoverRef.current = detail;
+      if (hoverThrottleRef.current !== null) {
+        return;
+      }
+      hoverThrottleRef.current = window.setTimeout(() => {
+        setOrbHovering(latestHoverRef.current);
+        hoverThrottleRef.current = null;
+      }, 100);
     };
     window.addEventListener('mora-orb-hover', handleOrbHover as EventListener);
-    return () => window.removeEventListener('mora-orb-hover', handleOrbHover as EventListener);
+    return () => {
+      window.removeEventListener('mora-orb-hover', handleOrbHover as EventListener);
+      if (hoverThrottleRef.current !== null) {
+        clearTimeout(hoverThrottleRef.current);
+        hoverThrottleRef.current = null;
+      }
+    };
   }, []);
 
   // Track if dashboard is in view
@@ -48,7 +63,7 @@ export default function MoraDashboardConnection() {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
 
     // Observe the dashboard section
