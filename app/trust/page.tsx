@@ -47,6 +47,7 @@ export default function TrustPage() {
             <Link
               href={demoLink}
               target="_blank"
+              rel="noreferrer noopener"
               className="inline-flex items-center text-sm text-[#4A6741] transition hover:text-[#2f4729]"
             >
               Mehr erfahren zur Demo-Architektur →
@@ -65,7 +66,7 @@ export default function TrustPage() {
             ))}
           </ul>
           <div className="rounded-2xl border border-[#D4B483]/40 bg-white/70 p-5 text-sm text-gray-700">
-            Hinweis: Keine Produktivaussagen. Keine personenbezogenen Daten in der Demo.
+            <strong>Hinweis:</strong> Keine Produktivaussagen. Keine personenbezogenen Daten in der Demo.
           </div>
         </section>
       </main>
