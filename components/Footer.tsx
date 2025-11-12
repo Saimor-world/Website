@@ -161,16 +161,10 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             </h3>
             <nav className="flex flex-col gap-3">
               <a
-                href="#leistungen"
+                href="#angebot"
                 className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
               >
                 {footerText.services}
-              </a>
-              <a
-                href="#mission"
-                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {footerText.mission}
               </a>
               <a
                 href="#kontakt"
