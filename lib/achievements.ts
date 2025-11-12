@@ -23,11 +23,11 @@ export const ACHIEVEMENTS: Achievement[] = [
     secret: false
   },
   {
-    id: 'clarity-spark',
+    id: 'quad_logo',
     name: 'Clarity Spark',
     nameDE: 'Klarheitsfunke',
-    description: 'A spark of clarity — thank you for noticing with care.',
-    descriptionDE: 'Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.',
+    description: 'A clarity spark lights up when you explore the logo with care.',
+    descriptionDE: 'Ein Klarheitsfunke leuchtet auf, wenn du das Logo bewusst erkundest.',
     icon: '✨',
     unlocked: false,
     secret: true

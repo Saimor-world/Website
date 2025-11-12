@@ -1,8 +1,8 @@
 'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { useRef } from 'react';
-import type { CSSProperties } from 'react';
+import { useRef, useCallback } from 'react';
+import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import CommunityNote from './CommunityNote';
@@ -71,6 +71,12 @@ export default function Hero({
       : document.getElementById(contactHashId)
         ? `#${contactHashId}`
         : `/${locale === 'en' ? 'en' : 'de'}/kontakt`;
+
+  const emitLogoClick = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
+    if (typeof window === 'undefined') return;
+    const detail = { x: event.clientX, y: event.clientY };
+    window.dispatchEvent(new CustomEvent('mora-logo-click', { detail }));
+  }, []);
 
   const smoothScrollTo = (elementId: string) => {
     const element = document.getElementById(elementId);
@@ -226,6 +232,7 @@ export default function Hero({
             className="relative inline-flex rounded-2xl justify-center"
             style={logoPanelStyle}
             aria-label="Saimôr Logo"
+            onClick={emitLogoClick}
           >
             <div
               className="absolute inset-0 rounded-2xl pointer-events-none"

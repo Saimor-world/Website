@@ -33,6 +33,28 @@ export default function EasterEggs() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = (matches: boolean) => {
+      prefersReducedMotionRef.current = matches;
+    };
+    updatePreference(media.matches);
+    const handler = (event: MediaQueryListEvent) => updatePreference(event.matches);
+    if (media.addEventListener) {
+      media.addEventListener('change', handler);
+    } else {
+      media.addListener(handler);
+    }
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener('change', handler);
+      } else {
+        media.removeListener(handler);
+      }
+    };
+  }, []);
+
   // Easter Egg States
   const [resonanzModeActive, setResonanzModeActive] = useState(false);
   const [showMessage, setShowMessage] = useState('');
@@ -40,7 +62,6 @@ export default function EasterEggs() {
 
   // Tracking
   const [konamiSequence, setKonamiSequence] = useState<string[]>([]);
-  const [clickTimes, setClickTimes] = useState<number[]>([]);
   const [typedChars, setTypedChars] = useState('');
   const [heroTimeStart, setHeroTimeStart] = useState<number | null>(null);
   const [visitedSections, setVisitedSections] = useState<Set<string>>(new Set());
@@ -49,6 +70,9 @@ export default function EasterEggs() {
   const dashboardVisitedRef = useRef<Set<string>>(new Set());
   const dashboardViewSwitchRef = useRef(0);
   const feldforscherUnlockedRef = useRef(false);
+  const prefersReducedMotionRef = useRef(false);
+  const logoClickCounterRef = useRef(0);
+  const logoClickResetRef = useRef<NodeJS.Timeout | null>(null);
   const dismissAchievement = useCallback(() => {
     setNewAchievement(null);
     if (achievementTimeoutRef.current) {
@@ -200,10 +224,16 @@ export default function EasterEggs() {
     }, 8000);
   }, [createGoldenRain, showTransientMessage]);
 
-  const activateKlarheitsfunke = useCallback((x: number, y: number) => {
-    showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.');
-    createSubtleParticles(x, y, 15);
-  }, [createSubtleParticles, showTransientMessage]);
+  const activateKlarheitsfunke = useCallback(
+    (coords?: { x: number; y: number }) => {
+      if (!prefersReducedMotionRef.current && coords) {
+        createSubtleParticles(coords.x, coords.y, 18);
+        createGoldenRain();
+      }
+      showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.', 3200);
+    },
+    [createSubtleParticles, createGoldenRain, showTransientMessage]
+  );
 
   const activateShake = useCallback(() => {
     showTransientMessage('Bewegung erkannt – Systeme reagieren.');
@@ -273,29 +303,40 @@ export default function EasterEggs() {
     unlockAchievement
   ]);
 
-  // === QUADRUPLE CLICK (4x oder mehr - "Klarheitsfunke") ===
+  // === KLICK AUF LOGO (4x - "Klarheitsfunke") ===
   useEffect(() => {
     if (!mounted) return;
 
-    const handleClick = (e: MouseEvent) => {
-      const now = Date.now();
-      const newClickTimes = [...clickTimes, now].slice(-5);
-      setClickTimes(newClickTimes);
+    const handleLogoSignal = (event: Event) => {
+      if (typeof window === 'undefined') return;
+      if (sessionStorage.getItem('achv_quad_logo') === '1') return;
 
-      // Quadruple click (4x in 1 second) - "Klarheitsfunke"
-      if (newClickTimes.length >= 4) {
-        const timeDiff = now - newClickTimes[newClickTimes.length - 4];
-        if (timeDiff < 1000) {
-          activateKlarheitsfunke(e.clientX, e.clientY);
-          unlockAchievement('clarity-spark');
-          setClickTimes([]); // Reset
-        }
+      logoClickCounterRef.current += 1;
+      if (logoClickResetRef.current) {
+        clearTimeout(logoClickResetRef.current);
+      }
+      logoClickResetRef.current = window.setTimeout(() => {
+        logoClickCounterRef.current = 0;
+      }, 1200);
+
+      if (logoClickCounterRef.current >= 4) {
+        logoClickCounterRef.current = 0;
+        sessionStorage.setItem('achv_quad_logo', '1');
+        const detail = (event as CustomEvent<{ x: number; y: number }>).detail;
+        activateKlarheitsfunke(detail);
+        unlockAchievement('quad_logo');
       }
     };
 
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
-  }, [mounted, clickTimes, activateKlarheitsfunke, unlockAchievement]);
+    window.addEventListener('mora-logo-click', handleLogoSignal as EventListener);
+    return () => {
+      window.removeEventListener('mora-logo-click', handleLogoSignal as EventListener);
+      if (logoClickResetRef.current) {
+        clearTimeout(logoClickResetRef.current);
+        logoClickResetRef.current = null;
+      }
+    };
+  }, [mounted, activateKlarheitsfunke, unlockAchievement]);
 
   // === SHAKE DETECTION (Mobile) ===
   useEffect(() => {
