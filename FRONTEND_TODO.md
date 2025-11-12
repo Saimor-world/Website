@@ -1,3 +1,18 @@
+## o. Session 7C - Polish II (13.11.2025)
+
+- o. **Achievements:** Feldforscher triggert nach 3 Cards oder 2 View-Switches, Texte bleiben im Silent Mode.
+- o. **Lint & Semantik:** useEffect-Dependencies geschlossen, Haptics/Particles via useCallback, Showcase-BG via <Image>.
+- o. **Trust Copy:** Neue Demo-Erklaerung auf /trust und /en/trust inkl. Link zu DATA_FLOW_EXPLAINED.
+- o. **Hero Panel:** Glass-Panel enger am Logo (blur 18px, softer shadow), CTA unveraendert.
+- o. **Mora Bridge:** Hover-Throttling (100ms) + Intersection 0.25, Orb reagiert smoother, Reduced-Motion respektiert.
+- o. **Mora Avatar:** Hover-Dispatcher registriert bevor Cleanup laeuft, keine TDZ-Warnungen.
+
+**Files touched:** components/EasterEggs.tsx, lib/achievements.ts, components/KonamiCode.tsx, components/Lichtgespraech.tsx, components/MoraShowcase.tsx, components/MoraAvatar.tsx, app/trust/page.tsx, app/en/trust/page.tsx, components/Hero.tsx, components/MoraDashboardConnection.tsx.
+
+**Offen:** Lighthouse Mobile >= 90 erneut pruefen nach Deployment; API /api/dashboard/* meldet weiter Dynamic-Server-Warning.
+
+---
+
 ## o. Session 7B – Polish (12.11.2025)
 
 - o. **Hero:** Logo-Kontrast via neues Glass-Panel + CTA-Kopie „Ruhigen Erstkontakt starten“ mit Subtext.
