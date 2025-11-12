@@ -14,11 +14,13 @@ export default function AchievementToast({ achievement, onClose }: Props) {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: -100, scale: 0.8 }}
+        role="status"
+        aria-live="polite"
+        initial={{ opacity: 0, y: -12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -100, scale: 0.8 }}
+        exit={{ opacity: 0, y: -12, scale: 0.98 }}
         className="fixed top-24 right-6 z-[10001] max-w-sm"
-        transition={{ type: 'spring', stiffness: 80, damping: 25 }}
+        transition={{ duration: 0.32, ease: 'easeOut' }}
       >
         <motion.div
           className="relative rounded-2xl p-5 shadow-2xl overflow-hidden"
@@ -26,33 +28,9 @@ export default function AchievementToast({ achievement, onClose }: Props) {
             background: 'linear-gradient(135deg, rgba(26, 46, 26, 0.98) 0%, rgba(74, 103, 65, 0.95) 100%)',
             backdropFilter: 'blur(20px)',
             border: '2px solid rgba(212, 180, 131, 0.5)',
-            boxShadow: '0 20px 60px rgba(212, 180, 131, 0.4), inset 0 0 40px rgba(255, 255, 255, 0.05)'
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.35)'
           }}
-          animate={{
-            boxShadow: [
-              '0 20px 60px rgba(212, 180, 131, 0.4)',
-              '0 20px 80px rgba(212, 180, 131, 0.6)',
-              '0 20px 60px rgba(212, 180, 131, 0.4)'
-            ]
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          {/* Shine Effect */}
-          <motion.div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: 'linear-gradient(45deg, transparent 30%, rgba(212, 180, 131, 0.3) 50%, transparent 70%)'
-            }}
-            animate={{
-              x: ['-200%', '200%']
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              repeatDelay: 2
-            }}
-          />
-
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -66,15 +44,8 @@ export default function AchievementToast({ achievement, onClose }: Props) {
             {/* Icon */}
             <motion.div
               className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4B483] to-[#E6C897] shadow-lg"
-              animate={{
-                scale: [1, 1.05, 1],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: 2,
-                ease: "easeInOut"
-              }}
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
               {achievement.icon}
             </motion.div>
@@ -101,7 +72,7 @@ export default function AchievementToast({ achievement, onClose }: Props) {
             className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#D4B483] to-[#E6C897]"
             initial={{ width: '100%' }}
             animate={{ width: '0%' }}
-            transition={{ duration: 5, ease: 'linear' }}
+            transition={{ duration: 3.5, ease: 'linear' }}
             onAnimationComplete={onClose}
           />
         </motion.div>

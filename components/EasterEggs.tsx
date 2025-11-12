@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Star, Heart, Crown } from 'lucide-react';
 import { getAchievementManager, type Achievement } from '@/lib/achievements';
@@ -44,10 +44,30 @@ export default function EasterEggs() {
   const [typedChars, setTypedChars] = useState('');
   const [heroTimeStart, setHeroTimeStart] = useState<number | null>(null);
   const [visitedSections, setVisitedSections] = useState<Set<string>>(new Set());
+  const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const achievementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dismissAchievement = useCallback(() => {
+    setNewAchievement(null);
+    if (achievementTimeoutRef.current) {
+      clearTimeout(achievementTimeoutRef.current);
+      achievementTimeoutRef.current = null;
+    }
+  }, []);
 
   // Secret patterns
   const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   const secretWords = ['klarheit', 'saimor', 'wandel'];
+
+  useEffect(() => {
+    return () => {
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+      if (achievementTimeoutRef.current) {
+        clearTimeout(achievementTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Haptic Feedback (Vibration) for mobile
   const triggerHapticFeedback = () => {
@@ -70,9 +90,26 @@ export default function EasterEggs() {
     if (achievement) {
       triggerHapticFeedback();
       setNewAchievement(achievement);
-      setTimeout(() => setNewAchievement(null), 5000);
+      if (achievementTimeoutRef.current) {
+        clearTimeout(achievementTimeoutRef.current);
+      }
+      achievementTimeoutRef.current = setTimeout(() => {
+        setNewAchievement(null);
+        achievementTimeoutRef.current = null;
+      }, 3600);
     }
   };
+  const showTransientMessage = useCallback((text: string, duration = 3500) => {
+    if (messageTimeoutRef.current) {
+      clearTimeout(messageTimeoutRef.current);
+    }
+    setShowMessage(text);
+    if (!text) return;
+    messageTimeoutRef.current = setTimeout(() => {
+      setShowMessage('');
+      messageTimeoutRef.current = null;
+    }, duration);
+  }, []);
 
   // === KONAMI CODE & SECRET WORDS ===
   useEffect(() => {
@@ -191,8 +228,7 @@ export default function EasterEggs() {
       if (hour >= 0 && hour < 6) {
         setTimeout(() => {
           unlockAchievement('night-owl');
-          setShowMessage('Nachteule entdeckt – Klarheit kennt keine Uhrzeit.');
-          setTimeout(() => setShowMessage(''), 4000);
+          showTransientMessage('Nachteule entdeckt – Klarheit kennt keine Uhrzeit.');
         }, 2000);
       }
 
@@ -200,8 +236,7 @@ export default function EasterEggs() {
       if (hour >= 5 && hour < 7) {
         setTimeout(() => {
           unlockAchievement('early-bird');
-          setShowMessage('Frühaufsteher – der Tag beginnt mit Klarheit.');
-          setTimeout(() => setShowMessage(''), 4000);
+          showTransientMessage('Frühaufsteher – der Tag beginnt mit Klarheit.');
         }, 2500);
       }
     };
@@ -226,8 +261,7 @@ export default function EasterEggs() {
             const duration = Date.now() - heroTimeStart;
             if (duration >= 12000) { // 12 seconds
               unlockAchievement('silent-observer');
-              setShowMessage('Du nimmst dir Zeit zum Hinschauen. Genau hier beginnt Klarheit.');
-              setTimeout(() => setShowMessage(''), 5000);
+              showTransientMessage('Du nimmst dir Zeit zum Hinschauen. Genau hier beginnt Klarheit.');
             }
             setHeroTimeStart(null);
           }
@@ -255,8 +289,7 @@ export default function EasterEggs() {
 
       if (allVisited && !achievementManager.current.getAll().find(a => a.id === 'clarity-navigator' && a.unlocked)) {
         unlockAchievement('clarity-navigator');
-        setShowMessage('Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
-        setTimeout(() => setShowMessage(''), 5000);
+        showTransientMessage('Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
       }
     };
 
@@ -278,42 +311,9 @@ export default function EasterEggs() {
   // useEffect(() => {
   //   window.addEventListener('mora-dashboard-view-switch', () => {
   //     unlockAchievement('field-explorer');
-  //     setShowMessage('Du betrachtest Systeme aus mehreren Perspektiven. Stark.');
-  //     setTimeout(() => setShowMessage(''), 5000);
+  //     showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
   //   });
   // }, [mounted]);
-
-  // === LOGO-CLICK TRACKING ===
-  useEffect(() => {
-    if (!mounted) return;
-
-    let clickCount = 0;
-    let resetTimer: NodeJS.Timeout;
-
-    const handleLogoClick = () => {
-      clickCount++;
-      clearTimeout(resetTimer);
-
-      if (clickCount === 3) {
-        unlockAchievement('logo-lover');
-        setShowMessage('Logo-Liebhaber – du erkennst die Essenz.');
-        createGoldenRain();
-        setTimeout(() => setShowMessage(''), 4000);
-        clickCount = 0;
-      } else {
-        // Reset nach 2 Sekunden
-        resetTimer = setTimeout(() => {
-          clickCount = 0;
-        }, 2000);
-      }
-    };
-
-    window.addEventListener('saimor-logo-click', handleLogoClick);
-    return () => {
-      window.removeEventListener('saimor-logo-click', handleLogoClick);
-      clearTimeout(resetTimer);
-    };
-  }, [mounted]);
 
   // === SCROLL TRACKING ===
   useEffect(() => {
@@ -332,9 +332,8 @@ export default function EasterEggs() {
       if (scrollTop + clientHeight >= scrollHeight * 0.95) {
         hasUnlocked = true;
         unlockAchievement('scroll-champion');
-        setShowMessage('Scroll-Champion – du hast alles gesehen.');
+        showTransientMessage('Scroll-Champion – du hast alles gesehen.');
         createGoldenRain();
-        setTimeout(() => setShowMessage(''), 4000);
       }
     };
 
@@ -348,9 +347,8 @@ export default function EasterEggs() {
 
     const timer = setTimeout(() => {
       unlockAchievement('patient-visitor');
-      setShowMessage('Geduldiger Entdecker – Zeit ist eine Form von Aufmerksamkeit.');
+      showTransientMessage('Geduldiger Entdecker – Zeit ist eine Form von Aufmerksamkeit.');
       createSubtleFireworks();
-      setTimeout(() => setShowMessage(''), 5000);
     }, 5 * 60 * 1000); // 5 Minuten
 
     return () => clearTimeout(timer);
@@ -360,7 +358,7 @@ export default function EasterEggs() {
 
   const activateResonanzMode = () => {
     setResonanzModeActive(true);
-    setShowMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.');
+    showTransientMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.', 4000);
 
     // Subtle golden shimmer effect
     document.body.style.animation = 'goldenShimmer 8s ease-in-out';
@@ -368,24 +366,19 @@ export default function EasterEggs() {
     createGoldenRain();
 
     setTimeout(() => {
-      setShowMessage('');
       document.body.style.animation = '';
       setResonanzModeActive(false);
     }, 8000);
   };
 
   const activateKlarheitsfunke = (x: number, y: number) => {
-    setShowMessage('Klarheitsfunke entdeckt.');
+    showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.');
     createSubtleParticles(x, y, 15);
-    setTimeout(() => setShowMessage(''), 4000);
   };
 
   const activateShake = () => {
-    setShowMessage('Bewegung erkannt – Systeme reagieren.');
+    showTransientMessage('Bewegung erkannt – Systeme reagieren.');
     createGoldenRain();
-    setTimeout(() => {
-      setShowMessage('');
-    }, 3000);
   };
 
   const activateSecretWord = (word: string) => {
@@ -394,9 +387,8 @@ export default function EasterEggs() {
       'saimor': 'Saimôr erwacht – Resonanz beginnt.',
       'wandel': 'Wandel beginnt – mit jedem Schritt.'
     };
-    setShowMessage(messages[word] || 'Geheimnis entdeckt.');
+    showTransientMessage(messages[word] || 'Geheimnis entdeckt.');
     createGoldenRain();
-    setTimeout(() => setShowMessage(''), 4000);
   };
 
   // === PARTICLE EFFECTS (REFINED) ===
@@ -492,10 +484,7 @@ export default function EasterEggs() {
   return (
     <>
       {/* Achievement Toast */}
-      <AchievementToast
-        achievement={newAchievement}
-        onClose={() => setNewAchievement(null)}
-      />
+      <AchievementToast achievement={newAchievement} onClose={dismissAchievement} />
 
       {/* Achievement Menu */}
       <AchievementMenu
@@ -508,9 +497,10 @@ export default function EasterEggs() {
       <AnimatePresence>
         {showMessage && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[10000] pointer-events-none"
           >
             <motion.div

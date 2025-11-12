@@ -26,8 +26,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     id: 'clarity-spark',
     name: 'Clarity Spark',
     nameDE: 'Klarheitsfunke',
-    description: 'Discovered the spark of clarity',
-    descriptionDE: 'Den Klarheitsfunken entdeckt',
+    description: 'A spark of clarity — thank you for noticing with care.',
+    descriptionDE: 'Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.',
     icon: '✨',
     unlocked: false,
     secret: true
@@ -36,8 +36,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     id: 'silent-observer',
     name: 'Silent Observer',
     nameDE: 'Leiser Beobachter',
-    description: 'You take time to look closely',
-    descriptionDE: 'Du nimmst dir Zeit zum Hinschauen',
+    description: 'You take the time to really look. Clarity starts there.',
+    descriptionDE: 'Du nimmst dir Zeit zum Hinschauen. Genau hier beginnt Klarheit.',
     icon: '👁️',
     unlocked: false,
     secret: true
@@ -46,8 +46,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     id: 'clarity-navigator',
     name: 'Clarity Navigator',
     nameDE: 'Klarheitsnavigator',
-    description: 'You examine the foundations',
-    descriptionDE: 'Du prüfst die Basis',
+    description: 'You check the foundation. Good decisions start with transparency.',
+    descriptionDE: 'Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.',
     icon: '🧭',
     unlocked: false,
     secret: true
@@ -109,16 +109,6 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: 'Opened the secret menu (AAA)',
     descriptionDE: 'Geheimmenü geöffnet (AAA)',
     icon: '🔐',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'logo-lover',
-    name: 'Logo Lover',
-    nameDE: 'Logo-Liebhaber',
-    description: 'Clicked the logo 3 times',
-    descriptionDE: '3x auf das Logo geklickt',
-    icon: '🎯',
     unlocked: false,
     secret: true
   },
