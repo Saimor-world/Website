@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function KonamiCode() {
@@ -8,18 +8,21 @@ export default function KonamiCode() {
   const [sequence, setSequence] = useState<string[]>([]);
 
   // Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
-  const konamiCode = [
-    'ArrowUp',
-    'ArrowUp',
-    'ArrowDown',
-    'ArrowDown',
-    'ArrowLeft',
-    'ArrowRight',
-    'ArrowLeft',
-    'ArrowRight',
-    'b',
-    'a'
-  ];
+  const konamiCode = useMemo(
+    () => [
+      'ArrowUp',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowRight',
+      'b',
+      'a'
+    ],
+    []
+  );
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -41,7 +44,7 @@ export default function KonamiCode() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [sequence]);
+  }, [sequence, konamiCode]);
 
   useEffect(() => {
     if (activated) {

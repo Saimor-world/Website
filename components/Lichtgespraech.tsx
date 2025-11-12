@@ -43,7 +43,7 @@ export default function Lichtgespraech() {
       };
       setMessages([welcome]);
     }
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;

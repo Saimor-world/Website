@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, memo, CSSProperties } from 'react';
 import {
@@ -199,11 +200,14 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-[0.04]">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop"
-            alt=""
+            alt="Abstract illuminated shapes"
+            fill
+            className="object-cover"
             loading="lazy"
-            className="w-full h-full object-cover"
+            decoding="async"
+            sizes="100vw"
           />
         </div>
         <motion.div

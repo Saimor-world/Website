@@ -151,12 +151,12 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '🔄',
     unlocked: false,
     secret: true
-  }
+  },
   {
     id: 'field-explorer',
     name: 'Field Researcher',
     nameDE: 'Feldforscher',
-    description: 'Multiple perspectives — powerful for real decisions.',
+    description: 'Multiple perspectives – powerful for real decisions.',
     descriptionDE: 'Mehrere Perspektiven – stark für echte Entscheidungen.',
     icon: '🔭',
     unlocked: false,
