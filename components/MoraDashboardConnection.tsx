@@ -6,9 +6,34 @@ export default function MoraDashboardConnection() {
   const [mounted, setMounted] = useState(false);
   const [showConnection, setShowConnection] = useState(false);
   const [dashboardInView, setDashboardInView] = useState(false);
+  const [orbHovering, setOrbHovering] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updatePreference);
+      return () => mediaQuery.removeEventListener('change', updatePreference);
+    }
+    mediaQuery.addListener(updatePreference);
+    return () => mediaQuery.removeListener(updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleOrbHover = (event: Event) => {
+      const detail = (event as CustomEvent<boolean>).detail;
+      setOrbHovering(Boolean(detail));
+    };
+    window.addEventListener('mora-orb-hover', handleOrbHover as EventListener);
+    return () => window.removeEventListener('mora-orb-hover', handleOrbHover as EventListener);
   }, []);
 
   // Track if dashboard is in view
@@ -39,95 +64,90 @@ export default function MoraDashboardConnection() {
 
   // Show connection when dashboard is in view
   useEffect(() => {
-    if (dashboardInView) {
-      const timer = setTimeout(() => setShowConnection(true), 500);
+    if (dashboardInView && orbHovering && !prefersReducedMotion) {
+      const timer = setTimeout(() => setShowConnection(true), 150);
       return () => clearTimeout(timer);
-    } else {
-      setShowConnection(false);
     }
-  }, [dashboardInView]);
+    setShowConnection(false);
+  }, [dashboardInView, orbHovering, prefersReducedMotion]);
 
-  if (!mounted || !showConnection) return null;
+  if (!mounted || prefersReducedMotion) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-40">
-      {/* Floating light particles from Orb to Dashboard */}
-      <AnimatePresence>
-        {[...Array(5)].map((_, i) => (
+    <AnimatePresence>
+      {showConnection && (
+        <motion.div
+          className="fixed inset-0 pointer-events-none z-40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        >
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="moraBridgeGradient" x1="1" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#D4B483" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#4A6741" stopOpacity="0.15" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M90 82 C 76 66, 65 52, 52 36"
+              stroke="url(#moraBridgeGradient)"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.55 }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            />
+            <motion.circle
+              r="1.4"
+              fill="#F4D9A5"
+              initial={{ opacity: 0, cx: 90, cy: 82 }}
+              animate={{
+                opacity: [0, 1, 0],
+                cx: [90, 70, 55],
+                cy: [82, 62, 40]
+              }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </svg>
+
           <motion.div
-            key={i}
-            className="absolute w-1.5 h-1.5 rounded-full"
+            className="absolute rounded-full"
             style={{
-              background: 'radial-gradient(circle, #D4B483 0%, transparent 70%)',
-              boxShadow: '0 0 8px rgba(212, 180, 131, 0.6)',
-              right: '5.5rem', // Near the orb (bottom-6 right-6 + half of w-20)
-              bottom: '4.5rem'
+              width: '120px',
+              height: '120px',
+              right: '1rem',
+              bottom: '1rem',
+              background: 'radial-gradient(circle, rgba(212, 180, 131, 0.18) 0%, transparent 70%)',
+              filter: 'blur(16px)'
             }}
-            initial={{
-              opacity: 0,
-              scale: 0,
-              x: 0,
-              y: 0
-            }}
-            animate={{
-              opacity: [0, 0.8, 0],
-              scale: [0, 1, 0],
-              x: [0, -200 - i * 100, -400 - i * 150],
-              y: [0, -300 - i * 80, -600 - i * 120]
-            }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.6,
-              ease: "easeInOut"
-            }}
-            exit={{ opacity: 0 }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
-        ))}
-      </AnimatePresence>
 
-      {/* Subtle glow pulse near orb */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: '120px',
-          height: '120px',
-          right: '1rem',
-          bottom: '1rem',
-          background: 'radial-gradient(circle, rgba(212, 180, 131, 0.15) 0%, transparent 70%)',
-          filter: 'blur(20px)'
-        }}
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.3, 0.6, 0.3]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-
-      {/* Tooltip hint */}
-      <motion.div
-        className="absolute bottom-32 right-8 px-4 py-2 rounded-xl text-xs font-medium"
-        style={{
-          background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 100%)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(212, 180, 131, 0.4)',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-          color: '#fff'
-        }}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 10 }}
-        transition={{ delay: 1 }}
-      >
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-[#D4B483] animate-pulse" />
-          <span>Mit Dashboard verbunden</span>
-        </div>
-      </motion.div>
-    </div>
+          <motion.div
+            className="absolute bottom-32 right-8 px-4 py-2 rounded-xl text-xs font-medium"
+            style={{
+              background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.92) 0%, rgba(93, 124, 84, 0.9) 100%)',
+              backdropFilter: 'blur(14px)',
+              border: '1px solid rgba(212, 180, 131, 0.4)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+              color: '#fff'
+            }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#D4B483] animate-pulse" />
+              <span>Verbindung zum Dashboard aktiv</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

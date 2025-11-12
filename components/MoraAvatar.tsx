@@ -11,6 +11,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   const [mounted, setMounted] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [dashboardHover, setDashboardHover] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
 
@@ -18,6 +19,8 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => () => sendOrbHoverEvent(false), [sendOrbHoverEvent]);
 
   const content = {
     de: {
@@ -66,6 +69,11 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
     }
   }[locale];
 
+  const sendOrbHoverEvent = useCallback((state: boolean) => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('mora-orb-hover', { detail: state }));
+  }, []);
+
   const openChatOverlay = useCallback(() => {
     if (typeof window === 'undefined') return;
     window.dispatchEvent(new Event('openMoraChat'));
@@ -109,6 +117,24 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
   }, [mousePos]);
 
   const eyePos = calculateEyePosition();
+
+  useEffect(() => {
+    if (!mounted) return;
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<boolean>).detail;
+      setDashboardHover(Boolean(detail));
+    };
+    window.addEventListener('mora-dashboard-card-hover', handler as EventListener);
+    return () => window.removeEventListener('mora-dashboard-card-hover', handler as EventListener);
+  }, [mounted]);
+
+  const updateHoverState = useCallback(
+    (state: boolean) => {
+      setIsHovered(state);
+      sendOrbHoverEvent(state);
+    },
+    [sendOrbHoverEvent]
+  );
 
   const handleClick = () => {
     // Open info popup
@@ -161,8 +187,10 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
               background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
               boxShadow: '0 8px 32px rgba(74, 103, 65, 0.3)'
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => updateHoverState(true)}
+            onMouseLeave={() => updateHoverState(false)}
+            onFocus={() => updateHoverState(true)}
+            onBlur={() => updateHoverState(false)}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onClick={handleClick}
@@ -171,8 +199,12 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
             animate={{
               boxShadow: isHovered
                 ? '0 12px 48px rgba(212, 180, 131, 0.5)'
-                : '0 8px 32px rgba(74, 103, 65, 0.3)'
+                : dashboardHover
+                  ? '0 10px 40px rgba(212, 180, 131, 0.35)'
+                  : '0 8px 32px rgba(74, 103, 65, 0.3)',
+              scale: dashboardHover && !isHovered ? 1.02 : 1
             }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
           >
             {/* Glow effect */}
             <motion.div
@@ -182,8 +214,8 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                 filter: 'blur(8px)'
               }}
               animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3]
+                scale: (isHovered || dashboardHover) ? [1, 1.25, 1] : [1, 1.1, 1],
+                opacity: (isHovered || dashboardHover) ? [0.4, 0.7, 0.4] : [0.25, 0.5, 0.25]
               }}
               transition={{ duration: 2, repeat: Infinity }}
             />

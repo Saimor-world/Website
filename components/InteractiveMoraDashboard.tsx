@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect, useId, useCallback } from 'react';
 import {
   TrendingUp, TrendingDown, Users, Clock, Sparkles,
   Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info
@@ -30,6 +30,12 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
   const [moraInsight, setMoraInsight] = useState(false);
   const [connections, setConnections] = useState<Array<[string, string]>>([]);
+  const sendDashboardHoverEvent = useCallback((state: boolean) => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent('mora-dashboard-card-hover', { detail: state }));
+  }, []);
+
+  useEffect(() => () => sendDashboardHoverEvent(false), [sendDashboardHoverEvent]);
   const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
   const demoTooltipId = useId();
 
@@ -338,8 +344,22 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      onMouseEnter={() => setHoveredPoint(point.id)}
-                      onMouseLeave={() => setHoveredPoint(null)}
+                      onMouseEnter={() => {
+                        setHoveredPoint(point.id);
+                        sendDashboardHoverEvent(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredPoint(null);
+                        sendDashboardHoverEvent(false);
+                      }}
+                      onFocus={() => {
+                        setHoveredPoint(point.id);
+                        sendDashboardHoverEvent(true);
+                      }}
+                      onBlur={() => {
+                        setHoveredPoint(null);
+                        sendDashboardHoverEvent(false);
+                      }}
                       className="relative rounded-2xl p-6 cursor-pointer group"
                       style={{
                         background: `linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, ${getCategoryColor(point.category)}15 100%)`,
@@ -349,6 +369,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                           : '0 4px 12px rgba(0, 0, 0, 0.08)'
                       }}
                       whileHover={{ y: -4, scale: 1.02 }}
+                      tabIndex={0}
                     >
                       {/* Category badge */}
                       <div
@@ -498,9 +519,24 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: i * 0.15, type: 'spring' }}
-                      onMouseEnter={() => setHoveredPoint(point.id)}
-                      onMouseLeave={() => setHoveredPoint(null)}
+                      onMouseEnter={() => {
+                        setHoveredPoint(point.id);
+                        sendDashboardHoverEvent(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredPoint(null);
+                        sendDashboardHoverEvent(false);
+                      }}
+                      onFocus={() => {
+                        setHoveredPoint(point.id);
+                        sendDashboardHoverEvent(true);
+                      }}
+                      onBlur={() => {
+                        setHoveredPoint(null);
+                        sendDashboardHoverEvent(false);
+                      }}
                       whileHover={{ scale: 1.2 }}
+                      tabIndex={0}
                     >
                       {/* Glow effect */}
                       {hoveredPoint === point.id && (
