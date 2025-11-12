@@ -194,6 +194,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onClick={handleClick}
+            aria-label={locale === 'de' ? 'Môra – Chat öffnen' : 'Môra – open chat'}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             animate={{

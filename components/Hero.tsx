@@ -98,6 +98,7 @@ export default function Hero({
           className="object-cover"
           quality={85}
           priority={false}
+          loading="lazy"
           sizes="100vw"
         />
 
@@ -325,7 +326,7 @@ export default function Hero({
             }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center backdrop-blur-xl"
+            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center backdrop-blur-xl min-h-[44px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4B483]/80"
             style={{
               background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(139, 181, 129, 0.85) 50%, rgba(74, 103, 65, 0.9) 100%)',
               border: '2px solid rgba(255, 255, 255, 0.2)',
@@ -370,7 +371,7 @@ export default function Hero({
           {/* Scroll Indicator */}
           <motion.button
             onClick={() => smoothScrollTo('angebot')}
-            className="flex flex-col items-center gap-2 text-gray-400 hover:text-[#8BB581] transition-colors cursor-pointer"
+            className="flex flex-col items-center gap-2 text-gray-400 hover:text-[#8BB581] transition-colors cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8BB581] min-h-[44px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}

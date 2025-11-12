@@ -360,7 +360,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                         setHoveredPoint(null);
                         sendDashboardHoverEvent(false);
                       }}
-                      className="relative rounded-2xl p-6 cursor-pointer group"
+                      className="relative rounded-2xl p-6 cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
                       style={{
                         background: `linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, ${getCategoryColor(point.category)}15 100%)`,
                         border: `2px solid ${hoveredPoint === point.id ? getCategoryColor(point.category) : 'rgba(212, 180, 131, 0.2)'}`,
@@ -509,7 +509,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                   return (
                     <motion.div
                       key={point.id}
-                      className="absolute cursor-pointer group"
+                      className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
                       style={{
                         left: `${point.x}%`,
                         top: `${point.y}%`,

@@ -99,8 +99,11 @@ export default function FAQ({ locale }: Props) {
               }}
             >
               <button
+                type="button"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full text-left p-6 flex items-start justify-between gap-4 hover:bg-saimor-green/5 transition-colors duration-200"
+                className="w-full text-left p-6 flex items-start justify-between gap-4 hover:bg-saimor-green/5 transition-colors duration-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4B483] focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-2xl"
+                aria-expanded={openIndex === i}
+                aria-controls={`faq-panel-${i}`}
               >
                 <span className="font-serif text-lg sm:text-xl font-semibold text-slate-900 pr-4"
                       style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -123,6 +126,7 @@ export default function FAQ({ locale }: Props) {
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
+                id={`faq-panel-${i}`}
               >
                 <div className="px-6 pb-6 pt-2">
                   <p className="text-slate-700 leading-relaxed">
