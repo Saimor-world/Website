@@ -72,7 +72,7 @@ export default function EasterEggs() {
   const feldforscherUnlockedRef = useRef(false);
   const prefersReducedMotionRef = useRef(false);
   const logoClickCounterRef = useRef(0);
-  const logoClickResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const logoClickResetRef = useRef<number | null>(null);
   const dismissAchievement = useCallback(() => {
     setNewAchievement(null);
     if (achievementTimeoutRef.current) {
