@@ -1,3 +1,19 @@
+## o. Session 7B – Polish (12.11.2025)
+
+- o. **Hero:** Logo-Kontrast via neues Glass-Panel + CTA-Kopie „Ruhigen Erstkontakt starten“ mit Subtext.
+- o. **Dashboard:** Badge jetzt „Demo-Dashboard (simulierte Daten)“ inkl. Tooltip + Hover-Events für Orb-Brücke.
+- o. **FAQ:** Vier neue Antworten (Demo-Fokus) und Accordion mit größeren Touch-Zielen & ARIA.
+- o. **Footer:** Tote Links entfernt/auf Anker gesetzt, nur Trust & Legal bleiben.
+- o. **Achievements:** Silent-Mode finalisiert (Texte, Timer 3,5s, aria-live, Feldforscher-Achievement vorbereitet).
+- o. **Môra ? Dashboard:** Orb sendet Hover-Events, neues SVG-Liane/Observer respektiert Reduced-Motion.
+- o. **FundingSection:** Komplett neutralisiert („Förderoptionen werden geprüft…“), keine Prozentclaims mehr.
+- o. **A11y/Mobile:** Focus-Styles & 44px Targets (FAQ, CTA, Cards), `loading="lazy"` fürs Hero-BG, Orb `aria-label`.
+
+**Offen:** Feldforscher-Achievement wird aktiviert, sobald Dashboard View Switch Event implementiert ist; FundingSection bleibt deaktiviert bis CEO-Freigabe.
+
+---
+
+**End of Document** - Ready for next Claude Code session! ðŸŽ¯
 # ðŸŽ¯ Frontend TODO - FÃ¼r nÃ¤chsten Claude Code
 
 **Last Update:** 2025-11-12 (Session 7)
