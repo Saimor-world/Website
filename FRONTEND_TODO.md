@@ -1,3 +1,11 @@
+## o. Session 7G - Portal Preview & Links (13.11.2025)
+
+- o. **Portal Skeleton:** `/portal` und `/en/portal` beschreiben die kommende Login-Shell (Welcome Area, Dashboard-Shell, Vertrauensraum) inkl. CTA zurück zu Kontakt/Waitlist.
+- o. **PortalPreview Component:** Wiederverwendbare Karte (`components/PortalPreview.tsx`) visualisiert den Drei-Schritte-Flow und markiert das Ganze als Demo-only.
+- o. **Footer Link:** Quick-Links enthalten jetzt einen Portal-Eintrag (lokalisierte Texte, 44 px Targets), damit Besucher:innen die Seite finden.
+
+---
+
 ## o. Session 7F - Final Polish & Deploy Review (13.11.2025)
 
 - o. **Build pipeline:** `pnpm install`, `pnpm lint`, `pnpm build` laufen sauber; bekannte `/api/dashboard/*` Dynamic-Server-Warnings bestehen (unverändert, dokumentiert).
