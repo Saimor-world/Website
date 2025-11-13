@@ -24,3 +24,5 @@
 | `SCREENSHOTS.md` | Screenshot-Briefing | Ready for archive | Enthält nur alte Screenshot-Anweisungen ohne Mehrwert für WEBSITE_MASTER; kann nach CEO-Freigabe nach `/archive/website-legacy/` verschoben werden. |
 | `README.md` | Repo-Uebersicht | Aktualisieren | Muss auf WEBSITE_MASTER verweisen, pnpm-Workflows und Guardrails aufnehmen. |
 | `docs/security.md` | Security Notiz | Aktualisieren | Sehr knapp; um CSP/Matomo/n8n Hinweise erweitern, damit Legal-Page referenzieren kann. |
+| `components/MoraShowcase.old.tsx` | Historische Chat-Demo | Ready for archive | Funktional durch `MoraDashboard.tsx` ersetzt; Datei bleibt nur als Referenz bis endgültige Archivierung. |
+| `components/InteractiveMoraDashboard.old.tsx` | Historisches Dashboard-Grid | Ready for archive | Ebenfalls durch `MoraDashboard.tsx` ersetzt; keine neuen Änderungen mehr, nach Freigabe archivierbar. |

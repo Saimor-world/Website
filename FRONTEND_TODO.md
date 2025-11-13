@@ -1,3 +1,11 @@
+## o. Session 7H - MoraDashboard Unification (13.11.2025)
+
+- o. **Unified Demo:** `MoraDashboard.tsx` vereint Chat + Dashboard mit konsistentem Demo-Badge und Orb-Verbindung auf der Startseite (DE/EN).
+- o. **Deprecated Files:** `MoraShowcase.old.tsx` & `InteractiveMoraDashboard.old.tsx` enthalten Hinweis, dass neue Features nur noch im unified Component landen.
+- o. **Docs & Cleanup:** WEBSITE_MASTER, cleanup_proposal_website & Footer/Portal-Links wurden angepasst, damit alle Referenzen auf die neue Struktur zeigen.
+
+---
+
 ## o. Session 7G - Portal Preview & Links (13.11.2025)
 
 - o. **Portal Skeleton:** `/portal` und `/en/portal` beschreiben die kommende Login-Shell (Welcome Area, Dashboard-Shell, Vertrauensraum) inkl. CTA zurück zu Kontakt/Waitlist.

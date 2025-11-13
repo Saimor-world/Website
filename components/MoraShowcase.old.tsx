@@ -1,3 +1,5 @@
+// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified Môra demo section).
+// Do not add new code here; kept only for reference until archival.
 'use client';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
