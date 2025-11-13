@@ -175,7 +175,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
     <>
       {/* Floating Avatar - Bottom Right */}
       <motion.div
-        className="fixed bottom-6 right-6 z-50"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5, type: 'spring' }}
@@ -184,7 +184,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
           {/* Avatar Container */}
           <motion.div
             id="mora-avatar"
-            className="relative w-20 h-20 rounded-full cursor-pointer group"
+            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full cursor-pointer group"
             data-mora-orb="true"
             style={{
               background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',

@@ -159,16 +159,16 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             <h3 className="font-semibold text-white mb-6 text-base" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
               {footerText.quickLinks}
             </h3>
-            <nav className="flex flex-col gap-3">
+            <nav className="flex flex-col gap-2">
               <a
                 href="#angebot"
-                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.services}
               </a>
               <a
                 href="#kontakt"
-                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.contact}
               </a>
@@ -185,18 +185,18 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             <h3 className="font-semibold text-white mb-6 text-base" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
               {footerText.legal}
             </h3>
-            <nav className="flex flex-col gap-3">
+            <nav className="flex flex-col gap-2">
               <Link
                 href="/trust"
-                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.trust}
               </Link>
               <Link
                 href="/legal"
-                className="text-white/70 hover:text-saimor-gold-light transition-colors duration-300 text-sm relative w-fit after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-full"
+                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
-                {footerText.imprint} & {footerText.privacy}
+                {footerText.imprint} &nbsp;/&nbsp; {footerText.privacy}
               </Link>
             </nav>
           </motion.div>

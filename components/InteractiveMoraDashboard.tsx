@@ -222,7 +222,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   };
 
   return (
-    <section className="py-20 sm:py-24 relative overflow-hidden">
+    <section className="py-16 sm:py-24 relative overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -231,7 +231,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -302,13 +302,13 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <motion.button
               onClick={() => {
                 setViewMode('folder');
                 emitViewSwitch();
               }}
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all"
+              className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
               style={{
                 background: viewMode === 'folder'
                   ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
@@ -328,7 +328,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 setViewMode('field');
                 emitViewSwitch();
               }}
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all"
+              className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
               style={{
                 background: viewMode === 'field'
                   ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
@@ -347,7 +347,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
 
         {/* Dashboard Container */}
         <motion.div
-          className="relative rounded-3xl p-8 overflow-hidden"
+          className="relative rounded-3xl p-5 sm:p-8 overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 249, 0.9) 100%)',
             backdropFilter: 'blur(20px)',
@@ -363,7 +363,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
               >
                 {dataPoints.map((point, i) => {
                   const StatusIcon = getStatusIcon(point.status);
@@ -392,7 +392,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                         setHoveredPoint(null);
                         sendDashboardHoverEvent(false);
                       }}
-                      className="relative rounded-2xl p-6 cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
+                      className="relative rounded-2xl p-5 sm:p-6 min-h-[240px] cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
                       style={{
                         background: `linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, ${getCategoryColor(point.category)}15 100%)`,
                         border: `2px solid ${hoveredPoint === point.id ? getCategoryColor(point.category) : 'rgba(212, 180, 131, 0.2)'}`,
@@ -405,7 +405,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                     >
                       {/* Category badge */}
                       <div
-                        className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold"
+                        className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 sm:px-3 py-1 rounded-full text-[0.65rem] sm:text-xs font-semibold"
                         style={{
                           background: `${getCategoryColor(point.category)}20`,
                           color: getCategoryColor(point.category)
@@ -459,7 +459,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="relative h-[600px]"
+                className="relative h-[520px] sm:h-[600px]"
               >
                 {/* SVG for connections (Mycelium lines) */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
