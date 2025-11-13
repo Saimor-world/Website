@@ -1,7 +1,6 @@
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
-import MoraShowcase from '@/components/MoraShowcase';
-import InteractiveMoraDashboard from '@/components/InteractiveMoraDashboard';
+import MoraDashboard from '@/components/MoraDashboard';
 import TrustProof from '@/components/TrustProof';
 // import FundingSection from '@/components/FundingSection'; // TODO(CEO): Re-enable after Pre-Seed confirmation
 import FAQ from '@/components/FAQ';
@@ -48,8 +47,7 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="en" />
         <Services locale="en" />
-        <MoraShowcase locale="en" />
-        <InteractiveMoraDashboard locale="en" />
+        <MoraDashboard locale="en" />
         <TrustProof locale="en" />
         {/* <FundingSection locale="en" /> */}
         <CommunityBanner locale="en" />
