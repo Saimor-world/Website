@@ -99,8 +99,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
   const content = {
     de: {
-      title: 'Môra – Demo-Dashboard',
-      subtitle: 'Chat + Dashboard in Einem System',
+      title: 'Môra – Resonanz-Dashboard (Demo)',
+      subtitle: 'Chat + Dashboard, ein Datenstrom',
       demoLabel: 'Demo-Dashboard (simulierte Daten)',
       demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten. Dieses Dashboard zeigt das Potenzial von Môra.',
 
@@ -148,12 +148,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       },
 
       // CTA
-      cta: 'Ruhigen Erstkontakt starten',
+      cta: 'Demo ansehen',
       ctaSecondary: 'Mehr über Môra erfahren'
     },
     en: {
-      title: 'Môra – Demo Dashboard',
-      subtitle: 'Chat + Dashboard in One System',
+      title: 'Môra – Resonance Dashboard (Demo)',
+      subtitle: 'Chat + Dashboard, one data stream',
       demoLabel: 'Demo Dashboard (simulated data)',
       demoTooltip: 'All values are currently based on locally generated demo data. No real customer data. This dashboard shows the potential of Môra.',
 
@@ -201,7 +201,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       },
 
       // CTA
-      cta: 'Start quiet first contact',
+      cta: 'See the demo',
       ctaSecondary: 'Learn more about Môra'
     }
   }[locale];

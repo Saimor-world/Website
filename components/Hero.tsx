@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useCallback } from 'react';
@@ -42,15 +42,15 @@ export default function Hero({
 
   const heroText = {
     de: {
-      heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
-      claim: 'Môra ist das Resonanz-Dashboard, das Zusammenhänge sichtbar macht und Entscheidungen ruhig begleitet – aktuell als Demo mit simulierten Daten.',
-      subline: 'Für Organisationen in Veränderung: souverän, auditierbar, EU-gehostet.',
+      heading: 'SaimÃ´r â€“ semantisches OS fÃ¼r Klarheit im Wandel',
+      claim: 'MÃ´ra ist das Resonanz-Dashboard, das ZusammenhÃ¤nge sichtbar macht und Entscheidungen ruhig begleitet â€“ aktuell als Demo mit simulierten Daten.',
+      subline: 'FÃ¼r Organisationen in VerÃ¤nderung: souverÃ¤n, auditierbar, EU-gehostet.',
       ctaPrimary: 'Demo ansehen',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
-      heading: 'Saimôr – a semantic OS for clarity in change',
-      claim: 'Môra is the resonance dashboard that links your signals and guides decisions calmly – today in demo mode with simulated data.',
+      heading: 'SaimÃ´r â€“ a semantic OS for clarity in change',
+      claim: 'MÃ´ra is the resonance dashboard that links your signals and guides decisions calmly â€“ today in demo mode with simulated data.',
       subline: 'For organisations in transition: sovereign, auditable, EU-hosted.',
       ctaPrimary: 'See the demo',
       ctaSecondary: 'View offering'
@@ -233,7 +233,7 @@ export default function Hero({
           <div
             className="relative inline-flex rounded-2xl justify-center"
             style={logoPanelStyle}
-            aria-label="Saimôr Logo"
+            aria-label="SaimÃ´r Logo"
             onClick={emitLogoClick}
           >
             <div
@@ -254,7 +254,7 @@ export default function Hero({
             />
             <Image
               src="/Logo neu.png"
-              alt="Saimôr Logo"
+              alt="SaimÃ´r Logo"
               width={600}
               height={180}
               className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
@@ -275,7 +275,7 @@ export default function Hero({
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-        {/* Môra Badge - Prominent */}
+        {/* MÃ´ra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -300,7 +300,7 @@ export default function Hero({
               </svg>
             </motion.div>
             <span className="text-sm font-semibold text-[#E6C897]">
-              {locale === 'de' ? 'MVP-Prototyp ⋅ Entwicklung' : 'MVP Prototype ⋅ In Development'}
+              {locale === 'de' ? 'MVP-Prototyp â‹… Entwicklung' : 'MVP Prototype â‹… In Development'}
             </span>
           </motion.div>
 
@@ -381,8 +381,8 @@ export default function Hero({
           </motion.a>
           <p className="text-sm text-white/80 text-center max-w-sm">
             {locale === 'de'
-              ? 'Demo-Daten, keine Eile – wir melden uns ruhig zurück.'
-              : 'Demo data, no rush – we will respond calmly.'}
+              ? 'Demo-Daten, keine Eile â€“ wir melden uns ruhig zurÃ¼ck.'
+              : 'Demo data, no rush â€“ we will respond calmly.'}
           </p>
 
           {/* Scroll Indicator */}
@@ -443,6 +443,7 @@ export default function Hero({
     </section>
   );
 }
+
 
 
 

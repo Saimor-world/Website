@@ -25,11 +25,11 @@ const Services = memo(function Services({ locale }: Props) {
     {
       key: 'mora',
       title: t('Môra', 'Môra'),
-      subtitle: t('Deine KI-Begleiterin für Klarheit', 'Your AI companion for clarity'),
+      subtitle: t('Resonanz-Dashboard für Klarheit', 'Resonance dashboard for clarity'),
       benefits: [
-        t('Dashboard · Web · Voice – alles verbunden', 'Dashboard · Web · Voice – all connected'),
+        t('Chat + Dashboard – ein Datenstrom', 'Chat + dashboard – one data stream'),
         t('Dual-Modus: Ordner & Feld', 'Dual mode: folder & field'),
-        t('MVP-Prototyp – Entwicklung läuft', 'MVP prototype – in development')
+        t('Demo-Status: simulierte Daten, auditbereit', 'Demo status: simulated data, audit-ready')
       ],
       href: '#waitlist',
       cta: t('Early Access sichern', 'Get early access'),
@@ -44,7 +44,7 @@ const Services = memo(function Services({ locale }: Props) {
       benefits: [
         t('Resonanzraum für klare Entscheidungen', 'Resonance space for clear decisions'),
         t('Tiefe statt Hektik – nachhaltige Veränderung', 'Depth instead of rush – sustainable change'),
-        t('1–6 Monate begleitet von Môra', '1–6 months with Môra’s support')
+        t('1–6 Monate begleitet von Môra', '1–6 months with Môra alongside')
       ],
       href: '/orbit',
       cta: t('Mehr erfahren', 'Learn more'),
@@ -57,7 +57,7 @@ const Services = memo(function Services({ locale }: Props) {
       subtitle: t('Impulse für Klarheit im Moment', 'Impulses for clarity in the moment'),
       benefits: [
         t('Energie in Veränderungssituationen', 'Energy in transformation moments'),
-        t('Workshop · Keynote · Stille Formate', 'Workshop · Keynote · Silent formats'),
+        t('Workshop – Keynote – stille Formate', 'Workshop – keynote – quiet formats'),
         t('Môra bereitet vor und begleitet nach', 'Môra prepares and follows up')
       ],
       href: '/pulse',

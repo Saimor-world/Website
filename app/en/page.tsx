@@ -1,22 +1,22 @@
-import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import MoraDashboard from '@/components/MoraDashboard';
-import TrustProof from '@/components/TrustProof';
-// import FundingSection from '@/components/FundingSection'; // TODO(CEO): Re-enable after Pre-Seed confirmation
-import FAQ from '@/components/FAQ';
-import ContactSection from '@/components/ContactSection';
-import CommunityBanner from '@/components/CommunityBanner';
-import WaitlistForm from '@/components/WaitlistForm';
-import dynamic from 'next/dynamic';
+﻿import Hero from "@/components/Hero";
+import Services from "@/components/Services";
+import MoraDashboard from "@/components/MoraDashboard";
+import TrustProof from "@/components/TrustProof";
+// import FundingSection from "@/components/FundingSection"; // TODO(CEO): Re-enable after Pre-Seed confirmation
+import FAQ from "@/components/FAQ";
+import ContactSection from "@/components/ContactSection";
+import CommunityBanner from "@/components/CommunityBanner";
+import WaitlistForm from "@/components/WaitlistForm";
+import dynamic from "next/dynamic";
 
-const MoraIntroAnimation = dynamic(() => import('@/components/MoraIntroAnimation'), { ssr: false });
-const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
-const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
-const MoraAvatar = dynamic(() => import('@/components/MoraAvatar'), { ssr: false });
-const MoraChat = dynamic(() => import('@/components/MoraChat'), { ssr: false });
-const MoraDashboardConnection = dynamic(() => import('@/components/MoraDashboardConnection'), { ssr: false });
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
-const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
+const MoraIntroAnimation = dynamic(() => import("@/components/MoraIntroAnimation"), { ssr: false });
+const ScrollProgress = dynamic(() => import("@/components/ScrollProgress"), { ssr: false });
+const EasterEggs = dynamic(() => import("@/components/EasterEggs"), { ssr: false });
+const MoraAvatar = dynamic(() => import("@/components/MoraAvatar"), { ssr: false });
+const MoraChat = dynamic(() => import("@/components/MoraChat"), { ssr: false });
+const MoraDashboardConnection = dynamic(() => import("@/components/MoraDashboardConnection"), { ssr: false });
+const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
+const MyceliumNetwork = dynamic(() => import("@/components/MyceliumNetwork"), { ssr: false });
 
 export const metadata = {
   title: 'Saimôr – Clarity in Transformation',
