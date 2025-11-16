@@ -8,11 +8,11 @@ const copy = {
     kicker: 'Wald \u00b7 Myzel \u00b7 Dashboard',
     title: 'Was oben rauscht, flie\u00dft unten zusammen',
     intro:
-      'Unter jeder Organisation liegt ein unsichtbares Myzel aus Daten, Entscheidungen und Beziehungen. M\u00f4ra macht dieses Myzel sichtbar \u2013 als Dashboard, Myzel-Ansicht und Dialog.',
+      'Unter jeder Organisation liegt ein unsichtbares Myzel aus Daten, Entscheidungen und Beziehungen. Môra macht dieses Myzel sichtbar – als Dashboard, Myzel-Ansicht und Dialog.',
     forest: {
       title: 'Oben: der Wald',
       points: [
-        'Teams, Projekte, Signale \u2013 viele Stimmen, wenig Zeit',
+        'Teams, Projekte, Signale – viele Stimmen, wenig Zeit',
         'Wir sammeln nur, was f\u00fcr Klarheit n\u00f6tig ist',
         'Kein L\u00e4rm, keine Versprechen, die noch nicht existieren'
       ]
@@ -20,14 +20,14 @@ const copy = {
     mycelium: {
       title: 'Unten: das Myzel',
       lines: [
-        'Quellen verbinden',
+        'Quellen verbinden (Connectoren)',
         'Myzel erkennen (Feld)',
         'Kontext & Insights',
-        'Dialog mit M\u00f4ra (Chat)'
+        'Dialog mit Môra (Chat)'
       ],
       badge: 'Demo-Dashboard (simulierte Daten)'
     },
-    panelTitle: 'M\u00f4ra Blick in das Myzel',
+    panelTitle: 'Môra Blick in das Myzel',
     panelSub: 'Folder \u00b7 Field \u00b7 Insights \u00b7 Chat',
     cta: 'Demo ansehen'
   },
@@ -35,11 +35,11 @@ const copy = {
     kicker: 'Forest \u00b7 Mycelium \u00b7 Dashboard',
     title: 'What rustles above connects below',
     intro:
-      'Every organisation has an invisible mycelium of data, decisions, and relationships. M\u00f4ra reveals this \u2013 as dashboard, field view, and dialogue.',
+      'Every organisation has an invisible mycelium of data, decisions, and relationships. Môra reveals this – as dashboard, field view, and dialogue.',
     forest: {
       title: 'Above: the forest',
       points: [
-        'Teams, projects, signals \u2013 many voices, little time',
+        'Teams, projects, signals – many voices, little time',
         'We only gather what is needed for clarity',
         'No noise, no promises that don\u2019t exist'
       ]
@@ -47,14 +47,14 @@ const copy = {
     mycelium: {
       title: 'Below: the mycelium',
       lines: [
-        'Connect sources',
+        'Connect sources (connectors)',
         'See the field (mycelium)',
         'Context & insights',
-        'Dialogue with M\u00f4ra (chat)'
+        'Dialogue with Môra (chat)'
       ],
       badge: 'Demo dashboard (simulated data)'
     },
-    panelTitle: 'M\u00f4ra view into the mycelium',
+    panelTitle: 'Môra view into the mycelium',
     panelSub: 'Folder \u00b7 Field \u00b7 Insights \u00b7 Chat',
     cta: 'See the demo'
   }

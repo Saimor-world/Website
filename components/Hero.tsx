@@ -44,16 +44,16 @@ const heroText = {
     de: {
       heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
       claim: 'Môra ist das Resonanz-Dashboard deiner Organisation: macht Zusammenhänge sichtbar, reduziert Lärm, begleitet Entscheidungen – aktuell als Demo mit simulierten Daten.',
-      subline: 'Oben der Wald, unten das Myzel: Wir verbinden Quellen, zeigen Strukturen und lassen dich mit Môra sprechen.',
+      subline: 'Heute Demo mit simulierten, realistisch strukturierten Daten; Morgen mit angebundenen Systemen – ohne Hype, nur Klarheit.',
       ctaPrimary: 'Demo ansehen',
-      ctaSecondary: 'Kontakt aufnehmen'
+      ctaSecondary: 'Gespräch vereinbaren'
     },
     en: {
       heading: 'Saimôr – a semantic OS for clarity in change',
       claim: 'Môra is your organisation’s resonance dashboard: reveals connections, reduces noise, guides decisions – today in demo mode with simulated data.',
-      subline: 'Forest above, mycelium below: we connect sources, show structures, and let you talk with Môra.',
+      subline: 'Today: demo with simulated, realistically structured data. Tomorrow: real system connectors – calm, no hype.',
       ctaPrimary: 'See the demo',
-      ctaSecondary: 'Talk to us'
+      ctaSecondary: 'Schedule a call'
     }
   }[locale];
 

@@ -8,18 +8,18 @@ const content = {
     cards: [
       {
         title: 'Saimôr Core',
-        body: 'Stabiles semantisches Backend: mock-default, später real-ready. Sicher, souverän, EU-fähig.',
+        body: 'Stabiles semantisches Backend: mock-default, real-ready sobald angebunden. Sicher, souverän, EU-fähig.',
         bullets: ['Datenadapter & Logging', 'Rollen & Audit vorbereitet', 'Keine echten Kundendaten im Demo-Modus']
       },
       {
         title: 'Môra UI',
-        body: 'Resonanz-Dashboard mit Folder/Feld, Insights und Chat. Zeigt Prioritäten, Kontext und leise Hinweise.',
+        body: 'Resonanz-Dashboard mit Folder/Feld, Insights und Chat. Läuft heute auf Demo-Daten, simuliert aber den späteren Workflow 1:1.',
         bullets: ['Field: Myzel sichtbar machen', 'Insights: Kontext statt Lärm', 'Chat: Dialog mit demselben Datenstrom']
       },
       {
         title: 'Môra OS',
-        body: 'Wachsende Plattform, die später Räume/Organisationen verbindet – ohne übertriebene Versprechen.',
-        bullets: ['Modular, erweiterbar', 'Interne Nutzung zuerst', 'Viele Wege, aber immer ruhig']
+        body: 'Wachsende Plattform, die später Räume/Organisationen verbindet – ohne Buzzwords, ohne übertriebene Versprechen.',
+        bullets: ['Modular, erweiterbar', 'Interne Nutzung zuerst', 'Vision klar, Umsetzung schrittweise']
       }
     ]
   },
@@ -30,18 +30,18 @@ const content = {
     cards: [
       {
         title: 'Saimôr Core',
-        body: 'Stable semantic backend: mock-default, later real-ready. Secure, sovereign, EU-capable.',
+        body: 'Stable semantic backend: mock-default, real-ready once connected. Secure, sovereign, EU-capable.',
         bullets: ['Data adapters & logging', 'Roles & audit prepared', 'No real customer data in demo mode']
       },
       {
         title: 'Môra UI',
-        body: 'Resonance dashboard with folder/field, insights, and chat. Shows priorities, context, and quiet cues.',
+        body: 'Resonance dashboard with folder/field, insights, and chat. Runs on demo data today but simulates the later workflow exactly.',
         bullets: ['Field: exposing the mycelium', 'Insights: context over noise', 'Chat: dialogue on the same stream']
       },
       {
         title: 'Môra OS',
-        body: 'Growing platform that will connect spaces/organisations over time – without overpromising.',
-        bullets: ['Modular, extensible', 'Internal-first usage', 'Many paths, always calm']
+        body: 'Growing platform that will connect spaces/organisations over time – no buzzwords, no overpromising.',
+        bullets: ['Modular, extensible', 'Internal-first usage', 'Vision clear, steps deliberate']
       }
     ]
   }
