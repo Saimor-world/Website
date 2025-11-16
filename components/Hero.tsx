@@ -42,15 +42,17 @@ export default function Hero({
 
   const heroText = {
     de: {
-      heading: 'Klarheit im Wandel',
-      claim: 'Begleitung für Menschen und Organisationen, wenn Systeme schwanken.',
-      ctaPrimary: 'Ruhigen Erstkontakt starten',
+      heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
+      claim: 'Môra ist das Resonanz-Dashboard, das Zusammenhänge sichtbar macht und Entscheidungen ruhig begleitet – aktuell als Demo mit simulierten Daten.',
+      subline: 'Für Organisationen in Veränderung: souverän, auditierbar, EU-gehostet.',
+      ctaPrimary: 'Demo ansehen',
       ctaSecondary: 'Angebot ansehen'
     },
     en: {
-      heading: 'Clarity in Transformation',
-      claim: 'Guidance for people and organizations when systems waver.',
-      ctaPrimary: 'Start a calm first contact',
+      heading: 'Saimôr – a semantic OS for clarity in change',
+      claim: 'Môra is the resonance dashboard that links your signals and guides decisions calmly – today in demo mode with simulated data.',
+      subline: 'For organisations in transition: sovereign, auditable, EU-hosted.',
+      ctaPrimary: 'See the demo',
       ctaSecondary: 'View offering'
     }
   }[locale];
@@ -313,10 +315,13 @@ export default function Hero({
           </h1>
           <p className="text-xl sm:text-2xl text-white/90 leading-relaxed"
              style={{
-               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-               fontFamily: 'Cormorant Garamond, serif'
+              textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              fontFamily: 'Cormorant Garamond, serif'
              }}>
             {heroText.claim}
+          </p>
+          <p className="text-base sm:text-lg text-white/75 max-w-3xl mx-auto leading-relaxed">
+            {heroText.subline}
           </p>
         </motion.div>
 
@@ -346,7 +351,7 @@ export default function Hero({
               border: '2px solid rgba(255, 255, 255, 0.2)',
               boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
             }}
-            aria-label={locale === 'de' ? 'Ruhigen Erstkontakt starten' : 'Start a calm first contact'}
+            aria-label={heroText.ctaPrimary}
           >
             {/* Animated shine effect */}
             <motion.div
@@ -371,15 +376,13 @@ export default function Hero({
                 <path d="M13 7H7v6h6V7z"/>
                 <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
               </motion.svg>
-              <span>
-                {locale === 'de' ? 'Ruhigen Erstkontakt starten' : 'Start a calm first contact'}
-              </span>
+              <span>{heroText.ctaPrimary}</span>
             </span>
           </motion.a>
           <p className="text-sm text-white/80 text-center max-w-sm">
             {locale === 'de'
-              ? 'Kurze Nachricht – wir melden uns in Ruhe zurück.'
-              : 'Leave a short note – we’ll respond with calm clarity.'}
+              ? 'Demo-Daten, keine Eile – wir melden uns ruhig zurück.'
+              : 'Demo data, no rush – we will respond calmly.'}
           </p>
 
           {/* Scroll Indicator */}
