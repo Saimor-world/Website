@@ -3,6 +3,8 @@ import Services from "@/components/Services";
 import MoraDashboard from "@/components/MoraDashboard";
 import TrustProof from "@/components/TrustProof";
 // import FundingSection from "@/components/FundingSection"; // TODO(CEO): Re-enable after Pre-Seed confirmation
+import MyceliumSection from "@/components/MyceliumSection";
+import ProductStory from "@/components/ProductStory";
 import FAQ from "@/components/FAQ";
 import ContactSection from "@/components/ContactSection";
 import CommunityBanner from "@/components/CommunityBanner";
@@ -46,8 +48,10 @@ export default function Page() {
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="de" />
+        <MyceliumSection locale="de" />
         <Services locale="de" />
         <MoraDashboard locale="de" />
+        <ProductStory locale="de" />
         <TrustProof locale="de" />
         {/* <FundingSection locale="de" /> */}
         <CommunityBanner locale="de" />

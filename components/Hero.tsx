@@ -40,20 +40,20 @@ export default function Hero({
   contactHashId = 'kontakt',
 }: Props) {
 
-  const heroText = {
+const heroText = {
     de: {
-      heading: 'SaimÃ´r â€“ semantisches OS fÃ¼r Klarheit im Wandel',
-      claim: 'MÃ´ra ist das Resonanz-Dashboard, das ZusammenhÃ¤nge sichtbar macht und Entscheidungen ruhig begleitet â€“ aktuell als Demo mit simulierten Daten.',
-      subline: 'FÃ¼r Organisationen in VerÃ¤nderung: souverÃ¤n, auditierbar, EU-gehostet.',
+      heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
+      claim: 'Môra ist das Resonanz-Dashboard deiner Organisation: macht Zusammenhänge sichtbar, reduziert Lärm, begleitet Entscheidungen – aktuell als Demo mit simulierten Daten.',
+      subline: 'Oben der Wald, unten das Myzel: Wir verbinden Quellen, zeigen Strukturen und lassen dich mit Môra sprechen.',
       ctaPrimary: 'Demo ansehen',
-      ctaSecondary: 'Angebot ansehen'
+      ctaSecondary: 'Kontakt aufnehmen'
     },
     en: {
-      heading: 'SaimÃ´r â€“ a semantic OS for clarity in change',
-      claim: 'MÃ´ra is the resonance dashboard that links your signals and guides decisions calmly â€“ today in demo mode with simulated data.',
-      subline: 'For organisations in transition: sovereign, auditable, EU-hosted.',
+      heading: 'Saimôr – a semantic OS for clarity in change',
+      claim: 'Môra is your organisation’s resonance dashboard: reveals connections, reduces noise, guides decisions – today in demo mode with simulated data.',
+      subline: 'Forest above, mycelium below: we connect sources, show structures, and let you talk with Môra.',
       ctaPrimary: 'See the demo',
-      ctaSecondary: 'View offering'
+      ctaSecondary: 'Talk to us'
     }
   }[locale];
 
@@ -233,7 +233,7 @@ export default function Hero({
           <div
             className="relative inline-flex rounded-2xl justify-center"
             style={logoPanelStyle}
-            aria-label="SaimÃ´r Logo"
+            aria-label="Saimôr Logo"
             onClick={emitLogoClick}
           >
             <div
@@ -254,7 +254,7 @@ export default function Hero({
             />
             <Image
               src="/Logo neu.png"
-              alt="SaimÃ´r Logo"
+              alt="Saimôr Logo"
               width={600}
               height={180}
               className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
@@ -275,7 +275,7 @@ export default function Hero({
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-        {/* MÃ´ra Badge - Prominent */}
+        {/* Môra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -381,8 +381,8 @@ export default function Hero({
           </motion.a>
           <p className="text-sm text-white/80 text-center max-w-sm">
             {locale === 'de'
-              ? 'Demo-Daten, keine Eile â€“ wir melden uns ruhig zurÃ¼ck.'
-              : 'Demo data, no rush â€“ we will respond calmly.'}
+              ? 'Demo-Daten, keine Eile – wir melden uns ruhig zurück.'
+              : 'Demo data, no rush – we will respond calmly.'}
           </p>
 
           {/* Scroll Indicator */}
