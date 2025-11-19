@@ -1,4 +1,4 @@
-// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified Môra demo section).
+﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified MÃ´ra demo section).
 // Do not add new code here; kept only for reference until archival.
 'use client';
 import Image from 'next/image';
@@ -64,40 +64,40 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
   const content = {
     de: {
-      title: 'Môra – Deine KI-Begleiterin für Business-Klarheit',
+      title: 'MÃ´ra â€“ Deine KI-Begleiterin fÃ¼r Business-Klarheit',
       subtitle: 'Erlebe echte KI in Aktion',
-      intro: 'Hallo, ich bin Môra. Ich analysiere deine Business-Daten in Echtzeit und gebe dir klare Antworten. Stell mir eine Frage!',
+      intro: 'Hallo, ich bin MÃ´ra. Ich analysiere deine Business-Daten in Echtzeit und gebe dir klare Antworten. Stell mir eine Frage!',
 
-      inputPlaceholder: 'Frag Môra etwas zu deinem Business...',
+      inputPlaceholder: 'Frag MÃ´ra etwas zu deinem Business...',
       askButton: 'Fragen',
 
       quickQuestions: [
-        'Wie kann ich Team-Produktivität steigern?',
+        'Wie kann ich Team-ProduktivitÃ¤t steigern?',
         'Zeig mir Budget-Optimierungen',
         'Analysiere Projekt-Fortschritt'
       ],
 
-      realResponse: 'Echte Môra-Antwort',
+      realResponse: 'Echte MÃ´ra-Antwort',
       responseIn: 'Antwort in',
       seconds: 'Sekunden',
 
       kpis: {
-        productivity: 'Team-Produktivität',
+        productivity: 'Team-ProduktivitÃ¤t',
         progress: 'Projekt-Fortschritt',
         satisfaction: 'Mitarbeiter-Zufriedenheit',
         budget: 'Budget-Effizienz'
       },
 
-      chatLink: 'Für tiefere Analysen',
-      chatButton: 'Môra Chat öffnen',
+      chatLink: 'FÃ¼r tiefere Analysen',
+      chatButton: 'MÃ´ra Chat Ã¶ffnen',
       cta: 'Kostenlos testen'
     },
     en: {
-      title: 'Môra – Your AI Companion for Business Clarity',
+      title: 'MÃ´ra â€“ Your AI Companion for Business Clarity',
       subtitle: 'Experience Real AI in Action',
-      intro: 'Hello, I\'m Môra. I analyze your business data in real-time and give you clear answers. Ask me a question!',
+      intro: 'Hello, I\'m MÃ´ra. I analyze your business data in real-time and give you clear answers. Ask me a question!',
 
-      inputPlaceholder: 'Ask Môra about your business...',
+      inputPlaceholder: 'Ask MÃ´ra about your business...',
       askButton: 'Ask',
 
       quickQuestions: [
@@ -106,7 +106,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
         'Analyze project progress'
       ],
 
-      realResponse: 'Real Môra Response',
+      realResponse: 'Real MÃ´ra Response',
       responseIn: 'Response in',
       seconds: 'seconds',
 
@@ -118,7 +118,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
       },
 
       chatLink: 'For deeper analysis',
-      chatButton: 'Open Môra Chat',
+      chatButton: 'Open MÃ´ra Chat',
       cta: 'Try for free'
     }
   }[locale];
@@ -144,15 +144,15 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
     // Demo responses
     const demoResponses = locale === 'de' ? {
-      team: 'Basierend auf deinen aktuellen KPIs (87% Produktivität) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
-      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Môra zeigt dir alle Zahlen im Blick.',
-      project: 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
-      default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
+      team: 'Basierend auf deinen aktuellen KPIs (87% ProduktivitÃ¤t) empfehle ich: 1) WÃ¶chentliche KlarheitsgesprÃ¤che im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit kÃ¶nnen wir das systematisch umsetzen.',
+      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestÃ¼tzte Entscheidungen. MÃ´ra zeigt dir alle Zahlen im Blick.',
+      project: 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) RegelmÃ¤ÃŸige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+      default: 'Hallo! Ich bin MÃ´ra, deine KI-Begleiterin bei SaimÃ´r. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
     } : {
       team: 'Based on your current KPIs (87% productivity), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
-      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. Môra shows you all numbers at a glance.',
+      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. MÃ´ra shows you all numbers at a glance.',
       project: 'Project progress: 73%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
-      default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
+      default: 'Hello! I\'m MÃ´ra, your AI companion at SaimÃ´r. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
     };
 
     // Match question to response
@@ -234,7 +234,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
           viewport={{ once: true }}
         >
           <motion.p
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-wider text-[#D4B483] font-semibold mb-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#D4B483]/10 to-[#4A6741]/10 border border-[#D4B483]/20"
+            className="inline-flex items-center gap-2 text-sm uppercase tracking-wider text-[#D4A857] font-semibold mb-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#D4A857]/10 to-[#4A6741]/10 border border-[#D4A857]/20"
             initial={{ scale: 0.9 }}
             whileInView={{ scale: 1 }}
             animate={{
@@ -253,7 +253,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%, #E6C897 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4A857 70%, #E6C897 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}
@@ -267,7 +267,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
         {/* Main Interactive Section */}
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* LEFT: Môra Chat Interface */}
+          {/* LEFT: MÃ´ra Chat Interface */}
           <motion.div
             className="space-y-6 rounded-3xl p-8 shadow-xl"
             style={glassPanelStyle}
@@ -275,18 +275,18 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            {/* Animated Môra Orb */}
+            {/* Animated MÃ´ra Orb */}
             <div className="relative flex items-center justify-center mb-8">
               {/* Outer rotating ring */}
               <motion.div
-                className="absolute w-48 h-48 rounded-full border-2 border-dashed border-[#D4B483]/30"
+                className="absolute w-48 h-48 rounded-full border-2 border-dashed border-[#D4A857]/30"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
               />
 
               {/* Middle pulsing ring */}
               <motion.div
-                className="absolute w-40 h-40 rounded-full bg-gradient-to-r from-[#D4B483]/20 to-[#4A6741]/20"
+                className="absolute w-40 h-40 rounded-full bg-gradient-to-r from-[#D4A857]/20 to-[#4A6741]/20"
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.3, 0.6, 0.3]
@@ -298,7 +298,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               {[0, 60, 120, 180, 240, 300].map((angle, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-2 h-2 rounded-full bg-[#D4B483]"
+                  className="absolute w-2 h-2 rounded-full bg-[#D4A857]"
                   style={{
                     left: '50%',
                     top: '50%',
@@ -326,7 +326,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
               {/* Core Orb */}
               <motion.div
-                className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#D4B483] via-[#E6C897] to-[#4A6741] flex items-center justify-center shadow-2xl"
+                className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#D4A857] via-[#E6C897] to-[#4A6741] flex items-center justify-center shadow-2xl"
                 animate={{
                   boxShadow: [
                     '0 0 40px rgba(212, 180, 131, 0.5)',
@@ -357,7 +357,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                   disabled={isAsking}
                 >
                   <div className="flex items-center gap-3">
-                    <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4B483] transition-colors" />
+                    <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4A857] transition-colors" />
                     <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
                       {question}
                     </span>
@@ -380,13 +380,13 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
                 placeholder={content.inputPlaceholder}
                 disabled={isAsking}
-                className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30 disabled:opacity-50 bg-transparent"
+                className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30 disabled:opacity-50 bg-transparent"
                 style={glassTileStyle}
               />
               <motion.button
                 onClick={() => handleAskMora()}
                 disabled={isAsking || !userQuestion.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4B483] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4A857] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -398,7 +398,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               </motion.button>
             </motion.div>
 
-            {/* Môra Response */}
+            {/* MÃ´ra Response */}
             <AnimatePresence>
               {moraResponse && (
                 <motion.div
@@ -415,7 +415,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                 >
                   <div className="flex items-start gap-3 mb-3">
                     <motion.div
-                      className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4B483] to-[#4A6741] flex items-center justify-center flex-shrink-0"
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A857] to-[#4A6741] flex items-center justify-center flex-shrink-0"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                     >
@@ -423,7 +423,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                     </motion.div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-gray-900">Môra</h4>
+                        <h4 className="font-bold text-gray-900">MÃ´ra</h4>
                         {showSuccess && (
                           <motion.div
                             className="flex items-center gap-1 text-xs text-emerald-600"
@@ -431,7 +431,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                             animate={{ scale: 1 }}
                           >
                             <CheckCircle2 className="w-4 h-4" />
-                            {content.realResponse} · {responseTime}{content.seconds.slice(0, 1)}
+                            {content.realResponse} Â· {responseTime}{content.seconds.slice(0, 1)}
                           </motion.div>
                         )}
                       </div>
@@ -543,7 +543,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                         <motion.p
                           className="text-4xl font-bold text-gray-900"
                           key={kpi.value}
-                          initial={{ scale: 1.2, color: '#D4B483' }}
+                          initial={{ scale: 1.2, color: '#D4A857' }}
                           animate={{ scale: 1, color: '#1f2937' }}
                           transition={{ duration: 0.4 }}
                         >
@@ -580,7 +580,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
             href="https://cal.com/saimor/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483] shadow-2xl"
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4A857] shadow-2xl"
             whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 60px rgba(74, 103, 65, 0.3)' }}
             whileTap={{ scale: 0.95 }}
           >

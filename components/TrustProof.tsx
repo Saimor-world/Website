@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { CheckCircle, Shield, Activity } from 'lucide-react';
 
@@ -11,17 +11,17 @@ export default function TrustProof({ locale }: Props) {
     {
       icon: CheckCircle,
       title: t('Klar statt komplex', 'Clear instead of complex'),
-      desc: t('Verständliche Ergebnisse in kurzer Zeit.', 'Understandable results in a short time.'),
+      desc: t('VerstÃ¤ndliche Ergebnisse in kurzer Zeit.', 'Understandable results in a short time.'),
     },
     {
       icon: Shield,
-      title: t('Datensouveränität', 'Data sovereignty'),
+      title: t('DatensouverÃ¤nitÃ¤t', 'Data sovereignty'),
       desc: t('EU-Hosting & DSGVO-Guardrails, keine Profile.', 'EU hosting & GDPR guardrails, no profiles.'),
     },
     {
       icon: Activity,
       title: t('Begleitung statt Hype', 'Guidance instead of hype'),
-      desc: t('Rhythmus, der Entscheidungen ermöglicht.', 'Rhythm that enables decisions.'),
+      desc: t('Rhythmus, der Entscheidungen ermÃ¶glicht.', 'Rhythm that enables decisions.'),
     },
   ];
 
@@ -58,13 +58,13 @@ export default function TrustProof({ locale }: Props) {
             className="font-serif text-3xl sm:text-4xl md:text-5xl mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}
           >
-            {t('Warum Saimôr', 'Why Saimôr')}
+            {t('Warum SaimÃ´r', 'Why SaimÃ´r')}
           </h2>
         </motion.div>
 
@@ -149,8 +149,8 @@ export default function TrustProof({ locale }: Props) {
         >
           <p className="text-slate-500 italic text-lg" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
             {t(
-              '„Saimôr ist kein Tool, sondern ein Resonanzraum."',
-              '"Saimôr is not a tool, but a resonance space."'
+              'â€žSaimÃ´r ist kein Tool, sondern ein Resonanzraum."',
+              '"SaimÃ´r is not a tool, but a resonance space."'
             )}
           </p>
         </motion.div>

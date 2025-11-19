@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useState } from 'react';
@@ -50,7 +50,7 @@ export default function ContactSection({ locale }: Props) {
             className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
@@ -59,7 +59,7 @@ export default function ContactSection({ locale }: Props) {
             {t('Kontakt', 'Contact')}
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            {t('Kurz sprechen, Fokus klären, nächsten Schritt festlegen.', 'Quick call, clarify focus, determine next step.')}
+            {t('Kurz sprechen, Fokus klÃ¤ren, nÃ¤chsten Schritt festlegen.', 'Quick call, clarify focus, determine next step.')}
           </p>
         </motion.div>
 
@@ -74,8 +74,8 @@ export default function ContactSection({ locale }: Props) {
           >
             <div className="rounded-3xl p-10 relative overflow-hidden"
                  style={{
-                   background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,180,131,0.12) 100%)',
-                   border: '2px solid rgba(212,180,131,0.3)'
+                   background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,168,87,0.12) 100%)',
+                   border: '2px solid rgba(212,168,87,0.3)'
                  }}>
               <h3 className="font-serif text-3xl mb-8 text-slate-900"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -90,8 +90,8 @@ export default function ContactSection({ locale }: Props) {
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
                        style={{
-                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,180,131,0.2) 100%)',
-                         border: '1px solid rgba(212,180,131,0.3)'
+                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
+                         border: '1px solid rgba(212,168,87,0.3)'
                        }}>
                     <Mail size={20} className="text-saimor-green" />
                   </div>
@@ -107,8 +107,8 @@ export default function ContactSection({ locale }: Props) {
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
                        style={{
-                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,180,131,0.2) 100%)',
-                         border: '1px solid rgba(212,180,131,0.3)'
+                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
+                         border: '1px solid rgba(212,168,87,0.3)'
                        }}>
                     <MapPin size={20} className="text-saimor-green" />
                   </div>
@@ -139,16 +139,16 @@ export default function ContactSection({ locale }: Props) {
               style={{
                 background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
                 boxShadow: '0 15px 35px rgba(74, 103, 65, 0.25)',
-                border: '2px solid rgba(212,180,131,0.5)'
+                border: '2px solid rgba(212,168,87,0.5)'
               }}
             >
               <motion.div
                 className="absolute inset-0"
                 animate={{
                   background: [
-                    'radial-gradient(circle at 30% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)',
-                    'radial-gradient(circle at 70% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)',
-                    'radial-gradient(circle at 30% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)'
+                    'radial-gradient(circle at 30% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)',
+                    'radial-gradient(circle at 70% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)',
+                    'radial-gradient(circle at 30% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)'
                   ]
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
@@ -157,10 +157,10 @@ export default function ContactSection({ locale }: Props) {
                 <Phone className="w-12 h-12 mx-auto mb-4 text-white" />
                 <h4 className="font-serif text-2xl mb-2 text-white"
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  {t('Klarheitsgespräch buchen', 'Book clarity call')}
+                  {t('KlarheitsgesprÃ¤ch buchen', 'Book clarity call')}
                 </h4>
                 <p className="text-white/90">
-                  {t('30 Minuten kostenlos – ohne Verkaufsdruck', '30 minutes free – no sales pressure')}
+                  {t('30 Minuten kostenlos â€“ ohne Verkaufsdruck', '30 minutes free â€“ no sales pressure')}
                 </p>
               </div>
             </motion.a>
@@ -176,7 +176,7 @@ export default function ContactSection({ locale }: Props) {
             <form onSubmit={handleSubmit} className="rounded-3xl p-10 space-y-6"
                   style={{
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                    border: '2px solid rgba(212,180,131,0.3)',
+                    border: '2px solid rgba(212,168,87,0.3)',
                     boxShadow: '0 20px 50px rgba(74,103,65,0.1)'
                   }}>
               <div>
@@ -238,7 +238,7 @@ export default function ContactSection({ locale }: Props) {
                 }}
               >
                 {status === 'sending' && t('Wird gesendet...', 'Sending...')}
-                {status === 'sent' && t('✓ Gesendet!', '✓ Sent!')}
+                {status === 'sent' && t('âœ“ Gesendet!', 'âœ“ Sent!')}
                 {status === 'idle' && (
                   <>
                     <span>{t('Nachricht senden', 'Send message')}</span>

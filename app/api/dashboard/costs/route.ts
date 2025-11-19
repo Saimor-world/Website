@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const DASHBOARD_API = 'https://voice.saimor.world/api/dashboard';
 
 export async function GET(request: NextRequest) {

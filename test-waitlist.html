@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warteliste Test - Saimôr</title>
+    <title>Warteliste Test - SaimÃ´r</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #4A6741 0%, #D4B483 100%);
+            background: linear-gradient(135deg, #4A6741 0%, #D4A857 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -54,7 +54,7 @@
         }
         input:focus {
             outline: none;
-            border-color: #D4B483;
+            border-color: #D4A857;
             box-shadow: 0 0 0 3px rgba(212, 180, 131, 0.1);
         }
         .interests {
@@ -76,17 +76,17 @@
             gap: 8px;
         }
         .interest-btn:hover {
-            border-color: #D4B483;
+            border-color: #D4A857;
             background: #faf8f5;
         }
         .interest-btn.active {
-            border-color: #D4B483;
+            border-color: #D4A857;
             background: rgba(212, 180, 131, 0.1);
         }
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #4A6741 0%, #D4B483 100%);
+            background: linear-gradient(135deg, #4A6741 0%, #D4A857 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -156,11 +156,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>🧪 Wartelisten-Test</h1>
+        <h1>ðŸ§ª Wartelisten-Test</h1>
         <p class="subtitle">Teste die /api/waitlist Route lokal</p>
 
         <div class="info-box">
-            <strong>ℹ️ Test-Modus</strong>
+            <strong>â„¹ï¸ Test-Modus</strong>
             Diese Seite testet die Wartelisten-API.<br>
             <span class="endpoint">POST /api/waitlist</span>
         </div>
@@ -180,16 +180,16 @@
                 <label>Interessen (optional)</label>
                 <div class="interests">
                     <button type="button" class="interest-btn" data-interest="mora-ai">
-                        🤖 Môra AI
+                        ðŸ¤– MÃ´ra AI
                     </button>
                     <button type="button" class="interest-btn" data-interest="dashboards">
-                        📊 Dashboards
+                        ðŸ“Š Dashboards
                     </button>
                     <button type="button" class="interest-btn" data-interest="workshops">
-                        🎯 Workshops
+                        ðŸŽ¯ Workshops
                     </button>
                     <button type="button" class="interest-btn" data-interest="orbit">
-                        🌀 Orbit
+                        ðŸŒ€ Orbit
                     </button>
                 </div>
             </div>
@@ -264,7 +264,7 @@
                     result.className = 'result success';
                     result.style.display = 'block';
                     result.innerHTML = `
-                        <h3>✅ Erfolgreich!</h3>
+                        <h3>âœ… Erfolgreich!</h3>
                         <p><strong>Endpoint:</strong> ${endpoint}</p>
                         <p><strong>Status:</strong> ${response.status}</p>
                         <p><strong>Wartelisten-Position:</strong> #${data.position || 'N/A'}</p>
@@ -280,9 +280,9 @@
                 result.className = 'result error';
                 result.style.display = 'block';
                 result.innerHTML = `
-                    <h3>❌ Fehler</h3>
+                    <h3>âŒ Fehler</h3>
                     <p><strong>Message:</strong> ${error.message}</p>
-                    <p><strong>Mögliche Ursachen:</strong></p>
+                    <p><strong>MÃ¶gliche Ursachen:</strong></p>
                     <ul style="margin-left: 20px; margin-top: 10px;">
                         <li>Server nicht erreichbar</li>
                         <li>NEXTAUTH_SECRET fehlt</li>

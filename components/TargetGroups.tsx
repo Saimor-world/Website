@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { Building2, Users, User, Network } from 'lucide-react';
 
@@ -11,17 +11,17 @@ export default function TargetGroups({ locale }: Props) {
     {
       icon: Building2,
       title: t('Kommunen & Regionen', 'Municipalities & Regions'),
-      desc: t('Digitale Transformation im öffentlichen Raum – Bürgernähe durch klare Strukturen und verständliche Prozesse.', 'Digital transformation in public space – citizen proximity through clear structures and understandable processes.'),
+      desc: t('Digitale Transformation im Ã¶ffentlichen Raum â€“ BÃ¼rgernÃ¤he durch klare Strukturen und verstÃ¤ndliche Prozesse.', 'Digital transformation in public space â€“ citizen proximity through clear structures and understandable processes.'),
       features: [
         t('Digitalisierungsstrategie', 'Digitalization strategy'),
-        t('Bürgerdialoge', 'Citizen dialogues'),
+        t('BÃ¼rgerdialoge', 'Citizen dialogues'),
         t('Organisationsentwicklung', 'Organizational development'),
       ],
     },
     {
       icon: Users,
       title: t('KMU & Mittelstand', 'SMEs & Mid-market'),
-      desc: t('Nachhaltige Strukturen für wachsende Unternehmen – von familiären Teams zu professionellen Organisationen.', 'Sustainable structures for growing companies – from family teams to professional organizations.'),
+      desc: t('Nachhaltige Strukturen fÃ¼r wachsende Unternehmen â€“ von familiÃ¤ren Teams zu professionellen Organisationen.', 'Sustainable structures for growing companies â€“ from family teams to professional organizations.'),
       features: [
         t('Wachstumsbegleitung', 'Growth guidance'),
         t('Teamentwicklung', 'Team development'),
@@ -31,17 +31,17 @@ export default function TargetGroups({ locale }: Props) {
     {
       icon: User,
       title: t('Einzelpersonen', 'Individuals'),
-      desc: t('Persönliche Klarheit in Übergangsphasen – berufliche Neuorientierung, Führungsrollen, Lebenswandel.', 'Personal clarity in transition phases – career reorientation, leadership roles, life changes.'),
+      desc: t('PersÃ¶nliche Klarheit in Ãœbergangsphasen â€“ berufliche Neuorientierung, FÃ¼hrungsrollen, Lebenswandel.', 'Personal clarity in transition phases â€“ career reorientation, leadership roles, life changes.'),
       features: [
         t('Coaching', 'Coaching'),
         t('Mentoring', 'Mentoring'),
-        t('Reflexionsräume', 'Reflection spaces'),
+        t('ReflexionsrÃ¤ume', 'Reflection spaces'),
       ],
     },
     {
       icon: Network,
       title: t('Partner & Netzwerke', 'Partners & Networks'),
-      desc: t('Zusammenarbeit mit anderen Beratern, Agenturen und Organisationen – gemeinsam komplexe Herausforderungen lösen.', 'Collaboration with other consultants, agencies and organizations – solving complex challenges together.'),
+      desc: t('Zusammenarbeit mit anderen Beratern, Agenturen und Organisationen â€“ gemeinsam komplexe Herausforderungen lÃ¶sen.', 'Collaboration with other consultants, agencies and organizations â€“ solving complex challenges together.'),
       features: [
         t('Kooperationen', 'Cooperations'),
         t('Referral-Partner', 'Referral partners'),
@@ -100,7 +100,7 @@ export default function TargetGroups({ locale }: Props) {
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-6"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -204,7 +204,7 @@ export default function TargetGroups({ locale }: Props) {
                       <motion.div
                         className="w-2 h-2 rounded-full flex-shrink-0"
                         style={{
-                          background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                          background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)'
                         }}
                         whileHover={{
                           scale: 1.5,

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
@@ -50,7 +50,7 @@ const FundingSection = memo(function FundingSection({ locale }: Props) {
             className="text-3xl md:text-4xl font-bold mb-4"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}
@@ -65,8 +65,8 @@ const FundingSection = memo(function FundingSection({ locale }: Props) {
         <motion.div
           className="rounded-3xl p-8 md:p-10 max-w-3xl mx-auto"
           style={{
-            background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,180,131,0.08) 100%)',
-            border: '1px solid rgba(212,180,131,0.3)',
+            background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,168,87,0.08) 100%)',
+            border: '1px solid rgba(212,168,87,0.3)',
             boxShadow: '0 12px 36px rgba(10, 22, 18, 0.12)'
           }}
           initial={{ opacity: 0, y: 20 }}
@@ -74,7 +74,7 @@ const FundingSection = memo(function FundingSection({ locale }: Props) {
           viewport={{ once: true }}
         >
           <div className="flex items-start gap-4 mb-4">
-            <Info className="w-5 h-5 text-[#D4B483] flex-shrink-0 mt-0.5" />
+            <Info className="w-5 h-5 text-[#D4A857] flex-shrink-0 mt-0.5" />
             <div className="flex-1 text-left space-y-3 text-gray-700">
               {content.points.map((point, idx) => (
                 <p key={idx} className="text-base leading-relaxed">

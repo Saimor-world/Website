@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Cookie, Shield, X } from 'lucide-react';
@@ -83,7 +83,7 @@ export default function CookieBanner() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-slate-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                      Datensouveränität
+                      DatensouverÃ¤nitÃ¤t
                     </h3>
                     <p className="text-xs text-slate-600">Ihre Entscheidung</p>
                   </div>
@@ -100,7 +100,7 @@ export default function CookieBanner() {
               </div>
 
               <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                Wir nutzen <strong>Matomo</strong> (EU-Hosting, DSGVO-konform) für anonyme Analytics.
+                Wir nutzen <strong>Matomo</strong> (EU-Hosting, DSGVO-konform) fÃ¼r anonyme Analytics.
                 Keine Profile, keine Weitergabe. Ihre Wahl.
               </p>
 
@@ -148,7 +148,7 @@ export default function CookieBanner() {
                 onClick={() => setShowDetails(!showDetails)}
                 className="text-xs text-saimor-green hover:text-saimor-gold transition-colors font-semibold"
               >
-                {showDetails ? '↑ Weniger anzeigen' : '↓ Details anzeigen'}
+                {showDetails ? 'â†‘ Weniger anzeigen' : 'â†“ Details anzeigen'}
               </button>
             </div>
 
@@ -160,11 +160,11 @@ export default function CookieBanner() {
                 onClick={acceptAll}
                 className="w-full px-6 py-4 rounded-2xl font-bold text-white transition-all duration-300"
                 style={{
-                  background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+                  background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
                   boxShadow: '0 8px 20px rgba(74, 103, 65, 0.3)'
                 }}
               >
-                ✓ Alle akzeptieren
+                âœ“ Alle akzeptieren
               </motion.button>
 
               <div className="flex gap-3">
@@ -190,7 +190,7 @@ export default function CookieBanner() {
               <p className="text-[10px] text-center text-slate-500">
                 Mehr in unserer{' '}
                 <a href="/de/rechtliches/datenschutz" className="text-saimor-green hover:underline">
-                  Datenschutzerklärung
+                  DatenschutzerklÃ¤rung
                 </a>
               </p>
             </div>

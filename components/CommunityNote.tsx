@@ -43,7 +43,7 @@ export default function CommunityNote({ locale, className }: Props) {
         transition={{ duration: 0.6 }}
       >
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-          <Sparkles className="h-4 w-4 text-[#D4B483]" />
+          <Sparkles className="h-4 w-4 text-[#D4A857]" />
           {content.badge}
         </div>
 
@@ -57,7 +57,7 @@ export default function CommunityNote({ locale, className }: Props) {
             href="https://cal.com/saimor/30min"
             target="_blank"
             rel="noreferrer"
-            className="flex-1 rounded-full bg-gradient-to-r from-[#D4B483] via-[#E6C897] to-[#4A6741] px-6 py-3 text-center font-semibold text-[#0C1A14] shadow-xl"
+            className="flex-1 rounded-full bg-gradient-to-r from-[#D4A857] via-[#E6C897] to-[#4A6741] px-6 py-3 text-center font-semibold text-[#0C1A14] shadow-xl"
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.97 }}
           >

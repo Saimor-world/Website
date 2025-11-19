@@ -1,21 +1,21 @@
-# 🔄 CODEX HANDOFF - Session 6 → Session 7
+﻿# ðŸ”„ CODEX HANDOFF - Session 6 â†’ Session 7
 
 **Timestamp:** 2025-11-12 (nach Session 6)
 **Branch:** `main` (production)
-**Status:** ✅ Clean working tree, alle Changes gepusht
+**Status:** âœ… Clean working tree, alle Changes gepusht
 **Deployment:** Live auf saimor.world via Vercel
 
 ---
 
-## ✅ Was gerade fertig wurde (Session 6)
+## âœ… Was gerade fertig wurde (Session 6)
 
-### 1. Liquid Glass Polish - KOMPLETT ✅
+### 1. Liquid Glass Polish - KOMPLETT âœ…
 Alle Components haben jetzt harmonisierte liquid glass aesthetic:
-- ✅ TrustProof.tsx
-- ✅ FAQ.tsx
-- ✅ WaitlistForm.tsx
-- ✅ CommunityBanner.tsx
-- ✅ MoraShowcase.tsx (bereits in früherer Session)
+- âœ… TrustProof.tsx
+- âœ… FAQ.tsx
+- âœ… WaitlistForm.tsx
+- âœ… CommunityBanner.tsx
+- âœ… MoraShowcase.tsx (bereits in frÃ¼herer Session)
 
 **Pattern verwendet (konsistent):**
 ```tsx
@@ -36,26 +36,26 @@ const glassTileStyle: CSSProperties = {
 };
 ```
 
-### 2. Easter Eggs → Silent Mode ✅
+### 2. Easter Eggs â†’ Silent Mode âœ…
 - Alle lauten Effekte entfernt (Explosions, Fireworks, Matrix Rain)
 - Neue stille Achievements (Klarheitsfunke, Leiser Beobachter, Klarheitsnavigator)
-- Konami Code → Resonanzmodus (subtile goldene Shimmer)
+- Konami Code â†’ Resonanzmodus (subtile goldene Shimmer)
 - TypeScript Set Bug gefixt (`Array.from(prev).concat(item)`)
 
-### 3. Radikale Content-Bereinigung ✅
-- Pre-Seed Funding Section auskommentiert (TODO für CEO)
+### 3. Radikale Content-Bereinigung âœ…
+- Pre-Seed Funding Section auskommentiert (TODO fÃ¼r CEO)
 - Horizon/Solara/Nova komplett entfernt
-- SystemsSection.tsx GELÖSCHT (317 lines)
-- Testimonials: "Horizon-Paket" → "Môra Dashboard"
-- FAQ: Preise & Daten entfernt, MVP-Kontext hinzugefügt
+- SystemsSection.tsx GELÃ–SCHT (317 lines)
+- Testimonials: "Horizon-Paket" â†’ "MÃ´ra Dashboard"
+- FAQ: Preise & Daten entfernt, MVP-Kontext hinzugefÃ¼gt
 
-### 4. Môra ↔ Dashboard Visual Connection ✅
+### 4. MÃ´ra â†” Dashboard Visual Connection âœ…
 - Neue Component: `components/MoraDashboardConnection.tsx`
-- Floating particles von Môra Orb zu Dashboard
-- IntersectionObserver für viewport-based trigger
+- Floating particles von MÃ´ra Orb zu Dashboard
+- IntersectionObserver fÃ¼r viewport-based trigger
 
-### 5. Dokumentation ✅
-- FRONTEND_TODO.md vollständig aktualisiert
+### 5. Dokumentation âœ…
+- FRONTEND_TODO.md vollstÃ¤ndig aktualisiert
 - Session 6 Summary dokumentiert
 
 **Commits (alle gepusht):**
@@ -63,20 +63,20 @@ const glassTileStyle: CSSProperties = {
 253230e - feat: liquid glass polish - FAQ, WaitlistForm, CommunityBanner
 af95030 - docs: update FRONTEND_TODO - Session 6 summary
 15c756b - feat: apply liquid glass polish to TrustProof cards
-de5ccba - feat: add visual Môra Chat ↔ Dashboard connection
+de5ccba - feat: add visual MÃ´ra Chat â†” Dashboard connection
 dd16d0a - refactor: remove Systems references, update testimonials
 ```
 
 ---
 
-## 🎯 NÄCHSTE SCHRITTE - Für Codex Session 7
+## ðŸŽ¯ NÃ„CHSTE SCHRITTE - FÃ¼r Codex Session 7
 
-### 🔴 HIGH PRIORITY (sofort machbar)
+### ðŸ”´ HIGH PRIORITY (sofort machbar)
 
-#### Option A: Môra Disney Intro (BIG IMPACT)
-**Plan:** Vollständig dokumentiert in `MORA_DISNEY_INTRO_PLAN.md`
+#### Option A: MÃ´ra Disney Intro (BIG IMPACT)
+**Plan:** VollstÃ¤ndig dokumentiert in `MORA_DISNEY_INTRO_PLAN.md`
 **Aufwand:** 2-3 Stunden
-**Impact:** 🔥 Riesig - cinematic first-visit experience
+**Impact:** ðŸ”¥ Riesig - cinematic first-visit experience
 
 **Schritte:**
 1. Create `components/MoraIntroAnimation.tsx` (siehe MORA_DISNEY_INTRO_PLAN.md)
@@ -106,7 +106,7 @@ export default function Page() {
 1. Fade in (0-1s) - Schwarzer Screen
 2. Orbs erscheinen (1-3s) - 3 goldene Orbs
 3. Data-Lianen wachsen (3-6s) - Organische Verbindungen
-4. Môra Badge erscheint (6-8s) - "Môra erwacht..."
+4. MÃ´ra Badge erscheint (6-8s) - "MÃ´ra erwacht..."
 5. Fade to website (8-10s)
 
 **Skip Function:** ESC-Taste oder Click anywhere
@@ -114,7 +114,7 @@ export default function Page() {
 #### Option B: Quick Wins (falls wenig Zeit)
 1. **Performance Check:**
    - `npm run build` und Bundle Size checken
-   - Lighthouse Score für Mobile & Desktop
+   - Lighthouse Score fÃ¼r Mobile & Desktop
    - MyceliumNetwork Canvas Performance auf Mobile testen
 
 2. **Mobile Polish:**
@@ -129,13 +129,13 @@ export default function Page() {
 
 ---
 
-## 📚 WICHTIGER KONTEXT
+## ðŸ“š WICHTIGER KONTEXT
 
 ### Brand Colors (konsistent verwenden)
 ```css
---saimor-green-700: #4A6741  /* Header/Footer/dunkle Flächen */
+--saimor-green-700: #4A6741  /* Header/Footer/dunkle FlÃ¤chen */
 --saimor-green-600: #557351  /* Hover states */
---saimor-gold-500:  #D4B483  /* Primary CTA/Icons */
+--saimor-gold-500:  #D4A857  /* Primary CTA/Icons */
 --saimor-gold-600:  #C6A36C  /* CTA Hover */
 --saimor-ink-900:   #0E1A1B  /* Dunkle Tiefen */
 --saimor-cream:     #F8F5F0  /* Off-White backgrounds */
@@ -148,17 +148,17 @@ export default function Page() {
 - **Always:** inset highlight (0 1px 0 white 0.5)
 
 ### MVP/Demo Context Standard
-Überall wo Features gezeigt werden:
-- **Banner:** "MVP-Phase – Simulations-Umgebung"
+Ãœberall wo Features gezeigt werden:
+- **Banner:** "MVP-Phase â€“ Simulations-Umgebung"
 - **Label:** "Demo-Dashboard (simulierte Daten)"
 - **Tooltip:** "Alle Werte basieren auf lokal generierten Demo-Daten"
 
 ### TypeScript Patterns
 ```tsx
-// ✅ RICHTIG - Set iteration
+// âœ… RICHTIG - Set iteration
 setVisitedSections(prev => new Set(Array.from(prev).concat('trust')));
 
-// ❌ FALSCH - Build error
+// âŒ FALSCH - Build error
 setVisitedSections(prev => new Set([...prev, 'trust']));
 ```
 
@@ -182,33 +182,33 @@ git push origin main
 ### File Structure (wichtigste Files)
 ```
 components/
-  ├── Hero.tsx                      // Main hero with Môra badge
-  ├── Services.tsx                  // 3 Services (Môra, Orbit, Pulse)
-  ├── MoraShowcase.tsx              // Interactive Môra demo
-  ├── InteractiveMoraDashboard.tsx  // KPI dashboard demo
-  ├── MoraChat.tsx                  // Floating chat orb
-  ├── MoraDashboardConnection.tsx   // Visual connection particles
-  ├── TrustProof.tsx                // "Warum Saimôr" section
-  ├── FAQ.tsx                       // Accordion FAQ
-  ├── WaitlistForm.tsx              // Early access form
-  ├── CommunityBanner.tsx           // Early access banner
-  ├── EasterEggs.tsx                // Silent achievements system
-  └── MyceliumNetwork.tsx           // Canvas background animation
+  â”œâ”€â”€ Hero.tsx                      // Main hero with MÃ´ra badge
+  â”œâ”€â”€ Services.tsx                  // 3 Services (MÃ´ra, Orbit, Pulse)
+  â”œâ”€â”€ MoraShowcase.tsx              // Interactive MÃ´ra demo
+  â”œâ”€â”€ InteractiveMoraDashboard.tsx  // KPI dashboard demo
+  â”œâ”€â”€ MoraChat.tsx                  // Floating chat orb
+  â”œâ”€â”€ MoraDashboardConnection.tsx   // Visual connection particles
+  â”œâ”€â”€ TrustProof.tsx                // "Warum SaimÃ´r" section
+  â”œâ”€â”€ FAQ.tsx                       // Accordion FAQ
+  â”œâ”€â”€ WaitlistForm.tsx              // Early access form
+  â”œâ”€â”€ CommunityBanner.tsx           // Early access banner
+  â”œâ”€â”€ EasterEggs.tsx                // Silent achievements system
+  â””â”€â”€ MyceliumNetwork.tsx           // Canvas background animation
 
 app/
-  ├── de/page.tsx                   // German homepage
-  ├── en/page.tsx                   // English homepage
-  ├── trust/page.tsx                // Trust & transparency page
-  ├── legal/page.tsx                // Legal notice
-  └── systems/page.tsx              // Redirects to /#mora-showcase
+  â”œâ”€â”€ de/page.tsx                   // German homepage
+  â”œâ”€â”€ en/page.tsx                   // English homepage
+  â”œâ”€â”€ trust/page.tsx                // Trust & transparency page
+  â”œâ”€â”€ legal/page.tsx                // Legal notice
+  â””â”€â”€ systems/page.tsx              // Redirects to /#mora-showcase
 
 lib/
-  └── achievements.ts               // Achievement definitions
+  â””â”€â”€ achievements.ts               // Achievement definitions
 ```
 
 ---
 
-## 🚫 WICHTIGE DON'Ts
+## ðŸš« WICHTIGE DON'Ts
 
 1. **KEINE neuen Produkt-Claims ohne CEO-Approval:**
    - Pre-Seed Funding bleibt auskommentiert
@@ -221,12 +221,12 @@ lib/
    - Nur subtile, poetische Effekte
    - Deutsche Messages verwenden
 
-3. **KEINE weißen Text auf hellen Backgrounds:**
-   - Immer gray-700/800/900 für Lesbarkeit
-   - Liquid glass panels sind hell → dunkler Text!
+3. **KEINE weiÃŸen Text auf hellen Backgrounds:**
+   - Immer gray-700/800/900 fÃ¼r Lesbarkeit
+   - Liquid glass panels sind hell â†’ dunkler Text!
 
 4. **KEINE Spread Operator auf Sets in Production:**
-   - Build target unterstützt das nicht
+   - Build target unterstÃ¼tzt das nicht
    - Immer `Array.from(set).concat(item)` verwenden
 
 5. **KEINE Commits ohne Build-Test:**
@@ -235,7 +235,7 @@ lib/
 
 ---
 
-## 🔧 DEVELOPMENT COMMANDS
+## ðŸ”§ DEVELOPMENT COMMANDS
 
 ```bash
 # Start dev server
@@ -256,56 +256,56 @@ git push origin main
 
 ---
 
-## 📊 CURRENT STATUS SUMMARY
+## ðŸ“Š CURRENT STATUS SUMMARY
 
 **Branch:** main (production)
 **Last Commit:** 253230e - liquid glass polish
-**Build:** ✅ Exit Code 0
+**Build:** âœ… Exit Code 0
 **Bundle Size:** 177 kB (sehr gut!)
 **Pages:** 31
 **Deployment:** Auto via Vercel on push to main
 
 **Component Health:**
-- ✅ All Components haben liquid glass
-- ✅ All Easter Eggs sind silent mode
-- ✅ All MVP context banners vorhanden
-- ✅ All outdated content entfernt
-- ✅ All text ist gut lesbar (gray on white)
+- âœ… All Components haben liquid glass
+- âœ… All Easter Eggs sind silent mode
+- âœ… All MVP context banners vorhanden
+- âœ… All outdated content entfernt
+- âœ… All text ist gut lesbar (gray on white)
 
 **Known TODOs (non-critical):**
-- 🟡 FundingSection wartet auf CEO-Approval (auskommentiert)
-- 🟡 /systems redirect works, aber page könnte gelöscht werden
-- 🟡 Dashboard Login Integration (später)
-- 🟡 Real API für Môra Intelligence (später)
+- ðŸŸ¡ FundingSection wartet auf CEO-Approval (auskommentiert)
+- ðŸŸ¡ /systems redirect works, aber page kÃ¶nnte gelÃ¶scht werden
+- ðŸŸ¡ Dashboard Login Integration (spÃ¤ter)
+- ðŸŸ¡ Real API fÃ¼r MÃ´ra Intelligence (spÃ¤ter)
 
 ---
 
-## 💡 EMPFEHLUNG FÜR CODEX
+## ðŸ’¡ EMPFEHLUNG FÃœR CODEX
 
 **Wenn viel Zeit (2-3h):**
-→ **Môra Disney Intro implementieren** (MORA_DISNEY_INTRO_PLAN.md)
+â†’ **MÃ´ra Disney Intro implementieren** (MORA_DISNEY_INTRO_PLAN.md)
 - Riesiger Impact
 - Plan ist komplett fertig
 - User wird es lieben
-- Perfekt für "Universum" Feeling
+- Perfekt fÃ¼r "Universum" Feeling
 
 **Wenn wenig Zeit (30-60 min):**
-→ **Quick Wins abarbeiten**
+â†’ **Quick Wins abarbeiten**
 - Bundle size optimization
 - Mobile polish
 - A11y improvements
 
 **Wenn mittlere Zeit (1-2h):**
-→ **Beides kombinieren**
+â†’ **Beides kombinieren**
 - Start with Disney Intro (skeleton)
 - Quick wins nebenbei
-- Intro später verfeinern
+- Intro spÃ¤ter verfeinern
 
 ---
 
-## 📞 QUESTIONS? CHECK THESE FILES
+## ðŸ“ž QUESTIONS? CHECK THESE FILES
 
-- `FRONTEND_TODO.md` - Vollständige Task-Liste
+- `FRONTEND_TODO.md` - VollstÃ¤ndige Task-Liste
 - `MORA_DISNEY_INTRO_PLAN.md` - Kompletter Intro-Plan
 - `WEBSITE_MASTER.md` - Website Vision & Strategie
 - `SHARED_CONTEXT.md` - Backend/Frontend Sync
@@ -313,22 +313,22 @@ git push origin main
 
 ---
 
-## 🎯 SUCCESS CRITERIA
+## ðŸŽ¯ SUCCESS CRITERIA
 
 **Session 7 ist erfolgreich wenn:**
-1. ✅ Môra Disney Intro läuft (oder Quick Wins komplett)
-2. ✅ Build succeeds (npm run build = Exit Code 0)
-3. ✅ No console errors
-4. ✅ Mobile works perfekt
-5. ✅ Alle changes gepusht & deployed
-6. ✅ FRONTEND_TODO.md aktualisiert mit Session 7 summary
+1. âœ… MÃ´ra Disney Intro lÃ¤uft (oder Quick Wins komplett)
+2. âœ… Build succeeds (npm run build = Exit Code 0)
+3. âœ… No console errors
+4. âœ… Mobile works perfekt
+5. âœ… Alle changes gepusht & deployed
+6. âœ… FRONTEND_TODO.md aktualisiert mit Session 7 summary
 
 ---
 
-**Viel Erfolg, Codex! 🚀**
+**Viel Erfolg, Codex! ðŸš€**
 
 Du hast alles was du brauchst. Der Code ist clean, die Patterns sind etabliert, der Plan ist fertig.
 
 **Erste Action:** `git status` checken, dann `npm run dev` starten, dann entscheiden: Disney Intro oder Quick Wins?
 
-LET'S GO! ✨
+LET'S GO! âœ¨

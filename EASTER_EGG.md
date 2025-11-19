@@ -29,21 +29,24 @@
 
 ---
 
-## 🎆 WAS PASSIERT:
+## 💥 WAS PASSIERT:
 
-### **1. AKTIVIERUNGS-MESSAGE**
-- Große Message: "KONAMI CODE AKTIVIERT!"
+### **1. AKTIVIERUNGS-MESSAGE - ENHANCED**
+- Große Message: "RESONANZ AKTIVIERT!"
 - Emojis: 🌟✨🎮
-- Particle Burst (12 Partikel explodieren)
-- Glowing Effect
+- **16 Partikel explodieren** (vorher 12)
+- **Haptisches Feedback** (Vibration auf mobilen Geräten)
+- Enhanced Glowing Effect mit stärkeren Schatten
+- Spring-Animation für natürlichere Bewegung
 - Rotation & Scale Animation
 
-### **2. MATRIX RAIN EFFEKT**
-- 20 vertikale Kolonnen
+### **2. MATRIX RAIN EFFEKT - VERBESSERT**
+- **25 vertikale Kolonnen** (vorher 20)
+- **35 Zeichen pro Kolonne** (vorher 30)
 - Japanische Zeichen (Katakana)
-- Grüner Text
+- Grüner Text mit Drop-Shadow für bessere Sichtbarkeit
 - Fließt von oben nach unten
-- Opacity 0.1 (subtle)
+- Opacity 0.12 (subtle, vorher 0.1)
 
 ### **3. RAINBOW ANIMATION**
 - Die GANZE Website bekommt Hue-Rotation
@@ -51,25 +54,32 @@
 - Duration: 3s, infinite loop
 - Alle Elemente betroffen
 
-### **4. FLOATING PARTIKEL**
-- 30 schwebende Punkte
-- Gold/Grün/Accent Mix
-- Y-Bewegung: -30px
+### **4. FLOATING PARTIKEL - ENHANCED**
+- **40 schwebende Punkte** (vorher 30)
+- Gold/Grün/Accent Mix mit 4 Farben
+- Y-Bewegung: -40px (vorher -30px)
 - X-Bewegung: random
-- Glow Effects
+- **Individuelle Glow Effects** für jedes Partikel
+- Blur-Effekt für weicheren Look
 
-### **5. RIESIGES SAIMÔR LOGO**
+### **5. RIESIGES SAIMÔR LOGO - OPTIMIERT**
 - Zentral platziert
-- Opacity 0.05 (sehr subtle)
-- Rotiert 360° in 20s
-- Scale-Animation
-- Blur-Effekt
+- Opacity 0.06 (sehr subtle, vorher 0.05)
+- Rotiert 360° in **25s** (vorher 20s)
+- Scale-Animation 1 → 1.15 → 1
+- Enhanced Blur-Effekt (120px)
 
-### **6. DATA CONNECTION LINES**
-- 5 gestrichelte Linien
-- Verbinden Random-Points
-- Opacity 0.1-0.3
-- Path Animation
+### **6. DATA CONNECTION LINES - NEU! 🆕**
+- **8 animierte Datenverbindungen** (komplett neu)
+- Gestrichelte Linien zwischen Random-Points
+- Opacity 0.3
+- Path-Length Animation
+- Infinite Reverse Loop
+
+### **7. HAPTIC FEEDBACK - NEU! 🆕**
+- Vibrationsmuster: [100, 50, 100, 50, 200]
+- Nur auf mobilen Geräten mit Vibrations-Support
+- Verstärkt das Gefühl der Aktivierung
 
 ---
 

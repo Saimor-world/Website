@@ -4,6 +4,10 @@ import MoraDashboard from "@/components/MoraDashboard";
 import TrustProof from "@/components/TrustProof";
 // import FundingSection from "@/components/FundingSection"; // TODO(CEO): Re-enable after Pre-Seed confirmation
 import MyceliumSection from "@/components/MyceliumSection";
+import DemoPreview from "@/components/DemoPreview";
+import HowItWorksMindloop from "@/components/HowItWorksMindloop";
+import UseCases from "@/components/UseCases";
+import HowItWorks from "@/components/HowItWorks";
 import ProductStory from "@/components/ProductStory";
 import FAQ from "@/components/FAQ";
 import ContactSection from "@/components/ContactSection";
@@ -49,6 +53,10 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="de" />
         <MyceliumSection locale="de" />
+        <DemoPreview locale="de" />
+        <HowItWorksMindloop locale="de" />
+        <UseCases locale="de" />
+        <HowItWorks locale="de" />
         <Services locale="de" />
         <MoraDashboard locale="de" />
         <ProductStory locale="de" />

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { Quote, Building2, Users, TrendingUp } from 'lucide-react';
 
@@ -11,12 +11,12 @@ export default function Testimonials({ locale }: Props) {
     {
       icon: Building2,
       title: t('Kommunale Transformation', 'Municipal Transformation'),
-      organization: t('Mittelgroße Kommune (15.000 Einwohner)', 'Mid-sized municipality (15,000 residents)'),
-      challenge: t('Digitalstrategie entwickeln ohne externe IT-Abhängigkeit', 'Develop digital strategy without external IT dependency'),
-      solution: t('6-monatiger Orbit-Prozess mit Führungskreis und Fachbereichen', '6-month Orbit process with leadership and departments'),
+      organization: t('MittelgroÃŸe Kommune (15.000 Einwohner)', 'Mid-sized municipality (15,000 residents)'),
+      challenge: t('Digitalstrategie entwickeln ohne externe IT-AbhÃ¤ngigkeit', 'Develop digital strategy without external IT dependency'),
+      solution: t('6-monatiger Orbit-Prozess mit FÃ¼hrungskreis und Fachbereichen', '6-month Orbit process with leadership and departments'),
       result: t('Eigene Roadmap, klare Priorisierung, 40% weniger Meetings', 'Own roadmap, clear prioritization, 40% fewer meetings'),
-      quote: t('"Endlich verstehen wir, was wir wirklich brauchen – statt was uns verkauft wird."', '"Finally we understand what we really need – instead of what\'s being sold to us."'),
-      role: t('Bürgermeisterin', 'Mayor'),
+      quote: t('"Endlich verstehen wir, was wir wirklich brauchen â€“ statt was uns verkauft wird."', '"Finally we understand what we really need â€“ instead of what\'s being sold to us."'),
+      role: t('BÃ¼rgermeisterin', 'Mayor'),
       color: '#4A6741'
     },
     {
@@ -25,20 +25,20 @@ export default function Testimonials({ locale }: Props) {
       organization: t('Tech-Startup (30 Mitarbeitende)', 'Tech startup (30 employees)'),
       challenge: t('Nach Pivot: Team neu fokussieren, alte Muster ablegen', 'After pivot: Refocus team, shed old patterns'),
       solution: t('3 Pulse-Workshops + 2 Follow-up Sessions', '3 Pulse workshops + 2 follow-up sessions'),
-      result: t('Klare Rollen, gemeinsames Verständnis, neue Energie', 'Clear roles, shared understanding, new energy'),
-      quote: t('"Saimôr hat uns geholfen, wieder miteinander statt aneinander vorbei zu reden."', '"Saimôr helped us talk with each other again, instead of past each other."'),
+      result: t('Klare Rollen, gemeinsames VerstÃ¤ndnis, neue Energie', 'Clear roles, shared understanding, new energy'),
+      quote: t('"SaimÃ´r hat uns geholfen, wieder miteinander statt aneinander vorbei zu reden."', '"SaimÃ´r helped us talk with each other again, instead of past each other."'),
       role: t('Head of Product', 'Head of Product'),
-      color: '#D4B483'
+      color: '#D4A857'
     },
     {
       icon: TrendingUp,
-      title: t('Daten-Dashboard für Entscheider', 'Data Dashboard for Decision-Makers'),
-      organization: t('Sozialer Träger (120 Mitarbeitende)', 'Social organization (120 employees)'),
-      challenge: t('Datenflut aus 5 Systemen – niemand versteht die Gesamtsicht', 'Data flood from 5 systems – no one understands the big picture'),
-      solution: t('Môra: KPI-Workshop + individuelles Dashboard', 'Môra: KPI workshop + custom dashboard'),
+      title: t('Daten-Dashboard fÃ¼r Entscheider', 'Data Dashboard for Decision-Makers'),
+      organization: t('Sozialer TrÃ¤ger (120 Mitarbeitende)', 'Social organization (120 employees)'),
+      challenge: t('Datenflut aus 5 Systemen â€“ niemand versteht die Gesamtsicht', 'Data flood from 5 systems â€“ no one understands the big picture'),
+      solution: t('MÃ´ra: KPI-Workshop + individuelles Dashboard', 'MÃ´ra: KPI workshop + custom dashboard'),
       result: t('6 Kern-KPIs live, monatliche Klarheit statt Excel-Chaos', '6 core KPIs live, monthly clarity instead of Excel chaos'),
-      quote: t('"Wir treffen jetzt Entscheidungen auf Basis von Fakten, nicht Bauchgefühl."', '"We now make decisions based on facts, not gut feeling."'),
-      role: t('Geschäftsführerin', 'Managing Director'),
+      quote: t('"Wir treffen jetzt Entscheidungen auf Basis von Fakten, nicht BauchgefÃ¼hl."', '"We now make decisions based on facts, not gut feeling."'),
+      role: t('GeschÃ¤ftsfÃ¼hrerin', 'Managing Director'),
       color: '#5D7C54'
     }
   ];
@@ -71,7 +71,7 @@ export default function Testimonials({ locale }: Props) {
             className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
@@ -80,7 +80,7 @@ export default function Testimonials({ locale }: Props) {
             {t('Erfolgreiche Projekte', 'Successful Projects')}
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            {t('Wie Saimôr Klarheit in der Praxis schafft', 'How Saimôr creates clarity in practice')}
+            {t('Wie SaimÃ´r Klarheit in der Praxis schafft', 'How SaimÃ´r creates clarity in practice')}
           </p>
         </motion.div>
 
@@ -100,7 +100,7 @@ export default function Testimonials({ locale }: Props) {
               className="relative group rounded-3xl p-8 overflow-hidden"
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                border: '2px solid rgba(212,180,131,0.3)',
+                border: '2px solid rgba(212,168,87,0.3)',
                 boxShadow: '0 20px 50px rgba(74,103,65,0.12)'
               }}
             >
@@ -149,7 +149,7 @@ export default function Testimonials({ locale }: Props) {
 
                   <div>
                     <p className="text-xs font-bold text-saimor-green mb-1">
-                      {t('Lösung', 'Solution')}
+                      {t('LÃ¶sung', 'Solution')}
                     </p>
                     <p className="text-sm text-slate-700 leading-relaxed">
                       {item.solution}
@@ -174,7 +174,7 @@ export default function Testimonials({ locale }: Props) {
                     {item.quote}
                   </p>
                   <p className="text-sm font-semibold text-saimor-green pl-8">
-                    – {item.role}
+                    â€“ {item.role}
                   </p>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Check, Loader2, Heart, Sparkles } from 'lucide-react';
@@ -36,41 +36,41 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
 
   const content = {
     de: {
-      title: 'Warteliste für Early Access',
-      subtitle: 'Erhalte exklusiven Zugang zu Môra und gestalte die Zukunft von Saimôr mit.',
+      title: 'Warteliste fÃ¼r Early Access',
+      subtitle: 'Erhalte exklusiven Zugang zu MÃ´ra und gestalte die Zukunft von SaimÃ´r mit.',
       namePlaceholder: 'Dein Name',
       emailPlaceholder: 'deine@email.de',
       interestTitle: 'Was interessiert dich? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra KI-Assistentin', emoji: '✨' },
-        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
-        { id: 'orbit', label: 'Orbit Coaching', emoji: '🌀' }
+        { id: 'mora-ai', label: 'MÃ´ra KI-Assistentin', emoji: 'âœ¨' },
+        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: 'ðŸ“Š' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: 'ðŸŽ¤' },
+        { id: 'orbit', label: 'Orbit Coaching', emoji: 'ðŸŒ€' }
       ],
       submit: 'Auf Warteliste setzen',
-      submitting: 'Wird gesendet…',
-      successTitle: 'Willkommen in der Community! 🌿',
-      successMessage: 'Du erhältst in Kürze eine Bestätigung. Wir melden uns, sobald Môra bereit ist.',
+      submitting: 'Wird gesendetâ€¦',
+      successTitle: 'Willkommen in der Community! ðŸŒ¿',
+      successMessage: 'Du erhÃ¤ltst in KÃ¼rze eine BestÃ¤tigung. Wir melden uns, sobald MÃ´ra bereit ist.',
       errorMessage: 'Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt.',
-      privacy: 'Deine Daten werden nur für Early Access verwendet. Kein Newsletter ohne Zustimmung.',
+      privacy: 'Deine Daten werden nur fÃ¼r Early Access verwendet. Kein Newsletter ohne Zustimmung.',
       position: 'Wartelisten-Position wird nach Anmeldung angezeigt'
     },
     en: {
       title: 'Early Access Waitlist',
-      subtitle: 'Get exclusive access to Môra and help shape the future of Saimôr.',
+      subtitle: 'Get exclusive access to MÃ´ra and help shape the future of SaimÃ´r.',
       namePlaceholder: 'Your name',
       emailPlaceholder: 'your@email.com',
       interestTitle: 'What interests you? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra AI assistant', emoji: '✨' },
-        { id: 'dashboards', label: 'Dashboards & analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
-        { id: 'orbit', label: 'Orbit coaching', emoji: '🌀' }
+        { id: 'mora-ai', label: 'MÃ´ra AI assistant', emoji: 'âœ¨' },
+        { id: 'dashboards', label: 'Dashboards & analytics', emoji: 'ðŸ“Š' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: 'ðŸŽ¤' },
+        { id: 'orbit', label: 'Orbit coaching', emoji: 'ðŸŒ€' }
       ],
       submit: 'Join waitlist',
-      submitting: 'Sending…',
-      successTitle: 'Welcome to the community! 🌿',
-      successMessage: 'You’ll receive a confirmation email shortly. We’ll reach out as soon as Môra is ready.',
+      submitting: 'Sendingâ€¦',
+      successTitle: 'Welcome to the community! ðŸŒ¿',
+      successMessage: 'Youâ€™ll receive a confirmation email shortly. Weâ€™ll reach out as soon as MÃ´ra is ready.',
       errorMessage: 'Something went wrong. Please try again or contact us directly.',
       privacy: 'Your data is only used for early access. No newsletters without your consent.',
       position: 'Waitlist position will be shown after signup'
@@ -130,7 +130,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
           viewport={{ once: true }}
         >
           {/* Header */}
-          <div className="bg-gradient-to-br from-[#4A6741] to-[#D4B483] p-8 text-white text-center">
+          <div className="bg-gradient-to-br from-[#4A6741] to-[#D4A857] p-8 text-white text-center">
             <motion.div
               className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center"
               animate={{ rotate: 360 }}
@@ -171,7 +171,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     {content.successMessage}
                   </p>
                   <motion.div
-                    className="flex items-center justify-center gap-2 text-[#D4B483]"
+                    className="flex items-center justify-center gap-2 text-[#D4A857]"
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
@@ -194,7 +194,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setName(e.target.value)}
                       placeholder={content.namePlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30"
+                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30"
                       style={glassFieldStyle}
                     />
                   </div>
@@ -207,7 +207,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={content.emailPlaceholder}
                       required
-                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30"
+                      className="w-full px-6 py-4 rounded-xl bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30"
                       style={glassFieldStyle}
                     />
                   </div>
@@ -245,7 +245,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                                 {item.label}
                               </span>
                               {isActive && (
-                                <Check className="w-4 h-4 ml-auto text-[#D4B483]" />
+                                <Check className="w-4 h-4 ml-auto text-[#D4A857]" />
                               )}
                             </div>
                           </motion.button>
@@ -258,7 +258,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                   <motion.button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4B483] text-white font-bold text-lg shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 flex items-center justify-center gap-3"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4A857] text-white font-bold text-lg shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 flex items-center justify-center gap-3"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { memo } from 'react';
 
 type Locale = 'de' | 'en';
@@ -24,16 +24,16 @@ const Services = memo(function Services({ locale }: Props) {
   const items: ServiceItem[] = [
     {
       key: 'mora',
-      title: t('Môra', 'Môra'),
-      subtitle: t('Resonanz-Dashboard für Klarheit', 'Resonance dashboard for clarity'),
+      title: t('MÃ´ra', 'MÃ´ra'),
+      subtitle: t('Resonanz-Dashboard fÃ¼r Klarheit', 'Resonance dashboard for clarity'),
       benefits: [
-        t('Chat + Dashboard – ein Datenstrom', 'Chat + dashboard – one data stream'),
+        t('Chat + Dashboard â€“ ein Datenstrom', 'Chat + dashboard â€“ one data stream'),
         t('Dual-Modus: Ordner & Feld', 'Dual mode: folder & field'),
         t('Demo-Status: simulierte Daten, auditbereit', 'Demo status: simulated data, audit-ready')
       ],
       href: '#waitlist',
       cta: t('Early Access sichern', 'Get early access'),
-      secondaryCta: t('Mehr über Môra', 'Learn about Môra'),
+      secondaryCta: t('Mehr Ã¼ber MÃ´ra', 'Learn about MÃ´ra'),
       secondaryHref: '/mora',
       featured: true
     },
@@ -42,23 +42,23 @@ const Services = memo(function Services({ locale }: Props) {
       title: t('Orbit', 'Orbit'),
       subtitle: t('Rhythmus statt Meetings', 'Rhythm instead of meetings'),
       benefits: [
-        t('Resonanzraum für klare Entscheidungen', 'Resonance space for clear decisions'),
-        t('Tiefe statt Hektik – nachhaltige Veränderung', 'Depth instead of rush – sustainable change'),
-        t('1–6 Monate begleitet von Môra', '1–6 months with Môra alongside')
+        t('Resonanzraum fÃ¼r klare Entscheidungen', 'Resonance space for clear decisions'),
+        t('Tiefe statt Hektik â€“ nachhaltige VerÃ¤nderung', 'Depth instead of rush â€“ sustainable change'),
+        t('1â€“6 Monate begleitet von MÃ´ra', '1â€“6 months with MÃ´ra alongside')
       ],
       href: '/orbit',
       cta: t('Mehr erfahren', 'Learn more'),
-      secondaryCta: t('Klarheitsgespräch buchen', 'Book clarity call'),
+      secondaryCta: t('KlarheitsgesprÃ¤ch buchen', 'Book clarity call'),
       secondaryHref: 'https://cal.com/saimor/30min'
     },
     {
       key: 'pulse',
       title: t('Pulse', 'Pulse'),
-      subtitle: t('Impulse für Klarheit im Moment', 'Impulses for clarity in the moment'),
+      subtitle: t('Impulse fÃ¼r Klarheit im Moment', 'Impulses for clarity in the moment'),
       benefits: [
-        t('Energie in Veränderungssituationen', 'Energy in transformation moments'),
-        t('Workshop – Keynote – stille Formate', 'Workshop – keynote – quiet formats'),
-        t('Môra bereitet vor und begleitet nach', 'Môra prepares and follows up')
+        t('Energie in VerÃ¤nderungssituationen', 'Energy in transformation moments'),
+        t('Workshop â€“ Keynote â€“ stille Formate', 'Workshop â€“ keynote â€“ quiet formats'),
+        t('MÃ´ra bereitet vor und begleitet nach', 'MÃ´ra prepares and follows up')
       ],
       href: '/pulse',
       cta: t('Mehr erfahren', 'Learn more'),
@@ -73,7 +73,7 @@ const Services = memo(function Services({ locale }: Props) {
     'linear-gradient(135deg, rgba(212, 180, 131, 0.18) 0%, rgba(102, 153, 102, 0.1) 50%, rgba(212, 180, 131, 0.12) 100%)'
   ];
 
-  const ctaHint = t('Ruhiger Erstkontakt über Cal.com', 'Calm first contact via Cal.com');
+  const ctaHint = t('Ruhiger Erstkontakt Ã¼ber Cal.com', 'Calm first contact via Cal.com');
 
   return (
     <section id="angebot" className="py-16 sm:py-24 relative overflow-hidden">
@@ -101,7 +101,7 @@ const Services = memo(function Services({ locale }: Props) {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%, #E6C897 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4A857 70%, #E6C897 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
@@ -110,7 +110,7 @@ const Services = memo(function Services({ locale }: Props) {
             {t('Angebot', 'Offering')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t('Klarheit im Wandel – mit menschlicher Tiefe & technischer Präzision.', 'Clarity in transformation – with human depth & technical precision.')}
+            {t('Klarheit im Wandel â€“ mit menschlicher Tiefe & technischer PrÃ¤zision.', 'Clarity in transformation â€“ with human depth & technical precision.')}
           </p>
         </div>
 
@@ -146,7 +146,7 @@ const Services = memo(function Services({ locale }: Props) {
                   <svg viewBox="0 0 64 64" className="w-full h-full">
                     <circle cx="32" cy="32" r="28" fill="none" stroke="#4A6741" strokeWidth="2" strokeDasharray="4 4" />
                     <circle cx="32" cy="4" r="3" fill="#4A6741" />
-                    <circle cx="60" cy="32" r="2" fill="#D4B483" />
+                    <circle cx="60" cy="32" r="2" fill="#D4A857" />
                     <circle cx="32" cy="60" r="2" fill="#5D7C54" />
                   </svg>
                 </div>

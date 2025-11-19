@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
@@ -12,15 +12,15 @@ type Props = {
 
 const COPY: Record<Locale, { greeting: string; subtitle: string; badge: string; skip: string }> = {
   de: {
-    greeting: 'Hallo, ich bin Môra 🌱',
-    subtitle: 'Deine Begleiterin für Klarheit im Wandel.',
-    badge: 'Môra erwacht …',
-    skip: 'Überspringen',
+    greeting: 'Hallo, ich bin MÃ´ra ðŸŒ±',
+    subtitle: 'Deine Begleiterin fÃ¼r Klarheit im Wandel.',
+    badge: 'MÃ´ra erwacht â€¦',
+    skip: 'Ãœberspringen',
   },
   en: {
-    greeting: "Hello, I'm Môra 🌱",
+    greeting: "Hello, I'm MÃ´ra ðŸŒ±",
     subtitle: 'Your companion for clarity in transformation.',
-    badge: 'Môra is waking up…',
+    badge: 'MÃ´ra is waking upâ€¦',
     skip: 'Skip intro',
   },
 };
@@ -156,7 +156,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           role="dialog"
-          aria-label="Môra Intro Animation"
+          aria-label="MÃ´ra Intro Animation"
         >
           <button
             type="button"
@@ -185,9 +185,9 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
             />
 
             <div
-              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/40 shadow-[0_0_25px_rgba(212,180,131,0.6)]"
+              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/40 shadow-[0_0_25px_rgba(212,168,87,0.6)]"
               style={{
-                background: 'linear-gradient(140deg, #4A6741 0%, #D4B483 100%)',
+                background: 'linear-gradient(140deg, #4A6741 0%, #D4A857 100%)',
               }}
             >
               <div className="flex gap-6">
@@ -260,7 +260,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
               <defs>
                 <linearGradient id={gradientId}>
-                  <stop offset="0%" stopColor="#D4B483" />
+                  <stop offset="0%" stopColor="#D4A857" />
                   <stop offset="100%" stopColor="#4A6741" />
                 </linearGradient>
               </defs>

@@ -1,4 +1,4 @@
-// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified Môra demo section).
+﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified MÃ´ra demo section).
 // Do not add new code here; kept only for reference until archival.
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -59,14 +59,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   }, []);
   const content = {
     de: {
-      title: 'Môra Dashboard',
-      subtitle: 'Dual Mode: Ordner ↔ Feld Ansicht',
+      title: 'MÃ´ra Dashboard',
+      subtitle: 'Dual Mode: Ordner â†” Feld Ansicht',
       demoLabel: 'Demo-Dashboard (simulierte Daten)',
       demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten.',
       folderView: 'Ordner-Ansicht',
       fieldView: 'Feld-Ansicht',
-      moraInsight: '💡 Môra Insight',
-      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare Abläufe → höhere Zufriedenheit.',
+      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
+      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare AblÃ¤ufe â†’ hÃ¶here Zufriedenheit.',
       categories: {
         people: 'Menschen',
         process: 'Prozesse',
@@ -87,14 +87,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
       }
     },
     en: {
-      title: 'Môra Dashboard',
-      subtitle: 'Dual Mode: Folder ↔ Field View',
+      title: 'MÃ´ra Dashboard',
+      subtitle: 'Dual Mode: Folder â†” Field View',
       demoLabel: 'Demo Dashboard (simulated data)',
       demoTooltip: 'All values are currently based on locally generated demo data. No real customer data.',
       folderView: 'Folder View',
       fieldView: 'Field View',
-      moraInsight: '💡 Môra Insight',
-      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows → higher satisfaction.',
+      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
+      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows â†’ higher satisfaction.',
       categories: {
         people: 'People',
         process: 'Processes',
@@ -192,7 +192,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
     setConnections(newConnections);
   }, []);
 
-  // Auto-show Môra insight after 2s
+  // Auto-show MÃ´ra insight after 2s
   useEffect(() => {
     const timer = setTimeout(() => setMoraInsight(true), 2000);
     return () => clearTimeout(timer);
@@ -201,7 +201,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   const getStatusColor = (status: DataPoint['status']) => {
     switch (status) {
       case 'good': return '#4A6741';
-      case 'warning': return '#D4B483';
+      case 'warning': return '#D4A857';
       case 'critical': return '#E85D75';
     }
   };
@@ -218,7 +218,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
     switch (category) {
       case 'people': return '#4A6741';
       case 'process': return '#5D7C54';
-      case 'resources': return '#D4B483';
+      case 'resources': return '#D4A857';
       default: return '#669966';
     }
   };
@@ -245,7 +245,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
             className="text-4xl md:text-5xl font-bold mb-4"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}
@@ -273,14 +273,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
               </span>
               <button
                 type="button"
-                className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B483]/50"
+                className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
                 onMouseEnter={() => setDemoTooltipVisible(true)}
                 onMouseLeave={() => setDemoTooltipVisible(false)}
                 onFocus={() => setDemoTooltipVisible(true)}
                 onBlur={() => setDemoTooltipVisible(false)}
                 aria-describedby={demoTooltipId}
               >
-                <Info className="w-4 h-4 text-[#D4B483]" />
+                <Info className="w-4 h-4 text-[#D4A857]" />
                 {/* Tooltip */}
                 <div
                   id={demoTooltipId}
@@ -296,7 +296,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 >
                   <p className="text-sm text-white">{content.demoTooltip}</p>
                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
-                    <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,180,131,0.4)]" />
+                    <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,168,87,0.4)]" />
                   </div>
                 </div>
               </button>
@@ -394,7 +394,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                         setHoveredPoint(null);
                         sendDashboardHoverEvent(false);
                       }}
-                      className="relative rounded-2xl p-5 sm:p-6 min-h-[240px] cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
+                      className="relative rounded-2xl p-5 sm:p-6 min-h-[240px] cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4A857]"
                       style={{
                         background: `linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, ${getCategoryColor(point.category)}15 100%)`,
                         border: `2px solid ${hoveredPoint === point.id ? getCategoryColor(point.category) : 'rgba(212, 180, 131, 0.2)'}`,
@@ -516,7 +516,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                         {isActive && (
                           <motion.circle
                             r="4"
-                            fill="#D4B483"
+                            fill="#D4A857"
                             initial={{
                               cx: `${fromPoint.x}%`,
                               cy: `${fromPoint.y}%`
@@ -543,7 +543,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                   return (
                     <motion.div
                       key={point.id}
-                      className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4B483]"
+                      className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4A857]"
                       style={{
                         left: `${point.x}%`,
                         top: `${point.y}%`,
@@ -645,7 +645,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                             >
                               <div className="font-bold text-slate-800 mb-1">{point.label}</div>
                               <div className="text-xs text-gray-600">
-                                {content.categories[point.category as keyof typeof content.categories]} · {content.status[point.status]}
+                                {content.categories[point.category as keyof typeof content.categories]} Â· {content.status[point.status]}
                               </div>
                               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45" style={{ background: getCategoryColor(point.category) }} />
                             </div>
@@ -660,7 +660,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
           </AnimatePresence>
         </motion.div>
 
-        {/* Môra Insight Panel */}
+        {/* MÃ´ra Insight Panel */}
         <AnimatePresence>
           {moraInsight && (
             <motion.div
@@ -680,7 +680,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                 animate={{ rotate: 360, scale: [1, 1.2, 1] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <Sparkles className="w-6 h-6 text-[#D4B483]" />
+                <Sparkles className="w-6 h-6 text-[#D4A857]" />
               </motion.div>
 
               <div className="flex items-start gap-4">
@@ -697,7 +697,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                   onClick={() => setMoraInsight(false)}
                   className="text-white/60 hover:text-white transition"
                 >
-                  ✕
+                  âœ•
                 </button>
               </div>
             </motion.div>

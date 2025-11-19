@@ -1,4 +1,4 @@
-# CLAUDE.md
+﻿# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -54,48 +54,48 @@ This is a **Next.js 14 multilingual one-page website** for saimor.world using th
 - Server actions are configured with `allowedOrigins: ["*"]` in next.config.js
 - Contact form exists but email sending is not yet implemented
 - SEO basics included: `sitemap.ts`, `robots.ts`
-- merk dir alles, und ja mach das 1) Trust-&-Proof-Sektion – Position
+- merk dir alles, und ja mach das 1) Trust-&-Proof-Sektion â€“ Position
 
 Ja: Nach Services (Pulse/Systems/Orbit), vor Values.
-Begründung: Erst zeigst du Angebot → Beweis → Haltung. Das stärkt den Funnel und nimmt Skepsis raus, bevor’s „philosophischer“ wird.
+BegrÃ¼ndung: Erst zeigst du Angebot â†’ Beweis â†’ Haltung. Das stÃ¤rkt den Funnel und nimmt Skepsis raus, bevorâ€™s â€žphilosophischerâ€œ wird.
 
 Copy (final, kurz & wirksam):
 
-Headline: Warum Saimôr
+Headline: Warum SaimÃ´r
 
 Bullets (3 Cards):
 
-Klar statt komplex – verständliche Ergebnisse in kurzer Zeit.
+Klar statt komplex â€“ verstÃ¤ndliche Ergebnisse in kurzer Zeit.
 
-Datensouveränität – EU-Hosting & DSGVO-Guardrails, keine Profile.
+DatensouverÃ¤nitÃ¤t â€“ EU-Hosting & DSGVO-Guardrails, keine Profile.
 
-Begleitung statt Hype – Rhythmus, der Entscheidungen ermöglicht.
+Begleitung statt Hype â€“ Rhythmus, der Entscheidungen ermÃ¶glicht.
 
-Leises Zitat unten: „Saimôr ist kein Tool, sondern ein Resonanzraum.“
+Leises Zitat unten: â€žSaimÃ´r ist kein Tool, sondern ein Resonanzraum.â€œ
 
 Minimal JSX (reuse deiner Card/Section/Icons):
 
-<Section id="trust" title="Warum Saimôr">
+<Section id="trust" title="Warum SaimÃ´r">
   <Grid cols={3}>
-    <Card icon="CheckCircle">Klar statt komplex – verständliche Ergebnisse in kurzer Zeit.</Card>
-    <Card icon="Shield">Datensouveränität – EU-Hosting & DSGVO-Guardrails, keine Profile.</Card>
-    <Card icon="Activity">Begleitung statt Hype – Rhythmus, der Entscheidungen ermöglicht.</Card>
+    <Card icon="CheckCircle">Klar statt komplex â€“ verstÃ¤ndliche Ergebnisse in kurzer Zeit.</Card>
+    <Card icon="Shield">DatensouverÃ¤nitÃ¤t â€“ EU-Hosting & DSGVO-Guardrails, keine Profile.</Card>
+    <Card icon="Activity">Begleitung statt Hype â€“ Rhythmus, der Entscheidungen ermÃ¶glicht.</Card>
   </Grid>
-  <MutedQuote>„Saimôr ist kein Tool, sondern ein Resonanzraum.“</MutedQuote>
+  <MutedQuote>â€žSaimÃ´r ist kein Tool, sondern ein Resonanzraum.â€œ</MutedQuote>
 </Section>
 
-2) Farben – behalten oder wechseln?
+2) Farben â€“ behalten oder wechseln?
 
 Behalten.
-Eure aktuellen Töne #4A6741 (green) & #D4B483 (gold) passen super zum Natur-Branding. Wir machen nur Token-Harmonisierung, kein Umschwenken auf neue Werte.
+Eure aktuellen TÃ¶ne #4A6741 (green) & #D4A857 (gold) passen super zum Natur-Branding. Wir machen nur Token-Harmonisierung, kein Umschwenken auf neue Werte.
 
 Bitte diese Tokens anlegen/angleichen (keine Optik brechen):
 
 :root{
-  --saimor-green-700: #4A6741; /* Header/Foot/Flächen dunkel */
+  --saimor-green-700: #4A6741; /* Header/Foot/FlÃ¤chen dunkel */
   --saimor-green-600: #557351; /* Hover/grad-Stop */
   --saimor-green-200: #EAF1EC; /* helle Cards/Background */
-  --saimor-gold-500:  #D4B483; /* Primary CTA/Icon */
+  --saimor-gold-500:  #D4A857; /* Primary CTA/Icon */
   --saimor-gold-600:  #C6A36C; /* CTA Hover/Focus */
   --saimor-ink-900:   #0E1A1B; /* dunkle Tiefen (Vision-Block) */
   --saimor-cream:     #F8F5F0; /* Off-White */
@@ -104,7 +104,7 @@ Bitte diese Tokens anlegen/angleichen (keine Optik brechen):
 
 Buttons: Primary = --saimor-gold-500, Hover = --saimor-gold-600.
 
-Kontrast kurz prüfen (AA) – bei Bedarf Text auf Buttons leicht abdunkeln (#1B1B1B).
+Kontrast kurz prÃ¼fen (AA) â€“ bei Bedarf Text auf Buttons leicht abdunkeln (#1B1B1B).
 
 3) Vercel-Deployment
 
@@ -116,118 +116,118 @@ Checkliste: Routing (CTAs gehen erst auf /orbit|/pulse|/systems), Trust-Block si
 
 Danach: npx vercel --prod.
 
-Ergänzungen, damit Claude direkt baut
+ErgÃ¤nzungen, damit Claude direkt baut
 A) Drei Zwischenseiten (finale Texte)
 
 /orbit
 
-Titel: Orbit – Rhythmus statt Meetings
+Titel: Orbit â€“ Rhythmus statt Meetings
 
-Lead: Orbit ist die systematische Begleitung für wiederkehrende Transformation. Wir ersetzen starre Meetings durch einen natürlichen Rhythmus, der Klarheit und Resonanz schafft.
+Lead: Orbit ist die systematische Begleitung fÃ¼r wiederkehrende Transformation. Wir ersetzen starre Meetings durch einen natÃ¼rlichen Rhythmus, der Klarheit und Resonanz schafft.
 
 Nutzen:
 
-Regelmäßige Orientierung statt Meeting-Overload
+RegelmÃ¤ÃŸige Orientierung statt Meeting-Overload
 
 Tiefe statt Hektik
 
-Kontinuität im Wandel
+KontinuitÃ¤t im Wandel
 
-Format: Dauer: 1–6 Monate · Regelmäßige Sessions · klarer Takt
+Format: Dauer: 1â€“6 Monate Â· RegelmÃ¤ÃŸige Sessions Â· klarer Takt
 
-Zielgruppe: Teams, Organisationen, Führungskreise
+Zielgruppe: Teams, Organisationen, FÃ¼hrungskreise
 
-Callout: Erst verstehen, dann verändern – Orbit schafft einen verlässlichen Resonanzraum für Entscheidungen.
+Callout: Erst verstehen, dann verÃ¤ndern â€“ Orbit schafft einen verlÃ¤sslichen Resonanzraum fÃ¼r Entscheidungen.
 
-Primary CTA: Klarheitsgespräch zu Orbit buchen → https://cal.com/saimor/30min
+Primary CTA: KlarheitsgesprÃ¤ch zu Orbit buchen â†’ https://cal.com/saimor/30min
 
-Secondary: Zurück zur Startseite → /
+Secondary: ZurÃ¼ck zur Startseite â†’ /
 
 /pulse
 
-Titel: Pulse – Impulse für Klarheit im Moment
+Titel: Pulse â€“ Impulse fÃ¼r Klarheit im Moment
 
-Lead: Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Sie bringen Klarheit genau dorthin, wo sie gebraucht wird.
+Lead: Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille RÃ¤ume. Sie bringen Klarheit genau dorthin, wo sie gebraucht wird.
 
 Nutzen:
 
-Energie & Fokus in Veränderungssituationen
+Energie & Fokus in VerÃ¤nderungssituationen
 
-Punktuelle Klärung statt Dauerbelastung
+Punktuelle KlÃ¤rung statt Dauerbelastung
 
-Resonanzräume für Teams & Regionen
+ResonanzrÃ¤ume fÃ¼r Teams & Regionen
 
 Beispiele:
 
-Workshop „Klarheit im Wandel“ (3h)
+Workshop â€žKlarheit im Wandelâ€œ (3h)
 
-Keynote „Resonanz statt Rauschen“ (30–45 min)
+Keynote â€žResonanz statt Rauschenâ€œ (30â€“45 min)
 
-Stilles Format „Die stille Sprache der Tiefe“ (60–90 min)
+Stilles Format â€žDie stille Sprache der Tiefeâ€œ (60â€“90 min)
 
-Callout: Pulse setzt Impulse – spürbar, verständlich, wirksam.
+Callout: Pulse setzt Impulse â€“ spÃ¼rbar, verstÃ¤ndlich, wirksam.
 
-Primary CTA: Pulse-Format anfragen → https://cal.com/saimor/30min
+Primary CTA: Pulse-Format anfragen â†’ https://cal.com/saimor/30min
 
-Secondary: Zurück zur Startseite → /
+Secondary: ZurÃ¼ck zur Startseite â†’ /
 
 /systems
 
-Titel: Systems – Daten, die Klarheit schaffen
+Titel: Systems â€“ Daten, die Klarheit schaffen
 
-Lead: Systems verbindet Daten, Dashboards & KI – immer menschenzentriert. Ziel ist nicht Kontrolle, sondern Orientierung.
+Lead: Systems verbindet Daten, Dashboards & KI â€“ immer menschenzentriert. Ziel ist nicht Kontrolle, sondern Orientierung.
 
 Nutzen:
 
-Verständliche Datenlösungen
+VerstÃ¤ndliche DatenlÃ¶sungen
 
-Aggregierte Insights statt Überforderung
+Aggregierte Insights statt Ãœberforderung
 
 Entscheidungen mit Vertrauen
 
 Packages:
 
-Nova – 3 KPIs, Monatsreport
+Nova â€“ 3 KPIs, Monatsreport
 
-Horizon – 6 KPIs, Wochenreport
+Horizon â€“ 6 KPIs, Wochenreport
 
-Solara – 12+ KPIs, tägliche Insights mit Handlungsempfehlungen
+Solara â€“ 12+ KPIs, tÃ¤gliche Insights mit Handlungsempfehlungen
 
-Datenschutz: DSGVO-Guardrails: ausschließlich aggregierte Geschäftsdaten, EU-Hosting, Mindestgruppengröße 5, keine personenbezogenen Profile.
+Datenschutz: DSGVO-Guardrails: ausschlieÃŸlich aggregierte GeschÃ¤ftsdaten, EU-Hosting, MindestgruppengrÃ¶ÃŸe 5, keine personenbezogenen Profile.
 
-Primary CTA: Einblick in Systems erhalten → https://cal.com/saimor/30min
+Primary CTA: Einblick in Systems erhalten â†’ https://cal.com/saimor/30min
 
-Secondary: Zurück zur Startseite → /
+Secondary: ZurÃ¼ck zur Startseite â†’ /
 
-B) Startseite – CTA-Routing vereinheitlichen
+B) Startseite â€“ CTA-Routing vereinheitlichen
 
-Orbit-Card: Mehr erfahren → /orbit
+Orbit-Card: Mehr erfahren â†’ /orbit
 
-Pulse-Card: Mehr erfahren → /pulse
+Pulse-Card: Mehr erfahren â†’ /pulse
 
-Systems-Card: Mehr erfahren → /systems
+Systems-Card: Mehr erfahren â†’ /systems
 
 Kontakt-Block darf weiterhin direkt zu Cal.com gehen.
 
 C) SEO-Head (kurz)
 export const metadata = {
-  title: 'Saimôr – Klarheit im Wandel',
-  description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+  title: 'SaimÃ´r â€“ Klarheit im Wandel',
+  description: 'SaimÃ´r begleitet Kommunen, Unternehmen und Menschen im Wandel â€“ mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
   openGraph: {
-    title: 'Saimôr – Klarheit im Wandel',
+    title: 'SaimÃ´r â€“ Klarheit im Wandel',
     description: 'Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
     images: ['/og-saimor.png'],
   },
 };
 
-Kurzantwort an Claude (wenn du’s inline zurückspielen willst)
+Kurzantwort an Claude (wenn duâ€™s inline zurÃ¼ckspielen willst)
 
-Trust & Proof: nach Services, vor Values einfügen (Copy siehe oben).
+Trust & Proof: nach Services, vor Values einfÃ¼gen (Copy siehe oben).
 
-Farben: aktuelle Grün/Gold-Werte beibehalten, nur Tokens vereinheitlichen (siehe CSS-Variablen).
+Farben: aktuelle GrÃ¼n/Gold-Werte beibehalten, nur Tokens vereinheitlichen (siehe CSS-Variablen).
 
 Deploy: erst npx vercel (Preview), QA, dann npx vercel --prod.
 
-CTAs: Startseite → Zwischenseiten; Zwischenseiten → Cal.com.
+CTAs: Startseite â†’ Zwischenseiten; Zwischenseiten â†’ Cal.com.
 
 SEO: Title/Description/OG setzen.

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { GraduationCap, Users, BarChart3, Heart, CheckCircle } from 'lucide-react';
 
@@ -12,8 +12,8 @@ export default function Education({ locale }: Props) {
       icon: Users,
       title: t('Pulse Workshop', 'Pulse Workshop'),
       subtitle: t('"Digitaler Wandel"', '"Digital Transformation"'),
-      duration: t('3h intensiv für Lehrerkollegium', '3h intensive for teaching staff'),
-      color: '#D4B483'
+      duration: t('3h intensiv fÃ¼r Lehrerkollegium', '3h intensive for teaching staff'),
+      color: '#D4A857'
     },
     {
       icon: BarChart3,
@@ -34,8 +34,8 @@ export default function Education({ locale }: Props) {
   const testimonials = [
     {
       quote: t(
-        'Saimôr hat uns geholfen, digitale Transformation greifbar zu machen – für Lehrer UND Schüler.',
-        'Saimôr helped us make digital transformation tangible – for teachers AND students.'
+        'SaimÃ´r hat uns geholfen, digitale Transformation greifbar zu machen â€“ fÃ¼r Lehrer UND SchÃ¼ler.',
+        'SaimÃ´r helped us make digital transformation tangible â€“ for teachers AND students.'
       ),
       author: t('Schulleitung Gymnasium', 'School Management High School'),
       location: t('Musterstadt', 'Sample City')
@@ -53,7 +53,7 @@ export default function Education({ locale }: Props) {
   const examples = [
     {
       title: t('Realschule Bayern', 'Secondary School Bavaria'),
-      desc: t('Von Überforderung zu Klarheit', 'From overwhelm to clarity'),
+      desc: t('Von Ãœberforderung zu Klarheit', 'From overwhelm to clarity'),
       duration: t('6 Monate Orbit', '6 months Orbit'),
       icon: CheckCircle,
       color: '#4A6741'
@@ -63,11 +63,11 @@ export default function Education({ locale }: Props) {
       desc: t('Eltern-Lehrer-Dialog neu gestaltet', 'Parent-teacher dialogue redesigned'),
       duration: t('Pulse Workshop', 'Pulse Workshop'),
       icon: CheckCircle,
-      color: '#D4B483'
+      color: '#D4A857'
     },
     {
       title: t('Berufsschule BW', 'Vocational School BW'),
-      desc: t('Digitales Dashboard für Schüler-Feedback', 'Digital dashboard for student feedback'),
+      desc: t('Digitales Dashboard fÃ¼r SchÃ¼ler-Feedback', 'Digital dashboard for student feedback'),
       duration: t('Systems', 'Systems'),
       icon: CheckCircle,
       color: '#5D7C54'
@@ -123,13 +123,13 @@ export default function Education({ locale }: Props) {
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}
           >
-            {t('Klarheit für Bildung', 'Clarity for Education')}
+            {t('Klarheit fÃ¼r Bildung', 'Clarity for Education')}
           </h2>
 
           <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
@@ -314,12 +314,12 @@ export default function Education({ locale }: Props) {
             whileTap={{ scale: 0.98 }}
             className="inline-block px-10 py-5 rounded-3xl font-bold text-lg text-white transition-all duration-300"
             style={{
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               boxShadow: '0 15px 40px rgba(74, 103, 65, 0.3)',
               border: '2px solid rgba(212, 180, 131, 0.4)'
             }}
           >
-            {t('Gespräch über Bildungslösungen buchen', 'Book conversation about education solutions')}
+            {t('GesprÃ¤ch Ã¼ber BildungslÃ¶sungen buchen', 'Book conversation about education solutions')}
           </motion.a>
         </motion.div>
       </div>

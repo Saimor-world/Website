@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, X } from 'lucide-react';
 import type { Achievement } from '@/lib/achievements';
@@ -43,7 +43,7 @@ export default function AchievementToast({ achievement, onClose }: Props) {
           <div className="relative flex items-start gap-4">
             {/* Icon */}
             <motion.div
-              className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4B483] to-[#E6C897] shadow-lg"
+              className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4A857] to-[#E6C897] shadow-lg"
               animate={{ scale: [1, 1.02, 1] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
@@ -53,8 +53,8 @@ export default function AchievementToast({ achievement, onClose }: Props) {
             {/* Text */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <Trophy className="w-4 h-4 text-[#D4B483]" />
-                <span className="text-xs font-semibold text-[#D4B483] uppercase tracking-wider">
+                <Trophy className="w-4 h-4 text-[#D4A857]" />
+                <span className="text-xs font-semibold text-[#D4A857] uppercase tracking-wider">
                   Achievement freigeschaltet!
                 </span>
               </div>
@@ -69,7 +69,7 @@ export default function AchievementToast({ achievement, onClose }: Props) {
 
           {/* Progress Bar */}
           <motion.div
-            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#D4B483] to-[#E6C897]"
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#D4A857] to-[#E6C897]"
             initial={{ width: '100%' }}
             animate={{ width: '0%' }}
             transition={{ duration: 3.5, ease: 'linear' }}

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
@@ -16,12 +16,12 @@ export default function VisionMindset({ locale }: Props) {
     {
       from: t('Von Vision', 'From vision'),
       to: t('zu Wirkung', 'to impact'),
-      desc: t('Ideen in die Realität überführen, nachhaltig und messbar.', 'Transform ideas into reality, sustainably and measurably.'),
+      desc: t('Ideen in die RealitÃ¤t Ã¼berfÃ¼hren, nachhaltig und messbar.', 'Transform ideas into reality, sustainably and measurably.'),
     },
     {
       from: t('Von Daten', 'From data'),
       to: t('zu Entscheidungen', 'to decisions'),
-      desc: t('Informationen in handlungsfähiges Wissen verwandeln.', 'Transform information into actionable knowledge.'),
+      desc: t('Informationen in handlungsfÃ¤higes Wissen verwandeln.', 'Transform information into actionable knowledge.'),
     },
   ];
 
@@ -120,7 +120,7 @@ export default function VisionMindset({ locale }: Props) {
               <div className="text-left md:flex-1">
                 <h3 className="text-2xl sm:text-3xl font-semibold mb-3"
                     style={{
-                      background: 'linear-gradient(135deg, #D4B483 0%, #E6C897 100%)',
+                      background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text'
@@ -165,8 +165,8 @@ export default function VisionMindset({ locale }: Props) {
             <div className="relative z-10">
               <blockquote className="font-serif text-2xl sm:text-3xl md:text-4xl italic leading-relaxed mb-6" style={{ fontFamily: 'Cormorant Garamond, serif', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
                 {t(
-                  '&ldquo;Saimôr ist kein Tool, sondern ein Resonanzraum.&rdquo;',
-                  '&ldquo;Saimôr is not a tool, but a resonance space.&rdquo;'
+                  '&ldquo;SaimÃ´r ist kein Tool, sondern ein Resonanzraum.&rdquo;',
+                  '&ldquo;SaimÃ´r is not a tool, but a resonance space.&rdquo;'
                 )}
               </blockquote>
 
@@ -183,8 +183,8 @@ export default function VisionMindset({ locale }: Props) {
 
               <p className="text-lg text-white/80">
                 {t(
-                  'Ein Ort, wo Menschen, Systeme und Veränderung aufeinandertreffen – mit Klarheit statt Verwirrung.',
-                  'A place where people, systems and change meet – with clarity instead of confusion.'
+                  'Ein Ort, wo Menschen, Systeme und VerÃ¤nderung aufeinandertreffen â€“ mit Klarheit statt Verwirrung.',
+                  'A place where people, systems and change meet â€“ with clarity instead of confusion.'
                 )}
               </p>
             </div>

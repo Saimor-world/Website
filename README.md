@@ -1,39 +1,39 @@
-# 🌱 Saimôr – Klarheit im Wandel
+﻿# ðŸŒ± SaimÃ´r â€“ Klarheit im Wandel
 
-Moderne, mehrsprachige One-Page-Website für Saimôr mit Fokus auf Klarheit, Ruhe und menschzentrierte Beratung.
+Moderne, mehrsprachige One-Page-Website fÃ¼r SaimÃ´r mit Fokus auf Klarheit, Ruhe und menschzentrierte Beratung.
 
 **Live:** [saimor.world](https://saimor.world)
 
 ---
 
-## 🎯 Features
+## ðŸŽ¯ Features
 
 ### **Kern-Features**
-- ✅ **Multilingual** (DE/EN) mit next-intl
-- ✅ **One-Page Design** mit smooth Scroll-Navigation
-- ✅ **Next.js 14** (App Router, TypeScript)
-- ✅ **Responsive** (Mobile-first Design)
-- ✅ **SEO-optimiert** (Sitemap, Robots, Meta-Tags)
+- âœ… **Multilingual** (DE/EN) mit next-intl
+- âœ… **One-Page Design** mit smooth Scroll-Navigation
+- âœ… **Next.js 14** (App Router, TypeScript)
+- âœ… **Responsive** (Mobile-first Design)
+- âœ… **SEO-optimiert** (Sitemap, Robots, Meta-Tags)
 
 ### **Interaktive Features**
-- ✅ **Môra Avatar** (Floating, Eye-Tracking, Click-to-Chat)
-- ✅ **Easter Eggs** (Konami Code, Secret Words, Achievements)
-- ✅ **Scroll Progress** Indicator
-- ✅ **Cookie Banner** (DSGVO-konform)
+- âœ… **MÃ´ra Avatar** (Floating, Eye-Tracking, Click-to-Chat)
+- âœ… **Easter Eggs** (Konami Code, Secret Words, Achievements)
+- âœ… **Scroll Progress** Indicator
+- âœ… **Cookie Banner** (DSGVO-konform)
 
-### **Community Features** 🆕
-- ✅ **Early-Access Programm** (Transparenz-Badge: "Im Aufbau")
-- ✅ **Warteliste** (Interest-Segmentierung, Success Animation)
-- ✅ **n8n Integration** (Webhook für Automation)
+### **Community Features** ðŸ†•
+- âœ… **Early-Access Programm** (Transparenz-Badge: "Im Aufbau")
+- âœ… **Warteliste** (Interest-Segmentierung, Success Animation)
+- âœ… **n8n Integration** (Webhook fÃ¼r Automation)
 
 ### **Integrations**
-- ✅ **Cal.com** (Booking-Widget)
-- ✅ **Matomo** (Privacy-first Analytics)
-- ✅ **n8n** (Webhook Automation)
+- âœ… **Cal.com** (Booking-Widget)
+- âœ… **Matomo** (Privacy-first Analytics)
+- âœ… **n8n** (Webhook Automation)
 
 ---
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 ### **Installation**
 
@@ -57,7 +57,7 @@ openssl rand -base64 32
 # Development Server starten
 npm run dev
 
-# → http://localhost:3000
+# â†’ http://localhost:3000
 ```
 
 ### **Build & Production**
@@ -69,62 +69,62 @@ npm run build
 # Production Server starten
 npm run start
 
-# Lint prüfen
+# Lint prÃ¼fen
 npm run lint
 ```
 
 ---
 
-## 📁 Projektstruktur
+## ðŸ“ Projektstruktur
 
 ```
 saimor-live/
-├── app/                      # Next.js App Router
-│   ├── de/                   # Deutsche Version
-│   ├── en/                   # Englische Version
-│   └── api/                  # API Routes
-│       ├── waitlist/         # 🆕 Wartelisten-API
-│       ├── contact/          # Kontaktformular
-│       └── mora/             # Môra Chat-API
-│
-├── components/               # React Components
-│   ├── Hero.tsx              # Hero Section
-│   ├── Services.tsx          # Leistungen (Orbit/Pulse/Systems)
-│   ├── MoraShowcase.tsx      # Môra KI-Showcase
-│   ├── TrustProof.tsx        # Vertrauens-Section
-│   ├── CommunityBanner.tsx   # 🆕 Community Launch Banner
-│   ├── WaitlistForm.tsx      # 🆕 Wartelisten-Formular
-│   ├── MoraAvatar.tsx        # 🆕 Floating Avatar (Eye-Tracking)
-│   ├── MoraChat.tsx          # Chat-Widget
-│   ├── EasterEggs.tsx        # Gamification
-│   └── ...
-│
-├── public/                   # Static Assets
-│   ├── Logo neu.png          # Saimôr Logo
-│   └── og-saimor.png         # OpenGraph Image
-│
-├── styles/                   # Global Styles
-├── middleware.ts             # i18n & Security Headers
-├── next.config.js            # Next.js Config
-├── tailwind.config.ts        # TailwindCSS Config
-│
-├── DEPLOYMENT.md             # 🆕 Deployment Guide
-├── SOCIAL_MEDIA_LAUNCH.md    # 🆕 Social Media Strategie
-└── README.md                 # Diese Datei
+â”œâ”€â”€ app/                      # Next.js App Router
+â”‚   â”œâ”€â”€ de/                   # Deutsche Version
+â”‚   â”œâ”€â”€ en/                   # Englische Version
+â”‚   â””â”€â”€ api/                  # API Routes
+â”‚       â”œâ”€â”€ waitlist/         # ðŸ†• Wartelisten-API
+â”‚       â”œâ”€â”€ contact/          # Kontaktformular
+â”‚       â””â”€â”€ mora/             # MÃ´ra Chat-API
+â”‚
+â”œâ”€â”€ components/               # React Components
+â”‚   â”œâ”€â”€ Hero.tsx              # Hero Section
+â”‚   â”œâ”€â”€ Services.tsx          # Leistungen (Orbit/Pulse/Systems)
+â”‚   â”œâ”€â”€ MoraShowcase.tsx      # MÃ´ra KI-Showcase
+â”‚   â”œâ”€â”€ TrustProof.tsx        # Vertrauens-Section
+â”‚   â”œâ”€â”€ CommunityBanner.tsx   # ðŸ†• Community Launch Banner
+â”‚   â”œâ”€â”€ WaitlistForm.tsx      # ðŸ†• Wartelisten-Formular
+â”‚   â”œâ”€â”€ MoraAvatar.tsx        # ðŸ†• Floating Avatar (Eye-Tracking)
+â”‚   â”œâ”€â”€ MoraChat.tsx          # Chat-Widget
+â”‚   â”œâ”€â”€ EasterEggs.tsx        # Gamification
+â”‚   â””â”€â”€ ...
+â”‚
+â”œâ”€â”€ public/                   # Static Assets
+â”‚   â”œâ”€â”€ Logo neu.png          # SaimÃ´r Logo
+â”‚   â””â”€â”€ og-saimor.png         # OpenGraph Image
+â”‚
+â”œâ”€â”€ styles/                   # Global Styles
+â”œâ”€â”€ middleware.ts             # i18n & Security Headers
+â”œâ”€â”€ next.config.js            # Next.js Config
+â”œâ”€â”€ tailwind.config.ts        # TailwindCSS Config
+â”‚
+â”œâ”€â”€ DEPLOYMENT.md             # ðŸ†• Deployment Guide
+â”œâ”€â”€ SOCIAL_MEDIA_LAUNCH.md    # ðŸ†• Social Media Strategie
+â””â”€â”€ README.md                 # Diese Datei
 ```
 
 ---
 
-## 🎨 Design System
+## ðŸŽ¨ Design System
 
 ### **Farben**
 
 ```css
-/* Saimôr Brand Colors */
+/* SaimÃ´r Brand Colors */
 --saimor-green-700: #4A6741;  /* Primary Dark */
 --saimor-green-600: #5D7C54;  /* Primary Medium */
 --saimor-green-200: #EAF1EC;  /* Primary Light */
---saimor-gold-500:  #D4B483;  /* Accent Gold */
+--saimor-gold-500:  #D4A857;  /* Accent Gold */
 --saimor-gold-600:  #C6A36C;  /* Accent Dark */
 --saimor-ink-900:   #0E1A1B;  /* Dark Backgrounds */
 --saimor-cream:     #F8F5F0;  /* Off-White */
@@ -143,9 +143,9 @@ saimor-live/
 
 ---
 
-## 🔧 Environment Variables
+## ðŸ”§ Environment Variables
 
-Siehe `.env.example` für vollständige Liste.
+Siehe `.env.example` fÃ¼r vollstÃ¤ndige Liste.
 
 ### **Minimal Setup (Required)**
 
@@ -170,7 +170,7 @@ NEXT_PUBLIC_MATOMO_SITE_ID=1
 
 ---
 
-## 📦 Dependencies
+## ðŸ“¦ Dependencies
 
 ### **Core**
 - `next` 14.2.33
@@ -188,12 +188,12 @@ NEXT_PUBLIC_MATOMO_SITE_ID=1
 
 ---
 
-## 🚢 Deployment
+## ðŸš¢ Deployment
 
 ### **Vercel (Empfohlen)**
 
-1. **GitHub verbinden:** Vercel Dashboard → New Project
-2. **Environment Variables setzen:** Settings → Environment Variables
+1. **GitHub verbinden:** Vercel Dashboard â†’ New Project
+2. **Environment Variables setzen:** Settings â†’ Environment Variables
 3. **Auto-Deploy:** Bei jedem Push auf `main`
 
 Detaillierte Anleitung: [`DEPLOYMENT.md`](./DEPLOYMENT.md)
@@ -215,7 +215,7 @@ npm run start
 
 ---
 
-## 📊 Performance
+## ðŸ“Š Performance
 
 ### **Lighthouse Scores** (saimor.world)
 
@@ -228,30 +228,30 @@ npm run start
 
 ```
 First Load JS:
-├─ /de:          178 kB
-├─ /en:          178 kB
-└─ Shared:        87 kB
+â”œâ”€ /de:          178 kB
+â”œâ”€ /en:          178 kB
+â””â”€ Shared:        87 kB
 
 Total Pages: 31
 ```
 
 ### **Optimizations**
 
-- ✅ Next.js Image Optimization (AVIF/WebP)
-- ✅ Component Memoization (React.memo)
-- ✅ Dynamic Imports (Code Splitting)
-- ✅ Font Optimization (next/font)
-- ✅ Lazy Loading (Images, Chat-Widget)
+- âœ… Next.js Image Optimization (AVIF/WebP)
+- âœ… Component Memoization (React.memo)
+- âœ… Dynamic Imports (Code Splitting)
+- âœ… Font Optimization (next/font)
+- âœ… Lazy Loading (Images, Chat-Widget)
 
 ---
 
-## 🧪 Testing
+## ðŸ§ª Testing
 
 ```bash
-# Lint prüfen
+# Lint prÃ¼fen
 npm run lint
 
-# TypeScript prüfen
+# TypeScript prÃ¼fen
 npx tsc --noEmit
 
 # Build testen
@@ -267,7 +267,7 @@ npm run build
 
 ---
 
-## 🤝 Contributing
+## ðŸ¤ Contributing
 
 ### **Development Workflow**
 
@@ -277,14 +277,14 @@ git checkout -b feature/neue-section
 
 # 2. Code schreiben & committen
 git add .
-git commit -m "feat: neue Section hinzugefügt"
+git commit -m "feat: neue Section hinzugefÃ¼gt"
 
 # 3. Pushen
 git push origin feature/neue-section
 
 # 4. Pull Request erstellen
-# → Vercel erstellt Preview-URL
-# → Review & Merge
+# â†’ Vercel erstellt Preview-URL
+# â†’ Review & Merge
 ```
 
 ### **Commit Convention**
@@ -296,13 +296,13 @@ docs: Dokumentation
 style: Formatierung
 refactor: Code-Umstrukturierung
 perf: Performance-Verbesserung
-test: Tests hinzufügen
+test: Tests hinzufÃ¼gen
 chore: Build/Tooling
 ```
 
 ---
 
-## 📚 Dokumentation
+## ðŸ“š Dokumentation
 
 - **Deployment:** [`DEPLOYMENT.md`](./DEPLOYMENT.md)
 - **Social Media Launch:** [`SOCIAL_MEDIA_LAUNCH.md`](./SOCIAL_MEDIA_LAUNCH.md)
@@ -311,12 +311,12 @@ chore: Build/Tooling
 
 ---
 
-## 🆘 Troubleshooting
+## ðŸ†˜ Troubleshooting
 
 ### **Problem: Hydration Errors**
 
 ```bash
-# Lösung: Client-only Components mit dynamic() laden
+# LÃ¶sung: Client-only Components mit dynamic() laden
 import dynamic from 'next/dynamic';
 const Component = dynamic(() => import('./Component'), { ssr: false });
 ```
@@ -324,14 +324,14 @@ const Component = dynamic(() => import('./Component'), { ssr: false });
 ### **Problem: 500 Error bei API Routes**
 
 ```bash
-# Lösung: NEXTAUTH_SECRET in .env.local setzen
+# LÃ¶sung: NEXTAUTH_SECRET in .env.local setzen
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 ```
 
 ### **Problem: Images laden nicht**
 
 ```bash
-# Lösung: next.config.js → remotePatterns prüfen
+# LÃ¶sung: next.config.js â†’ remotePatterns prÃ¼fen
 images: {
   remotePatterns: [
     { protocol: 'https', hostname: 'images.unsplash.com' }
@@ -341,40 +341,40 @@ images: {
 
 ---
 
-## 📞 Support
+## ðŸ“ž Support
 
 **Website:** [saimor.world](https://saimor.world)
 **Email:** hi@saimor.world
 **LinkedIn:** [linkedin.com/company/saimor](https://linkedin.com/company/saimor)
 
-**Für technische Fragen:**
+**FÃ¼r technische Fragen:**
 - GitHub Issues: [github.com/Saimor-world/Website/issues](https://github.com/Saimor-world/Website/issues)
 - Vercel Docs: [nextjs.org/docs](https://nextjs.org/docs)
 
 ---
 
-## 📝 Changelog
+## ðŸ“ Changelog
 
-### **2025-10-28 - Community Launch** 🆕
+### **2025-10-28 - Community Launch** ðŸ†•
 - Community Banner mit Transparenz-Badge
 - Wartelisten-Formular mit Interest-Segmentierung
 - n8n Webhook Integration
-- Môra Avatar (Floating, Eye-Tracking)
+- MÃ´ra Avatar (Floating, Eye-Tracking)
 - Performance-Optimierungen
 
 ### **2025-10-27 - Initial Release**
 - Multilingual Website (DE/EN)
 - Services-Sections (Orbit/Pulse/Systems)
-- Môra Showcase
+- MÃ´ra Showcase
 - Cal.com Integration
 - SEO & Analytics
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
-Proprietary - © 2024-2025 Saimôr. All rights reserved.
+Proprietary - Â© 2024-2025 SaimÃ´r. All rights reserved.
 
 ---
 
-**Built with ❤️ and 🤖 by Marius & Claude**
+**Built with â¤ï¸ and ðŸ¤– by Marius & Claude**

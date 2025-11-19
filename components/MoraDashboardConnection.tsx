@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -118,7 +118,7 @@ export default function MoraDashboardConnection() {
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" aria-hidden="true">
               <defs>
                 <linearGradient id="moraBridgeGradient" x1="1" y1="1" x2="0" y2="0">
-                  <stop offset="0%" stopColor="#D4B483" stopOpacity="0.6" />
+                  <stop offset="0%" stopColor="#D4A857" stopOpacity="0.6" />
                   <stop offset="100%" stopColor="#4A6741" stopOpacity="0.15" />
                 </linearGradient>
               </defs>
@@ -174,7 +174,7 @@ export default function MoraDashboardConnection() {
               transition={{ delay: 0.2 }}
             >
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#D4B483] animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-[#D4A857] animate-pulse" />
                 <span>Verbindung zum Dashboard aktiv</span>
               </div>
             </motion.div>

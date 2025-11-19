@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trophy, Lock, Check } from 'lucide-react';
 import type { Achievement } from '@/lib/achievements';
@@ -48,7 +48,7 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="relative p-6 border-b border-[#D4B483]/20">
+            <div className="relative p-6 border-b border-[#D4A857]/20">
               {/* Close Button */}
               <button
                 onClick={onClose}
@@ -58,7 +58,7 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
               </button>
 
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#D4B483] to-[#E6C897] flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center shadow-lg">
                   <Trophy className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -77,7 +77,7 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
               {/* Progress Bar */}
               <div className="relative h-3 bg-black/30 rounded-full overflow-hidden">
                 <motion.div
-                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#D4B483] to-[#E6C897] rounded-full"
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#D4A857] to-[#E6C897] rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 1, ease: 'easeOut' }}
@@ -93,19 +93,19 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
               {/* Unlocked */}
               {unlocked.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-[#D4B483] uppercase tracking-wider mb-3">
+                  <h3 className="text-sm font-semibold text-[#D4A857] uppercase tracking-wider mb-3">
                     {locale === 'de' ? 'Freigeschaltet' : 'Unlocked'}
                   </h3>
                   <div className="space-y-3">
                     {unlocked.map((achievement, i) => (
                       <motion.div
                         key={achievement.id}
-                        className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-[#D4B483]/20 hover:bg-white/10 hover:border-[#D4B483]/40 transition-all"
+                        className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-[#D4A857]/20 hover:bg-white/10 hover:border-[#D4A857]/40 transition-all"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
                       >
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#D4B483] to-[#E6C897] flex items-center justify-center text-2xl shadow-lg">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center text-2xl shadow-lg">
                           {achievement.icon}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -113,7 +113,7 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
                             <h4 className="text-base font-bold text-white">
                               {achievement.nameDE}
                             </h4>
-                            <Check className="w-4 h-4 text-[#D4B483]" />
+                            <Check className="w-4 h-4 text-[#D4A857]" />
                           </div>
                           <p className="text-sm text-white/70 mb-2">
                             {achievement.descriptionDE}

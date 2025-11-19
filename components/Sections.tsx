@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { Zap, Database, Orbit } from 'lucide-react';
 import ContactForm from './ContactForm';
@@ -8,17 +8,17 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
   const translations = {
     de: {
       offers: {
-        pulse: { title: 'Pulse', subtitle: 'Workshops & Impulsformate', text: 'Gemeinsam Klarheit im Wandel erzeugen und Menschen in Veränderungen mitnehmen.', cta: 'Impulse entdecken' },
-        systems: { title: 'Systems', subtitle: 'Daten, Dashboards & KI', text: 'Verständliche Datenlösungen, die Menschen befähigen statt überfordern.', cta: 'Einblick erhalten' },
-        orbit: { title: 'Orbit', subtitle: 'Selbstorganisation & Coaching', text: 'Persönliche Klarheit und nachhaltige Strukturen für Einzelne und Teams.', cta: 'Klarheitsgespräch starten' },
-        ctaHint: 'Ruhiger Erstkontakt über Cal.com'
+        pulse: { title: 'Pulse', subtitle: 'Workshops & Impulsformate', text: 'Gemeinsam Klarheit im Wandel erzeugen und Menschen in VerÃ¤nderungen mitnehmen.', cta: 'Impulse entdecken' },
+        systems: { title: 'Systems', subtitle: 'Daten, Dashboards & KI', text: 'VerstÃ¤ndliche DatenlÃ¶sungen, die Menschen befÃ¤higen statt Ã¼berfordern.', cta: 'Einblick erhalten' },
+        orbit: { title: 'Orbit', subtitle: 'Selbstorganisation & Coaching', text: 'PersÃ¶nliche Klarheit und nachhaltige Strukturen fÃ¼r Einzelne und Teams.', cta: 'KlarheitsgesprÃ¤ch starten' },
+        ctaHint: 'Ruhiger Erstkontakt Ã¼ber Cal.com'
       },
       mission: {
         title: 'Mission & Haltung',
-        text: 'Saimôr entsteht aus der Überzeugung, dass echter Wandel nur durch Klarheit gelingt. Wir schaffen Resonanzräume, in denen Menschen, Daten und Veränderung aufeinandertreffen – ohne Überforderung, mit Vertrauen.',
+        text: 'SaimÃ´r entsteht aus der Ãœberzeugung, dass echter Wandel nur durch Klarheit gelingt. Wir schaffen ResonanzrÃ¤ume, in denen Menschen, Daten und VerÃ¤nderung aufeinandertreffen â€“ ohne Ãœberforderung, mit Vertrauen.',
         subtitle: 'Start: 1. September 2025'
       },
-      contact: { title: 'Kontakt', subtitle: 'Kurz sprechen, Fokus klären, nächsten Schritt festlegen.', name: 'Name', email: 'E-Mail', message: 'Nachricht', send: 'Nachricht senden', book: 'Klarheitsgespräch buchen', disclaimer: 'Alle Anfragen und Buchungen laufen DSGVO-konform über Cal.com. Kein Verkauf, sondern Klarheit im Gespräch.' }
+      contact: { title: 'Kontakt', subtitle: 'Kurz sprechen, Fokus klÃ¤ren, nÃ¤chsten Schritt festlegen.', name: 'Name', email: 'E-Mail', message: 'Nachricht', send: 'Nachricht senden', book: 'KlarheitsgesprÃ¤ch buchen', disclaimer: 'Alle Anfragen und Buchungen laufen DSGVO-konform Ã¼ber Cal.com. Kein Verkauf, sondern Klarheit im GesprÃ¤ch.' }
     },
     en: {
       offers: {
@@ -29,7 +29,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
       },
       mission: {
         title: 'Mission & Stance',
-        text: 'Saimôr emerges from the conviction that real change only succeeds through clarity. We create resonance spaces where people, data and change meet – without overwhelm, with trust.',
+        text: 'SaimÃ´r emerges from the conviction that real change only succeeds through clarity. We create resonance spaces where people, data and change meet â€“ without overwhelm, with trust.',
         subtitle: 'Launch: September 1, 2025'
       },
       contact: { title: 'Contact', subtitle: 'Quick call, sharpen focus, decide the next step.', name: 'Name', email: 'Email', message: 'Message', send: 'Send message', book: 'Book Light Conversation', disclaimer: 'All inquiries and bookings run GDPR-compliant via Cal.com. No sales, but clarity in conversation.' }
@@ -91,7 +91,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               className="group relative rounded-2xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                borderColor: 'rgba(212,180,131,0.25)'
+                borderColor: 'rgba(212,168,87,0.25)'
               }}
             >
               {/* Glow effect on hover */}
@@ -185,7 +185,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               className="font-serif text-3xl sm:text-4xl md:text-5xl"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+                background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -248,7 +248,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-4"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                background: 'linear-gradient(135deg, #D4B483 0%, #E6C897 50%, #D4B483 100%)',
+                background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 50%, #D4A857 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

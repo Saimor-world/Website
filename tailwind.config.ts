@@ -19,16 +19,16 @@ const config: Config = {
         "saimor-green-dark": "#3A5231",  // Darker variant
         "saimor-green-200": "#EAF1EC",   // Light background (--saimor-green-200)
         "saimor-accent": "#669966",      // Accent dot green
-        "saimor-gold": "#D4B483",        // Logo golden line (--saimor-gold-500)
-        "saimor-gold-light": "#E6C897",  // Light gold variant
-        "saimor-gold-600": "#C6A36C",    // Gold hover/focus (--saimor-gold-600)
+        "saimor-gold": "#D4A857",        // Logo golden line (--saimor-gold-500)
+        "saimor-gold-light": "#E6C680",  // Light gold variant
+        "saimor-gold-600": "#BF8F3F",    // Gold hover/focus (--saimor-gold-600)
         "saimor-ink": "#0E1A1B",         // Dark depths (--saimor-ink-900)
         "saimor-cream": "#F8F5F0",       // Off-White (--saimor-cream)
 
         // Refined Pastell palette
-        "gold-primary": "#D4B483",
-        "gold-secondary": "#E6C897",
-        "gold-dark": "#C2A270",
+        "gold-primary": "#D4A857",
+        "gold-secondary": "#E6C680",
+        "gold-dark": "#BC8C3F",
         "forest-primary": "#4A6741",
         "forest-secondary": "#5D7C54",
         "sage-green": "#B8D4BA",
@@ -40,7 +40,7 @@ const config: Config = {
         // Glass-morphism colors
         "glass-white": "rgba(255, 255, 255, 0.1)",
         "glass-green": "rgba(74, 103, 65, 0.1)",
-        "glass-gold": "rgba(212, 180, 131, 0.1)"
+        "glass-gold": "rgba(212, 168, 87, 0.1)"
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', "serif"],

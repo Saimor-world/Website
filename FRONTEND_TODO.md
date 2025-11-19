@@ -1,4 +1,4 @@
-## o. Session 7H - MoraDashboard Unification (13.11.2025)
+﻿## o. Session 7H - MoraDashboard Unification (13.11.2025)
 
 - o. **Unified Demo:** `MoraDashboard.tsx` vereint Chat + Dashboard mit konsistentem Demo-Badge und Orb-Verbindung auf der Startseite (DE/EN).
 - o. **Deprecated Files:** `MoraShowcase.old.tsx` & `InteractiveMoraDashboard.old.tsx` enthalten Hinweis, dass neue Features nur noch im unified Component landen.
@@ -8,20 +8,20 @@
 
 ## o. Session 7G - Portal Preview & Links (13.11.2025)
 
-- o. **Portal Skeleton:** `/portal` und `/en/portal` beschreiben die kommende Login-Shell (Welcome Area, Dashboard-Shell, Vertrauensraum) inkl. CTA zurück zu Kontakt/Waitlist.
+- o. **Portal Skeleton:** `/portal` und `/en/portal` beschreiben die kommende Login-Shell (Welcome Area, Dashboard-Shell, Vertrauensraum) inkl. CTA zurÃ¼ck zu Kontakt/Waitlist.
 - o. **PortalPreview Component:** Wiederverwendbare Karte (`components/PortalPreview.tsx`) visualisiert den Drei-Schritte-Flow und markiert das Ganze als Demo-only.
-- o. **Footer Link:** Quick-Links enthalten jetzt einen Portal-Eintrag (lokalisierte Texte, 44 px Targets), damit Besucher:innen die Seite finden.
+- o. **Footer Link:** Quick-Links enthalten jetzt einen Portal-Eintrag (lokalisierte Texte, 44â€¯px Targets), damit Besucher:innen die Seite finden.
 
 ---
 
 ## o. Session 7F - Final Polish & Deploy Review (13.11.2025)
 
-- o. **Build pipeline:** `pnpm install`, `pnpm lint`, `pnpm build` laufen sauber; bekannte `/api/dashboard/*` Dynamic-Server-Warnings bestehen (unverändert, dokumentiert).
-- o. **Lighthouse:** Automatischer Abruf via Google PSI (CLI & REST) mehrfach mit TLS/429-Fehler beendet → keine frischen Scores; erneut anstoßen sobald das Kontingent wieder frei ist.
-- o. **Manual QA:** Hero-Panel erfüllt AA-Kontrast (logoPanelStyle), Demo-Badge trägt `role="status"`+`title`, Orb↔Dashboard-Link schaltet zwischen Pfad/Glow (reduced-motion) und 4×-Logo-Achievement feuert genau einmal/Sitzung (SessionStorage + R-Motion Guard).
+- o. **Build pipeline:** `pnpm install`, `pnpm lint`, `pnpm build` laufen sauber; bekannte `/api/dashboard/*` Dynamic-Server-Warnings bestehen (unverÃ¤ndert, dokumentiert).
+- o. **Lighthouse:** Automatischer Abruf via Google PSI (CLI & REST) mehrfach mit TLS/429-Fehler beendet â†’ keine frischen Scores; erneut anstoÃŸen sobald das Kontingent wieder frei ist.
+- o. **Manual QA:** Hero-Panel erfÃ¼llt AA-Kontrast (logoPanelStyle), Demo-Badge trÃ¤gt `role="status"`+`title`, Orbâ†”Dashboard-Link schaltet zwischen Pfad/Glow (reduced-motion) und 4Ã—-Logo-Achievement feuert genau einmal/Sitzung (SessionStorage + R-Motion Guard).
 - o. **Focus / Keyboard:** CTA, FAQ, Badge-Buttons behalten sichtbare `focus-visible` Outlines, Tab-Reihenfolge konsistent; reduzierte Bewegung wird in Intro, Bridge und Achievements respektiert.
 
-**Offen:** Lighthouse Mobile ≥90 / Desktop ≥95 erneut erfassen (PSI 429). Monitoring der Edge-runtime Warnungen bleibt bestehen.
+**Offen:** Lighthouse Mobile â‰¥90 / Desktop â‰¥95 erneut erfassen (PSI 429). Monitoring der Edge-runtime Warnungen bleibt bestehen.
 
 ---
 
@@ -70,11 +70,11 @@
 
 ---
 
-**End of Document** - Ready for next Claude Code session! 🎯
-# 🎯 Frontend TODO - Für nächsten Claude Code
+**End of Document** - Ready for next Claude Code session! ðŸŽ¯
+# ðŸŽ¯ Frontend TODO - FÃ¼r nÃ¤chsten Claude Code
 
 **Last Update:** 2025-11-12 (Session 7)
-**Status:** 🟢 PRODUCTION READY - Weitere Features geplant
+**Status:** ðŸŸ¢ PRODUCTION READY - Weitere Features geplant
 
 ---
 
@@ -91,74 +91,74 @@
 
 ---
 
-## ✅ Was heute erledigt wurde (Session 6 - 11.11.2025)
+## âœ… Was heute erledigt wurde (Session 6 - 11.11.2025)
 
 ### 1. Easter Eggs komplett refactored (Silent Mode)
-- ✅ **Laute Effekte entfernt:** Triple-click Explosions, Fireworks, Matrix Rain, Rainbow
-- ✅ **Stille Achievements hinzugefügt:**
+- âœ… **Laute Effekte entfernt:** Triple-click Explosions, Fireworks, Matrix Rain, Rainbow
+- âœ… **Stille Achievements hinzugefÃ¼gt:**
   - Klarheitsfunke (4x Click auf Hero Logo)
   - Leiser Beobachter (12s in Hero Section)
   - Klarheitsnavigator (Trust/Legal/Home besucht)
-- ✅ **Konami Code → Resonanzmodus:** Subtile goldene Shimmer statt lautem Effekt
-- ✅ **TypeScript Set Bug gefixt:** `Array.from(prev).concat(item)` statt spread
-- ✅ **Deutsche poetische Messages:** "Du hast einen stillen Moment entdeckt..."
+- âœ… **Konami Code â†’ Resonanzmodus:** Subtile goldene Shimmer statt lautem Effekt
+- âœ… **TypeScript Set Bug gefixt:** `Array.from(prev).concat(item)` statt spread
+- âœ… **Deutsche poetische Messages:** "Du hast einen stillen Moment entdeckt..."
 
 **Files Changed:**
 - `components/EasterEggs.tsx` - Komplette Refactoring zu stillen, poetischen Achievements
 - `lib/achievements.ts` - Neue Achievement Definitionen
 
 ### 2. Radikale Content-Bereinigung
-- ✅ **Pre-Seed Funding Section:** Auskommentiert in DE/EN pages (TODO für CEO)
-- ✅ **Horizon/Solara/Nova Packages:** Komplett aus MoraShowcase entfernt (89 lines)
-- ✅ **SystemsSection.tsx:** Komplette Datei gelöscht (317 lines)
-- ✅ **Testimonials:** "Horizon-Paket" → "Môra Dashboard" aktualisiert
-- ✅ **FAQ:** Konkrete Preise & Launch-Daten entfernt, MVP-Kontext hinzugefügt
+- âœ… **Pre-Seed Funding Section:** Auskommentiert in DE/EN pages (TODO fÃ¼r CEO)
+- âœ… **Horizon/Solara/Nova Packages:** Komplett aus MoraShowcase entfernt (89 lines)
+- âœ… **SystemsSection.tsx:** Komplette Datei gelÃ¶scht (317 lines)
+- âœ… **Testimonials:** "Horizon-Paket" â†’ "MÃ´ra Dashboard" aktualisiert
+- âœ… **FAQ:** Konkrete Preise & Launch-Daten entfernt, MVP-Kontext hinzugefÃ¼gt
 
 **Reason:** User forderte "radikales Denken - alle veralteten Inhalte raus"
 
 **Files Changed:**
 - `app/de/page.tsx` & `app/en/page.tsx` - FundingSection commented out
-- `components/MoraShowcase.tsx` - Packages entfernt, nur Môra Features
+- `components/MoraShowcase.tsx` - Packages entfernt, nur MÃ´ra Features
 - `components/SystemsSection.tsx` - DELETED
-- `components/Testimonials.tsx` - Horizon → Môra
+- `components/Testimonials.tsx` - Horizon â†’ MÃ´ra
 - `components/FAQ.tsx` - Preise/Daten raus
 
 ### 3. MoraShowcase Lesbarkeit Fix
-- ✅ **Text Colors:** white → gray-700/800/900 (besser lesbar)
-- ✅ **Glass Panels:** Höhere Opazität für besseren Kontrast
-- ✅ **Demo Responses:** "Systems Dashboard" → "Môra" aktualisiert
+- âœ… **Text Colors:** white â†’ gray-700/800/900 (besser lesbar)
+- âœ… **Glass Panels:** HÃ¶here OpazitÃ¤t fÃ¼r besseren Kontrast
+- âœ… **Demo Responses:** "Systems Dashboard" â†’ "MÃ´ra" aktualisiert
 
-**Problem:** User sagte "kann man nicht gut lesen weil weiße Schrift"
-**Solution:** Dunkle Grautöne auf hellen Liquid Glass Panels
+**Problem:** User sagte "kann man nicht gut lesen weil weiÃŸe Schrift"
+**Solution:** Dunkle GrautÃ¶ne auf hellen Liquid Glass Panels
 
 **Files Changed:**
 - `components/MoraShowcase.tsx` - Text colors & glass panel opacity
 
 ### 4. InteractiveMoraDashboard MVP-Kontext
-- ✅ **Demo Label:** "Demo-Dashboard (simulierte Daten)" hinzugefügt
-- ✅ **Info Tooltip:** Erklärt dass es lokale Demo-Daten sind
-- ✅ **Hover State:** Tooltip erscheint on hover auf Info Icon
+- âœ… **Demo Label:** "Demo-Dashboard (simulierte Daten)" hinzugefÃ¼gt
+- âœ… **Info Tooltip:** ErklÃ¤rt dass es lokale Demo-Daten sind
+- âœ… **Hover State:** Tooltip erscheint on hover auf Info Icon
 
 **Files Changed:**
 - `components/InteractiveMoraDashboard.tsx` - MVP Context Banner
 
 ### 5. Hero Logo Visibility verbessert
-- ✅ **Dunklerer Hintergrund:** Besserer Kontrast für Logo
-- ✅ **Stärkerer Border:** 2px solid rgba gold
-- ✅ **Enhanced Shadows:** Tiefere Schatten für 3D-Effekt
-- ✅ **Golden Glow:** Subtiles Leuchten um Logo
+- âœ… **Dunklerer Hintergrund:** Besserer Kontrast fÃ¼r Logo
+- âœ… **StÃ¤rkerer Border:** 2px solid rgba gold
+- âœ… **Enhanced Shadows:** Tiefere Schatten fÃ¼r 3D-Effekt
+- âœ… **Golden Glow:** Subtiles Leuchten um Logo
 
 **Files Changed:**
 - `components/Hero.tsx` - Logo panel styling
 
-### 6. Môra ↔ Dashboard Visual Connection (NEW)
-- ✅ **Component erstellt:** `MoraDashboardConnection.tsx`
-- ✅ **Floating Particles:** 5 goldene Partikel fliegen von Orb zu Dashboard
-- ✅ **Subtle Glow:** Pulsierender Glow um Môra Orb
-- ✅ **Tooltip:** "Mit Dashboard verbunden" wenn Dashboard in View
-- ✅ **IntersectionObserver:** Trigger nur wenn Dashboard sichtbar
+### 6. MÃ´ra â†” Dashboard Visual Connection (NEW)
+- âœ… **Component erstellt:** `MoraDashboardConnection.tsx`
+- âœ… **Floating Particles:** 5 goldene Partikel fliegen von Orb zu Dashboard
+- âœ… **Subtle Glow:** Pulsierender Glow um MÃ´ra Orb
+- âœ… **Tooltip:** "Mit Dashboard verbunden" wenn Dashboard in View
+- âœ… **IntersectionObserver:** Trigger nur wenn Dashboard sichtbar
 
-**Reason:** User wollte visuelle Verbindung zwischen Môra Chat Orb und Dashboard
+**Reason:** User wollte visuelle Verbindung zwischen MÃ´ra Chat Orb und Dashboard
 
 **Files Added:**
 - `components/MoraDashboardConnection.tsx` (133 lines)
@@ -166,63 +166,63 @@
 **Files Changed:**
 - `app/de/page.tsx` & `app/en/page.tsx` - Component integriert
 
-### 7. TrustProof Liquid Glass Polish ✅
-- ✅ **Card Backgrounds:** White-based liquid glass statt gold/green tint
-- ✅ **Backdrop Blur:** 24px → 32px für stärkeren Effekt
-- ✅ **Icon Containers:** Liquid glass mit backdrop blur
-- ✅ **Box Shadows:** Konsistente Schatten mit Rest der Site
+### 7. TrustProof Liquid Glass Polish âœ…
+- âœ… **Card Backgrounds:** White-based liquid glass statt gold/green tint
+- âœ… **Backdrop Blur:** 24px â†’ 32px fÃ¼r stÃ¤rkeren Effekt
+- âœ… **Icon Containers:** Liquid glass mit backdrop blur
+- âœ… **Box Shadows:** Konsistente Schatten mit Rest der Site
 
 **Files Changed:**
 - `components/TrustProof.tsx` - Liquid glass polish
 
-**Build Status:** Alle Commits pushed ✅
+**Build Status:** Alle Commits pushed âœ…
 
 ---
 
-## ✅ Was erledigt wurde (Session 5 - 04.11.2025)
+## âœ… Was erledigt wurde (Session 5 - 04.11.2025)
 
 ### 1. Hero modernisiert (Epiminds-Style)
-- ✅ **NUR 1 CTA Button** ("Môra kennenlernen") statt 2
-- ✅ **Scroll-Indicator** statt zweitem Button
-- ✅ **Dunkler Hintergrund** (moderne Overlay wie Epiminds)
-- ✅ **Dschungel-Bild** subtil integriert mit multiply blend
-- ✅ **Saimor Logo** prominent sichtbar
-- ✅ **Môra Badge** "Backend 85% · Jetzt verfügbar" mit Animation
-- ✅ **Liquid Glass Effects** überall
-- ✅ **MyceliumNetwork** Hintergrund läuft perfekt
+- âœ… **NUR 1 CTA Button** ("MÃ´ra kennenlernen") statt 2
+- âœ… **Scroll-Indicator** statt zweitem Button
+- âœ… **Dunkler Hintergrund** (moderne Overlay wie Epiminds)
+- âœ… **Dschungel-Bild** subtil integriert mit multiply blend
+- âœ… **Saimor Logo** prominent sichtbar
+- âœ… **MÃ´ra Badge** "Backend 85% Â· Jetzt verfÃ¼gbar" mit Animation
+- âœ… **Liquid Glass Effects** Ã¼berall
+- âœ… **MyceliumNetwork** Hintergrund lÃ¤uft perfekt
 
 **Files Changed:**
 - `components/Hero.tsx` - Modernized with 1 CTA + dark Epiminds-style overlay
 
 ### 2. Services Section aktualisiert (3 statt 4)
-- ✅ **Systems entfernt** - Nova/Horizon/Solara sind jetzt Môra integriert
-- ✅ **Môra Vision aktualisiert:**
-  - Dual Mode (Ordner ↔ Feld) erwähnt
+- âœ… **Systems entfernt** - Nova/Horizon/Solara sind jetzt MÃ´ra integriert
+- âœ… **MÃ´ra Vision aktualisiert:**
+  - Dual Mode (Ordner â†” Feld) erwÃ¤hnt
   - Dashboard Intelligence betont
   - Web, Voice, Workflow-Runner Integration
-- ✅ **Grid-Layout:** `lg:grid-cols-3` (war 4)
-- ✅ **Orbit & Pulse:** "Môra-unterstützt" betont
+- âœ… **Grid-Layout:** `lg:grid-cols-3` (war 4)
+- âœ… **Orbit & Pulse:** "MÃ´ra-unterstÃ¼tzt" betont
 
 **Files Changed:**
-- `components/Services.tsx` - Removed Systems, updated Môra vision, 3-column grid
+- `components/Services.tsx` - Removed Systems, updated MÃ´ra vision, 3-column grid
 
-### 3. Balance: SAIMOR + Môra
-- ✅ **Saimor Logo** im Hero prominent
-- ✅ **Môra Badge** im Hero für Early Access
-- ✅ **Services:** Menschen (Saimor) machen Workshops, Môra ist Tool
-- ✅ **MyceliumNetwork:** Organischer Hintergrund für "Universum" Feeling
+### 3. Balance: SAIMOR + MÃ´ra
+- âœ… **Saimor Logo** im Hero prominent
+- âœ… **MÃ´ra Badge** im Hero fÃ¼r Early Access
+- âœ… **Services:** Menschen (Saimor) machen Workshops, MÃ´ra ist Tool
+- âœ… **MyceliumNetwork:** Organischer Hintergrund fÃ¼r "Universum" Feeling
 
-**Build Status:** Exit Code 0 ✅ (31 pages, 177 kB)
+**Build Status:** Exit Code 0 âœ… (31 pages, 177 kB)
 
 ---
 
-## 📋 NEXT STEPS - Prioritized
+## ðŸ“‹ NEXT STEPS - Prioritized
 
-### 🔴 HIGH PRIORITY (Nächste Session)
+### ðŸ”´ HIGH PRIORITY (NÃ¤chste Session)
 
-#### 1. Môra Disney Intro implementieren
-**Warum:** First-visit Animation für "Universum" Feeling
-**Plan:** Bereits vollständig in `MORA_DISNEY_INTRO_PLAN.md` dokumentiert
+#### 1. MÃ´ra Disney Intro implementieren
+**Warum:** First-visit Animation fÃ¼r "Universum" Feeling
+**Plan:** Bereits vollstÃ¤ndig in `MORA_DISNEY_INTRO_PLAN.md` dokumentiert
 **Aufwand:** 2-3 Stunden
 **Files:**
 - Create: `components/MoraIntroAnimation.tsx`
@@ -245,21 +245,21 @@ export default function Page() {
 ```
 
 #### 2. Liquid Glass Effects auf restlichen Sections
-**Warum:** User wollte "radikalen Politur über die ganze Website"
-**✅ Bereits erledigt:**
-- `components/MoraShowcase.tsx` - Session 6 ✅
-- `components/TrustProof.tsx` - Session 6 ✅
+**Warum:** User wollte "radikalen Politur Ã¼ber die ganze Website"
+**âœ… Bereits erledigt:**
+- `components/MoraShowcase.tsx` - Session 6 âœ…
+- `components/TrustProof.tsx` - Session 6 âœ…
 
 **Noch zu polieren:**
 - `components/CommunityBanner.tsx` - Backdrop blur verbessern
 - `components/WaitlistForm.tsx` - Form inputs mit glass effect
 - `components/FAQ.tsx` - Accordion items mit glass
 
-**Aufwand:** ~45 min (3 Components à 15 min)
+**Aufwand:** ~45 min (3 Components Ã  15 min)
 
 **Pattern:**
 ```tsx
-// Liquid Glass Style (White-based für bessere Lesbarkeit)
+// Liquid Glass Style (White-based fÃ¼r bessere Lesbarkeit)
 style={{
   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
   backdropFilter: 'blur(32px)',
@@ -272,28 +272,28 @@ style={{
 **Problem:** Services.tsx hat Systems entfernt, aber `/systems` Page existiert noch
 **Options:**
 - A) Delete `app/systems/page.tsx` komplett
-- B) Redirect zu Môra Showcase: `redirect('/de#mora-showcase')`
-- C) Umbauen zu "Môra Dashboard" Demo-Page
+- B) Redirect zu MÃ´ra Showcase: `redirect('/de#mora-showcase')`
+- C) Umbauen zu "MÃ´ra Dashboard" Demo-Page
 
 **Recommendation:** Option B (Redirect)
 
 ---
 
-### 🟡 MEDIUM PRIORITY (Diese Woche)
+### ðŸŸ¡ MEDIUM PRIORITY (Diese Woche)
 
 #### 4. Dashboard Login Integration vorbereiten
 **Context:** Shared Auth zwischen Website & Dashboard (siehe SHARED_CONTEXT.md)
 **Backend Status:** Dashboard API @ voice.saimor.world hat Bearer Token Auth
 **Tasks:**
-- [ ] NextAuth Config erweitern (Custom Provider für Dashboard API)
+- [ ] NextAuth Config erweitern (Custom Provider fÃ¼r Dashboard API)
 - [ ] Protected Routes Setup (`/dashboard/*`)
 - [ ] User Context Provider erstellen
 - [ ] Login Flow UI (Modal oder separate /login page)
 
 **Reference:** Backend-Claude #1 hat Auth System (ADMIN_TOKEN in .env)
 
-#### 5. Môra Intelligence Layer
-**Vision:** Môra auf Website wird "intelligent" (echte AI, nicht Demo)
+#### 5. MÃ´ra Intelligence Layer
+**Vision:** MÃ´ra auf Website wird "intelligent" (echte AI, nicht Demo)
 **Requirements:**
 - Dashboard API Integration (voice.saimor.world)
 - Real-time KPI Updates
@@ -301,27 +301,27 @@ style={{
 - User-spezifische Empfehlungen
 
 **Tasks:**
-- [ ] API Client für Dashboard Endpoints erstellen
-- [ ] Môra Chat Component mit real API anbinden
+- [ ] API Client fÃ¼r Dashboard Endpoints erstellen
+- [ ] MÃ´ra Chat Component mit real API anbinden
 - [ ] KPI Display Component (real data)
-- [ ] WebSocket Integration für Real-time Updates
+- [ ] WebSocket Integration fÃ¼r Real-time Updates
 
 ---
 
-### 🟢 LOW PRIORITY (Später)
+### ðŸŸ¢ LOW PRIORITY (SpÃ¤ter)
 
 #### 6. Mobile Optimization Pass
-**Current Status:** Responsive, aber könnte besser sein
+**Current Status:** Responsive, aber kÃ¶nnte besser sein
 **Focus Areas:**
 - Hero CTA: Touch-optimiert? (aktuell schon gut)
-- Services Cards: Swipe gesture für mobile?
+- Services Cards: Swipe gesture fÃ¼r mobile?
 - MyceliumNetwork: Performance auf Mobile (Canvas heavy)
 
 #### 7. Performance Optimization
 **Current:** 177 kB First Load JS - sehr gut!
 **Potential Wins:**
 - Image optimization (Dschungel-Bild von Unsplash)
-- Code splitting für Easter Eggs (nicht critical path)
+- Code splitting fÃ¼r Easter Eggs (nicht critical path)
 - MyceliumNetwork: RequestAnimationFrame throttling
 
 #### 8. A11y Audit
@@ -330,18 +330,18 @@ style={{
 - [ ] Keyboard Navigation testen
 - [ ] Screen Reader Test
 - [ ] Color Contrast Check (WCAG AA)
-- [ ] Focus States überall
+- [ ] Focus States Ã¼berall
 
 ---
 
-## 🎨 Design System Tokens (Für Konsistenz)
+## ðŸŽ¨ Design System Tokens (FÃ¼r Konsistenz)
 
 ### Colors (bereits im Einsatz)
 ```css
 --saimor-green-700: #4A6741;  /* Header/Footer/Dark surfaces */
 --saimor-green-600: #557351;  /* Hover states */
 --saimor-green-200: #EAF1EC;  /* Light cards/backgrounds */
---saimor-gold-500:  #D4B483;  /* Primary CTA/Icons */
+--saimor-gold-500:  #D4A857;  /* Primary CTA/Icons */
 --saimor-gold-600:  #C6A36C;  /* CTA Hover */
 --saimor-ink-900:   #0E1A1B;  /* Deep dark (Vision blocks) */
 --saimor-cream:     #F8F5F0;  /* Off-white */
@@ -364,7 +364,7 @@ text-4xl md:text-5xl lg:text-6xl (konsistent!)
 ### Spacing
 ```css
 /* Section Padding */
-py-20 sm:py-24 (konsistent überall!)
+py-20 sm:py-24 (konsistent Ã¼berall!)
 
 /* Container Max Width */
 max-w-7xl (Services, FAQ, etc.)
@@ -386,7 +386,7 @@ whileTap: { scale: 0.98 }
 
 ---
 
-## 🔗 Integration Points (Backend Koordination)
+## ðŸ”— Integration Points (Backend Koordination)
 
 ### 1. Dashboard API (Backend-Claude #1)
 **Base URL:** `https://voice.saimor.world/api/v1/dashboard/`
@@ -396,7 +396,7 @@ whileTap: { scale: 0.98 }
 - `/overview` - Dashboard KPIs
 - `/costs` - Cost tracking
 - `/activity` - Recent activity
-- `/chat/message` - Môra chat (POST)
+- `/chat/message` - MÃ´ra chat (POST)
 
 **CORS:** Backend needs to whitelist `saimor.world` origin!
 
@@ -409,57 +409,57 @@ whileTap: { scale: 0.98 }
 - `/actions/confirm` - 2FA confirmation
 - `/actions/undo` - 5-min undo window
 
-### 3. Môra UI (neue separate App)
+### 3. MÃ´ra UI (neue separate App)
 **Location:** `C:/mora-ui`
-**Status:** Kickoff läuft (andere Claude Instance)
-**Vision:** Dual Mode (Ordner ↔ Feld), Workflow-Runner, Broadcast
-**Integration:** Später als Demo-Widget auf Website einbetten?
+**Status:** Kickoff lÃ¤uft (andere Claude Instance)
+**Vision:** Dual Mode (Ordner â†” Feld), Workflow-Runner, Broadcast
+**Integration:** SpÃ¤ter als Demo-Widget auf Website einbetten?
 
 ---
 
-## 📦 Current Website Architecture
+## ðŸ“¦ Current Website Architecture
 
 ### Pages
 ```
-/de                  → Main page (Hero, Services, Môra Showcase, etc.)
-/en                  → English version
-/orbit               → Orbit service page
-/pulse               → Pulse service page
-/systems             → ⚠️ DEPRECATED - needs redirect or removal
-/de/kontakt          → Contact page
-/de/rechtliches/*    → Legal pages
+/de                  â†’ Main page (Hero, Services, MÃ´ra Showcase, etc.)
+/en                  â†’ English version
+/orbit               â†’ Orbit service page
+/pulse               â†’ Pulse service page
+/systems             â†’ âš ï¸ DEPRECATED - needs redirect or removal
+/de/kontakt          â†’ Contact page
+/de/rechtliches/*    â†’ Legal pages
 ```
 
 ### Key Components
 ```
 components/
-├── Hero.tsx                 ✅ Modernized (Epiminds-style, 1 CTA)
-├── Services.tsx             ✅ Updated (3 services, Môra vision)
-├── MoraShowcase.tsx         🔄 Needs liquid glass polish
-├── TrustProof.tsx           🔄 Needs liquid glass polish
-├── CommunityBanner.tsx      🔄 Needs backdrop blur improve
-├── WaitlistForm.tsx         🔄 Needs glass effect on inputs
-├── FAQ.tsx                  🔄 Needs glass on accordion
-├── MoraAvatar.tsx           ✅ Working (popup on click)
-├── MyceliumNetwork.tsx      ✅ Perfect (organic background)
-├── DataJungle.tsx           ✅ Working (jungle elements)
-├── ScrollProgress.tsx       ✅ Working
-├── EasterEggs.tsx           ✅ Working (achievement system)
-└── CookieBanner.tsx         ✅ Working (GDPR compliant)
+â”œâ”€â”€ Hero.tsx                 âœ… Modernized (Epiminds-style, 1 CTA)
+â”œâ”€â”€ Services.tsx             âœ… Updated (3 services, MÃ´ra vision)
+â”œâ”€â”€ MoraShowcase.tsx         ðŸ”„ Needs liquid glass polish
+â”œâ”€â”€ TrustProof.tsx           ðŸ”„ Needs liquid glass polish
+â”œâ”€â”€ CommunityBanner.tsx      ðŸ”„ Needs backdrop blur improve
+â”œâ”€â”€ WaitlistForm.tsx         ðŸ”„ Needs glass effect on inputs
+â”œâ”€â”€ FAQ.tsx                  ðŸ”„ Needs glass on accordion
+â”œâ”€â”€ MoraAvatar.tsx           âœ… Working (popup on click)
+â”œâ”€â”€ MyceliumNetwork.tsx      âœ… Perfect (organic background)
+â”œâ”€â”€ DataJungle.tsx           âœ… Working (jungle elements)
+â”œâ”€â”€ ScrollProgress.tsx       âœ… Working
+â”œâ”€â”€ EasterEggs.tsx           âœ… Working (achievement system)
+â””â”€â”€ CookieBanner.tsx         âœ… Working (GDPR compliant)
 ```
 
 ### API Routes
 ```
-/api/waitlist         ✅ Working (ready for n8n)
-/api/contact          ⚠️ Email not connected yet
-/api/auth/*           ⚠️ NextAuth needs NEXTAUTH_SECRET in Vercel
-/api/dashboard/*      🔄 Proxies to Dashboard API (needs implementation)
-/api/mora             🔄 Future: Môra Intelligence Layer
+/api/waitlist         âœ… Working (ready for n8n)
+/api/contact          âš ï¸ Email not connected yet
+/api/auth/*           âš ï¸ NextAuth needs NEXTAUTH_SECRET in Vercel
+/api/dashboard/*      ðŸ”„ Proxies to Dashboard API (needs implementation)
+/api/mora             ðŸ”„ Future: MÃ´ra Intelligence Layer
 ```
 
 ---
 
-## 🐛 Known Issues
+## ðŸ› Known Issues
 
 ### 1. NextAuth 500 Error (Vercel)
 **Problem:** Missing `NEXTAUTH_SECRET` in Vercel ENV
@@ -478,27 +478,27 @@ components/
 
 ---
 
-## 🎯 Vision: "Das wird kein Landing Page - ein kleines Universum"
+## ðŸŽ¯ Vision: "Das wird kein Landing Page - ein kleines Universum"
 
 ### Current Progress (85% ready)
-- ✅ **Organic Background:** MyceliumNetwork + DataJungle
-- ✅ **Modern Hero:** Epiminds-inspired, 1 CTA, liquid glass
-- ✅ **Services:** 3 clear offerings (Môra, Orbit, Pulse)
-- ✅ **Môra Prominent:** Badge, featured card, avatar
-- ✅ **Early Access:** Waitlist form ready
-- 🔄 **Intelligence:** Dashboard integration pending
-- 🔄 **Disney Intro:** Plan ready, implementation pending
+- âœ… **Organic Background:** MyceliumNetwork + DataJungle
+- âœ… **Modern Hero:** Epiminds-inspired, 1 CTA, liquid glass
+- âœ… **Services:** 3 clear offerings (MÃ´ra, Orbit, Pulse)
+- âœ… **MÃ´ra Prominent:** Badge, featured card, avatar
+- âœ… **Early Access:** Waitlist form ready
+- ðŸ”„ **Intelligence:** Dashboard integration pending
+- ðŸ”„ **Disney Intro:** Plan ready, implementation pending
 
 ### Next Phase: "Universum lebendig machen"
-1. Môra Disney Intro (first visit magic)
+1. MÃ´ra Disney Intro (first visit magic)
 2. Dashboard Login (users can log in)
 3. Real-time KPI Display (live data)
-4. Intelligent Môra Chat (real AI responses)
+4. Intelligent MÃ´ra Chat (real AI responses)
 5. User Context (personalized experience)
 
 ---
 
-## 📚 Documentation References
+## ðŸ“š Documentation References
 
 ### Internal Docs
 - `CLAUDE.md` - Development commands, architecture overview
@@ -513,33 +513,33 @@ components/
 
 ---
 
-## ⚠️ Important Notes for Next Claude Code
+## âš ï¸ Important Notes for Next Claude Code
 
 ### Context to Remember
-1. **Systems = Môra** - Nova/Horizon/Solara packages are now integrated into Môra
-2. **SAIMOR im Fokus** - Menschen (Saimor team) do workshops, Môra is the AI tool
-3. **Balance** - Logo + Môra both prominent, not "Môra-lastig"
+1. **Systems = MÃ´ra** - Nova/Horizon/Solara packages are now integrated into MÃ´ra
+2. **SAIMOR im Fokus** - Menschen (Saimor team) do workshops, MÃ´ra is the AI tool
+3. **Balance** - Logo + MÃ´ra both prominent, not "MÃ´ra-lastig"
 4. **Epiminds-Style** - Minimalist, modern, motion-first (user's reference)
 5. **Liquid Glass** - User wants this aesthetic across ALL components
 
 ### Don't Break
-- ✅ MyceliumNetwork background (working perfectly)
-- ✅ Hero with 1 CTA (user approved)
-- ✅ 3 Services layout (Môra, Orbit, Pulse)
-- ✅ Saimor Logo in Hero
-- ✅ DataJungle elements
+- âœ… MyceliumNetwork background (working perfectly)
+- âœ… Hero with 1 CTA (user approved)
+- âœ… 3 Services layout (MÃ´ra, Orbit, Pulse)
+- âœ… Saimor Logo in Hero
+- âœ… DataJungle elements
 
 ### User Preferences
-- ❌ NO 2 CTAs in Hero (just 1 + scroll indicator)
-- ❌ NO emojis (unless explicitly requested)
-- ❌ NO Systems as separate service (it's Môra now)
-- ✅ YES minimalist & professional
-- ✅ YES liquid glass everywhere
-- ✅ YES organic animations
+- âŒ NO 2 CTAs in Hero (just 1 + scroll indicator)
+- âŒ NO emojis (unless explicitly requested)
+- âŒ NO Systems as separate service (it's MÃ´ra now)
+- âœ… YES minimalist & professional
+- âœ… YES liquid glass everywhere
+- âœ… YES organic animations
 
 ---
 
-## 🚀 Quick Start Commands
+## ðŸš€ Quick Start Commands
 
 ```bash
 # Development
@@ -557,4 +557,4 @@ open https://saimor.world
 
 ---
 
-**End of Document** - Ready for next Claude Code session! 🎯
+**End of Document** - Ready for next Claude Code session! ðŸŽ¯

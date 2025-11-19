@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 
 type Locale = 'de' | 'en';
@@ -16,41 +16,41 @@ const content: Record<Locale, {
 }> = {
   de: {
     eyebrow: 'Demo-Datenfluss',
-    title: 'Wie Môra aktuell versorgt wird',
-    intro: 'Alles läuft mit simulierten Unternehmensdaten innerhalb der Saimôr-Umgebung. Keine externen Clouds, keine Produktivsysteme – aber der komplette Stack wird bereits wie später live getestet.',
+    title: 'Wie MÃ´ra aktuell versorgt wird',
+    intro: 'Alles lÃ¤uft mit simulierten Unternehmensdaten innerhalb der SaimÃ´r-Umgebung. Keine externen Clouds, keine Produktivsysteme â€“ aber der komplette Stack wird bereits wie spÃ¤ter live getestet.',
     steps: [
       {
         label: 'Mock Company Streams',
-        description: 'Generierte KPI- und Voice-Datensätze spiegeln typische Organisationen, bleiben aber vollständig lokal.',
+        description: 'Generierte KPI- und Voice-DatensÃ¤tze spiegeln typische Organisationen, bleiben aber vollstÃ¤ndig lokal.',
         accent: 'gray'
       },
       {
         label: 'Adapter Layer',
-        description: 'Transformiert die Mock-Daten in genau das Schema, das reale Integrationen später nutzen.',
+        description: 'Transformiert die Mock-Daten in genau das Schema, das reale Integrationen spÃ¤ter nutzen.',
         accent: 'gold'
       },
       {
-        label: 'Core API / Môra OS',
-        description: 'API-Endpunkte laufen mit Auth, Logging und Audit-Hooks – nur gefüttert aus dem Adapter.',
+        label: 'Core API / MÃ´ra OS',
+        description: 'API-Endpunkte laufen mit Auth, Logging und Audit-Hooks â€“ nur gefÃ¼ttert aus dem Adapter.',
         accent: 'green'
       },
       {
-        label: 'Môra UI Widgets',
-        description: 'Dashboard, Chat und Orb greifen ausschließlich auf die Core-API zu (Demo-Modus).',
+        label: 'MÃ´ra UI Widgets',
+        description: 'Dashboard, Chat und Orb greifen ausschlieÃŸlich auf die Core-API zu (Demo-Modus).',
         accent: 'green'
       },
       {
         label: 'Website Sections',
-        description: 'Hero, Dashboard & FAQ zeigen die Core-Werte, stets als „Demo-Daten“ gekennzeichnet.',
+        description: 'Hero, Dashboard & FAQ zeigen die Core-Werte, stets als â€žDemo-Datenâ€œ gekennzeichnet.',
         accent: 'green'
       }
     ],
-    footnote: 'Quelle: DATA_FLOW_EXPLAINED.md – Stand MVP / Demo-Phase'
+    footnote: 'Quelle: DATA_FLOW_EXPLAINED.md â€“ Stand MVP / Demo-Phase'
   },
   en: {
     eyebrow: 'Demo Data Flow',
-    title: 'How Môra is powered today',
-    intro: 'Everything runs with simulated company data inside the Saimôr environment. No external clouds, no production backends – yet the full stack behaves exactly like the live setup.',
+    title: 'How MÃ´ra is powered today',
+    intro: 'Everything runs with simulated company data inside the SaimÃ´r environment. No external clouds, no production backends â€“ yet the full stack behaves exactly like the live setup.',
     steps: [
       {
         label: 'Mock Company Streams',
@@ -63,12 +63,12 @@ const content: Record<Locale, {
         accent: 'gold'
       },
       {
-        label: 'Core API / Môra OS',
-        description: 'API endpoints run with auth, logging and audit hooks – only the inputs are simulated.',
+        label: 'Core API / MÃ´ra OS',
+        description: 'API endpoints run with auth, logging and audit hooks â€“ only the inputs are simulated.',
         accent: 'green'
       },
       {
-        label: 'Môra UI Widgets',
+        label: 'MÃ´ra UI Widgets',
         description: 'Dashboard, chat + orb only talk to the Core API (demo mode).',
         accent: 'green'
       },
@@ -78,7 +78,7 @@ const content: Record<Locale, {
         accent: 'green'
       }
     ],
-    footnote: 'Source: DATA_FLOW_EXPLAINED.md – MVP / demo status'
+    footnote: 'Source: DATA_FLOW_EXPLAINED.md â€“ MVP / demo status'
   }
 };
 
@@ -159,7 +159,7 @@ export default function DataFlowDiagram({ locale }: DataFlowDiagramProps) {
                   <div
                     className="hidden md:block absolute top-1/2 -right-2 w-4 h-px"
                     style={{
-                      background: 'linear-gradient(90deg, transparent 0%, rgba(212,180,131,0.4) 50%, transparent 100%)'
+                      background: 'linear-gradient(90deg, transparent 0%, rgba(212,168,87,0.4) 50%, transparent 100%)'
                     }}
                   />
                 )}

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { Sparkles, Users, Heart, Rocket } from 'lucide-react';
 import type { CSSProperties } from 'react';
@@ -31,44 +31,44 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   const content = {
     de: {
       badge: 'Early Access',
-      title: 'Werde Teil der Saimôr-Community',
-      subtitle: 'Wir bauen Saimôr gemeinsam mit dir. Sei dabei, wenn Môra erwacht.',
+      title: 'Werde Teil der SaimÃ´r-Community',
+      subtitle: 'Wir bauen SaimÃ´r gemeinsam mit dir. Sei dabei, wenn MÃ´ra erwacht.',
       features: [
-        { icon: Users, text: 'Exklusiver Beta-Zugang zu Môra', color: 'from-blue-500 to-cyan-500' },
+        { icon: Users, text: 'Exklusiver Beta-Zugang zu MÃ´ra', color: 'from-blue-500 to-cyan-500' },
         { icon: Heart, text: 'Mitgestaltung der Features', color: 'from-pink-500 to-rose-500' },
         { icon: Rocket, text: 'Early-Supporter Benefits', color: 'from-purple-500 to-indigo-500' },
         { icon: Sparkles, text: 'Direkter Draht zum Team', color: 'from-amber-500 to-orange-500' }
       ],
-      status: 'Im Aufbau: Backend 85% · Frontend 70% · Community Start: Jetzt',
+      status: 'Im Aufbau: Backend 85% Â· Frontend 70% Â· Community Start: Jetzt',
       cta: 'Warteliste beitreten',
       secondary: 'Mehr erfahren',
-      transparency: '🔧 Technische Entwicklung läuft – wir halten dich auf dem Laufenden!'
+      transparency: 'ðŸ”§ Technische Entwicklung lÃ¤uft â€“ wir halten dich auf dem Laufenden!'
     },
     en: {
       badge: 'Early Access',
-      title: 'Join the Saimôr Community',
-      subtitle: 'We\'re building Saimôr together with you. Be there when Môra awakens.',
+      title: 'Join the SaimÃ´r Community',
+      subtitle: 'We\'re building SaimÃ´r together with you. Be there when MÃ´ra awakens.',
       features: [
-        { icon: Users, text: 'Exclusive Beta Access to Môra', color: 'from-blue-500 to-cyan-500' },
+        { icon: Users, text: 'Exclusive Beta Access to MÃ´ra', color: 'from-blue-500 to-cyan-500' },
         { icon: Heart, text: 'Shape Features with Us', color: 'from-pink-500 to-rose-500' },
         { icon: Rocket, text: 'Early-Supporter Benefits', color: 'from-purple-500 to-indigo-500' },
         { icon: Sparkles, text: 'Direct Team Access', color: 'from-amber-500 to-orange-500' }
       ],
-      status: 'In Development: Backend 85% · Frontend 70% · Community Launch: Now',
+      status: 'In Development: Backend 85% Â· Frontend 70% Â· Community Launch: Now',
       cta: 'Join Waitlist',
       secondary: 'Learn More',
-      transparency: '🔧 Technical development ongoing – we\'ll keep you posted!'
+      transparency: 'ðŸ”§ Technical development ongoing â€“ we\'ll keep you posted!'
     }
   }[locale];
 
   return (
     <section className="relative py-20 sm:py-24 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#4A6741]/5 via-[#D4B483]/10 to-[#4A6741]/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#4A6741]/5 via-[#D4A857]/10 to-[#4A6741]/5" />
 
       {/* Organic floating shapes */}
       <motion.div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#D4B483]/10 blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#D4A857]/10 blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
           x: [0, 30, 0],
@@ -97,7 +97,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#4A6741] to-[#D4B483] text-white font-semibold text-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#4A6741] to-[#D4A857] text-white font-semibold text-sm">
             <Sparkles className="w-4 h-4" />
             {content.badge}
           </div>
@@ -115,7 +115,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
             className="text-4xl md:text-5xl font-bold mb-4"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4A857 70%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}
@@ -184,7 +184,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
         >
           <motion.a
             href="#waitlist"
-            className="px-10 py-4 rounded-full bg-gradient-to-r from-[#4A6741] to-[#D4B483] text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-3"
+            className="px-10 py-4 rounded-full bg-gradient-to-r from-[#4A6741] to-[#D4A857] text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-3"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -196,7 +196,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
             href="https://cal.com/saimor/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-10 py-4 rounded-full border-2 border-[#D4B483] text-[#4A6741] font-semibold text-lg hover:bg-[#D4B483]/10 transition-colors"
+            className="px-10 py-4 rounded-full border-2 border-[#D4A857] text-[#4A6741] font-semibold text-lg hover:bg-[#D4A857]/10 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

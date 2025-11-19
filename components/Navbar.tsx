@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Sparkles, Home, Briefcase, Mail, Globe } from 'lucide-react';
@@ -129,7 +129,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
                 <svg viewBox="0 0 40 40" className="w-full h-full">
                   <defs>
                     <linearGradient id="orbLogo" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#D4B483' }} />
+                      <stop offset="0%" style={{ stopColor: '#D4A857' }} />
                       <stop offset="100%" style={{ stopColor: '#E6C897' }} />
                     </linearGradient>
                   </defs>
@@ -159,10 +159,10 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
                     textShadow: '0 2px 8px rgba(212, 180, 131, 0.3)'
                   }}
                 >
-                  Saimôr
+                  SaimÃ´r
                 </span>
                 <span
-                  className="text-[9px] text-[#D4B483] tracking-widest uppercase opacity-70"
+                  className="text-[9px] text-[#D4A857] tracking-widest uppercase opacity-70"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   {locale === 'de' ? 'Klarheit' : 'Clarity'}
@@ -171,7 +171,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
             </Link>
 
             {/* Divider */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-[#D4B483]/40 to-transparent" />
+            <div className="h-8 w-px bg-gradient-to-b from-transparent via-[#D4A857]/40 to-transparent" />
 
             {/* Desktop Quick Links */}
             <div className="hidden lg:flex items-center gap-2">
@@ -191,7 +191,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
                     />
                   </motion.a>
                   {index < navItems.slice(1, 3).length - 1 && (
-                    <span className="text-[#D4B483]/30 text-xs">|</span>
+                    <span className="text-[#D4A857]/30 text-xs">|</span>
                   )}
                 </div>
               ))}
@@ -202,7 +202,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
               href="https://cal.com/saimor/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-[#D4B483] to-[#E6C897] shadow-lg hover:shadow-xl transition-all"
+              className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-[#D4A857] to-[#E6C897] shadow-lg hover:shadow-xl transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -210,13 +210,13 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
               }}
             >
               <Sparkles className="w-4 h-4" />
-              <span>{locale === 'de' ? 'Gespräch buchen' : 'Book Call'}</span>
+              <span>{locale === 'de' ? 'GesprÃ¤ch buchen' : 'Book Call'}</span>
             </motion.a>
 
             {/* Menu Button */}
             <motion.button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="relative w-9 h-9 rounded-full bg-gradient-to-br from-[#D4B483]/20 to-[#E6C897]/10 flex items-center justify-center text-[#D4B483] hover:from-[#D4B483]/30 hover:to-[#E6C897]/20 transition-all"
+              className="relative w-9 h-9 rounded-full bg-gradient-to-br from-[#D4A857]/20 to-[#E6C897]/10 flex items-center justify-center text-[#D4A857] hover:from-[#D4A857]/30 hover:to-[#E6C897]/20 transition-all"
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
               style={{
@@ -354,7 +354,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
                 >
                   <Globe className="w-5 h-5" />
                 </Link>
-                <span className="text-xs font-medium text-[#D4B483]">{locale === 'de' ? 'EN' : 'DE'}</span>
+                <span className="text-xs font-medium text-[#D4A857]">{locale === 'de' ? 'EN' : 'DE'}</span>
               </motion.div>
             </div>
           </motion.div>

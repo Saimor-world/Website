@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Send, X, Loader2, User, Bot } from 'lucide-react';
@@ -50,11 +50,11 @@ export default function MoraChat() {
       setMessages([{
         id: 'welcome',
         role: 'assistant',
-        content: 'Hallo! Ich bin Môra, deine KI-Begleiterin für Klarheit im Wandel. Wie kann ich dir heute helfen?',
+        content: 'Hallo! Ich bin MÃ´ra, deine KI-Begleiterin fÃ¼r Klarheit im Wandel. Wie kann ich dir heute helfen?',
         timestamp: Date.now()
       }]);
       setSuggestions([
-        { id: '1', text: 'Was ist Saimôr?' },
+        { id: '1', text: 'Was ist SaimÃ´r?' },
         { id: '2', text: 'Wie funktioniert Orbit?' },
         { id: '3', text: 'Termin buchen' }
       ]);
@@ -96,7 +96,7 @@ export default function MoraChat() {
 
       if (!response.ok) {
         const errorPayload = await response.json().catch(() => ({}));
-        throw new Error(errorPayload?.error || 'Môra ist gerade nicht erreichbar');
+        throw new Error(errorPayload?.error || 'MÃ´ra ist gerade nicht erreichbar');
       }
 
       const data = await response.json();
@@ -128,7 +128,7 @@ export default function MoraChat() {
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
         role: 'assistant',
-        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuche es später noch einmal oder buche direkt einen Termin auf Cal.com.',
+        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuche es spÃ¤ter noch einmal oder buche direkt einen Termin auf Cal.com.',
         timestamp: Date.now()
       };
 
@@ -172,15 +172,15 @@ export default function MoraChat() {
               }}
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4B483] to-[#E6C897] flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center shadow-lg">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                    Môra
+                    MÃ´ra
                   </h3>
                   <p className="text-xs text-white/80">
-                    KI-Begleiterin für Klarheit
+                    KI-Begleiterin fÃ¼r Klarheit
                   </p>
                 </div>
                 <button
@@ -211,7 +211,7 @@ export default function MoraChat() {
                   <div
                     className={`max-w-[75%] px-4 py-2.5 rounded-2xl ${
                       message.role === 'user'
-                        ? 'bg-gradient-to-br from-[#D4B483] to-[#E6C897] text-white'
+                        ? 'bg-gradient-to-br from-[#D4A857] to-[#E6C897] text-white'
                         : 'bg-white border border-gray-200 text-gray-800'
                     }`}
                     style={{
@@ -226,7 +226,7 @@ export default function MoraChat() {
                   </div>
 
                   {message.role === 'user' && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[#D4B483] to-[#E6C897] flex items-center justify-center shadow-md">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center shadow-md">
                       <User className="w-4 h-4 text-white" />
                     </div>
                   )}
@@ -256,7 +256,7 @@ export default function MoraChat() {
                     <motion.button
                       key={suggestion.id}
                       onClick={() => handleSuggestionClick(suggestion)}
-                      className="px-3 py-1.5 rounded-full text-sm font-medium bg-white border border-[#D4B483]/30 text-[#4A6741] hover:bg-[#D4B483]/10 hover:border-[#D4B483] transition-all"
+                      className="px-3 py-1.5 rounded-full text-sm font-medium bg-white border border-[#D4A857]/30 text-[#4A6741] hover:bg-[#D4A857]/10 hover:border-[#D4A857] transition-all"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -284,7 +284,7 @@ export default function MoraChat() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Nachricht eingeben..."
-                  className="flex-1 px-4 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/50 focus:border-[#D4B483] text-sm transition-all"
+                  className="flex-1 px-4 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50 focus:border-[#D4A857] text-sm transition-all"
                   disabled={isLoading}
                 />
                 <motion.button

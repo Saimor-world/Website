@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -18,8 +18,8 @@ export default function DataJungle() {
   useEffect(() => {
     // Erstelle Daten-Chaos im Hintergrund
     const sampleData = [
-      '0101', '1010', 'DATA', '∞', '{}', '[]', 'KPI', 'AI',
-      '€', '%', '⚡', '∑', 'Δ', '≈', '→', '↓', '↑',
+      '0101', '1010', 'DATA', 'âˆž', '{}', '[]', 'KPI', 'AI',
+      'â‚¬', '%', 'âš¡', 'âˆ‘', 'Î”', 'â‰ˆ', 'â†’', 'â†“', 'â†‘',
       'JSON', 'SQL', 'CSV', 'API', 'DB'
     ];
 
@@ -75,12 +75,12 @@ export default function DataJungle() {
               transition={{ duration: 3, delay: i * 0.5 }}
             />
 
-            {/* Cookie-Krümel entlang der Liane */}
+            {/* Cookie-KrÃ¼mel entlang der Liane */}
             {[0.2, 0.4, 0.6, 0.8].map((offset, j) => (
               <g key={`cookie-${i}-${j}`}>
                 <circle
                   r="8"
-                  fill="#D4B483"
+                  fill="#D4A857"
                   opacity="0.6"
                 >
                   <animate
@@ -158,12 +158,12 @@ export default function DataJungle() {
               delay: i * 0.3
             }}
           >
-            🍪 {cookieValue}
+            ðŸª {cookieValue}
           </motion.div>
         );
       })}
 
-      {/* LICHTSTRAHL - Vom Saimôr Logo (Zentrum oben) nach unten */}
+      {/* LICHTSTRAHL - Vom SaimÃ´r Logo (Zentrum oben) nach unten */}
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 1000 1000"
@@ -171,22 +171,22 @@ export default function DataJungle() {
         style={{ opacity: isHovered ? 0.15 : 0.08 }}
       >
         <defs>
-          {/* Gradient für Lichtstrahl */}
+          {/* Gradient fÃ¼r Lichtstrahl */}
           <linearGradient id="lightBeam" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="#D4B483" stopOpacity="0.6" />
-            <stop offset="30%" stopColor="#D4B483" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#D4B483" stopOpacity="0" />
+            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.6" />
+            <stop offset="30%" stopColor="#D4A857" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#D4A857" stopOpacity="0" />
           </linearGradient>
 
-          {/* Radial Gradient für Lichtquelle */}
+          {/* Radial Gradient fÃ¼r Lichtquelle */}
           <radialGradient id="lightSource" cx="50%" cy="20%">
-            <stop offset="0%" stopColor="#D4B483" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#D4B483" stopOpacity="0.3" />
+            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.8" />
+            <stop offset="50%" stopColor="#D4A857" stopOpacity="0.3" />
             <stop offset="100%" stopColor="transparent" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        {/* Lichtquelle (Saimôr = Leuchtturm) */}
+        {/* Lichtquelle (SaimÃ´r = Leuchtturm) */}
         <motion.circle
           cx="500"
           cy="200"
@@ -230,7 +230,7 @@ export default function DataJungle() {
         />
       </svg>
 
-      {/* BRÜCKE - Path durch den Datendschungel */}
+      {/* BRÃœCKE - Path durch den Datendschungel */}
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 1000 1000"
@@ -240,12 +240,12 @@ export default function DataJungle() {
         <defs>
           <linearGradient id="bridgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#4A6741" stopOpacity="0.6" />
-            <stop offset="50%" stopColor="#D4B483" stopOpacity="0.8" />
+            <stop offset="50%" stopColor="#D4A857" stopOpacity="0.8" />
             <stop offset="100%" stopColor="#4A6741" stopOpacity="0.6" />
           </linearGradient>
         </defs>
 
-        {/* Haupt-Brückenpfad - elegant geschwungen */}
+        {/* Haupt-BrÃ¼ckenpfad - elegant geschwungen */}
         <motion.path
           d="M 0,700 Q 250,650 500,600 T 1000,550"
           stroke="url(#bridgeGradient)"
@@ -264,7 +264,7 @@ export default function DataJungle() {
           }}
         />
 
-        {/* Parallele Brückenwege */}
+        {/* Parallele BrÃ¼ckenwege */}
         <motion.path
           d="M 0,720 Q 250,670 500,620 T 1000,570"
           stroke="url(#bridgeGradient)"
@@ -289,12 +289,12 @@ export default function DataJungle() {
           transition={{ duration: 4, delay: 1 }}
         />
 
-        {/* Brücken-Partikel die den Pfad entlang wandern - LANGSAM! */}
+        {/* BrÃ¼cken-Partikel die den Pfad entlang wandern - LANGSAM! */}
         {[0, 1, 2].map((i) => (
           <motion.circle
             key={`bridge-particle-${i}`}
             r="4"
-            fill="#D4B483"
+            fill="#D4A857"
             filter="url(#glow)"
             style={{ opacity: 0.6 }}
           >
@@ -318,7 +318,7 @@ export default function DataJungle() {
         </defs>
       </svg>
 
-      {/* KLARHEITS-PARTIKEL - Folgen der Brücke */}
+      {/* KLARHEITS-PARTIKEL - Folgen der BrÃ¼cke */}
       {isHovered && (
         <div className="absolute inset-0">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -328,7 +328,7 @@ export default function DataJungle() {
               style={{
                 left: `${10 + i * 12}%`,
                 top: `${60 + Math.sin(i) * 10}%`,
-                background: 'radial-gradient(circle, #D4B483 0%, #4A6741 100%)',
+                background: 'radial-gradient(circle, #D4A857 0%, #4A6741 100%)',
                 boxShadow: '0 0 15px rgba(212, 180, 131, 0.6)'
               }}
               animate={{
@@ -358,12 +358,12 @@ export default function DataJungle() {
             className="text-xs font-mono text-saimor-green text-center"
             style={{ textShadow: '0 0 10px rgba(74, 103, 65, 0.5)' }}
           >
-            Daten → Klarheit → Wandel
+            Daten â†’ Klarheit â†’ Wandel
           </p>
         </motion.div>
       )}
 
-      {/* Saimôr Logo Glow (zentral, subtle) */}
+      {/* SaimÃ´r Logo Glow (zentral, subtle) */}
       <motion.div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
         animate={{

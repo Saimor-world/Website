@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, X, Loader2 } from 'lucide-react';
@@ -32,13 +32,13 @@ export default function Lichtgespraech() {
       // Welcome message
       const welcome: Message = {
         id: 'welcome',
-        content: 'Willkommen im Lichtgespräch. Ich bin hier, um Klarheit in Ihren Wandel zu bringen. Wie kann ich Sie heute begleiten?',
+        content: 'Willkommen im LichtgesprÃ¤ch. Ich bin hier, um Klarheit in Ihren Wandel zu bringen. Wie kann ich Sie heute begleiten?',
         role: 'assistant',
         timestamp: new Date(),
         suggestions: [
-          'Was ist Saimôr?',
+          'Was ist SaimÃ´r?',
           'Wie funktioniert Orbit?',
-          'Lösungen für Schulen'
+          'LÃ¶sungen fÃ¼r Schulen'
         ]
       };
       setMessages([welcome]);
@@ -94,15 +94,15 @@ export default function Lichtgespraech() {
       setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {
-      console.error('Lichtgespräch error:', error);
+      console.error('LichtgesprÃ¤ch error:', error);
 
       // Fallback zu lokalem Chatbot
       const fallbackMessage: Message = {
         id: `msg_${Date.now()}_assistant`,
-        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuchen Sie es später erneut oder buchen Sie direkt ein Klarheitsgespräch.',
+        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuchen Sie es spÃ¤ter erneut oder buchen Sie direkt ein KlarheitsgesprÃ¤ch.',
         role: 'assistant',
         timestamp: new Date(),
-        suggestions: ['Klarheitsgespräch buchen']
+        suggestions: ['KlarheitsgesprÃ¤ch buchen']
       };
 
       setMessages(prev => [...prev, fallbackMessage]);
@@ -112,7 +112,7 @@ export default function Lichtgespraech() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (suggestion === 'Klarheitsgespräch buchen') {
+    if (suggestion === 'KlarheitsgesprÃ¤ch buchen') {
       window.open('https://cal.com/saimor/30min', '_blank');
       return;
     }
@@ -133,7 +133,7 @@ export default function Lichtgespraech() {
             onClick={() => setIsOpen(true)}
             className="relative w-20 h-20 rounded-full shadow-2xl overflow-hidden group"
             style={{
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               border: '3px solid rgba(212, 180, 131, 0.6)',
               boxShadow: '0 20px 60px rgba(74, 103, 65, 0.4), 0 0 40px rgba(212, 180, 131, 0.3)'
             }}
@@ -191,7 +191,7 @@ export default function Lichtgespraech() {
               transition={{ delay: 0.5 }}
             >
               <span className="text-xs font-semibold text-saimor-green">
-                Lichtgespräch
+                LichtgesprÃ¤ch
               </span>
             </motion.div>
           </motion.button>
@@ -228,7 +228,7 @@ export default function Lichtgespraech() {
                   key={i}
                   className="absolute w-1.5 h-1.5 rounded-full"
                   style={{
-                    background: '#D4B483',
+                    background: '#D4A857',
                     left: `${20 + i * 15}%`,
                     top: `${30 + Math.random() * 40}%`
                   }}
@@ -255,7 +255,7 @@ export default function Lichtgespraech() {
                     <Sparkles className="w-6 h-6 text-white" />
                   </motion.div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">Lichtgespräch</h3>
+                    <h3 className="font-bold text-white text-lg">LichtgesprÃ¤ch</h3>
                     <p className="text-xs text-white/80">Klarheit im Wandel</p>
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function Lichtgespraech() {
                     }`}
                     style={{
                       background: message.role === 'user'
-                        ? 'linear-gradient(135deg, #D4B483 0%, #E6C897 100%)'
+                        ? 'linear-gradient(135deg, #D4A857 0%, #E6C897 100%)'
                         : 'linear-gradient(135deg, rgba(74, 103, 65, 0.08) 0%, rgba(212, 180, 131, 0.12) 100%)',
                       border: message.role === 'user'
                         ? '1px solid rgba(212, 180, 131, 0.4)'
@@ -323,7 +323,7 @@ export default function Lichtgespraech() {
                               color: '#4A6741'
                             }}
                           >
-                            → {suggestion}
+                            â†’ {suggestion}
                           </motion.button>
                         ))}
                       </div>

@@ -1,13 +1,13 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Users, Repeat, Sparkles, Target, Heart } from 'lucide-react';
 
 export default function OrbitPage() {
   const benefits = [
-    { icon: Target, text: 'Regelmäßige Orientierung statt Meeting-Overload', color: '#4A6741' },
+    { icon: Target, text: 'RegelmÃ¤ÃŸige Orientierung statt Meeting-Overload', color: '#4A6741' },
     { icon: Heart, text: 'Tiefe statt Hektik', color: '#5D7C54' },
-    { icon: Sparkles, text: 'Kontinuität im Wandel', color: '#D4B483' }
+    { icon: Sparkles, text: 'KontinuitÃ¤t im Wandel', color: '#D4A857' }
   ];
 
   return (
@@ -80,9 +80,9 @@ export default function OrbitPage() {
             <motion.div
               className="inline-block mb-6 px-6 py-3 rounded-full"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(212,180,131,0.15) 100%)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(212,168,87,0.15) 100%)',
                 backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(212,180,131,0.4)'
+                border: '1px solid rgba(212,168,87,0.4)'
               }}
               whileHover={{ scale: 1.05 }}
             >
@@ -103,7 +103,7 @@ export default function OrbitPage() {
                  fontFamily: 'Cormorant Garamond, serif',
                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
                }}>
-              Systematische Begleitung für wiederkehrende Transformation. Ein natürlicher Rhythmus, der Klarheit und Resonanz schafft.
+              Systematische Begleitung fÃ¼r wiederkehrende Transformation. Ein natÃ¼rlicher Rhythmus, der Klarheit und Resonanz schafft.
             </p>
           </motion.div>
         </div>
@@ -141,7 +141,7 @@ export default function OrbitPage() {
             className="font-serif text-4xl sm:text-5xl mb-16 text-center"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
@@ -166,14 +166,14 @@ export default function OrbitPage() {
                 className="relative p-8 rounded-3xl shadow-xl group overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                  border: '1px solid rgba(212,180,131,0.3)',
+                  border: '1px solid rgba(212,168,87,0.3)',
                   boxShadow: '0 20px 40px rgba(74,103,65,0.1)'
                 }}
               >
                 {/* Hover gradient overlay */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
                      style={{
-                       background: 'radial-gradient(circle at center, rgba(212,180,131,0.1) 0%, transparent 70%)'
+                       background: 'radial-gradient(circle at center, rgba(212,168,87,0.1) 0%, transparent 70%)'
                      }}
                 />
 
@@ -205,17 +205,17 @@ export default function OrbitPage() {
             className="grid sm:grid-cols-3 gap-6 mb-20"
           >
             {[
-              { icon: Clock, title: 'Dauer', desc: '1–6 Monate' },
-              { icon: Repeat, title: 'Sessions', desc: 'Regelmäßiger Takt' },
-              { icon: Users, title: 'Zielgruppe', desc: 'Teams, Organisationen, Führungskreise' }
+              { icon: Clock, title: 'Dauer', desc: '1â€“6 Monate' },
+              { icon: Repeat, title: 'Sessions', desc: 'RegelmÃ¤ÃŸiger Takt' },
+              { icon: Users, title: 'Zielgruppe', desc: 'Teams, Organisationen, FÃ¼hrungskreise' }
             ].map((item, i) => (
               <motion.div
                 key={i}
                 whileHover={{ y: -6, scale: 1.02 }}
                 className="text-center p-8 rounded-3xl shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,180,131,0.12) 100%)',
-                  border: '1px solid rgba(212,180,131,0.3)'
+                  background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,168,87,0.12) 100%)',
+                  border: '1px solid rgba(212,168,87,0.3)'
                 }}
               >
                 <item.icon className="w-10 h-10 mx-auto mb-4 text-saimor-green" />
@@ -241,7 +241,7 @@ export default function OrbitPage() {
           >
             <motion.div
               className="absolute top-6 right-8 w-4 h-4 rounded-full"
-              style={{ background: 'rgba(212,180,131,0.6)' }}
+              style={{ background: 'rgba(212,168,87,0.6)' }}
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.6, 1, 0.6]
@@ -250,8 +250,8 @@ export default function OrbitPage() {
             />
             <p className="text-2xl sm:text-3xl font-medium text-slate-900 leading-relaxed"
                style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Erst verstehen, dann verändern – <br className="hidden sm:block"/>
-              Orbit schafft einen verlässlichen <span className="text-saimor-green font-bold">Resonanzraum</span> für Entscheidungen.
+              Erst verstehen, dann verÃ¤ndern â€“ <br className="hidden sm:block"/>
+              Orbit schafft einen verlÃ¤sslichen <span className="text-saimor-green font-bold">Resonanzraum</span> fÃ¼r Entscheidungen.
             </p>
           </motion.div>
 
@@ -271,21 +271,21 @@ export default function OrbitPage() {
               style={{
                 background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
                 boxShadow: '0 15px 35px rgba(74, 103, 65, 0.3), inset 0 2px 0 rgba(255,255,255,0.3)',
-                border: '2px solid rgba(212,180,131,0.5)'
+                border: '2px solid rgba(212,168,87,0.5)'
               }}
             >
               <motion.div
                 className="absolute inset-0"
                 animate={{
                   background: [
-                    'radial-gradient(circle at 20% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)',
-                    'radial-gradient(circle at 80% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)',
-                    'radial-gradient(circle at 20% 50%, rgba(212,180,131,0.3) 0%, transparent 60%)'
+                    'radial-gradient(circle at 20% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)',
+                    'radial-gradient(circle at 80% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)',
+                    'radial-gradient(circle at 20% 50%, rgba(212,168,87,0.3) 0%, transparent 60%)'
                   ]
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
               />
-              <span className="relative z-10">Klarheitsgespräch zu Orbit buchen</span>
+              <span className="relative z-10">KlarheitsgesprÃ¤ch zu Orbit buchen</span>
             </motion.a>
 
             <Link
@@ -293,7 +293,7 @@ export default function OrbitPage() {
               className="flex items-center gap-3 text-lg text-saimor-green hover:text-saimor-gold transition-colors font-semibold"
             >
               <ArrowLeft size={22} />
-              <span>Zurück zur Startseite</span>
+              <span>ZurÃ¼ck zur Startseite</span>
             </Link>
           </div>
         </div>

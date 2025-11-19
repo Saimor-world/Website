@@ -1,0 +1,223 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HowItWorksMindloop > renders three German steps 1`] = `
+<section
+  class="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-[#0f1f17] via-[#0d1b14] to-[#0c1813]"
+>
+  <div
+    class="relative mx-auto max-w-6xl px-6 lg:px-8 space-y-10"
+  >
+    <div
+      class="absolute inset-0 pointer-events-none opacity-30"
+    />
+    <div
+      class="relative text-center text-white space-y-3 max-w-3xl mx-auto"
+    >
+      <p
+        class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-saimor-gold shadow-sm"
+      >
+        Mind Loop
+      </p>
+      <h2
+        class="text-3xl sm:text-4xl font-semibold"
+        style="font-family: "Cormorant Garamond", serif;"
+      >
+        Wie der Mind Loop arbeitet
+      </h2>
+      <p
+        class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
+      >
+        Drei ruhige Schritte verbinden Signale, Bedeutung und Myzel. Keine Autonomieversprechen, nur Klarheit mit Demo-Daten.
+      </p>
+    </div>
+    <div
+      class="relative grid gap-4 sm:gap-6 lg:grid-cols-3"
+    >
+      <div
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 sm:p-7 shadow-[0_18px_50px_rgba(0,0,0,0.24)] flex flex-col gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold/60 cursor-pointer"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="flex items-center justify-between gap-2"
+        >
+          <div
+            class="inline-flex items-center gap-3"
+          >
+            <span
+              class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
+            >
+              <svg
+                class="lucide lucide-activity h-5 w-5 text-saimor-gold"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+                />
+              </svg>
+            </span>
+            <h3
+              class="text-xl font-semibold text-white"
+            >
+              Signale sammeln
+            </h3>
+          </div>
+          <span
+            class="text-xs text-white/60"
+          >
+            0
+            1
+          </span>
+        </div>
+        <p
+          class="text-sm sm:text-base text-white/80 leading-relaxed"
+        >
+          Systeme, Dokumente und Notizen liefern Zustände und Ereignisse.
+        </p>
+      </div>
+      <div
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 sm:p-7 shadow-[0_18px_50px_rgba(0,0,0,0.24)] flex flex-col gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold/60 cursor-pointer"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="flex items-center justify-between gap-2"
+        >
+          <div
+            class="inline-flex items-center gap-3"
+          >
+            <span
+              class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
+            >
+              <svg
+                class="lucide lucide-brain h-5 w-5 text-saimor-gold"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"
+                />
+                <path
+                  d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"
+                />
+                <path
+                  d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"
+                />
+                <path
+                  d="M17.599 6.5a3 3 0 0 0 .399-1.375"
+                />
+                <path
+                  d="M6.003 5.125A3 3 0 0 0 6.401 6.5"
+                />
+                <path
+                  d="M3.477 10.896a4 4 0 0 1 .585-.396"
+                />
+                <path
+                  d="M19.938 10.5a4 4 0 0 1 .585.396"
+                />
+                <path
+                  d="M6 18a4 4 0 0 1-1.967-.516"
+                />
+                <path
+                  d="M19.967 17.484A4 4 0 0 1 18 18"
+                />
+              </svg>
+            </span>
+            <h3
+              class="text-xl font-semibold text-white"
+            >
+              Bedeutung erkennen
+            </h3>
+          </div>
+          <span
+            class="text-xs text-white/60"
+          >
+            0
+            2
+          </span>
+        </div>
+        <p
+          class="text-sm sm:text-base text-white/80 leading-relaxed"
+        >
+          Die semantische Schicht verdichtet Muster, Hinweise und Auffälligkeiten (Mind Loop).
+        </p>
+      </div>
+      <div
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 sm:p-7 shadow-[0_18px_50px_rgba(0,0,0,0.24)] flex flex-col gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold/60 cursor-pointer"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="flex items-center justify-between gap-2"
+        >
+          <div
+            class="inline-flex items-center gap-3"
+          >
+            <span
+              class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
+            >
+              <svg
+                class="lucide lucide-panels-top-left h-5 w-5 text-saimor-gold"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  height="18"
+                  rx="2"
+                  width="18"
+                  x="3"
+                  y="3"
+                />
+                <path
+                  d="M3 9h18"
+                />
+                <path
+                  d="M9 21V9"
+                />
+              </svg>
+            </span>
+            <h3
+              class="text-xl font-semibold text-white"
+            >
+              Kontext sichtbar machen
+            </h3>
+          </div>
+          <span
+            class="text-xs text-white/60"
+          >
+            0
+            3
+          </span>
+        </div>
+        <p
+          class="text-sm sm:text-base text-white/80 leading-relaxed"
+        >
+          Môra zeigt im Myzelraum, welche Themen, Risiken oder Chancen gerade wichtig sind.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+`;

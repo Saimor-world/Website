@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
@@ -11,30 +11,30 @@ export default function FAQ({ locale }: Props) {
 
   const faqs = [
     {
-      q: t('Was ist Saimôr?', 'What is Saimôr?'),
+      q: t('Was ist SaimÃ´r?', 'What is SaimÃ´r?'),
       a: t(
-        'Saimôr ist ein ruhiger Resonanzraum für Klarheit in Veränderung. Wir verbinden menschliche Tiefe mit präziser Technologie – immer ohne Druck, immer mit Zeit zum Verstehen.',
-        'Saimôr is a calm resonance space for clarity in change. We combine human depth with precise technology—always without pressure, always with time to understand.'
+        'SaimÃ´r ist ein ruhiger Resonanzraum fÃ¼r Klarheit in VerÃ¤nderung. Wir verbinden menschliche Tiefe mit prÃ¤ziser Technologie â€“ immer ohne Druck, immer mit Zeit zum Verstehen.',
+        'SaimÃ´r is a calm resonance space for clarity in change. We combine human depth with precise technologyâ€”always without pressure, always with time to understand.'
       ),
     },
     {
-      q: t('Was ist Môra?', 'What is Môra?'),
+      q: t('Was ist MÃ´ra?', 'What is MÃ´ra?'),
       a: t(
-        'Môra ist die KI-Begleiterin im Saimôr-Ökosystem. Im Prototyp zeigt sie Dashboard-Beispiele und reagiert im Chat – aktuell mit simulierten Daten, ohne externe Clouds.',
-        'Môra is the AI companion inside the Saimôr ecosystem. In the prototype she shows dashboard examples and responds in chat—currently with simulated data and no external clouds.'
+        'MÃ´ra ist die KI-Begleiterin im SaimÃ´r-Ã–kosystem. Im Prototyp zeigt sie Dashboard-Beispiele und reagiert im Chat â€“ aktuell mit simulierten Daten, ohne externe Clouds.',
+        'MÃ´ra is the AI companion inside the SaimÃ´r ecosystem. In the prototype she shows dashboard examples and responds in chatâ€”currently with simulated data and no external clouds.'
       ),
     },
     {
       q: t('Wie kann ich es ausprobieren?', 'How can I try it?'),
       a: t(
-        'Schreib uns kurz. Wir zeigen dir die Demo in Ruhe und besprechen, ob und wie Saimôr zu deinem Kontext passt.',
-        'Send us a short note. We will walk you through the demo calmly and discuss if and how Saimôr fits your context.'
+        'Schreib uns kurz. Wir zeigen dir die Demo in Ruhe und besprechen, ob und wie SaimÃ´r zu deinem Kontext passt.',
+        'Send us a short note. We will walk you through the demo calmly and discuss if and how SaimÃ´r fits your context.'
       ),
     },
     {
       q: t('Wie geht ihr mit Daten & Sicherheit um?', 'How do you handle data & security?'),
       a: t(
-        'In der Demo nutzen wir ausschließlich lokal generierte Beispiel-Daten. Keine Profilbildung, kein Tracking, EU-Recht als Basis. Bei echten Projekten gilt: Datensparsamkeit, klare Rollen, Export jederzeit.',
+        'In der Demo nutzen wir ausschlieÃŸlich lokal generierte Beispiel-Daten. Keine Profilbildung, kein Tracking, EU-Recht als Basis. Bei echten Projekten gilt: Datensparsamkeit, klare Rollen, Export jederzeit.',
         'In the demo we use only locally generated sample data. No profiling, no tracking, EU law as the baseline. For real projects we apply data minimization, clear roles, and export on request at any time.'
       ),
     },
@@ -67,16 +67,16 @@ export default function FAQ({ locale }: Props) {
             className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}
           >
-            {t('Häufige Fragen', 'Frequently Asked Questions')}
+            {t('HÃ¤ufige Fragen', 'Frequently Asked Questions')}
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            {t('Alles, was Sie über Saimôr wissen sollten', 'Everything you should know about Saimôr')}
+            {t('Alles, was Sie Ã¼ber SaimÃ´r wissen sollten', 'Everything you should know about SaimÃ´r')}
           </p>
         </motion.div>
 
@@ -101,7 +101,7 @@ export default function FAQ({ locale }: Props) {
               <button
                 type="button"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full text-left p-6 flex items-start justify-between gap-4 hover:bg-saimor-green/5 transition-colors duration-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4B483] focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-2xl"
+                className="w-full text-left p-6 flex items-start justify-between gap-4 hover:bg-saimor-green/5 transition-colors duration-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-2xl"
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-panel-${i}`}
               >
@@ -160,7 +160,7 @@ export default function FAQ({ locale }: Props) {
               boxShadow: '0 10px 30px rgba(74, 103, 65, 0.25)'
             }}
           >
-            {t('Klarheitsgespräch buchen', 'Book clarity call')}
+            {t('KlarheitsgesprÃ¤ch buchen', 'Book clarity call')}
           </motion.a>
         </motion.div>
       </div>

@@ -1,19 +1,19 @@
-# 🎬 Môra Disney Intro - First-Visit Animation
+﻿# ðŸŽ¬ MÃ´ra Disney Intro - First-Visit Animation
 
-**Ziel:** Môra stellt sich beim ersten Besuch vor - verspielt, animiert, unvergesslich
+**Ziel:** MÃ´ra stellt sich beim ersten Besuch vor - verspielt, animiert, unvergesslich
 
 **Inspiration:** Disney Intros, Obsidian Tool, Orbs, vernetzt
 
 ---
 
-## 🎨 Konzept
+## ðŸŽ¨ Konzept
 
 **First-Visit Experience:**
 1. User landet auf Website
 2. Dunkler Screen fade-in
-3. Goldener Orb fliegt vom Zentrum ein (Môra)
+3. Goldener Orb fliegt vom Zentrum ein (MÃ´ra)
 4. Orb pulsiert, "erwacht"
-5. Text erscheint: "Hallo, ich bin Môra"
+5. Text erscheint: "Hallo, ich bin MÃ´ra"
 6. Kurze Animation: Orb verbindet sich mit Daten-Lianen
 7. Orb fliegt zu finaler Position (unten rechts als Avatar)
 8. Website fade-in
@@ -22,7 +22,7 @@
 
 ---
 
-## 🎯 Technische Umsetzung
+## ðŸŽ¯ Technische Umsetzung
 
 ### **1. localStorage Flag**
 ```typescript
@@ -38,19 +38,19 @@ if (!hasSeenIntro) {
 **Phase 1 - Orb Enter (0-1s):**
 - Schwarzer Fullscreen Overlay
 - Goldener Orb (200px) erscheint in Bildmitte
-- Scale: 0 → 1, Opacity: 0 → 1
+- Scale: 0 â†’ 1, Opacity: 0 â†’ 1
 - Glow-Effect
 
 **Phase 2 - Awakening (1-2s):**
-- Orb pulsiert (Scale: 1 → 1.3 → 1)
-- Text fade-in: "Hallo, ich bin Môra 🌱"
-- Subtext: "Deine KI-Begleiterin für Klarheit"
+- Orb pulsiert (Scale: 1 â†’ 1.3 â†’ 1)
+- Text fade-in: "Hallo, ich bin MÃ´ra ðŸŒ±"
+- Subtext: "Deine KI-Begleiterin fÃ¼r Klarheit"
 - Sparkles um Orb herum
 
 **Phase 3 - Connection (2-3s):**
 - Lianen/Verbindungen wachsen aus Orb
 - 3-4 Linien zu verschiedenen Richtungen
-- Gradient-Animation (gold → grün)
+- Gradient-Animation (gold â†’ grÃ¼n)
 - Kurzer "Netzwerk"-Effekt
 
 **Phase 4 - Exit (3-4s):**
@@ -90,11 +90,11 @@ export default function MoraIntroAnimation({ locale = 'de' }) {
 
   const content = {
     de: {
-      greeting: 'Hallo, ich bin Môra 🌱',
-      subtitle: 'Deine KI-Begleiterin für Klarheit'
+      greeting: 'Hallo, ich bin MÃ´ra ðŸŒ±',
+      subtitle: 'Deine KI-Begleiterin fÃ¼r Klarheit'
     },
     en: {
-      greeting: 'Hello, I\'m Môra 🌱',
+      greeting: 'Hello, I\'m MÃ´ra ðŸŒ±',
       subtitle: 'Your AI companion for clarity'
     }
   }[locale];
@@ -135,7 +135,7 @@ export default function MoraIntroAnimation({ locale = 'de' }) {
             <div
               className="relative w-[200px] h-[200px] rounded-full flex items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)'
               }}
             >
               {/* Eyes */}
@@ -171,7 +171,7 @@ export default function MoraIntroAnimation({ locale = 'de' }) {
               >
                 {content.greeting}
               </h2>
-              <p className="text-lg text-[#D4B483]/80">
+              <p className="text-lg text-[#D4A857]/80">
                 {content.subtitle}
               </p>
             </motion.div>
@@ -196,7 +196,7 @@ export default function MoraIntroAnimation({ locale = 'de' }) {
               ))}
               <defs>
                 <linearGradient id="connectionGradient">
-                  <stop offset="0%" stopColor="#D4B483" />
+                  <stop offset="0%" stopColor="#D4A857" />
                   <stop offset="100%" stopColor="#4A6741" />
                 </linearGradient>
               </defs>
@@ -211,7 +211,7 @@ export default function MoraIntroAnimation({ locale = 'de' }) {
 
 ---
 
-## 🎬 Integration
+## ðŸŽ¬ Integration
 
 **In pages (de/page.tsx, en/page.tsx):**
 ```typescript
@@ -229,11 +229,11 @@ export default function Page() {
 
 ---
 
-## 🎨 Design Details
+## ðŸŽ¨ Design Details
 
 **Colors:**
-- Background: `#0A1612` (dunkelgrün, fast schwarz)
-- Orb: Gradient `#4A6741` → `#D4B483`
+- Background: `#0A1612` (dunkelgrÃ¼n, fast schwarz)
+- Orb: Gradient `#4A6741` â†’ `#D4A857`
 - Glow: `rgba(212, 180, 131, 0.6)`
 - Text: White + Gold accent
 
@@ -248,27 +248,27 @@ export default function Page() {
 
 ---
 
-## 🎯 User Experience
+## ðŸŽ¯ User Experience
 
 **Good:**
-- ✅ Nur beim ersten Besuch
-- ✅ Skipable (ESC oder Click → localStorage setzen)
-- ✅ Kurz (3-4s)
-- ✅ Memorabel
-- ✅ Erklärt Môra's Charakter
+- âœ… Nur beim ersten Besuch
+- âœ… Skipable (ESC oder Click â†’ localStorage setzen)
+- âœ… Kurz (3-4s)
+- âœ… Memorabel
+- âœ… ErklÃ¤rt MÃ´ra's Charakter
 
 **Avoid:**
-- ❌ Zu lang (>5s nervt)
-- ❌ Bei jedem Page Load
-- ❌ Unskipable
+- âŒ Zu lang (>5s nervt)
+- âŒ Bei jedem Page Load
+- âŒ Unskipable
 
 ---
 
-## 📋 Next Steps (für nächste Session)
+## ðŸ“‹ Next Steps (fÃ¼r nÃ¤chste Session)
 
 1. **Component erstellen:** `MoraIntroAnimation.tsx`
 2. **In Pages integrieren:** de/page, en/page
-3. **Skip-Button:** ESC oder Click → localStorage setzen
+3. **Skip-Button:** ESC oder Click â†’ localStorage setzen
 4. **Test:** First-visit vs. Repeat-visit
 5. **Polish:** Easing, Timing, Sparkles
 6. **Optional:** Sound effect (subtil)
@@ -276,5 +276,5 @@ export default function Page() {
 ---
 
 **Aufwand:** 2-3h
-**Priorität:** 🟡 Nice-to-have (nach WEB-01)
-**Impact:** 🔥 High (WOW-Faktor!)
+**PrioritÃ¤t:** ðŸŸ¡ Nice-to-have (nach WEB-01)
+**Impact:** ðŸ”¥ High (WOW-Faktor!)

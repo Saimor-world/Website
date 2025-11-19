@@ -1,0 +1,1023 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DemoPreview > renders English copy without crashing 1`] = `
+<section
+  class="py-16 sm:py-20 lg:py-24 bg-[#0c1813]"
+  id="demo-preview"
+>
+  <div
+    class="relative mx-auto max-w-6xl px-6 lg:px-8"
+  >
+    <div
+      class="absolute inset-0 pointer-events-none opacity-35"
+    />
+    <div
+      class="relative space-y-6"
+      style="opacity: 0; transform: translateY(24px);"
+    >
+      <div
+        class="text-center text-white space-y-3 max-w-3xl mx-auto"
+      >
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-saimor-gold shadow-sm"
+        >
+          <svg
+            class="lucide lucide-badge-check h-4 w-4"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+            />
+            <path
+              d="m9 12 2 2 4-4"
+            />
+          </svg>
+          Live Demo Panel
+        </p>
+        <h2
+          class="text-3xl sm:text-4xl font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          Demo view · Môra UI
+        </h2>
+        <p
+          class="text-base sm:text-lg text-white/80 leading-relaxed"
+        >
+          Here’s a real preview of Môra’s resonance space — all elements come directly from the UI (demo data).
+        </p>
+      </div>
+      <div
+        class="rounded-3xl overflow-hidden border border-white/10 relative"
+        style="background: linear-gradient(180deg, rgba(17, 34, 27, 0.95) 0%, rgba(12, 24, 19, 0.9) 100%); border: 1px solid rgb(212, 168, 87); box-shadow: 0 30px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);"
+      >
+        <div
+          class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent"
+        />
+        <div
+          class="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-white/10 bg-white/5"
+        >
+          <div
+            class="flex items-center gap-2 text-white/80 text-sm"
+          >
+            <svg
+              class="lucide lucide-sparkles h-4 w-4 text-saimor-gold"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+              />
+              <path
+                d="M20 3v4"
+              />
+              <path
+                d="M22 5h-4"
+              />
+              <path
+                d="M4 17v2"
+              />
+              <path
+                d="M5 18H3"
+              />
+            </svg>
+            <span>
+              Demo view (simulated data)
+            </span>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <span
+              class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"
+            />
+            <span
+              class="text-xs text-white/60"
+            >
+              Live · Mock
+            </span>
+          </div>
+        </div>
+        <div
+          class="grid lg:grid-cols-[1.2fr,1fr] gap-4 sm:gap-6 p-4 sm:p-6"
+        >
+          <div
+            class="space-y-4"
+          >
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
+            >
+              <div
+                class="flex items-center justify-between mb-3 text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-activity h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+                    />
+                  </svg>
+                  Home Pulse
+                </div>
+                <span
+                  class="text-xs text-white/60"
+                >
+                  Calm · Focus
+                </span>
+              </div>
+              <div
+                class="grid sm:grid-cols-3 gap-3"
+              >
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Signals
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 87%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Fresh impulses visible
+                  </p>
+                </div>
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Resonanz
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 78%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Clusters in the field
+                  </p>
+                </div>
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Rhythmus
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 68%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Calm cadence for talks
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-leaf h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"
+                    />
+                    <path
+                      d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
+                    />
+                  </svg>
+                  Field · Mycelium
+                </div>
+                <div
+                  class="flex items-center gap-2 text-xs text-white/70"
+                >
+                  <span
+                    class="h-2 w-2 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Calm sync
+                  </span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-white/85 text-sm"
+              >
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Folder
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Field
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Insights
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Chat (calm)
+                  </span>
+                </div>
+              </div>
+              <div
+                class="rounded-2xl border border-white/10 bg-gradient-to-r from-white/6 to-white/2 p-3 text-sm text-white/70"
+              >
+                <p
+                  class="flex items-center gap-2"
+                >
+                  <svg
+                    class="lucide lucide-panels-top-left h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      height="18"
+                      rx="2"
+                      width="18"
+                      x="3"
+                      y="3"
+                    />
+                    <path
+                      d="M3 9h18"
+                    />
+                    <path
+                      d="M9 21V9"
+                    />
+                  </svg>
+                  Mycelium map updated · Folder · Field 12 / Insights 4
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="space-y-4"
+          >
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-panels-top-left h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      height="18"
+                      rx="2"
+                      width="18"
+                      x="3"
+                      y="3"
+                    />
+                    <path
+                      d="M3 9h18"
+                    />
+                    <path
+                      d="M9 21V9"
+                    />
+                  </svg>
+                  Context panel
+                </div>
+                <span
+                  class="text-xs text-white/60"
+                >
+                  Folder · Field
+                </span>
+              </div>
+              <ul
+                class="space-y-2 text-sm text-white/80"
+              >
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Focus: decisions & people
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Signals: 12 calm, 2 open
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Next step: share context
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Example: calm café view · simulated data
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="rounded-2xl border border-white/12 bg-gradient-to-br from-[#102018] to-[#0d1a14] p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-message-circle h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
+                    />
+                  </svg>
+                  Chat · calm mode
+                </div>
+                <span
+                  class="text-xs text-white/65"
+                >
+                  Calm reply
+                </span>
+              </div>
+              <div
+                class="space-y-2 text-sm text-white/85"
+              >
+                <div
+                  class="rounded-2xl bg-white/5 border border-white/12 px-3 py-3 shadow-inner"
+                >
+                  <p>
+                    Which signals converge in the field?
+                  </p>
+                </div>
+                <div
+                  class="rounded-2xl bg-[#0f1f17] border border-white/12 px-3 py-3 shadow-inner text-white/80"
+                >
+                  <p>
+                    Answer: three clusters, ready for a focus call.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`DemoPreview > shows German demo hint and badge 1`] = `
+<section
+  class="py-16 sm:py-20 lg:py-24 bg-[#0c1813]"
+  id="demo-preview"
+>
+  <div
+    class="relative mx-auto max-w-6xl px-6 lg:px-8"
+  >
+    <div
+      class="absolute inset-0 pointer-events-none opacity-35"
+    />
+    <div
+      class="relative space-y-6"
+      style="opacity: 0; transform: translateY(24px);"
+    >
+      <div
+        class="text-center text-white space-y-3 max-w-3xl mx-auto"
+      >
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-saimor-gold shadow-sm"
+        >
+          <svg
+            class="lucide lucide-badge-check h-4 w-4"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+            />
+            <path
+              d="m9 12 2 2 4-4"
+            />
+          </svg>
+          Live Demo Panel
+        </p>
+        <h2
+          class="text-3xl sm:text-4xl font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          Demo-Ansicht · Môra UI
+        </h2>
+        <p
+          class="text-base sm:text-lg text-white/80 leading-relaxed"
+        >
+          Hier siehst du einen echten Einblick in Môras Resonanzraum — alle Elemente stammen direkt aus der UI (Demo-Daten). So könnte der Raum für ein Café aussehen – mit simulierten Daten.
+        </p>
+      </div>
+      <div
+        class="rounded-3xl overflow-hidden border border-white/10 relative"
+        style="background: linear-gradient(180deg, rgba(17, 34, 27, 0.95) 0%, rgba(12, 24, 19, 0.9) 100%); border: 1px solid rgb(212, 168, 87); box-shadow: 0 30px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);"
+      >
+        <div
+          class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent"
+        />
+        <div
+          class="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-white/10 bg-white/5"
+        >
+          <div
+            class="flex items-center gap-2 text-white/80 text-sm"
+          >
+            <svg
+              class="lucide lucide-sparkles h-4 w-4 text-saimor-gold"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+              />
+              <path
+                d="M20 3v4"
+              />
+              <path
+                d="M22 5h-4"
+              />
+              <path
+                d="M4 17v2"
+              />
+              <path
+                d="M5 18H3"
+              />
+            </svg>
+            <span>
+              Demo-Ansicht (simulierte Daten)
+            </span>
+          </div>
+          <div
+            class="flex items-center gap-2"
+          >
+            <span
+              class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"
+            />
+            <span
+              class="text-xs text-white/60"
+            >
+              Live · Mock
+            </span>
+          </div>
+        </div>
+        <div
+          class="grid lg:grid-cols-[1.2fr,1fr] gap-4 sm:gap-6 p-4 sm:p-6"
+        >
+          <div
+            class="space-y-4"
+          >
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
+            >
+              <div
+                class="flex items-center justify-between mb-3 text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-activity h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+                    />
+                  </svg>
+                  Home Pulse
+                </div>
+                <span
+                  class="text-xs text-white/60"
+                >
+                  Calm · Focus
+                </span>
+              </div>
+              <div
+                class="grid sm:grid-cols-3 gap-3"
+              >
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Signals
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 87%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Frische Impulse sichtbar
+                  </p>
+                </div>
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Resonanz
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 78%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Cluster im Feld
+                  </p>
+                </div>
+                <div
+                  class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-white/80 text-sm flex flex-col gap-1"
+                >
+                  <span
+                    class="flex items-center justify-between text-xs uppercase tracking-[0.1em] text-white/60"
+                  >
+                    Rhythmus
+                    <span
+                      class="h-1.5 w-1.5 rounded-full"
+                      style="background-color: rgb(212, 168, 87);"
+                    />
+                  </span>
+                  <div
+                    class="h-2 rounded-full bg-white/10 overflow-hidden"
+                  >
+                    <div
+                      class="h-full rounded-full bg-saimor-gold"
+                      style="width: 68%;"
+                    />
+                  </div>
+                  <p
+                    class="text-xs text-white/65"
+                  >
+                    Ruhige Taktung für Gespräche
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-leaf h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"
+                    />
+                    <path
+                      d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
+                    />
+                  </svg>
+                  Feld · Myzel
+                </div>
+                <div
+                  class="flex items-center gap-2 text-xs text-white/70"
+                >
+                  <span
+                    class="h-2 w-2 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Calm sync
+                  </span>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-white/85 text-sm"
+              >
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Folder
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Field
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Insights
+                  </span>
+                </div>
+                <div
+                  class="rounded-xl bg-[#102018] border border-white/10 px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full"
+                    style="background-color: rgb(212, 168, 87);"
+                  />
+                  <span>
+                    Chat (ruhig)
+                  </span>
+                </div>
+              </div>
+              <div
+                class="rounded-2xl border border-white/10 bg-gradient-to-r from-white/6 to-white/2 p-3 text-sm text-white/70"
+              >
+                <p
+                  class="flex items-center gap-2"
+                >
+                  <svg
+                    class="lucide lucide-panels-top-left h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      height="18"
+                      rx="2"
+                      width="18"
+                      x="3"
+                      y="3"
+                    />
+                    <path
+                      d="M3 9h18"
+                    />
+                    <path
+                      d="M9 21V9"
+                    />
+                  </svg>
+                  Myzel-Karte aktualisiert · Folder · Field 12 / Insights 4
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="space-y-4"
+          >
+            <div
+              class="rounded-2xl border border-white/12 bg-white/8 p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-panels-top-left h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      height="18"
+                      rx="2"
+                      width="18"
+                      x="3"
+                      y="3"
+                    />
+                    <path
+                      d="M3 9h18"
+                    />
+                    <path
+                      d="M9 21V9"
+                    />
+                  </svg>
+                  Kontextpanel
+                </div>
+                <span
+                  class="text-xs text-white/60"
+                >
+                  Folder · Field
+                </span>
+              </div>
+              <ul
+                class="space-y-2 text-sm text-white/80"
+              >
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Fokus: Entscheidungen & People
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Signals: 12 ruhig, 2 offen
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Nächster Schritt: Kontext teilen
+                  </span>
+                </li>
+                <li
+                  class="rounded-xl border border-white/10 bg-[#102018] px-3 py-2 flex items-center gap-2"
+                >
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-emerald-300"
+                  />
+                  <span>
+                    Beispiel: Café-Raum mit simulierten Daten
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="rounded-2xl border border-white/12 bg-gradient-to-br from-[#102018] to-[#0d1a14] p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.28)] space-y-3"
+            >
+              <div
+                class="flex items-center justify-between text-white"
+              >
+                <div
+                  class="flex items-center gap-2 text-sm font-semibold"
+                >
+                  <svg
+                    class="lucide lucide-message-circle h-4 w-4 text-saimor-gold"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
+                    />
+                  </svg>
+                  Chat · ruhiger Modus
+                </div>
+                <span
+                  class="text-xs text-white/65"
+                >
+                  Calm reply
+                </span>
+              </div>
+              <div
+                class="space-y-2 text-sm text-white/85"
+              >
+                <div
+                  class="rounded-2xl bg-white/5 border border-white/12 px-3 py-3 shadow-inner"
+                >
+                  <p>
+                    Welche Signale verdichten sich im Feld?
+                  </p>
+                </div>
+                <div
+                  class="rounded-2xl bg-[#0f1f17] border border-white/12 px-3 py-3 shadow-inner text-white/80"
+                >
+                  <p>
+                    Antwort: drei Cluster, bereit für Fokusgespräch.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;

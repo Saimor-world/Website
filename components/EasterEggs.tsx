@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Star, Heart, Crown } from 'lucide-react';
@@ -153,7 +153,7 @@ export default function EasterEggs() {
     }
     feldforscherUnlockedRef.current = true;
     unlockAchievement('field-explorer');
-    showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
+    showTransientMessage('Mehrere Perspektiven â€“ stark fÃ¼r echte Entscheidungen.');
   }, [showTransientMessage, unlockAchievement]);
 
   // === PARTICLE & ACTIVATION HELPERS (DECLARE EARLY TO AVOID TDZ) ===
@@ -168,7 +168,7 @@ export default function EasterEggs() {
         y,
         vx: Math.cos(angle) * velocity,
         vy: Math.sin(angle) * velocity,
-        color: ['#D4B483', '#E6C897'][Math.floor(Math.random() * 2)],
+        color: ['#D4A857', '#E6C897'][Math.floor(Math.random() * 2)],
         size: 4 + Math.random() * 6,
         icon: [Sparkles, Star][Math.floor(Math.random() * 2)]
       };
@@ -198,7 +198,7 @@ export default function EasterEggs() {
       y: -20,
       vx: (Math.random() - 0.5) * 1,
       vy: 2 + Math.random() * 3,
-      color: '#D4B483',
+      color: '#D4A857',
       size: 5 + Math.random() * 5,
       icon: Crown
     }));
@@ -230,21 +230,21 @@ export default function EasterEggs() {
         createSubtleParticles(coords.x, coords.y, 18);
         createGoldenRain();
       }
-      showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.', 3200);
+      showTransientMessage('Ein Klarheitsfunke â€“ danke fÃ¼rs aufmerksame Entdecken.', 3200);
     },
     [createSubtleParticles, createGoldenRain, showTransientMessage]
   );
 
   const activateShake = useCallback(() => {
-    showTransientMessage('Bewegung erkannt – Systeme reagieren.');
+    showTransientMessage('Bewegung erkannt â€“ Systeme reagieren.');
     createGoldenRain();
   }, [createGoldenRain, showTransientMessage]);
 
   const activateSecretWord = useCallback((word: string) => {
     const messages: { [key: string]: string } = {
-      klarheit: 'Klarheit gefunden – sie war immer da.',
-      saimor: 'Saimôr erwacht – Resonanz beginnt.',
-      wandel: 'Wandel beginnt – mit jedem Schritt.'
+      klarheit: 'Klarheit gefunden â€“ sie war immer da.',
+      saimor: 'SaimÃ´r erwacht â€“ Resonanz beginnt.',
+      wandel: 'Wandel beginnt â€“ mit jedem Schritt.'
     };
     showTransientMessage(messages[word] || 'Geheimnis entdeckt.');
     createGoldenRain();
@@ -377,7 +377,7 @@ export default function EasterEggs() {
     };
   }, [mounted, activateShake, unlockAchievement]);
 
-  // === TIME-BASED ACHIEVEMENTS (Nachteule/Frühaufsteher) ===
+  // === TIME-BASED ACHIEVEMENTS (Nachteule/FrÃ¼haufsteher) ===
   useEffect(() => {
     if (!mounted) return;
 
@@ -388,15 +388,15 @@ export default function EasterEggs() {
       if (hour >= 0 && hour < 6) {
         setTimeout(() => {
           unlockAchievement('night-owl');
-          showTransientMessage('Nachteule entdeckt – Klarheit kennt keine Uhrzeit.');
+          showTransientMessage('Nachteule entdeckt â€“ Klarheit kennt keine Uhrzeit.');
         }, 2000);
       }
 
-      // Frühaufsteher: 05:00 - 07:00
+      // FrÃ¼haufsteher: 05:00 - 07:00
       if (hour >= 5 && hour < 7) {
         setTimeout(() => {
           unlockAchievement('early-bird');
-          showTransientMessage('Frühaufsteher – der Tag beginnt mit Klarheit.');
+          showTransientMessage('FrÃ¼haufsteher â€“ der Tag beginnt mit Klarheit.');
         }, 2500);
       }
     };
@@ -449,7 +449,7 @@ export default function EasterEggs() {
 
       if (allVisited && !achievementManager.current.getAll().find(a => a.id === 'clarity-navigator' && a.unlocked)) {
         unlockAchievement('clarity-navigator');
-        showTransientMessage('Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
+        showTransientMessage('Du prÃ¼fst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
       }
     };
 
@@ -513,7 +513,7 @@ export default function EasterEggs() {
       if (scrollTop + clientHeight >= scrollHeight * 0.95) {
         hasUnlocked = true;
         unlockAchievement('scroll-champion');
-        showTransientMessage('Scroll-Champion – du hast alles gesehen.');
+        showTransientMessage('Scroll-Champion â€“ du hast alles gesehen.');
         createGoldenRain();
       }
     };
@@ -528,7 +528,7 @@ export default function EasterEggs() {
 
     const timer = setTimeout(() => {
       unlockAchievement('patient-visitor');
-      showTransientMessage('Geduldiger Entdecker – Zeit ist eine Form von Aufmerksamkeit.');
+      showTransientMessage('Geduldiger Entdecker â€“ Zeit ist eine Form von Aufmerksamkeit.');
       createSubtleFireworks();
     }, 5 * 60 * 1000); // 5 Minuten
 
@@ -671,7 +671,7 @@ export default function EasterEggs() {
         transition={{ delay: 8 }}
         whileHover={{ opacity: 0.8, scale: 1.05 }}
       >
-        💡 AAA für Achievements
+        ðŸ’¡ AAA fÃ¼r Achievements
       </motion.div>
     </>
   );

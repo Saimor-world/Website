@@ -25,7 +25,7 @@ export const metadata = {
 export default function MoraPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0F1F17] via-[#13261D] to-[#0F1F17] text-slate-100">
-      <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: 'radial-gradient(circle at 20% 20%, rgba(212,180,131,0.18), transparent 55%)' }} />
+      <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: 'radial-gradient(circle at 20% 20%, rgba(212,168,87,0.18), transparent 55%)' }} />
       <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'radial-gradient(circle at 80% 10%, rgba(74,103,65,0.2), transparent 50%)' }} />
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 py-16 lg:py-24 space-y-12">

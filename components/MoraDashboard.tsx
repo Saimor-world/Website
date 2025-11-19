@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 /**
  * MoraDashboard - Unified Component
  *
@@ -7,9 +7,9 @@
  *
  * Structure:
  * 1. Header with Demo Badge
- * 2. Chat Interface (top) - Ask Môra questions
- * 3. Dashboard Grid (bottom) - Folder ↔ Field view
- * 4. Môra Insights
+ * 2. Chat Interface (top) - Ask MÃ´ra questions
+ * 3. Dashboard Grid (bottom) - Folder â†” Field view
+ * 4. MÃ´ra Insights
  * 5. Quiet CTA
  */
 
@@ -99,34 +99,34 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
   const content = {
     de: {
-      title: 'Môra – Resonanz-Dashboard (Demo)',
+      title: 'MÃ´ra â€“ Resonanz-Dashboard (Demo)',
       subtitle: 'Chat + Dashboard, ein Datenstrom',
       demoLabel: 'Demo-Dashboard (simulierte Daten)',
-      demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten. Dieses Dashboard zeigt das Potenzial von Môra.',
+      demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten. Dieses Dashboard zeigt das Potenzial von MÃ´ra.',
 
       // Chat Section
-      chatTitle: 'Stell Môra eine Frage',
-      chatIntro: 'Frag mich zu deinem Business – ich analysiere die Daten und gebe klare Antworten.',
-      inputPlaceholder: 'Frag Môra etwas zu deinem Business...',
+      chatTitle: 'Stell MÃ´ra eine Frage',
+      chatIntro: 'Frag mich zu deinem Business â€“ ich analysiere die Daten und gebe klare Antworten.',
+      inputPlaceholder: 'Frag MÃ´ra etwas zu deinem Business...',
       askButton: 'Fragen',
       quickQuestions: [
-        'Wie kann ich Team-Produktivität steigern?',
+        'Wie kann ich Team-ProduktivitÃ¤t steigern?',
         'Zeig mir Budget-Optimierungen',
         'Analysiere Projekt-Fortschritt'
       ],
-      realResponse: 'Echte Môra-Antwort',
+      realResponse: 'Echte MÃ´ra-Antwort',
       responseIn: 'Antwort in',
       seconds: 'Sekunden',
-      chatLink: 'Für tiefere Analysen',
-      chatButton: 'Môra Chat öffnen',
+      chatLink: 'FÃ¼r tiefere Analysen',
+      chatButton: 'MÃ´ra Chat Ã¶ffnen',
 
       // Dashboard Section
       dashboardTitle: 'Dashboard',
-      dashboardSubtitle: 'Dual Mode: Ordner ↔ Feld Ansicht',
+      dashboardSubtitle: 'Dual Mode: Ordner â†” Feld Ansicht',
       folderView: 'Ordner-Ansicht',
       fieldView: 'Feld-Ansicht',
-      moraInsight: '💡 Môra Insight',
-      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare Abläufe → höhere Zufriedenheit.',
+      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
+      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare AblÃ¤ufe â†’ hÃ¶here Zufriedenheit.',
 
       categories: {
         people: 'Menschen',
@@ -149,37 +149,37 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'Demo ansehen',
-      ctaSecondary: 'Mehr über Môra erfahren'
+      ctaSecondary: 'Mehr Ã¼ber MÃ´ra erfahren'
     },
     en: {
-      title: 'Môra – Resonance Dashboard (Demo)',
+      title: 'MÃ´ra â€“ Resonance Dashboard (Demo)',
       subtitle: 'Chat + Dashboard, one data stream',
       demoLabel: 'Demo Dashboard (simulated data)',
-      demoTooltip: 'All values are currently based on locally generated demo data. No real customer data. This dashboard shows the potential of Môra.',
+      demoTooltip: 'All values are currently based on locally generated demo data. No real customer data. This dashboard shows the potential of MÃ´ra.',
 
       // Chat Section
-      chatTitle: 'Ask Môra a Question',
-      chatIntro: 'Ask me about your business – I analyze the data and give clear answers.',
-      inputPlaceholder: 'Ask Môra about your business...',
+      chatTitle: 'Ask MÃ´ra a Question',
+      chatIntro: 'Ask me about your business â€“ I analyze the data and give clear answers.',
+      inputPlaceholder: 'Ask MÃ´ra about your business...',
       askButton: 'Ask',
       quickQuestions: [
         'How can I boost team productivity?',
         'Show me budget optimizations',
         'Analyze project progress'
       ],
-      realResponse: 'Real Môra Response',
+      realResponse: 'Real MÃ´ra Response',
       responseIn: 'Response in',
       seconds: 'seconds',
       chatLink: 'For deeper analysis',
-      chatButton: 'Open Môra Chat',
+      chatButton: 'Open MÃ´ra Chat',
 
       // Dashboard Section
       dashboardTitle: 'Dashboard',
-      dashboardSubtitle: 'Dual Mode: Folder ↔ Field View',
+      dashboardSubtitle: 'Dual Mode: Folder â†” Field View',
       folderView: 'Folder View',
       fieldView: 'Field View',
-      moraInsight: '💡 Môra Insight',
-      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows → higher satisfaction.',
+      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
+      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows â†’ higher satisfaction.',
 
       categories: {
         people: 'People',
@@ -202,7 +202,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'See the demo',
-      ctaSecondary: 'Learn more about Môra'
+      ctaSecondary: 'Learn more about MÃ´ra'
     }
   }[locale];
 
@@ -282,7 +282,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     setConnections(newConnections);
   }, []);
 
-  // Auto-show Môra insight after 3s
+  // Auto-show MÃ´ra insight after 3s
   useEffect(() => {
     const timer = setTimeout(() => setMoraInsight(true), 3000);
     return () => clearTimeout(timer);
@@ -300,15 +300,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
     // Demo responses
     const demoResponses = locale === 'de' ? {
-      team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
-      budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
-      project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
-      default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
+      team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) WÃ¶chentliche KlarheitsgesprÃ¤che im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit kÃ¶nnen wir das systematisch umsetzen.',
+      budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestÃ¼tzte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
+      project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) RegelmÃ¤ÃŸige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+      default: 'Hallo! Ich bin MÃ´ra, deine KI-Begleiterin bei SaimÃ´r. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
     } : {
       team: 'Based on your current KPIs (87% engagement), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
       budget: 'Your process efficiency is at 92% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. The dashboard shows you all numbers at a glance.',
       project: 'Velocity: 85%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
-      default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
+      default: 'Hello! I\'m MÃ´ra, your AI companion at SaimÃ´r. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
     };
 
     // Match question to response
@@ -345,7 +345,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const getStatusColor = (status: DataPoint['status']) => {
     switch (status) {
       case 'good': return '#4A6741';
-      case 'warning': return '#D4B483';
+      case 'warning': return '#D4A857';
       case 'critical': return '#E85D75';
     }
   };
@@ -362,7 +362,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     switch (category) {
       case 'people': return '#4A6741';
       case 'process': return '#5D7C54';
-      case 'resources': return '#D4B483';
+      case 'resources': return '#D4A857';
       default: return '#669966';
     }
   };
@@ -407,7 +407,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4B483 70%, #E6C897 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4A857 70%, #E6C897 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}
@@ -437,14 +437,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </span>
               <button
                 type="button"
-                className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4B483]/50"
+                className="relative flex items-center justify-center w-6 h-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
                 onMouseEnter={() => setDemoTooltipVisible(true)}
                 onMouseLeave={() => setDemoTooltipVisible(false)}
                 onFocus={() => setDemoTooltipVisible(true)}
                 onBlur={() => setDemoTooltipVisible(false)}
                 aria-describedby={demoTooltipId}
               >
-                <Info className="w-4 h-4 text-[#D4B483]" />
+                <Info className="w-4 h-4 text-[#D4A857]" />
                 {/* Tooltip */}
                 <div
                   id={demoTooltipId}
@@ -460,7 +460,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 >
                   <p className="text-sm text-white whitespace-normal">{content.demoTooltip}</p>
                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
-                    <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,180,131,0.4)]" />
+                    <div className="w-2 h-2 rotate-45 bg-[#4A6741] border-r border-b border-[rgba(212,168,87,0.4)]" />
                   </div>
                 </div>
               </button>
@@ -500,7 +500,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   disabled={isAsking}
                 >
                   <div className="flex items-center gap-3">
-                    <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4B483] transition-colors" />
+                    <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4A857] transition-colors" />
                     <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
                       {question}
                     </span>
@@ -522,13 +522,13 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
                   placeholder={content.inputPlaceholder}
                   disabled={isAsking}
-                  className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4B483]/30 disabled:opacity-50 bg-transparent"
+                  className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30 disabled:opacity-50 bg-transparent"
                   style={glassTileStyle}
                 />
                 <motion.button
                   onClick={() => handleAskMora()}
                   disabled={isAsking || !userQuestion.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4B483] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4A857] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -541,7 +541,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </motion.div>
             </div>
 
-            {/* Right: Môra Response */}
+            {/* Right: MÃ´ra Response */}
             <div className="flex items-center justify-center">
               <AnimatePresence mode="wait">
                 {moraResponse ? (
@@ -557,7 +557,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <motion.div
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4B483] to-[#4A6741] flex items-center justify-center flex-shrink-0"
+                        className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A857] to-[#4A6741] flex items-center justify-center flex-shrink-0"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                       >
@@ -565,7 +565,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       </motion.div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-bold text-gray-900">Môra</h4>
+                          <h4 className="font-bold text-gray-900">MÃ´ra</h4>
                           {showSuccess && (
                             <motion.div
                               className="flex items-center gap-1 text-xs text-emerald-600"
@@ -573,7 +573,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                               animate={{ scale: 1 }}
                             >
                               <CheckCircle2 className="w-4 h-4" />
-                              {content.realResponse} · {responseTime}{content.seconds.slice(0, 1)}
+                              {content.realResponse} Â· {responseTime}{content.seconds.slice(0, 1)}
                             </motion.div>
                           )}
                         </div>
@@ -606,7 +606,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <Sparkles className="w-12 h-12 mx-auto mb-3 text-[#D4B483]" />
+                    <Sparkles className="w-12 h-12 mx-auto mb-3 text-[#D4A857]" />
                     <p className="text-sm">{content.chatIntro}</p>
                   </motion.div>
                 )}
@@ -891,7 +891,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                               >
                                 <div className="font-bold text-slate-800 mb-1">{point.label}</div>
                                 <div className="text-xs text-gray-600">
-                                  {content.categories[point.category as keyof typeof content.categories]} · {content.status[point.status]}
+                                  {content.categories[point.category as keyof typeof content.categories]} Â· {content.status[point.status]}
                                 </div>
                               </div>
                             </motion.div>
@@ -905,7 +905,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </AnimatePresence>
           </motion.div>
 
-          {/* Môra Insight Panel */}
+          {/* MÃ´ra Insight Panel */}
           <AnimatePresence>
             {moraInsight && (
               <motion.div
@@ -924,7 +924,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   animate={{ rotate: 360, scale: [1, 1.2, 1] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <Sparkles className="w-6 h-6 text-[#D4B483]" />
+                  <Sparkles className="w-6 h-6 text-[#D4A857]" />
                 </motion.div>
 
                 <div className="flex items-start gap-4">
@@ -941,7 +941,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     onClick={() => setMoraInsight(false)}
                     className="text-white/60 hover:text-white transition"
                   >
-                    ✕
+                    âœ•
                   </button>
                 </div>
               </motion.div>
@@ -958,7 +958,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         >
           <motion.a
             href="/#waitlist"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4B483] shadow-2xl"
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4A857] shadow-2xl"
             whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 60px rgba(74, 103, 65, 0.3)' }}
             whileTap={{ scale: 0.95 }}
           >

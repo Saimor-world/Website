@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 /* Farben als CSS-Variablen */
 :root{
   --saimor-green:#4A6741;
-  --saimor-gold:#D4B483;
+  --saimor-gold:#D4A857;
   --saimor-cream:#F8F5F0;
   --warm-beige:#FAF0E6;
   --forest-primary:#4A6741;
@@ -30,7 +30,7 @@ html,body{
 .s-appear { animation: s-fadein 160ms ease-out both; }
 
 /* Trenner */
-.hr-line{ height:1px; background:linear-gradient(to right,transparent,rgba(212,180,131,.25),transparent); }
+.hr-line{ height:1px; background:linear-gradient(to right,transparent,rgba(212,168,87,.25),transparent); }
 
 /* Orbit-Stroke */
 .orbit-stroke{ stroke:var(--saimor-gold); opacity:.3 }
@@ -43,19 +43,19 @@ html,body{
 .bg-band{
   background:
     radial-gradient(1200px 600px at 85% 20%, rgba(74,103,65,0.08), transparent 70%),
-    linear-gradient(to bottom, rgba(212,180,131,0.10), rgba(230,200,151,0.06), transparent 70%);
+    linear-gradient(to bottom, rgba(212,168,87,0.10), rgba(230,200,151,0.06), transparent 70%);
 }
 
 /* Goldschimmer am Seitenende */
 .band-bottom{
-  background: radial-gradient(900px 280px at 50% 100%, rgba(212,180,131,.15), transparent 70%);
+  background: radial-gradient(900px 280px at 50% 100%, rgba(212,168,87,.15), transparent 70%);
 }
 
 /* Sticky-Header Blur */
 .nav-blur{
   backdrop-filter: blur(8px);
   background: linear-gradient(to bottom, rgba(74,103,65,.85), rgba(93,124,84,.65));
-  border-bottom: 1px solid rgba(212,180,131,.15);
+  border-bottom: 1px solid rgba(212,168,87,.15);
 }
 
 /* --------- NEU: Cards, Chips, Orbits, Reveal --------- */
@@ -63,7 +63,7 @@ html,body{
 /* dezente Glow-Karten */
 .s-card{
   position: relative;
-  border: 1px solid rgba(212,180,131,.2);
+  border: 1px solid rgba(212,168,87,.2);
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(248,245,240,.9));
   box-shadow: 0 12px 30px rgba(74,103,65,.15);
@@ -71,8 +71,8 @@ html,body{
 }
 .s-card:hover{
   transform: translateY(-4px);
-  border-color: rgba(212,180,131,.5);
-  box-shadow: 0 30px 60px rgba(74,103,65,.25), 0 0 0 1px rgba(212,180,131,.2) inset;
+  border-color: rgba(212,168,87,.5);
+  box-shadow: 0 30px 60px rgba(74,103,65,.25), 0 0 0 1px rgba(212,168,87,.2) inset;
   background: linear-gradient(180deg, rgba(255,255,255,1), rgba(248,245,240,.95));
 }
 
@@ -80,8 +80,8 @@ html,body{
 .s-pill{
   display:inline-flex; align-items:center; gap:.5rem;
   padding:.55rem .9rem; border-radius:999px;
-  border:1px solid rgba(212,180,131,.25);
-  background: linear-gradient(180deg, rgba(212,180,131,.1), rgba(212,180,131,.05));
+  border:1px solid rgba(212,168,87,.25);
+  background: linear-gradient(180deg, rgba(212,168,87,.1), rgba(212,168,87,.05));
   color: var(--forest-primary);
   transition: transform .18s ease, border-color .18s ease, background .18s ease;
 }
@@ -90,9 +90,9 @@ html,body{
   background: rgba(74,103,65,.85);
   box-shadow: 0 0 0 4px rgba(74,103,65,.15);
 }
-.s-pill:hover{ transform: translateY(-2px); border-color: rgba(212,180,131,.5); }
+.s-pill:hover{ transform: translateY(-2px); border-color: rgba(212,168,87,.5); }
 
-/* Orbit-Hinterleger für Sektionen */
+/* Orbit-Hinterleger fÃ¼r Sektionen */
 .section-orbits{
   position:absolute; inset:0; pointer-events:none; z-index:-1;
 }

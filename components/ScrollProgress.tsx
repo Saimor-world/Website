@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ export default function ScrollProgress() {
           .map(p => ({ ...p, position: p.position + 0.008 }))
           .filter(p => p.position < 1);
 
-        // Add new particle occasionally (weniger häufig)
+        // Add new particle occasionally (weniger hÃ¤ufig)
         if (Math.random() > 0.85) {
           newParticles.push({ id: Date.now(), position: 0 });
         }
@@ -47,7 +47,7 @@ export default function ScrollProgress() {
         className="fixed top-0 left-0 right-0 h-1 origin-left z-[9999]"
         style={{
           scaleX,
-          background: 'linear-gradient(90deg, #4A6741 0%, #D4B483 50%, #4A6741 100%)',
+          background: 'linear-gradient(90deg, #4A6741 0%, #D4A857 50%, #4A6741 100%)',
           boxShadow: '0 0 10px rgba(212, 180, 131, 0.5)'
         }}
       />
@@ -59,7 +59,7 @@ export default function ScrollProgress() {
           className="fixed top-0 w-3 h-3 rounded-full z-[9999] pointer-events-none"
           style={{
             left: `${particle.position * 100}%`,
-            background: 'radial-gradient(circle, #D4B483 0%, #4A6741 100%)',
+            background: 'radial-gradient(circle, #D4A857 0%, #4A6741 100%)',
             boxShadow: '0 0 8px rgba(212, 180, 131, 0.8)',
             marginTop: '-5px'
           }}

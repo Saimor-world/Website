@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
@@ -29,52 +29,52 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
   const content = {
     de: {
-      hover: 'Klick mich! (Long-press für Menü)',
-      greeting: 'Hallo! Ich bin Môra 🌱',
-      subtitle: 'Deine KI-Begleiterin für Klarheit',
-      infoTitle: 'Môra erwacht bald!',
-      infoText: 'Ich bin deine KI-Assistentin für Business-Klarheit. Momentan wird der MVP-Prototyp entwickelt. Bald kann ich dir helfen mit:',
+      hover: 'Klick mich! (Long-press fÃ¼r MenÃ¼)',
+      greeting: 'Hallo! Ich bin MÃ´ra ðŸŒ±',
+      subtitle: 'Deine KI-Begleiterin fÃ¼r Klarheit',
+      infoTitle: 'MÃ´ra erwacht bald!',
+      infoText: 'Ich bin deine KI-Assistentin fÃ¼r Business-Klarheit. Momentan wird der MVP-Prototyp entwickelt. Bald kann ich dir helfen mit:',
       infoFeatures: [
-        '📊 Echtzeit-Analysen deiner Business-Daten',
-        '🎯 Klare Antworten statt Datenflut',
-        '🔐 DSGVO-konform, EU-Hosting',
-        '🌀 Cross-Channel (Web, Voice, Dashboard)'
+        'ðŸ“Š Echtzeit-Analysen deiner Business-Daten',
+        'ðŸŽ¯ Klare Antworten statt Datenflut',
+        'ðŸ” DSGVO-konform, EU-Hosting',
+        'ðŸŒ€ Cross-Channel (Web, Voice, Dashboard)'
       ],
       infoCTA: 'Komm auf die Warteliste',
       infoChatCTA: 'Mit MA\'ra chatten',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 Mit Môra chatten',
-        about: '📚 Über Saimôr',
-        services: '🎯 Services',
-        close: '✕ Schließen'
+        chat: 'ðŸ’¬ Mit MÃ´ra chatten',
+        about: 'ðŸ“š Ãœber SaimÃ´r',
+        services: 'ðŸŽ¯ Services',
+        close: 'âœ• SchlieÃŸen'
       }
     },
     en: {
       hover: 'Click me! (Long-press for menu)',
-      greeting: 'Hello! I\'m Môra 🌱',
+      greeting: 'Hello! I\'m MÃ´ra ðŸŒ±',
       subtitle: 'Your AI companion for clarity',
-      infoTitle: 'Môra is waking up soon!',
+      infoTitle: 'MÃ´ra is waking up soon!',
       infoText: 'I\'m your AI assistant for business clarity. The MVP prototype is currently in development. Soon I can help you with:',
       infoFeatures: [
-        '📊 Real-time analysis of your business data',
-        '🎯 Clear answers instead of data overload',
-        '🔐 GDPR-compliant, EU hosting',
-        '🌀 Cross-channel (Web, Voice, Dashboard)'
+        'ðŸ“Š Real-time analysis of your business data',
+        'ðŸŽ¯ Clear answers instead of data overload',
+        'ðŸ” GDPR-compliant, EU hosting',
+        'ðŸŒ€ Cross-channel (Web, Voice, Dashboard)'
       ],
       infoCTA: 'Join the waitlist',
       infoChatCTA: 'Chat with MA\'ra',
       quickActions: {
         title: 'Quick Actions',
-        chat: '💬 Chat with Môra',
-        about: '📚 About Saimôr',
-        services: '🎯 Services',
-        close: '✕ Close'
+        chat: 'ðŸ’¬ Chat with MÃ´ra',
+        about: 'ðŸ“š About SaimÃ´r',
+        services: 'ðŸŽ¯ Services',
+        close: 'âœ• Close'
       }
     }
   }[locale];
 
-  const orbAriaLabel = locale === 'de' ? 'Môra – verbunden mit dem Dashboard' : 'Môra – connected to the dashboard';
+  const orbAriaLabel = locale === 'de' ? 'MÃ´ra â€“ verbunden mit dem Dashboard' : 'MÃ´ra â€“ connected to the dashboard';
 
   const openChatOverlay = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -187,7 +187,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
             className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full cursor-pointer group"
             data-mora-orb="true"
             style={{
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4B483 100%)',
+              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 50%, #D4A857 100%)',
               boxShadow: '0 8px 32px rgba(74, 103, 65, 0.3)'
             }}
             onMouseEnter={() => updateHoverState(true)}
@@ -263,7 +263,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
             {/* Sparkles icon overlay */}
             <motion.div
-              className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#D4B483] flex items-center justify-center shadow-lg"
+              className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#D4A857] flex items-center justify-center shadow-lg"
               animate={{
                 rotate: [0, 360],
                 scale: [1, 1.1, 1]
@@ -287,9 +287,9 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="bg-[#1a1f16] text-[#D4B483] px-4 py-2 rounded-lg text-sm font-medium shadow-xl border border-[#D4B483]/20">
+                <div className="bg-[#1a1f16] text-[#D4A857] px-4 py-2 rounded-lg text-sm font-medium shadow-xl border border-[#D4A857]/20">
                   {content.hover}
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a1f16] rotate-45 border-r border-b border-[#D4B483]/20" />
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a1f16] rotate-45 border-r border-b border-[#D4A857]/20" />
                 </div>
               </motion.div>
             )}
@@ -310,14 +310,14 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
                 {/* Popup */}
                 <motion.div
-                  className="relative bg-gradient-to-br from-white to-[#F8F5F0] rounded-3xl shadow-2xl max-w-md w-full border-2 border-[#D4B483]/30 overflow-hidden"
+                  className="relative bg-gradient-to-br from-white to-[#F8F5F0] rounded-3xl shadow-2xl max-w-md w-full border-2 border-[#D4A857]/30 overflow-hidden"
                   initial={{ scale: 0.8, y: 50 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.8, y: 50 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Header with Môra */}
-                  <div className="relative bg-gradient-to-br from-[#4A6741] to-[#D4B483] p-8 text-white text-center overflow-hidden">
+                  {/* Header with MÃ´ra */}
+                  <div className="relative bg-gradient-to-br from-[#4A6741] to-[#D4A857] p-8 text-white text-center overflow-hidden">
                     {/* Animated sparkles */}
                     <motion.div
                       className="absolute top-4 right-4"
@@ -333,7 +333,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                       animate={{ rotate: [0, 5, -5, 0] }}
                       transition={{ duration: 4, repeat: Infinity }}
                     >
-                      {/* Môra Face */}
+                      {/* MÃ´ra Face */}
                       <div className="relative">
                         <div className="flex gap-3">
                           <div className="w-3 h-4 bg-white rounded-full" />
@@ -375,7 +375,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                       </div>
                       <div className="w-full bg-white rounded-full h-2 overflow-hidden">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-[#4A6741] to-[#D4B483]"
+                          className="h-full bg-gradient-to-r from-[#4A6741] to-[#D4A857]"
                           initial={{ width: 0 }}
                           animate={{ width: '60%' }}
                           transition={{ duration: 1, delay: 0.5 }}
@@ -392,7 +392,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                         }}
                         className="w-full py-4 rounded-2xl font-bold text-white shadow-lg"
                         style={{
-                          background: 'linear-gradient(135deg, #4A6741 0%, #D4B483 100%)'
+                          background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)'
                         }}
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
@@ -405,7 +405,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                           setShowInfoPopup(false);
                           openChatOverlay();
                         }}
-                        className="w-full py-4 rounded-2xl font-semibold text-[#4A6741] border border-[#D4B483]/40 bg-white/95 shadow-lg"
+                        className="w-full py-4 rounded-2xl font-semibold text-[#4A6741] border border-[#D4A857]/40 bg-white/95 shadow-lg"
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -430,13 +430,13 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
           <AnimatePresence>
             {showQuickActions && (
               <motion.div
-                className="absolute bottom-full right-0 mb-3 bg-[#1a1f16] border-2 border-[#D4B483]/30 rounded-xl shadow-2xl p-4 min-w-[200px]"
+                className="absolute bottom-full right-0 mb-3 bg-[#1a1f16] border-2 border-[#D4A857]/30 rounded-xl shadow-2xl p-4 min-w-[200px]"
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 10 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="text-[#D4B483] font-semibold mb-3 text-sm">
+                <div className="text-[#D4A857] font-semibold mb-3 text-sm">
                   {content.quickActions.title}
                 </div>
                 <div className="space-y-2">

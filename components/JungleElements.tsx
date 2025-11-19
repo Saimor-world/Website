@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -23,7 +23,7 @@ export default function JungleElements() {
       position: Math.random(),
       speed: 0.02 + Math.random() * 0.03,
       size: 4 + Math.random() * 6,
-      color: i % 2 === 0 ? '#D4B483' : '#4A6741'
+      color: i % 2 === 0 ? '#D4A857' : '#4A6741'
     }));
     setParticles(initialParticles);
   }, []);
@@ -125,7 +125,7 @@ export default function JungleElements() {
                 cx={0}
                 cy={0}
                 r={5}
-                fill="#D4B483"
+                fill="#D4A857"
                 opacity={0.7}
                 filter="url(#glow)"
                 initial={{ opacity: 0 }}
@@ -155,7 +155,7 @@ export default function JungleElements() {
             <motion.circle
               key={particle.id}
               r={radius || 7.5}
-              fill={particle.color || '#D4B483'}
+              fill={particle.color || '#D4A857'}
               opacity={0.8}
               filter="url(#glow)"
               style={{
@@ -211,7 +211,7 @@ export default function JungleElements() {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Saimôr Logo Reveal Effect (center) */}
+      {/* SaimÃ´r Logo Reveal Effect (center) */}
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         initial={{ opacity: 0, scale: 0.8 }}
