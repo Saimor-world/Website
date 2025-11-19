@@ -40,7 +40,7 @@ export default function Hero({
   contactHashId = 'kontakt',
 }: Props) {
 
-const heroText = {
+  const heroText = {
     de: {
       heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
       claim: 'Môra ist das Resonanz-Dashboard deiner Organisation: macht Zusammenhänge sichtbar, reduziert Lärm, begleitet Entscheidungen – aktuell als Demo mit simulierten Daten.',
@@ -253,14 +253,14 @@ const heroText = {
               }}
             />
             <Image
-              src="/Logo neu.png"
-              alt="Saimôr Logo"
-              width={600}
-              height={180}
-              className="w-72 sm:w-96 md:w-[28rem] lg:w-[32rem] xl:w-[36rem] h-auto object-contain relative z-10"
+              src="/saimor-logo-new.png"
+              alt="Saimôr Logo - Organic Branch Design"
+              width={400}
+              height={500}
+              className="w-64 sm:w-80 md:w-96 lg:w-[26rem] xl:w-[28rem] h-auto object-contain relative z-10"
               style={{
                 filter:
-                  'drop-shadow(0 12px 28px rgba(0,0,0,0.6)) drop-shadow(0 0 50px rgba(255,255,255,0.65)) contrast(1.25) brightness(1.15)',
+                  'drop-shadow(0 8px 24px rgba(0,0,0,0.4)) drop-shadow(0 0 30px rgba(212, 180, 131, 0.3))',
                 mixBlendMode: 'normal'
               }}
               priority
@@ -275,7 +275,7 @@ const heroText = {
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="max-w-5xl mx-auto mb-6 px-4 text-center"
         >
-        {/* Môra Badge - Prominent */}
+          {/* Môra Badge - Prominent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -295,8 +295,8 @@ const heroText = {
               transition={{ duration: 3, repeat: Infinity }}
             >
               <svg className="w-5 h-5 text-[#D4A857]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 7H7v6h6V7z"/>
-                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
+                <path d="M13 7H7v6h6V7z" />
+                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" />
               </svg>
             </motion.div>
             <span className="text-sm font-semibold text-[#E6C897]">
@@ -314,10 +314,10 @@ const heroText = {
             {heroText.heading}
           </h1>
           <p className="text-xl sm:text-2xl text-white/90 leading-relaxed"
-             style={{
+            style={{
               textShadow: '0 2px 8px rgba(0,0,0,0.3)',
               fontFamily: 'Cormorant Garamond, serif'
-             }}>
+            }}>
             {heroText.claim}
           </p>
           <p className="text-base sm:text-lg text-white/75 max-w-3xl mx-auto leading-relaxed">
@@ -373,8 +373,8 @@ const heroText = {
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <path d="M13 7H7v6h6V7z"/>
-                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"/>
+                <path d="M13 7H7v6h6V7z" />
+                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" />
               </motion.svg>
               <span>{heroText.ctaPrimary}</span>
             </span>
@@ -407,7 +407,7 @@ const heroText = {
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
-              <path d="M12 5v14M19 12l-7 7-7-7"/>
+              <path d="M12 5v14M19 12l-7 7-7-7" />
             </motion.svg>
           </motion.button>
         </motion.div>
