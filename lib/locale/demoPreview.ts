@@ -17,9 +17,9 @@ export const demoPreviewCopy: Record<
   }
 > = {
   de: {
-    title: "Live Demo Panel",
-    hint: "Schneller Blick in die echte Oberfläche mit simulierten Daten. Keine Slides, nur UI.",
-    badge: "Demo - simulierte Daten",
+    title: "Demo",
+    hint: "Sieh dir Môra direkt an – mit Beispieldaten.",
+    badge: "Demo",
     pulse: "Home Pulse",
     field: "Feld - Myzel",
     context: "Kontextpanel",

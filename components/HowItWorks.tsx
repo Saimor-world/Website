@@ -45,16 +45,16 @@ const steps = {
 
 const copy = {
   de: {
-    kicker: "So wirkt das Myzel",
-    title: "Wald oben, Myzel unten - klarer Flow",
-    intro: "Drei ruhige Schritte reichen: aufnehmen, deuten, zeigen.",
-    badge: "Calm · Forest-Green · Gold"
+    kicker: "Drei Schritte",
+    title: "So arbeitet Môra",
+    intro: "Signale sammeln, Muster erkennen, Kontext zeigen.",
+    badge: "Ruhig · Klar"
   },
   en: {
-    kicker: "How it works",
-    title: "Forest above, mycelium below - clear flow",
-    intro: "Three calm steps are enough: capture, read, show.",
-    badge: "Calm · Forest-Green · Gold"
+    kicker: "Three steps",
+    title: "How Môra works",
+    intro: "Collect signals, spot patterns, show context.",
+    badge: "Calm · Clear"
   }
 } as const;
 

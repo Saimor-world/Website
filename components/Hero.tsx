@@ -40,16 +40,16 @@ export default function Hero({
 
   const heroText = {
     de: {
-      heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
-      claim: 'Môra ist das Resonanz-Dashboard deiner Organisation: macht Zusammenhänge sichtbar, reduziert Lärm, begleitet Entscheidungen – aktuell als Demo mit simulierten Daten.',
-      subline: 'Heute Demo mit strukturierter Simulation, morgen mit angebundenen Systemen – ohne Hype, nur Klarheit.',
+      heading: 'Saimôr – Klarheit im Wandel',
+      claim: 'Môra bündelt, was gerade wichtig ist – aus allen Systemen, an einem Ort.',
+      subline: 'Ruhig. Klar. Ohne Lärm.',
       ctaPrimary: 'Demo ansehen',
       ctaSecondary: 'Gespräch vereinbaren'
     },
     en: {
-      heading: 'Saimôr – a semantic OS for clarity in change',
-      claim: 'Môra is your organisation’s resonance dashboard: reveals connections, reduces noise, guides decisions – today in demo mode with simulated data.',
-      subline: 'Today: demo with realistically structured simulation. Tomorrow: live connectors – calm, no hype.',
+      heading: 'Saimôr – clarity in change',
+      claim: 'Môra brings together what matters – from all your systems, in one place.',
+      subline: 'Calm. Clear. No noise.',
       ctaPrimary: 'See the demo',
       ctaSecondary: 'Schedule a call'
     }
@@ -57,33 +57,29 @@ export default function Hero({
 
   const heroHighlights = {
     de: [
-      { label: 'Signalmodus', value: 'ruhig · 12 Impulse' },
-      { label: 'Fokusfelder', value: 'People × Process' },
-      { label: 'Status', value: 'Demo · Calm Beta' }
+      { label: 'Modus', value: 'Demo mit Beispieldaten' },
+      { label: 'Fokus', value: 'Menschen & Prozesse' }
     ],
     en: [
-      { label: 'Signal mode', value: 'calm · 12 signals' },
-      { label: 'Focus fields', value: 'People × Process' },
-      { label: 'Status', value: 'Demo · Calm beta' }
+      { label: 'Mode', value: 'Demo with sample data' },
+      { label: 'Focus', value: 'People & processes' }
     ]
   }[locale];
 
   const logoNotes = {
     de: [
-      { title: 'Organisch', copy: 'Form inspiriert vom Wald-Myzel' },
-      { title: 'Primär grün', copy: 'Sanfte Übergänge statt hartem Kontrast' },
-      { title: 'Goldpunkte', copy: 'Markieren Resonanz & Entscheidungen' }
+      { title: 'Organisch', copy: 'Inspiriert vom Myzel im Wald' },
+      { title: 'Ruhig', copy: 'Grüne Töne für klaren Fokus' }
     ],
     en: [
-      { title: 'Organic', copy: 'Form inspired by forest mycelium' },
-      { title: 'Primary green', copy: 'Soft gradients for calm focus' },
-      { title: 'Golden nodes', copy: 'Signalling resonance & decisions' }
+      { title: 'Organic', copy: 'Inspired by forest mycelium' },
+      { title: 'Calm', copy: 'Green tones for clear focus' }
     ]
   }[locale];
 
   const badgeCopy = locale === 'de'
-    ? 'Môra Resonanz · neues Erscheinungsbild'
-    : 'Môra resonance · refreshed identity';
+    ? 'Môra · neu gestaltet'
+    : 'Môra · redesigned';
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({

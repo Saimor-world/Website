@@ -29,25 +29,25 @@ export const myceliumCopy: Record<
   }
 > = {
   de: {
-    kicker: "Wald - Myzel - Demo",
-    title: "Was wir zeigen, bleibt funktional",
+    kicker: "So funktioniert's",
+    title: "Oben der Wald, unten das Myzel",
     intro:
-      "Kurzer Überblick über den Flow: oben Signale bündeln, unten das Myzel ordnen und eine ruhige Demo starten.",
-    badges: ["Neue Wort-Bildmarke", "Primär Grün"],
+      "Môra bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.",
+    badges: ["Ruhig", "Klar"],
     forest: {
-      title: "Oben - der Wald",
+      title: "Der Wald",
       items: [
-        "Teams & Projekte - wir sortieren nur Relevantes",
-        "Keine Versprechen, keine Hypers",
-        "Signale laufen geordnet ein"
+        "Teams & Projekte an einem Ort",
+        "Nur was wichtig ist",
+        "Ruhiger Überblick"
       ]
     },
     mycelium: {
-      title: "Unten - das Myzel",
+      title: "Das Myzel",
       items: [
-        "Connectoren verknüpfen Quellen",
-        "Feld, Folder, Chat bleiben ruhig",
-        "Insights zeigen den nächsten Schritt"
+        "Verbindet alle Systeme",
+        "Zeigt Zusammenhänge",
+        "Schlägt nächste Schritte vor"
       ]
     },
     demo: {

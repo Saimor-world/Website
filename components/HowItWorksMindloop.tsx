@@ -8,9 +8,9 @@ type Locale = "de" | "en";
 
 const copy = {
   de: {
-    kicker: "Mind Loop",
-    title: "Drei Schritte, mehr braucht es nicht",
-    intro: "Nur das, was wir wirklich nutzen: Signale aufnehmen, kurz verdichten, Kontext zeigen.",
+    kicker: "Überblick",
+    title: "Klarheit statt Chaos",
+    intro: "Môra bringt Ordnung in deine Daten.",
     steps: [
       {
         title: "Signale sammeln",
@@ -27,9 +27,9 @@ const copy = {
     ]
   },
   en: {
-    kicker: "Mind Loop",
-    title: "Three steps, nothing more",
-    intro: "Only what we actually run: collect signals, condense briefly, surface context.",
+    kicker: "Overview",
+    title: "Clarity, not chaos",
+    intro: "Môra brings order to your data.",
     steps: [
       {
         title: "Collect signals",
