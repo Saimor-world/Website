@@ -14,7 +14,7 @@ const copy = {
     steps: [
       {
         title: "Signale sammeln",
-        body: "Systeme, Dokumente und Notizen liefern Zustaende – wir speichern nur Relevantes."
+        body: "Systeme, Dokumente und Notizen liefern Zustände – wir speichern nur Relevantes."
       },
       {
         title: "Bedeutung erkennen",
@@ -22,7 +22,7 @@ const copy = {
       },
       {
         title: "Kontext zeigen",
-        body: "Feld, Folder und Chat bleiben ruhig und erklaeren, was zusammengehoert."
+        body: "Feld, Folder und Chat bleiben ruhig und erklären, was zusammengehört."
       }
     ]
   },

@@ -10,7 +10,7 @@ const steps = {
   de: [
     {
       title: "Signale sammeln",
-      body: "Beobachtungen und Pulse kommen sortiert an - kein Laerm.",
+      body: "Beobachtungen und Pulse kommen sortiert an – kein Lärm.",
       icon: Radar
     },
     {
@@ -20,7 +20,7 @@ const steps = {
     },
     {
       title: "Kontext zeigen",
-      body: "Die Myzel-Karte erklaert, was zusammengehoert.",
+      body: "Die Myzel-Karte erklärt, was zusammengehört.",
       icon: PanelsTopLeft
     }
   ],

@@ -18,7 +18,7 @@ export const demoPreviewCopy: Record<
 > = {
   de: {
     title: "Live Demo Panel",
-    hint: "Schneller Blick in die echte Oberflaeche mit simulierten Daten. Keine Slides, nur UI.",
+    hint: "Schneller Blick in die echte Oberfläche mit simulierten Daten. Keine Slides, nur UI.",
     badge: "Demo - simulierte Daten",
     pulse: "Home Pulse",
     field: "Feld - Myzel",
@@ -27,13 +27,13 @@ export const demoPreviewCopy: Record<
     lines: ["Folder", "Field", "Insights", "Chat"],
     bubble: {
       question: "Welche Signale verdichten sich im Feld?",
-      answer: "Drei Cluster, bereit fuer ein Fokusgespraech."
+      answer: "Drei Cluster, bereit für ein Fokusgespräch."
     },
     contextItems: [
       "Fokus: Entscheidungen & People",
       "Signals: 12 ruhig / 2 offen",
-      "Naechster Schritt: Kontext teilen",
-      "Beispiel: Cafe-Szenario"
+      "Nächster Schritt: Kontext teilen",
+      "Beispiel: Café-Szenario"
     ],
     heading: "Demo-Ansicht - MA'ra UI"
   },

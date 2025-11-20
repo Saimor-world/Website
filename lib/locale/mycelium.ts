@@ -32,8 +32,8 @@ export const myceliumCopy: Record<
     kicker: "Wald - Myzel - Demo",
     title: "Was wir zeigen, bleibt funktional",
     intro:
-      "Kurzer Ueberblick ueber den Flow: oben Signale buendeln, unten das Myzel ordnen und eine ruhige Demo starten.",
-    badges: ["Neue Wort-Bildmarke", "Primaer Gruen"],
+      "Kurzer Überblick über den Flow: oben Signale bündeln, unten das Myzel ordnen und eine ruhige Demo starten.",
+    badges: ["Neue Wort-Bildmarke", "Primär Grün"],
     forest: {
       title: "Oben - der Wald",
       items: [
@@ -45,9 +45,9 @@ export const myceliumCopy: Record<
     mycelium: {
       title: "Unten - das Myzel",
       items: [
-        "Connectoren verknuepfen Quellen",
+        "Connectoren verknüpfen Quellen",
         "Feld, Folder, Chat bleiben ruhig",
-        "Insights zeigen den naechsten Schritt"
+        "Insights zeigen den nächsten Schritt"
       ]
     },
     demo: {
@@ -59,7 +59,7 @@ export const myceliumCopy: Record<
         { label: "Status", value: "Live Demo Panel" }
       ],
       note: "Direkter Sprung in die UI ohne Marketing-Tour.",
-      cta: "Demo oeffnen"
+      cta: "Demo öffnen"
     },
     quickFacts: [
       { label: "Signals", value: "12 ruhig" },
