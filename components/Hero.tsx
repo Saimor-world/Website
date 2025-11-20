@@ -1,6 +1,5 @@
 ﻿'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Link from 'next/link';
 import { useRef, useCallback } from 'react';
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react';
 import dynamic from 'next/dynamic';
@@ -19,19 +18,18 @@ type Props = {
 };
 
 const logoPanelStyle: CSSProperties = {
-  maxWidth: 'min(90vw, 300px)',
-  padding: '12px 18px',
-  background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(248,250,249,0.88) 100%)',
-  backdropFilter: 'blur(16px)',
-  border: '1px solid rgba(212, 180, 131, 0.35)',
-  boxShadow: '0 14px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
-  borderRadius: '20px'
+  background: 'linear-gradient(145deg, rgba(18,31,26,0.95) 0%, rgba(40,63,50,0.92) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.28)',
+  boxShadow: '0 30px 90px rgba(5, 10, 8, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+  borderRadius: '28px',
+  padding: '24px',
+  position: 'relative'
 };
 
 const logoInnerGlow: CSSProperties = {
-  background:
-    'radial-gradient(circle at 50% 50%, rgba(212, 180, 131, 0.15) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 70%)',
-  filter: 'blur(24px)'
+  background: 'radial-gradient(circle at 50% 30%, rgba(212,180,87,0.25), transparent 60%)',
+  filter: 'blur(32px)',
+  borderRadius: '48px'
 };
 
 export default function Hero({
@@ -44,18 +42,48 @@ export default function Hero({
     de: {
       heading: 'Saimôr – semantisches OS für Klarheit im Wandel',
       claim: 'Môra ist das Resonanz-Dashboard deiner Organisation: macht Zusammenhänge sichtbar, reduziert Lärm, begleitet Entscheidungen – aktuell als Demo mit simulierten Daten.',
-      subline: 'Heute Demo mit simulierten, realistisch strukturierten Daten; Morgen mit angebundenen Systemen – ohne Hype, nur Klarheit.',
+      subline: 'Heute Demo mit strukturierter Simulation, morgen mit angebundenen Systemen – ohne Hype, nur Klarheit.',
       ctaPrimary: 'Demo ansehen',
       ctaSecondary: 'Gespräch vereinbaren'
     },
     en: {
       heading: 'Saimôr – a semantic OS for clarity in change',
       claim: 'Môra is your organisation’s resonance dashboard: reveals connections, reduces noise, guides decisions – today in demo mode with simulated data.',
-      subline: 'Today: demo with simulated, realistically structured data. Tomorrow: real system connectors – calm, no hype.',
+      subline: 'Today: demo with realistically structured simulation. Tomorrow: live connectors – calm, no hype.',
       ctaPrimary: 'See the demo',
       ctaSecondary: 'Schedule a call'
     }
   }[locale];
+
+  const heroHighlights = {
+    de: [
+      { label: 'Signalmodus', value: 'ruhig · 12 Impulse' },
+      { label: 'Fokusfelder', value: 'People × Process' },
+      { label: 'Status', value: 'Demo · Calm Beta' }
+    ],
+    en: [
+      { label: 'Signal mode', value: 'calm · 12 signals' },
+      { label: 'Focus fields', value: 'People × Process' },
+      { label: 'Status', value: 'Demo · Calm beta' }
+    ]
+  }[locale];
+
+  const logoNotes = {
+    de: [
+      { title: 'Organisch', copy: 'Form inspiriert vom Wald-Myzel' },
+      { title: 'Primär grün', copy: 'Sanfte Übergänge statt hartem Kontrast' },
+      { title: 'Goldpunkte', copy: 'Markieren Resonanz & Entscheidungen' }
+    ],
+    en: [
+      { title: 'Organic', copy: 'Form inspired by forest mycelium' },
+      { title: 'Primary green', copy: 'Soft gradients for calm focus' },
+      { title: 'Golden nodes', copy: 'Signalling resonance & decisions' }
+    ]
+  }[locale];
+
+  const badgeCopy = locale === 'de'
+    ? 'Môra Resonanz · neues Erscheinungsbild'
+    : 'Môra resonance · refreshed identity';
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -63,7 +91,6 @@ export default function Hero({
     offset: ['start start', 'end start']
   });
 
-  const brandSunY = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   const cal = calUrl ?? process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min';
@@ -87,6 +114,15 @@ export default function Hero({
         behavior: 'smooth',
         block: 'start'
       });
+    }
+  };
+
+  const handleContactCta = () => {
+    if (typeof window === 'undefined') return;
+    if (document.getElementById(contactHashId)) {
+      smoothScrollTo(contactHashId);
+    } else {
+      window.location.href = fallbackHref;
     }
   };
 
@@ -221,199 +257,157 @@ export default function Hero({
         </svg>
       </motion.div>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:py-32 md:py-40 text-center z-10">
-        {/* Brand Sun */}
-        <motion.div
-          style={{ y: brandSunY }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex justify-center mb-8 will-change-transform"
-        >
-          <div
-            className="relative inline-flex rounded-2xl justify-center"
-            style={logoPanelStyle}
-            aria-label="Saimôr Logo"
-            onClick={emitLogoClick}
-          >
-            <div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{ border: '1px solid rgba(14, 26, 27, 0.15)' }}
-            />
-            <div
-              className="absolute inset-0 rounded-2xl opacity-80 pointer-events-none"
-              style={logoInnerGlow}
-            />
-            <div
-              className="absolute -inset-4 rounded-[32px] opacity-70 pointer-events-none"
-              style={{
-                background:
-                  'radial-gradient(circle, rgba(212, 180, 131, 0.25) 0%, rgba(0,0,0,0) 65%)',
-                filter: 'blur(32px)'
-              }}
-            />
-            <Image
-              src="/saimor-logo-new.png"
-              alt="Saimôr Logo - Organic Branch Design"
-              width={400}
-              height={500}
-              className="w-64 sm:w-80 md:w-96 lg:w-[26rem] xl:w-[28rem] h-auto object-contain relative z-10"
-              style={{
-                filter:
-                  'drop-shadow(0 8px 24px rgba(0,0,0,0.4)) drop-shadow(0 0 30px rgba(212, 180, 131, 0.3))',
-                mixBlendMode: 'normal'
-              }}
-              priority
-            />
-          </div>
-        </motion.div>
-
-        {/* Main Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-          className="max-w-5xl mx-auto mb-6 px-4 text-center"
-        >
-          {/* Môra Badge - Prominent */}
+      <div className="relative mx-auto max-w-6xl px-6 py-20 sm:py-28 lg:py-32 z-10">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex items-center gap-3 px-6 py-3 mb-6 rounded-full backdrop-blur-xl"
-            style={{
-              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(74, 103, 65, 0.12) 100%)',
-              border: '1px solid rgba(212, 180, 131, 0.3)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-            }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-left"
           >
             <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 180, 360]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
+              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs uppercase tracking-[0.4em] text-white/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              <svg className="w-5 h-5 text-[#D4A857]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 7H7v6h6V7z" />
-                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" />
-              </svg>
+              <span className="text-[#E6C897]">●</span>
+              {badgeCopy}
             </motion.div>
-            <span className="text-sm font-semibold text-[#E6C897]">
-              {locale === 'de' ? 'MVP-Prototyp â‹… Entwicklung' : 'MVP Prototype â‹… In Development'}
-            </span>
+
+            <h1
+              className="mt-6 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-tight text-white"
+              style={{ fontFamily: 'Cormorant Garamond, serif', textShadow: '0 4px 20px rgba(0,0,0,0.55)' }}
+            >
+              {heroText.heading}
+            </h1>
+
+            <p className="mt-6 text-xl text-white/90 leading-relaxed" style={{ fontFamily: 'Inter, sans-serif' }}>
+              {heroText.claim}
+            </p>
+
+            <p className="mt-2 text-lg text-white/75 leading-relaxed max-w-2xl">
+              {heroText.subline}
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <motion.a
+                href={cal}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 text-base font-semibold text-white shadow-[0_18px_60px_rgba(10,15,12,0.65)]"
+                style={{
+                  background: 'linear-gradient(120deg, #8BB581, #4A6741 60%, #2C402F)',
+                  border: '1px solid rgba(255,255,255,0.15)'
+                }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                {heroText.ctaPrimary}
+              </motion.a>
+
+              <motion.button
+                onClick={handleContactCta}
+                className="inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 text-base font-semibold text-white/90"
+                style={{
+                  background: 'rgba(15, 28, 23, 0.4)',
+                  border: '1px solid rgba(212, 180, 131, 0.3)',
+                  backdropFilter: 'blur(10px)'
+                }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                aria-label={heroText.ctaSecondary}
+              >
+                {heroText.ctaSecondary}
+              </motion.button>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {heroHighlights.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                >
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#E6C897]/80" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
-          <h1
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide leading-tight font-bold text-white mb-4"
-            style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              textShadow: '0 4px 12px rgba(0,0,0,0.4)'
-            }}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
           >
-            {heroText.heading}
-          </h1>
-          <p className="text-xl sm:text-2xl text-white/90 leading-relaxed"
-            style={{
-              textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              fontFamily: 'Cormorant Garamond, serif'
-            }}>
-            {heroText.claim}
-          </p>
-          <p className="text-base sm:text-lg text-white/75 max-w-3xl mx-auto leading-relaxed">
-            {heroText.subline}
-          </p>
-        </motion.div>
-
-        {/* Single Modern CTA - Minimalist like Epiminds */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.6, duration: 1, ease: [0.23, 1, 0.32, 1] }}
-          className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto"
-        >
-          {/* Single Primary CTA - Liquid Glass */}
-          <motion.a
-            href="#waitlist"
-            onClick={(e) => {
-              e.preventDefault();
-              smoothScrollTo('waitlist');
-            }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0 30px 80px rgba(212, 180, 131, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 2px rgba(212, 180, 131, 0.4)'
-            }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="group relative w-full px-12 py-5 rounded-full text-white font-bold text-lg overflow-hidden text-center backdrop-blur-xl min-h-[44px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4A857]/80"
-            style={{
-              background: 'linear-gradient(135deg, rgba(212, 180, 131, 0.9) 0%, rgba(139, 181, 129, 0.85) 50%, rgba(74, 103, 65, 0.9) 100%)',
-              border: '2px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 20px 60px rgba(212, 180, 131, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(212, 180, 131, 0.25)'
-            }}
-            aria-label={heroText.ctaPrimary}
-          >
-            {/* Animated shine effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-              initial={{ x: '-200%' }}
-              animate={{ x: '200%' }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
-            />
-
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <motion.svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.15, 1]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <path d="M13 7H7v6h6V7z" />
-                <path fillRule="evenodd" d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z" />
-              </motion.svg>
-              <span>{heroText.ctaPrimary}</span>
-            </span>
-          </motion.a>
-          <p className="text-sm text-white/80 text-center max-w-sm">
-            {locale === 'de'
-              ? 'Demo-Daten, keine Eile – wir melden uns ruhig zurück.'
-              : 'Demo data, no rush – we will respond calmly.'}
-          </p>
-
-          {/* Scroll Indicator */}
-          <motion.button
-            onClick={() => smoothScrollTo('angebot')}
-            className="flex flex-col items-center gap-2 text-gray-400 hover:text-[#8BB581] transition-colors cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8BB581] min-h-[44px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            aria-label="Scroll to offering"
-          >
-            <span className="text-sm font-medium">{locale === 'de' ? 'Entdecken' : 'Discover'}</span>
-            <motion.svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            <div
+              className="relative overflow-hidden"
+              style={logoPanelStyle}
+              aria-label="Saimôr Logo Showcase"
+              onClick={emitLogoClick}
             >
-              <path d="M12 5v14M19 12l-7 7-7-7" />
-            </motion.svg>
-          </motion.button>
-        </motion.div>
+              <div className="absolute inset-0 opacity-60 pointer-events-none" style={logoInnerGlow} />
+              <div className="absolute -inset-6 opacity-40 pointer-events-none" style={logoInnerGlow} />
 
-        <CommunityNote locale={locale} className="mt-12 max-w-4xl mx-auto px-4" />
+              <div className="relative">
+                <div className="flex items-center justify-between gap-4 text-white">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-white/60">{locale === 'de' ? 'Markenzeichen' : 'Word mark'}</p>
+                    <p className="text-2xl font-serif mt-1">Saimôr Logo 2026</p>
+                    <p className="text-sm text-white/70">{locale === 'de' ? 'ruhig · organisch · klar' : 'calm · organic · clear'}</p>
+                  </div>
+                  <motion.span
+                    className="rounded-full px-3 py-1 text-xs font-semibold text-[#0F1A17]"
+                    style={{ background: 'linear-gradient(135deg, #E6C897, #D4A857)' }}
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ repeat: Infinity, duration: 3 }}
+                  >
+                    {locale === 'de' ? 'Neu' : 'New'}
+                  </motion.span>
+                </div>
 
+                <div className="relative mt-6 rounded-[28px] border border-white/10 bg-[#0f1c16]/60 px-6 py-8 overflow-hidden">
+                  <div className="absolute inset-0 opacity-30">
+                    <Orbits className="absolute inset-0" />
+                  </div>
+                  <div className="relative flex items-center justify-center">
+                    <Image
+                      src="/saimor-logo-new.png"
+                      alt="Saimôr Logo"
+                      width={420}
+                      height={480}
+                      className="w-full max-w-xs sm:max-w-sm object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.45)]"
+                      priority
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  {logoNotes.map((note) => (
+                    <div
+                      key={note.title}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/85"
+                    >
+                      <p className="text-xs uppercase tracking-[0.25em] text-[#E6C897]/80">{note.title}</p>
+                      <p className="mt-1 text-sm leading-relaxed">{note.copy}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="mt-16">
+          <CommunityNote locale={locale} className="max-w-3xl px-0" />
+        </div>
       </div>
 
       {/* Organic Golden Transition Element */}

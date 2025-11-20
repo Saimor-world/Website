@@ -18,46 +18,44 @@ export const demoPreviewCopy: Record<
 > = {
   de: {
     title: "Live Demo Panel",
-    hint:
-      "Hier siehst du einen echten Einblick in Môras Resonanzraum — alle Elemente stammen direkt aus der UI (Demo-Daten). So könnte der Raum für ein Café aussehen – mit simulierten Daten.",
-    badge: "Demo-Ansicht (simulierte Daten)",
+    hint: "Schneller Blick in die echte Oberflaeche mit simulierten Daten. Keine Slides, nur UI.",
+    badge: "Demo - simulierte Daten",
     pulse: "Home Pulse",
-    field: "Feld · Myzel",
+    field: "Feld - Myzel",
     context: "Kontextpanel",
-    chat: "Chat · ruhiger Modus",
-    lines: ["Folder", "Field", "Insights", "Chat (ruhig)"],
+    chat: "Chat - ruhig",
+    lines: ["Folder", "Field", "Insights", "Chat"],
     bubble: {
       question: "Welche Signale verdichten sich im Feld?",
-      answer: "Antwort: drei Cluster, bereit für Fokusgespräch."
+      answer: "Drei Cluster, bereit fuer ein Fokusgespraech."
     },
     contextItems: [
       "Fokus: Entscheidungen & People",
-      "Signals: 12 ruhig, 2 offen",
-      "Nächster Schritt: Kontext teilen",
-      "Beispiel: Café-Raum mit simulierten Daten"
+      "Signals: 12 ruhig / 2 offen",
+      "Naechster Schritt: Kontext teilen",
+      "Beispiel: Cafe-Szenario"
     ],
-    heading: "Demo-Ansicht · Môra UI"
+    heading: "Demo-Ansicht - MA'ra UI"
   },
   en: {
     title: "Live Demo Panel",
-    hint:
-      "Here’s a real preview of Môra’s resonance space — all elements come directly from the UI (demo data).",
-    badge: "Demo view (simulated data)",
+    hint: "Fast preview of the real interface with simulated data. No slides, just UI.",
+    badge: "Demo - simulated data",
     pulse: "Home Pulse",
-    field: "Field · Mycelium",
+    field: "Field - Mycelium",
     context: "Context panel",
-    chat: "Chat · calm mode",
-    lines: ["Folder", "Field", "Insights", "Chat (calm)"],
+    chat: "Chat - calm",
+    lines: ["Folder", "Field", "Insights", "Chat"],
     bubble: {
       question: "Which signals converge in the field?",
-      answer: "Answer: three clusters, ready for a focus call."
+      answer: "Three clusters, ready for a focus call."
     },
     contextItems: [
       "Focus: decisions & people",
-      "Signals: 12 calm, 2 open",
+      "Signals: 12 calm / 2 open",
       "Next step: share context",
-      "Example: calm café view · simulated data"
+      "Example: calm cafe flow"
     ],
-    heading: "Demo view · Môra UI"
+    heading: "Demo view - MA'ra UI"
   }
 };

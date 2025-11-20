@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { Activity, Brain, PanelsTopLeft } from "lucide-react";
 import { memo, useCallback } from "react";
@@ -9,47 +9,43 @@ type Locale = "de" | "en";
 const copy = {
   de: {
     kicker: "Mind Loop",
-    title: "Wie der Mind Loop arbeitet",
-    intro:
-      "Drei ruhige Schritte verbinden Signale, Bedeutung und Myzel. Keine Autonomieversprechen, nur Klarheit mit Demo-Daten.",
+    title: "Drei Schritte, mehr braucht es nicht",
+    intro: "Nur das, was wir wirklich nutzen: Signale aufnehmen, kurz verdichten, Kontext zeigen.",
     steps: [
       {
         title: "Signale sammeln",
-        body: "Systeme, Dokumente und Notizen liefern Zustände und Ereignisse."
+        body: "Systeme, Dokumente und Notizen liefern Zustaende – wir speichern nur Relevantes."
       },
       {
         title: "Bedeutung erkennen",
-        body: "Die semantische Schicht verdichtet Muster, Hinweise und Auffälligkeiten (Mind Loop)."
+        body: "Eine schlanke Semantik-Schicht markiert Muster, Hinweise und Risiken."
       },
       {
-        title: "Kontext sichtbar machen",
-        body: "Môra zeigt im Myzelraum, welche Themen, Risiken oder Chancen gerade wichtig sind."
+        title: "Kontext zeigen",
+        body: "Feld, Folder und Chat bleiben ruhig und erklaeren, was zusammengehoert."
       }
     ]
   },
   en: {
     kicker: "Mind Loop",
-    title: "How the Mind Loop works",
-    intro:
-      "Three calm steps connect signals, meaning, and mycelium. No autonomy claims, just clarity with demo data.",
+    title: "Three steps, nothing more",
+    intro: "Only what we actually run: collect signals, condense briefly, surface context.",
     steps: [
       {
         title: "Collect signals",
-        body: "Systems, documents, and notes provide states and events."
+        body: "Systems, docs, and notes provide states – only relevant bits stay."
       },
       {
-        title: "Detect meaning",
-        body: "The semantic layer condenses patterns, cues, and anomalies (Mind Loop)."
+        title: "Read meaning",
+        body: "A slim semantic layer marks patterns, hints, and risks."
       },
       {
-        title: "Make context visible",
-        body: "Môra shows in the mycelium space which themes, risks, or opportunities matter now."
+        title: "Show context",
+        body: "Field, folder, and chat stay calm and explain what belongs together."
       }
     ]
   }
-} as const;
-
-const icons = [Activity, Brain, PanelsTopLeft];
+} as const;const icons = [Activity, Brain, PanelsTopLeft];
 
 function HowItWorksMindloop({ locale }: { locale: Locale }) {
   const t = copy[locale];
@@ -128,3 +124,5 @@ function HowItWorksMindloop({ locale }: { locale: Locale }) {
 }
 
 export default memo(HowItWorksMindloop);
+
+

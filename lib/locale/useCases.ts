@@ -1,61 +1,54 @@
-type Locale = "de" | "en";
+﻿type Locale = "de" | "en";
 
-export const useCasesCopy: Record<
-  Locale,
-  {
-    kicker: string;
-    title: string;
-    intro: string;
-    cta: string;
-    cards: { title: string; body: string }[];
-  }
-> = {
+type UseCaseCopy = {
+  kicker: string;
+  title: string;
+  intro: string;
+  cta: string;
+  cards: { title: string; body: string }[];
+};
+
+export const useCasesCopy: Record<Locale, UseCaseCopy> = {
   de: {
     kicker: "Anwendungen",
-    title: "Wo Môra sofort Resonanz stiftet",
-    intro:
-      "Klare Einsatzfelder aus dem aktuellen Produkt: ruhig, fokussiert, nah an echten Abläufen.",
+    title: "Kurz und funktional",
+    intro: "Drei Felder, in denen wir MA'ra heute nutzen koennen – jeweils mit klaren Datenstroemen.",
     cta: "Kontakt aufnehmen",
     cards: [
       {
         title: "Teams & Projekte",
-        body:
-          "Sprint-Signale, Entscheidungsnotizen, ruhige Zusammenfassung in Folder und Field. Keine Lärmwände."
+        body: "Sprint-Signale, Entscheidungsnotizen, ruhige Ordner-Ansicht. Keine Laermwaende."
       },
       {
-        title: "Café / kleiner Standort",
-        body:
-          "Oben: Gästezahlen, Tagesumsatz, ruhige/volle Tage. Unten im Myzel: Öffnungszeiten, Angebote, Events und Auslastung. Môra schlägt keine Preise vor, zeigt aber Muster."
+        title: "Café / Standort",
+        body: "Oben Zahlen & Auslastung, unten oeffnungszeiten, Events, Angebote. Muster statt Hype."
       },
       {
         title: "Kommunale Einrichtungen",
-        body:
-          "Beteiligungs-Impulse, Anfragen, Beschlüsse im Kontextpanel. Nachvollziehbar, auditierbar."
+        body: "Beteiligung, Anfragen, Beschluesse im Kontextpanel – auditierbar und ruhig."
       }
     ]
   },
   en: {
     kicker: "Use cases",
-    title: "Where Môra creates resonance right now",
-    intro:
-      "Clear scenarios from the current product: calm, focused, aligned with real workflows.",
-    cta: "Contact us",
+    title: "Short and functional",
+    intro: "Three areas where MA'ra already works – each with a clear data stream.",
+    cta: "Reach out",
     cards: [
       {
         title: "Teams & projects",
-        body:
-          "Sprint signals, decision notes, calm summaries in folder and field. No noise walls."
+        body: "Sprint signals, decision notes, calm folder view. Zero noise walls."
       },
       {
-        title: "Small café / location",
-        body:
-          "Above: guest counts, daily revenue, calm/busy days. Below in the mycelium: opening hours, offers, events, occupancy. Môra never sets prices; it just shows where patterns change."
+        title: "Café / venue",
+        body: "Top view for numbers & load, bottom view for hours, events, offers. Patterns, not hype."
       },
       {
         title: "Public institutions",
-        body:
-          "Engagement signals, requests, resolutions inside the context panel. Traceable and calm."
+        body: "Engagement, requests, resolutions inside the context panel – traceable and calm."
       }
     ]
   }
 };
+
+

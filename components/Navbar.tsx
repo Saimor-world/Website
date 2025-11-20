@@ -1,5 +1,6 @@
 ﻿'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Sparkles, Home, Briefcase, Mail, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -88,11 +89,12 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
 
         {/* Main Orb Container */}
         <motion.div
-          className="relative bg-gradient-to-br from-[#1a2e1a]/95 via-[#4A6741]/90 to-[#2d4a2d]/95 rounded-full shadow-2xl overflow-hidden"
+          className="relative flex items-center gap-5 px-6 py-3 bg-gradient-to-br from-[#0f1c16]/95 via-[#1f3527]/90 to-[#214031]/95 rounded-[40px] shadow-2xl overflow-hidden"
           style={{
             backdropFilter: 'blur(20px) saturate(180%)',
-            border: '2px solid rgba(212, 180, 131, 0.3)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(212, 180, 131, 0.2), 0 0 40px rgba(212, 180, 131, 0.15)'
+            border: '1.5px solid rgba(212, 180, 131, 0.35)',
+            boxShadow: '0 25px 70px rgba(4, 7, 6, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+            minWidth: 'min(92vw, 760px)'
           }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
@@ -108,61 +110,43 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
           />
 
           {/* Content */}
-          <div className="relative px-6 py-3 flex items-center gap-4">
+          <div className="relative flex items-center gap-4 w-full">
             {/* Logo */}
             <Link
               href={`/${locale}`}
-              className="flex items-center gap-2.5 group"
-              onClick={(e) => {
+              className="flex items-center gap-3 group"
+              onClick={() => {
                 setMenuOpen(false);
-                // Fire custom event for achievement tracking
                 const event = new CustomEvent('saimor-logo-click');
                 window.dispatchEvent(event);
               }}
             >
-              {/* Animated S Logo */}
-              <motion.div
-                className="relative w-9 h-9 flex items-center justify-center"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
-              >
-                <svg viewBox="0 0 40 40" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="orbLogo" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#D4A857' }} />
-                      <stop offset="100%" style={{ stopColor: '#E6C897' }} />
-                    </linearGradient>
-                  </defs>
-                  <motion.path
-                    d="M 15 12 Q 20 8, 28 11 Q 32 14, 31 20 Q 30 25, 24 26 L 22 26 Q 18 25, 17 22"
-                    fill="url(#orbLogo)"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, ease: 'easeInOut' }}
-                  />
-                  <motion.path
-                    d="M 25 28 Q 20 32, 12 29 Q 8 26, 9 20 Q 10 15, 16 14 L 18 14 Q 22 15, 23 18"
-                    fill="url(#orbLogo)"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, delay: 0.2, ease: 'easeInOut' }}
-                  />
-                </svg>
-              </motion.div>
+              <div className="relative w-12 h-12 rounded-2xl bg-[#0b1611]/90 border border-white/15 flex items-center justify-center overflow-hidden shadow-inner">
+                <div
+                  className="absolute inset-0 opacity-50"
+                  style={{ background: 'radial-gradient(circle at 30% 30%, rgba(212,180,131,0.4), transparent 70%)' }}
+                />
+                <Image
+                  src="/saimor-logo-new.png"
+                  alt="Saimôr"
+                  width={80}
+                  height={80}
+                  className="relative z-10 w-11 h-11 object-contain"
+                />
+              </div>
 
-              {/* Wordmark */}
               <div className="flex flex-col -space-y-0.5">
                 <span
                   className="text-lg font-bold tracking-wide bg-gradient-to-r from-white via-[#E6C897] to-white bg-clip-text text-transparent"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    textShadow: '0 2px 8px rgba(212, 180, 131, 0.3)'
+                    textShadow: '0 2px 8px rgba(212, 180, 131, 0.45)'
                   }}
                 >
-                  SaimÃ´r
+                  Saimôr
                 </span>
                 <span
-                  className="text-[9px] text-[#D4A857] tracking-widest uppercase opacity-70"
+                  className="text-[10px] text-[#E6C897]/80 tracking-[0.5em] uppercase"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   {locale === 'de' ? 'Klarheit' : 'Clarity'}
@@ -363,3 +347,4 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
     </>
   );
 }
+

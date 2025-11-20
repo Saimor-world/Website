@@ -1,79 +1,111 @@
 type Locale = "de" | "en";
 
+type SectionCard = {
+  title: string;
+  items: string[];
+};
+
+type DemoBlock = {
+  title: string;
+  subtitle: string;
+  rows: { label: string; value: string }[];
+  note: string;
+  cta: string;
+};
+
+type QuickFact = { label: string; value: string };
+
 export const myceliumCopy: Record<
   Locale,
   {
     kicker: string;
     title: string;
     intro: string;
-    forest: { title: string; points: string[] };
-    mycelium: { title: string; lines: string[]; badge: string };
-    panelTitle: string;
-    panelSub: string;
-    chatPrompt: string;
-    chatAnswer: string;
-    demoCaption: string;
-    demoLink: string;
+    badges: string[];
+    forest: SectionCard;
+    mycelium: SectionCard;
+    demo: DemoBlock;
+    quickFacts: QuickFact[];
   }
 > = {
   de: {
-    kicker: "Wald · Myzel · Demo-Ansicht",
-    title: "Was oben rauscht, fließt unten zusammen",
+    kicker: "Wald - Myzel - Demo",
+    title: "Was wir zeigen, bleibt funktional",
     intro:
-      "Unter jeder Organisation liegt ein Myzel aus Daten, Entscheidungen und Beziehungen. Môra macht dieses Geflecht sichtbar – als Demo-Ansicht, Feld und ruhigen Dialog.",
+      "Kurzer Ueberblick ueber den Flow: oben Signale buendeln, unten das Myzel ordnen und eine ruhige Demo starten.",
+    badges: ["Neue Wort-Bildmarke", "Primaer Gruen"],
     forest: {
-      title: "Oben: der Wald",
-      points: [
-        "Teams, Projekte, Signale – viele Stimmen, wenig Zeit",
-        "Wir sammeln nur, was für Klarheit nötig ist",
-        "Kein Lärm, keine Versprechen, die noch nicht existieren"
+      title: "Oben - der Wald",
+      items: [
+        "Teams & Projekte - wir sortieren nur Relevantes",
+        "Keine Versprechen, keine Hypers",
+        "Signale laufen geordnet ein"
       ]
     },
     mycelium: {
-      title: "Unten: das Myzel",
-      lines: [
-        "Quellen verbinden (Connectoren)",
-        "Myzel erkennen (Feld)",
-        "Kontext & Insights",
-        "Dialog mit Môra (Chat)"
-      ],
-      badge: "Demo-Ansicht (simulierte Daten)"
+      title: "Unten - das Myzel",
+      items: [
+        "Connectoren verknuepfen Quellen",
+        "Feld, Folder, Chat bleiben ruhig",
+        "Insights zeigen den naechsten Schritt"
+      ]
     },
-    panelTitle: "Môra Blick in das Myzel",
-    panelSub: "Folder · Field · Insights · Chat",
-    chatPrompt: "Welche Signale verbinden People & Process?",
-    chatAnswer: "Antwort nach kurzer Reflexion – ruhig, mit Kontext.",
-    demoCaption: "Demo-Ansicht ansehen",
-    demoLink: "Zum Live Demo Panel"
+    demo: {
+      title: "Demo-Panel",
+      subtitle: "Folder - Field - Insights - Chat",
+      rows: [
+        { label: "Modus", value: "Simulierte Daten - Calm sync" },
+        { label: "Fokus", value: "People x Process" },
+        { label: "Status", value: "Live Demo Panel" }
+      ],
+      note: "Direkter Sprung in die UI ohne Marketing-Tour.",
+      cta: "Demo oeffnen"
+    },
+    quickFacts: [
+      { label: "Signals", value: "12 ruhig" },
+      { label: "Dialog", value: "MA'ra antwortet nach Kontext" },
+      { label: "Kontext", value: "Folder + Field kombiniert" },
+      { label: "Tempo", value: "Calm - keine Hektik" }
+    ]
   },
   en: {
-    kicker: "Forest · Mycelium · Demo view",
-    title: "What rustles above connects below",
+    kicker: "Forest - Mycelium - Demo",
+    title: "Only the functional bits",
     intro:
-      "Every organisation has a mycelium of data, decisions, and relationships. Môra reveals this structure – as demo view, field view, and calm dialogue.",
+      "Compact flow: collect the signals, keep the mycelium tidy, open the demo when needed.",
+    badges: ["New wordmark", "Primary green"],
     forest: {
-      title: "Above: the forest",
-      points: [
-        "Teams, projects, signals – many voices, little time",
-        "We only gather what is needed for clarity",
-        "No noise, no promises that don’t exist"
+      title: "Above - forest view",
+      items: [
+        "Teams & projects - only what matters",
+        "No hype layers, no empty promises",
+        "Signals arrive in a calm queue"
       ]
     },
     mycelium: {
-      title: "Below: the mycelium",
-      lines: [
-        "Connect sources (connectors)",
-        "See the field (mycelium)",
-        "Context & insights",
-        "Dialogue with Môra (chat)"
-      ],
-      badge: "Demo view (simulated data)"
+      title: "Below - mycelium",
+      items: [
+        "Connectors tie sources together",
+        "Field, folder, chat stay quiet",
+        "Insights point at the next move"
+      ]
     },
-    panelTitle: "Môra view into the mycelium",
-    panelSub: "Folder · Field · Insights · Chat",
-    chatPrompt: "Which signals connect people & process?",
-    chatAnswer: "Response after brief reflection – calm, with context.",
-    demoCaption: "See the demo view",
-    demoLink: "Go to Live Demo Panel"
+    demo: {
+      title: "Demo panel",
+      subtitle: "Folder - Field - Insights - Chat",
+      rows: [
+        { label: "Mode", value: "Simulated data - calm sync" },
+        { label: "Focus", value: "People x Process" },
+        { label: "Status", value: "Live demo panel" }
+      ],
+      note: "Direct jump into the UI, no marketing tour.",
+      cta: "Open demo"
+    },
+    quickFacts: [
+      { label: "Signals", value: "12 calm" },
+      { label: "Dialogue", value: "MA'ra replies with context" },
+      { label: "Context", value: "Folder + field combined" },
+      { label: "Pace", value: "Calm - zero rush" }
+    ]
   }
 };

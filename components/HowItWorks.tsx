@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useRef } from "react";
 import { Radar, Brain, PanelsTopLeft } from "lucide-react";
@@ -10,34 +10,34 @@ const steps = {
   de: [
     {
       title: "Signale sammeln",
-      body: "Beobachtungen, Snapshots und ruhige Pulse kommen geordnet an – kein Lärm, nur Relevantes.",
+      body: "Beobachtungen und Pulse kommen sortiert an - kein Laerm.",
       icon: Radar
     },
     {
-      title: "Bedeutung erkennen",
-      body: "Semantik + Mind Loop: Muster verdichten sich, damit der Kontext klar statt chaotisch bleibt.",
+      title: "Bedeutung lesen",
+      body: "Eine kurze Semantik-Schicht markiert Muster und Risiken.",
       icon: Brain
     },
     {
-      title: "Kontext sichtbar machen",
-      body: "Myzel-Karte + UI: Feld, Folder und Chat zeigen, was zusammengehört – transparent und ruhig.",
+      title: "Kontext zeigen",
+      body: "Die Myzel-Karte erklaert, was zusammengehoert.",
       icon: PanelsTopLeft
     }
   ],
   en: [
     {
       title: "Collect signals",
-      body: "Observations, snapshots, and calm pulses arrive in order – no noise, only what matters.",
+      body: "Observations and pulses arrive sorted - no noise.",
       icon: Radar
     },
     {
-      title: "Read the meaning",
-      body: "Semantics + mind loop: patterns condense so context stays clear instead of chaotic.",
+      title: "Read meaning",
+      body: "A quick semantic layer flags patterns and risks.",
       icon: Brain
     },
     {
-      title: "Make context visible",
-      body: "Mycelium map + UI: field, folder, and chat show what belongs together – transparent and calm.",
+      title: "Show context",
+      body: "The mycelium map explains what belongs together.",
       icon: PanelsTopLeft
     }
   ]
@@ -46,17 +46,14 @@ const steps = {
 const copy = {
   de: {
     kicker: "So wirkt das Myzel",
-    title: "Wald oben, Myzel unten – ein klarer Flow",
-    intro:
-      "Drei Schritte, die Môra heute als Demo erfüllt: Signale annehmen, Bedeutung verdichten, " +
-      "Kontext zeigen.",
+    title: "Wald oben, Myzel unten - klarer Flow",
+    intro: "Drei ruhige Schritte reichen: aufnehmen, deuten, zeigen.",
     badge: "Calm · Forest-Green · Gold"
   },
   en: {
     kicker: "How it works",
-    title: "Forest above, mycelium below – one clear flow",
-    intro:
-      "Three steps Môra already delivers in demo: receive signals, condense meaning, reveal context.",
+    title: "Forest above, mycelium below - clear flow",
+    intro: "Three calm steps are enough: capture, read, show.",
     badge: "Calm · Forest-Green · Gold"
   }
 } as const;
@@ -148,3 +145,4 @@ export default function HowItWorks({ locale }: { locale: Locale }) {
     </section>
   );
 }
+
