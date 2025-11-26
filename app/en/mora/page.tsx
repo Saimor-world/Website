@@ -102,7 +102,7 @@ export default function MoraPage() {
             Orb · chat · dashboard – one core
           </h2>
           <p className="text-base text-white/80 leading-relaxed max-w-3xl">
-            The orb reacts to focus, the chat feeds insights, the dashboard shows the same signals – only visualized. Everything remains calm and traceable.
+            The orb reacts to focus, the chat feeds insights, the dashboard shows the same signals - only visualized. Everything remains calm and traceable.
           </p>
           <div className="flex flex-wrap gap-3 text-sm">
             <Link href="/en#contact" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
@@ -110,6 +110,9 @@ export default function MoraPage() {
             </Link>
             <Link href="/en#waitlist" className="rounded-2xl bg-saimor-gold px-4 py-2 font-semibold text-[#0E1A1B] shadow-lg shadow-saimor-gold/20 hover:bg-saimor-gold-light transition">
               Secure early access
+            </Link>
+            <Link href="/en/mora/analog-affect" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
+              Môra Analog Affect explainer
             </Link>
           </div>
         </section>

@@ -40,15 +40,44 @@ const config: Config = {
         // Glass-morphism colors
         "glass-white": "rgba(255, 255, 255, 0.1)",
         "glass-green": "rgba(74, 103, 65, 0.1)",
-        "glass-gold": "rgba(212, 168, 87, 0.1)"
+        "glass-gold": "rgba(212, 168, 87, 0.1)",
+
+        // Mora Retro Palette (Onepager)
+        "saimor-base": "#020d0a",
+        "saimor-forest-dark": "#1a3c34",
+        "saimor-teal": "#10b981",
+        "saimor-gold-retro": "#CEB676",
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', "serif"],
-        sans: ['Inter', "ui-sans-serif", "system-ui"]
+        sans: ['Inter', "ui-sans-serif", "system-ui"],
+        mono: ['"Space Mono"', "monospace"],
+        vcr: ['"VT323"', "monospace"],
       },
       backgroundImage: {
         "radial-orbit": "radial-gradient(1200px 600px at 20% 10%, rgba(255,206,69,0.08), transparent)",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))"
+      },
+      animation: {
+        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 8s ease-in-out infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        'boot-fade': 'fadeOut 0.8s ease-out forwards',
+        'equalizer': 'equalizer 0.8s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-15px) scale(1.02)' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1', pointerEvents: 'auto' },
+          '100%': { opacity: '0', pointerEvents: 'none' }
+        },
+        equalizer: {
+          '0%, 100%': { height: '20%' },
+          '50%': { height: '80%' }
+        }
       }
     }
   },

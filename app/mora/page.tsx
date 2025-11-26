@@ -66,7 +66,6 @@ export default function MoraPage() {
                 Chat + Dashboard in einem Block
               </h2>
               <p className="text-base text-white/80 max-w-3xl leading-relaxed">
-                Ein Datenstrom, zwei Blickwinkel: oben Chat, unten Ordner- und Feld-Ansicht. Jede Zahl trägt einen Demo-Hinweis, jede Interaktion bleibt leise.
               </p>
             </div>
             <div className="flex gap-3 text-sm">
@@ -110,6 +109,9 @@ export default function MoraPage() {
             </Link>
             <Link href="/#waitlist" className="rounded-2xl bg-saimor-gold px-4 py-2 font-semibold text-[#0E1A1B] shadow-lg shadow-saimor-gold/20 hover:bg-saimor-gold-light transition">
               Early Access sichern
+            </Link>
+            <Link href="/mora/analog-affect" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
+              Môra Analog Affect erklärt
             </Link>
           </div>
         </section>

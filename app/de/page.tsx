@@ -1,26 +1,13 @@
 ﻿import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import MoraDashboard from "@/components/MoraDashboard";
-import TrustProof from "@/components/TrustProof";
-// import FundingSection from "@/components/FundingSection"; // TODO(CEO): Re-enable after Pre-Seed confirmation
-import MyceliumSection from "@/components/MyceliumSection";
-import DemoPreview from "@/components/DemoPreview";
-import HowItWorksMindloop from "@/components/HowItWorksMindloop";
-import UseCases from "@/components/UseCases";
-import HowItWorks from "@/components/HowItWorks";
-import ProductStory from "@/components/ProductStory";
-import FAQ from "@/components/FAQ";
-import ContactSection from "@/components/ContactSection";
+import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
+import ContactSection from "@/components/ContactSection";
 import dynamic from "next/dynamic";
 
 const MoraIntroAnimation = dynamic(() => import("@/components/MoraIntroAnimation"), { ssr: false });
 const ScrollProgress = dynamic(() => import("@/components/ScrollProgress"), { ssr: false });
 const EasterEggs = dynamic(() => import("@/components/EasterEggs"), { ssr: false });
-const MoraAvatar = dynamic(() => import("@/components/MoraAvatar"), { ssr: false });
-const MoraChat = dynamic(() => import("@/components/MoraChat"), { ssr: false });
-const MoraDashboardConnection = dynamic(() => import("@/components/MoraDashboardConnection"), { ssr: false });
 const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
 const MyceliumNetwork = dynamic(() => import("@/components/MyceliumNetwork"), { ssr: false });
 
@@ -46,25 +33,12 @@ export default function Page() {
       <MyceliumNetwork />
       <ScrollProgress />
       <EasterEggs />
-      <MoraAvatar locale="de" />
-      <MoraChat />
-      <MoraDashboardConnection />
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="de" />
-        <MyceliumSection locale="de" />
-        <DemoPreview locale="de" />
-        <HowItWorksMindloop locale="de" />
-        <UseCases locale="de" />
-        <HowItWorks locale="de" />
-        <Services locale="de" />
-        <MoraDashboard locale="de" />
-        <ProductStory locale="de" />
-        <TrustProof locale="de" />
-        {/* <FundingSection locale="de" /> */}
+        <MoraTeaser locale="de" />
         <CommunityBanner locale="de" />
         <WaitlistForm locale="de" />
-        <FAQ locale="de" />
         <ContactSection locale="de" />
       </div>
     </>

@@ -1,41 +1,28 @@
 ﻿import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import MoraDashboard from "@/components/MoraDashboard";
-import TrustProof from "@/components/TrustProof";
-// import FundingSection from "@/components/FundingSection"; // TODO(CEO): Re-enable after Pre-Seed confirmation
-import MyceliumSection from "@/components/MyceliumSection";
-import DemoPreview from "@/components/DemoPreview";
-import HowItWorksMindloop from "@/components/HowItWorksMindloop";
-import UseCases from "@/components/UseCases";
-import HowItWorks from "@/components/HowItWorks";
-import ProductStory from "@/components/ProductStory";
-import FAQ from "@/components/FAQ";
-import ContactSection from "@/components/ContactSection";
+import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
+import ContactSection from "@/components/ContactSection";
 import dynamic from "next/dynamic";
 
 const MoraIntroAnimation = dynamic(() => import("@/components/MoraIntroAnimation"), { ssr: false });
 const ScrollProgress = dynamic(() => import("@/components/ScrollProgress"), { ssr: false });
 const EasterEggs = dynamic(() => import("@/components/EasterEggs"), { ssr: false });
-const MoraAvatar = dynamic(() => import("@/components/MoraAvatar"), { ssr: false });
-const MoraChat = dynamic(() => import("@/components/MoraChat"), { ssr: false });
-const MoraDashboardConnection = dynamic(() => import("@/components/MoraDashboardConnection"), { ssr: false });
 const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
 const MyceliumNetwork = dynamic(() => import("@/components/MyceliumNetwork"), { ssr: false });
 
 export const metadata = {
-  title: 'Saimôr – Clarity in Transformation',
-  description: 'Saimôr accompanies municipalities, companies and people in transformation – with consulting, dashboards & workshops. Clear instead of complex. GDPR-compliant, EU-based.',
+  title: 'Saimôr – Clarity in Change',
+  description: 'Saimôr guides municipalities, companies and people through change – with consulting, dashboards & workshops. Clear instead of complex. GDPR-compliant, EU-based.',
   openGraph: {
-    title: 'Saimôr – Clarity in Transformation',
-    description: 'Consulting, dashboards & workshops. Clear instead of complex. GDPR-compliant, EU-based.',
+    title: 'Saimôr – Clarity in Change',
+    description: 'Consulting, Dashboards & Workshops. Clear instead of complex. GDPR-compliant, EU-based.',
     images: ['/og-saimor.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Saimôr – Clarity in Transformation',
-    description: 'Consulting, dashboards & workshops. Clear instead of complex.',
+    title: 'Saimôr – Clarity in Change',
+    description: 'Consulting, Dashboards & Workshops. Clear instead of complex.',
   }
 };
 
@@ -46,25 +33,12 @@ export default function Page() {
       <MyceliumNetwork />
       <ScrollProgress />
       <EasterEggs />
-      <MoraAvatar locale="en" />
-      <MoraChat />
-      <MoraDashboardConnection />
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="en" />
-        <MyceliumSection locale="en" />
-        <DemoPreview locale="en" />
-        <HowItWorksMindloop locale="en" />
-        <UseCases locale="en" />
-        <HowItWorks locale="en" />
-        <Services locale="en" />
-        <MoraDashboard locale="en" />
-        <ProductStory locale="en" />
-        <TrustProof locale="en" />
-        {/* <FundingSection locale="en" /> */}
+        <MoraTeaser locale="en" />
         <CommunityBanner locale="en" />
         <WaitlistForm locale="en" />
-        <FAQ locale="en" />
         <ContactSection locale="en" />
       </div>
     </>

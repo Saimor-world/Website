@@ -30,3 +30,9 @@ node_modules/
 .env.local
 .env
 .DS_Store
+
+# Backup files
+*.old
+*.bak
+fix-encoding.ps1
+MORA_POLISH.md

@@ -99,34 +99,34 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
   const content = {
     de: {
-      title: 'MÃ´ra â€“ Resonanz-Dashboard (Demo)',
+      title: 'Môra – Resonanz-Dashboard (Demo)',
       subtitle: 'Chat + Dashboard, ein Datenstrom',
       demoLabel: 'Demo-Dashboard (simulierte Daten)',
-      demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten. Dieses Dashboard zeigt das Potenzial von MÃ´ra.',
+      demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten. Dieses Dashboard zeigt das Potenzial von Môra.',
 
       // Chat Section
-      chatTitle: 'Stell MÃ´ra eine Frage',
-      chatIntro: 'Frag mich zu deinem Business â€“ ich analysiere die Daten und gebe klare Antworten.',
-      inputPlaceholder: 'Frag MÃ´ra etwas zu deinem Business...',
+      chatTitle: 'Stell Môra eine Frage',
+      chatIntro: 'Frag mich zu deinem Business – ich erinnere mich an Muster und gebe klare Antworten.',
+      inputPlaceholder: 'Frag Môra nach Zusammenhängen...',
       askButton: 'Fragen',
       quickQuestions: [
-        'Wie kann ich Team-ProduktivitÃ¤t steigern?',
+        'Wie kann ich Team-Produktivität steigern?',
         'Zeig mir Budget-Optimierungen',
         'Analysiere Projekt-Fortschritt'
       ],
-      realResponse: 'Echte MÃ´ra-Antwort',
+      realResponse: 'Echte Môra-Antwort',
       responseIn: 'Antwort in',
       seconds: 'Sekunden',
-      chatLink: 'FÃ¼r tiefere Analysen',
-      chatButton: 'MÃ´ra Chat Ã¶ffnen',
+      chatLink: 'Für tiefere Analysen',
+      chatButton: 'Môra Chat öffnen',
 
       // Dashboard Section
       dashboardTitle: 'Dashboard',
-      dashboardSubtitle: 'Dual Mode: Ordner â†” Feld Ansicht',
+      dashboardSubtitle: 'Dual Mode: Ordner ↔ Feld Ansicht',
       folderView: 'Ordner-Ansicht',
       fieldView: 'Feld-Ansicht',
-      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
-      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare AblÃ¤ufe â†’ hÃ¶here Zufriedenheit.',
+      moraInsight: '💡 Môra Insight',
+      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare Abläufe → höhere Zufriedenheit.',
 
       categories: {
         people: 'Menschen',
@@ -149,37 +149,37 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'Demo ansehen',
-      ctaSecondary: 'Mehr Ã¼ber MÃ´ra erfahren'
+      ctaSecondary: 'Mehr über Môra erfahren'
     },
     en: {
-      title: 'MÃ´ra â€“ Resonance Dashboard (Demo)',
+      title: 'Môra – Resonance Dashboard (Demo)',
       subtitle: 'Chat + Dashboard, one data stream',
       demoLabel: 'Demo Dashboard (simulated data)',
-      demoTooltip: 'All values are currently based on locally generated demo data. No real customer data. This dashboard shows the potential of MÃ´ra.',
+      demoTooltip: 'All values are currently based on locally generated demo data. No real customer data. This dashboard shows the potential of Môra.',
 
       // Chat Section
-      chatTitle: 'Ask MÃ´ra a Question',
-      chatIntro: 'Ask me about your business â€“ I analyze the data and give clear answers.',
-      inputPlaceholder: 'Ask MÃ´ra about your business...',
+      chatTitle: 'Ask Môra a Question',
+      chatIntro: 'Ask me about your business – I remember patterns and give clear answers.',
+      inputPlaceholder: 'Ask Môra about connections...',
       askButton: 'Ask',
       quickQuestions: [
         'How can I boost team productivity?',
         'Show me budget optimizations',
         'Analyze project progress'
       ],
-      realResponse: 'Real MÃ´ra Response',
+      realResponse: 'Real Môra Response',
       responseIn: 'Response in',
       seconds: 'seconds',
       chatLink: 'For deeper analysis',
-      chatButton: 'Open MÃ´ra Chat',
+      chatButton: 'Open Môra Chat',
 
       // Dashboard Section
       dashboardTitle: 'Dashboard',
-      dashboardSubtitle: 'Dual Mode: Folder â†” Field View',
+      dashboardSubtitle: 'Dual Mode: Folder ↔ Field View',
       folderView: 'Folder View',
       fieldView: 'Field View',
-      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
-      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows â†’ higher satisfaction.',
+      moraInsight: '💡 Môra Insight',
+      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows → higher satisfaction.',
 
       categories: {
         people: 'People',
@@ -202,7 +202,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'See the demo',
-      ctaSecondary: 'Learn more about MÃ´ra'
+      ctaSecondary: 'Learn more about Môra'
     }
   }[locale];
 
@@ -449,9 +449,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 <div
                   id={demoTooltipId}
                   role="tooltip"
-                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 rounded-lg transition duration-300 whitespace-nowrap max-w-xs ${
-                    isDemoTooltipVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'
-                  }`}
+                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 rounded-lg transition duration-300 whitespace-nowrap max-w-xs ${isDemoTooltipVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'
+                    }`}
                   style={{
                     background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(93, 124, 84, 0.95) 100%)',
                     border: '1px solid rgba(212, 180, 131, 0.4)',

@@ -41,16 +41,16 @@ export default function Hero({
   const heroText = {
     de: {
       heading: 'Saimôr – Klarheit im Wandel',
-      claim: 'Môra bündelt, was gerade wichtig ist – aus allen Systemen, an einem Ort.',
-      subline: 'Ruhig. Klar. Ohne Lärm.',
-      ctaPrimary: 'Demo ansehen',
+      claim: 'Saimôr ist das Ökosystem. Môra ist das Gedächtnis.',
+      subline: 'Wie Wald und Myzel: Oben die Organisation, unten die Verbindungen. Môra bringt zusammen, was zusammengehört.',
+      ctaPrimary: 'Môra kennenlernen',
       ctaSecondary: 'Gespräch vereinbaren'
     },
     en: {
       heading: 'Saimôr – clarity in change',
-      claim: 'Môra brings together what matters – from all your systems, in one place.',
-      subline: 'Calm. Clear. No noise.',
-      ctaPrimary: 'See the demo',
+      claim: 'Saimôr is the ecosystem. Môra is the memory.',
+      subline: 'Like forest and mycelium: above the organization, below the connections. Môra brings together what belongs together.',
+      ctaPrimary: 'Explore Môra',
       ctaSecondary: 'Schedule a call'
     }
   }[locale];
@@ -68,12 +68,14 @@ export default function Hero({
 
   const logoNotes = {
     de: [
-      { title: 'Organisch', copy: 'Inspiriert vom Myzel im Wald' },
-      { title: 'Ruhig', copy: 'Grüne Töne für klaren Fokus' }
+      { title: 'Myzel-Netzwerk', copy: 'Organische Verbindungen wie im Waldboden' },
+      { title: 'Wachstum', copy: 'Verzweigungen zeigen lebendige Strukturen' },
+      { title: 'Ruhige Farben', copy: 'Grün für Klarheit, Gold für Resonanz' }
     ],
     en: [
-      { title: 'Organic', copy: 'Inspired by forest mycelium' },
-      { title: 'Calm', copy: 'Green tones for clear focus' }
+      { title: 'Mycelium network', copy: 'Organic connections like in forest soil' },
+      { title: 'Growth', copy: 'Branches show living structures' },
+      { title: 'Calm colors', copy: 'Green for clarity, gold for resonance' }
     ]
   }[locale];
 
@@ -290,9 +292,7 @@ export default function Hero({
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <motion.a
-                href={cal}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={locale === 'en' ? '/en/mora' : '/mora'}
                 className="inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 text-base font-semibold text-white shadow-[0_18px_60px_rgba(10,15,12,0.65)]"
                 style={{
                   background: 'linear-gradient(120deg, #8BB581, #4A6741 60%, #2C402F)',
@@ -304,8 +304,10 @@ export default function Hero({
                 {heroText.ctaPrimary}
               </motion.a>
 
-              <motion.button
-                onClick={handleContactCta}
+              <motion.a
+                href={cal}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 text-base font-semibold text-white/90"
                 style={{
                   background: 'rgba(15, 28, 23, 0.4)',
@@ -317,7 +319,7 @@ export default function Hero({
                 aria-label={heroText.ctaSecondary}
               >
                 {heroText.ctaSecondary}
-              </motion.button>
+              </motion.a>
             </div>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
