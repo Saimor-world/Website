@@ -1,19 +1,18 @@
 ﻿import Link from "next/link";
 import MoraDashboard from "@/components/MoraDashboard";
-import DataFlowDiagram from "@/components/DataFlowDiagram";
 
 const featureCards = [
   {
-    title: 'What is Môra?',
-    body: 'Môra is our resonance dashboard. It connects orb, chat and dashboard into one calm space where data becomes context – currently as a demo with simulated data.'
+    title: 'Not a mirror',
+    body: 'Môra does not just reflect data, it remembers patterns and connections.'
   },
   {
-    title: 'How does it feel?',
-    body: 'Slow, clear, auditable. Responses come after short reflection. Every view carries the note “Demo dashboard (simulated data)” and stays readable on mobile.'
+    title: 'A memory',
+    body: 'Like mycelium in forest soil, Môra connects what belongs together – calm and clear.'
   },
   {
-    title: 'What does it show today?',
-    body: 'Chat + dashboard in one block: folder and field view, demo KPIs, a subtle link between orb and dashboard. No customer data – only the process.'
+    title: 'Local & secure',
+    body: 'Fully local, EU-hosted, GDPR-compliant. Your data stays your data.'
   }
 ];
 
@@ -30,17 +29,17 @@ export default function MoraPage() {
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 py-16 lg:py-24 space-y-12">
         <header className="space-y-6 text-center">
-          <p className="text-xs tracking-[0.4em] uppercase text-saimor-gold">Môra · Demo mode</p>
+          <p className="text-xs tracking-[0.4em] uppercase text-saimor-gold">Môra · The memory of Saimôr</p>
           <h1 className="text-4xl sm:text-5xl font-semibold leading-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Resonance dashboard for calm clarity
+            Not a mirror.<br />
+            <span className="text-saimor-teal italic">A memory.</span>
           </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">
-            We are open about how the demo works: simulated data, adapters, core API, UI. Everything local, quiet, auditable – a preview of the productive integration.
+          <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+            Môra is the semantic memory of Saimôr. It recognizes patterns, understands context, and shows what belongs together.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-white/80">
-            <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">Demo dashboard (simulated data)</span>
-            <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">Orb ↔ Dashboard ↔ System</span>
-            <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">EU-hosted · audit-ready</span>
+            <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">Demo with sample data</span>
+            <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">Local & secure</span>
           </div>
         </header>
 
@@ -61,18 +60,12 @@ export default function MoraPage() {
         <section className="rounded-[36px] border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-[0_30px_80px_rgba(0,0,0,0.35)] space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.35em] text-saimor-gold">Live demo</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-saimor-gold">Demo</p>
               <h2 className="text-3xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                Chat + dashboard in one block
+                This is what Môra looks like
               </h2>
-              <p className="text-base text-white/80 max-w-3xl leading-relaxed">
-                One data stream, two angles: chat on top, folder and field view below. Every number has a demo label, every interaction stays quiet.
-              </p>
             </div>
             <div className="flex gap-3 text-sm">
-              <Link href="/en#waitlist" className="rounded-2xl bg-saimor-gold px-4 py-2 font-semibold text-[#0E1A1B] shadow-lg shadow-saimor-gold/20 hover:bg-saimor-gold-light transition">
-                See the demo
-              </Link>
               <Link href="/mora" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
                 Zur deutschen Seite
               </Link>
@@ -83,36 +76,20 @@ export default function MoraPage() {
           </div>
         </section>
 
-        <section className="rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 space-y-5">
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.35em] text-saimor-gold">Data flow</p>
-            <h2 className="text-3xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Demo data → adapter → core API → UI → website
-            </h2>
-            <p className="text-base text-white/80 leading-relaxed">
-              Everything comes from mock streams. We practice logging, audit, and roles – just without real customer data. You see early how integration will look later.
-            </p>
-          </div>
-          <DataFlowDiagram locale="en" />
-        </section>
-
-        <section className="rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 space-y-4">
-          <p className="text-xs tracking-[0.35em] uppercase text-saimor-gold">Connection</p>
+        <section className="rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 space-y-4 text-center">
+          <p className="text-xs tracking-[0.35em] uppercase text-saimor-gold">Next step</p>
           <h2 className="text-3xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Orb · chat · dashboard – one core
+            Dive deeper
           </h2>
-          <p className="text-base text-white/80 leading-relaxed max-w-3xl">
-            The orb reacts to focus, the chat feeds insights, the dashboard shows the same signals - only visualized. Everything remains calm and traceable.
+          <p className="text-base text-white/80 leading-relaxed max-w-2xl mx-auto">
+            Discover the full Môra experience: VHS archives, emotional semantics, and how Môra learns from German broadcast data.
           </p>
-          <div className="flex flex-wrap gap-3 text-sm">
-            <Link href="/en#contact" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
-              Start a calm intro call
+          <div className="flex flex-wrap justify-center gap-3 text-sm pt-4">
+            <Link href="/en/mora/analog-affect" className="rounded-2xl bg-saimor-teal px-6 py-3 font-bold text-black shadow-lg shadow-saimor-teal/20 hover:scale-105 transition">
+              Experience Môra Analog Affect
             </Link>
-            <Link href="/en#waitlist" className="rounded-2xl bg-saimor-gold px-4 py-2 font-semibold text-[#0E1A1B] shadow-lg shadow-saimor-gold/20 hover:bg-saimor-gold-light transition">
-              Secure early access
-            </Link>
-            <Link href="/en/mora/analog-affect" className="rounded-2xl border border-white/30 px-4 py-2 font-semibold text-white/90 hover:bg-white/10 transition">
-              Môra Analog Affect explainer
+            <Link href="/en" className="rounded-2xl border border-white/30 px-6 py-3 font-semibold text-white/90 hover:bg-white/10 transition">
+              Back to homepage
             </Link>
           </div>
         </section>

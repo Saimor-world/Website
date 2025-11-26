@@ -56,7 +56,7 @@ export default function MoraTeaser({ locale }: Props) {
                     {/* CTA */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                         <Link
-                            href="/mora/analog-affect"
+                            href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
                             className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-bold text-lg shadow-lg shadow-saimor-teal/20 hover:shadow-saimor-teal/40 hover:scale-105 transition-all duration-300"
                         >
                             <span>{t('Tief eintauchen', 'Dive deep')}</span>
@@ -64,7 +64,7 @@ export default function MoraTeaser({ locale }: Props) {
                         </Link>
 
                         <Link
-                            href="/mora"
+                            href={locale === 'en' ? '/en/mora' : '/mora'}
                             className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all duration-300"
                         >
                             {t('Mehr über Môra', 'Learn about Môra')}
