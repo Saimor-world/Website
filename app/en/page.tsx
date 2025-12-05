@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <>
+    <main className="flex flex-col min-h-screen">
       <MoraIntroAnimation locale="en" />
       <MyceliumNetwork />
       <ScrollProgress />
@@ -41,6 +41,6 @@ export default function Page() {
         <WaitlistForm locale="en" />
         <ContactSection locale="en" />
       </div>
-    </>
+    </main>
   )
 }

@@ -12,15 +12,15 @@ type Props = {
 
 const COPY: Record<Locale, { greeting: string; subtitle: string; badge: string; skip: string }> = {
   de: {
-    greeting: 'Hallo, ich bin MÃ´ra ðŸŒ±',
-    subtitle: 'Deine Begleiterin fÃ¼r Klarheit im Wandel.',
-    badge: 'MÃ´ra erwacht â€¦',
-    skip: 'Ãœberspringen',
+    greeting: 'Hallo, ich bin Môra 🌱',
+    subtitle: 'Deine Begleiterin für Klarheit im Wandel.',
+    badge: 'Môra erwacht …',
+    skip: 'Überspringen',
   },
   en: {
-    greeting: "Hello, I'm MÃ´ra ðŸŒ±",
+    greeting: "Hello, I'm Môra 🌱",
     subtitle: 'Your companion for clarity in transformation.',
-    badge: 'MÃ´ra is waking upâ€¦',
+    badge: 'Môra is waking up…',
     skip: 'Skip intro',
   },
 };
@@ -156,7 +156,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           role="dialog"
-          aria-label="MÃ´ra Intro Animation"
+          aria-label="Môra Intro Animation"
         >
           <button
             type="button"

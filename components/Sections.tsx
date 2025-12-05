@@ -4,21 +4,21 @@ import { Zap, Database, Orbit } from 'lucide-react';
 import ContactForm from './ContactForm';
 
 
-export default function Sections({ locale }: { locale: 'de'|'en' }) {
+export default function Sections({ locale }: { locale: 'de' | 'en' }) {
   const translations = {
     de: {
       offers: {
-        pulse: { title: 'Pulse', subtitle: 'Workshops & Impulsformate', text: 'Gemeinsam Klarheit im Wandel erzeugen und Menschen in VerÃ¤nderungen mitnehmen.', cta: 'Impulse entdecken' },
-        systems: { title: 'Systems', subtitle: 'Daten, Dashboards & KI', text: 'VerstÃ¤ndliche DatenlÃ¶sungen, die Menschen befÃ¤higen statt Ã¼berfordern.', cta: 'Einblick erhalten' },
-        orbit: { title: 'Orbit', subtitle: 'Selbstorganisation & Coaching', text: 'PersÃ¶nliche Klarheit und nachhaltige Strukturen fÃ¼r Einzelne und Teams.', cta: 'KlarheitsgesprÃ¤ch starten' },
-        ctaHint: 'Ruhiger Erstkontakt Ã¼ber Cal.com'
+        pulse: { title: 'Pulse', subtitle: 'Workshops & Impulsformate', text: 'Gemeinsam Klarheit im Wandel erzeugen und Menschen in Veränderungen mitnehmen.', cta: 'Impulse entdecken' },
+        systems: { title: 'Systems', subtitle: 'Daten, Dashboards & KI', text: 'Verständliche Datenlösungen, die Menschen befähigen statt überfordern.', cta: 'Einblick erhalten' },
+        orbit: { title: 'Orbit', subtitle: 'Selbstorganisation & Coaching', text: 'Persönliche Klarheit und nachhaltige Strukturen für Einzelne und Teams.', cta: 'Klarheitsgespräch starten' },
+        ctaHint: 'Ruhiger Erstkontakt über Cal.com'
       },
       mission: {
         title: 'Mission & Haltung',
-        text: 'SaimÃ´r entsteht aus der Ãœberzeugung, dass echter Wandel nur durch Klarheit gelingt. Wir schaffen ResonanzrÃ¤ume, in denen Menschen, Daten und VerÃ¤nderung aufeinandertreffen â€“ ohne Ãœberforderung, mit Vertrauen.',
+        text: 'Saimôr entsteht aus der Überzeugung, dass echter Wandel nur durch Klarheit gelingt. Wir schaffen Resonanzräume, in denen Menschen, Daten und Veränderung aufeinandertreffen – ohne Überforderung, mit Vertrauen.',
         subtitle: 'Start: 1. September 2025'
       },
-      contact: { title: 'Kontakt', subtitle: 'Kurz sprechen, Fokus klÃ¤ren, nÃ¤chsten Schritt festlegen.', name: 'Name', email: 'E-Mail', message: 'Nachricht', send: 'Nachricht senden', book: 'KlarheitsgesprÃ¤ch buchen', disclaimer: 'Alle Anfragen und Buchungen laufen DSGVO-konform Ã¼ber Cal.com. Kein Verkauf, sondern Klarheit im GesprÃ¤ch.' }
+      contact: { title: 'Kontakt', subtitle: 'Kurz sprechen, Fokus klären, nächsten Schritt festlegen.', name: 'Name', email: 'E-Mail', message: 'Nachricht', send: 'Nachricht senden', book: 'Klarheitsgespräch buchen', disclaimer: 'Alle Anfragen und Buchungen laufen DSGVO-konform über Cal.com. Kein Verkauf, sondern Klarheit im Gespräch.' }
     },
     en: {
       offers: {
@@ -29,7 +29,7 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
       },
       mission: {
         title: 'Mission & Stance',
-        text: 'SaimÃ´r emerges from the conviction that real change only succeeds through clarity. We create resonance spaces where people, data and change meet â€“ without overwhelm, with trust.',
+        text: 'Saimôr emerges from the conviction that real change only succeeds through clarity. We create resonance spaces where people, data and change meet – without overwhelm, with trust.',
         subtitle: 'Launch: September 1, 2025'
       },
       contact: { title: 'Contact', subtitle: 'Quick call, sharpen focus, decide the next step.', name: 'Name', email: 'Email', message: 'Message', send: 'Send message', book: 'Book Light Conversation', disclaimer: 'All inquiries and bookings run GDPR-compliant via Cal.com. No sales, but clarity in conversation.' }
@@ -46,9 +46,9 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
     <>
       {/* Offers Section */}
       <section id="leistungen" className="py-16 sm:py-24 md:py-40 relative overflow-hidden"
-               style={{
-                 background: 'linear-gradient(135deg, rgba(248,245,240,0.98) 0%, rgba(250,240,230,0.95) 100%)'
-               }}>
+        style={{
+          background: 'linear-gradient(135deg, rgba(248,245,240,0.98) 0%, rgba(250,240,230,0.95) 100%)'
+        }}>
         {/* Subtle organic background elements */}
         <motion.div
           className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-15 pointer-events-none"
@@ -76,36 +76,36 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
         />
 
         <div className="relative mx-auto max-w-7xl px-4">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {cards.map(({ icon: Icon, key }, i) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              whileHover={{
-                y: -6,
-                transition: { duration: 0.2 }
-              }}
-              className="group relative rounded-2xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                borderColor: 'rgba(212,168,87,0.25)'
-              }}
-            >
-              {/* Glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/15 to-saimor-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {cards.map(({ icon: Icon, key }, i) => (
+              <motion.div
+                key={key}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+                whileHover={{
+                  y: -6,
+                  transition: { duration: 0.2 }
+                }}
+                className="group relative rounded-2xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
+                  borderColor: 'rgba(212,168,87,0.25)'
+                }}
+              >
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/15 to-saimor-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-              <div className="relative z-10">
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <Icon className="mb-6 w-10 h-10 text-saimor-gold group-hover:drop-shadow-lg transition-all duration-300" />
-                </motion.div>
+                <div className="relative z-10">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <Icon className="mb-6 w-10 h-10 text-saimor-gold group-hover:drop-shadow-lg transition-all duration-300" />
+                  </motion.div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl mb-3 transition-colors duration-300"
+                  <h3 className="font-serif text-2xl sm:text-3xl mb-3 transition-colors duration-300"
                     style={{
                       fontFamily: 'Cormorant Garamond, serif',
                       background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)',
@@ -113,42 +113,42 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text'
                     }}>
-                  {(translations.offers[key as keyof typeof translations.offers] as any).title}
-                </h3>
+                    {(translations.offers[key as keyof typeof translations.offers] as any).title}
+                  </h3>
 
-                <h4 className="text-lg sm:text-xl font-medium mb-4 text-saimor-green/90">
-                  {(translations.offers[key as keyof typeof translations.offers] as any).subtitle}
-                </h4>
+                  <h4 className="text-lg sm:text-xl font-medium mb-4 text-saimor-green/90">
+                    {(translations.offers[key as keyof typeof translations.offers] as any).subtitle}
+                  </h4>
 
-                <p className="text-slate-700 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
-                  {(translations.offers[key as keyof typeof translations.offers] as any).text}
-                </p>
+                  <p className="text-slate-700 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg">
+                    {(translations.offers[key as keyof typeof translations.offers] as any).text}
+                  </p>
 
-                <motion.a
-                  href="https://cal.com/saimor/30min"
-                  target="_blank"
-                  rel="noreferrer"
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
-                    border: '2px solid rgba(212, 180, 131, 0.4)',
-                    boxShadow: '0 8px 25px rgba(74, 103, 65, 0.25)'
-                  }}
-                  aria-label={`${(translations.offers[key as keyof typeof translations.offers] as any).cta} - Book via Cal.com (opens in new tab)`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-saimor-green/95 to-saimor-gold-light/90 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10">{(translations.offers[key as keyof typeof translations.offers] as any).cta}</span>
-                </motion.a>
+                  <motion.a
+                    href="https://cal.com/saimor/30min"
+                    target="_blank"
+                    rel="noreferrer"
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
+                      border: '2px solid rgba(212, 180, 131, 0.4)',
+                      boxShadow: '0 8px 25px rgba(74, 103, 65, 0.25)'
+                    }}
+                    aria-label={`${(translations.offers[key as keyof typeof translations.offers] as any).cta} - Book via Cal.com (opens in new tab)`}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-saimor-green/95 to-saimor-gold-light/90 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10">{(translations.offers[key as keyof typeof translations.offers] as any).cta}</span>
+                  </motion.a>
 
-                <p className="text-xs text-slate-600 mt-3 text-center">
-                  {translations.offers.ctaHint}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  <p className="text-xs text-slate-600 mt-3 text-center">
+                    {translations.offers.ctaHint}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -204,9 +204,9 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
               }}
             >
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
-                   style={{
-                     background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.9) 0%, rgba(212, 180, 131, 0.85) 100%)'
-                   }}>M</div>
+                style={{
+                  background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.9) 0%, rgba(212, 180, 131, 0.85) 100%)'
+                }}>M</div>
             </motion.div>
           </div>
 
@@ -246,14 +246,14 @@ export default function Sections({ locale }: { locale: 'de'|'en' }) {
           transition={{ duration: 0.8 }}
         >
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-4"
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 50%, #D4A857 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                textShadow: '0 2px 4px rgba(0,0,0,0.05)'
-              }}>
+            style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 50%, #D4A857 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 2px 4px rgba(0,0,0,0.05)'
+            }}>
             {translations.contact.title}
           </h2>
           <p className="text-lg sm:text-xl text-slate-700 mb-8 sm:mb-12 max-w-3xl">

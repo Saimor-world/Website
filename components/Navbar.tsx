@@ -6,7 +6,7 @@ import { Menu, X, Sparkles, Home, Briefcase, Mail, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Navbar({ locale }: { locale: 'de'|'en' }) {
+export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -194,7 +194,7 @@ export default function Navbar({ locale }: { locale: 'de'|'en' }) {
               }}
             >
               <Sparkles className="w-4 h-4" />
-              <span>{locale === 'de' ? 'GesprÃ¤ch buchen' : 'Book Call'}</span>
+              <span>{locale === 'de' ? 'Gespräch buchen' : 'Book Call'}</span>
             </motion.a>
 
             {/* Menu Button */}

@@ -93,48 +93,68 @@ a,
 }
 
 /* ========================================
-   DESIGN TOKENS - SAIMÔR COLOR SYSTEM
+   DESIGN TOKENS - SAIMÔR MÔRA BIBEL COLORS
+   Based on: Saimor Mora Masterbibel
    ======================================== */
 
 :root {
-  /* Primary Greens - Jungle Theme */
-  --saimor-green-900: #1a2e1a;
-  --saimor-green-800: #2d4a2d;
-  --saimor-green-700: #4A6741;
-  --saimor-green-600: #5D7C54;
-  --saimor-green-500: #6B8E5F;
-  --saimor-green-400: #88A885;
-  --saimor-green-300: #A8C3A5;
-  --saimor-green-200: #EAF1EC;
-  --saimor-green-100: #F5F9F6;
+  /* === BIBEL PRIMARY COLORS === */
+  /* Waldgrün - Saimôr Primary (Bibel: #1A3C32) */
+  --saimor-waldgruen: #1A3C32;
+  --saimor-green-900: #0F231C;
+  --saimor-green-800: #1A3C32;
+  --saimor-green-700: #2A5244;
+  --saimor-green-600: #3D6857;
+  --saimor-green-500: #4A7A68;
+  --saimor-green-400: #6B9A88;
+  --saimor-green-300: #8FBAA8;
+  --saimor-green-200: #C5DDD4;
+  --saimor-green-100: #E8F2EE;
 
-  /* Gold/Brass - Accent & CTAs */
-  --saimor-gold-700: #B89B6B;
-  --saimor-gold-600: #C6A36C;
-  --saimor-gold-500: #D4A857;
-  --saimor-gold-400: #E6C897;
-  --saimor-gold-300: #F0D7B0;
-  --saimor-gold-200: #F8E8D4;
-  --saimor-gold-100: #FCF5EB;
+  /* Gold - Môra/Meaning/Awareness (Bibel: #D6A848) */
+  --saimor-mora-gold: #D6A848;
+  --saimor-gold-700: #B8913A;
+  --saimor-gold-600: #C79E42;
+  --saimor-gold-500: #D6A848;
+  --saimor-gold-400: #E4BE6D;
+  --saimor-gold-300: #EDD092;
+  --saimor-gold-200: #F5E3B8;
+  --saimor-gold-100: #FBF3E0;
 
-  /* Neutrals */
-  --saimor-ink-900: #0E1A1B;
-  --saimor-ink-800: #1b2640;
-  --saimor-ink-700: #2D3748;
+  /* Tiefschwarz - Space/Deep (Bibel: #0B0F10) */
+  --saimor-space: #0B0F10;
+  --saimor-ink-900: #0B0F10;
+  --saimor-ink-800: #141A1C;
+  --saimor-ink-700: #1E2628;
+
+  /* Nebelgrau - Glass/Icons (Bibel: #AAB0B2) */
+  --saimor-nebel: #AAB0B2;
   --saimor-cream: #F8F7F3;
   --saimor-white: #FFFFFF;
 
-  /* Legacy aliases */
-  --saimor-green: var(--saimor-green-700);
+  /* === AWARENESS COLORS (Bibel) === */
+  --awareness-idle: #22C55E;
+  /* Green - Idle */
+  --awareness-info: #FBBF24;
+  /* Yellow - Info */
+  --awareness-thinking: #3B82F6;
+  /* Blue - Thinking */
+  --awareness-problem: #EF4444;
+  /* Red - Problem */
+  --awareness-insight: #D6A848;
+  /* Gold - Insight */
+
+  /* === LEGACY ALIASES (for backwards compatibility) === */
+  --saimor-green: var(--saimor-waldgruen);
   --saimor-green-light: var(--saimor-green-600);
-  --saimor-green-dark: var(--saimor-green-800);
-  --saimor-accent: #669966;
-  --saimor-gold: var(--saimor-gold-500);
+  --saimor-green-dark: var(--saimor-green-900);
+  --saimor-accent: var(--saimor-green-500);
+  --saimor-gold: var(--saimor-mora-gold);
   --saimor-gold-light: var(--saimor-gold-400);
-  --forest-primary: var(--saimor-green-700);
-  --gold-primary: var(--saimor-gold-500);
+  --forest-primary: var(--saimor-waldgruen);
+  --gold-primary: var(--saimor-mora-gold);
   --off: var(--saimor-cream);
-  --ink: #DDE1EA;
+  --ink: var(--saimor-nebel);
   --line: var(--saimor-ink-800);
 
   /* Spacing Scale (8px base) */

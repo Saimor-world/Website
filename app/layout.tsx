@@ -47,19 +47,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" data-saimor="pb-1.2">
+    <html lang="de" data-saimor="pb-1.2" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="bg-forest-primary text-warm-beige antialiased">
-        {/* Cache Buster - Force clear old chunks */}
-        <Script
-          src="/cache-bust.js"
-          strategy="beforeInteractive"
-        />
+      <body className="bg-forest-primary text-warm-beige antialiased" suppressHydrationWarning>
         <AuthProvider>
           <ClientProviders />
           {children}

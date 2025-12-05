@@ -4,49 +4,76 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ============================================
+        // SAIMÔR MÔRA BIBEL COLOR SYSTEM
+        // Based on: Saimor Mora Masterbibel
+        // ============================================
+
+        // === BIBEL PRIMARY COLORS ===
+        "waldgruen": "#1A3C32",           // Saimôr Primary
+        "mora-gold": "#D6A848",           // Môra/Meaning/Awareness
+        "space": "#0B0F10",               // Tiefschwarz - Deep Space
+        "nebel": "#AAB0B2",               // Nebelgrau - Glass/Icons
+
+        // === AWARENESS COLORS (Bibel) ===
+        "awareness-idle": "#22C55E",      // Green - Idle
+        "awareness-info": "#FBBF24",      // Yellow - Info
+        "awareness-thinking": "#3B82F6",  // Blue - Thinking
+        "awareness-problem": "#EF4444",   // Red - Problem
+        "awareness-insight": "#D6A848",   // Gold - Insight
+
+        // === SAIMÔR GREEN SCALE ===
+        "saimor-green": {
+          900: "#0F231C",
+          800: "#1A3C32",  // === WALDGRÜN ===
+          700: "#2A5244",
+          600: "#3D6857",
+          500: "#4A7A68",
+          400: "#6B9A88",
+          300: "#8FBAA8",
+          200: "#C5DDD4",
+          100: "#E8F2EE",
+          DEFAULT: "#1A3C32",
+        },
+
+        // === SAIMÔR GOLD SCALE ===
+        "saimor-gold": {
+          700: "#B8913A",
+          600: "#C79E42",
+          500: "#D6A848",  // === MÔRA GOLD ===
+          400: "#E4BE6D",
+          300: "#EDD092",
+          200: "#F5E3B8",
+          100: "#FBF3E0",
+          DEFAULT: "#D6A848",
+        },
+
+        // === LEGACY ALIASES (backwards compatibility) ===
+        "saimor-ink": "#0B0F10",
+        "saimor-cream": "#F8F7F3",
+        "gold-primary": "#D6A848",
+        "forest-primary": "#1A3C32",
+        "saimor-accent": "#4A7A68",
+
         // Legacy colors for compatibility
         navy: "#0E1526",
         "navy-light": "#1A2332",
-        gold: "#FFCE45",
-        ink: "#DDE1EA",
+        gold: "#D6A848",
+        ink: "#AAB0B2",
         paper: "#F9F9F6",
         bone: "#F7F5F3",
         "bone-dark": "#F0EDE8",
 
-        // New Logo-inspired Green Palette (Primary Brand Colors)
-        "saimor-green": "#4A6741",       // Main logo green (--saimor-green-700)
-        "saimor-green-light": "#5D7C54", // Lighter variant (--saimor-green-600)
-        "saimor-green-dark": "#3A5231",  // Darker variant
-        "saimor-green-200": "#EAF1EC",   // Light background (--saimor-green-200)
-        "saimor-accent": "#669966",      // Accent dot green
-        "saimor-gold": "#D4A857",        // Logo golden line (--saimor-gold-500)
-        "saimor-gold-light": "#E6C680",  // Light gold variant
-        "saimor-gold-600": "#BF8F3F",    // Gold hover/focus (--saimor-gold-600)
-        "saimor-ink": "#0E1A1B",         // Dark depths (--saimor-ink-900)
-        "saimor-cream": "#F8F5F0",       // Off-White (--saimor-cream)
-
-        // Refined Pastell palette
-        "gold-primary": "#D4A857",
-        "gold-secondary": "#E6C680",
-        "gold-dark": "#BC8C3F",
-        "forest-primary": "#4A6741",
-        "forest-secondary": "#5D7C54",
-        "sage-green": "#B8D4BA",
-        "warm-beige": "#FAF0E6",
-        "neutral-gray": "#9CA3AF",
-        "light-gray": "#F8FAF9",
-        "text-dark": "#4A5568",
-
         // Glass-morphism colors
         "glass-white": "rgba(255, 255, 255, 0.1)",
-        "glass-green": "rgba(74, 103, 65, 0.1)",
-        "glass-gold": "rgba(212, 168, 87, 0.1)",
+        "glass-green": "rgba(26, 60, 50, 0.15)",
+        "glass-gold": "rgba(214, 168, 72, 0.15)",
 
-        // Mora Retro Palette (Onepager)
+        // Mora Deep View Palette
         "saimor-base": "#020d0a",
-        "saimor-forest-dark": "#1a3c34",
+        "saimor-forest-dark": "#1A3C32",
         "saimor-teal": "#10b981",
-        "saimor-gold-retro": "#CEB676",
+        "saimor-gold-retro": "#D6A848",
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', "serif"],
