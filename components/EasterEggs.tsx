@@ -500,7 +500,9 @@ export default function EasterEggs() {
       setTimeout(checkCompletionist, 500);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
 
   // === "FELDFORSCHER" - Dashboard Exploration Tracking ===
