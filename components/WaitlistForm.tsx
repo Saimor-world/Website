@@ -36,41 +36,41 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
 
   const content = {
     de: {
-      title: 'Warteliste fÃ¼r Early Access',
-      subtitle: 'Erhalte exklusiven Zugang zu MÃ´ra und gestalte die Zukunft von SaimÃ´r mit.',
+      title: 'Warteliste für Early Access',
+      subtitle: 'Erhalte frühen Zugang zu Môra und gestalte die Zukunft von Saimôr mit.',
       namePlaceholder: 'Dein Name',
       emailPlaceholder: 'deine@email.de',
       interestTitle: 'Was interessiert dich? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'MÃ´ra KI-Assistentin', emoji: 'âœ¨' },
-        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: 'ðŸ“Š' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: 'ðŸŽ¤' },
-        { id: 'orbit', label: 'Orbit Coaching', emoji: 'ðŸŒ€' }
+        { id: 'mora-ai', label: 'Môra KI-Begleiterin', emoji: '✨' },
+        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: '📊' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
+        { id: 'orbit', label: 'Orbit Coaching', emoji: '🌍' }
       ],
       submit: 'Auf Warteliste setzen',
-      submitting: 'Wird gesendetâ€¦',
-      successTitle: 'Willkommen in der Community! ðŸŒ¿',
-      successMessage: 'Du erhÃ¤ltst in KÃ¼rze eine BestÃ¤tigung. Wir melden uns, sobald MÃ´ra bereit ist.',
+      submitting: 'Wird gesendet …',
+      successTitle: 'Willkommen in der Community! 🌱',
+      successMessage: 'Du erhältst in Kürze eine Bestätigung. Wir melden uns, sobald Môra bereit ist.',
       errorMessage: 'Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt.',
-      privacy: 'Deine Daten werden nur fÃ¼r Early Access verwendet. Kein Newsletter ohne Zustimmung.',
+      privacy: 'Deine Daten werden nur für Early Access verwendet. Kein Newsletter ohne Zustimmung.',
       position: 'Wartelisten-Position wird nach Anmeldung angezeigt'
     },
     en: {
       title: 'Early Access Waitlist',
-      subtitle: 'Get exclusive access to MÃ´ra and help shape the future of SaimÃ´r.',
+      subtitle: 'Get early access to Môra and help shape the future of Saimôr.',
       namePlaceholder: 'Your name',
       emailPlaceholder: 'your@email.com',
       interestTitle: 'What interests you? (optional)',
       interests: [
-        { id: 'mora-ai', label: 'MÃ´ra AI assistant', emoji: 'âœ¨' },
-        { id: 'dashboards', label: 'Dashboards & analytics', emoji: 'ðŸ“Š' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: 'ðŸŽ¤' },
-        { id: 'orbit', label: 'Orbit coaching', emoji: 'ðŸŒ€' }
+        { id: 'mora-ai', label: 'Môra AI companion', emoji: '✨' },
+        { id: 'dashboards', label: 'Dashboards & analytics', emoji: '📊' },
+        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
+        { id: 'orbit', label: 'Orbit coaching', emoji: '🌍' }
       ],
       submit: 'Join waitlist',
-      submitting: 'Sendingâ€¦',
-      successTitle: 'Welcome to the community! ðŸŒ¿',
-      successMessage: 'Youâ€™ll receive a confirmation email shortly. Weâ€™ll reach out as soon as MÃ´ra is ready.',
+      submitting: 'Sending …',
+      successTitle: 'Welcome to the community! 🌱',
+      successMessage: 'You’ll receive a confirmation email shortly. We’ll reach out as soon as Môra is ready.',
       errorMessage: 'Something went wrong. Please try again or contact us directly.',
       privacy: 'Your data is only used for early access. No newsletters without your consent.',
       position: 'Waitlist position will be shown after signup'

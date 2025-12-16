@@ -40,16 +40,16 @@ export default function MoraTeaser({ locale }: Props) {
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight">
-                        {t('Kein Spiegel.', 'Not a mirror.')}<br />
-                        <span className="text-saimor-teal italic">{t('Ein Gedächtnis.', 'A memory.')}</span>
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight space-y-1">
+                        <span className="block">{t('Kein Spiegel.', 'Not a mirror.')}</span>
+                        <span className="block text-saimor-teal italic">{t('Ein Gedächtnis.', 'A memory.')}</span>
                     </h2>
 
                     {/* Description */}
                     <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
                         {t(
-                            'Môra ist das semantische Gedächtnis von Saimôr OS. Sie erkennt Muster, versteht Kontext und reflektiert – vollständig lokal, ohne externe Clouds.',
-                            'Môra is the semantic memory of Saimôr OS. It recognizes patterns, understands context, and reflects – completely local, without external clouds.'
+                            'Môra ist das semantische Gedächtnis von Saimôr OS. Sie erkennt Muster und Kontext – vollständig lokal, ohne externe Clouds.',
+                            'Môra is the semantic memory of Saimôr OS. It recognises patterns and context – fully local, without external clouds.'
                         )}
                     </p>
 
@@ -57,7 +57,7 @@ export default function MoraTeaser({ locale }: Props) {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                         <Link
                             href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-bold text-lg shadow-lg shadow-saimor-teal/20 hover:shadow-saimor-teal/40 hover:scale-105 transition-all duration-300"
+                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 hover:shadow-saimor-teal/30 hover:scale-[1.02] transition-all duration-300"
                         >
                             <span>{t('Tief eintauchen', 'Dive deep')}</span>
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -65,7 +65,7 @@ export default function MoraTeaser({ locale }: Props) {
 
                         <Link
                             href={locale === 'en' ? '/en/mora' : '/mora'}
-                            className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all duration-300"
+                            className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/5 transition-all duration-300"
                         >
                             {t('Mehr über Môra', 'Learn about Môra')}
                         </Link>
@@ -73,7 +73,7 @@ export default function MoraTeaser({ locale }: Props) {
 
                     {/* Subtle hint */}
                     <p className="text-sm text-slate-500 pt-4">
-                        {t('→ Nur 2 Klicks zur Deep-View-Erfahrung', '→ Just 2 clicks to the deep view experience')}
+                        {t('Zwei Klicks bis zur Deep-View-Erfahrung.', 'Two clicks to the deep view experience.')}
                     </p>
                 </motion.div>
             </div>

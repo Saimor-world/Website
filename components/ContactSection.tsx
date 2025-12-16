@@ -59,7 +59,7 @@ export default function ContactSection({ locale }: Props) {
             {t('Kontakt', 'Contact')}
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            {t('Kurz sprechen, Fokus klÃ¤ren, nÃ¤chsten Schritt festlegen.', 'Quick call, clarify focus, determine next step.')}
+            {t('Kurz sprechen, Fokus klären, nächsten Schritt festlegen.', 'Short call, clear focus, next step.')}
           </p>
         </motion.div>
 

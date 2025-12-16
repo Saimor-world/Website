@@ -77,10 +77,10 @@ export default function Testimonials({ locale }: Props) {
               backgroundClip: 'text'
             }}
           >
-            {t('Erfolgreiche Projekte', 'Successful Projects')}
+            {t('Erfolgreiche Projekte', 'Quietly successful projects')}
           </h2>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            {t('Wie Saimôr Klarheit in der Praxis schafft', 'How Saimôr creates clarity in practice')}
+            {t('Wie Saimôr Klarheit in der Praxis schafft', 'How Saimôr brings clarity into practice')}
           </p>
         </motion.div>
 
@@ -93,8 +93,8 @@ export default function Testimonials({ locale }: Props) {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: i * 0.15, duration: 0.6 }}
               whileHover={{
-                y: -10,
-                scale: 1.02,
+                y: -6,
+                scale: 1.01,
                 transition: { duration: 0.3 }
               }}
               className="relative group rounded-3xl p-8 overflow-hidden"

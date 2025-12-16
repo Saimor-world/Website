@@ -11,17 +11,17 @@ export default function TrustProof({ locale }: Props) {
     {
       icon: CheckCircle,
       title: t('Klar statt komplex', 'Clear instead of complex'),
-      desc: t('VerstÃ¤ndliche Ergebnisse in kurzer Zeit.', 'Understandable results in a short time.'),
+      desc: t('Verständliche Ergebnisse in ruhigem Tempo.', 'Understandable results in a calm rhythm.'),
     },
     {
       icon: Shield,
-      title: t('DatensouverÃ¤nitÃ¤t', 'Data sovereignty'),
+      title: t('Datensouveränität', 'Data sovereignty'),
       desc: t('EU-Hosting & DSGVO-Guardrails, keine Profile.', 'EU hosting & GDPR guardrails, no profiles.'),
     },
     {
       icon: Activity,
       title: t('Begleitung statt Hype', 'Guidance instead of hype'),
-      desc: t('Rhythmus, der Entscheidungen ermÃ¶glicht.', 'Rhythm that enables decisions.'),
+      desc: t('Rhythmus, der Entscheidungen ermöglicht.', 'Rhythm that enables decisions.'),
     },
   ];
 
@@ -64,7 +64,7 @@ export default function TrustProof({ locale }: Props) {
               backgroundClip: 'text'
             }}
           >
-            {t('Warum SaimÃ´r', 'Why SaimÃ´r')}
+            {t('Warum Saimôr', 'Why Saimôr')}
           </h2>
         </motion.div>
 
@@ -149,8 +149,8 @@ export default function TrustProof({ locale }: Props) {
         >
           <p className="text-slate-500 italic text-lg" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
             {t(
-              'â€žSaimÃ´r ist kein Tool, sondern ein Resonanzraum."',
-              '"SaimÃ´r is not a tool, but a resonance space."'
+              '„Saimôr ist kein Tool, sondern ein Resonanzraum."',
+              '"Saimôr is not a tool, but a resonance space."'
             )}
           </p>
         </motion.div>

@@ -31,33 +31,33 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   const content = {
     de: {
       badge: 'Early Access',
-      title: 'Werde Teil der SaimÃ´r-Community',
-      subtitle: 'Wir bauen SaimÃ´r gemeinsam mit dir. Sei dabei, wenn MÃ´ra erwacht.',
+      title: 'Werde Teil der Saimôr Community',
+      subtitle: 'Wir bauen Saimôr gemeinsam mit dir. In ruhigem Tempo, Schritt für Schritt.',
       features: [
-        { icon: Users, text: 'Exklusiver Beta-Zugang zu MÃ´ra', color: 'from-blue-500 to-cyan-500' },
-        { icon: Heart, text: 'Mitgestaltung der Features', color: 'from-pink-500 to-rose-500' },
-        { icon: Rocket, text: 'Early-Supporter Benefits', color: 'from-purple-500 to-indigo-500' },
-        { icon: Sparkles, text: 'Direkter Draht zum Team', color: 'from-amber-500 to-orange-500' }
+        { icon: Users, text: 'Früher Zugang zu Môra', color: 'from-blue-500 to-cyan-500' },
+        { icon: Heart, text: 'Gemeinsam Funktionen schärfen', color: 'from-pink-500 to-rose-500' },
+        { icon: Rocket, text: 'Ruhiger Start als Early Supporter', color: 'from-purple-500 to-indigo-500' },
+        { icon: Sparkles, text: 'Direkter Kontakt zum Team', color: 'from-amber-500 to-orange-500' }
       ],
-      status: 'Im Aufbau: Backend 85% Â· Frontend 70% Â· Community Start: Jetzt',
+      status: 'Im Aufbau: Backend 85 % · Frontend 70 % · Communitystart: laufend',
       cta: 'Warteliste beitreten',
       secondary: 'Mehr erfahren',
-      transparency: 'ðŸ”§ Technische Entwicklung lÃ¤uft â€“ wir halten dich auf dem Laufenden!'
+      transparency: 'Technische Entwicklung läuft – wir halten dich ruhig auf dem Laufenden.'
     },
     en: {
       badge: 'Early Access',
-      title: 'Join the SaimÃ´r Community',
-      subtitle: 'We\'re building SaimÃ´r together with you. Be there when MÃ´ra awakens.',
+      title: 'Join the Saimôr community',
+      subtitle: 'We are building Saimôr together with you. Calmly and step by step.',
       features: [
-        { icon: Users, text: 'Exclusive Beta Access to MÃ´ra', color: 'from-blue-500 to-cyan-500' },
+        { icon: Users, text: 'Early access to Môra', color: 'from-blue-500 to-cyan-500' },
         { icon: Heart, text: 'Shape Features with Us', color: 'from-pink-500 to-rose-500' },
         { icon: Rocket, text: 'Early-Supporter Benefits', color: 'from-purple-500 to-indigo-500' },
         { icon: Sparkles, text: 'Direct Team Access', color: 'from-amber-500 to-orange-500' }
       ],
-      status: 'In Development: Backend 85% Â· Frontend 70% Â· Community Launch: Now',
+      status: 'In development: backend 85 % · frontend 70 % · community launch: ongoing',
       cta: 'Join Waitlist',
       secondary: 'Learn More',
-      transparency: 'ðŸ”§ Technical development ongoing â€“ we\'ll keep you posted!'
+      transparency: 'Technical development is ongoing – we will keep you gently informed.'
     }
   }[locale];
 

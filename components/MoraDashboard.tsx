@@ -1,16 +1,16 @@
 ﻿'use client';
 /**
- * MoraDashboard - Unified Component
- *
- * Combines MoraShowcase (Chat Interface) + InteractiveMoraDashboard (Dashboard Grid)
- * into ONE cohesive section. User request: "aus einem Guss" - everything connected.
- *
- * Structure:
- * 1. Header with Demo Badge
- * 2. Chat Interface (top) - Ask MÃ´ra questions
- * 3. Dashboard Grid (bottom) - Folder â†” Field view
- * 4. MÃ´ra Insights
- * 5. Quiet CTA
+ * MoraDashboard - Premium Glassmorphism Edition
+ * 
+ * Inspired by mora-ui ClientHealthDashboard with:
+ * - Premium glassmorphic cards with blur effects
+ * - Animated health bars with smooth transitions
+ * - Pulse animations for warning/inactive states
+ * - Hover quick actions
+ * - Summary stats header
+ * - Demo data (no real backend calls)
+ * 
+ * Adapted for website: Saimôr colors, demo mode, integrated chat
  */
 
 import Image from 'next/image';
@@ -19,7 +19,8 @@ import { useState, useEffect, useId, useCallback, useRef, CSSProperties } from '
 import {
   Sparkles, TrendingUp, TrendingDown, Users, Target, BarChart3,
   MessageSquare, Send, Loader2, CheckCircle2, ChevronRight,
-  Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info
+  Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info,
+  Building2, FolderOpen, Zap, Clock, RefreshCw, FileText, Eye, ArrowUpDown
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -30,30 +31,34 @@ interface MoraDashboardProps {
 
 type ViewMode = 'folder' | 'field';
 
-interface DataPoint {
+interface DashboardMetric {
   id: string;
   label: string;
   value: number;
   change: number;
   status: 'good' | 'warning' | 'critical';
-  category: string;
-  x: number;
-  y: number;
+  category: 'people' | 'process' | 'resources';
+  departmentCount?: number;
+  spaceCount?: number;
+  folderCount?: number;
+  nodeCount?: number;
+  activeUsers?: number;
+  lastActivity?: string;
 }
 
-// Liquid Glass Styles (konsistent mit Rest der Site)
+// Premium Glassmorphism Styles
 const glassPanelStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 249, 0.85) 100%)',
-  backdropFilter: 'blur(32px)',
-  border: '1px solid rgba(212, 180, 131, 0.35)',
-  boxShadow: '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 22, 18, 0.3) 100%)',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
 };
 
-const glassTileStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(212, 180, 131, 0.2) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.3)',
-  backdropFilter: 'blur(24px)',
-  boxShadow: '0 12px 40px rgba(74, 103, 65, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+const glassCardStyle: CSSProperties = {
+  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 22, 18, 0.3) 100%)',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
 };
 
 export default function MoraDashboard({ locale }: MoraDashboardProps) {
@@ -65,10 +70,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Dashboard States
-  const [viewMode, setViewMode] = useState<ViewMode>('field');
-  const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('folder');
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'health' | 'name' | 'activity'>('health');
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [moraInsight, setMoraInsight] = useState(false);
-  const [connections, setConnections] = useState<Array<[string, string]>>([]);
   const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
 
   const demoTooltipId = useId();
@@ -128,24 +135,23 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       moraInsight: '💡 Môra Insight',
       insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare Abläufe → höhere Zufriedenheit.',
 
-      categories: {
-        people: 'Menschen',
-        process: 'Prozesse',
-        resources: 'Ressourcen'
-      },
-      dataPoints: {
-        engagement: 'Team-Engagement',
-        efficiency: 'Prozess-Effizienz',
-        satisfaction: 'Zufriedenheit',
-        workload: 'Arbeitsbelastung',
-        velocity: 'Umsetzungsgeschwindigkeit',
-        clarity: 'Klarheitsindex'
-      },
-      status: {
-        good: 'Optimal',
-        warning: 'Beobachten',
-        critical: 'Handeln'
-      },
+      // Stats
+      avgHealth: 'Ø Gesundheit',
+      healthy: 'Gesund',
+      warning: 'Beobachten',
+      inactive: 'Inaktiv',
+      totalNodes: 'Knoten',
+      sortBy: 'Sortieren',
+      lastUpdate: 'Aktualisiert',
+      refresh: 'Aktualisieren',
+
+      // Metrics
+      depts: 'ABTEILUNGEN',
+      spaces: 'BEREICHE',
+      folders: 'ORDNER',
+      nodes: 'KNOTEN',
+      activeUsers: 'aktiv',
+      healthScore: 'Gesundheits-Score',
 
       // CTA
       cta: 'Demo ansehen',
@@ -181,24 +187,23 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       moraInsight: '💡 Môra Insight',
       insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows → higher satisfaction.',
 
-      categories: {
-        people: 'People',
-        process: 'Processes',
-        resources: 'Resources'
-      },
-      dataPoints: {
-        engagement: 'Team Engagement',
-        efficiency: 'Process Efficiency',
-        satisfaction: 'Satisfaction',
-        workload: 'Workload',
-        velocity: 'Velocity',
-        clarity: 'Clarity Index'
-      },
-      status: {
-        good: 'Optimal',
-        warning: 'Monitor',
-        critical: 'Act'
-      },
+      // Stats
+      avgHealth: 'Avg Health',
+      healthy: 'Healthy',
+      warning: 'Warning',
+      inactive: 'Inactive',
+      totalNodes: 'Nodes',
+      sortBy: 'Sort by',
+      lastUpdate: 'Updated',
+      refresh: 'Refresh',
+
+      // Metrics
+      depts: 'DEPTS',
+      spaces: 'SPACES',
+      folders: 'FOLDERS',
+      nodes: 'NODES',
+      activeUsers: 'active',
+      healthScore: 'Health Score',
 
       // CTA
       cta: 'See the demo',
@@ -206,83 +211,95 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   }[locale];
 
-  // Data points for dashboard
-  const dataPoints: DataPoint[] = [
+  // Demo Dashboard Metrics (simulated data)
+  const demoMetrics: DashboardMetric[] = [
     {
-      id: 'engagement',
-      label: content.dataPoints.engagement,
+      id: 'team-engagement',
+      label: locale === 'de' ? 'Team-Engagement' : 'Team Engagement',
       value: 87,
       change: 12,
       status: 'good',
       category: 'people',
-      x: 25,
-      y: 30
+      departmentCount: 4,
+      spaceCount: 12,
+      folderCount: 28,
+      nodeCount: 156,
+      activeUsers: 24,
+      lastActivity: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
     },
     {
-      id: 'efficiency',
-      label: content.dataPoints.efficiency,
+      id: 'process-efficiency',
+      label: locale === 'de' ? 'Prozess-Effizienz' : 'Process Efficiency',
       value: 92,
       change: 8,
       status: 'good',
       category: 'process',
-      x: 65,
-      y: 35
+      departmentCount: 3,
+      spaceCount: 9,
+      folderCount: 22,
+      nodeCount: 134,
+      activeUsers: 18,
+      lastActivity: new Date(Date.now() - 45 * 60 * 1000).toISOString()
     },
     {
       id: 'satisfaction',
-      label: content.dataPoints.satisfaction,
+      label: locale === 'de' ? 'Zufriedenheit' : 'Satisfaction',
       value: 78,
       change: -3,
       status: 'warning',
       category: 'people',
-      x: 45,
-      y: 60
+      departmentCount: 5,
+      spaceCount: 15,
+      folderCount: 35,
+      nodeCount: 198,
+      activeUsers: 32,
+      lastActivity: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
     },
     {
       id: 'workload',
-      label: content.dataPoints.workload,
+      label: locale === 'de' ? 'Arbeitsbelastung' : 'Workload',
       value: 68,
       change: -15,
       status: 'critical',
       category: 'resources',
-      x: 75,
-      y: 65
+      departmentCount: 2,
+      spaceCount: 6,
+      folderCount: 14,
+      nodeCount: 89,
+      activeUsers: 12,
+      lastActivity: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString()
     },
     {
       id: 'velocity',
-      label: content.dataPoints.velocity,
+      label: locale === 'de' ? 'Umsetzungsgeschwindigkeit' : 'Velocity',
       value: 85,
       change: 5,
       status: 'good',
       category: 'process',
-      x: 35,
-      y: 75
+      departmentCount: 3,
+      spaceCount: 10,
+      folderCount: 24,
+      nodeCount: 142,
+      activeUsers: 20,
+      lastActivity: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
     },
     {
       id: 'clarity',
-      label: content.dataPoints.clarity,
+      label: locale === 'de' ? 'Klarheitsindex' : 'Clarity Index',
       value: 91,
       change: 18,
       status: 'good',
       category: 'people',
-      x: 55,
-      y: 45
+      departmentCount: 4,
+      spaceCount: 11,
+      folderCount: 26,
+      nodeCount: 148,
+      activeUsers: 22,
+      lastActivity: new Date(Date.now() - 30 * 60 * 1000).toISOString()
     }
   ];
 
-  // Generate mycelium connections
-  useEffect(() => {
-    const newConnections: Array<[string, string]> = [
-      ['engagement', 'clarity'],
-      ['efficiency', 'satisfaction'],
-      ['clarity', 'efficiency'],
-      ['satisfaction', 'velocity'],
-      ['velocity', 'workload']
-    ];
-    setConnections(newConnections);
-  }, []);
-
-  // Auto-show MÃ´ra insight after 3s
+  // Auto-show Môra insight after 3s
   useEffect(() => {
     const timer = setTimeout(() => setMoraInsight(true), 3000);
     return () => clearTimeout(timer);
@@ -300,15 +317,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
     // Demo responses
     const demoResponses = locale === 'de' ? {
-      team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) WÃ¶chentliche KlarheitsgesprÃ¤che im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit kÃ¶nnen wir das systematisch umsetzen.',
-      budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestÃ¼tzte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
-      project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) RegelmÃ¤ÃŸige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
-      default: 'Hallo! Ich bin MÃ´ra, deine KI-Begleiterin bei SaimÃ´r. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
+      team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
+      budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
+      project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+      default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
     } : {
       team: 'Based on your current KPIs (87% engagement), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
       budget: 'Your process efficiency is at 92% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. The dashboard shows you all numbers at a glance.',
       project: 'Velocity: 85%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
-      default: 'Hello! I\'m MÃ´ra, your AI companion at SaimÃ´r. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
+      default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
     };
 
     // Match question to response
@@ -342,15 +359,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   };
 
   // Helper functions
-  const getStatusColor = (status: DataPoint['status']) => {
+  const getStatusColor = (status: DashboardMetric['status']) => {
     switch (status) {
-      case 'good': return '#4A6741';
-      case 'warning': return '#D4A857';
-      case 'critical': return '#E85D75';
+      case 'good': return { text: 'text-[#4A6741]', bg: 'bg-[#4A6741]/20', border: 'border-[#4A6741]/30', glow: 'shadow-[#4A6741]/20' };
+      case 'warning': return { text: 'text-[#D4A857]', bg: 'bg-[#D4A857]/20', border: 'border-[#D4A857]/30', glow: 'shadow-[#D4A857]/20' };
+      case 'critical': return { text: 'text-[#E85D75]', bg: 'bg-[#E85D75]/20', border: 'border-[#E85D75]/30', glow: 'shadow-[#E85D75]/20' };
     }
   };
 
-  const getStatusIcon = (status: DataPoint['status']) => {
+  const getStatusIcon = (status: DashboardMetric['status']) => {
     switch (status) {
       case 'good': return CheckCircle;
       case 'warning': return AlertCircle;
@@ -358,7 +375,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category: DashboardMetric['category']) => {
     switch (category) {
       case 'people': return '#4A6741';
       case 'process': return '#5D7C54';
@@ -367,54 +384,122 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   };
 
+  const formatTimeAgo = (dateString: string | null) => {
+    if (!dateString) return locale === 'de' ? 'Nie' : 'Never';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (locale === 'de') {
+      if (diffMins < 1) return 'Gerade eben';
+      if (diffMins < 60) return `vor ${diffMins} Min`;
+      if (diffHours < 24) return `vor ${diffHours} Std`;
+      return `vor ${diffDays} Tagen`;
+    } else {
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      return `${diffDays}d ago`;
+    }
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await new Promise(resolve => setTimeout(resolve, 800));
+    setIsRefreshing(false);
+  };
+
+  // Sort metrics
+  const sortedMetrics = [...demoMetrics].sort((a, b) => {
+    switch (sortBy) {
+      case 'health': return b.value - a.value;
+      case 'name': return a.label.localeCompare(b.label);
+      case 'activity': return new Date(b.lastActivity || 0).getTime() - new Date(a.lastActivity || 0).getTime();
+      default: return 0;
+    }
+  });
+
+  const healthyCount = demoMetrics.filter(m => m.status === 'good').length;
+  const warningCount = demoMetrics.filter(m => m.status === 'warning').length;
+  const criticalCount = demoMetrics.filter(m => m.status === 'critical').length;
+  const totalNodes = demoMetrics.reduce((sum, m) => sum + (m.nodeCount || 0), 0);
+  const avgHealth = demoMetrics.length > 0 ? demoMetrics.reduce((sum, m) => sum + m.value, 0) / demoMetrics.length : 0;
+
   return (
-    <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 opacity-[0.04]">
-          <Image
-            src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop"
-            alt="Abstract illuminated shapes"
-            fill
-            className="object-cover"
-            loading="lazy"
-            decoding="async"
-            sizes="100vw"
-          />
-        </div>
-        <motion.div
-          className="absolute inset-0"
-          animate={{
-            background: [
-              'linear-gradient(180deg, rgba(248, 247, 243, 0.98) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(248, 247, 243, 0.98) 100%)',
-              'linear-gradient(180deg, rgba(248, 247, 243, 0.95) 0%, rgba(255, 255, 255, 0.98) 50%, rgba(248, 247, 243, 0.95) 100%)',
-              'linear-gradient(180deg, rgba(248, 247, 243, 0.98) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(248, 247, 243, 0.98) 100%)'
-            ]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-        />
-      </div>
+    <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden min-h-screen"
+      style={{ background: 'linear-gradient(135deg, #030806 0%, #040a08 50%, #030806 100%)' }}>
+      
+      {/* Premium Background with parallax stars */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+        <defs>
+          <radialGradient id="saimorGlow" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#saimorGlow)" />
+        {Array.from({ length: 40 }).map((_, i) => {
+          const seededRandom = (seed: number) => {
+            const x = Math.sin(seed + i * 7.3) * 10000;
+            return x - Math.floor(x);
+          };
+          const cx = seededRandom(i) * 100;
+          const cy = seededRandom(i + 100) * 100;
+          const r = seededRandom(i + 200) * 1.5 + 0.3;
+          return (
+            <motion.circle
+              key={i}
+              cx={`${cx}%`}
+              cy={`${cy}%`}
+              r={r}
+              fill={i % 3 === 0 ? "#D4A857" : "#4A6741"}
+              animate={{ opacity: [0.1, 0.5, 0.1] }}
+              transition={{ duration: 3 + (i % 5), repeat: Infinity, delay: (i % 20) * 0.1 }}
+            />
+          );
+        })}
+      </svg>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header with Demo Badge */}
+        {/* Premium Header with glassmorphism */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
-            style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #5D7C54 30%, #D4A857 70%, #E6C897 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
+          <motion.div
+            className="inline-block mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
           >
-            {content.title}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
+            <div className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-2xl px-8 py-4 shadow-2xl">
+              <div className="flex items-center gap-3 mb-2 justify-center">
+                <Sparkles className="text-[#D4A857]" size={28} />
+                <h2
+                  className="text-2xl sm:text-3xl font-light tracking-[0.2em] text-white/90"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                >
+                  {content.title.toUpperCase()}
+                </h2>
+                <button
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-all ml-2 disabled:opacity-50"
+                >
+                  <RefreshCw size={18} className={`text-[#4A6741] transition-transform ${isRefreshing ? 'animate-spin' : 'hover:rotate-180'}`} />
+                </button>
+              </div>
+              <p className="text-xs text-white/40 tracking-widest uppercase">
+                {demoMetrics.length} {locale === 'de' ? 'Metriken' : 'Metrics'} • {content.lastUpdate} {new Date().toLocaleTimeString()}
+              </p>
+            </div>
+          </motion.div>
+
+          <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed mb-6">
             {content.subtitle}
           </p>
 
@@ -428,7 +513,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               }}
             >
               <span
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-white/80"
                 role="status"
                 aria-live="polite"
                 title={content.demoTooltip}
@@ -467,6 +552,81 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           </div>
         </motion.div>
 
+        {/* Summary Stats Row with Glassmorphism */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+          {/* Overall Health */}
+          <motion.div
+            className="backdrop-blur-xl bg-black/40 border border-[#D4A857]/30 rounded-xl px-6 py-3 flex items-center gap-3"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <BarChart3 size={18} className="text-[#D4A857]" />
+            <div>
+              <div className="text-2xl font-light text-[#D4A857] font-mono">{Math.round(avgHealth)}%</div>
+              <div className="text-[10px] text-white/40 uppercase tracking-wider">{content.avgHealth}</div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="backdrop-blur-xl bg-[#4A6741]/10 border border-[#4A6741]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <CheckCircle size={14} className="text-[#4A6741]" />
+            <span className="text-sm text-[#4A6741] font-mono">{healthyCount}</span>
+          </motion.div>
+          <motion.div
+            className="backdrop-blur-xl bg-[#D4A857]/10 border border-[#D4A857]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <AlertCircle size={14} className="text-[#D4A857]" />
+            <span className="text-sm text-[#D4A857] font-mono">{warningCount}</span>
+          </motion.div>
+          <motion.div
+            className="backdrop-blur-xl bg-[#E85D75]/10 border border-[#E85D75]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <AlertCircle size={14} className="text-[#E85D75]" />
+            <span className="text-sm text-[#E85D75] font-mono">{criticalCount}</span>
+          </motion.div>
+
+          {/* Total Nodes */}
+          <motion.div
+            className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Zap size={14} className="text-[#4A6741]" />
+            <span className="text-sm text-white/60 font-mono">{totalNodes} {content.totalNodes.toLowerCase()}</span>
+          </motion.div>
+        </div>
+
+        {/* Sort Controls */}
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <div className="flex items-center gap-1 backdrop-blur-sm bg-black/30 rounded-lg p-1">
+            <ArrowUpDown size={12} className="text-white/40 ml-2" />
+            {(['health', 'name', 'activity'] as const).map((option) => (
+              <button
+                key={option}
+                onClick={() => setSortBy(option)}
+                className={`px-3 py-1 text-xs rounded-md transition-all ${sortBy === option
+                  ? 'bg-[#4A6741]/20 text-[#4A6741] border border-[#4A6741]/30'
+                  : 'text-white/40 hover:text-white/70'
+                  }`}
+              >
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* CHAT SECTION */}
         <motion.div
           className="mb-16 rounded-3xl p-8 shadow-xl"
@@ -476,10 +636,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           viewport={{ once: true }}
         >
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {content.chatTitle}
             </h3>
-            <p className="text-gray-600">{content.chatIntro}</p>
+            <p className="text-white/70">{content.chatIntro}</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
@@ -490,7 +650,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   key={index}
                   onClick={() => handleAskMora(question)}
                   className="w-full p-4 rounded-2xl text-left transition-all group disabled:opacity-50"
-                  style={glassTileStyle}
+                  style={glassCardStyle}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -500,7 +660,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 >
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4A857] transition-colors" />
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                    <span className="text-sm font-medium text-white/90 group-hover:text-white">
                       {question}
                     </span>
                   </div>
@@ -521,8 +681,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
                   placeholder={content.inputPlaceholder}
                   disabled={isAsking}
-                  className="w-full px-6 py-4 pr-14 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30 disabled:opacity-50 bg-transparent"
-                  style={glassTileStyle}
+                  className="w-full px-6 py-4 pr-14 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30 disabled:opacity-50 bg-transparent"
+                  style={glassCardStyle}
                 />
                 <motion.button
                   onClick={() => handleAskMora()}
@@ -540,14 +700,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </motion.div>
             </div>
 
-            {/* Right: MÃ´ra Response */}
+            {/* Right: Môra Response */}
             <div className="flex items-center justify-center">
               <AnimatePresence mode="wait">
                 {moraResponse ? (
                   <motion.div
                     className="w-full p-6 rounded-2xl"
                     style={{
-                      ...glassTileStyle,
+                      ...glassCardStyle,
                       background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.15) 0%, rgba(212, 180, 131, 0.1) 100%)'
                     }}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -564,19 +724,19 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       </motion.div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-bold text-gray-900">MÃ´ra</h4>
+                          <h4 className="font-bold text-white">Môra</h4>
                           {showSuccess && (
                             <motion.div
-                              className="flex items-center gap-1 text-xs text-emerald-600"
+                              className="flex items-center gap-1 text-xs text-[#4A6741]"
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
                             >
                               <CheckCircle2 className="w-4 h-4" />
-                              {content.realResponse} Â· {responseTime}{content.seconds.slice(0, 1)}
+                              {content.realResponse} · {responseTime}{content.seconds.slice(0, 1)}
                             </motion.div>
                           )}
                         </div>
-                        <p className="text-sm text-gray-700 leading-relaxed">
+                        <p className="text-sm text-white/90 leading-relaxed">
                           {moraResponse}
                         </p>
                       </div>
@@ -585,9 +745,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     {/* Link to Full Chat */}
                     <motion.button
                       onClick={openMoraChat}
-                      className="w-full mt-4 py-3 rounded-xl text-sm font-medium text-gray-900 transition-all flex items-center justify-center gap-2"
+                      className="w-full mt-4 py-3 rounded-xl text-sm font-medium text-white transition-all flex items-center justify-center gap-2"
                       style={{
-                        ...glassTileStyle,
+                        ...glassCardStyle,
                         background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.2) 0%, rgba(212, 180, 131, 0.15) 100%)'
                       }}
                       whileHover={{ scale: 1.02 }}
@@ -600,7 +760,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   </motion.div>
                 ) : (
                   <motion.div
-                    className="text-center text-gray-500"
+                    className="text-center text-white/50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -614,7 +774,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           </div>
         </motion.div>
 
-        {/* DASHBOARD SECTION */}
+        {/* DASHBOARD GRID - Premium Glassmorphism Cards */}
         <motion.div
           className="mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -622,10 +782,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           viewport={{ once: true }}
         >
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <h3 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {content.dashboardTitle}
             </h3>
-            <p className="text-gray-600 mb-6">{content.dashboardSubtitle}</p>
+            <p className="text-white/70 mb-6">{content.dashboardSubtitle}</p>
 
             {/* View Mode Toggle */}
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -671,282 +831,221 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </div>
           </div>
 
-          {/* Dashboard Container */}
-          <motion.div
-            className="relative rounded-3xl p-5 sm:p-8 overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 249, 0.9) 100%)',
-              backdropFilter: 'blur(20px)',
-              border: '2px solid rgba(212, 180, 131, 0.3)',
-              boxShadow: '0 20px 60px rgba(74, 103, 65, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-            }}
-          >
-            <AnimatePresence mode="wait">
-              {viewMode === 'folder' ? (
-                // FOLDER VIEW - Traditional Cards
-                <motion.div
-                  key="folder"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
-                >
-                  {dataPoints.map((point, i) => {
-                    const StatusIcon = getStatusIcon(point.status);
-                    return (
-                      <motion.div
-                        data-mora-node="true"
-                        key={point.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        onMouseEnter={() => {
-                          setHoveredPoint(point.id);
-                          sendDashboardHoverEvent(true);
-                          emitCardVisited(point.id);
-                        }}
-                        onMouseLeave={() => {
-                          setHoveredPoint(null);
-                          sendDashboardHoverEvent(false);
-                        }}
-                        className="relative rounded-2xl p-5 sm:p-6 min-h-[240px] cursor-pointer group"
-                        style={{
-                          background: `linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, ${getCategoryColor(point.category)}15 100%)`,
-                          border: `2px solid ${hoveredPoint === point.id ? getCategoryColor(point.category) : 'rgba(212, 180, 131, 0.2)'}`,
-                          boxShadow: hoveredPoint === point.id
-                            ? `0 10px 40px ${getCategoryColor(point.category)}30`
-                            : '0 4px 12px rgba(0, 0, 0, 0.08)'
-                        }}
-                        whileHover={{ y: -4, scale: 1.02 }}
-                      >
-                        {/* Category badge */}
-                        <div
-                          className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 sm:px-3 py-1 rounded-full text-[0.65rem] sm:text-xs font-semibold"
-                          style={{
-                            background: `${getCategoryColor(point.category)}20`,
-                            color: getCategoryColor(point.category)
-                          }}
-                        >
-                          {content.categories[point.category as keyof typeof content.categories]}
-                        </div>
+          {/* Dashboard Grid Container */}
+          <AnimatePresence mode="wait">
+            {viewMode === 'folder' ? (
+              <motion.div
+                key="folder"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              >
+                {sortedMetrics.map((metric, index) => {
+                  const StatusIcon = getStatusIcon(metric.status);
+                  const colors = getStatusColor(metric.status);
+                  const isHovered = hoveredCard === metric.id;
+                  const needsAttention = metric.status === 'warning' || metric.status === 'critical';
 
-                        {/* Status Icon */}
-                        <StatusIcon
-                          className="w-8 h-8 mb-4"
-                          style={{ color: getStatusColor(point.status) }}
+                  return (
+                    <motion.div
+                      key={metric.id}
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
+                      className="relative group cursor-pointer transition-all duration-300"
+                      onMouseEnter={() => {
+                        setHoveredCard(metric.id);
+                        sendDashboardHoverEvent(true);
+                        emitCardVisited(metric.id);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredCard(null);
+                        sendDashboardHoverEvent(false);
+                      }}
+                      onClick={() => setSelectedCard(selectedCard === metric.id ? null : metric.id)}
+                    >
+                      {/* Pulse animation for warnings */}
+                      {needsAttention && (
+                        <motion.div
+                          className={`absolute -inset-0.5 rounded-2xl ${colors.bg} opacity-50`}
+                          animate={{ scale: [1, 1.02, 1], opacity: [0.3, 0.5, 0.3] }}
+                          transition={{ duration: 2, repeat: Infinity }}
                         />
+                      )}
 
-                        {/* Label */}
-                        <h4 className="text-lg font-bold text-slate-800 mb-2">
-                          {point.label}
-                        </h4>
+                      {/* Premium Glassmorphic Card */}
+                      <div className={`relative p-5 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${selectedCard === metric.id
+                        ? `bg-[#4A6741]/10 border-[#4A6741]/40 shadow-lg shadow-[#4A6741]/10`
+                        : `bg-black/40 ${colors.border} hover:border-white/30 hover:bg-black/50`
+                        } ${isHovered ? 'transform scale-[1.02] shadow-xl' : ''}`}
+                        style={glassCardStyle}>
 
-                        {/* Value */}
-                        <div className="flex items-baseline gap-2 mb-2">
-                          <span className="text-4xl font-bold" style={{ color: getCategoryColor(point.category) }}>
-                            {point.value}
-                          </span>
-                          <span className="text-lg text-gray-500">/ 100</span>
+                        {/* Metric Header */}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-11 h-11 rounded-xl ${colors.bg} border ${colors.border} flex items-center justify-center shadow-lg ${colors.glow}`}>
+                              <StatusIcon size={20} className={colors.text} />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-medium text-white/90">{metric.label}</h3>
+                              <p className="text-[10px] text-white/40 font-mono">{metric.category}</p>
+                            </div>
+                          </div>
+                          <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full border ${colors.bg} ${colors.border} ${colors.text} text-[10px] font-mono`}>
+                            <StatusIcon size={10} />
+                            <span>{metric.status.toUpperCase()}</span>
+                          </div>
                         </div>
 
-                        {/* Change */}
-                        <div className="flex items-center gap-2">
-                          {point.change > 0 ? (
-                            <TrendingUp className="w-4 h-4 text-green-600" />
+                        {/* Health Score Bar */}
+                        <div className="mb-4">
+                          <div className="flex items-center justify-between text-xs mb-1.5">
+                            <span className="text-white/50">{content.healthScore}</span>
+                            <span className={`${colors.text} font-mono font-medium`}>{metric.value}%</span>
+                          </div>
+                          <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden">
+                            <motion.div
+                              className={`h-full rounded-full ${metric.value >= 80 ? 'bg-gradient-to-r from-[#4A6741] to-[#5D7C54]' :
+                                metric.value >= 60 ? 'bg-gradient-to-r from-[#D4A857] to-[#E6C897]' :
+                                  'bg-gradient-to-r from-[#E85D75] to-[#F87171]'
+                                }`}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${metric.value}%` }}
+                              transition={{ duration: 1, delay: index * 0.05, ease: 'easeOut' }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Metrics Grid */}
+                        <div className="grid grid-cols-4 gap-2">
+                          {[
+                            { icon: Building2, label: content.depts, value: metric.departmentCount || 0 },
+                            { icon: Activity, label: content.spaces, value: metric.spaceCount || 0 },
+                            { icon: FolderOpen, label: content.folders, value: metric.folderCount || 0 },
+                            { icon: Zap, label: content.nodes, value: metric.nodeCount || 0 },
+                          ].map((item) => (
+                            <div key={item.label} className="p-2 rounded-lg bg-black/30 text-center">
+                              <item.icon size={10} className="text-white/30 mx-auto mb-1" />
+                              <div className="text-sm font-mono text-[#4A6741]">{item.value}</div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Change Indicator */}
+                        <div className="flex items-center gap-2 mt-4">
+                          {metric.change > 0 ? (
+                            <TrendingUp className="w-4 h-4 text-[#4A6741]" />
                           ) : (
-                            <TrendingDown className="w-4 h-4 text-red-500" />
+                            <TrendingDown className="w-4 h-4 text-[#E85D75]" />
                           )}
                           <span
                             className="text-sm font-semibold"
-                            style={{ color: point.change > 0 ? '#4A6741' : '#E85D75' }}
+                            style={{ color: metric.change > 0 ? '#4A6741' : '#E85D75' }}
                           >
-                            {point.change > 0 ? '+' : ''}{point.change}%
+                            {metric.change > 0 ? '+' : ''}{metric.change}%
                           </span>
                         </div>
-                      </motion.div>
-                    );
-                  })}
-                </motion.div>
-              ) : (
-                // FIELD VIEW - Mycelium Network
-                <motion.div
-                  key="field"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="relative h-[520px] sm:h-[600px]"
-                >
-                  {/* SVG for connections */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                    <defs>
-                      <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="rgba(74, 103, 65, 0.6)" />
-                        <stop offset="50%" stopColor="rgba(212, 180, 131, 0.8)" />
-                        <stop offset="100%" stopColor="rgba(74, 103, 65, 0.6)" />
-                      </linearGradient>
-                    </defs>
 
-                    {connections.map(([from, to], i) => {
-                      const fromPoint = dataPoints.find(p => p.id === from);
-                      const toPoint = dataPoints.find(p => p.id === to);
-                      if (!fromPoint || !toPoint) return null;
-
-                      const isActive = hoveredPoint === from || hoveredPoint === to;
-
-                      return (
-                        <motion.line
-                          key={`${from}-${to}`}
-                          x1={`${fromPoint.x}%`}
-                          y1={`${fromPoint.y}%`}
-                          x2={`${toPoint.x}%`}
-                          y2={`${toPoint.y}%`}
-                          stroke="url(#connectionGradient)"
-                          strokeWidth={isActive ? 3 : 2}
-                          strokeLinecap="round"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                          animate={{
-                            pathLength: 1,
-                            opacity: isActive ? 1 : 0.4
-                          }}
-                          transition={{ duration: 1, delay: i * 0.2 }}
-                        />
-                      );
-                    })}
-                  </svg>
-
-                  {/* Data points */}
-                  {dataPoints.map((point, i) => {
-                    const StatusIcon = getStatusIcon(point.status);
-                    return (
-                      <motion.div
-                        key={point.id}
-                        className="absolute cursor-pointer group"
-                        style={{
-                          left: `${point.x}%`,
-                          top: `${point.y}%`,
-                          transform: 'translate(-50%, -50%)',
-                          zIndex: hoveredPoint === point.id ? 10 : 5
-                        }}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: i * 0.15, type: 'spring' }}
-                        onMouseEnter={() => {
-                          setHoveredPoint(point.id);
-                          sendDashboardHoverEvent(true);
-                          emitCardVisited(point.id);
-                        }}
-                        onMouseLeave={() => {
-                          setHoveredPoint(null);
-                          sendDashboardHoverEvent(false);
-                        }}
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        {/* Data point orb */}
-                        <motion.div
-                          className="relative w-20 h-20 rounded-full flex items-center justify-center"
-                          style={{
-                            background: `linear-gradient(135deg, ${getCategoryColor(point.category)} 0%, ${getCategoryColor(point.category)}CC 100%)`,
-                            boxShadow: `0 8px 24px ${getCategoryColor(point.category)}40`,
-                            border: '2px solid rgba(255, 255, 255, 0.3)'
-                          }}
-                        >
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-white">{point.value}</div>
-                            <div className="text-[10px] text-white/80">
-                              {point.change > 0 ? '+' : ''}{point.change}%
-                            </div>
+                        {/* Bottom Row */}
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
+                          <div className="flex items-center gap-2 text-[10px] text-white/40">
+                            <Users size={11} />
+                            <span>{metric.activeUsers} {content.activeUsers}</span>
                           </div>
-
-                          {/* Status indicator */}
-                          <div
-                            className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center"
-                            style={{
-                              background: getStatusColor(point.status),
-                              border: '2px solid white'
-                            }}
-                          >
-                            <StatusIcon className="w-3 h-3 text-white" />
+                          <div className="flex items-center gap-2 text-[10px] text-white/40">
+                            <Clock size={11} />
+                            <span>{formatTimeAgo(metric.lastActivity || null)}</span>
                           </div>
-                        </motion.div>
+                        </div>
 
-                        {/* Tooltip */}
+                        {/* Hover Quick Actions */}
                         <AnimatePresence>
-                          {hoveredPoint === point.id && (
+                          {isHovered && (
                             <motion.div
-                              className="absolute bottom-full left-1/2 mb-4 whitespace-nowrap"
-                              initial={{ opacity: 0, y: 10, x: '-50%' }}
-                              animate={{ opacity: 1, y: 0, x: '-50%' }}
-                              exit={{ opacity: 0, y: 10 }}
-                              style={{ zIndex: 100 }}
+                              initial={{ opacity: 0, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 5 }}
+                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-2"
                             >
-                              <div
-                                className="px-4 py-3 rounded-xl shadow-2xl text-sm"
-                                style={{
-                                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 249, 0.95) 100%)',
-                                  backdropFilter: 'blur(12px)',
-                                  border: `2px solid ${getCategoryColor(point.category)}`,
-                                  boxShadow: `0 8px 32px ${getCategoryColor(point.category)}30`
-                                }}
-                              >
-                                <div className="font-bold text-slate-800 mb-1">{point.label}</div>
-                                <div className="text-xs text-gray-600">
-                                  {content.categories[point.category as keyof typeof content.categories]} Â· {content.status[point.status]}
-                                </div>
-                              </div>
+                              <button className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1">
+                                <FileText size={10} />
+                                {locale === 'de' ? 'Bericht' : 'Report'}
+                              </button>
+                              <button className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1">
+                                <Eye size={10} />
+                                {locale === 'de' ? 'Details' : 'Details'}
+                              </button>
                             </motion.div>
                           )}
                         </AnimatePresence>
-                      </motion.div>
-                    );
-                  })}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* MÃ´ra Insight Panel */}
-          <AnimatePresence>
-            {moraInsight && (
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            ) : (
               <motion.div
-                className="mt-8 rounded-3xl p-6 overflow-hidden relative"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 100%)',
-                  border: '2px solid rgba(212, 180, 131, 0.4)',
-                  boxShadow: '0 12px 40px rgba(74, 103, 65, 0.3)'
-                }}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                key="field"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="relative h-[520px] sm:h-[600px] rounded-3xl overflow-hidden"
+                style={glassPanelStyle}
               >
-                <motion.div
-                  className="absolute top-4 right-4"
-                  animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <Sparkles className="w-6 h-6 text-[#D4A857]" />
-                </motion.div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-1">
-                    <h4 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                      {content.moraInsight}
-                    </h4>
-                    <p className="text-white/90 leading-relaxed">
-                      {content.insightText}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => setMoraInsight(false)}
-                    className="text-white/60 hover:text-white transition"
-                  >
-                    âœ•
-                  </button>
+                {/* Field View - Mycelium Network Visualization */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-white/50 text-lg">
+                    {locale === 'de' ? 'Feld-Ansicht: Myzel-Netzwerk-Visualisierung' : 'Field View: Mycelium Network Visualization'}
+                  </p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
+
+        {/* Môra Insight Panel */}
+        <AnimatePresence>
+          {moraInsight && (
+            <motion.div
+              className="mb-8 rounded-3xl p-6 overflow-hidden relative"
+              style={{
+                background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 100%)',
+                border: '2px solid rgba(212, 180, 131, 0.4)',
+                boxShadow: '0 12px 40px rgba(74, 103, 65, 0.3)'
+              }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            >
+              <motion.div
+                className="absolute top-4 right-4"
+                animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <Sparkles className="w-6 h-6 text-[#D4A857]" />
+              </motion.div>
+
+              <div className="flex items-start gap-4">
+                <div className="flex-1">
+                  <h4 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    {content.moraInsight}
+                  </h4>
+                  <p className="text-white/90 leading-relaxed">
+                    {content.insightText}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setMoraInsight(false)}
+                  className="text-white/60 hover:text-white transition"
+                >
+                  ×
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* CTA - Ruhig & Einladend */}
         <motion.div
@@ -967,7 +1066,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           <div>
             <motion.a
               href={locale === 'de' ? '/mora' : '/en/mora'}
-              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#4A6741] transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-[#4A6741] transition-colors"
               whileHover={{ x: 4 }}
             >
               {content.ctaSecondary}

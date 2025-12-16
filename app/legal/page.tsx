@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { AlertCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Impressum & Datenschutz â€“ SaimÃ´r',
-  description: 'Rechtliche Informationen â€“ Vorabversion',
+  title: 'Impressum & Datenschutz – Saimôr',
+  description: 'Rechtliche Informationen – Vorabversion',
 };
 
 export default function LegalPage() {
@@ -14,10 +14,10 @@ export default function LegalPage() {
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold" style={{ color: '#4A6741' }}>
-            SaimÃ´r
+            Saimôr
           </Link>
           <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
-            â† ZurÃ¼ck zur Startseite
+            ← Zur Startseite
           </Link>
         </div>
       </header>
@@ -33,10 +33,10 @@ export default function LegalPage() {
         >
           <AlertCircle className="w-6 h-6 text-[#D4A857] flex-shrink-0 mt-0.5" />
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-1">Vorabversion â€“ Juristische Finalisierung folgt</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-1">Vorabversion – juristische Finalisierung folgt</h2>
             <p className="text-gray-700">
-              Diese Seite befindet sich in Bearbeitung. Die rechtlich verbindlichen Dokumente (Impressum, DatenschutzerklÃ¤rung)
-              werden vor dem offiziellen Launch finalisiert und durch einen Rechtsanwalt geprÃ¼ft.
+              Diese Seite befindet sich in Bearbeitung. Die rechtlich verbindlichen Dokumente (Impressum, Datenschutzerklärung)
+              werden vor dem offiziellen Launch finalisiert und juristisch geprüft.
             </p>
           </div>
         </div>
@@ -63,58 +63,58 @@ export default function LegalPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Impressum</h2>
             <div className="bg-white p-6 rounded-xl border border-gray-200">
               <p className="text-gray-700 mb-4">
-                <strong>Angaben gemÃ¤ÃŸ Â§ 5 TMG:</strong>
+                <strong>Angaben gemäß § 5 TMG:</strong>
               </p>
               <p className="text-gray-700 mb-2">
-                SaimÃ´r<br />
-                [Firmenname wird ergÃ¤nzt]<br />
-                [Adresse wird ergÃ¤nzt]<br />
+                Saimôr<br />
+                [Firmenname wird ergänzt]<br />
+                [Adresse wird ergänzt]<br />
                 Deutschland
               </p>
               <p className="text-gray-700 mt-4 mb-2">
                 <strong>Vertreten durch:</strong><br />
-                [GeschÃ¤ftsfÃ¼hrer wird ergÃ¤nzt]
+                [Geschäftsführer wird ergänzt]
               </p>
               <p className="text-gray-700 mt-4 mb-2">
                 <strong>Kontakt:</strong><br />
-                E-Mail: [wird ergÃ¤nzt]<br />
-                Telefon: [wird ergÃ¤nzt]
+                E-Mail: [wird ergänzt]<br />
+                Telefon: [wird ergänzt]
               </p>
               <p className="text-gray-700 mt-4 mb-2">
                 <strong>Registereintrag:</strong><br />
-                [Handelsregister wird ergÃ¤nzt]<br />
-                [Registernummer wird ergÃ¤nzt]
+                [Handelsregister wird ergänzt]<br />
+                [Registernummer wird ergänzt]
               </p>
               <p className="text-gray-700 mt-4">
                 <strong>Umsatzsteuer-ID:</strong><br />
-                [USt-IdNr. wird ergÃ¤nzt gemÃ¤ÃŸ Â§27 a Umsatzsteuergesetz]
+                [USt-IdNr. wird ergänzt gemäß § 27a Umsatzsteuergesetz]
               </p>
             </div>
           </section>
 
           {/* Datenschutz */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">DatenschutzerklÃ¤rung</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Datenschutzerklärung</h2>
 
             <div className="space-y-6">
               {/* Allgemeines */}
               <div className="bg-white p-6 rounded-xl border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">1. Allgemeines</h3>
                 <p className="text-gray-700 mb-3">
-                  Wir nehmen den Schutz Ihrer persÃ¶nlichen Daten sehr ernst und behandeln Ihre personenbezogenen Daten
-                  vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser DatenschutzerklÃ¤rung.
+                  Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst und behandeln Ihre personenbezogenen Daten
+                  vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
                 </p>
                 <p className="text-gray-700">
-                  Diese DatenschutzerklÃ¤rung gilt fÃ¼r die Website saimor.world und beschreibt,
+                  Diese Datenschutzerklärung gilt für die Website saimor.world und beschreibt,
                   welche Daten wir erheben und wie wir sie verwenden.
                 </p>
               </div>
 
               {/* Verantwortlicher */}
               <div className="bg-white p-6 rounded-xl border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Verantwortlicher</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Verantwortliche Stelle</h3>
                 <p className="text-gray-700">
-                  Verantwortlich fÃ¼r die Datenverarbeitung auf dieser Website ist:<br />
+                  Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
                   [Angaben wie in Impressum]
                 </p>
               </div>
@@ -125,9 +125,9 @@ export default function LegalPage() {
 
                 <h4 className="font-bold text-gray-900 mb-2 mt-4">Cookies</h4>
                 <p className="text-gray-700 mb-3">
-                  Diese Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem EndgerÃ¤t gespeichert werden.
-                  Wir nutzen Cookies zur Verbesserung der Nutzererfahrung. Sie kÃ¶nnen Ihren Browser so einstellen,
-                  dass Sie Ã¼ber das Setzen von Cookies informiert werden.
+                  Diese Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden.
+                  Wir nutzen Cookies zur Verbesserung der Nutzererfahrung. Sie können Ihren Browser so einstellen,
+                  dass Sie über das Setzen von Cookies informiert werden.
                 </p>
 
                 <h4 className="font-bold text-gray-900 mb-2 mt-4">Server-Log-Dateien</h4>
@@ -143,14 +143,14 @@ export default function LegalPage() {
                   <li>IP-Adresse</li>
                 </ul>
                 <p className="text-gray-700">
-                  Diese Daten werden nicht mit anderen Datenquellen zusammengefÃ¼hrt.
+                  Diese Daten werden nicht mit anderen Datenquellen zusammengeführt.
                   Die Speicherung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
                 </p>
 
                 <h4 className="font-bold text-gray-900 mb-2 mt-4">Kontaktformular & Warteliste</h4>
                 <p className="text-gray-700">
                   Wenn Sie uns per Kontaktformular oder Warteliste Anfragen zukommen lassen,
-                  werden Ihre Angaben (Name, E-Mail-Adresse) zur Bearbeitung der Anfrage und fÃ¼r den Fall von Anschlussfragen
+                  werden Ihre Angaben (Name, E-Mail-Adresse) zur Bearbeitung der Anfrage und für den Fall von Anschlussfragen
                   bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
                 </p>
               </div>
@@ -162,13 +162,13 @@ export default function LegalPage() {
                   Sie haben jederzeit das Recht auf:
                 </p>
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
-                  <li>Auskunft Ã¼ber Ihre gespeicherten Daten (Art. 15 DSGVO)</li>
+                  <li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO)</li>
                   <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
-                  <li>LÃ¶schung Ihrer Daten (Art. 17 DSGVO)</li>
-                  <li>EinschrÃ¤nkung der Verarbeitung (Art. 18 DSGVO)</li>
-                  <li>DatenÃ¼bertragbarkeit (Art. 20 DSGVO)</li>
+                  <li>Löschung Ihrer Daten (Art. 17 DSGVO)</li>
+                  <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+                  <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
                   <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
-                  <li>Beschwerde bei einer AufsichtsbehÃ¶rde (Art. 77 DSGVO)</li>
+                  <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)</li>
                 </ul>
               </div>
 
@@ -179,14 +179,14 @@ export default function LegalPage() {
                 <h4 className="font-bold text-gray-900 mb-2">Vercel (Hosting)</h4>
                 <p className="text-gray-700 mb-4">
                   Diese Website wird auf Servern von Vercel Inc. (USA) gehostet.
-                  Vercel ist EU-US Data Privacy Framework zertifiziert.
+                  Vercel ist nach dem EU-US Data Privacy Framework zertifiziert.
                   Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener" className="text-[#4A6741] underline">Vercel Privacy Policy</a>
                 </p>
 
                 <h4 className="font-bold text-gray-900 mb-2">Cal.com (Buchungstool)</h4>
                 <p className="text-gray-700">
-                  FÃ¼r Terminbuchungen nutzen wir Cal.com. Wenn Sie einen Termin buchen,
-                  werden Ihre Daten (Name, E-Mail) an Cal.com Ã¼bertragen.
+                  Für Terminbuchungen nutzen wir Cal.com. Wenn Sie einen Termin buchen,
+                  werden Ihre Daten (Name, E-Mail) an Cal.com übertragen.
                   Weitere Informationen: <a href="https://cal.com/privacy" target="_blank" rel="noopener" className="text-[#4A6741] underline">Cal.com Privacy</a>
                 </p>
               </div>
@@ -197,16 +197,16 @@ export default function LegalPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Haftungsausschluss</h2>
             <div className="bg-white p-6 rounded-xl border border-gray-200 text-gray-700">
-              <h3 className="font-bold mb-2">Haftung fÃ¼r Inhalte</h3>
+              <h3 className="font-bold mb-2">Haftung für Inhalte</h3>
               <p className="mb-4">
-                Die Inhalte unserer Seiten wurden mit grÃ¶ÃŸter Sorgfalt erstellt.
-                FÃ¼r die Richtigkeit, VollstÃ¤ndigkeit und AktualitÃ¤t der Inhalte kÃ¶nnen wir jedoch keine GewÃ¤hr Ã¼bernehmen.
+                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt.
+                Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
               </p>
 
-              <h3 className="font-bold mb-2">Haftung fÃ¼r Links</h3>
+              <h3 className="font-bold mb-2">Haftung für Links</h3>
               <p>
-                Unsere Website enthÃ¤lt Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
-                Deshalb kÃ¶nnen wir fÃ¼r diese fremden Inhalte auch keine GewÃ¤hr Ã¼bernehmen.
+                Unsere Website enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
+                Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
               </p>
             </div>
           </section>
