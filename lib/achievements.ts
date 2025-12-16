@@ -182,6 +182,56 @@ export const ACHIEVEMENTS: Achievement[] = [
     unlocked: false,
     secret: true
   },
+  {
+    id: 'mora-explorer',
+    name: 'Môra Explorer',
+    nameDE: 'Môra-Entdecker',
+    description: 'You explored the Môra dashboard. Patterns reveal themselves to the curious.',
+    descriptionDE: 'Du hast das Môra-Dashboard erkundet. Muster offenbaren sich den Neugierigen.',
+    icon: '🔮',
+    unlocked: false,
+    secret: false
+  },
+  {
+    id: 'deep-diver',
+    name: 'Deep Diver',
+    nameDE: 'Tiefentaucher',
+    description: 'You went beyond the surface. Depth rewards the persistent.',
+    descriptionDE: 'Du bist über die Oberfläche hinausgegangen. Tiefe belohnt die Beharrlichen.',
+    icon: '🌊',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'pattern-recognizer',
+    name: 'Pattern Recognizer',
+    nameDE: 'Muster-Erkenner',
+    description: 'You see connections others miss. Clarity emerges from observation.',
+    descriptionDE: 'Du siehst Verbindungen, die andere übersehen. Klarheit entsteht durch Beobachtung.',
+    icon: '🔗',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'curiosity-driven',
+    name: 'Curiosity Driven',
+    nameDE: 'Neugiergetrieben',
+    description: 'You clicked, explored, questioned. Curiosity is the engine of discovery.',
+    descriptionDE: 'Du hast geklickt, erkundet, gefragt. Neugier ist der Motor der Entdeckung.',
+    icon: '❓',
+    unlocked: false,
+    secret: false
+  },
+  {
+    id: 'completionist',
+    name: 'Completionist',
+    nameDE: 'Vollendungssucher',
+    description: 'You unlocked 75% of achievements. Mastery comes through dedication.',
+    descriptionDE: 'Du hast 75% der Erfolge freigeschaltet. Meisterschaft kommt durch Hingabe.',
+    icon: '🏆',
+    unlocked: false,
+    secret: false
+  },
 ];
 
 const STORAGE_KEY = 'saimor-achievements';

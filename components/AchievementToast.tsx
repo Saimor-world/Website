@@ -43,11 +43,17 @@ export default function AchievementToast({ achievement, onClose }: Props) {
           <div className="relative flex items-start gap-4">
             {/* Icon */}
             <motion.div
-              className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4A857] to-[#E6C897] shadow-lg"
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-4xl bg-gradient-to-br from-[#D4A857] to-[#E6C897] shadow-lg relative overflow-hidden"
+              animate={{ scale: [1, 1.05, 1], rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {achievement.icon}
+              {/* Shimmer effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear', repeatDelay: 0.5 }}
+              />
+              <span className="relative z-10">{achievement.icon}</span>
             </motion.div>
 
             {/* Text */}
@@ -69,12 +75,19 @@ export default function AchievementToast({ achievement, onClose }: Props) {
 
           {/* Progress Bar */}
           <motion.div
-            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#D4A857] to-[#E6C897]"
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#D4A857] to-[#E6C897] relative overflow-hidden"
             initial={{ width: '100%' }}
             animate={{ width: '0%' }}
             transition={{ duration: 3.5, ease: 'linear' }}
             onAnimationComplete={onClose}
-          />
+          >
+            {/* Shimmer effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+            />
+          </motion.div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

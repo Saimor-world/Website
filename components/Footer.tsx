@@ -162,18 +162,18 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
               {footerText.quickLinks}
             </h3>
             <nav className="flex flex-col gap-2">
-              <a
-                href="#angebot"
+              <Link
+                href={locale === 'de' ? '/#leistungen' : '/en#leistungen'}
                 className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.services}
-              </a>
-              <a
-                href="#kontakt"
+              </Link>
+              <Link
+                href={locale === 'de' ? '/#kontakt' : '/en#kontakt'}
                 className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.contact}
-              </a>
+              </Link>
               <Link
                 href={locale === 'de' ? '/portal' : '/en/portal'}
                 className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"

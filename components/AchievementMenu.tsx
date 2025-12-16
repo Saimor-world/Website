@@ -82,9 +82,20 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 1, ease: 'easeOut' }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white mix-blend-difference">
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white mix-blend-difference"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
                   {progress}%
-                </div>
+                </motion.div>
+                {/* Shimmer effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
+                />
               </div>
             </div>
 
@@ -105,9 +116,13 @@ export default function AchievementMenu({ achievements, isOpen, onClose, locale 
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
                       >
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center text-2xl shadow-lg">
+                        <motion.div
+                          className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] flex items-center justify-center text-2xl shadow-lg"
+                          whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                          transition={{ duration: 0.3 }}
+                        >
                           {achievement.icon}
-                        </div>
+                        </motion.div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <h4 className="text-base font-bold text-white">

@@ -153,7 +153,7 @@ export default function EasterEggs() {
     }
     feldforscherUnlockedRef.current = true;
     unlockAchievement('field-explorer');
-    showTransientMessage('Mehrere Perspektiven â€“ stark fÃ¼r echte Entscheidungen.');
+    showTransientMessage('Mehrere Perspektiven – stark für echte Entscheidungen.');
   }, [showTransientMessage, unlockAchievement]);
 
   // === PARTICLE & ACTIVATION HELPERS (DECLARE EARLY TO AVOID TDZ) ===
@@ -230,21 +230,21 @@ export default function EasterEggs() {
         createSubtleParticles(coords.x, coords.y, 18);
         createGoldenRain();
       }
-      showTransientMessage('Ein Klarheitsfunke â€“ danke fÃ¼rs aufmerksame Entdecken.', 3200);
+      showTransientMessage('Ein Klarheitsfunke – danke fürs aufmerksame Entdecken.', 3200);
     },
     [createSubtleParticles, createGoldenRain, showTransientMessage]
   );
 
   const activateShake = useCallback(() => {
-    showTransientMessage('Bewegung erkannt â€“ Systeme reagieren.');
+    showTransientMessage('Bewegung erkannt – Systeme reagieren.');
     createGoldenRain();
   }, [createGoldenRain, showTransientMessage]);
 
   const activateSecretWord = useCallback((word: string) => {
     const messages: { [key: string]: string } = {
-      klarheit: 'Klarheit gefunden â€“ sie war immer da.',
-      saimor: 'SaimÃ´r erwacht â€“ Resonanz beginnt.',
-      wandel: 'Wandel beginnt â€“ mit jedem Schritt.'
+      klarheit: 'Klarheit gefunden – sie war immer da.',
+      saimor: 'Saimôr erwacht – Resonanz beginnt.',
+      wandel: 'Wandel beginnt – mit jedem Schritt.'
     };
     showTransientMessage(messages[word] || 'Geheimnis entdeckt.');
     createGoldenRain();
@@ -388,7 +388,7 @@ export default function EasterEggs() {
       if (hour >= 0 && hour < 6) {
         setTimeout(() => {
           unlockAchievement('night-owl');
-          showTransientMessage('Nachteule entdeckt â€“ Klarheit kennt keine Uhrzeit.');
+          showTransientMessage('Nachteule entdeckt – Klarheit kennt keine Uhrzeit.');
         }, 2000);
       }
 
@@ -396,7 +396,7 @@ export default function EasterEggs() {
       if (hour >= 5 && hour < 7) {
         setTimeout(() => {
           unlockAchievement('early-bird');
-          showTransientMessage('FrÃ¼haufsteher â€“ der Tag beginnt mit Klarheit.');
+          showTransientMessage('Frühaufsteher – der Tag beginnt mit Klarheit.');
         }, 2500);
       }
     };
@@ -449,7 +449,7 @@ export default function EasterEggs() {
 
       if (allVisited && !achievementManager.current.getAll().find(a => a.id === 'clarity-navigator' && a.unlocked)) {
         unlockAchievement('clarity-navigator');
-        showTransientMessage('Du prÃ¼fst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
+        showTransientMessage('Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.');
       }
     };
 
@@ -465,6 +465,43 @@ export default function EasterEggs() {
 
     checkSectionVisits();
   }, [mounted, visitedSections, unlockAchievement, showTransientMessage]);
+
+  // === "MÔRA EXPLORER" - Môra Page Visit Tracking ===
+  useEffect(() => {
+    if (!mounted) return;
+
+    const path = window.location.pathname;
+    if (path.includes('/mora') && !achievementManager.current.getAll().find(a => a.id === 'mora-explorer' && a.unlocked)) {
+      setTimeout(() => {
+        unlockAchievement('mora-explorer');
+        showTransientMessage('Môra entdeckt – das semantische Gedächtnis wartet auf dich.');
+      }, 2000);
+    }
+  }, [mounted, unlockAchievement, showTransientMessage]);
+
+  // === "COMPLETIONIST" - Check when achievements are unlocked ===
+  useEffect(() => {
+    if (!mounted) return;
+
+    const checkCompletionist = () => {
+      const progress = achievementManager.current.getProgress();
+      const threshold = 0.75; // 75% of achievements
+      
+      if (progress.percentage >= threshold * 100 && 
+          !achievementManager.current.getAll().find(a => a.id === 'completionist' && a.unlocked)) {
+        unlockAchievement('completionist');
+        showTransientMessage('Meisterschaft erreicht – du hast fast alle Geheimnisse enthüllt.');
+        createSubtleFireworks();
+      }
+    };
+
+    // Check after any achievement unlock
+    const unsubscribe = achievementManager.current.subscribe(() => {
+      setTimeout(checkCompletionist, 500);
+    });
+
+    return () => unsubscribe();
+  }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
 
   // === "FELDFORSCHER" - Dashboard Exploration Tracking ===
   useEffect(() => {
@@ -671,7 +708,7 @@ export default function EasterEggs() {
         transition={{ delay: 8 }}
         whileHover={{ opacity: 0.8, scale: 1.05 }}
       >
-        ðŸ’¡ AAA fÃ¼r Achievements
+        💡 AAA für Achievements
       </motion.div>
     </>
   );
