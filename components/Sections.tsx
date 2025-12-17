@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { motion } from 'framer-motion';
 import { Zap, Database, Orbit } from 'lucide-react';
 import ContactForm from './ContactForm';
@@ -130,7 +130,7 @@ export default function Sections({ locale }: { locale: 'de' | 'en' }) {
                     rel="noreferrer"
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="block w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
+                    className="block w-full px-6 py-4 sm:py-5 rounded-xl font-semibold text-lg transition-all duration-300 min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
                     style={{
                       background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
                       border: '2px solid rgba(212, 180, 131, 0.4)',

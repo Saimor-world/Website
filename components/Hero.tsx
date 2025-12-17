@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -240,7 +240,7 @@ export default function Hero({ locale, calUrl }: Props) {
               {/* Primary CTA */}
               <motion.a
                 href={locale === 'en' ? '/en/mora' : '/mora'}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-lg font-semibold overflow-hidden"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{
                   background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
                   border: '2px solid rgba(214, 168, 72, 0.5)',
@@ -264,7 +264,7 @@ export default function Hero({ locale, calUrl }: Props) {
                 href={cal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-lg font-medium text-white/90"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-medium text-white/90 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.2)',
