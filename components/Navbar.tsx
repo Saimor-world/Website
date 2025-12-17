@@ -84,49 +84,68 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
-        {/* Ambient Glow */}
+        {/* Ambient Glow - Subtle */}
         <motion.div
-          className="absolute inset-0 -m-8 rounded-full pointer-events-none"
+          className="absolute inset-0 -m-12 rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.25) 0%, transparent 70%)',
-            filter: 'blur(24px)'
+            background: 'radial-gradient(circle, rgba(212, 180, 131, 0.15) 0%, transparent 60%)',
+            filter: 'blur(32px)'
           }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
+            scale: [1, 1.15, 1],
+            opacity: [0.2, 0.35, 0.2]
           }}
           transition={{
-            duration: 3,
+            duration: 4,
             repeat: Infinity,
             ease: 'easeInOut'
           }}
         />
 
-        {/* Main Orb Container */}
+        {/* Main Orb Container - Elegant & Refined */}
         <motion.div
-          className="relative flex items-center gap-5 px-6 py-3 bg-gradient-to-br from-[#0f1c16]/95 via-[#1f3527]/90 to-[#214031]/95 rounded-[40px] shadow-2xl overflow-hidden"
+          className="relative flex items-center gap-6 px-8 py-4 rounded-[32px] overflow-hidden"
           style={{
-            backdropFilter: 'blur(20px) saturate(180%)',
-            border: '1.5px solid rgba(212, 180, 131, 0.35)',
-            boxShadow: '0 25px 70px rgba(4, 7, 6, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
-            minWidth: 'min(92vw, 760px)'
+            background: 'linear-gradient(135deg, rgba(15, 35, 22, 0.85) 0%, rgba(26, 60, 50, 0.9) 50%, rgba(15, 35, 22, 0.85) 100%)',
+            backdropFilter: 'blur(24px) saturate(160%)',
+            border: '1px solid rgba(212, 180, 131, 0.2)',
+            boxShadow: `
+              0 8px 32px rgba(0, 0, 0, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+              0 1px 2px rgba(255, 255, 255, 0.05) inset
+            `,
+            minWidth: 'min(90vw, 720px)'
           }}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ 
+            borderColor: 'rgba(212, 180, 131, 0.3)',
+            boxShadow: `
+              0 12px 40px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+              0 1px 3px rgba(255, 255, 255, 0.08) inset,
+              0 0 60px rgba(212, 180, 131, 0.08)
+            `
+          }}
           transition={{ duration: 0.3 }}
         >
-          {/* Rotating Background Pattern */}
+          {/* Subtle animated shimmer */}
           <motion.div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
-              background: 'conic-gradient(from 0deg, transparent, rgba(212, 180, 131, 0.3), transparent)'
+              background: 'linear-gradient(90deg, transparent 0%, rgba(212, 180, 131, 0.4) 50%, transparent 100%)',
             }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            animate={{
+              x: ['-100%', '200%']
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
           />
 
           {/* Content */}
-          <div className="relative flex items-center gap-4 w-full">
-            {/* Logo - Better color integration */}
+          <div className="relative flex items-center gap-6 w-full">
+            {/* Logo - Elegant Integration */}
             <Link
               href={`/${locale}`}
               className="flex items-center gap-3 group"
@@ -137,36 +156,32 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               }}
             >
               <motion.div 
-                className="relative w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg border"
+                className="relative w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(26, 60, 50, 0.98) 0%, rgba(58, 82, 49, 0.95) 50%, rgba(74, 103, 65, 0.9) 100%)',
-                  borderColor: 'rgba(212, 168, 131, 0.35)',
-                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 180, 131, 0.1)'
+                  background: 'linear-gradient(135deg, rgba(26, 60, 50, 0.6) 0%, rgba(74, 103, 65, 0.4) 100%)',
+                  border: '1px solid rgba(212, 180, 131, 0.25)',
+                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.3)'
                 }}
-                whileHover={{ scale: 1.05, boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 180, 131, 0.2)' }}
+                whileHover={{ 
+                  scale: 1.05,
+                  borderColor: 'rgba(212, 180, 131, 0.4)',
+                  boxShadow: 'inset 0 1px 3px rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 180, 131, 0.15)'
+                }}
                 transition={{ duration: 0.2 }}
               >
-                {/* Animated gold glow background - subtle pulsing */}
+                {/* Subtle gold glow */}
                 <motion.div
-                  className="absolute inset-0 opacity-25"
+                  className="absolute inset-0 opacity-20"
                   style={{ 
-                    background: 'radial-gradient(circle at 50% 50%, rgba(212,180,131,0.4) 0%, transparent 75%)',
+                    background: 'radial-gradient(circle at 50% 50%, rgba(212,180,131,0.3) 0%, transparent 70%)',
                   }}
                   animate={{
-                    opacity: [0.2, 0.3, 0.2],
-                    scale: [1, 1.05, 1]
+                    opacity: [0.15, 0.25, 0.15],
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 4,
                     repeat: Infinity,
                     ease: 'easeInOut'
-                  }}
-                />
-                {/* Inner highlight */}
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 60%)',
                   }}
                 />
                 <Image
@@ -174,25 +189,29 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   alt="Saimôr"
                   width={80}
                   height={80}
-                  className="relative z-10 w-10 h-10 object-contain"
+                  className="relative z-10 w-8 h-8 object-contain"
                   style={{ 
-                    filter: 'brightness(1.15) contrast(1.1) drop-shadow(0 2px 4px rgba(212, 180, 131, 0.3))',
+                    filter: 'brightness(1.2) contrast(1.15) drop-shadow(0 1px 3px rgba(212, 180, 131, 0.25))',
                   }}
                 />
               </motion.div>
 
               <div className="flex flex-col -space-y-0.5">
-                <span
-                  className="text-lg font-bold tracking-wide bg-gradient-to-r from-white via-[#E6C897] to-white bg-clip-text text-transparent"
+                <motion.span
+                  className="text-xl font-bold tracking-wide"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    textShadow: '0 2px 8px rgba(212, 180, 131, 0.45)'
+                    background: 'linear-gradient(135deg, #FFFFFF 0%, #E6C897 50%, #FFFFFF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
                   }}
+                  whileHover={{ scale: 1.02 }}
                 >
                   Saimôr
-                </span>
+                </motion.span>
                 <span
-                  className="text-[10px] text-[#E6C897]/80 tracking-[0.5em] uppercase"
+                  className="text-[10px] text-[#E6C897]/70 tracking-[0.4em] uppercase font-medium"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   {locale === 'de' ? 'Klarheit' : 'Clarity'}
@@ -200,60 +219,80 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               </div>
             </Link>
 
-            {/* Divider */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-[#D4A857]/40 to-transparent" />
+            {/* Elegant Divider */}
+            <div className="h-6 w-px bg-gradient-to-b from-transparent via-[#D4A857]/30 to-transparent" />
 
-            {/* Desktop Quick Links */}
-            <div className="hidden lg:flex items-center gap-2">
+            {/* Desktop Quick Links - Elegant */}
+            <div className="hidden lg:flex items-center gap-1">
               {navItems.slice(1, 3).map((item, index) => (
-                <div key={item.href} className="flex items-center gap-2">
-                  <motion.a
-                    href={item.href}
-                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                    className="relative px-3 py-1.5 text-sm text-white/90 hover:text-white rounded-lg transition-colors group cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="relative z-10">{item.label}</span>
-                    <motion.div
-                      className="absolute inset-0 bg-white/10 rounded-lg"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                    />
-                  </motion.a>
-                  {index < navItems.slice(1, 3).length - 1 && (
-                    <span className="text-[#D4A857]/30 text-xs">|</span>
-                  )}
-                </div>
+                <motion.a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                  className="relative px-4 py-2 text-sm font-medium text-white/85 hover:text-white rounded-lg transition-all cursor-pointer"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  <motion.div
+                    className="absolute inset-0 rounded-lg bg-white/5 border border-white/5"
+                    initial={{ opacity: 0 }}
+                    whileHover={{ 
+                      opacity: 1,
+                      borderColor: 'rgba(212, 180, 131, 0.2)',
+                      backgroundColor: 'rgba(212, 180, 131, 0.05)'
+                    }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </motion.a>
               ))}
             </div>
 
-            {/* CTA Button - Desktop only */}
+            {/* Spacer */}
+            <div className="flex-1" />
+
+            {/* CTA Button - Refined */}
             <motion.a
               href="https://cal.com/saimor/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-[#D4A857] to-[#E6C897] shadow-lg hover:shadow-xl transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1A3C32] transition-all relative overflow-hidden group"
               style={{
-                border: '1px solid rgba(255, 255, 255, 0.2)'
+                background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 100%)',
+                boxShadow: '0 4px 16px rgba(212, 168, 87, 0.25)'
               }}
+              whileHover={{ 
+                scale: 1.03,
+                boxShadow: '0 6px 24px rgba(212, 168, 87, 0.35)',
+              }}
+              whileTap={{ scale: 0.97 }}
             >
-              <Sparkles className="w-4 h-4" />
-              <span>{locale === 'de' ? 'Gespräch buchen' : 'Book Call'}</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '100%' }}
+                transition={{ duration: 0.6 }}
+              />
+              <Sparkles className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">{locale === 'de' ? 'Gespräch buchen' : 'Book Call'}</span>
             </motion.a>
 
-            {/* Menu Button */}
+            {/* Menu Button - Elegant */}
             <motion.button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="relative w-9 h-9 rounded-full bg-gradient-to-br from-[#D4A857]/20 to-[#E6C897]/10 flex items-center justify-center text-[#D4A857] hover:from-[#D4A857]/30 hover:to-[#E6C897]/20 transition-all"
-              whileHover={{ scale: 1.1, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
+              className="relative w-9 h-9 rounded-xl flex items-center justify-center text-[#D4A857] transition-all"
               style={{
-                border: '1px solid rgba(212, 180, 131, 0.3)',
+                background: 'rgba(212, 180, 131, 0.08)',
+                border: '1px solid rgba(212, 180, 131, 0.2)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                backgroundColor: 'rgba(212, 180, 131, 0.12)',
+                borderColor: 'rgba(212, 180, 131, 0.3)',
                 boxShadow: '0 4px 12px rgba(212, 180, 131, 0.2)'
               }}
+              whileTap={{ scale: 0.95 }}
             >
               <AnimatePresence mode="wait">
                 {menuOpen ? (
