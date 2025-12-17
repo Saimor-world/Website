@@ -62,6 +62,17 @@ const glassCardStyle: CSSProperties = {
 };
 
 export default function MoraDashboard({ locale }: MoraDashboardProps) {
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Chat States
   const [userQuestion, setUserQuestion] = useState('');
   const [moraResponse, setMoraResponse] = useState('');
@@ -537,7 +548,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           </radialGradient>
         </defs>
         <rect width="100%" height="100%" fill="url(#saimorGlow)" />
-        {Array.from({ length: 40 }).map((_, i) => {
+        {Array.from({ length: isMobile ? 20 : 40 }).map((_, i) => {
           const seededRandom = (seed: number) => {
             const x = Math.sin(seed + i * 7.3) * 10000;
             return x - Math.floor(x);
@@ -572,26 +583,30 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-2xl px-8 py-4 shadow-2xl">
-              <div className="flex items-center gap-3 mb-2 justify-center">
-                <Sparkles className="text-[#D4A857]" size={28} />
+            <div className={`backdrop-blur-xl bg-black/40 border border-white/10 ${isMobile ? 'rounded-xl px-4 py-3' : 'rounded-2xl px-8 py-4'} shadow-2xl`}>
+              <div className={`flex items-center gap-3 ${isMobile ? 'mb-1' : 'mb-2'} justify-center`}>
+                <Sparkles className="text-[#D4A857]" size={isMobile ? 20 : 28} />
                 <h2
-                  className="text-2xl sm:text-3xl font-light tracking-[0.2em] text-white/90"
+                  className={`${isMobile ? 'text-lg' : 'text-2xl sm:text-3xl'} font-light ${isMobile ? 'tracking-[0.1em]' : 'tracking-[0.2em]'} text-white/90`}
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   {content.title.toUpperCase()}
                 </h2>
-                <button
-                  onClick={handleRefresh}
-                  disabled={isRefreshing}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-all ml-2 disabled:opacity-50"
-                >
-                  <RefreshCw size={18} className={`text-[#4A6741] transition-transform ${isRefreshing ? 'animate-spin' : 'hover:rotate-180'}`} />
-                </button>
+                {!isMobile && (
+                  <button
+                    onClick={handleRefresh}
+                    disabled={isRefreshing}
+                    className="p-2 rounded-lg hover:bg-white/10 transition-all ml-2 disabled:opacity-50"
+                  >
+                    <RefreshCw size={18} className={`text-[#4A6741] transition-transform ${isRefreshing ? 'animate-spin' : 'hover:rotate-180'}`} />
+                  </button>
+                )}
               </div>
-              <p className="text-xs text-white/40 tracking-widest uppercase">
-                {demoMetrics.length} {locale === 'de' ? 'Metriken' : 'Metrics'} • {content.lastUpdate} {new Date().toLocaleTimeString()}
-              </p>
+              {!isMobile && (
+                <p className="text-xs text-white/40 tracking-widest uppercase">
+                  {demoMetrics.length} {locale === 'de' ? 'Metriken' : 'Metrics'} • {content.lastUpdate} {new Date().toLocaleTimeString()}
+                </p>
+              )}
             </div>
           </motion.div>
 
@@ -653,115 +668,119 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           </div>
         </motion.div>
 
-        {/* Summary Stats Row with Glassmorphism */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+        {/* Summary Stats Row - Compact on mobile */}
+        <div className={`flex flex-wrap items-center justify-center ${isMobile ? 'gap-2 mb-4' : 'gap-4 mb-8'}`}>
           {/* Overall Health */}
           <motion.div
-            className="backdrop-blur-xl bg-black/40 border border-[#D4A857]/30 rounded-xl px-6 py-3 flex items-center gap-3"
+            className={`backdrop-blur-xl bg-black/40 border border-[#D4A857]/30 ${isMobile ? 'rounded-lg px-3 py-2' : 'rounded-xl px-6 py-3'} flex items-center gap-3`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <BarChart3 size={18} className="text-[#D4A857]" />
+            <BarChart3 size={isMobile ? 14 : 18} className="text-[#D4A857]" />
             <div>
-              <div className="text-2xl font-light text-[#D4A857] font-mono">{Math.round(avgHealth)}%</div>
-              <div className="text-[10px] text-white/40 uppercase tracking-wider">{content.avgHealth}</div>
+              <div className={`${isMobile ? 'text-lg' : 'text-2xl'} font-light text-[#D4A857] font-mono`}>{Math.round(avgHealth)}%</div>
+              {!isMobile && <div className="text-[10px] text-white/40 uppercase tracking-wider">{content.avgHealth}</div>}
             </div>
           </motion.div>
 
           <motion.div
-            className="backdrop-blur-xl bg-[#4A6741]/10 border border-[#4A6741]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            className={`backdrop-blur-xl bg-[#4A6741]/10 border border-[#4A6741]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
           >
-            <CheckCircle size={14} className="text-[#4A6741]" />
-            <span className="text-sm text-[#4A6741] font-mono">{healthyCount}</span>
+            <CheckCircle size={isMobile ? 12 : 14} className="text-[#4A6741]" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#4A6741] font-mono`}>{healthyCount}</span>
           </motion.div>
           <motion.div
-            className="backdrop-blur-xl bg-[#D4A857]/10 border border-[#D4A857]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            className={`backdrop-blur-xl bg-[#D4A857]/10 border border-[#D4A857]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <AlertCircle size={14} className="text-[#D4A857]" />
-            <span className="text-sm text-[#D4A857] font-mono">{warningCount}</span>
+            <AlertCircle size={isMobile ? 12 : 14} className="text-[#D4A857]" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#D4A857] font-mono`}>{warningCount}</span>
           </motion.div>
           <motion.div
-            className="backdrop-blur-xl bg-[#E85D75]/10 border border-[#E85D75]/30 rounded-xl px-4 py-3 flex items-center gap-2"
+            className={`backdrop-blur-xl bg-[#E85D75]/10 border border-[#E85D75]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
           >
-            <AlertCircle size={14} className="text-[#E85D75]" />
-            <span className="text-sm text-[#E85D75] font-mono">{criticalCount}</span>
+            <AlertCircle size={isMobile ? 12 : 14} className="text-[#E85D75]" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#E85D75] font-mono`}>{criticalCount}</span>
           </motion.div>
 
-          {/* Total Nodes */}
-          <motion.div
-            className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Zap size={14} className="text-[#4A6741]" />
-            <span className="text-sm text-white/60 font-mono">{totalNodes} {content.totalNodes.toLowerCase()}</span>
-          </motion.div>
+          {/* Total Nodes - Hide on mobile to save space */}
+          {!isMobile && (
+            <motion.div
+              className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Zap size={14} className="text-[#4A6741]" />
+              <span className="text-sm text-white/60 font-mono">{totalNodes} {content.totalNodes.toLowerCase()}</span>
+            </motion.div>
+          )}
         </div>
 
-        {/* Sort Controls */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="flex items-center gap-1 backdrop-blur-sm bg-black/30 rounded-lg p-1">
-            <ArrowUpDown size={12} className="text-white/40 ml-2" />
-            {(['health', 'name', 'activity'] as const).map((option) => (
-              <button
-                key={option}
-                onClick={() => setSortBy(option)}
-                className={`px-3 py-1 text-xs rounded-md transition-all ${sortBy === option
-                  ? 'bg-[#4A6741]/20 text-[#4A6741] border border-[#4A6741]/30'
-                  : 'text-white/40 hover:text-white/70'
-                  }`}
-              >
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </button>
-            ))}
+        {/* Sort Controls - Compact on mobile */}
+        {!isMobile && (
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <div className="flex items-center gap-1 backdrop-blur-sm bg-black/30 rounded-lg p-1">
+              <ArrowUpDown size={12} className="text-white/40 ml-2" />
+              {(['health', 'name', 'activity'] as const).map((option) => (
+                <button
+                  key={option}
+                  onClick={() => setSortBy(option)}
+                  className={`px-3 py-1 text-xs rounded-md transition-all ${sortBy === option
+                    ? 'bg-[#4A6741]/20 text-[#4A6741] border border-[#4A6741]/30'
+                    : 'text-white/40 hover:text-white/70'
+                    }`}
+                >
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* CHAT SECTION */}
+        {/* CHAT SECTION - Compact on mobile */}
         <motion.div
-          className="mb-16 rounded-3xl p-8 shadow-xl"
+          className={`mb-8 ${isMobile ? 'rounded-2xl p-4' : 'mb-16 rounded-3xl p-8'} shadow-xl`}
           style={glassPanelStyle}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          <div className={`text-center ${isMobile ? 'mb-4' : 'mb-8'}`}>
+            <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-white mb-2`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {content.chatTitle}
             </h3>
-            <p className="text-white/70">{content.chatIntro}</p>
+            <p className={`${isMobile ? 'text-sm' : ''} text-white/70`}>{content.chatIntro}</p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Left: Quick Questions */}
-            <div className="space-y-3">
+          <div className={`grid ${isMobile ? 'gap-4' : 'lg:grid-cols-2 gap-8'}`}>
+            {/* Quick Questions - Compact on mobile */}
+            <div className={isMobile ? 'space-y-2' : 'space-y-3'}>
               {content.quickQuestions.map((question, index) => (
                 <motion.button
                   key={index}
                   onClick={() => handleAskMora(question)}
-                  className="w-full p-4 rounded-2xl text-left transition-all group disabled:opacity-50"
+                  className={`w-full ${isMobile ? 'p-3 rounded-xl' : 'p-4 rounded-2xl'} text-left transition-all group disabled:opacity-50 active:scale-[0.98]`}
                   style={glassCardStyle}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ x: 4 }}
+                  whileHover={!isMobile ? { x: 4 } : {}}
                   disabled={isAsking}
                 >
                   <div className="flex items-center gap-3">
-                    <MessageSquare className="w-5 h-5 text-[#4A6741] group-hover:text-[#D4A857] transition-colors" />
-                    <span className="text-sm font-medium text-white/90 group-hover:text-white">
+                    <MessageSquare className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#4A6741] group-hover:text-[#D4A857] transition-colors flex-shrink-0`} />
+                    <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-white/90 group-hover:text-white`}>
                       {question}
                     </span>
                   </div>
@@ -888,51 +907,153 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </h3>
             <p className="text-white/70 mb-6">{content.dashboardSubtitle}</p>
 
-            {/* View Mode Toggle */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              <motion.button
-                onClick={() => {
-                  setViewMode('folder');
-                  emitViewSwitch();
-                }}
-                className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
-                style={{
-                  background: viewMode === 'folder'
-                    ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
-                    : 'rgba(74, 103, 65, 0.1)',
-                  color: viewMode === 'folder' ? 'white' : '#4A6741',
-                  border: viewMode === 'folder' ? 'none' : '2px solid rgba(74, 103, 65, 0.3)'
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Folder className="w-5 h-5" />
-                <span>{content.folderView}</span>
-              </motion.button>
+            {/* View Mode Toggle - Only on Desktop */}
+            {!isMobile && (
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+                <motion.button
+                  onClick={() => {
+                    setViewMode('folder');
+                    emitViewSwitch();
+                  }}
+                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
+                  style={{
+                    background: viewMode === 'folder'
+                      ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
+                      : 'rgba(74, 103, 65, 0.1)',
+                    color: viewMode === 'folder' ? 'white' : '#4A6741',
+                    border: viewMode === 'folder' ? 'none' : '2px solid rgba(74, 103, 65, 0.3)'
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Folder className="w-5 h-5" />
+                  <span>{content.folderView}</span>
+                </motion.button>
 
-              <motion.button
-                onClick={() => {
-                  setViewMode('field');
-                  emitViewSwitch();
-                }}
-                className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
-                style={{
-                  background: viewMode === 'field'
-                    ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
-                    : 'rgba(74, 103, 65, 0.1)',
-                  color: viewMode === 'field' ? 'white' : '#4A6741',
-                  border: viewMode === 'field' ? 'none' : '2px solid rgba(74, 103, 65, 0.3)'
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <LayoutGrid className="w-5 h-5" />
-                <span>{content.fieldView}</span>
-              </motion.button>
-            </div>
+                <motion.button
+                  onClick={() => {
+                    setViewMode('field');
+                    emitViewSwitch();
+                  }}
+                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
+                  style={{
+                    background: viewMode === 'field'
+                      ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
+                      : 'rgba(74, 103, 65, 0.1)',
+                    color: viewMode === 'field' ? 'white' : '#4A6741',
+                    border: viewMode === 'field' ? 'none' : '2px solid rgba(74, 103, 65, 0.3)'
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <LayoutGrid className="w-5 h-5" />
+                  <span>{content.fieldView}</span>
+                </motion.button>
+              </div>
+            )}
+            
+            {/* Mobile Quick Info */}
+            {isMobile && (
+              <div className="text-center mb-4">
+                <p className="text-sm text-white/60">
+                  {locale === 'de' ? 'Tippe auf eine Metrik für Details' : 'Tap a metric for details'}
+                </p>
+              </div>
+            )}
           </div>
 
-          {/* Dashboard Grid Container */}
+          {/* MOBILE VIEW - Fast, scannable, compact */}
+          {isMobile ? (
+            <div className="space-y-3">
+              {sortedMetrics.map((metric, index) => {
+                const StatusIcon = getStatusIcon(metric.status);
+                const colors = getStatusColor(metric.status);
+                const categoryColor = getCategoryColor(metric.category);
+                const isSelected = selectedCard === metric.id;
+
+                return (
+                  <motion.div
+                    key={metric.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.03 }}
+                    onClick={() => setSelectedCard(isSelected ? null : metric.id)}
+                    className={`relative rounded-xl p-4 transition-all active:scale-[0.98] ${
+                      isSelected 
+                        ? 'bg-[#4A6741]/20 border-2 border-[#4A6741]' 
+                        : 'bg-black/30 border border-white/10'
+                    }`}
+                    style={{ backdropFilter: 'blur(10px)' }}
+                  >
+                    {/* Compact Header Row */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className={`w-10 h-10 rounded-lg ${colors.bg} border ${colors.border} flex items-center justify-center flex-shrink-0`}>
+                          <StatusIcon size={18} className={colors.text} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base font-semibold text-white truncate">{metric.label}</h3>
+                          <p className="text-[10px] text-white/50 font-mono">{metric.category}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xl font-bold ${colors.text} font-mono`}>{metric.value}%</span>
+                        <div className={`w-2 h-2 rounded-full ${metric.status === 'good' ? 'bg-[#4A6741]' : metric.status === 'warning' ? 'bg-[#D4A857]' : 'bg-[#E85D75]'}`} />
+                      </div>
+                    </div>
+
+                    {/* Quick Stats Row - Compact */}
+                    <div className="flex items-center gap-4 text-xs text-white/60">
+                      <div className="flex items-center gap-1">
+                        <Users size={12} />
+                        <span>{metric.activeUsers}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock size={12} />
+                        <span>{formatTimeAgo(metric.lastActivity || null)}</span>
+                      </div>
+                      {metric.change !== 0 && (
+                        <div className={`flex items-center gap-1 ${metric.change > 0 ? 'text-[#4A6741]' : 'text-[#E85D75]'}`}>
+                          {metric.change > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                          <span className="font-semibold">{metric.change > 0 ? '+' : ''}{metric.change}%</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Expandable Details */}
+                    {isSelected && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="mt-3 pt-3 border-t border-white/10 space-y-2"
+                      >
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div>
+                            <span className="text-white/50">{content.depts}:</span>
+                            <span className="text-white ml-1 font-mono">{metric.departmentCount || 0}</span>
+                          </div>
+                          <div>
+                            <span className="text-white/50">{content.spaces}:</span>
+                            <span className="text-white ml-1 font-mono">{metric.spaceCount || 0}</span>
+                          </div>
+                          <div>
+                            <span className="text-white/50">{content.folders}:</span>
+                            <span className="text-white ml-1 font-mono">{metric.folderCount || 0}</span>
+                          </div>
+                          <div>
+                            <span className="text-white/50">{content.nodes}:</span>
+                            <span className="text-white ml-1 font-mono">{metric.nodeCount || 0}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+          /* DESKTOP VIEW - Full organic experience */
           <AnimatePresence mode="wait">
             {viewMode === 'folder' ? (
               <motion.div
@@ -1347,6 +1468,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </motion.div>
             )}
           </AnimatePresence>
+          )}
         </motion.div>
 
         {/* Môra Insight Panel */}
