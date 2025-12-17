@@ -64,8 +64,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        // If on different page, navigate first then scroll
-        window.location.href = href;
+        // If on different page, navigate to home page with anchor
+        window.location.href = `/${locale}${href}`;
       }
     }
   };
