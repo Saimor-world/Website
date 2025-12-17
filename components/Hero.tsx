@@ -163,24 +163,24 @@ export default function Hero({ locale, calUrl }: Props) {
 
       {/* === MAIN CONTENT === */}
       <motion.div
-        className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 lg:py-32"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32"
         style={{ y: parallaxY, opacity, scale }}
       >
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
 
           {/* LEFT: Text Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }} // Reduced movement for cleaner feel
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }} // Faster
             className="text-center lg:text-left"
           >
             {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 sm:mb-8"
               style={{
                 background: 'linear-gradient(135deg, rgba(214, 168, 72, 0.15) 0%, rgba(214, 168, 72, 0.05) 100%)',
                 border: '1px solid rgba(214, 168, 72, 0.3)',
@@ -195,10 +195,10 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* Headline */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-6xl sm:text-7xl lg:text-8xl font-bold mb-6"
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="text-5xl sm:text-6xl lg:text-8xl font-bold mb-4 sm:mb-6"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
                 background: 'linear-gradient(135deg, #FFFFFF 0%, #D6A848 50%, #AAB0B2 100%)',
@@ -212,9 +212,9 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* Subheadline */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.3 }}
               className="text-xl sm:text-2xl lg:text-3xl text-white/90 mb-6 font-light"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
@@ -223,31 +223,31 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-lg text-[#AAB0B2] mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              transition={{ delay: 0.4 }}
+              className="text-base sm:text-lg text-[#AAB0B2] mb-8 sm:mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed"
             >
               {content.description}
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - Mobile Optimized (Stacked) */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
+              transition={{ delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10 sm:mb-12 w-full sm:w-auto"
             >
               {/* Primary CTA */}
-              <Link href={locale === 'en' ? '/en/mora' : '/mora'}>
+              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto">
                 <motion.div
-                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-white cursor-pointer"
+                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857] cursor-pointer"
                   style={{
                     background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
                     border: '2px solid rgba(214, 168, 72, 0.5)',
                     boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                   }}
-                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
+                  whileHover={{ scale: 1.02, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <motion.div
@@ -266,14 +266,14 @@ export default function Hero({ locale, calUrl }: Props) {
                 href={cal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-medium text-white/90 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.2)',
                   backdropFilter: 'blur(10px)'
                 }}
                 whileHover={{
-                  scale: 1.03,
+                  scale: 1.02,
                   background: 'rgba(255, 255, 255, 0.1)',
                   borderColor: 'rgba(214, 168, 72, 0.5)'
                 }}
@@ -284,29 +284,32 @@ export default function Hero({ locale, calUrl }: Props) {
               </motion.a>
             </motion.div>
 
-            {/* Stats */}
+            {/* Stats - Glassmorphism & Cleaner */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0"
+              transition={{ delay: 0.6 }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0"
             >
               {content.stats.map((stat, i) => (
                 <motion.div
                   key={i}
-                  className="text-center p-4 rounded-2xl"
+                  className="text-center p-5 rounded-3xl backdrop-blur-md"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(214, 168, 72, 0.15)'
+                    background: 'rgba(0, 0, 0, 0.2)', // Darker clearer background
+                    border: '1px solid rgba(255, 255, 255, 0.08)', // Subtler border
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
                   }}
                   whileHover={{
                     scale: 1.05,
-                    background: 'rgba(214, 168, 72, 0.1)',
-                    borderColor: 'rgba(214, 168, 72, 0.4)'
+                    background: 'rgba(214, 168, 72, 0.05)',
+                    borderColor: 'rgba(214, 168, 72, 0.3)',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)'
                   }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <div className="text-2xl font-bold text-[#D6A848] mb-1">{stat.value}</div>
-                  <div className="text-xs text-[#AAB0B2] uppercase tracking-wider">{stat.label}</div>
+                  <div className="text-3xl font-bold text-[#D6A848] mb-1">{stat.value}</div>
+                  <div className="text-xs text-[#AAB0B2]/80 uppercase tracking-widest font-medium">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -314,14 +317,14 @@ export default function Hero({ locale, calUrl }: Props) {
 
           {/* RIGHT: Logo/Visual */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="relative flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative flex items-center justify-center mt-8 lg:mt-0"
           >
             {/* Glowing orb background */}
             <motion.div
-              className="absolute w-[500px] h-[500px] rounded-full"
+              className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full"
               style={{
                 background: 'radial-gradient(circle, rgba(214, 168, 72, 0.15) 0%, transparent 70%)',
                 filter: 'blur(60px)'
@@ -335,24 +338,24 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* Rotating rings */}
             <motion.div
-              className="absolute w-[400px] h-[400px] rounded-full border border-[#D6A848]/20"
+              className="absolute w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] rounded-full border border-[#D6A848]/20"
               animate={{ rotate: 360 }}
               transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div
-              className="absolute w-[320px] h-[320px] rounded-full border border-[#1A3C32]/40"
+              className="absolute w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] rounded-full border border-[#1A3C32]/40"
               animate={{ rotate: -360 }}
               transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div
-              className="absolute w-[240px] h-[240px] rounded-full border border-[#D6A848]/10"
+              className="absolute w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] rounded-full border border-[#D6A848]/10"
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             />
 
-            {/* Main logo container */}
+            {/* Main logo container - FORCE ROUND WITH OVERFLOW HIDDEN */}
             <motion.div
-              className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] rounded-full flex items-center justify-center"
+              className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] rounded-full flex items-center justify-center overflow-hidden z-20"
               style={{
                 background: 'linear-gradient(145deg, rgba(26, 60, 50, 0.9) 0%, rgba(11, 15, 16, 0.95) 100%)',
                 border: '2px solid rgba(214, 168, 72, 0.3)',
@@ -372,19 +375,20 @@ export default function Hero({ locale, calUrl }: Props) {
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               whileHover={{ scale: 1.05 }}
             >
+              <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-full pointer-events-none" />
               <Image
                 src="/saimor-logo-new.png"
                 alt="Saimôr Logo"
                 width={280}
                 height={320}
-                className="w-48 sm:w-64 object-contain drop-shadow-2xl"
+                className="w-48 sm:w-64 object-contain drop-shadow-2xl rounded-full"
                 priority
               />
             </motion.div>
 
             {/* Floating badges around logo */}
             <motion.div
-              className="absolute top-10 right-0 px-3 py-1.5 rounded-full text-xs font-semibold"
+              className="absolute top-4 sm:top-10 right-0 sm:right-0 px-3 py-1.5 rounded-full text-xs font-semibold z-30"
               style={{
                 background: 'linear-gradient(135deg, #D6A848, #E8C068)',
                 color: '#0B0F10',
@@ -397,7 +401,7 @@ export default function Hero({ locale, calUrl }: Props) {
             </motion.div>
 
             <motion.div
-              className="absolute bottom-20 left-0 px-3 py-1.5 rounded-full text-xs font-medium text-[#D6A848] border border-[#D6A848]/30 bg-[#0B0F10]/80 backdrop-blur-sm"
+              className="absolute bottom-10 sm:bottom-20 left-0 px-3 py-1.5 rounded-full text-xs font-medium text-[#D6A848] border border-[#D6A848]/30 bg-[#0B0F10]/80 backdrop-blur-sm z-30"
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 4, repeat: Infinity, delay: 1 }}
             >
@@ -409,7 +413,7 @@ export default function Hero({ locale, calUrl }: Props) {
 
       {/* === SCROLL INDICATOR === */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
+        className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5 }}

@@ -88,14 +88,14 @@ export default function Sections({ locale }: { locale: 'de' | 'en' }) {
                   y: -6,
                   transition: { duration: 0.2 }
                 }}
-                className="group relative rounded-2xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
+                className="group relative rounded-3xl border p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
                   borderColor: 'rgba(212,168,87,0.25)'
                 }}
               >
                 {/* Glow effect on hover */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-saimor-gold/15 to-saimor-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-saimor-gold/15 to-saimor-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative z-10">
                   <motion.div
@@ -130,7 +130,7 @@ export default function Sections({ locale }: { locale: 'de' | 'en' }) {
                     rel="noreferrer"
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="block w-full px-6 py-4 sm:py-5 rounded-xl font-semibold text-lg transition-all duration-300 min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
+                    className="block w-full px-6 py-4 sm:py-5 rounded-full font-semibold text-lg transition-all duration-300 min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-saimor-gold focus-visible:ring-offset-2 relative overflow-hidden group/btn text-center text-white"
                     style={{
                       background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
                       border: '2px solid rgba(212, 180, 131, 0.4)',
