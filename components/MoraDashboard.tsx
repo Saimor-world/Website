@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 /**
  * MoraDashboard - Premium Glassmorphism Edition
  * 
@@ -211,6 +211,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   }[locale];
 
+
   // Demo Dashboard Metrics (simulated data)
   const demoMetrics: DashboardMetric[] = [
     {
@@ -305,7 +306,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Chat Handler
+  // Chat Handler with Gemini API integration
   const handleAskMora = async (question?: string) => {
     const q = question || userQuestion;
     if (!q.trim() || isAsking) return;
@@ -315,42 +316,75 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     setShowSuccess(false);
     const startTime = Date.now();
 
-    // Demo responses
-    const demoResponses = locale === 'de' ? {
-      team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
-      budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
-      project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
-      default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
-    } : {
-      team: 'Based on your current KPIs (87% engagement), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
-      budget: 'Your process efficiency is at 92% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. The dashboard shows you all numbers at a glance.',
-      project: 'Velocity: 85%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
-      default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
-    };
+    try {
+      // Try Gemini API first
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: q,
+          locale: locale
+        }),
+      });
 
-    // Match question to response
-    const qLower = q.toLowerCase();
-    let response = demoResponses.default;
+      const data = await response.json();
 
-    if (qLower.includes('produktiv') || qLower.includes('team') || qLower.includes('productiv') || qLower.includes('engagement')) {
-      response = demoResponses.team;
-    } else if (qLower.includes('budget') || qLower.includes('kosten') || qLower.includes('cost') || qLower.includes('effizien')) {
-      response = demoResponses.budget;
-    } else if (qLower.includes('projekt') || qLower.includes('project') || qLower.includes('fortschritt') || qLower.includes('progress') || qLower.includes('velocity')) {
-      response = demoResponses.project;
+      const endTime = Date.now();
+      const duration = ((endTime - startTime) / 1000).toFixed(1);
+
+      if (data.error) {
+        // Fallback to demo responses if Gemini fails
+        const demoResponses = locale === 'de' ? {
+          team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
+          budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
+          project: 'Umsetzungsgeschwindigkeit: 85%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+          default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Prozessen oder Ressourcen!'
+        } : {
+          team: 'Based on your current KPIs (87% engagement), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
+          budget: 'Your process efficiency is at 92% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. The dashboard shows you all numbers at a glance.',
+          project: 'Velocity: 85%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
+          default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, processes or resources!'
+        };
+
+        const qLower = q.toLowerCase();
+        let fallbackResponse = demoResponses.default;
+
+        if (qLower.includes('produktiv') || qLower.includes('team') || qLower.includes('productiv') || qLower.includes('engagement')) {
+          fallbackResponse = demoResponses.team;
+        } else if (qLower.includes('budget') || qLower.includes('kosten') || qLower.includes('cost') || qLower.includes('effizien')) {
+          fallbackResponse = demoResponses.budget;
+        } else if (qLower.includes('projekt') || qLower.includes('project') || qLower.includes('fortschritt') || qLower.includes('progress') || qLower.includes('velocity')) {
+          fallbackResponse = demoResponses.project;
+        }
+
+        setMoraResponse(fallbackResponse);
+      } else {
+        setMoraResponse(data.reply || data.response || '');
+      }
+
+      setResponseTime(parseFloat(duration));
+      setShowSuccess(true);
+      setIsAsking(false);
+      setUserQuestion('');
+
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+      // Fallback to demo response on error
+      const fallbackResponse = locale === 'de'
+        ? 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuche es später noch einmal.'
+        : 'Sorry, I\'m not available right now. Please try again later.';
+
+      const endTime = Date.now();
+      const duration = ((endTime - startTime) / 1000).toFixed(1);
+
+      setMoraResponse(fallbackResponse);
+      setResponseTime(parseFloat(duration));
+      setShowSuccess(true);
+      setIsAsking(false);
+      setUserQuestion('');
     }
-
-    // Simulate API delay (400-900ms)
-    await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 500));
-
-    const endTime = Date.now();
-    const duration = ((endTime - startTime) / 1000).toFixed(1);
-
-    setMoraResponse(response);
-    setResponseTime(parseFloat(duration));
-    setShowSuccess(true);
-    setIsAsking(false);
-    setUserQuestion('');
   };
 
   const openMoraChat = () => {
@@ -412,6 +446,52 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     setIsRefreshing(false);
   };
 
+  // Calculate positions for universe view (distributed in a network pattern)
+  const getUniversePositions = (metrics: DashboardMetric[]) => {
+    const positions: Record<string, { x: number; y: number }> = {};
+    const centerX = 50;
+    const centerY = 50;
+    const radius = 35;
+    
+    metrics.forEach((metric, index) => {
+      const angle = (index / metrics.length) * Math.PI * 2 - Math.PI / 2;
+      const variation = (Math.sin(index * 1.3) * 0.3 + 1) * radius;
+      positions[metric.id] = {
+        x: centerX + Math.cos(angle) * variation,
+        y: centerY + Math.sin(angle) * variation
+      };
+    });
+    
+    return positions;
+  };
+
+  // Connections between related metrics
+  const getConnections = (): Array<[string, string]> => {
+    const connections: Array<[string, string]> = [];
+    
+    // Connect metrics by category
+    const categoryGroups: Record<string, string[]> = {};
+    demoMetrics.forEach(m => {
+      if (!categoryGroups[m.category]) categoryGroups[m.category] = [];
+      categoryGroups[m.category].push(m.id);
+    });
+    
+    // Connect within categories
+    Object.values(categoryGroups).forEach(group => {
+      for (let i = 0; i < group.length - 1; i++) {
+        connections.push([group[i], group[i + 1]]);
+      }
+    });
+    
+    // Connect related metrics across categories
+    connections.push(['team-engagement', 'satisfaction']);
+    connections.push(['process-efficiency', 'velocity']);
+    connections.push(['clarity', 'team-engagement']);
+    connections.push(['satisfaction', 'workload']);
+    
+    return connections;
+  };
+
   // Sort metrics
   const sortedMetrics = [...demoMetrics].sort((a, b) => {
     switch (sortBy) {
@@ -427,6 +507,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const criticalCount = demoMetrics.filter(m => m.status === 'critical').length;
   const totalNodes = demoMetrics.reduce((sum, m) => sum + (m.nodeCount || 0), 0);
   const avgHealth = demoMetrics.length > 0 ? demoMetrics.reduce((sum, m) => sum + m.value, 0) / demoMetrics.length : 0;
+
+  // Universe view data (calculated after demoMetrics)
+  const universePositions = getUniversePositions(demoMetrics);
+  const connections = getConnections();
 
   return (
     <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden min-h-screen"
@@ -993,12 +1077,176 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 className="relative h-[520px] sm:h-[600px] rounded-3xl overflow-hidden"
                 style={glassPanelStyle}
               >
-                {/* Field View - Mycelium Network Visualization */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-white/50 text-lg">
-                    {locale === 'de' ? 'Feld-Ansicht: Myzel-Netzwerk-Visualisierung' : 'Field View: Mycelium Network Visualization'}
-                  </p>
-                </div>
+                {/* Universe View - Network Visualization */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                  <defs>
+                    <linearGradient id="universeConnectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="rgba(74, 103, 65, 0.6)" />
+                      <stop offset="50%" stopColor="rgba(212, 180, 131, 0.8)" />
+                      <stop offset="100%" stopColor="rgba(74, 103, 65, 0.6)" />
+                    </linearGradient>
+                    <filter id="universeShimmer">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="1 0 0 0 0
+                                0 1 0 0 0
+                                0 0 1 0 0
+                                0 0 0 18 -7"
+                      />
+                    </filter>
+                  </defs>
+
+                  {/* Connection lines */}
+                  {connections.map(([from, to], i) => {
+                    const fromPos = universePositions[from];
+                    const toPos = universePositions[to];
+                    if (!fromPos || !toPos) return null;
+
+                    const isActive = hoveredCard === from || hoveredCard === to;
+
+                    return (
+                      <motion.g key={`${from}-${to}`}>
+                        <motion.line
+                          x1={`${fromPos.x}%`}
+                          y1={`${fromPos.y}%`}
+                          x2={`${toPos.x}%`}
+                          y2={`${toPos.y}%`}
+                          stroke="url(#universeConnectionGradient)"
+                          strokeWidth={isActive ? 3 : 1.5}
+                          strokeLinecap="round"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          animate={{
+                            pathLength: 1,
+                            opacity: isActive ? 0.8 : 0.3
+                          }}
+                          transition={{ duration: 1, delay: i * 0.1 }}
+                          style={{ filter: isActive ? 'url(#universeShimmer)' : 'none' }}
+                        />
+                        {/* Animated particles along active lines */}
+                        {isActive && (
+                          <motion.circle
+                            r="3"
+                            fill="#D4A857"
+                            initial={{
+                              cx: `${fromPos.x}%`,
+                              cy: `${fromPos.y}%`
+                            }}
+                            animate={{
+                              cx: [`${fromPos.x}%`, `${toPos.x}%`],
+                              cy: [`${fromPos.y}%`, `${toPos.y}%`]
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "linear"
+                            }}
+                          />
+                        )}
+                      </motion.g>
+                    );
+                  })}
+                </svg>
+
+                {/* Metric nodes */}
+                {demoMetrics.map((metric, index) => {
+                  const pos = universePositions[metric.id];
+                  if (!pos) return null;
+                  const StatusIcon = getStatusIcon(metric.status);
+                  const categoryColor = getCategoryColor(metric.category);
+                  const isHovered = hoveredCard === metric.id;
+
+                  return (
+                    <motion.div
+                      key={metric.id}
+                      className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4A857]"
+                      style={{
+                        left: `${pos.x}%`,
+                        top: `${pos.y}%`,
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: isHovered ? 10 : 5
+                      }}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: index * 0.1, type: 'spring', stiffness: 200 }}
+                      onMouseEnter={() => {
+                        setHoveredCard(metric.id);
+                        sendDashboardHoverEvent(true);
+                        emitCardVisited(metric.id);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredCard(null);
+                        sendDashboardHoverEvent(false);
+                      }}
+                      onFocus={() => {
+                        setHoveredCard(metric.id);
+                        sendDashboardHoverEvent(true);
+                        emitCardVisited(metric.id);
+                      }}
+                      onBlur={() => {
+                        setHoveredCard(null);
+                        sendDashboardHoverEvent(false);
+                      }}
+                      whileHover={{ scale: 1.15 }}
+                      tabIndex={0}
+                    >
+                      {/* Glow effect */}
+                      {isHovered && (
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
+                            filter: 'blur(30px)',
+                            width: 150,
+                            height: 150,
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: -1
+                          }}
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.6, 0.9, 0.6]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      )}
+
+                      {/* Node orb */}
+                      <motion.div
+                        className="relative w-20 h-20 rounded-full flex flex-col items-center justify-center"
+                        style={{
+                          background: `linear-gradient(135deg, ${categoryColor} 0%, ${categoryColor}CC 100%)`,
+                          boxShadow: `0 8px 24px ${categoryColor}40, 0 0 20px ${categoryColor}30`,
+                          border: '2px solid rgba(255, 255, 255, 0.3)'
+                        }}
+                      >
+                        <StatusIcon size={24} className="text-white mb-1" />
+                        <span className="text-xs font-bold text-white">{metric.value}%</span>
+                      </motion.div>
+
+                      {/* Label on hover */}
+                      <AnimatePresence>
+                        {isHovered && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-4 py-2 rounded-lg whitespace-nowrap"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 22, 18, 0.9) 100%)',
+                              border: `1px solid ${categoryColor}`,
+                              boxShadow: `0 8px 24px rgba(0, 0, 0, 0.5)`
+                            }}
+                          >
+                            <p className="text-sm font-semibold text-white">{metric.label}</p>
+                            <p className="text-xs text-white/60 mt-1">{categoryColor === '#4A6741' ? (locale === 'de' ? 'Menschen' : 'People') : categoryColor === '#5D7C54' ? (locale === 'de' ? 'Prozesse' : 'Processes') : (locale === 'de' ? 'Ressourcen' : 'Resources')}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
               </motion.div>
             )}
           </AnimatePresence>
