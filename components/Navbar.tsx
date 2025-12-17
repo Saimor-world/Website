@@ -62,10 +62,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       const targetId = href.replace('#', '');
       const element = document.getElementById(targetId);
       if (element) {
+        // Element exists on current page, scroll to it
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        // If on different page, navigate to home page with anchor
-        window.location.href = `/${locale}${href}`;
+        // Element doesn't exist on current page, navigate to home page with anchor
+        // Use full URL with locale prefix: /de#leistungen or /en#leistungen
+        const targetUrl = `/${locale}${href}`;
+        window.location.href = targetUrl;
       }
     }
   };
