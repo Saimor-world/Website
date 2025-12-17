@@ -418,6 +418,40 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   };
 
+  // Enhanced connections based on semantic relationships (not just categories)
+  const getSemanticConnections = (): Array<[string, string, number]> => {
+    const connections: Array<[string, string, number]> = [];
+    
+    // Strong connections (same category) - weight 1.0
+    const categoryGroups: Record<string, string[]> = {};
+    demoMetrics.forEach(m => {
+      if (!categoryGroups[m.category]) categoryGroups[m.category] = [];
+      categoryGroups[m.category].push(m.id);
+    });
+    
+    Object.values(categoryGroups).forEach(group => {
+      for (let i = 0; i < group.length - 1; i++) {
+        connections.push([group[i], group[i + 1], 1.0]);
+      }
+    });
+    
+    // Semantic connections (meaningful relationships) - weight 0.6
+    // Team-Engagement ↔ Satisfaction (people metrics influence each other)
+    connections.push(['team-engagement', 'satisfaction', 0.6]);
+    connections.push(['satisfaction', 'clarity', 0.6]);
+    connections.push(['team-engagement', 'clarity', 0.6]);
+    
+    // Process efficiency ↔ Velocity (process metrics)
+    connections.push(['process-efficiency', 'velocity', 0.6]);
+    
+    // Cross-category semantic links (workload affects satisfaction)
+    connections.push(['workload', 'satisfaction', 0.4]);
+    connections.push(['clarity', 'process-efficiency', 0.4]);
+    connections.push(['team-engagement', 'velocity', 0.4]);
+    
+    return connections;
+  };
+
   const formatTimeAgo = (dateString: string | null) => {
     if (!dateString) return locale === 'de' ? 'Nie' : 'Never';
     const date = new Date(dateString);
@@ -465,31 +499,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     return positions;
   };
 
-  // Connections between related metrics
+  // Legacy connections for compatibility (uses semantic connections)
   const getConnections = (): Array<[string, string]> => {
-    const connections: Array<[string, string]> = [];
-    
-    // Connect metrics by category
-    const categoryGroups: Record<string, string[]> = {};
-    demoMetrics.forEach(m => {
-      if (!categoryGroups[m.category]) categoryGroups[m.category] = [];
-      categoryGroups[m.category].push(m.id);
-    });
-    
-    // Connect within categories
-    Object.values(categoryGroups).forEach(group => {
-      for (let i = 0; i < group.length - 1; i++) {
-        connections.push([group[i], group[i + 1]]);
-      }
-    });
-    
-    // Connect related metrics across categories
-    connections.push(['team-engagement', 'satisfaction']);
-    connections.push(['process-efficiency', 'velocity']);
-    connections.push(['clarity', 'team-engagement']);
-    connections.push(['satisfaction', 'workload']);
-    
-    return connections;
+    return getSemanticConnections().map(([from, to]) => [from, to]);
   };
 
   // Sort metrics
@@ -585,6 +597,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
           <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed mb-6">
             {content.subtitle}
+          </p>
+          <p className="text-sm text-white/50 max-w-2xl mx-auto italic leading-relaxed">
+            {locale === 'de' 
+              ? 'Kein Spiegel. Ein Gedächtnis. Môra erinnert sich an Muster und Zusammenhänge.'
+              : 'Not a mirror. A memory. Môra remembers patterns and connections.'}
           </p>
 
           {/* Demo Badge with Tooltip */}
@@ -931,6 +948,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   const isHovered = hoveredCard === metric.id;
                   const needsAttention = metric.status === 'warning' || metric.status === 'critical';
 
+                  const categoryColor = getCategoryColor(metric.category);
+
                   return (
                     <motion.div
                       key={metric.id}
@@ -958,12 +977,32 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                         />
                       )}
 
-                      {/* Premium Glassmorphic Card */}
+                      {/* Premium Glassmorphic Card - Living memory, not static mirror */}
                       <div className={`relative p-5 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${selectedCard === metric.id
                         ? `bg-[#4A6741]/10 border-[#4A6741]/40 shadow-lg shadow-[#4A6741]/10`
                         : `bg-black/40 ${colors.border} hover:border-white/30 hover:bg-black/50`
                         } ${isHovered ? 'transform scale-[1.02] shadow-xl' : ''}`}
                         style={glassCardStyle}>
+                        
+                        {/* Subtle pulse - memory is alive */}
+                        {isHovered && (
+                          <motion.div
+                            className="absolute inset-0 rounded-2xl"
+                            style={{
+                              background: `radial-gradient(circle at 50% 50%, ${categoryColor}05 0%, transparent 70%)`,
+                              border: `1px solid ${categoryColor}20`
+                            }}
+                            animate={{
+                              opacity: [0.3, 0.6, 0.3],
+                              scale: [1, 1.02, 1]
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        )}
 
                         {/* Metric Header */}
                         <div className="flex items-start justify-between mb-4">
@@ -1097,52 +1136,83 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     </filter>
                   </defs>
 
-                  {/* Connection lines */}
-                  {connections.map(([from, to], i) => {
+                  {/* Mycelium connections - organic, living network */}
+                  {getSemanticConnections().map(([from, to, weight], i) => {
                     const fromPos = universePositions[from];
                     const toPos = universePositions[to];
                     if (!fromPos || !toPos) return null;
 
                     const isActive = hoveredCard === from || hoveredCard === to;
+                    const baseOpacity = weight * 0.5; // Stronger connections are more visible
+                    const baseWidth = weight * 2; // Stronger connections are thicker
+
+                    // Organic curve (not straight line) - mycelium grows organically
+                    const midX = (fromPos.x + toPos.x) / 2;
+                    const midY = (fromPos.y + toPos.y) / 2;
+                    const offset = (Math.sin(i * 2.3) * 3) / weight; // Organic variation
+                    const cpX1 = fromPos.x + (midX - fromPos.x) * 0.5 + offset;
+                    const cpY1 = fromPos.y + (midY - fromPos.y) * 0.5 + offset * 0.7;
+                    const cpX2 = midX + (toPos.x - midX) * 0.5 + offset;
+                    const cpY2 = midY + (toPos.y - midY) * 0.5 - offset * 0.7;
 
                     return (
-                      <motion.g key={`${from}-${to}`}>
-                        <motion.line
-                          x1={`${fromPos.x}%`}
-                          y1={`${fromPos.y}%`}
-                          x2={`${toPos.x}%`}
-                          y2={`${toPos.y}%`}
+                      <motion.g key={`${from}-${to}-${i}`}>
+                        {/* Organic curved path (mycelium thread) */}
+                        <motion.path
+                          d={`M ${fromPos.x}%,${fromPos.y}% C ${cpX1}%,${cpY1}% ${cpX2}%,${cpY2}% ${toPos.x}%,${toPos.y}%`}
+                          fill="none"
                           stroke="url(#universeConnectionGradient)"
-                          strokeWidth={isActive ? 3 : 1.5}
+                          strokeWidth={isActive ? baseWidth * 2 : baseWidth}
                           strokeLinecap="round"
                           initial={{ pathLength: 0, opacity: 0 }}
                           animate={{
                             pathLength: 1,
-                            opacity: isActive ? 0.8 : 0.3
+                            opacity: isActive ? baseOpacity * 1.5 : baseOpacity
                           }}
-                          transition={{ duration: 1, delay: i * 0.1 }}
-                          style={{ filter: isActive ? 'url(#universeShimmer)' : 'none' }}
+                          transition={{ 
+                            pathLength: { duration: 1.2, delay: i * 0.08, ease: "easeOut" },
+                            opacity: { duration: 0.5 }
+                          }}
+                          style={{ 
+                            filter: isActive ? 'url(#universeShimmer)' : 'none',
+                            strokeDasharray: weight < 0.5 ? '4,4' : 'none' // Dashed for weak connections
+                          }}
                         />
-                        {/* Animated particles along active lines */}
-                        {isActive && (
-                          <motion.circle
-                            r="3"
-                            fill="#D4A857"
-                            initial={{
-                              cx: `${fromPos.x}%`,
-                              cy: `${fromPos.y}%`
-                            }}
-                            animate={{
-                              cx: [`${fromPos.x}%`, `${toPos.x}%`],
-                              cy: [`${fromPos.y}%`, `${toPos.y}%`]
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "linear"
-                            }}
-                          />
-                        )}
+                        {/* Pulsing signals traveling along mycelium thread */}
+                        {isActive && [0, 0.33, 0.66].map((progress, idx) => {
+                          // Calculate position along curve using progress
+                          const t = progress;
+                          const t2 = t * t;
+                          const t3 = t2 * t;
+                          const mt = 1 - t;
+                          const mt2 = mt * mt;
+                          const mt3 = mt2 * mt;
+                          
+                          const x = mt3 * fromPos.x + 3 * mt2 * t * cpX1 + 3 * mt * t2 * cpX2 + t3 * toPos.x;
+                          const y = mt3 * fromPos.y + 3 * mt2 * t * cpY1 + 3 * mt * t2 * cpY2 + t3 * toPos.y;
+                          
+                          return (
+                            <motion.circle
+                              key={`signal-${idx}`}
+                              r="3"
+                              fill="#D4A857"
+                              cx={`${x}%`}
+                              cy={`${y}%`}
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ 
+                                opacity: [0, 1, 1, 0],
+                                scale: [0, 1, 1, 0]
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "linear",
+                                delay: idx * 0.67,
+                                times: [0, 0.1, 0.9, 1]
+                              }}
+                            />
+                          );
+                        })}
                       </motion.g>
                     );
                   })}
@@ -1212,17 +1282,44 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                         />
                       )}
 
-                      {/* Node orb */}
+                      {/* Node orb - living memory, not static mirror */}
                       <motion.div
                         className="relative w-20 h-20 rounded-full flex flex-col items-center justify-center"
                         style={{
-                          background: `linear-gradient(135deg, ${categoryColor} 0%, ${categoryColor}CC 100%)`,
-                          boxShadow: `0 8px 24px ${categoryColor}40, 0 0 20px ${categoryColor}30`,
-                          border: '2px solid rgba(255, 255, 255, 0.3)'
+                          background: `radial-gradient(circle at 30% 30%, ${categoryColor}FF 0%, ${categoryColor}CC 50%, ${categoryColor}88 100%)`,
+                          boxShadow: `0 8px 24px ${categoryColor}40, 0 0 30px ${categoryColor}30, inset 0 2px 4px rgba(255,255,255,0.2)`,
+                          border: `2px solid ${isHovered ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`
+                        }}
+                        animate={{
+                          scale: isHovered ? 1.15 : [1, 1.02, 1],
+                          boxShadow: isHovered 
+                            ? `0 12px 32px ${categoryColor}60, 0 0 40px ${categoryColor}40`
+                            : `0 8px 24px ${categoryColor}40, 0 0 20px ${categoryColor}30`
+                        }}
+                        transition={{
+                          scale: { duration: isHovered ? 0.2 : 3, repeat: isHovered ? 0 : Infinity },
+                          boxShadow: { duration: 0.2 }
                         }}
                       >
-                        <StatusIcon size={24} className="text-white mb-1" />
-                        <span className="text-xs font-bold text-white">{metric.value}%</span>
+                        {/* Inner glow - memory pulse */}
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
+                            opacity: 0.6
+                          }}
+                          animate={{
+                            opacity: [0.4, 0.7, 0.4],
+                            scale: [1, 1.1, 1]
+                          }}
+                          transition={{
+                            duration: 2.5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                        <StatusIcon size={24} className="text-white mb-1 relative z-10" />
+                        <span className="text-xs font-bold text-white relative z-10">{metric.value}%</span>
                       </motion.div>
 
                       {/* Label on hover */}

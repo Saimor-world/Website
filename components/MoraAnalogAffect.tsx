@@ -80,7 +80,7 @@ const copyByLocale: Record<Locale, Copy> = {
     vhsTagDeep: 'Dataset: VHS_Archive_DE',
     vhsTitleDeep: 'The Emotional Fossil',
     vhsBodyDeep:
-      'We train Mora on German broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The "Static" of human interaction.',
+      'We train Mora on German broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The &quot;Static&quot; of human interaction.',
     vhsConsoleLines: [
       '> Extracting emotional semantics... [OK]',
       '> Analyzing nostalgic codes... [OK]',
@@ -131,7 +131,7 @@ const copyByLocale: Record<Locale, Copy> = {
     vhsTagDeep: 'Dataset: VHS_Archive_EN',
     vhsTitleDeep: 'The Emotional Fossil',
     vhsBodyDeep:
-      'We train Mora on broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The "Static" of human interaction.',
+      'We train Mora on broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The &quot;Static&quot; of human interaction.',
     vhsConsoleLines: [
       '> Extracting emotional semantics... [OK]',
       '> Analyzing nostalgic codes... [OK]',

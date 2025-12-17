@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import MoraDashboard from "@/components/MoraDashboard";
 
 const featureCards = [
@@ -36,6 +36,9 @@ export default function MoraPage() {
           </h1>
           <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
             Môra ist das semantische Gedächtnis von Saimôr. Sie erkennt Muster, versteht Kontext und zeigt, was zusammengehört.
+          </p>
+          <p className="text-sm text-white/60 max-w-xl mx-auto italic leading-relaxed mt-4">
+            Basierend auf der Analog Affect Theorie. Erfasst nicht nur saubere Daten, sondern auch Stille, Ironie, das &quot;Statische&quot; menschlicher Interaktion.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-white/80">
             <span className="rounded-full border border-white/20 px-4 py-1.5 bg-white/5">Demo mit Beispieldaten</span>
