@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Star, Heart, Crown } from 'lucide-react';
@@ -111,7 +111,7 @@ export default function EasterEggs() {
   useEffect(() => {
     setAchievements(achievementManager.current.getAll());
     const unsubscribe = achievementManager.current.subscribe(setAchievements);
-    return () => { unsubscribe(); };
+    return () => { void unsubscribe(); };
   }, []);
 
   // Helper to unlock achievement with haptic feedback
@@ -501,7 +501,7 @@ export default function EasterEggs() {
     });
 
     return () => {
-      unsubscribe();
+      void unsubscribe();
     };
   }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
 
