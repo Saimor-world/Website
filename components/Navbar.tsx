@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -49,11 +49,26 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   }, [pathname]);
 
   const navItems = [
-    { href: `/${locale}`, label: nav.home, icon: Home },
-    { href: '#leistungen', label: nav.services, icon: Briefcase },
-    { href: '#mission', label: nav.mission, icon: Sparkles },
-    { href: '#kontakt', label: nav.contact, icon: Mail }
+    { href: `/${locale}`, label: nav.home, icon: Home, isAnchor: false },
+    { href: '#leistungen', label: nav.services, icon: Briefcase, isAnchor: true },
+    { href: '#mission', label: nav.mission, icon: Sparkles, isAnchor: true },
+    { href: '#kontakt', label: nav.contact, icon: Mail, isAnchor: true }
   ];
+
+  const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
+    setMenuOpen(false);
+    if (isAnchor) {
+      e.preventDefault();
+      const targetId = href.replace('#', '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // If on different page, navigate first then scroll
+        window.location.href = href;
+      }
+    }
+  };
 
   return (
     <>
@@ -111,7 +126,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
           {/* Content */}
           <div className="relative flex items-center gap-4 w-full">
-            {/* Logo */}
+            {/* Logo - Better color integration */}
             <Link
               href={`/${locale}`}
               className="flex items-center gap-3 group"
@@ -121,19 +136,50 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 window.dispatchEvent(event);
               }}
             >
-              <div className="relative w-12 h-12 rounded-2xl bg-[#0b1611]/90 border border-white/15 flex items-center justify-center overflow-hidden shadow-inner">
+              <motion.div 
+                className="relative w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg border"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(26, 60, 50, 0.98) 0%, rgba(58, 82, 49, 0.95) 50%, rgba(74, 103, 65, 0.9) 100%)',
+                  borderColor: 'rgba(212, 168, 131, 0.35)',
+                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 180, 131, 0.1)'
+                }}
+                whileHover={{ scale: 1.05, boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 180, 131, 0.2)' }}
+                transition={{ duration: 0.2 }}
+              >
+                {/* Animated gold glow background - subtle pulsing */}
+                <motion.div
+                  className="absolute inset-0 opacity-25"
+                  style={{ 
+                    background: 'radial-gradient(circle at 50% 50%, rgba(212,180,131,0.4) 0%, transparent 75%)',
+                  }}
+                  animate={{
+                    opacity: [0.2, 0.3, 0.2],
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                />
+                {/* Inner highlight */}
                 <div
-                  className="absolute inset-0 opacity-50"
-                  style={{ background: 'radial-gradient(circle at 30% 30%, rgba(212,180,131,0.4), transparent 70%)' }}
+                  className="absolute inset-0 opacity-20"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 60%)',
+                  }}
                 />
                 <Image
                   src="/saimor-logo-new.png"
                   alt="Saimôr"
                   width={80}
                   height={80}
-                  className="relative z-10 w-11 h-11 object-contain"
+                  className="relative z-10 w-10 h-10 object-contain"
+                  style={{ 
+                    filter: 'brightness(1.15) contrast(1.1) drop-shadow(0 2px 4px rgba(212, 180, 131, 0.3))',
+                  }}
                 />
-              </div>
+              </motion.div>
 
               <div className="flex flex-col -space-y-0.5">
                 <span
@@ -163,7 +209,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 <div key={item.href} className="flex items-center gap-2">
                   <motion.a
                     href={item.href}
-                    className="relative px-3 py-1.5 text-sm text-white/90 hover:text-white rounded-lg transition-colors group"
+                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                    className="relative px-3 py-1.5 text-sm text-white/90 hover:text-white rounded-lg transition-colors group cursor-pointer"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -269,8 +316,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   <motion.a
                     key={item.href}
                     href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="absolute left-1/2 top-0 -translate-x-1/2 flex flex-col items-center gap-2 group"
+                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                    className="absolute left-1/2 top-0 -translate-x-1/2 flex flex-col items-center gap-2 group cursor-pointer"
                     initial={{ opacity: 0, scale: 0, x: '-50%', y: 0 }}
                     animate={{
                       opacity: 1,

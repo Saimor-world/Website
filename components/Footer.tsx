@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Mail } from 'lucide-react';
+import { Mail, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Footer({ locale }: { locale: 'de'|'en' }) {
