@@ -14,6 +14,7 @@
  */
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useId, useCallback, useRef, CSSProperties } from 'react';
 import {
@@ -1210,13 +1211,25 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                               initial={{ opacity: 0, y: 5 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: 5 }}
-                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-2"
+                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10"
                             >
-                              <button className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedCard(metric.id);
+                                }}
+                                className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1 cursor-pointer"
+                              >
                                 <FileText size={10} />
                                 {locale === 'de' ? 'Bericht' : 'Report'}
                               </button>
-                              <button className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedCard(metric.id);
+                                }}
+                                className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1 cursor-pointer"
+                              >
                                 <Eye size={10} />
                                 {locale === 'de' ? 'Details' : 'Details'}
                               </button>
@@ -1521,24 +1534,26 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <motion.a
-            href="/#waitlist"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4A857] shadow-2xl"
-            whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 60px rgba(74, 103, 65, 0.3)' }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {content.cta}
-          </motion.a>
+          <Link href="/#waitlist">
+            <motion.div
+              className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg text-white bg-gradient-to-r from-[#4A6741] to-[#D4A857] shadow-2xl cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 60px rgba(74, 103, 65, 0.3)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {content.cta}
+            </motion.div>
+          </Link>
 
           <div>
-            <motion.a
-              href={locale === 'de' ? '/mora' : '/en/mora'}
-              className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-[#4A6741] transition-colors"
-              whileHover={{ x: 4 }}
-            >
-              {content.ctaSecondary}
-              <ChevronRight className="w-4 h-4" />
-            </motion.a>
+            <Link href={locale === 'de' ? '/mora' : '/en/mora'}>
+              <motion.div
+                className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-[#4A6741] transition-colors cursor-pointer"
+                whileHover={{ x: 4 }}
+              >
+                {content.ctaSecondary}
+                <ChevronRight className="w-4 h-4" />
+              </motion.div>
+            </Link>
           </div>
         </motion.div>
       </div>

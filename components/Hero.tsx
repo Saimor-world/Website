@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Sparkles, ArrowRight, Play, ChevronDown } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -238,26 +239,27 @@ export default function Hero({ locale, calUrl }: Props) {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
             >
               {/* Primary CTA */}
-              <motion.a
-                href={locale === 'en' ? '/en/mora' : '/mora'}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                style={{
-                  background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
-                  border: '2px solid rgba(214, 168, 72, 0.5)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                }}
-                whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <Link href={locale === 'en' ? '/en/mora' : '/mora'}>
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-[#D6A848]/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.5 }}
-                />
-                <span className="relative text-white">{content.ctaPrimary}</span>
-                <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+                  className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A857] focus-visible:ring-offset-2 focus-visible:ring-offset-white cursor-pointer"
+                  style={{
+                    background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
+                    border: '2px solid rgba(214, 168, 72, 0.5)',
+                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  }}
+                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-[#D6A848]/20 to-transparent"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative text-white">{content.ctaPrimary}</span>
+                  <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform" />
+                </motion.div>
+              </Link>
 
               {/* Secondary CTA */}
               <motion.a
