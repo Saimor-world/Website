@@ -70,6 +70,9 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
         const targetUrl = `/${locale}${href}`;
         window.location.href = targetUrl;
       }
+    } else {
+      // For non-anchor links, let Next.js handle the navigation
+      // Don't prevent default, just close menu
     }
   };
 
@@ -161,25 +164,25 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               <motion.div 
                 className="relative w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(26, 60, 50, 0.6) 0%, rgba(74, 103, 65, 0.4) 100%)',
-                  border: '1px solid rgba(212, 180, 131, 0.25)',
-                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.3)'
+                  background: 'linear-gradient(135deg, rgba(212, 168, 87, 0.15) 0%, rgba(230, 200, 151, 0.1) 50%, rgba(212, 168, 87, 0.15) 100%)',
+                  border: '1px solid rgba(212, 180, 131, 0.35)',
+                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.12), 0 2px 8px rgba(212, 168, 87, 0.2)'
                 }}
                 whileHover={{ 
                   scale: 1.05,
-                  borderColor: 'rgba(212, 180, 131, 0.4)',
-                  boxShadow: 'inset 0 1px 3px rgba(255, 255, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 180, 131, 0.15)'
+                  borderColor: 'rgba(212, 180, 131, 0.5)',
+                  boxShadow: 'inset 0 1px 3px rgba(255, 255, 255, 0.15), 0 4px 12px rgba(212, 168, 87, 0.3), 0 0 20px rgba(212, 180, 131, 0.2)'
                 }}
                 transition={{ duration: 0.2 }}
               >
-                {/* Subtle gold glow */}
+                {/* Enhanced gold glow */}
                 <motion.div
-                  className="absolute inset-0 opacity-20"
+                  className="absolute inset-0 opacity-30"
                   style={{ 
-                    background: 'radial-gradient(circle at 50% 50%, rgba(212,180,131,0.3) 0%, transparent 70%)',
+                    background: 'radial-gradient(circle at 50% 50%, rgba(212,168,87,0.4) 0%, transparent 70%)',
                   }}
                   animate={{
-                    opacity: [0.15, 0.25, 0.15],
+                    opacity: [0.25, 0.35, 0.25],
                   }}
                   transition={{
                     duration: 4,
@@ -194,7 +197,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   height={80}
                   className="relative z-10 w-8 h-8 object-contain"
                   style={{ 
-                    filter: 'brightness(1.2) contrast(1.15) drop-shadow(0 1px 3px rgba(212, 180, 131, 0.25))',
+                    filter: 'brightness(1.3) contrast(1.2) drop-shadow(0 2px 4px rgba(212, 168, 87, 0.4))',
                   }}
                 />
               </motion.div>
@@ -204,17 +207,18 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   className="text-xl font-bold tracking-wide"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    background: 'linear-gradient(135deg, #FFFFFF 0%, #E6C897 50%, #FFFFFF 100%)',
+                    background: 'linear-gradient(135deg, #E6C897 0%, #D4A857 50%, #E6C897 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
+                    textShadow: '0 0 20px rgba(212, 168, 87, 0.3)'
                   }}
                   whileHover={{ scale: 1.02 }}
                 >
                   Saimôr
                 </motion.span>
                 <span
-                  className="text-[10px] text-[#E6C897]/70 tracking-[0.4em] uppercase font-medium"
+                  className="text-[10px] text-[#D4A857]/80 tracking-[0.4em] uppercase font-medium"
                   style={{ fontFamily: 'Inter, sans-serif' }}
                 >
                   {locale === 'de' ? 'Klarheit' : 'Clarity'}
@@ -227,28 +231,58 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
             {/* Desktop Quick Links - Elegant */}
             <div className="hidden lg:flex items-center gap-1">
-              {navItems.slice(1, 3).map((item, index) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                  className="relative px-4 py-2 text-sm font-medium text-white/85 hover:text-white rounded-lg transition-all cursor-pointer"
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span className="relative z-10">{item.label}</span>
-                  <motion.div
-                    className="absolute inset-0 rounded-lg bg-white/5 border border-white/5"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ 
-                      opacity: 1,
-                      borderColor: 'rgba(212, 180, 131, 0.2)',
-                      backgroundColor: 'rgba(212, 180, 131, 0.05)'
-                    }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </motion.a>
-              ))}
+              {navItems.slice(1, 3).map((item, index) => {
+                if (item.isAnchor) {
+                  return (
+                    <motion.a
+                      key={item.href}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                      className="relative px-4 py-2 text-sm font-medium text-white/85 hover:text-white rounded-lg transition-all cursor-pointer"
+                      whileHover={{ scale: 1.02, y: -1 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="relative z-10">{item.label}</span>
+                      <motion.div
+                        className="absolute inset-0 rounded-lg bg-white/5 border border-white/5"
+                        initial={{ opacity: 0 }}
+                        whileHover={{ 
+                          opacity: 1,
+                          borderColor: 'rgba(212, 180, 131, 0.2)',
+                          backgroundColor: 'rgba(212, 180, 131, 0.05)'
+                        }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </motion.a>
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <motion.div
+                        className="relative px-4 py-2 text-sm font-medium text-white/85 hover:text-white rounded-lg transition-all cursor-pointer"
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <span className="relative z-10">{item.label}</span>
+                        <motion.div
+                          className="absolute inset-0 rounded-lg bg-white/5 border border-white/5"
+                          initial={{ opacity: 0 }}
+                          whileHover={{ 
+                            opacity: 1,
+                            borderColor: 'rgba(212, 180, 131, 0.2)',
+                            backgroundColor: 'rgba(212, 180, 131, 0.05)'
+                          }}
+                          transition={{ duration: 0.2 }}
+                        />
+                      </motion.div>
+                    </Link>
+                  );
+                }
+              })}
             </div>
 
             {/* Spacer */}
@@ -329,7 +363,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex items-start justify-center pt-24"
+            className="fixed inset-0 z-40 flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -348,67 +382,123 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               {navItems.map((item, i) => {
                 const angle = (i / navItems.length) * Math.PI * 2 - Math.PI / 2;
-                const radius = 120;
+                const radius = 100;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
 
                 const ItemIcon = item.icon;
 
-                return (
-                  <motion.a
-                    key={item.href}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                    className="absolute left-1/2 top-0 -translate-x-1/2 flex flex-col items-center gap-2 group cursor-pointer"
-                    initial={{ opacity: 0, scale: 0, x: '-50%', y: 0 }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: `calc(-50% + ${x}px)`,
-                      y: y
-                    }}
-                    exit={{ opacity: 0, scale: 0, x: '-50%', y: 0 }}
-                    transition={{ delay: i * 0.05, type: 'spring', stiffness: 200, damping: 20 }}
-                    whileHover={{ scale: 1.1, y: y - 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {/* Icon Orb */}
-                    <motion.div
-                      className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(212, 180, 131, 0.8) 100%)',
-                        border: '2px solid rgba(212, 180, 131, 0.4)',
-                        boxShadow: '0 8px 24px rgba(212, 180, 131, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.1)'
+                if (item.isAnchor) {
+                  return (
+                    <motion.a
+                      key={item.href}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 group cursor-pointer"
+                      initial={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                        x: `calc(-50% + ${x}px)`,
+                        y: `calc(-50% + ${y}px)`
                       }}
-                      whileHover={{
-                        boxShadow: '0 12px 32px rgba(212, 180, 131, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2)'
-                      }}
+                      exit={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+                      transition={{ delay: i * 0.05, type: 'spring', stiffness: 200, damping: 20 }}
+                      whileHover={{ scale: 1.1, y: `calc(-50% + ${y - 5}px)` }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <ItemIcon className="w-6 h-6" />
-                    </motion.div>
+                      {/* Icon Orb */}
+                      <motion.div
+                        className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(212, 180, 131, 0.8) 100%)',
+                          border: '2px solid rgba(212, 180, 131, 0.4)',
+                          boxShadow: '0 8px 24px rgba(212, 180, 131, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.1)'
+                        }}
+                        whileHover={{
+                          boxShadow: '0 12px 32px rgba(212, 180, 131, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2)'
+                        }}
+                      >
+                        <ItemIcon className="w-6 h-6" />
+                      </motion.div>
 
-                    {/* Label */}
-                    <motion.span
-                      className="text-sm font-semibold text-white px-3 py-1 rounded-full"
-                      style={{
-                        background: 'rgba(26, 46, 26, 0.9)',
-                        border: '1px solid rgba(212, 180, 131, 0.3)',
-                        backdropFilter: 'blur(8px)',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
-                      }}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 + 0.2 }}
+                      {/* Label */}
+                      <motion.span
+                        className="text-sm font-semibold text-white px-3 py-1 rounded-full"
+                        style={{
+                          background: 'rgba(26, 46, 26, 0.9)',
+                          border: '1px solid rgba(212, 180, 131, 0.3)',
+                          backdropFilter: 'blur(8px)',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                        }}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 + 0.2 }}
+                      >
+                        {item.label}
+                      </motion.span>
+                    </motion.a>
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
                     >
-                      {item.label}
-                    </motion.span>
-                  </motion.a>
-                );
+                      <motion.div
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 group cursor-pointer"
+                        initial={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+                        animate={{
+                          opacity: 1,
+                          scale: 1,
+                          x: `calc(-50% + ${x}px)`,
+                          y: `calc(-50% + ${y}px)`
+                        }}
+                        exit={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+                        transition={{ delay: i * 0.05, type: 'spring', stiffness: 200, damping: 20 }}
+                        whileHover={{ scale: 1.1, y: `calc(-50% + ${y - 5}px)` }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {/* Icon Orb */}
+                        <motion.div
+                          className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(212, 180, 131, 0.8) 100%)',
+                            border: '2px solid rgba(212, 180, 131, 0.4)',
+                            boxShadow: '0 8px 24px rgba(212, 180, 131, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.1)'
+                          }}
+                          whileHover={{
+                            boxShadow: '0 12px 32px rgba(212, 180, 131, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2)'
+                          }}
+                        >
+                          <ItemIcon className="w-6 h-6" />
+                        </motion.div>
+
+                        {/* Label */}
+                        <motion.span
+                          className="text-sm font-semibold text-white px-3 py-1 rounded-full"
+                          style={{
+                            background: 'rgba(26, 46, 26, 0.9)',
+                            border: '1px solid rgba(212, 180, 131, 0.3)',
+                            backdropFilter: 'blur(8px)',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                          }}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 + 0.2 }}
+                        >
+                          {item.label}
+                        </motion.span>
+                      </motion.div>
+                    </Link>
+                  );
+                }
               })}
 
               {/* Language Switcher - Center */}
               <motion.div
-                className="absolute left-1/2 top-0 -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0 }}
