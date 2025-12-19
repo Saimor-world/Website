@@ -163,7 +163,7 @@ export default function Hero({ locale, calUrl }: Props) {
 
       {/* === MAIN CONTENT === */}
       <motion.div
-        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32"
+        className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32"
         style={{ y: parallaxY, opacity, scale }}
       >
         <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
@@ -244,7 +244,7 @@ export default function Hero({ locale, calUrl }: Props) {
             >
               {/* Primary CTA */}
               {/* Primary CTA */}
-              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto block relative z-20">
+              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto block relative z-20 pointer-events-auto">
                 <motion.div
                   className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] cursor-pointer"
                   style={{
@@ -272,7 +272,7 @@ export default function Hero({ locale, calUrl }: Props) {
                 href={cal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto block relative z-20"
+                className="w-full sm:w-auto block relative z-20 pointer-events-auto"
               >
                 <motion.div
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] cursor-pointer"
