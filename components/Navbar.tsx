@@ -45,7 +45,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     { href: `/${locale}`, label: nav.home, isAnchor: false },
     { href: '#leistungen', label: nav.services, isAnchor: true },
     { href: '#mission', label: nav.mission, isAnchor: true },
-    { href: '#kontakt', label: nav.contact, isAnchor: true }
+    { href: '#kontakt', label: nav.contact, isAnchor: true },
+    { href: '/portal', label: 'Portal', isAnchor: false }
   ];
 
   const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
