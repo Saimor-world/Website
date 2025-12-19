@@ -34,7 +34,7 @@ export default function Page() {
       <ScrollProgress />
       <EasterEggs />
       <CookieBanner />
-      <div className="relative z-10">
+      <div className="relative z-40">
         <Hero locale="de" />
         <MoraTeaser locale="de" />
         <CommunityBanner locale="de" />
