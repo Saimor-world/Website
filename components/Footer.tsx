@@ -74,11 +74,11 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             'radial-gradient(ellipse 800px 400px at 30% 70%, rgba(212, 180, 131, 0.3) 0%, transparent 70%)'
           ]
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Floating particles */}
-      {[...Array(8)].map((_, i) => (
+      {/* Floating particles - reduced for performance */}
+      {[...Array(4)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 rounded-full pointer-events-none"
