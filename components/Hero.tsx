@@ -407,6 +407,16 @@ export default function Hero({ locale, calUrl }: Props) {
                   backgroundSize: '150px 150px'
                 }}
               />
+
+              {/* Logo Image Restored - Centered in Orb */}
+              <Image
+                src="/saimor-logo-new.png"
+                alt="Saimôr Logo"
+                width={380}
+                height={380}
+                className="w-48 sm:w-64 object-contain drop-shadow-2xl relative z-30"
+                priority
+              />
             </motion.div>
 
             {/* Floating badges around logo */}

@@ -54,7 +54,7 @@ export default function MoraTeaser({ locale }: Props) {
                     </p>
 
                     {/* CTA */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-30">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-50">
                         <Link
                             href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
                             className="block"
