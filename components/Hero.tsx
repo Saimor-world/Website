@@ -243,28 +243,18 @@ export default function Hero({ locale, calUrl }: Props) {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10 sm:mb-12 w-full sm:w-auto"
             >
               {/* Primary CTA */}
-              {/* Primary CTA */}
-              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto block relative z-20 pointer-events-auto">
-                <motion.div
-                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] cursor-pointer"
-                  style={{
-                    background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
-                    border: '2px solid rgba(214, 168, 72, 0.5)',
-                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                  }}
-                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-[#D6A848]/20 to-transparent pointer-events-none"
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: '100%' }}
-                    transition={{ duration: 0.5 }}
-                  />
-                  <span className="relative text-white z-10">{content.ctaPrimary}</span>
-                  <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform z-10" />
-                </motion.div>
-              </Link>
+              <a
+                href={locale === 'en' ? '/en/mora' : '/mora'}
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] relative transition-all duration-300 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
+                  border: '2px solid rgba(214, 168, 72, 0.5)',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <span className="relative text-white z-10">{content.ctaPrimary}</span>
+                <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform z-10" />
+              </a>
 
               {/* Secondary CTA */}
               {/* Secondary CTA */}

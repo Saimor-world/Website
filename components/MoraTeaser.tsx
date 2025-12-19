@@ -55,40 +55,20 @@ export default function MoraTeaser({ locale }: Props) {
 
                     {/* CTA */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-50">
-                        <Link
+                        <a
                             href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                            className="block pointer-events-auto relative z-50"
+                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 min-h-[44px] transition-all duration-200 hover:scale-[1.02]"
                         >
-                            <motion.div
-                                className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 cursor-pointer min-h-[44px]"
-                                whileHover={{
-                                    scale: 1.02,
-                                    boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)'
-                                }}
-                                whileTap={{ scale: 0.98 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <span>{t('Tief eintauchen', 'Dive deep')}</span>
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </motion.div>
-                        </Link>
+                            <span>{t('Tief eintauchen', 'Dive deep')}</span>
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </a>
 
-                        <Link
+                        <a
                             href={locale === 'en' ? '/en/mora' : '/mora'}
-                            className="block pointer-events-auto relative z-50"
+                            className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/8 transition-all duration-300 min-h-[44px] hover:scale-[1.02] hover:border-white/30"
                         >
-                            <motion.div
-                                className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/5 transition-all duration-300 cursor-pointer min-h-[44px]"
-                                whileHover={{
-                                    scale: 1.02,
-                                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.08)'
-                                }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                {t('Mehr über Môra', 'Learn about Môra')}
-                            </motion.div>
-                        </Link>
+                            {t('Mehr über Môra', 'Learn about Môra')}
+                        </a>
                     </div>
 
                     {/* Subtle hint */}
