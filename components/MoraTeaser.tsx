@@ -57,7 +57,7 @@ export default function MoraTeaser({ locale }: Props) {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-50">
                         <Link
                             href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                            className="block"
+                            className="block pointer-events-auto relative z-50"
                         >
                             <motion.div
                                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 cursor-pointer min-h-[44px]"
@@ -75,7 +75,7 @@ export default function MoraTeaser({ locale }: Props) {
 
                         <Link
                             href={locale === 'en' ? '/en/mora' : '/mora'}
-                            className="block"
+                            className="block pointer-events-auto relative z-50"
                         >
                             <motion.div
                                 className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/5 transition-all duration-300 cursor-pointer min-h-[44px]"

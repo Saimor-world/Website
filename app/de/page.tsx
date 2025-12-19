@@ -1,5 +1,4 @@
 ﻿import Hero from "@/components/Hero";
-import OffersMission from '@/components/OffersMission';
 import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
@@ -37,7 +36,6 @@ export default function Page() {
       <CookieBanner />
       <div className="relative z-10">
         <Hero locale="de" />
-        <OffersMission locale="de" />
         <MoraTeaser locale="de" />
         <CommunityBanner locale="de" />
         <WaitlistForm locale="de" />
