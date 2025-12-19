@@ -331,20 +331,20 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
               <span className="text-xl font-sans text-saimor-gold-retro tracking-widest uppercase pt-0.5">{copy.heroStatus}</span>
             </div>
 
-            <h1 className="text-6xl md:text-9xl font-sans leading-[0.85] mb-10 uppercase cursor-default drop-shadow-lg">
-              <span className="hero-title-line glitch-hover block">{copy.heroLine1}</span>
-              <span className="hero-title-line text-saimor-teal italic opacity-90 glitch-hover block">{copy.heroLine2}</span>
+            <h1 className="text-6xl md:text-9xl font-sans leading-[0.85] mb-10 uppercase cursor-default drop-shadow-2xl">
+              <span className="hero-title-line glitch-hover block text-white" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.3)' }}>{copy.heroLine1}</span>
+              <span className="hero-title-line text-saimor-teal italic glitch-hover block" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(16,185,129,0.5)' }}>{copy.heroLine2}</span>
             </h1>
 
             <div className="grid md:grid-cols-12 gap-12 mt-8">
-              <div className="md:col-span-7 space-y-6 text-lg hero-desc-text font-light font-sans leading-relaxed border-l-2 border-saimor-forest-dark pl-6 relative">
+              <div className="md:col-span-7 space-y-6 text-lg font-normal font-sans leading-relaxed border-l-2 border-saimor-forest-dark pl-6 relative" style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(10px)', padding: '1.5rem', borderRadius: '0.5rem' }}>
                 <div className="absolute -left-[2px] top-0 w-2 h-2 bg-saimor-forest-dark"></div>
                 <div className="absolute -left-[2px] bottom-0 w-2 h-2 bg-saimor-forest-dark"></div>
 
-                <p className="hero-desc-text">
-                  <strong className="text-saimor-forest-dark font-mono">Mora</strong> {copy.heroDesc1}
+                <p className="text-white/95" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
+                  <strong className="text-saimor-teal font-mono font-bold">Mora</strong> {copy.heroDesc1}
                 </p>
-                <p className="hero-desc-text">
+                <p className="text-white/90" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
                   {copy.heroDesc2}
                 </p>
 

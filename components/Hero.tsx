@@ -430,19 +430,15 @@ export default function Hero({ locale, calUrl }: Props) {
                 }}
               />
 
-              {/* Center Symbol - Simple "S" */}
-              <div className="relative z-30 flex items-center justify-center">
-                <span
-                  className="text-7xl sm:text-8xl font-serif text-white/90"
-                  style={{
-                    fontFamily: 'Cormorant Garamond, serif',
-                    textShadow: '0 0 40px rgba(214, 168, 72, 0.8), 0 0 80px rgba(214, 168, 72, 0.4)',
-                    filter: 'blur(0.5px)'
-                  }}
-                >
-                  S
-                </span>
-              </div>
+              {/* Logo Image - Above fog layers */}
+              <Image
+                src="/saimor-logo-new.png"
+                alt="Saimôr Logo"
+                width={380}
+                height={380}
+                className="w-40 sm:w-52 object-contain drop-shadow-2xl relative z-40"
+                priority
+              />
             </motion.div>
 
             {/* Floating Badge - Simplified */}
