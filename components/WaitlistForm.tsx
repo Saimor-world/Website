@@ -12,19 +12,19 @@ interface WaitlistFormProps {
 
 const glassPanelStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(10, 22, 18, 0.85) 0%, rgba(10, 22, 18, 0.55) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.35)',
-  backdropFilter: 'blur(32px)',
+    'linear-gradient(135deg, rgba(10, 22, 18, 0.9) 0%, rgba(10, 22, 18, 0.6) 100%)',
+  border: '1px solid rgba(212, 180, 131, 0.25)',
+  backdropFilter: 'blur(40px)',
   boxShadow:
-    '0 35px 80px rgba(10, 22, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+    '0 40px 100px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
 };
 
 const glassFieldStyle: CSSProperties = {
   background:
-    'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 180, 131, 0.08) 100%)',
-  border: '1px solid rgba(212, 180, 131, 0.3)',
-  backdropFilter: 'blur(16px)',
-  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+    'rgba(255, 255, 255, 0.03)',
+  border: '1px solid rgba(212, 180, 131, 0.2)',
+  backdropFilter: 'blur(20px)',
+  boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)'
 };
 
 export default function WaitlistForm({ locale }: WaitlistFormProps) {
@@ -123,7 +123,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
     <section id="waitlist" className="relative py-20 sm:py-24">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
-          className="rounded-3xl overflow-hidden"
+          className="rounded-[2.5rem] overflow-hidden"
           style={glassPanelStyle}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -225,27 +225,29 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                             key={item.id}
                             type="button"
                             onClick={() => toggleInterest(item.id)}
-                            className="p-3 rounded-xl transition-all text-left"
+                            className="p-4 rounded-2xl transition-all text-left"
                             style={{
                               ...glassFieldStyle,
                               ...(isActive
                                 ? {
-                                    borderColor: 'rgba(212, 180, 131, 0.6)',
-                                    background:
-                                      'linear-gradient(135deg, rgba(212, 180, 131, 0.25) 0%, rgba(74, 103, 65, 0.2) 100%)'
-                                  }
+                                  borderColor: 'rgba(212, 180, 131, 1)',
+                                  background:
+                                    'linear-gradient(135deg, rgba(212, 180, 131, 0.2) 0%, rgba(74, 103, 65, 0.1) 100%)'
+                                }
                                 : {})
                             }}
-                            whileHover={{ scale: 1.02 }}
+                            whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.06)' }}
                             whileTap={{ scale: 0.98 }}
                           >
-                            <div className="flex items-center gap-2 text-white">
-                              <span className="text-xl">{item.emoji}</span>
-                              <span className="text-sm font-medium">
+                            <div className="flex items-center gap-3 text-white">
+                              <span className="text-2xl">{item.emoji}</span>
+                              <span className="text-sm font-medium leading-tight">
                                 {item.label}
                               </span>
                               {isActive && (
-                                <Check className="w-4 h-4 ml-auto text-[#D4A857]" />
+                                <div className="ml-auto w-5 h-5 rounded-full bg-[#D4A857] flex items-center justify-center">
+                                  <Check className="w-3 h-3 text-[#1A3C32]" strokeWidth={3} />
+                                </div>
                               )}
                             </div>
                           </motion.button>

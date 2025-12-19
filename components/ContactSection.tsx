@@ -72,13 +72,15 @@ export default function ContactSection({ locale }: Props) {
             transition={{ duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="rounded-3xl p-10 relative overflow-hidden"
-                 style={{
-                   background: 'linear-gradient(135deg, rgba(74,103,65,0.08) 0%, rgba(212,168,87,0.12) 100%)',
-                   border: '2px solid rgba(212,168,87,0.3)'
-                 }}>
+            <div className="rounded-[2.5rem] p-10 relative overflow-hidden h-full flex flex-col justify-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.05) 0%, rgba(212, 168, 87, 0.08) 100%)',
+                border: '1px solid rgba(212, 168, 87, 0.2)',
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.05)'
+              }}>
               <h3 className="font-serif text-3xl mb-8 text-slate-900"
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 {t('Direkt erreichen', 'Reach out directly')}
               </h3>
 
@@ -89,10 +91,10 @@ export default function ContactSection({ locale }: Props) {
                   className="flex items-center gap-4 text-slate-700 hover:text-saimor-green transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                       style={{
-                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
-                         border: '1px solid rgba(212,168,87,0.3)'
-                       }}>
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
+                      border: '1px solid rgba(212,168,87,0.3)'
+                    }}>
                     <Mail size={20} className="text-saimor-green" />
                   </div>
                   <div>
@@ -106,10 +108,10 @@ export default function ContactSection({ locale }: Props) {
                   className="flex items-center gap-4 text-slate-700"
                 >
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                       style={{
-                         background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
-                         border: '1px solid rgba(212,168,87,0.3)'
-                       }}>
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(74,103,65,0.15) 0%, rgba(212,168,87,0.2) 100%)',
+                      border: '1px solid rgba(212,168,87,0.3)'
+                    }}>
                     <MapPin size={20} className="text-saimor-green" />
                   </div>
                   <div>
@@ -130,16 +132,16 @@ export default function ContactSection({ locale }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{
-                scale: 1.03,
+                scale: 1.05,
                 y: -6,
-                boxShadow: '0 25px 50px rgba(74, 103, 65, 0.3)'
+                boxShadow: '0 30px 60px rgba(74, 103, 65, 0.25)'
               }}
               whileTap={{ scale: 0.98 }}
-              className="block rounded-3xl p-8 text-center overflow-hidden group relative"
+              className="block rounded-[2.5rem] p-8 text-center overflow-hidden group relative"
               style={{
-                background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
-                boxShadow: '0 15px 35px rgba(74, 103, 65, 0.25)',
-                border: '2px solid rgba(212,168,87,0.5)'
+                background: 'linear-gradient(135deg, rgba(26, 60, 50, 0.95) 0%, rgba(42, 90, 74, 0.9) 100%)',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+                border: '1px solid rgba(214, 168, 72, 0.4)'
               }}
             >
               <motion.div
@@ -156,7 +158,7 @@ export default function ContactSection({ locale }: Props) {
               <div className="relative z-10">
                 <Phone className="w-12 h-12 mx-auto mb-4 text-white" />
                 <h4 className="font-serif text-2xl mb-2 text-white"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                   {t('KlarheitsgesprÃ¤ch buchen', 'Book clarity call')}
                 </h4>
                 <p className="text-white/90">
@@ -173,12 +175,13 @@ export default function ContactSection({ locale }: Props) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <form onSubmit={handleSubmit} className="rounded-3xl p-10 space-y-6"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,245,240,0.9) 100%)',
-                    border: '2px solid rgba(212,168,87,0.3)',
-                    boxShadow: '0 20px 50px rgba(74,103,65,0.1)'
-                  }}>
+            <form onSubmit={handleSubmit} className="rounded-[2.5rem] p-10 space-y-6"
+              style={{
+                background: 'rgba(255, 255, 255, 0.8)',
+                border: '1px solid rgba(212, 168, 87, 0.2)',
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.05)'
+              }}>
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-saimor-green mb-2">
                   {t('Name', 'Name')}

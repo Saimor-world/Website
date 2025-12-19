@@ -51,16 +51,21 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
     e.preventDefault();
     setMenuOpen(false);
-    
+
     if (isAnchor) {
       const targetId = href.replace('#', '');
       const element = document.getElementById(targetId);
       if (element) {
+        // Element exists on current page, scroll to it
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        router.push(`/${locale}${href}`);
+        // Element doesn't exist on current page, navigate to home page with anchor
+        // Use window.location.href instead of router.push() for proper hash handling
+        const targetUrl = `/${locale}${href}`;
+        window.location.href = targetUrl;
       }
     } else {
+      // For non-anchor links, use Next.js router for client-side navigation
       router.push(href);
     }
   };
@@ -95,14 +100,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 style={{
                   background: 'radial-gradient(circle at 30% 30%, rgba(212, 168, 87, 0.4) 0%, rgba(26, 60, 50, 0.6) 50%, rgba(15, 35, 22, 0.8) 100%)',
                   border: '1px solid rgba(212, 180, 131, 0.3)',
-                  boxShadow: scrolled 
+                  boxShadow: scrolled
                     ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(212, 168, 87, 0.2) inset'
                     : '0 12px 40px rgba(212, 168, 87, 0.2), 0 0 60px rgba(212, 168, 87, 0.15), 0 0 0 1px rgba(212, 168, 87, 0.25) inset',
                   backdropFilter: 'blur(20px)',
                 }}
                 animate={{
                   scale: scrolled ? 0.9 : 1,
-                  boxShadow: scrolled 
+                  boxShadow: scrolled
                     ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(212, 168, 87, 0.2) inset'
                     : '0 12px 40px rgba(212, 168, 87, 0.2), 0 0 60px rgba(212, 168, 87, 0.15), 0 0 0 1px rgba(212, 168, 87, 0.25) inset'
                 }}
@@ -129,14 +134,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     ease: 'easeInOut'
                   }}
                 />
-                
+
                 {/* Logo Image */}
                 <Image
                   src="/saimor-logo-new.png"
                   alt="Saimôr"
                   width={64}
                   height={64}
-                  className="relative z-10 w-10 h-10 object-contain"
+                  className="relative z-10 w-10 h-10 object-contain rounded-full"
                   style={{
                     filter: 'brightness(1.4) contrast(1.2) drop-shadow(0 2px 8px rgba(212, 168, 87, 0.5))',
                   }}
@@ -156,7 +161,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   backdropFilter: 'blur(10px)'
                 }}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.1,
                   background: 'rgba(255, 255, 255, 0.1)',
                   borderColor: 'rgba(212, 168, 87, 0.3)'
@@ -176,7 +181,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(10px)'
               }}
-              whileHover={{ 
+              whileHover={{
                 scale: 1.1,
                 background: 'rgba(255, 255, 255, 0.1)',
                 borderColor: 'rgba(212, 168, 87, 0.3)'
@@ -254,7 +259,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                       key={item.href}
                       href={item.href}
                       onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                      className="relative px-6 py-4 text-lg font-medium text-white/80 hover:text-white rounded-xl transition-all group"
+                      className="relative px-6 py-4 text-lg font-medium text-white/80 hover:text-white rounded-2xl transition-all group"
                       style={{
                         background: 'rgba(255, 255, 255, 0.03)',
                         border: '1px solid rgba(255, 255, 255, 0.05)'
@@ -284,7 +289,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   href="https://cal.com/saimor/30min"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto mb-8 px-6 py-4 text-lg font-semibold text-[#1A3C32] rounded-xl text-center"
+                  className="mt-auto mb-8 px-6 py-4 text-lg font-semibold text-[#1A3C32] rounded-2xl text-center"
                   style={{
                     background: 'linear-gradient(135deg, #D4A857 0%, #E6C897 100%)',
                     boxShadow: '0 4px 20px rgba(212, 168, 87, 0.3)'

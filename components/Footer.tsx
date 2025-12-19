@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-export default function Footer({ locale }: { locale: 'de'|'en' }) {
+export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   const [year, setYear] = useState('2025'); // Default to avoid hydration mismatch
 
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
                 href="mailto:contact@saimor.world"
                 whileHover={{ scale: 1.1, y: -3 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all duration-300"
+                className="w-10 h-10 rounded-2xl flex items-center justify-center text-white transition-all duration-300"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(212, 180, 131, 0.15) 100%)',
                   border: '1px solid rgba(212, 180, 131, 0.3)',
@@ -165,19 +165,19 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             <nav className="flex flex-col gap-2">
               <Link
                 href={locale === 'de' ? '/#leistungen' : '/en#leistungen'}
-                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative inline-flex min-h-[44px] items-center rounded-2xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.services}
               </Link>
               <Link
                 href={locale === 'de' ? '/#kontakt' : '/en#kontakt'}
-                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative inline-flex min-h-[44px] items-center rounded-2xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.contact}
               </Link>
               <Link
                 href={locale === 'de' ? '/portal' : '/en/portal'}
-                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative inline-flex min-h-[44px] items-center rounded-2xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.portal}
               </Link>
@@ -197,13 +197,13 @@ export default function Footer({ locale }: { locale: 'de'|'en' }) {
             <nav className="flex flex-col gap-2">
               <Link
                 href="/trust"
-                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative inline-flex min-h-[44px] items-center rounded-2xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.trust}
               </Link>
               <Link
                 href="/legal"
-                className="relative inline-flex min-h-[44px] items-center rounded-xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative inline-flex min-h-[44px] items-center rounded-2xl px-2 text-white/80 text-sm transition-colors duration-300 hover:text-saimor-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/40 after:absolute after:bottom-2 after:left-2 after:w-0 after:h-0.5 after:bg-saimor-gold after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
               >
                 {footerText.imprint} &nbsp;/&nbsp; {footerText.privacy}
               </Link>

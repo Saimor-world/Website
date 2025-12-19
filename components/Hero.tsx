@@ -178,17 +178,19 @@ export default function Hero({ locale, calUrl }: Props) {
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 sm:mb-8"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6 sm:mb-8"
               style={{
-                background: 'linear-gradient(135deg, rgba(214, 168, 72, 0.15) 0%, rgba(214, 168, 72, 0.05) 100%)',
+                background: 'linear-gradient(135deg, rgba(214, 168, 72, 0.1) 0%, rgba(214, 168, 72, 0.05) 100%)',
                 border: '1px solid rgba(214, 168, 72, 0.3)',
-                backdropFilter: 'blur(10px)'
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
               }}
             >
               <Sparkles className="w-4 h-4 text-[#D6A848]" />
-              <span className="text-sm font-medium tracking-wide text-[#D6A848]">
+              <span className="text-xs sm:text-sm font-medium tracking-[0.1em] text-[#D6A848] uppercase">
                 {content.badge}
               </span>
             </motion.div>
@@ -196,8 +198,9 @@ export default function Hero({ locale, calUrl }: Props) {
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               className="text-5xl sm:text-6xl lg:text-8xl font-bold mb-4 sm:mb-6"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
@@ -233,21 +236,22 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* CTA Buttons - Mobile Optimized (Stacked) */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10 sm:mb-12 w-full sm:w-auto"
             >
               {/* Primary CTA */}
               <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto">
                 <motion.div
-                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857] cursor-pointer"
+                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857] cursor-pointer"
                   style={{
                     background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
                     border: '2px solid rgba(214, 168, 72, 0.5)',
                     boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                   }}
-                  whileHover={{ scale: 1.02, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
+                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(214, 168, 72, 0.3)' }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <motion.div
@@ -266,15 +270,15 @@ export default function Hero({ locale, calUrl }: Props) {
                 href={cal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 sm:py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(10px)'
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(32px)'
                 }}
                 whileHover={{
-                  scale: 1.02,
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  scale: 1.05,
+                  background: 'rgba(255, 255, 255, 0.08)',
                   borderColor: 'rgba(214, 168, 72, 0.5)'
                 }}
                 whileTap={{ scale: 0.98 }}
@@ -284,32 +288,32 @@ export default function Hero({ locale, calUrl }: Props) {
               </motion.a>
             </motion.div>
 
-            {/* Stats - Glassmorphism & Cleaner */}
+            {/* Stats - Glassmorphism & Premium Rounding */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 p-2 sm:p-0"
             >
               {content.stats.map((stat, i) => (
                 <motion.div
                   key={i}
-                  className="text-center p-5 rounded-3xl backdrop-blur-md"
+                  className="text-center p-6 rounded-[2rem] backdrop-blur-[20px]"
                   style={{
-                    background: 'rgba(0, 0, 0, 0.2)', // Darker clearer background
-                    border: '1px solid rgba(255, 255, 255, 0.08)', // Subtler border
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                    border: '1px solid rgba(214, 168, 72, 0.2)',
+                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                   }}
                   whileHover={{
                     scale: 1.05,
-                    background: 'rgba(214, 168, 72, 0.05)',
-                    borderColor: 'rgba(214, 168, 72, 0.3)',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)'
+                    background: 'linear-gradient(135deg, rgba(214, 168, 72, 0.1) 0%, rgba(214, 168, 72, 0.05) 100%)',
+                    borderColor: 'rgba(214, 168, 72, 0.5)',
+                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(214, 168, 72, 0.2)'
                   }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
-                  <div className="text-3xl font-bold text-[#D6A848] mb-1">{stat.value}</div>
-                  <div className="text-xs text-[#AAB0B2]/80 uppercase tracking-widest font-medium">{stat.label}</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-[#D6A848] mb-1 leading-tight">{stat.value}</div>
+                  <div className="text-[10px] sm:text-xs text-[#AAB0B2]/80 uppercase tracking-[0.2em] font-medium">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -355,33 +359,37 @@ export default function Hero({ locale, calUrl }: Props) {
 
             {/* Main logo container - FORCE ROUND WITH OVERFLOW HIDDEN */}
             <motion.div
-              className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] rounded-full flex items-center justify-center overflow-hidden z-20"
+              className="relative w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full flex items-center justify-center overflow-hidden z-20"
               style={{
-                background: 'linear-gradient(145deg, rgba(26, 60, 50, 0.9) 0%, rgba(11, 15, 16, 0.95) 100%)',
-                border: '2px solid rgba(214, 168, 72, 0.3)',
+                background: 'linear-gradient(145deg, rgba(26, 60, 50, 0.95) 0%, rgba(11, 15, 16, 0.98) 100%)',
+                border: '2px solid rgba(214, 168, 72, 0.4)',
                 boxShadow: `
-                  0 40px 80px rgba(0, 0, 0, 0.6),
-                  inset 0 2px 0 rgba(255, 255, 255, 0.1),
-                  0 0 100px rgba(214, 168, 72, 0.2)
+                  0 40px 100px rgba(0, 0, 0, 0.7),
+                  inset 0 2px 5px rgba(255, 255, 255, 0.1),
+                  0 0 120px rgba(214, 168, 72, 0.15)
                 `
               }}
               animate={{
                 boxShadow: [
-                  '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.1), 0 0 100px rgba(214, 168, 72, 0.2)',
-                  '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.1), 0 0 150px rgba(214, 168, 72, 0.35)',
-                  '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.1), 0 0 100px rgba(214, 168, 72, 0.2)',
+                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 120px rgba(214, 168, 72, 0.15)',
+                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 160px rgba(214, 168, 72, 0.3)',
+                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 120px rgba(214, 168, 72, 0.15)',
                 ]
               }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               whileHover={{ scale: 1.05 }}
             >
-              <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-full pointer-events-none" />
+              <div className="absolute inset-0 bg-white/5 backdrop-blur-[4px] rounded-full pointer-events-none" />
+
+              {/* Internal glow ring */}
+              <div className="absolute inset-[10px] rounded-full border border-[#D6A848]/10" />
+
               <Image
                 src="/saimor-logo-new.png"
                 alt="Saimôr Logo"
-                width={280}
-                height={320}
-                className="w-48 sm:w-64 object-contain drop-shadow-2xl rounded-full"
+                width={380}
+                height={380}
+                className="w-52 sm:w-72 object-contain drop-shadow-2xl rounded-full relative z-10"
                 priority
               />
             </motion.div>

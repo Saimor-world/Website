@@ -87,8 +87,13 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
       />
 
       <div
-        className="max-w-5xl mx-auto px-6 py-10 lg:py-12 relative z-10 rounded-[32px]"
-        style={glassPanelStyle}
+        className="max-w-5xl mx-auto px-6 py-12 lg:py-16 relative z-10 rounded-[3rem]"
+        style={{
+          ...glassPanelStyle,
+          background: 'linear-gradient(135deg, rgba(10, 22, 18, 0.8) 0%, rgba(10, 22, 18, 0.4) 100%)',
+          border: '1px solid rgba(212, 180, 131, 0.25)',
+          boxShadow: '0 40px 100px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+        }}
       >
         {/* Badge */}
         <motion.div
@@ -132,7 +137,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
           {content.features.map((feature, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-2xl transition-all hover:-translate-y-1"
+              className="p-6 rounded-[2rem] transition-all hover:-translate-y-1"
               style={glassTileStyle}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
