@@ -353,82 +353,105 @@ export default function Hero({ locale, calUrl }: Props) {
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             />
 
-            {/* Living Orb Replacement */}
+            {/* Living Orb - Organic & Breathing */}
             <motion.div
               className="relative w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full flex items-center justify-center z-20"
-              style={{
-                background: 'radial-gradient(circle at 30% 30%, #2A5A4A 0%, #0B1213 60%, #000000 100%)',
-                boxShadow: `
-                  0 0 60px rgba(42, 90, 74, 0.4),
-                  inset 10px 10px 20px rgba(255, 255, 255, 0.1),
-                  inset -10px -10px 20px rgba(0, 0, 0, 0.5)
-                `
-              }}
               whileHover={{ scale: 1.05 }}
               animate={{
-                boxShadow: [
-                  '0 0 60px rgba(42, 90, 74, 0.4), inset 10px 10px 20px rgba(255, 255, 255, 0.1), inset -10px -10px 20px rgba(0, 0, 0, 0.5)',
-                  '0 0 90px rgba(42, 90, 74, 0.6), inset 10px 10px 30px rgba(255, 255, 255, 0.15), inset -10px -10px 30px rgba(0, 0, 0, 0.6)',
-                  '0 0 60px rgba(42, 90, 74, 0.4), inset 10px 10px 20px rgba(255, 255, 255, 0.1), inset -10px -10px 20px rgba(0, 0, 0, 0.5)'
-                ]
+                scale: [1, 1.02, 1],
               }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Internal Core Pulse */}
-              <motion.div
-                className="absolute inset-[20%]"
+              {/* Base Orb with Gradient */}
+              <div
+                className="absolute inset-0 rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(214, 168, 72, 0.8) 0%, transparent 70%)',
-                  filter: 'blur(20px)',
+                  background: 'radial-gradient(circle at 35% 35%, rgba(42, 90, 74, 0.9) 0%, rgba(26, 60, 50, 0.7) 40%, rgba(11, 18, 19, 0.95) 100%)',
+                  boxShadow: `
+                    0 0 80px rgba(42, 90, 74, 0.5),
+                    inset 15px 15px 30px rgba(255, 255, 255, 0.08),
+                    inset -15px -15px 30px rgba(0, 0, 0, 0.6)
+                  `
+                }}
+              />
+
+              {/* Fog Layer 1 - Outer Mist */}
+              <motion.div
+                className="absolute inset-[-20%] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(214, 168, 72, 0.15) 0%, rgba(214, 168, 72, 0.05) 40%, transparent 70%)',
+                  filter: 'blur(40px)',
                   mixBlendMode: 'screen'
                 }}
                 animate={{
-                  scale: [0.8, 1.1, 0.8],
-                  opacity: [0.6, 0.9, 0.6]
+                  scale: [1, 1.3, 1],
+                  opacity: [0.4, 0.7, 0.4],
+                  rotate: [0, 180, 360]
                 }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
               />
 
-              {/* Subtle Texture Overlay */}
-              <div
-                className="absolute inset-0 rounded-full opacity-30 mix-blend-overlay"
+              {/* Fog Layer 2 - Inner Glow */}
+              <motion.div
+                className="absolute inset-[10%] rounded-full"
                 style={{
-                  backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
-                  backgroundSize: '150px 150px'
+                  background: 'radial-gradient(circle, rgba(214, 168, 72, 0.6) 0%, rgba(214, 168, 72, 0.2) 50%, transparent 80%)',
+                  filter: 'blur(25px)',
+                  mixBlendMode: 'screen'
+                }}
+                animate={{
+                  scale: [0.9, 1.2, 0.9],
+                  opacity: [0.5, 0.9, 0.5]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              {/* Organic Pulse - Core */}
+              <motion.div
+                className="absolute inset-[25%] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(214, 168, 72, 0.4) 40%, transparent 70%)',
+                  filter: 'blur(15px)',
+                  mixBlendMode: 'overlay'
+                }}
+                animate={{
+                  scale: [0.8, 1.3, 0.8],
+                  opacity: [0.3, 0.8, 0.3]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              />
+
+              {/* Subtle Noise Texture */}
+              <div
+                className="absolute inset-0 rounded-full opacity-20 mix-blend-overlay"
+                style={{
+                  backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
+                  backgroundSize: '200px 200px'
                 }}
               />
 
-              {/* Logo Image Restored - Centered in Orb */}
-              <Image
-                src="/saimor-logo-new.png"
-                alt="Saimôr Logo"
-                width={380}
-                height={380}
-                className="w-48 sm:w-64 object-contain drop-shadow-2xl relative z-30"
-                priority
-              />
+              {/* Center Symbol - Simple "S" */}
+              <div className="relative z-30 flex items-center justify-center">
+                <span
+                  className="text-7xl sm:text-8xl font-serif text-white/90"
+                  style={{
+                    fontFamily: 'Cormorant Garamond, serif',
+                    textShadow: '0 0 40px rgba(214, 168, 72, 0.8), 0 0 80px rgba(214, 168, 72, 0.4)',
+                    filter: 'blur(0.5px)'
+                  }}
+                >
+                  S
+                </span>
+              </div>
             </motion.div>
 
-            {/* Floating badges around logo */}
-            <motion.div
-              className="absolute top-4 sm:top-10 right-0 sm:right-0 px-3 py-1.5 rounded-full text-xs font-semibold z-30"
-              style={{
-                background: 'linear-gradient(135deg, #D6A848, #E8C068)',
-                color: '#0B0F10',
-                boxShadow: '0 10px 30px rgba(214, 168, 72, 0.4)'
-              }}
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              {locale === 'de' ? 'Logo 2026' : 'Logo 2026'}
-            </motion.div>
-
+            {/* Floating Badge - Simplified */}
             <motion.div
               className="absolute bottom-10 sm:bottom-20 left-0 px-3 py-1.5 rounded-full text-xs font-medium text-[#D6A848] border border-[#D6A848]/30 bg-[#0B0F10]/80 backdrop-blur-sm z-30"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+              animate={{ y: [0, 10, 0], opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 4, repeat: Infinity }}
             >
-              Môra · KI-Begleiterin
+              Môra · KI
             </motion.div>
           </motion.div>
         </div>
