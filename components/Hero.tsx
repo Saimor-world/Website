@@ -243,9 +243,10 @@ export default function Hero({ locale, calUrl }: Props) {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10 sm:mb-12 w-full sm:w-auto"
             >
               {/* Primary CTA */}
-              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto">
+              {/* Primary CTA */}
+              <Link href={locale === 'en' ? '/en/mora' : '/mora'} className="w-full sm:w-auto block relative z-20">
                 <motion.div
-                  className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857] cursor-pointer"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-semibold overflow-hidden min-h-[50px] cursor-pointer"
                   style={{
                     background: 'linear-gradient(135deg, #1A3C32 0%, #2A5A4A 100%)',
                     border: '2px solid rgba(214, 168, 72, 0.5)',
@@ -255,37 +256,42 @@ export default function Hero({ locale, calUrl }: Props) {
                   whileTap={{ scale: 0.98 }}
                 >
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-[#D6A848]/20 to-transparent"
+                    className="absolute inset-0 bg-gradient-to-r from-[#D6A848]/20 to-transparent pointer-events-none"
                     initial={{ x: '-100%' }}
                     whileHover={{ x: '100%' }}
                     transition={{ duration: 0.5 }}
                   />
-                  <span className="relative text-white">{content.ctaPrimary}</span>
-                  <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform" />
+                  <span className="relative text-white z-10">{content.ctaPrimary}</span>
+                  <ArrowRight className="relative w-5 h-5 text-[#D6A848] group-hover:translate-x-1 transition-transform z-10" />
                 </motion.div>
               </Link>
 
               {/* Secondary CTA */}
-              <motion.a
+              {/* Secondary CTA */}
+              <a
                 href={cal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(32px)'
-                }}
-                whileHover={{
-                  scale: 1.05,
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  borderColor: 'rgba(214, 168, 72, 0.5)'
-                }}
-                whileTap={{ scale: 0.98 }}
+                className="w-full sm:w-auto block relative z-20"
               >
-                <Play className="w-5 h-5 text-[#D6A848]" />
-                <span>{content.ctaSecondary}</span>
-              </motion.a>
+                <motion.div
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full text-lg font-medium text-white/90 min-h-[50px] cursor-pointer"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(32px)'
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    borderColor: 'rgba(214, 168, 72, 0.5)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Play className="w-5 h-5 text-[#D6A848]" />
+                  <span>{content.ctaSecondary}</span>
+                </motion.div>
+              </a>
             </motion.div>
 
             {/* Stats - Glassmorphism & Premium Rounding */}
@@ -357,40 +363,49 @@ export default function Hero({ locale, calUrl }: Props) {
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             />
 
-            {/* Main logo container - FORCE ROUND WITH OVERFLOW HIDDEN */}
+            {/* Living Orb Replacement */}
             <motion.div
-              className="relative w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full flex items-center justify-center overflow-hidden z-20"
+              className="relative w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full flex items-center justify-center z-20"
               style={{
-                background: 'linear-gradient(145deg, rgba(26, 60, 50, 0.95) 0%, rgba(11, 15, 16, 0.98) 100%)',
-                border: '2px solid rgba(214, 168, 72, 0.4)',
+                background: 'radial-gradient(circle at 30% 30%, #2A5A4A 0%, #0B1213 60%, #000000 100%)',
                 boxShadow: `
-                  0 40px 100px rgba(0, 0, 0, 0.7),
-                  inset 0 2px 5px rgba(255, 255, 255, 0.1),
-                  0 0 120px rgba(214, 168, 72, 0.15)
+                  0 0 60px rgba(42, 90, 74, 0.4),
+                  inset 10px 10px 20px rgba(255, 255, 255, 0.1),
+                  inset -10px -10px 20px rgba(0, 0, 0, 0.5)
                 `
               }}
+              whileHover={{ scale: 1.05 }}
               animate={{
                 boxShadow: [
-                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 120px rgba(214, 168, 72, 0.15)',
-                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 160px rgba(214, 168, 72, 0.3)',
-                  '0 40px 100px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1), 0 0 120px rgba(214, 168, 72, 0.15)',
+                  '0 0 60px rgba(42, 90, 74, 0.4), inset 10px 10px 20px rgba(255, 255, 255, 0.1), inset -10px -10px 20px rgba(0, 0, 0, 0.5)',
+                  '0 0 90px rgba(42, 90, 74, 0.6), inset 10px 10px 30px rgba(255, 255, 255, 0.15), inset -10px -10px 30px rgba(0, 0, 0, 0.6)',
+                  '0 0 60px rgba(42, 90, 74, 0.4), inset 10px 10px 20px rgba(255, 255, 255, 0.1), inset -10px -10px 20px rgba(0, 0, 0, 0.5)'
                 ]
               }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              whileHover={{ scale: 1.05 }}
             >
-              <div className="absolute inset-0 bg-white/5 backdrop-blur-[4px] rounded-full pointer-events-none" />
+              {/* Internal Core Pulse */}
+              <motion.div
+                className="absolute inset-[20%]"
+                style={{
+                  background: 'radial-gradient(circle, rgba(214, 168, 72, 0.8) 0%, transparent 70%)',
+                  filter: 'blur(20px)',
+                  mixBlendMode: 'screen'
+                }}
+                animate={{
+                  scale: [0.8, 1.1, 0.8],
+                  opacity: [0.6, 0.9, 0.6]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              />
 
-              {/* Internal glow ring */}
-              <div className="absolute inset-[10px] rounded-full border border-[#D6A848]/10" />
-
-              <Image
-                src="/saimor-logo-new.png"
-                alt="Saimôr Logo"
-                width={380}
-                height={380}
-                className="w-52 sm:w-72 object-contain drop-shadow-2xl rounded-full relative z-10"
-                priority
+              {/* Subtle Texture Overlay */}
+              <div
+                className="absolute inset-0 rounded-full opacity-30 mix-blend-overlay"
+                style={{
+                  backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
+                  backgroundSize: '150px 150px'
+                }}
               />
             </motion.div>
 

@@ -20,11 +20,11 @@ export default function MoraTeaser({ locale }: Props) {
 
             {/* Organic glow */}
             <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none z-0"
                 style={{ background: 'radial-gradient(circle, rgba(212,168,87,0.3) 0%, transparent 70%)' }}
             />
 
-            <div className="relative z-10 mx-auto max-w-5xl px-6">
+            <div className="relative z-20 mx-auto max-w-5xl px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -54,13 +54,14 @@ export default function MoraTeaser({ locale }: Props) {
                     </p>
 
                     {/* CTA */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-30">
                         <Link
                             href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
+                            className="block"
                         >
                             <motion.div
                                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 cursor-pointer min-h-[44px]"
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.02,
                                     boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)'
                                 }}
@@ -74,10 +75,11 @@ export default function MoraTeaser({ locale }: Props) {
 
                         <Link
                             href={locale === 'en' ? '/en/mora' : '/mora'}
+                            className="block"
                         >
                             <motion.div
                                 className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/5 transition-all duration-300 cursor-pointer min-h-[44px]"
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.02,
                                     borderColor: 'rgba(255, 255, 255, 0.3)',
                                     backgroundColor: 'rgba(255, 255, 255, 0.08)'
