@@ -1,7 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import LocalSystemConnector from './LocalSystemConnector';
+import { Terminal } from 'lucide-react';
 
 type Locale = 'de' | 'en';
 
@@ -32,6 +35,7 @@ const copy = {
       }
     ],
     cta: 'Demo-Zugang anfragen',
+    connect: 'Lokal Verbinden',
     note: 'Hinweis: Portal ist noch Demo-only. Keine Logins, kein Tracking.'
   },
   en: {
@@ -56,15 +60,17 @@ const copy = {
       }
     ],
     cta: 'Request demo access',
+    connect: 'Connect Local',
     note: 'Note: Portal is demo-only. No logins, no tracking yet.'
   }
 } as const;
 
 export default function PortalPreview({ locale }: PortalPreviewProps) {
   const text = copy[locale];
+  const [showConnector, setShowConnector] = useState(false);
 
   return (
-    <section className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-black/40 backdrop-blur-3xl p-8 sm:p-12 shadow-[0_32px_128px_rgba(0,0,0,0.6)]">
+    <section className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-black/40 backdrop-blur-3xl p-8 sm:p-12 shadow-[0_32px_128px_rgba(0,0,0,0.6)] min-h-[600px] flex flex-col justify-center">
       {/* Decorative background orbs */}
       <motion.div
         className="absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-20 blur-[120px]"
@@ -90,67 +96,105 @@ export default function PortalPreview({ locale }: PortalPreviewProps) {
       />
 
       <div className="relative z-10 space-y-12">
-        <div className="max-w-3xl space-y-4">
-          <p className="text-xs uppercase tracking-[0.5em] text-[#D4A857] font-semibold">
-            {text.eyebrow}
-          </p>
-          <h2
-            className="text-4xl sm:text-5xl font-semibold text-white leading-tight"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
-            {text.title}
-          </h2>
-          <p className="text-lg text-white/70 leading-relaxed font-light">
-            {text.subtitle}
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {text.cards.map((card, index) => (
-            <motion.article
-              key={card.title}
-              className="group relative rounded-[2rem] border border-white/5 bg-white/[0.03] p-8 transition-all duration-500 hover:bg-white/[0.07] hover:border-white/20 hover:shadow-2xl hover:shadow-[#D4A857]/5"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
-              whileHover={{ y: -8 }}
+        <AnimatePresence mode="wait">
+          {showConnector ? (
+            <motion.div
+              key="connector"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="w-full"
             >
-              {/* Badge */}
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xs font-mono tracking-widest text-[#D4A857] group-hover:bg-[#D4A857]/10 group-hover:border-[#D4A857]/30 transition-colors">
-                {card.badge}
+              <div className="mb-8 text-center">
+                <button
+                  onClick={() => setShowConnector(false)}
+                  className="text-xs text-white/40 hover:text-white uppercase tracking-widest transition-colors mb-4"
+                >
+                  ← {locale === 'de' ? 'Zurück zur Vorschau' : 'Back to Preview'}
+                </button>
+              </div>
+              <LocalSystemConnector locale={locale} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="preview"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="max-w-3xl space-y-4 mb-12">
+                <p className="text-xs uppercase tracking-[0.5em] text-[#D4A857] font-semibold">
+                  {text.eyebrow}
+                </p>
+                <h2
+                  className="text-4xl sm:text-5xl font-semibold text-white leading-tight"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                >
+                  {text.title}
+                </h2>
+                <p className="text-lg text-white/70 leading-relaxed font-light">
+                  {text.subtitle}
+                </p>
               </div>
 
-              <h3 className="text-2xl font-semibold text-white mb-3" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                {card.title}
-              </h3>
-              <p className="text-sm text-white/60 leading-relaxed group-hover:text-white/80 transition-colors">
-                {card.body}
-              </p>
+              <div className="grid gap-6 md:grid-cols-3 mb-12">
+                {text.cards.map((card, index) => (
+                  <motion.article
+                    key={card.title}
+                    className="group relative rounded-[2rem] border border-white/5 bg-white/[0.03] p-8 transition-all duration-500 hover:bg-white/[0.07] hover:border-white/20 hover:shadow-2xl hover:shadow-[#D4A857]/5"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
+                    whileHover={{ y: -8 }}
+                  >
+                    {/* Badge */}
+                    <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xs font-mono tracking-widest text-[#D4A857] group-hover:bg-[#D4A857]/10 group-hover:border-[#D4A857]/30 transition-colors">
+                      {card.badge}
+                    </div>
 
-              {/* Subtle hover reveal line */}
-              <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D4A857]/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-            </motion.article>
-          ))}
-        </div>
+                    <h3 className="text-2xl font-semibold text-white mb-3" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                      {card.title}
+                    </h3>
+                    <p className="text-sm text-white/60 leading-relaxed group-hover:text-white/80 transition-colors">
+                      {card.body}
+                    </p>
 
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between pt-8 border-t border-white/5">
-          <Link
-            href={locale === 'de' ? '/#kontakt' : '/en#kontakt'}
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-white/10 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/15 active:scale-95"
-          >
-            <span className="relative z-10">{text.cta}</span>
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:translate-x-full transition-transform duration-1000" />
-          </Link>
-          <div className="space-y-1 text-center sm:text-right">
-            <p className="text-xs text-[#D4A857]/60 uppercase tracking-[0.3em] font-medium">
-              Saimôr OS · System Status
-            </p>
-            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">
-              {text.note}
-            </p>
-          </div>
-        </div>
+                    {/* Subtle hover reveal line */}
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D4A857]/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+                  </motion.article>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between pt-8 border-t border-white/5">
+                <div className="flex gap-4">
+                  <Link
+                    href={locale === 'de' ? '/#kontakt' : '/en#kontakt'}
+                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-white/10 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/15 active:scale-95"
+                  >
+                    <span className="relative z-10">{text.cta}</span>
+                  </Link>
+                  <button
+                    onClick={() => setShowConnector(true)}
+                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 px-6 py-4 text-sm font-bold uppercase tracking-widest text-[#D4A857] transition-all hover:bg-[#D4A857]/10 active:scale-95 flex gap-2"
+                  >
+                    <Terminal size={14} />
+                    <span className="relative z-10">{text.connect}</span>
+                  </button>
+                </div>
+
+                <div className="space-y-1 text-center sm:text-right">
+                  <p className="text-xs text-[#D4A857]/60 uppercase tracking-[0.3em] font-medium">
+                    Saimôr OS · System Status
+                  </p>
+                  <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">
+                    {text.note}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
