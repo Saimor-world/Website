@@ -83,7 +83,7 @@ export default function CookieBanner() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-slate-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                      DatensouverÃ¤nitÃ¤t
+                      Datensouveränität
                     </h3>
                     <p className="text-xs text-slate-600">Ihre Entscheidung</p>
                   </div>
@@ -100,7 +100,7 @@ export default function CookieBanner() {
               </div>
 
               <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                Wir nutzen <strong>Matomo</strong> (EU-Hosting, DSGVO-konform) fÃ¼r anonyme Analytics.
+                Wir nutzen <strong>Matomo</strong> (EU-Hosting, DSGVO-konform) für anonyme Analytics.
                 Keine Profile, keine Weitergabe. Ihre Wahl.
               </p>
 
@@ -148,7 +148,7 @@ export default function CookieBanner() {
                 onClick={() => setShowDetails(!showDetails)}
                 className="text-xs text-saimor-green hover:text-saimor-gold transition-colors font-semibold"
               >
-                {showDetails ? 'â†‘ Weniger anzeigen' : 'â†“ Details anzeigen'}
+                {showDetails ? '←‘ Weniger anzeigen' : '←“ Details anzeigen'}
               </button>
             </div>
 
@@ -164,7 +164,7 @@ export default function CookieBanner() {
                   boxShadow: '0 8px 20px rgba(74, 103, 65, 0.3)'
                 }}
               >
-                âœ“ Alle akzeptieren
+                ✓ Alle akzeptieren
               </motion.button>
 
               <div className="flex gap-3">
@@ -190,7 +190,7 @@ export default function CookieBanner() {
               <p className="text-[10px] text-center text-slate-500">
                 Mehr in unserer{' '}
                 <a href="/de/rechtliches/datenschutz" className="text-saimor-green hover:underline">
-                  DatenschutzerklÃ¤rung
+                  Datenschutzerklärung
                 </a>
               </p>
             </div>

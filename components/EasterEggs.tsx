@@ -377,7 +377,7 @@ export default function EasterEggs() {
     };
   }, [mounted, activateShake, unlockAchievement]);
 
-  // === TIME-BASED ACHIEVEMENTS (Nachteule/FrÃ¼haufsteher) ===
+  // === TIME-BASED ACHIEVEMENTS (Nachteule/Frühaufsteher) ===
   useEffect(() => {
     if (!mounted) return;
 
@@ -392,7 +392,7 @@ export default function EasterEggs() {
         }, 2000);
       }
 
-      // FrÃ¼haufsteher: 05:00 - 07:00
+      // Frühaufsteher: 05:00 - 07:00
       if (hour >= 5 && hour < 7) {
         setTimeout(() => {
           unlockAchievement('early-bird');
@@ -486,9 +486,9 @@ export default function EasterEggs() {
     const checkCompletionist = () => {
       const progress = achievementManager.current.getProgress();
       const threshold = 0.75; // 75% of achievements
-      
-      if (progress.percentage >= threshold * 100 && 
-          !achievementManager.current.getAll().find(a => a.id === 'completionist' && a.unlocked)) {
+
+      if (progress.percentage >= threshold * 100 &&
+        !achievementManager.current.getAll().find(a => a.id === 'completionist' && a.unlocked)) {
         unlockAchievement('completionist');
         showTransientMessage('Meisterschaft erreicht – du hast fast alle Geheimnisse enthüllt.');
         createSubtleFireworks();
@@ -513,9 +513,23 @@ export default function EasterEggs() {
       const detail = (event as CustomEvent<string>).detail;
       if (!detail) return;
       dashboardVisitedRef.current.add(detail);
+
+      // Unlock Mora Explorer on first interactions
+      unlockAchievement('mora-explorer');
+
       if (dashboardVisitedRef.current.size >= 3) {
         tryUnlockFeldforscher();
       }
+      if (dashboardVisitedRef.current.size >= 5) {
+        unlockAchievement('pattern-recognizer');
+      }
+    };
+
+    const handleNodeSelect = (event: Event) => {
+      unlockAchievement('deep-diver');
+      // Detect locale from URL path
+      const isGerman = typeof window !== 'undefined' && window.location.pathname.startsWith('/de');
+      showTransientMessage(isGerman ? 'Tiefentaucher – du suchst nach echten Antworten.' : 'Deep Diver – you seek real answers.');
     };
 
     const handleViewSwitch = (event: Event) => {
@@ -527,13 +541,15 @@ export default function EasterEggs() {
     };
 
     window.addEventListener('mora-dashboard-card-visited', handleCardVisited as EventListener);
+    window.addEventListener('mora-node-select', handleNodeSelect as EventListener);
     window.addEventListener('mora-dashboard-view-switch', handleViewSwitch as EventListener);
 
     return () => {
       window.removeEventListener('mora-dashboard-card-visited', handleCardVisited as EventListener);
+      window.removeEventListener('mora-node-select', handleNodeSelect as EventListener);
       window.removeEventListener('mora-dashboard-view-switch', handleViewSwitch as EventListener);
     };
-  }, [mounted, tryUnlockFeldforscher]);
+  }, [mounted, tryUnlockFeldforscher, unlockAchievement, showTransientMessage]);
 
   // === SCROLL TRACKING ===
   useEffect(() => {
@@ -552,7 +568,7 @@ export default function EasterEggs() {
       if (scrollTop + clientHeight >= scrollHeight * 0.95) {
         hasUnlocked = true;
         unlockAchievement('scroll-champion');
-        showTransientMessage('Scroll-Champion â€“ du hast alles gesehen.');
+        showTransientMessage('Scroll-Champion – du hast alles gesehen.');
         createGoldenRain();
       }
     };
@@ -567,7 +583,7 @@ export default function EasterEggs() {
 
     const timer = setTimeout(() => {
       unlockAchievement('patient-visitor');
-      showTransientMessage('Geduldiger Entdecker â€“ Zeit ist eine Form von Aufmerksamkeit.');
+      showTransientMessage('Geduldiger Entdecker – Zeit ist eine Form von Aufmerksamkeit.');
       createSubtleFireworks();
     }, 5 * 60 * 1000); // 5 Minuten
 
@@ -702,16 +718,6 @@ export default function EasterEggs() {
         </div>
       )}
 
-      {/* Secret Hint - AAA for achievements */}
-      <motion.div
-        className="fixed bottom-20 left-4 z-40 px-3 py-1.5 rounded-full text-xs font-medium bg-black/40 text-white/50 backdrop-blur-sm"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 0.4, x: 0 }}
-        transition={{ delay: 8 }}
-        whileHover={{ opacity: 0.8, scale: 1.05 }}
-      >
-        💡 AAA für Achievements
-      </motion.div>
     </>
   );
 }

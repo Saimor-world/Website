@@ -20,7 +20,7 @@ export default function ScrollProgress() {
           .map(p => ({ ...p, position: p.position + 0.008 }))
           .filter(p => p.position < 1);
 
-        // Add new particle occasionally (weniger hÃ¤ufig)
+        // Add new particle occasionally (weniger häufig)
         if (Math.random() > 0.85) {
           newParticles.push({ id: Date.now(), position: 0 });
         }

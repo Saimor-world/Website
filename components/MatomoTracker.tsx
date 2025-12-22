@@ -22,7 +22,7 @@ export default function MatomoTracker() {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
-    script.src = 'https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js';
+    script.src = 'https://saimorworld.matomo.cloud/matomo.js';
 
     // Handle script load errors gracefully (e.g., blocked by ad blockers)
     script.onerror = () => {

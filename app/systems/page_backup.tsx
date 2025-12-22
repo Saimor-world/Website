@@ -5,9 +5,9 @@ import { ArrowLeft, Clock, Users, Repeat, Sparkles, Target, Heart } from 'lucide
 
 export default function OrbitPage() {
   const benefits = [
-    { icon: Target, text: 'RegelmÃ¤ÃŸige Orientierung statt Meeting-Overload', color: '#4A6741' },
+    { icon: Target, text: 'Regelmäßige Orientierung statt Meeting-Overload', color: '#4A6741' },
     { icon: Heart, text: 'Tiefe statt Hektik', color: '#5D7C54' },
-    { icon: Sparkles, text: 'KontinuitÃ¤t im Wandel', color: '#D4A857' }
+    { icon: Sparkles, text: 'Kontinuität im Wandel', color: '#D4A857' }
   ];
 
   return (
@@ -103,7 +103,7 @@ export default function OrbitPage() {
                  fontFamily: 'Cormorant Garamond, serif',
                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
                }}>
-              Systematische Begleitung fÃ¼r wiederkehrende Transformation. Ein natÃ¼rlicher Rhythmus, der Klarheit und Resonanz schafft.
+              Systematische Begleitung für wiederkehrende Transformation. Ein natürlicher Rhythmus, der Klarheit und Resonanz schafft.
             </p>
           </motion.div>
         </div>
@@ -205,9 +205,9 @@ export default function OrbitPage() {
             className="grid sm:grid-cols-3 gap-6 mb-20"
           >
             {[
-              { icon: Clock, title: 'Dauer', desc: '1â€“6 Monate' },
-              { icon: Repeat, title: 'Sessions', desc: 'RegelmÃ¤ÃŸiger Takt' },
-              { icon: Users, title: 'Zielgruppe', desc: 'Teams, Organisationen, FÃ¼hrungskreise' }
+              { icon: Clock, title: 'Dauer', desc: '1–6 Monate' },
+              { icon: Repeat, title: 'Sessions', desc: 'Regelmäßiger Takt' },
+              { icon: Users, title: 'Zielgruppe', desc: 'Teams, Organisationen, Führungskreise' }
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -250,8 +250,8 @@ export default function OrbitPage() {
             />
             <p className="text-2xl sm:text-3xl font-medium text-slate-900 leading-relaxed"
                style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Erst verstehen, dann verÃ¤ndern â€“ <br className="hidden sm:block"/>
-              Orbit schafft einen verlÃ¤sslichen <span className="text-saimor-green font-bold">Resonanzraum</span> fÃ¼r Entscheidungen.
+              Erst verstehen, dann verändern – <br className="hidden sm:block"/>
+              Orbit schafft einen verlässlichen <span className="text-saimor-green font-bold">Resonanzraum</span> für Entscheidungen.
             </p>
           </motion.div>
 
@@ -285,7 +285,7 @@ export default function OrbitPage() {
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
               />
-              <span className="relative z-10">KlarheitsgesprÃ¤ch zu Orbit buchen</span>
+              <span className="relative z-10">Klarheitsgespräch zu Orbit buchen</span>
             </motion.a>
 
             <Link
@@ -293,7 +293,7 @@ export default function OrbitPage() {
               className="flex items-center gap-3 text-lg text-saimor-green hover:text-saimor-gold transition-colors font-semibold"
             >
               <ArrowLeft size={22} />
-              <span>ZurÃ¼ck zur Startseite</span>
+              <span>Zurück zur Startseite</span>
             </Link>
           </div>
         </div>

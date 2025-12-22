@@ -211,7 +211,7 @@ export default function JungleElements() {
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* SaimÃ´r Logo Reveal Effect (center) */}
+      {/* Saimôr Logo Reveal Effect (center) */}
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         initial={{ opacity: 0, scale: 0.8 }}

@@ -29,11 +29,11 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
 
   const content = {
     de: {
-      hover: 'Klick mich! (Long-press fÃ¼r MenÃ¼)',
-      greeting: 'Hallo! Ich bin MÃ´ra ðŸŒ±',
-      subtitle: 'Deine KI-Begleiterin fÃ¼r Klarheit',
-      infoTitle: 'MÃ´ra erwacht bald!',
-      infoText: 'Ich bin deine KI-Assistentin fÃ¼r Business-Klarheit. Momentan wird der MVP-Prototyp entwickelt. Bald kann ich dir helfen mit:',
+      hover: 'Klick mich! (Long-press für Menü)',
+      greeting: 'Hallo! Ich bin Môra ðŸŒ±',
+      subtitle: 'Deine KI-Begleiterin für Klarheit',
+      infoTitle: 'Môra erwacht bald!',
+      infoText: 'Ich bin deine KI-Assistentin für Business-Klarheit. Momentan wird der MVP-Prototyp entwickelt. Bald kann ich dir helfen mit:',
       infoFeatures: [
         'ðŸ“Š Echtzeit-Analysen deiner Business-Daten',
         'ðŸŽ¯ Klare Antworten statt Datenflut',
@@ -44,17 +44,17 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       infoChatCTA: 'Mit MA\'ra chatten',
       quickActions: {
         title: 'Quick Actions',
-        chat: 'ðŸ’¬ Mit MÃ´ra chatten',
-        about: 'ðŸ“š Ãœber SaimÃ´r',
+        chat: 'ðŸ’¬ Mit Môra chatten',
+        about: 'ðŸ“š Über Saimôr',
         services: 'ðŸŽ¯ Services',
-        close: 'âœ• SchlieÃŸen'
+        close: 'âœ• Schließen'
       }
     },
     en: {
       hover: 'Click me! (Long-press for menu)',
-      greeting: 'Hello! I\'m MÃ´ra ðŸŒ±',
+      greeting: 'Hello! I\'m Môra ðŸŒ±',
       subtitle: 'Your AI companion for clarity',
-      infoTitle: 'MÃ´ra is waking up soon!',
+      infoTitle: 'Môra is waking up soon!',
       infoText: 'I\'m your AI assistant for business clarity. The MVP prototype is currently in development. Soon I can help you with:',
       infoFeatures: [
         'ðŸ“Š Real-time analysis of your business data',
@@ -66,15 +66,15 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       infoChatCTA: 'Chat with MA\'ra',
       quickActions: {
         title: 'Quick Actions',
-        chat: 'ðŸ’¬ Chat with MÃ´ra',
-        about: 'ðŸ“š About SaimÃ´r',
+        chat: 'ðŸ’¬ Chat with Môra',
+        about: 'ðŸ“š About Saimôr',
         services: 'ðŸŽ¯ Services',
         close: 'âœ• Close'
       }
     }
   }[locale];
 
-  const orbAriaLabel = locale === 'de' ? 'MÃ´ra â€“ verbunden mit dem Dashboard' : 'MÃ´ra â€“ connected to the dashboard';
+  const orbAriaLabel = locale === 'de' ? 'Môra – verbunden mit dem Dashboard' : 'Môra – connected to the dashboard';
 
   const openChatOverlay = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -316,7 +316,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                   exit={{ scale: 0.8, y: 50 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Header with MÃ´ra */}
+                  {/* Header with Môra */}
                   <div className="relative bg-gradient-to-br from-[#4A6741] to-[#D4A857] p-8 text-white text-center overflow-hidden">
                     {/* Animated sparkles */}
                     <motion.div
@@ -333,7 +333,7 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
                       animate={{ rotate: [0, 5, -5, 0] }}
                       transition={{ duration: 4, repeat: Infinity }}
                     >
-                      {/* MÃ´ra Face */}
+                      {/* Môra Face */}
                       <div className="relative">
                         <div className="flex gap-3">
                           <div className="w-3 h-4 bg-white rounded-full" />

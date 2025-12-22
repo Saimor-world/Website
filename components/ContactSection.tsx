@@ -159,10 +159,10 @@ export default function ContactSection({ locale }: Props) {
                 <Phone className="w-12 h-12 mx-auto mb-4 text-white" />
                 <h4 className="font-serif text-2xl mb-2 text-white"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  {t('KlarheitsgesprÃ¤ch buchen', 'Book clarity call')}
+                  {t('Klarheitsgespräch buchen', 'Book clarity call')}
                 </h4>
                 <p className="text-white/90">
-                  {t('30 Minuten kostenlos â€“ ohne Verkaufsdruck', '30 minutes free â€“ no sales pressure')}
+                  {t('30 Minuten kostenlos – ohne Verkaufsdruck', '30 minutes free – no sales pressure')}
                 </p>
               </div>
             </motion.a>
@@ -241,7 +241,7 @@ export default function ContactSection({ locale }: Props) {
                 }}
               >
                 {status === 'sending' && t('Wird gesendet...', 'Sending...')}
-                {status === 'sent' && t('âœ“ Gesendet!', 'âœ“ Sent!')}
+                {status === 'sent' && t('✓ Gesendet!', '✓ Sent!')}
                 {status === 'idle' && (
                   <>
                     <span>{t('Nachricht senden', 'Send message')}</span>

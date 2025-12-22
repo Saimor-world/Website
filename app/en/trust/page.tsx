@@ -5,13 +5,13 @@ const demoLink = '/docs/architecture/DATA_FLOW_EXPLAINED.md';
 
 const techItems = [
   'Data: local mock/simulation',
-  'Flow: SaimÃ´r Core (local) â†’ MÃ´ra UI â†’ Website',
+  'Flow: Saimôr Core (local) → Môra UI → Website',
   'Tracking: none',
   'Cookies: strictly necessary only (if any)'
 ];
 
 export const metadata: Metadata = {
-  title: 'Trust & Safety â€“ SaimÃ´r',
+  title: 'Trust & Safety – Saimôr',
   description: 'Transparent demo data handling, local processing, GDPR baseline.'
 };
 
@@ -21,10 +21,10 @@ export default function TrustPageEn() {
       <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <Link href="/en" className="text-2xl font-semibold text-[#4A6741]">
-            SaimÃ´r
+            Saimôr
           </Link>
           <Link href="/en" className="text-sm text-gray-600 transition hover:text-gray-900">
-            â† Back to start
+            ← Back to start
           </Link>
         </div>
       </header>
@@ -37,7 +37,7 @@ export default function TrustPageEn() {
           <h1 className="font-serif text-4xl text-[#0E1A1B]">Calm, traceable, intentional.</h1>
           <div className="space-y-4 text-lg leading-relaxed">
             <p>
-              We are in a prototype/demo phase. All values are locally generated demo data â€“ no external clouds,
+              We are in a prototype/demo phase. All values are locally generated demo data – no external clouds,
               no profiling.
             </p>
             <p>
@@ -50,7 +50,7 @@ export default function TrustPageEn() {
               rel="noreferrer noopener"
               className="inline-flex items-center text-sm text-[#4A6741] transition hover:text-[#2f4729]"
             >
-              Learn more about the demo architecture â†’
+              Learn more about the demo architecture →
             </Link>
           </div>
         </section>

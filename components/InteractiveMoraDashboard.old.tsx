@@ -1,4 +1,4 @@
-﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified MÃ´ra demo section).
+﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified Môra demo section).
 // Do not add new code here; kept only for reference until archival.
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -59,14 +59,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
   }, []);
   const content = {
     de: {
-      title: 'MÃ´ra Dashboard',
-      subtitle: 'Dual Mode: Ordner â†” Feld Ansicht',
+      title: 'Môra Dashboard',
+      subtitle: 'Dual Mode: Ordner ←” Feld Ansicht',
       demoLabel: 'Demo-Dashboard (simulierte Daten)',
       demoTooltip: 'Alle Werte basieren aktuell auf lokal generierten Demo-Daten. Keine echten Kundendaten.',
       folderView: 'Ordner-Ansicht',
       fieldView: 'Feld-Ansicht',
-      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
-      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare AblÃ¤ufe â†’ hÃ¶here Zufriedenheit.',
+      moraInsight: 'ðŸ’¡ Môra Insight',
+      insightText: 'Team-Engagement ist stark mit Prozess-Effizienz verbunden. Die Resonanz zeigt: Klare Abläufe → höhere Zufriedenheit.',
       categories: {
         people: 'Menschen',
         process: 'Prozesse',
@@ -87,14 +87,14 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
       }
     },
     en: {
-      title: 'MÃ´ra Dashboard',
-      subtitle: 'Dual Mode: Folder â†” Field View',
+      title: 'Môra Dashboard',
+      subtitle: 'Dual Mode: Folder ←” Field View',
       demoLabel: 'Demo Dashboard (simulated data)',
       demoTooltip: 'All values are currently based on locally generated demo data. No real customer data.',
       folderView: 'Folder View',
       fieldView: 'Field View',
-      moraInsight: 'ðŸ’¡ MÃ´ra Insight',
-      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows â†’ higher satisfaction.',
+      moraInsight: 'ðŸ’¡ Môra Insight',
+      insightText: 'Team engagement is strongly linked to process efficiency. The resonance shows: Clear workflows → higher satisfaction.',
       categories: {
         people: 'People',
         process: 'Processes',
@@ -192,7 +192,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
     setConnections(newConnections);
   }, []);
 
-  // Auto-show MÃ´ra insight after 2s
+  // Auto-show Môra insight after 2s
   useEffect(() => {
     const timer = setTimeout(() => setMoraInsight(true), 2000);
     return () => clearTimeout(timer);
@@ -645,7 +645,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
                             >
                               <div className="font-bold text-slate-800 mb-1">{point.label}</div>
                               <div className="text-xs text-gray-600">
-                                {content.categories[point.category as keyof typeof content.categories]} Â· {content.status[point.status]}
+                                {content.categories[point.category as keyof typeof content.categories]} · {content.status[point.status]}
                               </div>
                               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45" style={{ background: getCategoryColor(point.category) }} />
                             </div>
@@ -660,7 +660,7 @@ export default function InteractiveMoraDashboard({ locale }: DashboardProps) {
           </AnimatePresence>
         </motion.div>
 
-        {/* MÃ´ra Insight Panel */}
+        {/* Môra Insight Panel */}
         <AnimatePresence>
           {moraInsight && (
             <motion.div

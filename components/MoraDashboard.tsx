@@ -21,7 +21,7 @@ import {
   Sparkles, TrendingUp, TrendingDown, Users, Target, BarChart3,
   MessageSquare, Send, Loader2, CheckCircle2, ChevronRight,
   Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info,
-  Building2, FolderOpen, Zap, Clock, RefreshCw, FileText, Eye, ArrowUpDown
+  Building2, FolderOpen, Zap, Clock, RefreshCw, FileText, Eye, ArrowUpDown, X
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -63,21 +63,46 @@ const glassCardStyle: CSSProperties = {
 };
 
 export default function MoraDashboard({ locale }: MoraDashboardProps) {
+  // Hydration fix: only run client-side effects after mount
+  const [mounted, setMounted] = useState(false);
+
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false);
-  
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
+
+  // Use safe mouse position (0 during SSR, actual value after mount)
+  const safeMousePosition = mounted ? mousePosition : { x: 0, y: 0 };
 
   // Chat States
   const [userQuestion, setUserQuestion] = useState('');
   const [moraResponse, setMoraResponse] = useState('');
+  const [typedResponse, setTypedResponse] = useState('');
   const [isAsking, setIsAsking] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [responseTime, setResponseTime] = useState<number | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -167,7 +192,17 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'Demo ansehen',
-      ctaSecondary: 'Mehr über Môra erfahren'
+      ctaSecondary: 'Mehr über Môra erfahren',
+
+      // Contextual
+      suggestedQuestions: {
+        'team-engagement': 'Wie kann ich das Team-Engagement weiter fördern?',
+        'process-efficiency': 'Wo liegen die Engpässe in unseren Prozessen?',
+        'satisfaction': 'Was sind die Hauptgründe für die aktuelle Zufriedenheitsrate?',
+        'workload': 'Wie können wir die Arbeitsbelastung besser balancieren?',
+        'velocity': 'Was bremst unsere Umsetzungsgeschwindigkeit?',
+        'clarity': 'Welche Bereiche benötigen mehr Klarheit?'
+      }
     },
     en: {
       title: 'Môra – Resonance Dashboard (Demo)',
@@ -219,9 +254,19 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
       // CTA
       cta: 'See the demo',
-      ctaSecondary: 'Learn more about Môra'
+      ctaSecondary: 'Learn more about Môra',
+
+      // Contextual
+      suggestedQuestions: {
+        'team-engagement': 'How can I further foster team engagement?',
+        'process-efficiency': 'Where are the bottlenecks in our processes?',
+        'satisfaction': 'What are the main reasons for the current satisfaction rate?',
+        'workload': 'How can we better balance the workload?',
+        'velocity': 'What is slowing down our velocity?',
+        'clarity': 'Which areas need more clarity?'
+      }
     }
-  }[locale];
+  }[locale] as any;
 
 
   // Demo Dashboard Metrics (simulated data)
@@ -318,6 +363,23 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Typing effect for Môra response
+  useEffect(() => {
+    if (moraResponse && isTyping) {
+      let i = 0;
+      setTypedResponse('');
+      const interval = setInterval(() => {
+        setTypedResponse(prev => prev + moraResponse.charAt(i));
+        i++;
+        if (i >= moraResponse.length) {
+          clearInterval(interval);
+          setIsTyping(false);
+        }
+      }, 20); // Fast but visible typing
+      return () => clearInterval(interval);
+    }
+  }, [moraResponse, isTyping]);
+
   // Chat Handler with Gemini API integration
   const handleAskMora = async (question?: string) => {
     const q = question || userQuestion;
@@ -347,7 +409,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       const duration = ((endTime - startTime) / 1000).toFixed(1);
 
       if (data.error) {
-        // Fallback to demo responses if Gemini fails
+        // ... (demo responses)
         const demoResponses = locale === 'de' ? {
           team: 'Basierend auf deinen aktuellen KPIs (87% Engagement) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
           budget: 'Deine Prozess-Effizienz liegt bei 92% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Das Dashboard zeigt dir alle Zahlen im Blick.',
@@ -379,6 +441,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       setResponseTime(parseFloat(duration));
       setShowSuccess(true);
       setIsAsking(false);
+      setIsTyping(true); // Trigger typing effect
       setUserQuestion('');
 
     } catch (error) {
@@ -395,6 +458,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       setResponseTime(parseFloat(duration));
       setShowSuccess(true);
       setIsAsking(false);
+      setIsTyping(true);
       setUserQuestion('');
     }
   };
@@ -433,34 +497,34 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   // Enhanced connections based on semantic relationships (not just categories)
   const getSemanticConnections = (): Array<[string, string, number]> => {
     const connections: Array<[string, string, number]> = [];
-    
+
     // Strong connections (same category) - weight 1.0
     const categoryGroups: Record<string, string[]> = {};
     demoMetrics.forEach(m => {
       if (!categoryGroups[m.category]) categoryGroups[m.category] = [];
       categoryGroups[m.category].push(m.id);
     });
-    
+
     Object.values(categoryGroups).forEach(group => {
       for (let i = 0; i < group.length - 1; i++) {
         connections.push([group[i], group[i + 1], 1.0]);
       }
     });
-    
+
     // Semantic connections (meaningful relationships) - weight 0.6
     // Team-Engagement ↔ Satisfaction (people metrics influence each other)
     connections.push(['team-engagement', 'satisfaction', 0.6]);
     connections.push(['satisfaction', 'clarity', 0.6]);
     connections.push(['team-engagement', 'clarity', 0.6]);
-    
+
     // Process efficiency ↔ Velocity (process metrics)
     connections.push(['process-efficiency', 'velocity', 0.6]);
-    
+
     // Cross-category semantic links (workload affects satisfaction)
     connections.push(['workload', 'satisfaction', 0.4]);
     connections.push(['clarity', 'process-efficiency', 0.4]);
     connections.push(['team-engagement', 'velocity', 0.4]);
-    
+
     return connections;
   };
 
@@ -498,7 +562,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     const centerX = 50;
     const centerY = 50;
     const radius = 35;
-    
+
     metrics.forEach((metric, index) => {
       const angle = (index / metrics.length) * Math.PI * 2 - Math.PI / 2;
       const variation = (Math.sin(index * 1.3) * 0.3 + 1) * radius;
@@ -507,7 +571,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         y: centerY + Math.sin(angle) * variation
       };
     });
-    
+
     return positions;
   };
 
@@ -539,24 +603,24 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   return (
     <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden min-h-screen"
       style={{ background: 'linear-gradient(135deg, #030806 0%, #040a08 50%, #030806 100%)' }}>
-      
+
       {/* Premium Background with parallax stars */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
         <defs>
           <radialGradient id="saimorGlow" cx="50%" cy="30%" r="60%">
-            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.05" />
+            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.08" />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
         </defs>
         <rect width="100%" height="100%" fill="url(#saimorGlow)" />
-        {Array.from({ length: isMobile ? 20 : 40 }).map((_, i) => {
+        {Array.from({ length: isMobile ? 30 : 60 }).map((_, i) => {
           const seededRandom = (seed: number) => {
             const x = Math.sin(seed + i * 7.3) * 10000;
             return x - Math.floor(x);
           };
           const cx = seededRandom(i) * 100;
           const cy = seededRandom(i + 100) * 100;
-          const r = seededRandom(i + 200) * 1.5 + 0.3;
+          const r = seededRandom(i + 200) * 1.8 + 0.3;
           return (
             <motion.circle
               key={i}
@@ -564,8 +628,16 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               cy={`${cy}%`}
               r={r}
               fill={i % 3 === 0 ? "#D4A857" : "#4A6741"}
-              animate={{ opacity: [0.1, 0.5, 0.1] }}
-              transition={{ duration: 3 + (i % 5), repeat: Infinity, delay: (i % 20) * 0.1 }}
+              animate={{
+                opacity: [0.1, 0.6, 0.1],
+                x: safeMousePosition.x * (r * 0.5),
+                y: safeMousePosition.y * (r * 0.5)
+              }}
+              transition={{
+                opacity: { duration: 3 + (i % 5), repeat: Infinity, delay: (i % 20) * 0.1 },
+                x: { type: 'spring', stiffness: 50, damping: 20 },
+                y: { type: 'spring', stiffness: 50, damping: 20 }
+              }}
             />
           );
         })}
@@ -615,7 +687,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             {content.subtitle}
           </p>
           <p className="text-sm text-white/50 max-w-2xl mx-auto italic leading-relaxed">
-            {locale === 'de' 
+            {locale === 'de'
               ? 'Kein Spiegel. Ein Gedächtnis. Môra erinnert sich an Muster und Zusammenhänge.'
               : 'Not a mirror. A memory. Môra remembers patterns and connections.'}
           </p>
@@ -819,6 +891,33 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   )}
                 </motion.button>
               </motion.div>
+
+              {/* Contextual Suggestions */}
+              <AnimatePresence>
+                {selectedCard && content.suggestedQuestions[selectedCard] && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="pt-2"
+                  >
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest mb-2 pl-4">
+                      {locale === 'de' ? 'Môra empfiehlt diese Analyse:' : 'Môra suggests this analysis:'}
+                    </p>
+                    <motion.button
+                      onClick={() => handleAskMora(content.suggestedQuestions[selectedCard])}
+                      className="w-full p-3 rounded-xl text-left border border-[#D4A857]/40 bg-[#D4A857]/5 hover:bg-[#D4A857]/10 transition-colors flex items-center gap-3 group"
+                      whileHover={{ x: 4 }}
+                      disabled={isAsking}
+                    >
+                      <Sparkles className="w-4 h-4 text-[#D4A857] group-hover:scale-125 transition-transform" />
+                      <span className="text-sm text-[#D4A857] font-medium italic">
+                        "{content.suggestedQuestions[selectedCard]}"
+                      </span>
+                    </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Right: Môra Response */}
@@ -858,7 +957,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                           )}
                         </div>
                         <p className="text-sm text-white/90 leading-relaxed">
-                          {moraResponse}
+                          {typedResponse}
+                          {isTyping && (
+                            <motion.span
+                              animate={{ opacity: [1, 0] }}
+                              transition={{ duration: 0.5, repeat: Infinity }}
+                              className="inline-block w-1 h-4 bg-[#D4A857] ml-1 align-middle"
+                            />
+                          )}
                         </p>
                       </div>
                     </div>
@@ -952,7 +1058,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 </motion.button>
               </div>
             )}
-            
+
             {/* Mobile Quick Info */}
             {isMobile && (
               <div className="text-center mb-4">
@@ -979,11 +1085,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.03 }}
                     onClick={() => setSelectedCard(isSelected ? null : metric.id)}
-                    className={`relative rounded-xl p-4 transition-all active:scale-[0.98] ${
-                      isSelected 
-                        ? 'bg-[#4A6741]/20 border-2 border-[#4A6741]' 
-                        : 'bg-black/30 border border-white/10'
-                    }`}
+                    className={`relative rounded-xl p-4 transition-all active:scale-[0.98] ${isSelected
+                      ? 'bg-[#4A6741]/20 border-2 border-[#4A6741]'
+                      : 'bg-black/30 border border-white/10'
+                      }`}
                     style={{ backdropFilter: 'blur(10px)' }}
                   >
                     {/* Compact Header Row */}
@@ -1054,434 +1159,543 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               })}
             </div>
           ) : (
-          /* DESKTOP VIEW - Full organic experience */
-          <AnimatePresence mode="wait">
-            {viewMode === 'folder' ? (
-              <motion.div
-                key="folder"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {sortedMetrics.map((metric, index) => {
-                  const StatusIcon = getStatusIcon(metric.status);
-                  const colors = getStatusColor(metric.status);
-                  const isHovered = hoveredCard === metric.id;
-                  const needsAttention = metric.status === 'warning' || metric.status === 'critical';
+            /* DESKTOP VIEW - Full organic experience */
+            <AnimatePresence mode="wait">
+              {viewMode === 'folder' ? (
+                <motion.div
+                  key="folder"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                  {sortedMetrics.map((metric, index) => {
+                    const StatusIcon = getStatusIcon(metric.status);
+                    const colors = getStatusColor(metric.status);
+                    const isHovered = hoveredCard === metric.id;
+                    const needsAttention = metric.status === 'warning' || metric.status === 'critical';
 
-                  const categoryColor = getCategoryColor(metric.category);
+                    const categoryColor = getCategoryColor(metric.category);
 
-                  return (
-                    <motion.div
-                      key={metric.id}
-                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
-                      className="relative group cursor-pointer transition-all duration-300"
-                      onMouseEnter={() => {
-                        setHoveredCard(metric.id);
-                        sendDashboardHoverEvent(true);
-                        emitCardVisited(metric.id);
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredCard(null);
-                        sendDashboardHoverEvent(false);
-                      }}
-                      onClick={() => setSelectedCard(selectedCard === metric.id ? null : metric.id)}
-                    >
-                      {/* Pulse animation for warnings */}
-                      {needsAttention && (
-                        <motion.div
-                          className={`absolute -inset-0.5 rounded-2xl ${colors.bg} opacity-50`}
-                          animate={{ scale: [1, 1.02, 1], opacity: [0.3, 0.5, 0.3] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                      )}
-
-                      {/* Premium Glassmorphic Card - Living memory, not static mirror */}
-                      <div className={`relative p-5 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${selectedCard === metric.id
-                        ? `bg-[#4A6741]/10 border-[#4A6741]/40 shadow-lg shadow-[#4A6741]/10`
-                        : `bg-black/40 ${colors.border} hover:border-white/30 hover:bg-black/50`
-                        } ${isHovered ? 'transform scale-[1.02] shadow-xl' : ''}`}
-                        style={glassCardStyle}>
-                        
-                        {/* Subtle pulse - memory is alive */}
-                        {isHovered && (
+                    return (
+                      <motion.div
+                        key={metric.id}
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
+                        className="relative group cursor-pointer transition-all duration-300"
+                        onMouseEnter={() => {
+                          setHoveredCard(metric.id);
+                          sendDashboardHoverEvent(true);
+                          emitCardVisited(metric.id);
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredCard(null);
+                          sendDashboardHoverEvent(false);
+                        }}
+                        onClick={() => setSelectedCard(selectedCard === metric.id ? null : metric.id)}
+                      >
+                        {/* Pulse animation for warnings */}
+                        {needsAttention && (
                           <motion.div
-                            className="absolute inset-0 rounded-2xl"
-                            style={{
-                              background: `radial-gradient(circle at 50% 50%, ${categoryColor}05 0%, transparent 70%)`,
-                              border: `1px solid ${categoryColor}20`
-                            }}
-                            animate={{
-                              opacity: [0.3, 0.6, 0.3],
-                              scale: [1, 1.02, 1]
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
+                            className={`absolute -inset-0.5 rounded-2xl ${colors.bg} opacity-50`}
+                            animate={{ scale: [1, 1.02, 1], opacity: [0.3, 0.5, 0.3] }}
+                            transition={{ duration: 2, repeat: Infinity }}
                           />
                         )}
 
-                        {/* Metric Header */}
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-11 h-11 rounded-xl ${colors.bg} border ${colors.border} flex items-center justify-center shadow-lg ${colors.glow}`}>
-                              <StatusIcon size={20} className={colors.text} />
-                            </div>
-                            <div>
-                              <h3 className="text-sm font-medium text-white/90">{metric.label}</h3>
-                              <p className="text-[10px] text-white/40 font-mono">{metric.category}</p>
-                            </div>
-                          </div>
-                          <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full border ${colors.bg} ${colors.border} ${colors.text} text-[10px] font-mono`}>
-                            <StatusIcon size={10} />
-                            <span>{metric.status.toUpperCase()}</span>
-                          </div>
-                        </div>
+                        {/* Premium Glassmorphic Card - Living memory, not static mirror */}
+                        <div className={`relative p-5 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${selectedCard === metric.id
+                          ? `bg-[#4A6741]/10 border-[#4A6741]/40 shadow-lg shadow-[#4A6741]/10`
+                          : `bg-black/40 ${colors.border} hover:border-white/30 hover:bg-black/50`
+                          } ${isHovered ? 'transform scale-[1.02] shadow-xl' : ''}`}
+                          style={glassCardStyle}>
 
-                        {/* Health Score Bar */}
-                        <div className="mb-4">
-                          <div className="flex items-center justify-between text-xs mb-1.5">
-                            <span className="text-white/50">{content.healthScore}</span>
-                            <span className={`${colors.text} font-mono font-medium`}>{metric.value}%</span>
-                          </div>
-                          <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden">
-                            <motion.div
-                              className={`h-full rounded-full ${metric.value >= 80 ? 'bg-gradient-to-r from-[#4A6741] to-[#5D7C54]' :
-                                metric.value >= 60 ? 'bg-gradient-to-r from-[#D4A857] to-[#E6C897]' :
-                                  'bg-gradient-to-r from-[#E85D75] to-[#F87171]'
-                                }`}
-                              initial={{ width: 0 }}
-                              animate={{ width: `${metric.value}%` }}
-                              transition={{ duration: 1, delay: index * 0.05, ease: 'easeOut' }}
-                            />
-                          </div>
-                        </div>
-
-                        {/* Metrics Grid */}
-                        <div className="grid grid-cols-4 gap-2">
-                          {[
-                            { icon: Building2, label: content.depts, value: metric.departmentCount || 0 },
-                            { icon: Activity, label: content.spaces, value: metric.spaceCount || 0 },
-                            { icon: FolderOpen, label: content.folders, value: metric.folderCount || 0 },
-                            { icon: Zap, label: content.nodes, value: metric.nodeCount || 0 },
-                          ].map((item) => (
-                            <div key={item.label} className="p-2 rounded-lg bg-black/30 text-center">
-                              <item.icon size={10} className="text-white/30 mx-auto mb-1" />
-                              <div className="text-sm font-mono text-[#4A6741]">{item.value}</div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Change Indicator */}
-                        <div className="flex items-center gap-2 mt-4">
-                          {metric.change > 0 ? (
-                            <TrendingUp className="w-4 h-4 text-[#4A6741]" />
-                          ) : (
-                            <TrendingDown className="w-4 h-4 text-[#E85D75]" />
-                          )}
-                          <span
-                            className="text-sm font-semibold"
-                            style={{ color: metric.change > 0 ? '#4A6741' : '#E85D75' }}
-                          >
-                            {metric.change > 0 ? '+' : ''}{metric.change}%
-                          </span>
-                        </div>
-
-                        {/* Bottom Row */}
-                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-                          <div className="flex items-center gap-2 text-[10px] text-white/40">
-                            <Users size={11} />
-                            <span>{metric.activeUsers} {content.activeUsers}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-[10px] text-white/40">
-                            <Clock size={11} />
-                            <span>{formatTimeAgo(metric.lastActivity || null)}</span>
-                          </div>
-                        </div>
-
-                        {/* Hover Quick Actions */}
-                        <AnimatePresence>
+                          {/* Subtle pulse - memory is alive */}
                           {isHovered && (
                             <motion.div
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 5 }}
-                              className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10"
-                            >
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedCard(metric.id);
-                                }}
-                                className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1 cursor-pointer"
-                              >
-                                <FileText size={10} />
-                                {locale === 'de' ? 'Bericht' : 'Report'}
-                              </button>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedCard(metric.id);
-                                }}
-                                className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1 cursor-pointer"
-                              >
-                                <Eye size={10} />
-                                {locale === 'de' ? 'Details' : 'Details'}
-                              </button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="field"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="relative h-[520px] sm:h-[600px] rounded-3xl overflow-hidden"
-                style={glassPanelStyle}
-              >
-                {/* Universe View - Network Visualization */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                  <defs>
-                    <linearGradient id="universeConnectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="rgba(74, 103, 65, 0.6)" />
-                      <stop offset="50%" stopColor="rgba(212, 180, 131, 0.8)" />
-                      <stop offset="100%" stopColor="rgba(74, 103, 65, 0.6)" />
-                    </linearGradient>
-                    <filter id="universeShimmer">
-                      <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-                      <feColorMatrix
-                        type="matrix"
-                        values="1 0 0 0 0
-                                0 1 0 0 0
-                                0 0 1 0 0
-                                0 0 0 18 -7"
-                      />
-                    </filter>
-                  </defs>
-
-                  {/* Mycelium connections - organic, living network */}
-                  {getSemanticConnections().map(([from, to, weight], i) => {
-                    const fromPos = universePositions[from];
-                    const toPos = universePositions[to];
-                    if (!fromPos || !toPos) return null;
-
-                    const isActive = hoveredCard === from || hoveredCard === to;
-                    const baseOpacity = weight * 0.5; // Stronger connections are more visible
-                    const baseWidth = weight * 2; // Stronger connections are thicker
-
-                    // Organic curve (not straight line) - mycelium grows organically
-                    const midX = (fromPos.x + toPos.x) / 2;
-                    const midY = (fromPos.y + toPos.y) / 2;
-                    const offset = (Math.sin(i * 2.3) * 3) / weight; // Organic variation
-                    const cpX1 = fromPos.x + (midX - fromPos.x) * 0.5 + offset;
-                    const cpY1 = fromPos.y + (midY - fromPos.y) * 0.5 + offset * 0.7;
-                    const cpX2 = midX + (toPos.x - midX) * 0.5 + offset;
-                    const cpY2 = midY + (toPos.y - midY) * 0.5 - offset * 0.7;
-
-                    return (
-                      <motion.g key={`${from}-${to}-${i}`}>
-                        {/* Organic curved path (mycelium thread) */}
-                        <motion.path
-                          d={`M ${fromPos.x}%,${fromPos.y}% C ${cpX1}%,${cpY1}% ${cpX2}%,${cpY2}% ${toPos.x}%,${toPos.y}%`}
-                          fill="none"
-                          stroke="url(#universeConnectionGradient)"
-                          strokeWidth={isActive ? baseWidth * 2 : baseWidth}
-                          strokeLinecap="round"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                          animate={{
-                            pathLength: 1,
-                            opacity: isActive ? baseOpacity * 1.5 : baseOpacity
-                          }}
-                          transition={{ 
-                            pathLength: { duration: 1.2, delay: i * 0.08, ease: "easeOut" },
-                            opacity: { duration: 0.5 }
-                          }}
-                          style={{ 
-                            filter: isActive ? 'url(#universeShimmer)' : 'none',
-                            strokeDasharray: weight < 0.5 ? '4,4' : 'none' // Dashed for weak connections
-                          }}
-                        />
-                        {/* Pulsing signals traveling along mycelium thread */}
-                        {isActive && [0, 0.33, 0.66].map((progress, idx) => {
-                          // Calculate position along curve using progress
-                          const t = progress;
-                          const t2 = t * t;
-                          const t3 = t2 * t;
-                          const mt = 1 - t;
-                          const mt2 = mt * mt;
-                          const mt3 = mt2 * mt;
-                          
-                          const x = mt3 * fromPos.x + 3 * mt2 * t * cpX1 + 3 * mt * t2 * cpX2 + t3 * toPos.x;
-                          const y = mt3 * fromPos.y + 3 * mt2 * t * cpY1 + 3 * mt * t2 * cpY2 + t3 * toPos.y;
-                          
-                          return (
-                            <motion.circle
-                              key={`signal-${idx}`}
-                              r="3"
-                              fill="#D4A857"
-                              cx={`${x}%`}
-                              cy={`${y}%`}
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ 
-                                opacity: [0, 1, 1, 0],
-                                scale: [0, 1, 1, 0]
+                              className="absolute inset-0 rounded-2xl"
+                              style={{
+                                background: `radial-gradient(circle at 50% 50%, ${categoryColor}05 0%, transparent 70%)`,
+                                border: `1px solid ${categoryColor}20`
+                              }}
+                              animate={{
+                                opacity: [0.3, 0.6, 0.3],
+                                scale: [1, 1.02, 1]
                               }}
                               transition={{
                                 duration: 2,
                                 repeat: Infinity,
-                                ease: "linear",
-                                delay: idx * 0.67,
-                                times: [0, 0.1, 0.9, 1]
+                                ease: "easeInOut"
                               }}
                             />
-                          );
-                        })}
-                      </motion.g>
+                          )}
+
+                          {/* Metric Header */}
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className={`w-11 h-11 rounded-xl ${colors.bg} border ${colors.border} flex items-center justify-center shadow-lg ${colors.glow}`}>
+                                <StatusIcon size={20} className={colors.text} />
+                              </div>
+                              <div>
+                                <h3 className="text-sm font-medium text-white/90">{metric.label}</h3>
+                                <p className="text-[10px] text-white/40 font-mono">{metric.category}</p>
+                              </div>
+                            </div>
+                            <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full border ${colors.bg} ${colors.border} ${colors.text} text-[10px] font-mono`}>
+                              <StatusIcon size={10} />
+                              <span>{metric.status.toUpperCase()}</span>
+                            </div>
+                          </div>
+
+                          {/* Health Score Bar */}
+                          <div className="mb-4">
+                            <div className="flex items-center justify-between text-xs mb-1.5">
+                              <span className="text-white/50">{content.healthScore}</span>
+                              <span className={`${colors.text} font-mono font-medium`}>{metric.value}%</span>
+                            </div>
+                            <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden">
+                              <motion.div
+                                className={`h-full rounded-full ${metric.value >= 80 ? 'bg-gradient-to-r from-[#4A6741] to-[#5D7C54]' :
+                                  metric.value >= 60 ? 'bg-gradient-to-r from-[#D4A857] to-[#E6C897]' :
+                                    'bg-gradient-to-r from-[#E85D75] to-[#F87171]'
+                                  }`}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${metric.value}%` }}
+                                transition={{ duration: 1, delay: index * 0.05, ease: 'easeOut' }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Metrics Grid */}
+                          <div className="grid grid-cols-4 gap-2">
+                            {[
+                              { icon: Building2, label: content.depts, value: metric.departmentCount || 0 },
+                              { icon: Activity, label: content.spaces, value: metric.spaceCount || 0 },
+                              { icon: FolderOpen, label: content.folders, value: metric.folderCount || 0 },
+                              { icon: Zap, label: content.nodes, value: metric.nodeCount || 0 },
+                            ].map((item) => (
+                              <div key={item.label} className="p-2 rounded-lg bg-black/30 text-center">
+                                <item.icon size={10} className="text-white/30 mx-auto mb-1" />
+                                <div className="text-sm font-mono text-[#4A6741]">{item.value}</div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Change Indicator */}
+                          <div className="flex items-center gap-2 mt-4">
+                            {metric.change > 0 ? (
+                              <TrendingUp className="w-4 h-4 text-[#4A6741]" />
+                            ) : (
+                              <TrendingDown className="w-4 h-4 text-[#E85D75]" />
+                            )}
+                            <span
+                              className="text-sm font-semibold"
+                              style={{ color: metric.change > 0 ? '#4A6741' : '#E85D75' }}
+                            >
+                              {metric.change > 0 ? '+' : ''}{metric.change}%
+                            </span>
+                          </div>
+
+                          {/* Bottom Row */}
+                          <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
+                            <div className="flex items-center gap-2 text-[10px] text-white/40">
+                              <Users size={11} />
+                              <span>{metric.activeUsers} {content.activeUsers}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-[10px] text-white/40">
+                              <Clock size={11} />
+                              <span>{formatTimeAgo(metric.lastActivity || null)}</span>
+                            </div>
+                          </div>
+
+                          {/* Hover Quick Actions */}
+                          <AnimatePresence>
+                            {isHovered && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 5 }}
+                                className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10"
+                              >
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedCard(metric.id);
+                                  }}
+                                  className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1 cursor-pointer"
+                                >
+                                  <FileText size={10} />
+                                  {locale === 'de' ? 'Bericht' : 'Report'}
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedCard(metric.id);
+                                  }}
+                                  className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1 cursor-pointer"
+                                >
+                                  <Eye size={10} />
+                                  {locale === 'de' ? 'Details' : 'Details'}
+                                </button>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
                     );
                   })}
-                </svg>
-
-                {/* Metric nodes */}
-                {demoMetrics.map((metric, index) => {
-                  const pos = universePositions[metric.id];
-                  if (!pos) return null;
-                  const StatusIcon = getStatusIcon(metric.status);
-                  const categoryColor = getCategoryColor(metric.category);
-                  const isHovered = hoveredCard === metric.id;
-
-                  return (
-                    <motion.div
-                      key={metric.id}
-                      className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4A857]"
-                      style={{
-                        left: `${pos.x}%`,
-                        top: `${pos.y}%`,
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: isHovered ? 10 : 5
-                      }}
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: index * 0.1, type: 'spring', stiffness: 200 }}
-                      onMouseEnter={() => {
-                        setHoveredCard(metric.id);
-                        sendDashboardHoverEvent(true);
-                        emitCardVisited(metric.id);
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredCard(null);
-                        sendDashboardHoverEvent(false);
-                      }}
-                      onFocus={() => {
-                        setHoveredCard(metric.id);
-                        sendDashboardHoverEvent(true);
-                        emitCardVisited(metric.id);
-                      }}
-                      onBlur={() => {
-                        setHoveredCard(null);
-                        sendDashboardHoverEvent(false);
-                      }}
-                      whileHover={{ scale: 1.15 }}
-                      tabIndex={0}
-                    >
-                      {/* Glow effect */}
-                      {isHovered && (
-                        <motion.div
-                          className="absolute inset-0 rounded-full"
-                          style={{
-                            background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
-                            filter: 'blur(30px)',
-                            width: 150,
-                            height: 150,
-                            left: '50%',
-                            top: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            zIndex: -1
-                          }}
-                          animate={{
-                            scale: [1, 1.3, 1],
-                            opacity: [0.6, 0.9, 0.6]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="field"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="relative h-[520px] sm:h-[600px] rounded-3xl overflow-hidden"
+                  style={glassPanelStyle}
+                >
+                  {/* Universe View - Network Visualization */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                    <defs>
+                      <linearGradient id="universeConnectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="rgba(74, 103, 65, 0.6)" />
+                        <stop offset="50%" stopColor="rgba(212, 180, 131, 0.8)" />
+                        <stop offset="100%" stopColor="rgba(74, 103, 65, 0.6)" />
+                      </linearGradient>
+                      <filter id="universeShimmer">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                        <feColorMatrix
+                          type="matrix"
+                          values="1 0 0 0 0
+                                0 1 0 0 0
+                                0 0 1 0 0
+                                0 0 0 18 -7"
                         />
-                      )}
+                      </filter>
+                    </defs>
 
-                      {/* Node orb - living memory, not static mirror */}
+                    {/* Mycelium connections - organic, living network */}
+                    {getSemanticConnections().map(([from, to, weight], i) => {
+                      const fromPos = universePositions[from];
+                      const toPos = universePositions[to];
+                      if (!fromPos || !toPos) return null;
+
+                      const isActive = hoveredCard === from || hoveredCard === to;
+                      const baseOpacity = weight * 0.5; // Stronger connections are more visible
+                      const baseWidth = weight * 2; // Stronger connections are thicker
+
+                      // Organic curve (not straight line) - mycelium grows organically
+                      const midX = (fromPos.x + toPos.x) / 2;
+                      const midY = (fromPos.y + toPos.y) / 2;
+                      const offset = (Math.sin(i * 2.3) * 3) / weight; // Organic variation
+                      const cpX1 = fromPos.x + (midX - fromPos.x) * 0.5 + offset;
+                      const cpY1 = fromPos.y + (midY - fromPos.y) * 0.5 + offset * 0.7;
+                      const cpX2 = midX + (toPos.x - midX) * 0.5 + offset;
+                      const cpY2 = midY + (toPos.y - midY) * 0.5 - offset * 0.7;
+
+                      return (
+                        <motion.g key={`${from}-${to}-${i}`}>
+                          {/* Organic curved path (mycelium thread) */}
+                          <motion.path
+                            d={`M ${fromPos.x + (isActive ? safeMousePosition.x * 0.2 : safeMousePosition.x * 0.1)}%,${fromPos.y + (isActive ? safeMousePosition.y * 0.2 : safeMousePosition.y * 0.1)}% C ${cpX1 + safeMousePosition.x * 0.15}%,${cpY1 + safeMousePosition.y * 0.15}% ${cpX2 + safeMousePosition.x * 0.15}%,${cpY2 + safeMousePosition.y * 0.15}% ${toPos.x + (isActive ? safeMousePosition.x * 0.2 : safeMousePosition.x * 0.1)}%,${toPos.y + (isActive ? safeMousePosition.y * 0.2 : safeMousePosition.y * 0.1)}%`}
+                            fill="none"
+                            stroke="url(#universeConnectionGradient)"
+                            strokeWidth={isActive ? baseWidth * 2 : baseWidth}
+                            strokeLinecap="round"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            animate={{
+                              pathLength: 1,
+                              opacity: isActive ? baseOpacity * 1.5 : baseOpacity
+                            }}
+                            transition={{
+                              pathLength: { duration: 1.2, delay: i * 0.08, ease: "easeOut" },
+                              opacity: { duration: 0.5 }
+                            }}
+                            style={{
+                              filter: isActive ? 'url(#universeShimmer)' : 'none',
+                              strokeDasharray: weight < 0.5 ? '4,4' : 'none' // Dashed for weak connections
+                            }}
+                          />
+                          {/* Pulsing signals traveling along mycelium thread */}
+                          {isActive && [0, 0.33, 0.66].map((progress, idx) => {
+                            // Calculate position along curve using progress
+                            const t = progress;
+                            const t2 = t * t;
+                            const t3 = t2 * t;
+                            const mt = 1 - t;
+                            const mt2 = mt * mt;
+                            const mt3 = mt2 * mt;
+
+                            const x = mt3 * fromPos.x + 3 * mt2 * t * cpX1 + 3 * mt * t2 * cpX2 + t3 * toPos.x;
+                            const y = mt3 * fromPos.y + 3 * mt2 * t * cpY1 + 3 * mt * t2 * cpY2 + t3 * toPos.y;
+
+                            return (
+                              <motion.circle
+                                key={`signal-${idx}`}
+                                r="3"
+                                fill="#D4A857"
+                                cx={`${x}%`}
+                                cy={`${y}%`}
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{
+                                  opacity: [0, 1, 1, 0],
+                                  scale: [0, 1, 1, 0]
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  ease: "linear",
+                                  delay: idx * 0.67,
+                                  times: [0, 0.1, 0.9, 1]
+                                }}
+                              />
+                            );
+                          })}
+                        </motion.g>
+                      );
+                    })}
+                  </svg>
+
+                  {/* Metric nodes */}
+                  {demoMetrics.map((metric, index) => {
+                    const pos = universePositions[metric.id];
+                    if (!pos) return null;
+                    const StatusIcon = getStatusIcon(metric.status);
+                    const categoryColor = getCategoryColor(metric.category);
+                    const isHovered = hoveredCard === metric.id;
+
+                    return (
                       <motion.div
-                        className="relative w-20 h-20 rounded-full flex flex-col items-center justify-center"
+                        key={metric.id}
+                        className="absolute cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D4A857]"
                         style={{
-                          background: `radial-gradient(circle at 30% 30%, ${categoryColor}FF 0%, ${categoryColor}CC 50%, ${categoryColor}88 100%)`,
-                          boxShadow: `0 8px 24px ${categoryColor}40, 0 0 30px ${categoryColor}30, inset 0 2px 4px rgba(255,255,255,0.2)`,
-                          border: `2px solid ${isHovered ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`
+                          left: `${pos.x}%`,
+                          top: `${pos.y}%`,
+                          transform: 'translate(-50%, -50%)',
+                          x: isHovered ? safeMousePosition.x * 0.5 : safeMousePosition.x * 0.2,
+                          y: isHovered ? safeMousePosition.y * 0.5 : safeMousePosition.y * 0.2,
+                          zIndex: isHovered ? 10 : 5
                         }}
-                        animate={{
-                          scale: isHovered ? 1.15 : [1, 1.02, 1],
-                          boxShadow: isHovered 
-                            ? `0 12px 32px ${categoryColor}60, 0 0 40px ${categoryColor}40`
-                            : `0 8px 24px ${categoryColor}40, 0 0 20px ${categoryColor}30`
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: index * 0.1, type: 'spring', stiffness: 200 }}
+                        onMouseEnter={() => {
+                          setHoveredCard(metric.id);
+                          sendDashboardHoverEvent(true);
+                          emitCardVisited(metric.id);
                         }}
-                        transition={{
-                          scale: { duration: isHovered ? 0.2 : 3, repeat: isHovered ? 0 : Infinity },
-                          boxShadow: { duration: 0.2 }
+                        onMouseLeave={() => {
+                          setHoveredCard(null);
+                          sendDashboardHoverEvent(false);
                         }}
+                        onFocus={() => {
+                          setHoveredCard(metric.id);
+                          sendDashboardHoverEvent(true);
+                          emitCardVisited(metric.id);
+                        }}
+                        onBlur={() => {
+                          setHoveredCard(null);
+                          sendDashboardHoverEvent(false);
+                        }}
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          setSelectedCard(metric.id === selectedCard ? null : metric.id);
+                          if (metric.id !== selectedCard) {
+                            window.dispatchEvent(new CustomEvent('mora-node-select', { detail: metric.id }));
+                          }
+                        }}
+                        tabIndex={0}
                       >
-                        {/* Inner glow - memory pulse */}
-                        <motion.div
-                          className="absolute inset-0 rounded-full"
-                          style={{
-                            background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
-                            opacity: 0.6
-                          }}
-                          animate={{
-                            opacity: [0.4, 0.7, 0.4],
-                            scale: [1, 1.1, 1]
-                          }}
-                          transition={{
-                            duration: 2.5,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        />
-                        <StatusIcon size={24} className="text-white mb-1 relative z-10" />
-                        <span className="text-xs font-bold text-white relative z-10">{metric.value}%</span>
-                      </motion.div>
-
-                      {/* Label on hover */}
-                      <AnimatePresence>
+                        {/* Glow effect */}
                         {isHovered && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-4 py-2 rounded-lg whitespace-nowrap"
+                            className="absolute inset-0 rounded-full"
                             style={{
-                              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 22, 18, 0.9) 100%)',
-                              border: `1px solid ${categoryColor}`,
-                              boxShadow: `0 8px 24px rgba(0, 0, 0, 0.5)`
+                              background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
+                              filter: 'blur(30px)',
+                              width: 150,
+                              height: 150,
+                              left: '50%',
+                              top: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              zIndex: -1
                             }}
-                          >
-                            <p className="text-sm font-semibold text-white">{metric.label}</p>
-                            <p className="text-xs text-white/60 mt-1">{categoryColor === '#4A6741' ? (locale === 'de' ? 'Menschen' : 'People') : categoryColor === '#5D7C54' ? (locale === 'de' ? 'Prozesse' : 'Processes') : (locale === 'de' ? 'Ressourcen' : 'Resources')}</p>
-                          </motion.div>
+                            animate={{
+                              scale: [1, 1.3, 1],
+                              opacity: [0.6, 0.9, 0.6]
+                            }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          />
                         )}
-                      </AnimatePresence>
-                    </motion.div>
-                  );
-                })}
+
+                        {/* Node orb - living memory, not static mirror */}
+                        <motion.div
+                          className="relative w-20 h-20 rounded-full flex flex-col items-center justify-center"
+                          style={{
+                            background: `radial-gradient(circle at 30% 30%, ${categoryColor}FF 0%, ${categoryColor}CC 50%, ${categoryColor}88 100%)`,
+                            boxShadow: `0 8px 24px ${categoryColor}40, 0 0 30px ${categoryColor}30, inset 0 2px 4px rgba(255,255,255,0.2)`,
+                            border: `2px solid ${isHovered ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.2)'}`
+                          }}
+                          animate={{
+                            scale: isHovered ? 1.15 : [1, 1.02, 1],
+                            boxShadow: isHovered
+                              ? `0 12px 32px ${categoryColor}60, 0 0 40px ${categoryColor}40`
+                              : `0 8px 24px ${categoryColor}40, 0 0 20px ${categoryColor}30`
+                          }}
+                          transition={{
+                            scale: { duration: isHovered ? 0.2 : 3, repeat: isHovered ? 0 : Infinity },
+                            boxShadow: { duration: 0.2 }
+                          }}
+                        >
+                          {/* Inner glow - memory pulse */}
+                          <motion.div
+                            className="absolute inset-0 rounded-full"
+                            style={{
+                              background: `radial-gradient(circle, ${categoryColor}40 0%, transparent 70%)`,
+                              opacity: 0.6
+                            }}
+                            animate={{
+                              opacity: [0.4, 0.7, 0.4],
+                              scale: [1, 1.1, 1]
+                            }}
+                            transition={{
+                              duration: 2.5,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          />
+                          <StatusIcon size={24} className="text-white mb-1 relative z-10" />
+                          <span className="text-xs font-bold text-white relative z-10">{metric.value}%</span>
+                        </motion.div>
+
+                        {/* Label on hover */}
+                        <AnimatePresence>
+                          {isHovered && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 10 }}
+                              className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-4 py-2 rounded-lg whitespace-nowrap"
+                              style={{
+                                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 22, 18, 0.9) 100%)',
+                                border: `1px solid ${categoryColor}`,
+                                boxShadow: `0 8px 24px rgba(0, 0, 0, 0.5)`
+                              }}
+                            >
+                              <p className="text-sm font-semibold text-white">{metric.label}</p>
+                              <p className="text-xs text-white/60 mt-1">{categoryColor === '#4A6741' ? (locale === 'de' ? 'Menschen' : 'People') : categoryColor === '#5D7C54' ? (locale === 'de' ? 'Prozesse' : 'Processes') : (locale === 'de' ? 'Ressourcen' : 'Resources')}</p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+
+          {/* Metric Detail Overlay (selectedCard) */}
+          <AnimatePresence>
+            {selectedCard && (
+              <motion.div
+                initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+                animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
+                exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+                className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+                onClick={() => setSelectedCard(null)}
+              >
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                  className="w-full max-w-2xl rounded-3xl overflow-hidden relative"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 22, 18, 0.85) 100%)',
+                    border: '1px solid rgba(212, 180, 131, 0.3)',
+                    boxShadow: '0 32px 64px rgba(0, 0, 0, 0.5)'
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Close button */}
+                  <button
+                    onClick={() => setSelectedCard(null)}
+                    className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+
+                  <div className="p-8">
+                    {(() => {
+                      const metric = demoMetrics.find(m => m.id === selectedCard);
+                      if (!metric) return null;
+                      const colors = getStatusColor(metric.status);
+                      const Icon = getStatusIcon(metric.status);
+                      return (
+                        <>
+                          <div className="flex items-center gap-4 mb-8">
+                            <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center shadow-lg ${colors.glow}`}>
+                              <Icon size={32} className={colors.text} />
+                            </div>
+                            <div>
+                              <h3 className="text-3xl font-bold text-white mb-1" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                                {metric.label}
+                              </h3>
+                              <div className="flex items-center gap-4">
+                                <span className={`text-xl font-mono ${colors.text}`}>{metric.value}%</span>
+                                <span className="text-white/40 text-sm uppercase tracking-widest">{metric.category}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                            {[
+                              { label: content.depts, value: metric.departmentCount, icon: Building2 },
+                              { label: content.spaces, value: metric.spaceCount, icon: Activity },
+                              { label: content.folders, value: metric.folderCount, icon: FolderOpen },
+                              { label: content.nodes, value: metric.nodeCount, icon: Zap }
+                            ].map(stat => (
+                              <div key={stat.label} className="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                                <stat.icon className="w-4 h-4 text-[#D4A857] mx-auto mb-2 opacity-60" />
+                                <div className="text-xl font-mono text-white mb-1">{stat.value}</div>
+                                <div className="text-[10px] text-white/40 uppercase tracking-tighter">{stat.label}</div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="space-y-6">
+                            <div className="p-5 rounded-2xl bg-gradient-to-br from-[#4A6741]/20 to-transparent border border-[#4A6741]/30">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Sparkles className="w-4 h-4 text-[#D4A857]" />
+                                <h4 className="text-sm font-bold text-white uppercase tracking-wider">{locale === 'de' ? 'Môra Tiefen-Analyse' : 'Môra Deep Analysis'}</h4>
+                              </div>
+                              <p className="text-sm text-white/80 leading-relaxed italic">
+                                {content.suggestedQuestions[metric.id]}
+                              </p>
+                              <motion.button
+                                onClick={() => {
+                                  handleAskMora(content.suggestedQuestions[metric.id]);
+                                  setSelectedCard(null);
+                                  document.getElementById('mora-dashboard')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                className="mt-4 px-6 py-2 rounded-lg bg-[#D4A857]/20 border border-[#D4A857]/40 text-[#D4A857] text-xs font-bold hover:bg-[#D4A857]/30 transition-all"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                {locale === 'de' ? 'Diese Analyse starten' : 'Start this analysis'}
+                              </motion.button>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
-          )}
         </motion.div>
 
         {/* Môra Insight Panel */}

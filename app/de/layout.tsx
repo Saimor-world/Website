@@ -38,10 +38,10 @@ export default function RouteLayout({ children }: Readonly<{ children: ReactNode
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gold-primary text-forest-primary px-4 py-2 rounded-md z-50 font-semibold"
         tabIndex={1}
       >
-        Skip to main content
+        Zum Hauptinhalt springen
       </a>
       <Navbar locale="de" />
-      <main id="main-content" className="" role="main">{children}</main>
+      <main id="main-content" className="pt-24" role="main">{children}</main>
       <Footer locale="de" />
     </div>
   )

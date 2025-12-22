@@ -12,7 +12,7 @@ export default function Education({ locale }: Props) {
       icon: Users,
       title: t('Pulse Workshop', 'Pulse Workshop'),
       subtitle: t('"Digitaler Wandel"', '"Digital Transformation"'),
-      duration: t('3h intensiv fÃ¼r Lehrerkollegium', '3h intensive for teaching staff'),
+      duration: t('3h intensiv für Lehrerkollegium', '3h intensive for teaching staff'),
       color: '#D4A857'
     },
     {
@@ -34,8 +34,8 @@ export default function Education({ locale }: Props) {
   const testimonials = [
     {
       quote: t(
-        'SaimÃ´r hat uns geholfen, digitale Transformation greifbar zu machen â€“ fÃ¼r Lehrer UND SchÃ¼ler.',
-        'SaimÃ´r helped us make digital transformation tangible â€“ for teachers AND students.'
+        'Saimôr hat uns geholfen, digitale Transformation greifbar zu machen – für Lehrer UND Schüler.',
+        'Saimôr helped us make digital transformation tangible – for teachers AND students.'
       ),
       author: t('Schulleitung Gymnasium', 'School Management High School'),
       location: t('Musterstadt', 'Sample City')
@@ -53,7 +53,7 @@ export default function Education({ locale }: Props) {
   const examples = [
     {
       title: t('Realschule Bayern', 'Secondary School Bavaria'),
-      desc: t('Von Ãœberforderung zu Klarheit', 'From overwhelm to clarity'),
+      desc: t('Von Überforderung zu Klarheit', 'From overwhelm to clarity'),
       duration: t('6 Monate Orbit', '6 months Orbit'),
       icon: CheckCircle,
       color: '#4A6741'
@@ -67,7 +67,7 @@ export default function Education({ locale }: Props) {
     },
     {
       title: t('Berufsschule BW', 'Vocational School BW'),
-      desc: t('Digitales Dashboard fÃ¼r SchÃ¼ler-Feedback', 'Digital dashboard for student feedback'),
+      desc: t('Digitales Dashboard für Schüler-Feedback', 'Digital dashboard for student feedback'),
       duration: t('Systems', 'Systems'),
       icon: CheckCircle,
       color: '#5D7C54'
@@ -129,7 +129,7 @@ export default function Education({ locale }: Props) {
               backgroundClip: 'text'
             }}
           >
-            {t('Klarheit fÃ¼r Bildung', 'Clarity for Education')}
+            {t('Klarheit für Bildung', 'Clarity for Education')}
           </h2>
 
           <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
@@ -319,7 +319,7 @@ export default function Education({ locale }: Props) {
               border: '2px solid rgba(212, 180, 131, 0.4)'
             }}
           >
-            {t('GesprÃ¤ch Ã¼ber BildungslÃ¶sungen buchen', 'Book conversation about education solutions')}
+            {t('Gespräch über Bildungslösungen buchen', 'Book conversation about education solutions')}
           </motion.a>
         </motion.div>
       </div>

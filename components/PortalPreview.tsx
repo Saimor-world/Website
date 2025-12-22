@@ -64,65 +64,92 @@ export default function PortalPreview({ locale }: PortalPreviewProps) {
   const text = copy[locale];
 
   return (
-    <section className="relative overflow-hidden rounded-[48px] border border-white/10 bg-white/5 backdrop-blur-2xl p-8 sm:p-10 shadow-[0_35px_90px_rgba(0,0,0,0.4)]">
+    <section className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-black/40 backdrop-blur-3xl p-8 sm:p-12 shadow-[0_32px_128px_rgba(0,0,0,0.6)]">
+      {/* Decorative background orbs */}
       <motion.div
-        className="absolute -top-24 -right-24 w-64 h-64 rounded-full opacity-30 blur-[120px]"
-        animate={{ scale: [1, 1.15, 1] }}
-        transition={{ duration: 16, repeat: Infinity }}
-        style={{
-          background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, transparent 70%)'
+        className="absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-20 blur-[120px]"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, 20, 0],
+          y: [0, -20, 0]
         }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        style={{ background: 'radial-gradient(circle, #D4A857 0%, transparent 70%)' }}
+      />
+      <motion.div
+        className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full opacity-20 blur-[120px]"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.1, 0.15, 0.1],
+          x: [0, -30, 0],
+          y: [0, 30, 0]
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        style={{ background: 'radial-gradient(circle, #4A6741 0%, transparent 70%)' }}
       />
 
-      <div className="relative z-10 space-y-6">
-        <div className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.4em] text-saimor-gold">
+      <div className="relative z-10 space-y-12">
+        <div className="max-w-3xl space-y-4">
+          <p className="text-xs uppercase tracking-[0.5em] text-[#D4A857] font-semibold">
             {text.eyebrow}
           </p>
           <h2
-            className="text-3xl sm:text-4xl font-semibold text-white"
+            className="text-4xl sm:text-5xl font-semibold text-white leading-tight"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
             {text.title}
           </h2>
-          <p className="text-base text-white/85 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed font-light">
             {text.subtitle}
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {text.cards.map((card, index) => (
             <motion.article
               key={card.title}
-              className="rounded-3xl border border-white/10 bg-white/8 p-5 sm:p-6"
-              initial={{ opacity: 0, y: 20 }}
+              className="group relative rounded-[2rem] border border-white/5 bg-white/[0.03] p-8 transition-all duration-500 hover:bg-white/[0.07] hover:border-white/20 hover:shadow-2xl hover:shadow-[#D4A857]/5"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
+              whileHover={{ y: -8 }}
             >
-              <span className="inline-flex items-center justify-center rounded-full border border-white/20 px-3 py-1 text-xs tracking-[0.3em] text-white/70 mb-4">
+              {/* Badge */}
+              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xs font-mono tracking-widest text-[#D4A857] group-hover:bg-[#D4A857]/10 group-hover:border-[#D4A857]/30 transition-colors">
                 {card.badge}
-              </span>
-              <h3 className="text-xl font-semibold text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              </div>
+
+              <h3 className="text-2xl font-semibold text-white mb-3" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 {card.title}
               </h3>
-              <p className="text-sm text-white/75 leading-relaxed">
+              <p className="text-sm text-white/60 leading-relaxed group-hover:text-white/80 transition-colors">
                 {card.body}
               </p>
+
+              {/* Subtle hover reveal line */}
+              <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D4A857]/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
             </motion.article>
           ))}
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between pt-8 border-t border-white/5">
           <Link
             href={locale === 'de' ? '/#kontakt' : '/en#kontakt'}
-            className="inline-flex items-center justify-center rounded-2xl border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white transition hover:bg-white/10 min-h-[44px]"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-white/10 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white/15 active:scale-95"
           >
-            {text.cta}
+            <span className="relative z-10">{text.cta}</span>
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:translate-x-full transition-transform duration-1000" />
           </Link>
-          <p className="text-xs text-white/60 uppercase tracking-[0.4em] text-center sm:text-right">
-            {text.note}
-          </p>
+          <div className="space-y-1 text-center sm:text-right">
+            <p className="text-xs text-[#D4A857]/60 uppercase tracking-[0.3em] font-medium">
+              Saimôr OS · System Status
+            </p>
+            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">
+              {text.note}
+            </p>
+          </div>
         </div>
       </div>
     </section>

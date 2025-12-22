@@ -32,13 +32,13 @@ export default function Lichtgespraech() {
       // Welcome message
       const welcome: Message = {
         id: 'welcome',
-        content: 'Willkommen im LichtgesprÃ¤ch. Ich bin hier, um Klarheit in Ihren Wandel zu bringen. Wie kann ich Sie heute begleiten?',
+        content: 'Willkommen im Lichtgespräch. Ich bin hier, um Klarheit in Ihren Wandel zu bringen. Wie kann ich Sie heute begleiten?',
         role: 'assistant',
         timestamp: new Date(),
         suggestions: [
-          'Was ist SaimÃ´r?',
+          'Was ist Saimôr?',
           'Wie funktioniert Orbit?',
-          'LÃ¶sungen fÃ¼r Schulen'
+          'Lösungen für Schulen'
         ]
       };
       setMessages([welcome]);
@@ -94,15 +94,15 @@ export default function Lichtgespraech() {
       setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {
-      console.error('LichtgesprÃ¤ch error:', error);
+      console.error('Lichtgespräch error:', error);
 
       // Fallback zu lokalem Chatbot
       const fallbackMessage: Message = {
         id: `msg_${Date.now()}_assistant`,
-        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuchen Sie es spÃ¤ter erneut oder buchen Sie direkt ein KlarheitsgesprÃ¤ch.',
+        content: 'Entschuldigung, ich bin gerade nicht erreichbar. Bitte versuchen Sie es später erneut oder buchen Sie direkt ein Klarheitsgespräch.',
         role: 'assistant',
         timestamp: new Date(),
-        suggestions: ['KlarheitsgesprÃ¤ch buchen']
+        suggestions: ['Klarheitsgespräch buchen']
       };
 
       setMessages(prev => [...prev, fallbackMessage]);
@@ -112,7 +112,7 @@ export default function Lichtgespraech() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (suggestion === 'KlarheitsgesprÃ¤ch buchen') {
+    if (suggestion === 'Klarheitsgespräch buchen') {
       window.open('https://cal.com/saimor/30min', '_blank');
       return;
     }
@@ -191,7 +191,7 @@ export default function Lichtgespraech() {
               transition={{ delay: 0.5 }}
             >
               <span className="text-xs font-semibold text-saimor-green">
-                LichtgesprÃ¤ch
+                Lichtgespräch
               </span>
             </motion.div>
           </motion.button>
@@ -255,7 +255,7 @@ export default function Lichtgespraech() {
                     <Sparkles className="w-6 h-6 text-white" />
                   </motion.div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">LichtgesprÃ¤ch</h3>
+                    <h3 className="font-bold text-white text-lg">Lichtgespräch</h3>
                     <p className="text-xs text-white/80">Klarheit im Wandel</p>
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function Lichtgespraech() {
                               color: '#4A6741'
                             }}
                           >
-                            â†’ {suggestion}
+                            → {suggestion}
                           </motion.button>
                         ))}
                       </div>

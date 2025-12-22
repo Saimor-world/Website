@@ -12,7 +12,25 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const pathname = usePathname();
   const router = useRouter();
   const switchLocale = locale === 'de' ? 'en' : 'de';
-  const switchHref = `/${switchLocale}`;
+
+  // Sophisticated route switching
+  const getSwitchHref = () => {
+    if (!pathname) return `/${switchLocale}`;
+
+    // Check if pathname starts with a locale
+    if (pathname.startsWith('/de/') || pathname === '/de') {
+      return pathname.replace('/de', '/en');
+    }
+    if (pathname.startsWith('/en/') || pathname === '/en') {
+      return pathname.replace('/en', '/de');
+    }
+
+    // Default fallback
+    return `/${switchLocale}${pathname === '/' ? '' : pathname}`;
+  };
+
+  const switchHref = getSwitchHref();
+  const switchLabel = locale === 'de' ? 'Switch to English' : 'Zur deutschen Seite';
 
   const nav = {
     de: {
@@ -46,7 +64,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     { href: '#leistungen', label: nav.services, isAnchor: true },
     { href: '#mission', label: nav.mission, isAnchor: true },
     { href: '#kontakt', label: nav.contact, isAnchor: true },
-    { href: '/portal', label: 'Portal', isAnchor: false }
+    { href: `/${locale}/portal`, label: 'Portal', isAnchor: false }
   ];
 
   const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
@@ -170,6 +188,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 whileTap={{ scale: 0.95 }}
               >
                 <Globe className="w-4 h-4" />
+                <span className="sr-only">{switchLabel}</span>
               </motion.button>
             </Link>
 

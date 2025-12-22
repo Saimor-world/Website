@@ -5,25 +5,25 @@ import { ArrowLeft, Zap, Target, Heart } from 'lucide-react';
 
 export default function PulsePage() {
   const benefits = [
-    'Energie & Fokus in VerÃ¤nderungssituationen',
-    'Punktuelle KlÃ¤rung statt Dauerbelastung',
-    'ResonanzrÃ¤ume fÃ¼r Teams & Regionen'
+    'Energie & Fokus in Veränderungssituationen',
+    'Punktuelle Klärung statt Dauerbelastung',
+    'Resonanzräume für Teams & Regionen'
   ];
 
   const formats = [
     {
-      name: 'Workshop â€žKlarheit im Wandel"',
+      name: 'Workshop „Klarheit im Wandel"',
       duration: '3h',
       icon: Target
     },
     {
-      name: 'Keynote â€žResonanz statt Rauschen"',
-      duration: '30â€“45 min',
+      name: 'Keynote „Resonanz statt Rauschen"',
+      duration: '30–45 min',
       icon: Zap
     },
     {
-      name: 'Stilles Format â€žDie stille Sprache der Tiefe"',
-      duration: '60â€“90 min',
+      name: 'Stilles Format „Die stille Sprache der Tiefe"',
+      duration: '60–90 min',
       icon: Heart
     }
   ];
@@ -58,10 +58,10 @@ export default function PulsePage() {
                 textShadow: '0 2px 4px rgba(0,0,0,0.3)'
               }}
             >
-              Pulse â€“ Impulse fÃ¼r Klarheit im Moment
+              Pulse – Impulse für Klarheit im Moment
             </h1>
             <p className="text-xl sm:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille RÃ¤ume. Sie bringen Klarheit genau dorthin, wo sie gebraucht wird.
+              Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Sie bringen Klarheit genau dorthin, wo sie gebraucht wird.
             </p>
           </motion.div>
         </div>
@@ -147,7 +147,7 @@ export default function PulsePage() {
             }}
           >
             <p className="text-xl sm:text-2xl font-medium text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Pulse setzt Impulse â€“ spÃ¼rbar, verstÃ¤ndlich, wirksam.
+              Pulse setzt Impulse – spürbar, verständlich, wirksam.
             </p>
           </motion.div>
 
@@ -173,7 +173,7 @@ export default function PulsePage() {
               className="flex items-center gap-2 text-saimor-green hover:text-saimor-gold transition-colors"
             >
               <ArrowLeft size={20} />
-              <span>ZurÃ¼ck zur Startseite</span>
+              <span>Zurück zur Startseite</span>
             </Link>
           </div>
         </div>

@@ -5,14 +5,14 @@ const demoLink = '/docs/architecture/DATA_FLOW_EXPLAINED.md';
 
 const techItems = [
   'Datenerzeugung: lokal (Mock/Simulation)',
-  'Verarbeitung: SaimÃ´r Core (lokal) â†’ MÃ´ra UI â†’ Website',
+  'Verarbeitung: Saimôr Core (lokal) → Môra UI → Website',
   'Tracking: keins',
   'Cookies: nur technisch notwendig (falls vorhanden)'
 ];
 
 export const metadata: Metadata = {
-  title: 'Trust & Sicherheit â€“ SaimÃ´r',
-  description: 'Transparenz Ã¼ber Demo-Daten, lokale Verarbeitung und EU-Datenschutz.'
+  title: 'Trust & Sicherheit – Saimôr',
+  description: 'Transparenz über Demo-Daten, lokale Verarbeitung und EU-Datenschutz.'
 };
 
 export default function TrustPage() {
@@ -21,10 +21,10 @@ export default function TrustPage() {
       <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-2xl font-semibold text-[#4A6741]">
-            SaimÃ´r
+            Saimôr
           </Link>
           <Link href="/" className="text-sm text-gray-600 transition hover:text-gray-900">
-            â† ZurÃ¼ck zur Startseite
+            ← Zurück zur Startseite
           </Link>
         </div>
       </header>
@@ -37,11 +37,11 @@ export default function TrustPage() {
           <h1 className="font-serif text-4xl text-[#0E1A1B]">Ruhig, nachvollziehbar, bewusst.</h1>
           <div className="space-y-4 text-lg leading-relaxed">
             <p>
-              SaimÃ´r befindet sich in der Prototyp-/Demo-Phase. Alle gezeigten Werte basieren auf lokal
-              generierten Demo-Daten â€“ ohne externe Cloud-AbhÃ¤ngigkeiten und ohne Profilbildung.
+              Saimôr befindet sich in der Prototyp-/Demo-Phase. Alle gezeigten Werte basieren auf lokal
+              generierten Demo-Daten – ohne externe Cloud-Abhängigkeiten und ohne Profilbildung.
             </p>
             <p>
-              FÃ¼r echte Projekte gilt: Datensparsamkeit, klare Rollen &amp; Rechte, Export jederzeit.
+              Für echte Projekte gilt: Datensparsamkeit, klare Rollen &amp; Rechte, Export jederzeit.
               EU-Recht (DSGVO) ist die Basis.
             </p>
             <Link
@@ -50,7 +50,7 @@ export default function TrustPage() {
               rel="noreferrer noopener"
               className="inline-flex items-center text-sm text-[#4A6741] transition hover:text-[#2f4729]"
             >
-              Mehr erfahren zur Demo-Architektur â†’
+              Mehr erfahren zur Demo-Architektur →
             </Link>
           </div>
         </section>

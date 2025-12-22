@@ -1,4 +1,4 @@
-﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified MÃ´ra demo section).
+﻿// DEPRECATED: This component was replaced by MoraDashboard.tsx (unified Môra demo section).
 // Do not add new code here; kept only for reference until archival.
 'use client';
 import Image from 'next/image';
@@ -64,40 +64,40 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
   const content = {
     de: {
-      title: 'MÃ´ra â€“ Deine KI-Begleiterin fÃ¼r Business-Klarheit',
+      title: 'Môra – Deine KI-Begleiterin für Business-Klarheit',
       subtitle: 'Erlebe echte KI in Aktion',
-      intro: 'Hallo, ich bin MÃ´ra. Ich analysiere deine Business-Daten in Echtzeit und gebe dir klare Antworten. Stell mir eine Frage!',
+      intro: 'Hallo, ich bin Môra. Ich analysiere deine Business-Daten in Echtzeit und gebe dir klare Antworten. Stell mir eine Frage!',
 
-      inputPlaceholder: 'Frag MÃ´ra etwas zu deinem Business...',
+      inputPlaceholder: 'Frag Môra etwas zu deinem Business...',
       askButton: 'Fragen',
 
       quickQuestions: [
-        'Wie kann ich Team-ProduktivitÃ¤t steigern?',
+        'Wie kann ich Team-Produktivität steigern?',
         'Zeig mir Budget-Optimierungen',
         'Analysiere Projekt-Fortschritt'
       ],
 
-      realResponse: 'Echte MÃ´ra-Antwort',
+      realResponse: 'Echte Môra-Antwort',
       responseIn: 'Antwort in',
       seconds: 'Sekunden',
 
       kpis: {
-        productivity: 'Team-ProduktivitÃ¤t',
+        productivity: 'Team-Produktivität',
         progress: 'Projekt-Fortschritt',
         satisfaction: 'Mitarbeiter-Zufriedenheit',
         budget: 'Budget-Effizienz'
       },
 
-      chatLink: 'FÃ¼r tiefere Analysen',
-      chatButton: 'MÃ´ra Chat Ã¶ffnen',
+      chatLink: 'Für tiefere Analysen',
+      chatButton: 'Môra Chat öffnen',
       cta: 'Kostenlos testen'
     },
     en: {
-      title: 'MÃ´ra â€“ Your AI Companion for Business Clarity',
+      title: 'Môra – Your AI Companion for Business Clarity',
       subtitle: 'Experience Real AI in Action',
-      intro: 'Hello, I\'m MÃ´ra. I analyze your business data in real-time and give you clear answers. Ask me a question!',
+      intro: 'Hello, I\'m Môra. I analyze your business data in real-time and give you clear answers. Ask me a question!',
 
-      inputPlaceholder: 'Ask MÃ´ra about your business...',
+      inputPlaceholder: 'Ask Môra about your business...',
       askButton: 'Ask',
 
       quickQuestions: [
@@ -106,7 +106,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
         'Analyze project progress'
       ],
 
-      realResponse: 'Real MÃ´ra Response',
+      realResponse: 'Real Môra Response',
       responseIn: 'Response in',
       seconds: 'seconds',
 
@@ -118,7 +118,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
       },
 
       chatLink: 'For deeper analysis',
-      chatButton: 'Open MÃ´ra Chat',
+      chatButton: 'Open Môra Chat',
       cta: 'Try for free'
     }
   }[locale];
@@ -144,15 +144,15 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
     // Demo responses
     const demoResponses = locale === 'de' ? {
-      team: 'Basierend auf deinen aktuellen KPIs (87% ProduktivitÃ¤t) empfehle ich: 1) WÃ¶chentliche KlarheitsgesprÃ¤che im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit kÃ¶nnen wir das systematisch umsetzen.',
-      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestÃ¼tzte Entscheidungen. MÃ´ra zeigt dir alle Zahlen im Blick.',
-      project: 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) RegelmÃ¤ÃŸige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
-      default: 'Hallo! Ich bin MÃ´ra, deine KI-Begleiterin bei SaimÃ´r. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
+      team: 'Basierend auf deinen aktuellen KPIs (87% Produktivität) empfehle ich: 1) Wöchentliche Klarheitsgespräche im Team 2) Fokus-Zeiten ohne Meetings 3) Klare Ziele & Milestones. Mit Orbit können wir das systematisch umsetzen.',
+      budget: 'Deine Budget-Effizienz liegt bei 90% - sehr gut! Potenziale: 1) Automatisierung repetitiver Tasks 2) Ressourcen-Pooling 3) Daten-gestützte Entscheidungen. Môra zeigt dir alle Zahlen im Blick.',
+      project: 'Projekt-Fortschritt: 73%. Ich sehe Verbesserungspotenzial bei: 1) Klarere Meilensteine 2) Team-Alignment 3) Regelmäßige Reviews. Pulse-Workshops helfen, alle abzuholen und Klarheit zu schaffen.',
+      default: 'Hallo! Ich bin Môra, deine KI-Begleiterin bei Saimôr. Ich analysiere Business-Daten und gebe konkrete Empfehlungen. Stell mir gerne eine spezifische Frage zu Team, Budget oder Projekten!'
     } : {
       team: 'Based on your current KPIs (87% productivity), I recommend: 1) Weekly team clarity sessions 2) Focus time without meetings 3) Clear goals & milestones. With Orbit, we can implement this systematically.',
-      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. MÃ´ra shows you all numbers at a glance.',
+      budget: 'Your budget efficiency is at 90% - excellent! Potentials: 1) Automate repetitive tasks 2) Resource pooling 3) Data-driven decisions. Môra shows you all numbers at a glance.',
       project: 'Project progress: 73%. I see improvement potential in: 1) Clearer milestones 2) Team alignment 3) Regular reviews. Pulse workshops help get everyone on board and create clarity.',
-      default: 'Hello! I\'m MÃ´ra, your AI companion at SaimÃ´r. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
+      default: 'Hello! I\'m Môra, your AI companion at Saimôr. I analyze business data and give concrete recommendations. Feel free to ask me a specific question about team, budget or projects!'
     };
 
     // Match question to response
@@ -267,7 +267,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
 
         {/* Main Interactive Section */}
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* LEFT: MÃ´ra Chat Interface */}
+          {/* LEFT: Môra Chat Interface */}
           <motion.div
             className="space-y-6 rounded-3xl p-8 shadow-xl"
             style={glassPanelStyle}
@@ -275,7 +275,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            {/* Animated MÃ´ra Orb */}
+            {/* Animated Môra Orb */}
             <div className="relative flex items-center justify-center mb-8">
               {/* Outer rotating ring */}
               <motion.div
@@ -398,7 +398,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
               </motion.button>
             </motion.div>
 
-            {/* MÃ´ra Response */}
+            {/* Môra Response */}
             <AnimatePresence>
               {moraResponse && (
                 <motion.div
@@ -423,7 +423,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                     </motion.div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-gray-900">MÃ´ra</h4>
+                        <h4 className="font-bold text-gray-900">Môra</h4>
                         {showSuccess && (
                           <motion.div
                             className="flex items-center gap-1 text-xs text-emerald-600"
@@ -431,7 +431,7 @@ const MoraShowcase = memo(function MoraShowcase({ locale }: MoraShowcaseProps) {
                             animate={{ scale: 1 }}
                           >
                             <CheckCircle2 className="w-4 h-4" />
-                            {content.realResponse} Â· {responseTime}{content.seconds.slice(0, 1)}
+                            {content.realResponse} · {responseTime}{content.seconds.slice(0, 1)}
                           </motion.div>
                         )}
                       </div>
