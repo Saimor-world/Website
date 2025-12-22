@@ -18,7 +18,7 @@ export default function PortalPageEn() {
               A calm space where teams will log in
             </h1>
             <p className="text-base sm:text-lg text-white/85 max-w-3xl mx-auto leading-relaxed">
-              Login is still disabled – but the structure is ready. Here we show how the portal will work and how today's demo shell already links the same data.
+              Login is still disabled – but the structure is ready. Here we show how the portal will work and how today&apos;s demo shell already links the same data.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

@@ -838,7 +838,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           <div className={`grid ${isMobile ? 'gap-4' : 'lg:grid-cols-2 gap-8'}`}>
             {/* Quick Questions - Compact on mobile */}
             <div className={isMobile ? 'space-y-2' : 'space-y-3'}>
-              {content.quickQuestions.map((question, index) => (
+              {content.quickQuestions.map((question: string, index: number) => (
                 <motion.button
                   key={index}
                   onClick={() => handleAskMora(question)}
@@ -912,7 +912,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     >
                       <Sparkles className="w-4 h-4 text-[#D4A857] group-hover:scale-125 transition-transform" />
                       <span className="text-sm text-[#D4A857] font-medium italic">
-                        "{content.suggestedQuestions[selectedCard]}"
+                        &quot;{content.suggestedQuestions[selectedCard]}&quot;
                       </span>
                     </motion.button>
                   </motion.div>
