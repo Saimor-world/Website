@@ -1,8 +1,7 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, X, Globe, Sparkles } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -56,7 +55,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
-    { href: `/${locale === 'de' ? '' : 'en/'}mora`, label: nav.mora, isAnchor: false, highlight: true },
+    { href: `/${locale === 'de' ? '' : 'en/'}mora`, label: nav.mora, isAnchor: false },
     { href: `/${locale}/portal`, label: nav.portal, isAnchor: false },
     { href: '#kontakt', label: nav.contact, isAnchor: true },
   ];
@@ -96,7 +95,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               }`}
             layout
           >
-            {/* Logo */}
+            {/* Logo - Simplified Text */}
             <Link
               href={`/${locale}`}
               onClick={() => {
@@ -106,57 +105,36 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               className="relative z-10"
             >
               <motion.div
-                className="relative w-12 h-12 rounded-full flex items-center justify-center overflow-hidden"
-                style={{
-                  background: 'radial-gradient(circle at 30% 30%, rgba(212, 168, 87, 0.3) 0%, rgba(26, 60, 50, 0.5) 50%, rgba(15, 35, 22, 0.7) 100%)',
-                  border: '1px solid rgba(212, 180, 131, 0.25)',
-                  boxShadow: '0 8px 32px rgba(212, 168, 87, 0.15), inset 0 0 20px rgba(212, 168, 87, 0.1)',
-                }}
-                whileHover={{ scale: 1.1, boxShadow: '0 12px 40px rgba(212, 168, 87, 0.25)' }}
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Image
-                  src="/saimor-logo-new.png"
-                  alt="Saimôr"
-                  width={48}
-                  height={48}
-                  className="w-8 h-8 object-contain"
-                  style={{ filter: 'brightness(1.3) drop-shadow(0 2px 4px rgba(212, 168, 87, 0.4))' }}
-                />
+                <span
+                  className="text-xl font-semibold text-white"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                >
+                  Saimôr
+                </span>
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation - Hidden on mobile */}
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
-                <motion.a
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                  className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all ${item.highlight
-                      ? 'text-[#D4A857] hover:text-[#E6C897]'
-                      : 'text-white/70 hover:text-white'
-                    }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-full transition-all"
                 >
-                  <span className="relative z-10 flex items-center gap-1.5">
-                    {item.highlight && <Sparkles className="w-3.5 h-3.5" />}
-                    {item.label}
-                  </span>
-                  {item.highlight && (
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-[#D4A857]/10 border border-[#D4A857]/20"
-                      layoutId="nav-highlight"
-                    />
-                  )}
-                </motion.a>
+                  {item.label}
+                </Link>
               ))}
             </nav>
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2">
-              {/* Language Switcher - Minimal */}
+              {/* Language Switcher */}
               <Link href={switchHref}>
                 <motion.button
                   className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-xs font-bold text-white/60 hover:text-white border border-white/10 hover:border-white/20 transition-all"
@@ -217,7 +195,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
         </div>
       </motion.header>
 
-      {/* Mobile Menu - Full Screen Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <>
@@ -235,7 +213,6 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {/* Close Button */}
               <motion.button
                 onClick={() => setMenuOpen(false)}
                 className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20"
@@ -245,15 +222,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 <X className="w-6 h-6" />
               </motion.button>
 
-              {/* Navigation */}
               <nav className="flex flex-col items-center gap-4">
                 {navItems.map((item, index) => (
                   <motion.a
                     key={item.href}
                     href={item.href}
                     onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                    className={`text-3xl font-semibold ${item.highlight ? 'text-[#D4A857]' : 'text-white/80 hover:text-white'
-                      }`}
+                    className="text-3xl font-semibold text-white/80 hover:text-white"
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -261,13 +236,11 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    {item.highlight && <Sparkles className="inline w-5 h-5 mr-2" />}
                     {item.label}
                   </motion.a>
                 ))}
               </nav>
 
-              {/* CTA */}
               <motion.a
                 href="https://cal.com/saimor/30min"
                 target="_blank"
@@ -286,7 +259,6 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 {nav.book}
               </motion.a>
 
-              {/* Language Switch */}
               <motion.div
                 className="mt-8"
                 initial={{ opacity: 0 }}

@@ -99,49 +99,52 @@ export default function MoraPage() {
           </div>
         </section>
 
-        {/* CTA Section - Premium */}
+        {/* CTA Section - Get to know Môra as main focus */}
         <section className="relative rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-[#D4A857]/5 to-transparent p-10 sm:p-16 text-center overflow-hidden">
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none" />
 
           <div className="relative space-y-6 max-w-2xl mx-auto">
             <p className="text-xs uppercase tracking-[0.4em] text-[#D4A857]">Next Step</p>
             <h2 className="text-3xl sm:text-4xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Ready for more clarity?
+              Get to know Môra
             </h2>
             <p className="text-lg text-white/60 leading-relaxed">
-              Explore the Portal and connect Môra with your systems.
-              Or start a conversation with us.
+              Discover how Môra can support your organization.
+              Start a conversation or explore the Portal.
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 pt-4">
-              <Link
-                href="/en/portal"
+              <a
+                href="https://cal.com/saimor/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold text-[#0F1F17] transition-all hover:scale-105 active:scale-95"
                 style={{
                   background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
                   boxShadow: '0 8px 32px rgba(212, 168, 87, 0.3)'
                 }}
               >
-                Go to Portal →
-              </Link>
+                Book a Call →
+              </a>
               <Link
-                href="/en"
+                href="/en/portal"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-white/20 font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-all active:scale-95"
               >
-                Back to homepage
+                Explore Portal
               </Link>
             </div>
 
-            {/* Easter Egg Trigger - Hidden */}
-            <div
-              className="mt-16 opacity-0 hover:opacity-30 transition-opacity duration-1000 cursor-default select-none"
-              title="🔮"
-            >
+            {/* Secondary links - less prominent */}
+            <div className="flex flex-wrap justify-center gap-6 pt-8 text-sm text-white/40">
+              <Link href="/en" className="hover:text-white/60 transition-colors">
+                ← Back to homepage
+              </Link>
+              <span className="text-white/20">·</span>
               <Link
                 href="/en/mora/analog-affect"
-                className="text-[10px] text-white/20 hover:text-[#D4A857]/40 transition-colors"
+                className="hover:text-white/60 transition-colors"
               >
-                ⌘ · analog affect
+                Analog Affect →
               </Link>
             </div>
           </div>
