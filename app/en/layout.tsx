@@ -41,7 +41,7 @@ export default function RouteLayout({ children }: Readonly<{ children: ReactNode
         Skip to main content
       </a>
       <Navbar locale="en" />
-      <main id="main-content" className="pt-24" role="main">{children}</main>
+      <main id="main-content" className="" role="main">{children}</main>
       <Footer locale="en" />
     </div>
   )
