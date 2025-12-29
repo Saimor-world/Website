@@ -175,26 +175,6 @@ export default function Hero({ locale, calUrl }: Props) {
             transition={{ duration: 0.8, ease: 'easeOut' }} // Faster
             className="text-center lg:text-left"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6 sm:mb-8"
-              style={{
-                background: 'linear-gradient(135deg, rgba(214, 168, 72, 0.1) 0%, rgba(214, 168, 72, 0.05) 100%)',
-                border: '1px solid rgba(214, 168, 72, 0.3)',
-                backdropFilter: 'blur(20px)',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              <Sparkles className="w-4 h-4 text-[#D6A848]" />
-              <span className="text-xs sm:text-sm font-medium tracking-[0.1em] text-[#D6A848] uppercase">
-                {content.badge}
-              </span>
-            </motion.div>
-
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -439,15 +419,6 @@ export default function Hero({ locale, calUrl }: Props) {
                 className="w-40 sm:w-52 object-contain drop-shadow-2xl relative z-40"
                 priority
               />
-            </motion.div>
-
-            {/* Floating Badge - Simplified */}
-            <motion.div
-              className="absolute bottom-10 sm:bottom-20 left-0 px-3 py-1.5 rounded-full text-xs font-medium text-[#D6A848] border border-[#D6A848]/30 bg-[#0B0F10]/80 backdrop-blur-sm z-30"
-              animate={{ y: [0, 10, 0], opacity: [0.7, 1, 0.7] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              Môra · KI
             </motion.div>
           </motion.div>
         </div>
