@@ -79,23 +79,22 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   return (
     <>
-      {/* 2026-Ready Minimal Header */}
+      {/* Ultra-Clean Transparent Header */}
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'
-          }`}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
-            className={`relative flex items-center justify-between rounded-full transition-all duration-500 ${scrolled
-                ? 'px-4 py-2 bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl'
-                : 'px-6 py-3'
+            className={`relative flex items-center justify-between transition-all duration-500 ${scrolled
+                ? 'px-6 py-3 rounded-full bg-black/20 backdrop-blur-xl border border-white/5 shadow-2xl'
+                : 'px-6 py-4'
               }`}
             layout
           >
-            {/* Logo - Simplified Text */}
+            {/* Logo */}
             <Link
               href={`/${locale}`}
               onClick={() => {
@@ -110,7 +109,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 whileTap={{ scale: 0.95 }}
               >
                 <span
-                  className="text-xl font-semibold text-white"
+                  className="text-xl font-semibold text-white drop-shadow-lg"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   Saimôr
@@ -125,7 +124,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-full transition-all"
+                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-full transition-all hover:bg-white/5"
                 >
                   {item.label}
                 </Link>
@@ -137,7 +136,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               {/* Language Switcher */}
               <Link href={switchHref}>
                 <motion.button
-                  className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-xs font-bold text-white/60 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+                  className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-xs font-bold text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -164,7 +163,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               {/* Mobile Menu Toggle */}
               <motion.button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+                className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >

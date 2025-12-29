@@ -12,17 +12,17 @@ const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: f
 const MyceliumNetwork = dynamic(() => import("@/components/MyceliumNetwork"), { ssr: false });
 
 export const metadata = {
-  title: 'Saimôr – Clarity in Change',
-  description: 'Saimôr guides municipalities, companies and people through change – with consulting, dashboards & workshops. Clear instead of complex. GDPR-compliant, EU-based.',
+  title: 'Saimôr – The Ecosystem for Conscious Organizations',
+  description: 'Saimôr guides municipalities, companies and people through change. Clarity through semantic intelligence. GDPR-compliant, local & secure.',
   openGraph: {
-    title: 'Saimôr – Clarity in Change',
-    description: 'Consulting, Dashboards & Workshops. Clear instead of complex. GDPR-compliant, EU-based.',
+    title: 'Saimôr – The Ecosystem for Conscious Organizations',
+    description: 'Clarity through semantic intelligence. GDPR-compliant, local & secure.',
     images: ['/og-saimor.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Saimôr – Clarity in Change',
-    description: 'Consulting, Dashboards & Workshops. Clear instead of complex.',
+    title: 'Saimôr – The Ecosystem for Conscious Organizations',
+    description: 'Clarity through semantic intelligence.',
   }
 };
 

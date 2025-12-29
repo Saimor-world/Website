@@ -12,17 +12,17 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: f
 const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
 
 export const metadata = {
-  title: 'Saimôr – Klarheit im Wandel',
-  description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+  title: 'Saimôr – Das Ökosystem für bewusste Organisationen',
+  description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel. Klarheit durch semantische Intelligenz. DSGVO-konform, lokal & sicher.',
   openGraph: {
-    title: 'Saimôr – Klarheit im Wandel',
-    description: 'Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+    title: 'Saimôr – Das Ökosystem für bewusste Organisationen',
+    description: 'Klarheit durch semantische Intelligenz. DSGVO-konform, lokal & sicher.',
     images: ['/og-saimor.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Saimôr – Klarheit im Wandel',
-    description: 'Beratung, Dashboards & Workshops. Klar statt komplex.',
+    title: 'Saimôr – Das Ökosystem für bewusste Organisationen',
+    description: 'Klarheit durch semantische Intelligenz.',
   }
 };
 

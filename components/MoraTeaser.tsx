@@ -31,18 +31,12 @@ export default function MoraTeaser({ locale }: Props) {
                     transition={{ duration: 0.8 }}
                     className="text-center space-y-8"
                 >
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-saimor-gold-retro/20 bg-saimor-gold-retro/5 backdrop-blur-sm">
-                        <Sparkles className="w-4 h-4 text-saimor-gold-retro" />
-                        <span className="text-sm font-medium text-saimor-gold-retro tracking-wider uppercase">
-                            {t('Môra · Neu gestaltet', 'Môra · Reimagined')}
-                        </span>
-                    </div>
+                    {/* Badge Removed per user request */}
 
                     {/* Title */}
                     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight space-y-1">
                         <span className="block">{t('Kein Spiegel.', 'Not a mirror.')}</span>
-                        <span className="block text-saimor-teal italic">{t('Ein Gedächtnis.', 'A memory.')}</span>
+                        <span className="block text-saimor-gold-retro italic">{t('Ein Gedächtnis.', 'A memory.')}</span>
                     </h2>
 
                     {/* Description */}
@@ -53,21 +47,21 @@ export default function MoraTeaser({ locale }: Props) {
                         )}
                     </p>
 
-                    {/* CTA */}
+                    {/* CTA - Swapped prominence per user request */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-50">
                         <a
-                            href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-teal text-black font-semibold text-lg shadow-lg shadow-saimor-teal/20 min-h-[44px] transition-all duration-200 hover:scale-[1.02]"
+                            href={locale === 'en' ? '/en/mora' : '/mora'}
+                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-gold-retro text-[#0F1F17] font-semibold text-lg shadow-lg shadow-saimor-gold-retro/20 min-h-[44px] transition-all duration-200 hover:scale-[1.02]"
                         >
-                            <span>{t('Tief eintauchen', 'Dive deep')}</span>
+                            <span>{t('Mehr über Môra', 'About Môra')}</span>
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </a>
 
                         <a
-                            href={locale === 'en' ? '/en/mora' : '/mora'}
+                            href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
                             className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/8 transition-all duration-300 min-h-[44px] hover:scale-[1.02] hover:border-white/30"
                         >
-                            {t('Mehr über Môra', 'Learn about Môra')}
+                            {t('Tief eintauchen', 'Dive deep')}
                         </a>
                     </div>
 

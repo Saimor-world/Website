@@ -1,6 +1,6 @@
 {
-  "name": "saimor-onepager",
-  "version": "1.0.0",
+  "name": "saimor-live",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

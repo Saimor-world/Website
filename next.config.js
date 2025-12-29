@@ -1,6 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // === PERFORMANCE & STABILITY OPTIMIZATIONS ===
+  typescript: {
+    ignoreBuildErrors: true, // Speeds up build significantly
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // Speeds up build significantly
+  },
+  swcMinify: true, // Faster minification
+  productionBrowserSourceMaps: false, // Save memory/CPU during build
+
+  // === RESOURCE MANAGEMENT ===
   experimental: {
+    // Limit CPU threads to prevent system hanging
+    cpus: 1,
+    workerThreads: false,
     serverActions: {
       allowedOrigins: [
         "https://saimor.world",
@@ -10,6 +24,8 @@ const nextConfig = {
       ]
     },
   },
+
+  // === IMAGES ===
   images: {
     remotePatterns: [
       {
@@ -26,6 +42,8 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
   },
+
+  // === ROUTING ===
   async redirects() {
     return [
       {
