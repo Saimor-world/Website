@@ -1,152 +1,339 @@
 import Link from "next/link";
-import MoraDashboard from "@/components/MoraDashboard";
+import { Sparkles, Brain, Network, Shield, Zap, Eye, MessageSquare } from "lucide-react";
 
-const featureCards = [
-  {
-    title: 'Kein Spiegel',
-    body: 'Môra reflektiert nicht nur Daten, sie erinnert sich an Muster und Zusammenhänge.'
-  },
-  {
-    title: 'Ein Gedächtnis',
-    body: 'Wie das Myzel im Waldboden verbindet Môra, was zusammengehört – ruhig und klar.'
-  },
-  {
-    title: 'Lokal & sicher',
-    body: 'Vollständig lokal, EU-gehostet, DSGVO-konform. Deine Daten bleiben deine Daten.'
-  }
-];
+export const metadata = {
+  title: 'Môra - Universe OS | Saimôr',
+  description: 'Das semantische Gedächtnis für deine Organisation. Lokal, sicher, intelligent.',
+};
 
-// Note: metadata moved to layout for client component
 export default function MoraPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a1410] via-[#0F1F17] to-[#0a1410] text-slate-100">
-      {/* Premium Background */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 30% 20%, rgba(212,168,87,0.12), transparent 50%)' }} />
-      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 70% 80%, rgba(74,103,65,0.15), transparent 50%)' }} />
+    <div className="min-h-screen bg-black text-white">
+      
+      {/* Hero - Clear & Focused */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Subtle space background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-black to-black" />
+        
+        {/* Animated stars - subtle */}
+        <div className="absolute inset-0 opacity-30">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-emerald-400 animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${Math.random() * 2 + 1}px`,
+                height: `${Math.random() * 2 + 1}px`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 3}s`
+              }}
+            />
+          ))}
+        </div>
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-32 pb-16 sm:pt-40 sm:pb-24 space-y-16 sm:space-y-24">
-
-        {/* Hero Header - 2026 Premium */}
-        <header className="space-y-8 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#D4A857]/30 bg-[#D4A857]/5 text-xs tracking-widest uppercase text-[#D4A857]">
-            <span className="w-2 h-2 rounded-full bg-[#D4A857] animate-pulse" />
-            Môra · Semantic Memory
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center space-y-8">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
+            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <span className="text-sm text-emerald-300 font-medium">Universe OS</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.1]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Kein Spiegel.<br />
-            <span className="bg-gradient-to-r from-[#D4A857] via-[#E6C897] to-[#D4A857] bg-clip-text text-transparent">Ein Gedächtnis.</span>
+          {/* Main Title */}
+          <h1 className="text-6xl md:text-8xl font-light tracking-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <span className="block text-white/90">Kein Spiegel.</span>
+            <span className="block bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
+              Ein Gedächtnis.
+            </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Môra erkennt Muster, versteht Kontext und zeigt, was zusammengehört.
-            Lokal. Sicher. Intelligent.
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+            Môra ist dein semantisches Betriebssystem. Sie erinnert sich an Muster, versteht Kontext 
+            und zeigt, was zusammengehört.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">🔒 DSGVO-konform</span>
-            <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">💾 100% lokal</span>
-            <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">🧠 KI-gestützt</span>
+          {/* Key Features - Simple */}
+          <div className="flex flex-wrap justify-center gap-6 pt-8">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10">
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm">100% Lokal</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10">
+              <Brain className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm">KI-gestützt</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10">
+              <Network className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm">DSGVO-konform</span>
+            </div>
           </div>
-        </header>
 
-        {/* Feature Cards - Premium Grid */}
-        <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featureCards.map((card, index) => (
-            <article
-              key={card.title}
-              className="group relative rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-xl p-8 transition-all duration-500 hover:border-[#D4A857]/20 hover:bg-white/[0.04]"
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            <a 
+              href="#demo" 
+              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
             >
-              <div className="absolute top-6 right-6 w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-xs font-mono text-white/30">
-                {String(index + 1).padStart(2, '0')}
-              </div>
-              <h2 className="text-2xl font-semibold mb-4 text-[#D4A857]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                {card.title}
-              </h2>
-              <p className="text-white/60 leading-relaxed">{card.body}</p>
-              <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D4A857]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </article>
-          ))}
-        </section>
+              Live Demo ansehen
+            </a>
+            <a 
+              href="https://cal.com/saimor/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 rounded-2xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-all"
+            >
+              Gespräch buchen
+            </a>
+          </div>
+        </div>
+      </section>
 
-        {/* Dashboard Section - Premium Container */}
-        <section className="relative rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent backdrop-blur-xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#D4A857]/5 via-transparent to-[#4A6741]/5 pointer-events-none" />
+      {/* What is Universe OS - Clear Explanation */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-light mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Was ist das Universe OS?
+            </h2>
+            <p className="text-xl text-white/60 max-w-3xl mx-auto">
+              Stell dir vor, deine gesamte Organisation wäre ein lebendiges Universum. 
+              Jedes Team ein Planet, jedes Projekt ein System, jeder Gedanke ein Stern.
+            </p>
+          </div>
 
-          <div className="relative p-6 sm:p-10 space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-[#D4A857] mb-2">Live Demo</p>
-                <h2 className="text-3xl sm:text-4xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  So arbeitet Môra
-                </h2>
+          {/* 3 Core Concepts - Clean Grid */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* 1. Semantic Memory */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-emerald-950/50 to-black border border-emerald-500/20 backdrop-blur-sm">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
+                <Brain className="w-7 h-7 text-emerald-400" />
               </div>
-              <Link
-                href="/en/mora"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/20 text-sm font-medium text-white/70 hover:text-white hover:border-white/40 transition-all"
-              >
-                🌐 English Version
-              </Link>
+              <h3 className="text-2xl font-semibold mb-4">Semantisches Gedächtnis</h3>
+              <p className="text-white/60 leading-relaxed">
+                Môra versteht nicht nur Daten, sie erinnert sich an <strong>Bedeutungen</strong> und <strong>Zusammenhänge</strong>.
+              </p>
             </div>
 
-            <div className="rounded-2xl border border-white/5 bg-black/20 p-4">
-              <MoraDashboard locale="de" />
+            {/* 2. Visual Navigation */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-emerald-950/50 to-black border border-emerald-500/20 backdrop-blur-sm">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
+                <Eye className="w-7 h-7 text-emerald-400" />
+              </div>
+              <h3 className="text-2xl font-semibold mb-4">Visuelle Navigation</h3>
+              <p className="text-white/60 leading-relaxed">
+                Navigiere durch <strong>Planeten</strong> (Abteilungen), <strong>Systeme</strong> (Bereiche) und <strong>Sterne</strong> (Daten).
+              </p>
+            </div>
+
+            {/* 3. AI Companion */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-emerald-950/50 to-black border border-emerald-500/20 backdrop-blur-sm">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6">
+                <MessageSquare className="w-7 h-7 text-emerald-400" />
+              </div>
+              <h3 className="text-2xl font-semibold mb-4">KI-Begleitung</h3>
+              <p className="text-white/60 leading-relaxed">
+                Stelle Fragen, erhalte <strong>Insights</strong> und entdecke <strong>Muster</strong> in deinen Daten.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA Section - Môra kennenlernen als Hauptfokus */}
-        <section className="relative rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-[#D4A857]/5 to-transparent p-10 sm:p-16 text-center overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none" />
-
-          <div className="relative space-y-6 max-w-2xl mx-auto">
-            <p className="text-xs uppercase tracking-[0.4em] text-[#D4A857]">Nächster Schritt</p>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Môra kennenlernen
+      {/* Interactive Demo - Simplified */}
+      <section id="demo" className="relative py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm mb-6">
+              <Zap className="w-4 h-4 text-purple-400" />
+              <span className="text-sm text-purple-300 font-medium">Live Demo</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-light mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Erlebe Môra live
             </h2>
-            <p className="text-lg text-white/60 leading-relaxed">
-              Entdecke, wie Môra deine Organisation unterstützt.
-              Starte ein Gespräch oder erkunde das Portal.
+            <p className="text-xl text-white/60 max-w-2xl mx-auto">
+              Interaktives Dashboard mit simulierten Daten. So könnte deine Organisation aussehen.
+            </p>
+          </div>
+
+          {/* Demo Container - Clean & Focused */}
+          <div className="relative rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-emerald-950/30 to-black backdrop-blur-xl overflow-hidden p-8 md:p-12">
+            
+            {/* Demo Content Placeholder */}
+            <div className="space-y-8">
+              
+              {/* Chat Demo */}
+              <div className="p-8 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <Sparkles className="w-6 h-6 text-emerald-400" />
+                  <h3 className="text-xl font-semibold">Frag Môra etwas</h3>
+                </div>
+                
+                <div className="space-y-4">
+                  <button className="w-full p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-left transition-all group">
+                    <div className="flex items-center gap-3">
+                      <MessageSquare className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                      <span>Wie kann ich Team-Produktivität steigern?</span>
+                    </div>
+                  </button>
+                  
+                  <button className="w-full p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-left transition-all group">
+                    <div className="flex items-center gap-3">
+                      <MessageSquare className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                      <span>Zeig mir Budget-Optimierungen</span>
+                    </div>
+                  </button>
+                  
+                  <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                    <div className="flex gap-3">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-emerald-400 mb-2">Môra antwortet...</p>
+                        <p className="text-white/80 text-sm">
+                          Basierend auf deinen aktuellen KPIs empfehle ich: 1) Wöchentliche Klarheitsgespräche, 
+                          2) Fokus-Zeiten ohne Meetings, 3) Klare Ziele & Milestones.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Metrics Preview - Simple */}
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  { label: 'Team-Engagement', value: 87, status: 'good' },
+                  { label: 'Prozess-Effizienz', value: 92, status: 'good' },
+                  { label: 'Klarheitsindex', value: 91, status: 'good' }
+                ].map((metric, i) => (
+                  <div key={i} className="p-6 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-sm">
+                    <div className="text-sm text-white/50 mb-2">{metric.label}</div>
+                    <div className="text-3xl font-bold text-emerald-400 mb-3">{metric.value}%</div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full"
+                        style={{ width: `${metric.value}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Full Demo Link */}
+              <div className="text-center pt-8">
+                <p className="text-white/60 mb-4">
+                  Möchtest du mehr sehen?
+                </p>
+                <a 
+                  href="https://cal.com/saimor/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 transition-all"
+                >
+                  <span>Vollständige Demo buchen</span>
+                  <Sparkles className="w-4 h-4" />
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* How it Works - Simple Steps */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-light mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Wie funktioniert es?
+            </h2>
+            <p className="text-xl text-white/60 max-w-2xl mx-auto">
+              Drei einfache Schritte zu deinem semantischen Betriebssystem
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {[
+              {
+                num: '01',
+                title: 'Verbinde deine Daten',
+                desc: 'Email, Kalender, Dokumente, Tools - Môra integriert sich nahtlos in deine bestehende Infrastruktur.'
+              },
+              {
+                num: '02',
+                title: 'Môra lernt & verknüpft',
+                desc: 'Die KI analysiert Muster, versteht Kontext und erstellt ein semantisches Netzwerk deiner Organisation.'
+              },
+              {
+                num: '03',
+                title: 'Navigiere & frage',
+                desc: 'Nutze das Universe OS Interface oder frage Môra direkt. Sie kennt alle Zusammenhänge.'
+              }
+            ].map((step, i) => (
+              <div key={i} className="flex gap-8 items-start p-8 rounded-2xl bg-gradient-to-r from-emerald-950/20 to-transparent border-l-2 border-emerald-500/50">
+                <div className="text-6xl font-light text-emerald-500/20" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  {step.num}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold mb-3">{step.title}</h3>
+                  <p className="text-white/60 text-lg leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="p-12 md:p-16 rounded-[2.5rem] bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20 backdrop-blur-xl">
+            <Sparkles className="w-12 h-12 text-emerald-400 mx-auto mb-6" />
+            
+            <h2 className="text-4xl md:text-5xl font-light mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Bereit für dein semantisches Betriebssystem?
+            </h2>
+            
+            <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto">
+              Lass uns sprechen. Wir zeigen dir, wie Môra deine Organisation transformieren kann.
             </p>
 
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 pt-4">
-              <a
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a 
                 href="https://cal.com/saimor/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold text-[#0F1F17] transition-all hover:scale-105 active:scale-95"
-                style={{
-                  background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
-                  boxShadow: '0 8px 32px rgba(212, 168, 87, 0.3)'
-                }}
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
               >
-                Gespräch buchen →
+                Gespräch buchen
               </a>
               <Link
                 href="/de/portal"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-white/20 font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-all active:scale-95"
+                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-semibold hover:bg-white/5 transition-all"
               >
                 Portal erkunden
               </Link>
             </div>
 
-            {/* Sekundäre Links - weniger prominent */}
-            <div className="flex flex-wrap justify-center gap-6 pt-8 text-sm text-white/40">
-              <Link href="/" className="hover:text-white/60 transition-colors">
+            <div className="flex justify-center gap-8 pt-12 text-sm text-white/40">
+              <Link href="/" className="hover:text-white/70 transition-colors">
                 ← Zurück zur Startseite
               </Link>
-              <span className="text-white/20">·</span>
-              <Link
-                href="/mora/analog-affect"
-                className="hover:text-white/60 transition-colors"
-              >
+              <span>·</span>
+              <Link href="/mora/analog-affect" className="hover:text-white/70 transition-colors">
                 Analog Affect →
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </div>
     </div>
   );
 }
