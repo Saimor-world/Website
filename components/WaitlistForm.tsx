@@ -129,7 +129,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
             </div>
 
             {/* Right Form */}
-            <div className="md:col-span-3 p-12">
+            <div className="md:col-span-3 p-12 relative z-20">
               <AnimatePresence mode="wait">
                 {status === 'success' ? (
                   <motion.div
@@ -196,7 +196,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     <button
                       type="submit"
                       disabled={status === 'loading'}
-                      className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
+                      className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)] relative z-30 cursor-pointer pointer-events-auto"
                     >
                       {status === 'loading' ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                         <>

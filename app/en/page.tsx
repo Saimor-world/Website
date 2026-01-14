@@ -3,6 +3,10 @@ import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
 import ContactSection from "@/components/ContactSection";
+import dynamic from "next/dynamic";
+
+const MoraIntroAnimation = dynamic(() => import("@/components/MoraIntroAnimation"), { ssr: false });
+const MyceliumNetwork = dynamic(() => import("@/components/MyceliumNetwork"), { ssr: false });
 
 export const metadata = {
   title: 'Saimôr – The Ecosystem for Conscious Organizations',
@@ -12,6 +16,8 @@ export const metadata = {
 export default function Page() {
   return (
     <main className="flex flex-col min-h-screen">
+      <MoraIntroAnimation locale="en" />
+      <MyceliumNetwork />
       <div className="relative z-10">
         <Hero locale="en" />
         <MoraTeaser locale="en" />

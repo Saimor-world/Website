@@ -80,7 +80,7 @@ export default function ContactSection({ locale }: Props) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative z-20"
           >
             <form onSubmit={handleSubmit} className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-8">
               <div className="space-y-2">

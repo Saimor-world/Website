@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -104,15 +105,24 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 setMenuOpen(false);
                 window.dispatchEvent(new CustomEvent('saimor-logo-click'));
               }}
-              className="relative z-10"
+              className="relative z-10 group"
             >
               <motion.div
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
+                <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center group-hover:border-emerald-500/50 transition-colors">
+                  <Image 
+                    src="/Logo neu.png"
+                    alt="Saimôr"
+                    width={32}
+                    height={32}
+                    className="brightness-150 transition-all duration-500 group-hover:scale-110"
+                  />
+                </div>
                 <span
-                  className="text-xl font-semibold text-white drop-shadow-lg"
+                  className="text-xl font-semibold text-white drop-shadow-lg hidden sm:block"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   Saimôr

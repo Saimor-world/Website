@@ -162,7 +162,23 @@ export default function Hero({ locale, calUrl }: Props) {
           </motion.div>
 
           {/* Main Headline */}
-          <div className="space-y-4">
+          <div className="space-y-4 relative">
+            {/* User Logo Integration - Creative Handwriting */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 1 }}
+              className="absolute -top-32 left-1/2 -translate-x-1/2 w-48 h-48 pointer-events-none select-none"
+            >
+              <Image 
+                src="/Logo neu.png"
+                alt="Saimôr Logo"
+                width={192}
+                height={192}
+                className="opacity-60 blur-[1px] hover:blur-none transition-all duration-700 invert-0 grayscale brightness-150"
+              />
+            </motion.div>
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -198,11 +214,11 @@ export default function Hero({ locale, calUrl }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto"
+            className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
             <Link
-              href="/mora"
-              className="px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
+              href={locale === 'en' ? '/en/mora' : '/mora'}
+              className="px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center justify-center cursor-pointer"
             >
               {content.ctaPrimary}
             </Link>
@@ -210,7 +226,7 @@ export default function Hero({ locale, calUrl }: Props) {
               href={cal}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-10 py-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl text-white font-bold hover:bg-white/10 transition-all hover:scale-105"
+              className="px-10 py-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl text-white font-bold hover:bg-white/10 transition-all hover:scale-105 flex items-center justify-center cursor-pointer"
             >
               {content.ctaSecondary}
             </a>

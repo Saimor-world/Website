@@ -51,18 +51,18 @@ export default function MoraTeaser({ locale }: Props) {
                             )}
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-6 pt-4">
+                        <div className="flex flex-col sm:flex-row gap-6 pt-4 relative z-30 pointer-events-auto">
                             <Link
-                                href="/mora"
-                                className="group px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
+                                href={locale === 'en' ? '/en/mora' : '/mora'}
+                                className="group px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)] cursor-pointer"
                             >
                                 <span>{t('Showcase öffnen', 'Open Showcase')}</span>
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
 
                             <Link
-                                href="/mora/analog-affect"
-                                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105"
+                                href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
+                                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105 cursor-pointer"
                             >
                                 {t('Technische Details', 'Technical Details')}
                             </Link>
