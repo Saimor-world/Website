@@ -133,14 +133,23 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             {/* Desktop Navigation - Centered */}
             <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
               {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                  className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
-                >
-                  {item.label}
-                </Link>
+                item.isAnchor ? (
+                  <button
+                    key={item.href}
+                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                    className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )
               ))}
             </nav>
 
@@ -241,14 +250,24 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    <Link
-                      href={item.href}
-                      onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                      className="text-3xl font-semibold text-white/80 hover:text-white"
-                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    >
-                      {item.label}
-                    </Link>
+                    {item.isAnchor ? (
+                      <button
+                        onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                        className="text-3xl font-semibold text-white/80 hover:text-white"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                      >
+                        {item.label}
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="text-3xl font-semibold text-white/80 hover:text-white"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
               </nav>
