@@ -4,6 +4,13 @@ import Script from 'next/script'
 import './globals.css'
 import ClientProviders from '../components/ClientProviders'
 import AuthProvider from '../components/AuthProvider'
+import LayoutWrapper from '../components/LayoutWrapper'
+
+import dynamic from 'next/dynamic'
+
+const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
+const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
+const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -54,10 +61,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="bg-forest-primary text-warm-beige antialiased" suppressHydrationWarning>
+      <body className="bg-[#020504] text-white antialiased" suppressHydrationWarning>
         <AuthProvider>
           <ClientProviders />
-          {children}
+          <ScrollProgress />
+          <EasterEggs />
+          <CookieBanner />
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </AuthProvider>
       </body>
     </html>

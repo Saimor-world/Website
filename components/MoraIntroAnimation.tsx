@@ -180,14 +180,14 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
               style={{
                 width: 220,
                 height: 220,
-                background: 'radial-gradient(circle, rgba(212, 180, 131, 0.75) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(16, 185, 129, 0.75) 0%, transparent 70%)',
               }}
             />
 
             <div
-              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/40 shadow-[0_0_25px_rgba(212,168,87,0.6)]"
+              className="relative flex h-[200px] w-[200px] items-center justify-center rounded-full border border-white/40 shadow-[0_0_50px_rgba(52,211,153,0.6)]"
               style={{
-                background: 'linear-gradient(140deg, #4A6741 0%, #D4A857 100%)',
+                background: 'linear-gradient(140deg, #10B981 0%, #06B6D4 100%)',
               }}
             >
               <div className="flex gap-6">
@@ -260,8 +260,8 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
               <defs>
                 <linearGradient id={gradientId}>
-                  <stop offset="0%" stopColor="#D4A857" />
-                  <stop offset="100%" stopColor="#4A6741" />
+                  <stop offset="0%" stopColor="#10B981" />
+                  <stop offset="100%" stopColor="#06B6D4" />
                 </linearGradient>
               </defs>
             </svg>

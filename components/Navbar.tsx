@@ -55,26 +55,25 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
-    { href: `/${locale === 'de' ? '' : 'en/'}mora`, label: nav.mora, isAnchor: false },
+    { href: '/mora', label: nav.mora, isAnchor: false },
     { href: `/${locale}/portal`, label: nav.portal, isAnchor: false },
     { href: '#kontakt', label: nav.contact, isAnchor: true },
   ];
 
   const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
-    e.preventDefault();
     setMenuOpen(false);
 
     if (isAnchor) {
+      e.preventDefault();
       const targetId = href.replace('#', '');
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        window.location.href = `/${locale}${href}`;
+        router.push(`/${locale}${href}`);
       }
-    } else {
-      router.push(href);
     }
+    // For non-anchor links, let the standard Link component handle it
   };
 
   return (
@@ -223,20 +222,23 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
               <nav className="flex flex-col items-center gap-4">
                 {navItems.map((item, index) => (
-                  <motion.a
+                  <motion.div
                     key={item.href}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                    className="text-3xl font-semibold text-white/80 hover:text-white"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    {item.label}
-                  </motion.a>
+                    <Link
+                      href={item.href}
+                      onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                      className="text-3xl font-semibold text-white/80 hover:text-white"
+                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
 

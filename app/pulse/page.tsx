@@ -1,183 +1,103 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ArrowLeft, Zap, Target, Heart } from 'lucide-react';
+import { Zap, Target, Heart, Sparkles } from 'lucide-react';
 
 export default function PulsePage() {
-  const benefits = [
-    'Energie & Fokus in Veränderungssituationen',
-    'Punktuelle Klärung statt Dauerbelastung',
-    'Resonanzräume für Teams & Regionen'
-  ];
-
   const formats = [
     {
       name: 'Workshop „Klarheit im Wandel"',
       duration: '3h',
-      icon: Target
+      icon: Target,
+      desc: 'Fokussierte Klärung für Teams.'
     },
     {
       name: 'Keynote „Resonanz statt Rauschen"',
       duration: '30–45 min',
-      icon: Zap
+      icon: Zap,
+      desc: 'Inspiration für große Runden.'
     },
     {
-      name: 'Stilles Format „Die stille Sprache der Tiefe"',
+      name: 'Stilles Format „Tiefe"',
       duration: '60–90 min',
-      icon: Heart
+      icon: Heart,
+      desc: 'Bewusste Reflexion im Prozess.'
     }
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section
-        className="relative overflow-hidden min-h-[60vh] flex items-center"
-        style={{
-          background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.98) 0%, rgba(58, 82, 49, 0.95) 50%, rgba(74, 103, 65, 0.98) 100%)'
-        }}
-      >
-        {/* Background decoration */}
-        <motion.div
-          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full blur-3xl opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(212, 180, 131, 0.6) 0%, transparent 70%)' }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
+    <div className="min-h-screen bg-[#020504] text-white pt-32 pb-24 selection:bg-emerald-500/30">
+      
+      {/* Background Atmosphere */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-1/4 w-[700px] h-[700px] bg-cyan-900/10 blur-[150px] rounded-full" />
+      </div>
 
-        <div className="relative mx-auto max-w-4xl px-4 py-20 text-center z-10">
+      <main className="relative z-10 max-w-6xl mx-auto px-6">
+        
+        {/* Hero Section */}
+        <section className="mb-32 space-y-12 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md"
           >
-            <h1
-              className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6 text-white"
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}
+            <Zap className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">System: Pulse</span>
+          </motion.div>
+          
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <span className="block opacity-90">Impulse für</span>
+            <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
+              Klarheit.
+            </span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-white/40 leading-relaxed max-w-3xl mx-auto">
+            Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Sie bringen Energie genau dorthin, wo sie gebraucht wird.
+          </p>
+        </section>
+
+        {/* Formats Grid */}
+        <section className="grid md:grid-cols-3 gap-8 mb-32">
+          {formats.map((format, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-6 group hover:bg-white/[0.05] transition-colors"
             >
-              Pulse – Impulse für Klarheit im Moment
-            </h1>
-            <p className="text-xl sm:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Pulse sind gezielte Impulsformate: Workshops, Keynotes oder stille Räume. Sie bringen Klarheit genau dorthin, wo sie gebraucht wird.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <format.icon className="w-7 h-7 text-emerald-400" />
+              </div>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h3 className="text-xl font-bold text-white uppercase tracking-widest">{format.name}</h3>
+                  <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20">{format.duration}</p>
+                </div>
+                <p className="text-white/40 leading-relaxed">{format.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </section>
 
-      {/* Benefits Section */}
-      <section className="py-16 sm:py-24 bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-4xl px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-serif text-3xl sm:text-4xl mb-12 text-center"
-            style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              background: 'linear-gradient(135deg, #4A6741 0%, #D4A857 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}
-          >
-            Nutzen
-          </motion.h2>
-
-          <div className="space-y-6 mb-16">
-            {benefits.map((benefit, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-start gap-4 p-6 rounded-2xl bg-white border border-saimor-gold/20 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="w-2 h-2 rounded-full bg-saimor-green mt-2 flex-shrink-0" />
-                <p className="text-lg text-slate-700">{benefit}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Format Examples */}
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-serif text-2xl sm:text-3xl mb-8 text-center text-slate-800"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
-            Beispiele
-          </motion.h3>
-
-          <div className="grid sm:grid-cols-3 gap-6 mb-16">
-            {formats.map((format, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="p-6 rounded-2xl text-center"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.05) 0%, rgba(212, 180, 131, 0.08) 100%)',
-                  border: '1px solid rgba(212, 180, 131, 0.3)'
-                }}
-              >
-                <format.icon className="w-10 h-10 mx-auto mb-4 text-saimor-green" />
-                <h4 className="font-semibold text-lg mb-2 text-slate-900">{format.name}</h4>
-                <p className="text-sm text-slate-600">{format.duration}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Callout */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="p-8 rounded-3xl mb-16 text-center"
-            style={{
-              background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.08) 0%, rgba(212, 180, 131, 0.12) 100%)',
-              border: '1px solid rgba(212, 180, 131, 0.3)'
-            }}
-          >
-            <p className="text-xl sm:text-2xl font-medium text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Pulse setzt Impulse – spürbar, verständlich, wirksam.
-            </p>
-          </motion.div>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <motion.a
+        {/* Final CTA */}
+        <section className="text-center">
+          <div className="inline-flex flex-col items-center space-y-8">
+            <p className="text-white/40 text-sm uppercase tracking-[0.4em] font-black">Bereit für einen Impuls?</p>
+            <a
               href="https://cal.com/saimor/30min"
               target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-10 py-5 rounded-2xl font-bold text-lg text-white transition-all duration-300 shadow-lg hover:shadow-xl"
-              style={{
-                background: 'linear-gradient(135deg, rgba(74, 103, 65, 0.95) 0%, rgba(93, 124, 84, 0.9) 50%, rgba(212, 180, 131, 0.85) 100%)',
-                boxShadow: '0 8px 20px rgba(74, 103, 65, 0.3)'
-              }}
+              className="px-12 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 shadow-xl"
             >
-              Pulse-Format anfragen
-            </motion.a>
-
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-saimor-green hover:text-saimor-gold transition-colors"
-            >
-              <ArrowLeft size={20} />
-              <span>Zurück zur Startseite</span>
-            </Link>
+              Pulse anfragen
+            </a>
           </div>
-        </div>
-      </section>
+        </section>
+
+      </main>
     </div>
   );
 }

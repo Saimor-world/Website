@@ -14,62 +14,85 @@ export default function MoraTeaser({ locale }: Props) {
     const t = (de: string, en: string) => (locale === 'de' ? de : en);
 
     return (
-        <section className="relative py-24 sm:py-32 overflow-hidden">
-            {/* Smooth gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0F1F17] via-[#13261D] to-[#0F1F17] opacity-95 pointer-events-none" />
+        <section className="relative py-32 sm:py-48 overflow-hidden bg-[#020504]">
+            {/* Background Atmosphere */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[100px] rounded-full" />
+            </div>
 
-            {/* Organic glow */}
-            <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none z-0"
-                style={{ background: 'radial-gradient(circle, rgba(212,168,87,0.3) 0%, transparent 70%)' }}
-            />
+            <div className="relative z-10 mx-auto max-w-6xl px-6">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                    
+                    {/* Text Side */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="space-y-8"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">Môra Intelligence</span>
+                        </div>
 
-            <div className="relative z-20 mx-auto max-w-5xl px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="text-center space-y-8"
-                >
-                    {/* Badge Removed per user request */}
+                        <h2 className="text-5xl sm:text-7xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                            <span className="block opacity-90">{t('Kein Spiegel.', 'Not a mirror.')}</span>
+                            <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
+                                {t('Ein Gedächtnis.', 'A memory.')}
+                            </span>
+                        </h2>
 
-                    {/* Title */}
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight space-y-1">
-                        <span className="block">{t('Kein Spiegel.', 'Not a mirror.')}</span>
-                        <span className="block text-saimor-gold-retro italic">{t('Ein Gedächtnis.', 'A memory.')}</span>
-                    </h2>
+                        <p className="text-xl text-white/40 leading-relaxed max-w-xl">
+                            {t(
+                                'Môra ist das semantische Gedächtnis deines Systems. Sie erkennt Zusammenhänge, bevor du sie suchst – vollständig lokal und sicher.',
+                                'Môra is the semantic memory of your system. It recognizes connections before you search for them – fully local and secure.'
+                            )}
+                        </p>
 
-                    {/* Description */}
-                    <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                        {t(
-                            'Môra ist das semantische Gedächtnis von Saimôr OS. Sie erkennt Muster und Kontext – vollständig lokal, ohne externe Clouds.',
-                            'Môra is the semantic memory of Saimôr OS. It recognises patterns and context – fully local, without external clouds.'
-                        )}
-                    </p>
+                        <div className="flex flex-col sm:flex-row gap-6 pt-4">
+                            <Link
+                                href="/mora"
+                                className="group px-10 py-5 rounded-2xl bg-emerald-500 text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3"
+                            >
+                                <span>{t('Mehr über Môra', 'About Môra')}</span>
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
 
-                    {/* CTA - Swapped prominence per user request */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 relative z-50">
-                        <a
-                            href={locale === 'en' ? '/en/mora' : '/mora'}
-                            className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-saimor-gold-retro text-[#0F1F17] font-semibold text-lg shadow-lg shadow-saimor-gold-retro/20 min-h-[44px] transition-all duration-200 hover:scale-[1.02]"
+                            <Link
+                                href="/mora/analog-affect"
+                                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center"
+                            >
+                                {t('Tief eintauchen', 'Dive deep')}
+                            </Link>
+                        </div>
+                    </motion.div>
+
+                    {/* Visual Side - Abstract Representation */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="relative h-[400px] flex items-center justify-center"
+                    >
+                        <div className="absolute w-64 h-64 bg-emerald-500/20 blur-3xl rounded-full animate-pulse" />
+                        <div className="relative w-48 h-48 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl rotate-12 flex items-center justify-center overflow-hidden group hover:rotate-0 transition-transform duration-700">
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <Sparkles className="w-16 h-16 text-emerald-400 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+                        </div>
+                        {/* Orbiting particles */}
+                        <motion.div 
+                            className="absolute w-full h-full"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                         >
-                            <span>{t('Mehr über Môra', 'About Môra')}</span>
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </a>
-
-                        <a
-                            href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                            className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/8 transition-all duration-300 min-h-[44px] hover:scale-[1.02] hover:border-white/30"
-                        >
-                            {t('Tief eintauchen', 'Dive deep')}
-                        </a>
-                    </div>
-
-                    {/* Subtle hint */}
-                    <p className="text-sm text-slate-500 pt-4">
-                        {t('Zwei Klicks bis zur Deep-View-Erfahrung.', 'Two clicks to the deep view experience.')}
-                    </p>
-                </motion.div>
+                            <div className="absolute top-0 left-1/2 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,1)]" />
+                            <div className="absolute bottom-10 right-20 w-1.5 h-1.5 bg-cyan-400 rounded-full" />
+                        </motion.div>
+                    </motion.div>
+                </div>
             </div>
         </section>
     );

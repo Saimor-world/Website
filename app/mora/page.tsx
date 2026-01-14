@@ -145,12 +145,6 @@ export default function MoraPage() {
                 Portal Zugang
               </Link>
             </div>
-
-            <div className="pt-20 flex items-center justify-center gap-8 text-[10px] font-bold tracking-[0.3em] text-white/20 uppercase">
-              <Link href="/" className="hover:text-emerald-400 transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/mora/analog-affect" className="hover:text-emerald-400 transition-colors">Analog Affect</Link>
-            </div>
           </motion.div>
         </section>
 
