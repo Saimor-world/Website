@@ -123,9 +123,9 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
               <div className="relative z-10 pt-12">
                 <div className="flex -space-x-3">
                   {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-[#020504] bg-white/10" />
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030806] bg-white/10" />
                   ))}
-                  <div className="w-10 h-10 rounded-full border-2 border-[#020504] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
+                  <div className="w-10 h-10 rounded-full border-2 border-[#030806] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
                 </div>
                 <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20 mt-4">System Access Pending</p>
               </div>
