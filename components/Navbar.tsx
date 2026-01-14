@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+// Link removed - using native <a> tags for full page reloads
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
@@ -126,7 +126,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   Saimôr
                 </span>
               </motion.div>
-            </Link>
+            </a>
 
             {/* Desktop Navigation - Centered */}
             <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
@@ -154,15 +154,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             {/* Right Side Actions */}
             <div className="flex items-center gap-3">
               {/* Language Switcher */}
-              <Link href={switchHref}>
-                <motion.button
-                  className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {switchLabel}
-                </motion.button>
-              </Link>
+              <motion.a 
+                href={switchHref}
+                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {switchLabel}
+              </motion.a>
 
               {/* CTA Button - Desktop */}
               <motion.a
@@ -294,14 +293,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 animate={{ opacity: 1 }}
                 transition={{ delay: (navItems.length + 1) * 0.1 }}
               >
-                <Link
+                <a
                   href={switchHref}
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
                 >
                   <Globe className="w-4 h-4" />
                   {locale === 'de' ? 'Switch to English' : 'Zur deutschen Seite'}
-                </Link>
+                </a>
               </motion.div>
             </motion.div>
           </>
