@@ -47,19 +47,23 @@ interface DashboardMetric {
   lastActivity?: string;
 }
 
-// Premium Glassmorphism Styles
+// Premium Glassmorphism Styles (Universe OS Edition)
 const glassPanelStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 22, 18, 0.3) 100%)',
-  backdropFilter: 'blur(20px)',
+  background: 'rgba(10, 20, 15, 0.75)', // Slightly greenish tint (Universe OS)
+  backdropFilter: 'blur(40px)',
+  WebkitBackdropFilter: 'blur(40px)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+  borderRadius: '24px' // Premium radius
 };
 
 const glassCardStyle: CSSProperties = {
-  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(10, 22, 18, 0.3) 100%)',
+  background: 'rgba(10, 20, 15, 0.7)',
   backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05)',
+  borderRadius: '16px'
 };
 
 export default function MoraDashboard({ locale }: MoraDashboardProps) {
@@ -616,6 +620,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden min-h-screen"
       style={{ background: 'linear-gradient(135deg, #030806 0%, #040a08 50%, #030806 100%)' }}>
 
+      {/* Noise Texture Overlay (Universe OS) */}
+      <div className="absolute inset-0 bg-noise pointer-events-none opacity-30 mix-blend-overlay" />
+
       {/* Premium Background with parallax stars */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
         <defs>
@@ -849,13 +856,16 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
         {/* CHAT SECTION - Compact on mobile */}
         <motion.div
-          className={`mb-8 ${isMobile ? 'rounded-2xl p-4' : 'mb-16 rounded-3xl p-8'} shadow-xl`}
+          className={`relative mb-8 ${isMobile ? 'rounded-2xl p-4' : 'mb-16 rounded-3xl p-8'} shadow-xl overflow-hidden`}
           style={glassPanelStyle}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className={`text-center ${isMobile ? 'mb-4' : 'mb-8'}`}>
+          {/* Noise Texture */}
+          <div className="absolute inset-0 bg-noise pointer-events-none opacity-30 mix-blend-overlay" />
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'mb-4' : 'mb-8'}`}>
             <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-white mb-2`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {content.chatTitle}
             </h3>
