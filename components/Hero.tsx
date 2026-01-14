@@ -165,25 +165,7 @@ export default function Hero({ locale, calUrl }: Props) {
           </motion.div>
 
           {/* Main Headline */}
-          <div className="space-y-4 relative">
-            {/* User Logo Integration - Beautiful botanical design with white card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.8 }}
-              className="absolute -top-36 left-1/2 -translate-x-1/2 pointer-events-none select-none"
-            >
-              <div className="w-24 h-24 rounded-2xl bg-white shadow-2xl shadow-black/20 flex items-center justify-center overflow-hidden">
-                <Image 
-                  src="/saimor-logo-new.png"
-                  alt="Saimôr Logo"
-                  width={80}
-                  height={80}
-                  className="object-contain"
-                />
-              </div>
-            </motion.div>
-
+          <div className="space-y-6">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

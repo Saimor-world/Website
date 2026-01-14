@@ -83,18 +83,18 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   return (
     <>
-      {/* Ultra-Clean Transparent Header */}
+      {/* Sleek Premium Header */}
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
           <motion.div
             className={`relative flex items-center justify-between transition-all duration-500 ${scrolled
-                ? 'px-6 py-3 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl'
-                : 'px-6 py-4'
+                ? 'px-5 py-2.5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+                : 'px-5 py-3'
               }`}
             layout
           >
@@ -108,21 +108,21 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               className="relative z-10 group"
             >
               <motion.div
-                className="flex items-center gap-3"
+                className="flex items-center gap-2.5"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-white/95 flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/20 transition-shadow">
+                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-white flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-emerald-500/10 transition-all">
                   <Image 
                     src="/saimor-logo-new.png"
                     alt="Saimôr"
-                    width={32}
-                    height={32}
-                    className="object-contain scale-[1.4]"
+                    width={28}
+                    height={28}
+                    className="object-contain scale-[1.3]"
                   />
                 </div>
                 <span
-                  className="text-xl font-semibold text-white drop-shadow-lg hidden sm:block"
+                  className="text-lg font-medium text-white/90 hidden sm:block tracking-wide"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   Saimôr
@@ -130,14 +130,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            {/* Desktop Navigation - Centered */}
+            <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
-                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white rounded-full transition-all hover:bg-white/5"
+                  className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -145,12 +145,12 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             </nav>
 
             {/* Right Side Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {/* Language Switcher */}
               <Link href={switchHref}>
                 <motion.button
-                  className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-xs font-bold text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
-                  whileHover={{ scale: 1.1 }}
+                  className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {switchLabel}
@@ -162,16 +162,12 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 href="https://cal.com/saimor/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-6 py-2.5 text-sm font-black text-white rounded-full transition-all border border-emerald-500/50 hover:bg-emerald-500/10"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)',
-                  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.1)'
-                }}
-                whileHover={{ scale: 1.05, boxShadow: '0 6px 24px rgba(16, 185, 129, 0.2)', borderColor: 'rgba(16, 185, 129, 0.8)' }}
+                className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                {nav.book}
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="tracking-wide">{nav.book}</span>
               </motion.a>
 
               {/* Mobile Menu Toggle */}
