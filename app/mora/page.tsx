@@ -102,28 +102,23 @@ export default function MoraPage() {
               <MoraDashboard locale="de" />
             </motion.div>
 
-            {/* Analog View / Deep View Buttons */}
+            {/* Analog Affect Deep View Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
+              className="mt-12 flex justify-center"
             >
               <button
                 onClick={() => setShowAnalogView(true)}
-                className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 hover:border-amber-400/50 transition-all hover:scale-105 flex items-center justify-center gap-3"
+                className="group px-10 py-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-purple-500/20 border border-amber-500/30 hover:border-amber-400/50 transition-all hover:scale-105 flex items-center justify-center gap-4 backdrop-blur-md"
               >
-                <Radio className="w-5 h-5 text-amber-400 group-hover:animate-pulse" />
-                <span className="text-amber-200 font-bold">VHS Analog View</span>
-                <span className="text-[10px] text-amber-400/60 uppercase tracking-wider">Deep View</span>
-              </button>
-              <button
-                onClick={() => setShowAnalogView(true)}
-                className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 hover:border-purple-400/50 transition-all hover:scale-105 flex items-center justify-center gap-3"
-              >
-                <Eye className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
-                <span className="text-purple-200 font-bold">Affect Analysis</span>
-                <span className="text-[10px] text-purple-400/60 uppercase tracking-wider">Experimental</span>
+                <Eye className="w-6 h-6 text-amber-400 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <span className="text-amber-200 font-bold text-lg block">Analog Affect Experience</span>
+                  <span className="text-[11px] text-white/40 uppercase tracking-wider">VHS Archive • Deep View</span>
+                </div>
+                <Radio className="w-5 h-5 text-purple-400 group-hover:animate-pulse ml-2" />
               </button>
             </motion.div>
           </div>
