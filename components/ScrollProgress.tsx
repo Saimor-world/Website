@@ -12,11 +12,11 @@ export default function ScrollProgress() {
   return (
     <>
       {/* Progress Bar Background */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-white/5 z-[9999]" />
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-white/5 z-[9999] pointer-events-none" />
 
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[9999]"
+        className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[9999] pointer-events-none"
         style={{
           scaleX,
           background: 'linear-gradient(90deg, #10B981 0%, #34D399 50%, #6EE7B7 100%)',
@@ -25,7 +25,7 @@ export default function ScrollProgress() {
       />
 
       {/* Simple CSS-based pulsing indicator - much smoother */}
-      <div className="fixed top-1 left-2 flex items-center gap-1.5 z-[9999]">
+      <div className="fixed top-1 left-2 flex items-center gap-1.5 z-[9999] pointer-events-none">
         <div className="scroll-dot scroll-dot-1" />
         <div className="scroll-dot scroll-dot-2" />
         <div className="scroll-dot scroll-dot-3" />
