@@ -58,32 +58,32 @@ export default function Hero({ locale, calUrl }: Props) {
 
   const content = {
     de: {
-      badge: 'Resonanz v1.0 Active',
+      badge: 'Operational Excellence v1.0',
       headline: 'Saimôr',
-      subheadline: 'Das semantische Ökosystem.',
-      description: 'Môra begleitet dich im Wandel. Oben die Organisation, darunter das verbindende Netzwerk. Erlebe Klarheit durch semantische Intelligenz.',
-      ctaPrimary: 'Môra Universe entdecken',
-      ctaSecondary: 'Gespräch buchen',
+      subheadline: 'Klarheit im Wandel.',
+      description: 'Das semantische Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung. Maximieren Sie Ihre Wirkung durch datengestützte Klarheit.',
+      ctaPrimary: 'Showcase ansehen',
+      ctaSecondary: 'Strategiegespräch buchen',
       stats: [
-        { value: 'AI', label: 'Semantic' },
-        { value: 'EU', label: 'GDPR-Safe' },
-        { value: '∞', label: 'Nodes' }
+        { value: 'AI', label: 'Semantic Core' },
+        { value: 'EU', label: 'Data Sovereignty' },
+        { value: '∞', label: 'Connections' }
       ],
-      scrollHint: 'Scroll to explore'
+      scrollHint: 'Entdecken'
     },
     en: {
-      badge: 'Resonance v1.0 Active',
+      badge: 'Operational Excellence v1.0',
       headline: 'Saimôr',
-      subheadline: 'The Semantic Ecosystem.',
-      description: 'Môra accompanies you through change. Above the organization, below the connecting network. Experience clarity through semantic intelligence.',
-      ctaPrimary: 'Discover Môra Universe',
-      ctaSecondary: 'Book a Call',
+      subheadline: 'Clarity in Change.',
+      description: 'The semantic operating system for resilient organizations. Structured overview meets deep networking. Maximize your impact through data-driven clarity.',
+      ctaPrimary: 'View Showcase',
+      ctaSecondary: 'Book Strategy Call',
       stats: [
-        { value: 'AI', label: 'Semantic' },
-        { value: 'EU', label: 'GDPR-Safe' },
-        { value: '∞', label: 'Nodes' }
+        { value: 'AI', label: 'Semantic Core' },
+        { value: 'EU', label: 'Data Sovereignty' },
+        { value: '∞', label: 'Connections' }
       ],
-      scrollHint: 'Scroll to explore'
+      scrollHint: 'Explore'
     }
   }[locale];
 
@@ -93,13 +93,29 @@ export default function Hero({ locale, calUrl }: Props) {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020504]"
       role="banner"
     >
-      {/* === HIGH-END UNIVERSE BACKGROUND === */}
+      {/* === HIGH-END BACKGROUND LAYERS === */}
       <div className="absolute inset-0 z-0">
         {/* Deep Space Gradients */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.1)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.15)_0%,transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.1)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05)_0%,transparent_80%)]" />
         
+        {/* Subtle Forest Layer - High End & Professional */}
+        <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay">
+          <Image
+            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        {/* Mycelium Pattern Overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 10 50 50 T 90 90' stroke='rgba(16,185,129,0.5)' fill='none' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          backgroundSize: '120px 120px'
+        }} />
+
         {/* Animated Atmospheric Nebula */}
         <motion.div 
           className="absolute -top-[10%] -left-[5%] w-[60%] h-[60%] bg-emerald-500/10 blur-[120px] rounded-full"

@@ -68,9 +68,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
-              <Link href="/" className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.services}</Link>
-              <Link href="/mora" className="text-white/40 hover:text-emerald-400 transition-colors">Môra</Link>
-              <Link href="/#kontakt" className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.contact}</Link>
+              <Link href={`/${locale}`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.services}</Link>
+              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/40 hover:text-emerald-400 transition-colors">Môra</Link>
+              <Link href={`/${locale}#kontakt`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.contact}</Link>
             </div>
           </div>
 
@@ -78,9 +78,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
             <div className="flex flex-col gap-4">
-              <Link href="/trust" className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.trust}</Link>
-              <Link href="/legal" className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.imprint}</Link>
-              <Link href="/legal" className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.privacy}</Link>
+              <Link href={`/${locale}/trust`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.trust}</Link>
+              <Link href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.imprint}</Link>
+              <Link href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.privacy}</Link>
             </div>
           </div>
         </div>

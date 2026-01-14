@@ -34,7 +34,7 @@ export default function MoraTeaser({ locale }: Props) {
                     >
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
                             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">Môra Intelligence</span>
+                            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">Semantic Intelligence</span>
                         </div>
 
                         <h2 className="text-5xl sm:text-7xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -46,25 +46,25 @@ export default function MoraTeaser({ locale }: Props) {
 
                         <p className="text-xl text-white/40 leading-relaxed max-w-xl">
                             {t(
-                                'Môra ist das semantische Gedächtnis deines Systems. Sie erkennt Zusammenhänge, bevor du sie suchst – vollständig lokal und sicher.',
-                                'Môra is the semantic memory of your system. It recognizes connections before you search for them – fully local and secure.'
+                                'Môra ist die semantische Analyse-Ebene Ihres Systems. Sie erkennt strategische Zusammenhänge in Echtzeit – vollständig lokal, hochverfügbar und sicher.',
+                                'Môra is the semantic analysis layer of your system. It recognizes strategic connections in real-time – fully local, highly available and secure.'
                             )}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-6 pt-4">
                             <Link
                                 href="/mora"
-                                className="group px-10 py-5 rounded-2xl bg-emerald-500 text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3"
+                                className="group px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
                             >
-                                <span>{t('Mehr über Môra', 'About Môra')}</span>
+                                <span>{t('Showcase öffnen', 'Open Showcase')}</span>
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
 
                             <Link
                                 href="/mora/analog-affect"
-                                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center"
+                                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105"
                             >
-                                {t('Tief eintauchen', 'Dive deep')}
+                                {t('Technische Details', 'Technical Details')}
                             </Link>
                         </div>
                     </motion.div>

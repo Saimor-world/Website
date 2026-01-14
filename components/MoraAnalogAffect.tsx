@@ -196,9 +196,9 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     const droneOsc = ctx.createOscillator();
     const droneGain = ctx.createGain();
 
-    droneOsc.type = 'triangle';
-    droneOsc.frequency.setValueAtTime(65.41, ctx.currentTime);
-    droneGain.gain.value = 0.05;
+    droneOsc.type = 'sine'; // Changed from triangle to sine
+    droneOsc.frequency.setValueAtTime(40, ctx.currentTime); // Lower frequency hum
+    droneGain.gain.value = 0.03;
 
     droneOsc.connect(droneGain);
     droneGain.connect(ctx.destination);
@@ -217,21 +217,25 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     const gain = ctx.createGain();
 
     const note = scale[Math.floor(Math.random() * scale.length)];
-    osc.type = Math.random() > 0.5 ? 'square' : 'sawtooth';
+    osc.type = 'sine'; // Changed from square/sawtooth to sine for more subtle sound
     osc.frequency.setValueAtTime(note, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(
-      note * 1.01,
-      ctx.currentTime + 0.1
+      note * 1.005,
+      ctx.currentTime + 0.3
     );
 
-    gain.gain.setValueAtTime(0.02, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.015, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
 
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = 'lowpass';
+    lowpass.frequency.setValueAtTime(1000, ctx.currentTime);
+    gain.connect(lowpass);
+    lowpass.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.1);
+    osc.stop(ctx.currentTime + 0.5);
   };
 
   const startSequencer = () => {

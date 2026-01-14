@@ -36,42 +36,42 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
 
   const content = {
     de: {
-      title: 'Warteliste für Early Access',
-      subtitle: 'Erhalte frühen Zugang zu Môra und gestalte die Zukunft von Saimôr mit.',
-      namePlaceholder: 'Dein Name',
-      emailPlaceholder: 'deine@email.de',
-      interestTitle: 'Fokus-Bereiche (optional)',
+      title: 'Strategischer Vorabzugang',
+      subtitle: 'Sichern Sie sich Ihren Platz im Ökosystem und gestalten Sie die Zukunft semantischer Organisationen mit.',
+      namePlaceholder: 'Ihr Name',
+      emailPlaceholder: 'geschaeftlich@email.de',
+      interestTitle: 'Interessensgebiete (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra KI-Begleiterin', emoji: '✨' },
-        { id: 'dashboards', label: 'Dashboards & Analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
-        { id: 'orbit', label: 'Orbit Coaching', emoji: '🌍' }
+        { id: 'mora-ai', label: 'Môra Semantic AI', emoji: '✨' },
+        { id: 'dashboards', label: 'Analytics & Dashboards', emoji: '📊' },
+        { id: 'workshops', label: 'Corporate Transformation', emoji: '🎤' },
+        { id: 'orbit', label: 'Systems Coaching', emoji: '🌍' }
       ],
-      submit: 'Auf Warteliste setzen',
-      submitting: 'Wird gesendet …',
-      successTitle: 'Willkommen in der Community! 🌱',
-      successMessage: 'Du erhältst in Kürze eine Bestätigung. Wir melden uns, sobald Môra bereit ist.',
-      errorMessage: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
-      privacy: 'Deine Daten werden nur für Early Access verwendet. DSGVO-konform.'
+      submit: 'Platz sichern',
+      submitting: 'Übermittlung läuft …',
+      successTitle: 'Registrierung erfolgreich 🌱',
+      successMessage: 'Wir haben Ihre Anfrage erhalten und melden uns mit weiteren Details zur Bereitstellung.',
+      errorMessage: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+      privacy: 'Ihre Daten werden exklusiv für den Early Access verwendet. DSGVO-konform.'
     },
     en: {
-      title: 'Early Access Waitlist',
-      subtitle: 'Get early access to Môra and help shape the future of Saimôr.',
+      title: 'Strategic Early Access',
+      subtitle: 'Secure your place in the ecosystem and help shape the future of semantic organizations.',
       namePlaceholder: 'Your name',
-      emailPlaceholder: 'your@email.com',
-      interestTitle: 'Focus Areas (optional)',
+      emailPlaceholder: 'business@email.com',
+      interestTitle: 'Areas of Interest (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra AI companion', emoji: '✨' },
-        { id: 'dashboards', label: 'Dashboards & analytics', emoji: '📊' },
-        { id: 'workshops', label: 'Workshops & Pulse', emoji: '🎤' },
-        { id: 'orbit', label: 'Orbit coaching', emoji: '🌍' }
+        { id: 'mora-ai', label: 'Môra Semantic AI', emoji: '✨' },
+        { id: 'dashboards', label: 'Analytics & Dashboards', emoji: '📊' },
+        { id: 'workshops', label: 'Corporate Transformation', emoji: '🎤' },
+        { id: 'orbit', label: 'Systems Coaching', emoji: '🌍' }
       ],
-      submit: 'Join waitlist',
-      submitting: 'Sending …',
-      successTitle: 'Welcome to the community! 🌱',
-      successMessage: 'You’ll receive a confirmation email shortly. We’ll reach out as soon as Môra is ready.',
+      submit: 'Secure Spot',
+      submitting: 'Transmitting …',
+      successTitle: 'Registration Successful 🌱',
+      successMessage: 'We have received your request and will follow up with deployment details.',
       errorMessage: 'Something went wrong. Please try again.',
-      privacy: 'Your data is only used for early access. GDPR-compliant.'
+      privacy: 'Your data is used exclusively for early access. GDPR-compliant.'
     }
   }[locale];
 
@@ -196,11 +196,11 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     <button
                       type="submit"
                       disabled={status === 'loading'}
-                      className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3"
+                      className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
                     >
                       {status === 'loading' ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                         <>
-                          <span className="uppercase tracking-[0.2em]">{content.submit}</span>
+                          <span className="uppercase tracking-[0.2em] font-black">{content.submit}</span>
                           <ArrowRight className="w-4 h-4" />
                         </>
                       )}

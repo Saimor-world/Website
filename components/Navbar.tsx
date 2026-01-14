@@ -14,12 +14,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const getSwitchHref = () => {
     if (!pathname) return `/${switchLocale}`;
-    if (pathname.startsWith('/de/') || pathname === '/de') {
-      return pathname.replace('/de', '/en');
+    const segments = pathname.split('/').filter(Boolean);
+    if (segments[0] === 'de' || segments[0] === 'en') {
+      segments[0] = switchLocale;
+      return '/' + segments.join('/');
     }
-    if (pathname.startsWith('/en/') || pathname === '/en') {
-      return pathname.replace('/en', '/de');
-    }
+    // Handle root /mora specially if needed, or just prefix
+    if (pathname === '/mora') return '/en/mora';
     return `/${switchLocale}${pathname === '/' ? '' : pathname}`;
   };
 
@@ -55,25 +56,28 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
-    { href: '/mora', label: nav.mora, isAnchor: false },
+    { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
     { href: `/${locale}/portal`, label: nav.portal, isAnchor: false },
-    { href: '#kontakt', label: nav.contact, isAnchor: true },
+    { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
   ];
 
   const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
     setMenuOpen(false);
 
     if (isAnchor) {
-      e.preventDefault();
-      const targetId = href.replace('#', '');
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const [path, hash] = href.split('#');
+      const isOnTargetPage = pathname === path || (path === '/de' && pathname === '/') || (path === '/en' && pathname === '/en');
+      
+      if (isOnTargetPage) {
+        e.preventDefault();
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       } else {
-        router.push(`/${locale}${href}`);
+        // Let standard navigation happen
       }
     }
-    // For non-anchor links, let the standard Link component handle it
   };
 
   return (
@@ -148,14 +152,15 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 href="https://cal.com/saimor/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#0F1F17] rounded-full transition-all"
+                className="hidden md:flex items-center gap-2 px-6 py-2.5 text-sm font-black text-white rounded-full transition-all border border-emerald-500/50 hover:bg-emerald-500/10"
                 style={{
-                  background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
-                  boxShadow: '0 4px 16px rgba(212, 168, 87, 0.3)'
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)',
+                  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.1)'
                 }}
-                whileHover={{ scale: 1.05, boxShadow: '0 6px 24px rgba(212, 168, 87, 0.4)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 6px 24px rgba(16, 185, 129, 0.2)', borderColor: 'rgba(16, 185, 129, 0.8)' }}
                 whileTap={{ scale: 0.98 }}
               >
+                <Sparkles className="w-4 h-4 text-emerald-400" />
                 {nav.book}
               </motion.a>
 

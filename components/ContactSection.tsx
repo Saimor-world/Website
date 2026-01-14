@@ -119,12 +119,12 @@ export default function ContactSection({ locale }: Props) {
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3"
+                className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
               >
-                {status === 'sending' ? t('Wird gesendet...', 'Sending...') : status === 'sent' ? t('✓ Gesendet', '✓ Sent') : (
+                {status === 'sending' ? t('Analyse läuft...', 'Analyzing...') : status === 'sent' ? t('✓ Übermittelt', '✓ Transmitted') : (
                   <>
-                    <span>{t('Nachricht senden', 'Send message')}</span>
-                    <Send className="w-4 h-4" />
+                    <span className="uppercase tracking-[0.2em]">{t('Strategie-Anfrage senden', 'Request Strategy Call')}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
