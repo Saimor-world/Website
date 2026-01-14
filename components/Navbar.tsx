@@ -91,12 +91,11 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
-          <motion.div
+          <div
             className={`relative flex items-center justify-between transition-all duration-500 ${scrolled
                 ? 'px-5 py-2.5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
                 : 'px-5 py-3'
               }`}
-            layout
           >
             {/* Logo */}
             <Link
@@ -209,7 +208,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 </AnimatePresence>
               </motion.button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </motion.header>
 
