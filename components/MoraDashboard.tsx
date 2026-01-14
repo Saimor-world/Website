@@ -80,10 +80,16 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    // Throttle mouse movement for better performance
+    let rafId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        setMousePosition({
+          x: (e.clientX / window.innerWidth - 0.5) * 20,
+          y: (e.clientY / window.innerHeight - 0.5) * 20
+        });
+        rafId = 0;
       });
     };
     window.addEventListener('mousemove', handleMouseMove);
@@ -91,6 +97,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -114,6 +121,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [moraInsight, setMoraInsight] = useState(false);
   const [isDemoTooltipVisible, setDemoTooltipVisible] = useState(false);
+  const [expandedMetrics, setExpandedMetrics] = useState<Set<string>>(new Set());
 
   const demoTooltipId = useId();
   const visitedCardsRef = useRef<Set<string>>(new Set());
@@ -181,6 +189,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       sortBy: 'Sortieren',
       lastUpdate: 'Aktualisiert',
       refresh: 'Aktualisieren',
+      expandDetails: 'Details anzeigen',
+      collapseDetails: 'Details verbergen',
 
       // Metrics
       depts: 'ABTEILUNGEN',
@@ -243,6 +253,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       sortBy: 'Sort by',
       lastUpdate: 'Updated',
       refresh: 'Refresh',
+      expandDetails: 'Show details',
+      collapseDetails: 'Hide details',
 
       // Metrics
       depts: 'DEPTS',
@@ -741,60 +753,75 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           </div>
         </motion.div>
 
-        {/* Summary Stats Row - Compact on mobile */}
-        <div className={`flex flex-wrap items-center justify-center ${isMobile ? 'gap-2 mb-4' : 'gap-4 mb-8'}`}>
-          {/* Overall Health */}
+        {/* Summary Stats Row - Enhanced with tooltips */}
+        <div className={`flex flex-wrap items-center justify-center ${isMobile ? 'gap-2 mb-4' : 'gap-4 mb-8'}`} role="region" aria-label={locale === 'de' ? 'Dashboard Übersicht' : 'Dashboard Overview'}>
+          {/* Overall Health - Enhanced */}
           <motion.div
-            className={`backdrop-blur-xl bg-black/40 border border-[#D4A857]/30 ${isMobile ? 'rounded-lg px-3 py-2' : 'rounded-xl px-6 py-3'} flex items-center gap-3`}
+            className={`group relative backdrop-blur-xl bg-black/40 border border-[#D4A857]/30 hover:border-[#D4A857]/50 ${isMobile ? 'rounded-lg px-3 py-2' : 'rounded-xl px-6 py-3'} flex items-center gap-3 cursor-help transition-all`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+            title={`${content.avgHealth}: ${Math.round(avgHealth)}% - ${locale === 'de' ? 'Durchschnitt aller Metriken' : 'Average of all metrics'}`}
           >
-            <BarChart3 size={isMobile ? 14 : 18} className="text-[#D4A857]" />
+            <BarChart3 size={isMobile ? 14 : 18} className="text-[#D4A857] group-hover:scale-110 transition-transform" aria-hidden="true" />
             <div>
               <div className={`${isMobile ? 'text-lg' : 'text-2xl'} font-light text-[#D4A857] font-mono`}>{Math.round(avgHealth)}%</div>
               {!isMobile && <div className="text-[10px] text-white/40 uppercase tracking-wider">{content.avgHealth}</div>}
             </div>
+            {/* Trend indicator */}
+            {!isMobile && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#4A6741] animate-pulse" 
+                title={locale === 'de' ? 'Gesunde Gesamtlage' : 'Healthy overall status'}
+                aria-label={locale === 'de' ? 'Gesunde Gesamtlage' : 'Healthy overall status'} />
+            )}
           </motion.div>
 
           <motion.div
-            className={`backdrop-blur-xl bg-[#4A6741]/10 border border-[#4A6741]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
+            className={`group backdrop-blur-xl bg-[#4A6741]/10 hover:bg-[#4A6741]/20 border border-[#4A6741]/30 hover:border-[#4A6741]/50 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2 cursor-help transition-all`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
+            title={`${healthyCount} ${content.healthy} ${locale === 'de' ? 'Metriken' : 'metrics'}`}
           >
-            <CheckCircle size={isMobile ? 12 : 14} className="text-[#4A6741]" />
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#4A6741] font-mono`}>{healthyCount}</span>
+            <CheckCircle size={isMobile ? 12 : 14} className="text-[#4A6741] group-hover:scale-110 transition-transform" aria-hidden="true" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#4A6741] font-mono font-semibold`}>{healthyCount}</span>
+            {!isMobile && <span className="text-[10px] text-[#4A6741]/60 ml-1">{content.healthy}</span>}
           </motion.div>
           <motion.div
-            className={`backdrop-blur-xl bg-[#D4A857]/10 border border-[#D4A857]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
+            className={`group backdrop-blur-xl bg-[#D4A857]/10 hover:bg-[#D4A857]/20 border border-[#D4A857]/30 hover:border-[#D4A857]/50 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2 cursor-help transition-all`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            title={`${warningCount} ${content.warning} ${locale === 'de' ? 'Metriken' : 'metrics'}`}
           >
-            <AlertCircle size={isMobile ? 12 : 14} className="text-[#D4A857]" />
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#D4A857] font-mono`}>{warningCount}</span>
+            <AlertCircle size={isMobile ? 12 : 14} className="text-[#D4A857] group-hover:scale-110 transition-transform" aria-hidden="true" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#D4A857] font-mono font-semibold`}>{warningCount}</span>
+            {!isMobile && <span className="text-[10px] text-[#D4A857]/60 ml-1">{content.warning}</span>}
           </motion.div>
           <motion.div
-            className={`backdrop-blur-xl bg-[#E85D75]/10 border border-[#E85D75]/30 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2`}
+            className={`group backdrop-blur-xl bg-[#E85D75]/10 hover:bg-[#E85D75]/20 border border-[#E85D75]/30 hover:border-[#E85D75]/50 ${isMobile ? 'rounded-lg px-2 py-1.5' : 'rounded-xl px-4 py-3'} flex items-center gap-2 cursor-help transition-all ${criticalCount > 0 ? 'animate-pulse' : ''}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
+            title={`${criticalCount} ${locale === 'de' ? 'Kritische' : 'Critical'} ${locale === 'de' ? 'Metriken' : 'metrics'}`}
           >
-            <AlertCircle size={isMobile ? 12 : 14} className="text-[#E85D75]" />
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#E85D75] font-mono`}>{criticalCount}</span>
+            <AlertCircle size={isMobile ? 12 : 14} className="text-[#E85D75] group-hover:scale-110 transition-transform" aria-hidden="true" />
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} text-[#E85D75] font-mono font-semibold`}>{criticalCount}</span>
+            {!isMobile && <span className="text-[10px] text-[#E85D75]/60 ml-1">{locale === 'de' ? 'Kritisch' : 'Critical'}</span>}
           </motion.div>
 
-          {/* Total Nodes - Hide on mobile to save space */}
+          {/* Total Nodes - Enhanced with tooltip */}
           {!isMobile && (
             <motion.div
-              className="backdrop-blur-xl bg-black/40 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2"
+              className="group backdrop-blur-xl bg-black/40 hover:bg-black/50 border border-white/10 hover:border-white/20 rounded-xl px-4 py-3 flex items-center gap-2 cursor-help transition-all"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
+              title={`${totalNodes} ${locale === 'de' ? 'Datenpunkte insgesamt' : 'total data points'}`}
             >
-              <Zap size={14} className="text-[#4A6741]" />
-              <span className="text-sm text-white/60 font-mono">{totalNodes} {content.totalNodes.toLowerCase()}</span>
+              <Zap size={14} className="text-[#4A6741] group-hover:text-[#5D7C54] group-hover:scale-110 transition-all" aria-hidden="true" />
+              <span className="text-sm text-white/60 group-hover:text-white/80 font-mono transition-colors">{totalNodes}</span>
+              <span className="text-xs text-white/40 uppercase">{content.totalNodes.toLowerCase()}</span>
             </motion.div>
           )}
         </div>
@@ -842,7 +869,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 <motion.button
                   key={index}
                   onClick={() => handleAskMora(question)}
-                  className={`w-full ${isMobile ? 'p-3 rounded-xl' : 'p-4 rounded-2xl'} text-left transition-all group disabled:opacity-50 active:scale-[0.98]`}
+                  className={`w-full ${isMobile ? 'p-3 rounded-xl' : 'p-4 rounded-2xl'} text-left transition-all group disabled:opacity-50 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50`}
                   style={glassCardStyle}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -850,9 +877,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   transition={{ delay: index * 0.1 }}
                   whileHover={!isMobile ? { x: 4 } : {}}
                   disabled={isAsking}
+                  aria-label={`${locale === 'de' ? 'Schnellfrage' : 'Quick question'}: ${question}`}
+                  type="button"
                 >
                   <div className="flex items-center gap-3">
-                    <MessageSquare className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#4A6741] group-hover:text-[#D4A857] transition-colors flex-shrink-0`} />
+                    <MessageSquare className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-[#4A6741] group-hover:text-[#D4A857] transition-colors flex-shrink-0`} aria-hidden="true" />
                     <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium text-white/90 group-hover:text-white`}>
                       {question}
                     </span>
@@ -871,24 +900,29 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   type="text"
                   value={userQuestion}
                   onChange={(e) => setUserQuestion(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAskMora()}
+                  onKeyDown={(e) => e.key === 'Enter' && !isAsking && userQuestion.trim() && handleAskMora()}
                   placeholder={content.inputPlaceholder}
                   disabled={isAsking}
                   className="w-full px-6 py-4 pr-14 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/30 disabled:opacity-50 bg-transparent"
                   style={glassCardStyle}
+                  aria-label={content.inputPlaceholder}
+                  role="searchbox"
                 />
                 <motion.button
                   onClick={() => handleAskMora()}
                   disabled={isAsking || !userQuestion.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4A857] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-[#4A6741] to-[#D4A857] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50 focus:ring-offset-2 focus:ring-offset-black/40"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  aria-label={content.askButton}
+                  type="button"
                 >
                   {isAsking ? (
-                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    <Loader2 className="w-5 h-5 text-white animate-spin" aria-hidden="true" />
                   ) : (
-                    <Send className="w-5 h-5 text-white" />
+                    <Send className="w-5 h-5 text-white" aria-hidden="true" />
                   )}
+                  <span className="sr-only">{isAsking ? (locale === 'de' ? 'Lädt...' : 'Loading...') : content.askButton}</span>
                 </motion.button>
               </motion.div>
 
@@ -1022,7 +1056,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     setViewMode('folder');
                     emitViewSwitch();
                   }}
-                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
+                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
                   style={{
                     background: viewMode === 'folder'
                       ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
@@ -1032,8 +1066,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  role="tab"
+                  aria-selected={viewMode === 'folder'}
+                  aria-label={content.folderView}
                 >
-                  <Folder className="w-5 h-5" />
+                  <Folder className="w-5 h-5" aria-hidden="true" />
                   <span>{content.folderView}</span>
                 </motion.button>
 
@@ -1042,7 +1079,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     setViewMode('field');
                     emitViewSwitch();
                   }}
-                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px]"
+                  className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-semibold transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
                   style={{
                     background: viewMode === 'field'
                       ? 'linear-gradient(135deg, #4A6741 0%, #5D7C54 100%)'
@@ -1052,8 +1089,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  role="tab"
+                  aria-selected={viewMode === 'field'}
+                  aria-label={content.fieldView}
                 >
-                  <LayoutGrid className="w-5 h-5" />
+                  <LayoutGrid className="w-5 h-5" aria-hidden="true" />
                   <span>{content.fieldView}</span>
                 </motion.button>
               </div>
@@ -1084,12 +1124,31 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.03 }}
-                    onClick={() => setSelectedCard(isSelected ? null : metric.id)}
-                    className={`relative rounded-xl p-4 transition-all active:scale-[0.98] ${isSelected
-                      ? 'bg-[#4A6741]/20 border-2 border-[#4A6741]'
-                      : 'bg-black/30 border border-white/10'
+                    onClick={() => {
+                      setSelectedCard(isSelected ? null : metric.id);
+                      const newExpanded = new Set(expandedMetrics);
+                      if (isSelected) {
+                        newExpanded.delete(metric.id);
+                      } else {
+                        newExpanded.add(metric.id);
+                      }
+                      setExpandedMetrics(newExpanded);
+                    }}
+                    className={`relative rounded-xl p-4 transition-all active:scale-[0.98] cursor-pointer ${isSelected
+                      ? 'bg-[#4A6741]/20 border-2 border-[#4A6741] shadow-lg shadow-[#4A6741]/20'
+                      : 'bg-black/30 border border-white/10 hover:border-white/20'
                       }`}
                     style={{ backdropFilter: 'blur(10px)' }}
+                    role="button"
+                    aria-expanded={isSelected}
+                    aria-label={`${metric.label}, ${metric.value}% ${content.healthScore}`}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedCard(isSelected ? null : metric.id);
+                      }
+                    }}
                   >
                     {/* Compact Header Row */}
                     <div className="flex items-center justify-between mb-3">
@@ -1109,17 +1168,20 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     </div>
 
                     {/* Quick Stats Row - Compact */}
-                    <div className="flex items-center gap-4 text-xs text-white/60">
-                      <div className="flex items-center gap-1">
-                        <Users size={12} />
-                        <span>{metric.activeUsers}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} />
-                        <span>{formatTimeAgo(metric.lastActivity || null)}</span>
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-3 text-white/60">
+                        <div className="flex items-center gap-1" title={`${metric.activeUsers} ${content.activeUsers}`}>
+                          <Users size={12} />
+                          <span>{metric.activeUsers}</span>
+                        </div>
+                        <div className="flex items-center gap-1" title={formatTimeAgo(metric.lastActivity || null)}>
+                          <Clock size={12} />
+                          <span>{formatTimeAgo(metric.lastActivity || null)}</span>
+                        </div>
                       </div>
                       {metric.change !== 0 && (
-                        <div className={`flex items-center gap-1 ${metric.change > 0 ? 'text-[#4A6741]' : 'text-[#E85D75]'}`}>
+                        <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${metric.change > 0 ? 'bg-[#4A6741]/20 text-[#4A6741]' : 'bg-[#E85D75]/20 text-[#E85D75]'}`}
+                          title={`${metric.change > 0 ? '+' : ''}${metric.change}% ${locale === 'de' ? 'Veränderung' : 'change'}`}>
                           {metric.change > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                           <span className="font-semibold">{metric.change > 0 ? '+' : ''}{metric.change}%</span>
                         </div>
@@ -1127,33 +1189,70 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     </div>
 
                     {/* Expandable Details */}
-                    {isSelected && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="mt-3 pt-3 border-t border-white/10 space-y-2"
-                      >
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div>
-                            <span className="text-white/50">{content.depts}:</span>
-                            <span className="text-white ml-1 font-mono">{metric.departmentCount || 0}</span>
+                    <AnimatePresence>
+                      {isSelected && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="mt-3 pt-3 border-t border-white/10 space-y-3"
+                        >
+                          {/* Enhanced metrics grid */}
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="p-2 rounded-lg bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <Building2 size={10} className="text-[#D4A857]" />
+                                <span className="text-white/50 text-[10px] uppercase">{content.depts}</span>
+                              </div>
+                              <span className="text-white font-mono font-semibold">{metric.departmentCount || 0}</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <Activity size={10} className="text-[#D4A857]" />
+                                <span className="text-white/50 text-[10px] uppercase">{content.spaces}</span>
+                              </div>
+                              <span className="text-white font-mono font-semibold">{metric.spaceCount || 0}</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <FolderOpen size={10} className="text-[#D4A857]" />
+                                <span className="text-white/50 text-[10px] uppercase">{content.folders}</span>
+                              </div>
+                              <span className="text-white font-mono font-semibold">{metric.folderCount || 0}</span>
+                            </div>
+                            <div className="p-2 rounded-lg bg-white/5 border border-white/10">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <Zap size={10} className="text-[#D4A857]" />
+                                <span className="text-white/50 text-[10px] uppercase">{content.nodes}</span>
+                              </div>
+                              <span className="text-white font-mono font-semibold">{metric.nodeCount || 0}</span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="text-white/50">{content.spaces}:</span>
-                            <span className="text-white ml-1 font-mono">{metric.spaceCount || 0}</span>
+
+                          {/* Status badge */}
+                          <div className={`flex items-center justify-between p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
+                            <span className="text-xs text-white/70">{locale === 'de' ? 'Status' : 'Status'}</span>
+                            <span className={`text-xs font-semibold ${colors.text} uppercase`}>{metric.status}</span>
                           </div>
-                          <div>
-                            <span className="text-white/50">{content.folders}:</span>
-                            <span className="text-white ml-1 font-mono">{metric.folderCount || 0}</span>
-                          </div>
-                          <div>
-                            <span className="text-white/50">{content.nodes}:</span>
-                            <span className="text-white ml-1 font-mono">{metric.nodeCount || 0}</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
+
+                          {/* Suggested action */}
+                          {content.suggestedQuestions[metric.id] && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAskMora(content.suggestedQuestions[metric.id]);
+                                setSelectedCard(null);
+                              }}
+                              className="w-full p-2 rounded-lg bg-[#D4A857]/10 border border-[#D4A857]/30 text-[#D4A857] text-xs hover:bg-[#D4A857]/20 transition-colors flex items-center gap-2 group"
+                            >
+                              <Sparkles size={12} className="group-hover:scale-110 transition-transform" />
+                              <span className="flex-1 text-left truncate">{locale === 'de' ? 'Môra fragen' : 'Ask Môra'}</span>
+                              <ChevronRight size={12} />
+                            </button>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 );
               })}
@@ -1194,6 +1293,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                           sendDashboardHoverEvent(false);
                         }}
                         onClick={() => setSelectedCard(selectedCard === metric.id ? null : metric.id)}
+                        role="article"
+                        aria-label={`${metric.label} - ${metric.value}% ${content.healthScore}, ${metric.status}`}
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedCard(selectedCard === metric.id ? null : metric.id);
+                          }
+                        }}
                       >
                         {/* Pulse animation for warnings */}
                         {needsAttention && (
@@ -1254,20 +1362,39 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                               <span className="text-white/50">{content.healthScore}</span>
                               <span className={`${colors.text} font-mono font-medium`}>{metric.value}%</span>
                             </div>
-                            <div className="w-full h-2.5 bg-black/50 rounded-full overflow-hidden">
+                            <div className="relative w-full h-2.5 bg-black/50 rounded-full overflow-hidden"
+                              role="progressbar"
+                              aria-valuenow={metric.value}
+                              aria-valuemin={0}
+                              aria-valuemax={100}
+                              aria-label={`${content.healthScore}: ${metric.value}%`}>
                               <motion.div
-                                className={`h-full rounded-full ${metric.value >= 80 ? 'bg-gradient-to-r from-[#4A6741] to-[#5D7C54]' :
+                                className={`h-full rounded-full relative ${metric.value >= 80 ? 'bg-gradient-to-r from-[#4A6741] to-[#5D7C54]' :
                                   metric.value >= 60 ? 'bg-gradient-to-r from-[#D4A857] to-[#E6C897]' :
                                     'bg-gradient-to-r from-[#E85D75] to-[#F87171]'
                                   }`}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${metric.value}%` }}
                                 transition={{ duration: 1, delay: index * 0.05, ease: 'easeOut' }}
-                              />
+                              >
+                                {/* Animated shimmer effect */}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                                  animate={{
+                                    x: ['-100%', '100%']
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    repeatDelay: 3,
+                                    ease: 'easeInOut'
+                                  }}
+                                />
+                              </motion.div>
                             </div>
                           </div>
 
-                          {/* Metrics Grid */}
+                          {/* Metrics Grid - Enhanced with tooltips */}
                           <div className="grid grid-cols-4 gap-2">
                             {[
                               { icon: Building2, label: content.depts, value: metric.departmentCount || 0 },
@@ -1275,9 +1402,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                               { icon: FolderOpen, label: content.folders, value: metric.folderCount || 0 },
                               { icon: Zap, label: content.nodes, value: metric.nodeCount || 0 },
                             ].map((item) => (
-                              <div key={item.label} className="p-2 rounded-lg bg-black/30 text-center">
-                                <item.icon size={10} className="text-white/30 mx-auto mb-1" />
-                                <div className="text-sm font-mono text-[#4A6741]">{item.value}</div>
+                              <div 
+                                key={item.label} 
+                                className="group relative p-2 rounded-lg bg-black/30 hover:bg-black/40 text-center transition-all cursor-help"
+                                title={`${item.label}: ${item.value}`}
+                              >
+                                <item.icon size={10} className="text-white/30 group-hover:text-[#D4A857] mx-auto mb-1 transition-colors" />
+                                <div className="text-sm font-mono text-[#4A6741] group-hover:text-[#5D7C54] transition-colors">{item.value}</div>
+                                <div className="text-[8px] text-white/40 uppercase tracking-tighter mt-0.5">{item.label}</div>
                               </div>
                             ))}
                           </div>
@@ -1323,9 +1455,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                                     e.stopPropagation();
                                     setSelectedCard(metric.id);
                                   }}
-                                  className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1 cursor-pointer"
+                                  className="px-3 py-1 text-[10px] bg-[#4A6741]/20 hover:bg-[#4A6741]/30 border border-[#4A6741]/30 rounded-full text-[#4A6741] transition-all flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#4A6741]/50"
+                                  title={locale === 'de' ? 'Detaillierten Bericht anzeigen' : 'Show detailed report'}
+                                  aria-label={`${locale === 'de' ? 'Bericht anzeigen für' : 'Show report for'} ${metric.label}`}
                                 >
-                                  <FileText size={10} />
+                                  <FileText size={10} aria-hidden="true" />
                                   {locale === 'de' ? 'Bericht' : 'Report'}
                                 </button>
                                 <button
@@ -1333,9 +1467,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                                     e.stopPropagation();
                                     setSelectedCard(metric.id);
                                   }}
-                                  className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1 cursor-pointer"
+                                  className="px-3 py-1 text-[10px] bg-[#D4A857]/20 hover:bg-[#D4A857]/30 border border-[#D4A857]/30 rounded-full text-[#D4A857] transition-all flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
+                                  title={locale === 'de' ? 'Erweiterte Details anzeigen' : 'Show extended details'}
+                                  aria-label={`${locale === 'de' ? 'Details anzeigen für' : 'Show details for'} ${metric.label}`}
                                 >
-                                  <Eye size={10} />
+                                  <Eye size={10} aria-hidden="true" />
                                   {locale === 'de' ? 'Details' : 'Details'}
                                 </button>
                               </motion.div>
@@ -1622,9 +1758,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   {/* Close button */}
                   <button
                     onClick={() => setSelectedCard(null)}
-                    className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+                    className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#D4A857]/50"
+                    aria-label={locale === 'de' ? 'Schließen' : 'Close'}
+                    title={locale === 'de' ? 'Detailansicht schließen' : 'Close detail view'}
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-6 h-6" aria-hidden="true" />
                   </button>
 
                   <div className="p-8">
