@@ -141,13 +141,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     {item.label}
                   </button>
                 ) : (
-                  <Link
+                  <a
                     key={item.href}
                     href={item.href}
                     className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 )
               ))}
             </nav>
@@ -258,14 +258,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                         {item.label}
                       </button>
                     ) : (
-                      <Link
+                      <a
                         href={item.href}
                         onClick={() => setMenuOpen(false)}
                         className="text-3xl font-semibold text-white/80 hover:text-white"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                       >
                         {item.label}
-                      </Link>
+                      </a>
                     )}
                   </motion.div>
                 ))}

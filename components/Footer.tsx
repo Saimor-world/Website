@@ -87,8 +87,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
-              <Link href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</Link>
-              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</Link>
+              <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
+              <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
           </div>
@@ -97,9 +97,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
             <div className="flex flex-col gap-4">
-              <Link href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</Link>
-              <Link href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</Link>
-              <Link href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</Link>
+              <a href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</a>
+              <a href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</a>
+              <a href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</a>
             </div>
           </div>
         </div>
