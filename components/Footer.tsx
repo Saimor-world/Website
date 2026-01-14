@@ -1,8 +1,6 @@
 'use client';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Mail, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -66,7 +64,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           
           {/* Brand */}
           <div className="md:col-span-2 space-y-8">
-            <Link href={`/${locale}`} className="flex items-center gap-4 group">
+            <a href={`/${locale}`} className="flex items-center gap-4 group">
               <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
                 <Image 
                   src="/saimor-logo-new.png"
@@ -77,7 +75,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
                 />
               </div>
               <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
-            </Link>
+            </a>
             <p className="text-white/40 max-w-sm text-lg leading-relaxed">
               {footerText.tagline}
             </p>

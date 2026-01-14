@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,6 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
   const switchLocale = locale === 'de' ? 'en' : 'de';
 
   const getSwitchHref = () => {
@@ -98,7 +97,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               }`}
           >
             {/* Logo */}
-            <Link
+            <a
               href={`/${locale}`}
               onClick={() => {
                 setMenuOpen(false);

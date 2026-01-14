@@ -329,7 +329,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   >
                     {/* Outer Glow - MAXIMUM RADIANCE */}
                     <motion.div
-                      className="absolute inset-[-40px] rounded-full blur-[50px] opacity-60 group-hover/node:opacity-100 transition-opacity"
+                      className={`absolute ${isMobile ? 'inset-[-20px] blur-[30px]' : 'inset-[-40px] blur-[50px]'} rounded-full opacity-60 group-hover/node:opacity-100 transition-opacity`}
                       style={{ background: `radial-gradient(circle, ${statusColor} 0%, transparent 70%)` }}
                       animate={{ 
                         scale: [1, 1.4, 1],
@@ -340,7 +340,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     
                     {/* Node Core - Lighter Crystal Glass */}
                     <motion.div
-                      className={`relative ${isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
+                      className={`relative ${isMobile ? 'w-12 h-12' : 'w-24 h-24'} rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
                         isSelected ? 'scale-125 border-white shadow-[0_0_60px_rgba(255,255,255,0.5)]' : 'border-white/40 hover:border-white/60'
                       }`}
                       style={{
@@ -348,10 +348,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                         boxShadow: `0 0 40px ${statusGlow}, inset 0 0 30px rgba(255,255,255,0.2)`
                       }}
                     >
-                      <m.icon className={`${isMobile ? 'w-7 h-7' : 'w-10 h-10'} text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]`} />
+                      <m.icon className={`${isMobile ? 'w-5 h-5' : 'w-10 h-10'} text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]`} />
                       
                       {/* Floating Indicator - High Visibility White Badge */}
-                      <div className={`absolute -top-1 -right-1 ${isMobile ? 'px-2 py-1 text-[10px]' : 'px-3 py-1.5 text-xs'} rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center font-black text-emerald-700 shadow-[0_8px_20px_rgba(0,0,0,0.4)]`}>
+                      <div className={`absolute -top-1 -right-1 ${isMobile ? 'px-1.5 py-0.5 text-[8px]' : 'px-3 py-1.5 text-xs'} rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center font-black text-emerald-700 shadow-[0_8px_20px_rgba(0,0,0,0.4)]`}>
                         {m.value}%
                       </div>
                     </motion.div>
@@ -377,27 +377,27 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               {/* Center Intelligence Orb - BLINDING RADIANCE */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center group/core">
                 <motion.div
-                  className={`${isMobile ? 'w-40 h-40' : 'w-64 h-64'} rounded-full relative flex items-center justify-center`}
+                  className={`${isMobile ? 'w-28 h-28' : 'w-64 h-64'} rounded-full relative flex items-center justify-center`}
                   animate={{
                     scale: [1, 1.08, 1],
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {/* Rotating Rings - High Visibility */}
-                  <div className={`absolute inset-0 rounded-full border-4 border-emerald-400/50 animate-[spin_12s_linear_infinite]`} />
-                  <div className={`absolute ${isMobile ? 'inset-6' : 'inset-10'} rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]`} />
-                  <div className={`absolute ${isMobile ? 'inset-[-30px]' : 'inset-[-60px]'} rounded-full bg-emerald-400/30 blur-[80px] opacity-80 animate-pulse`} />
+                  <div className={`absolute inset-0 rounded-full ${isMobile ? 'border-2' : 'border-4'} border-emerald-400/50 animate-[spin_12s_linear_infinite]`} />
+                  <div className={`absolute ${isMobile ? 'inset-3' : 'inset-10'} rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]`} />
+                  <div className={`absolute ${isMobile ? 'inset-[-20px] blur-[40px]' : 'inset-[-60px] blur-[80px]'} rounded-full bg-emerald-400/30 opacity-80 animate-pulse`} />
                   
                   <div 
-                    className={`${isMobile ? 'w-24 h-24' : 'w-36 h-36'} rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] border-4 border-white shadow-2xl`}
+                    className={`${isMobile ? 'w-16 h-16' : 'w-36 h-36'} rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] ${isMobile ? 'border-2' : 'border-4'} border-white shadow-2xl`}
                     onClick={() => setViewMode('chat')}
                   >
-                    <Sparkles className={`${isMobile ? 'w-12 h-12' : 'w-20 h-20'} text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]`} />
+                    <Sparkles className={`${isMobile ? 'w-8 h-8' : 'w-20 h-20'} text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]`} />
                   </div>
                 </motion.div>
-                <div className={`${isMobile ? 'mt-8' : 'mt-14'} opacity-100 transition-all duration-500`}>
-                  <p className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-black tracking-[0.8em] text-white uppercase drop-shadow-[0_0_20px_rgba(52,211,153,1)]`}>MÔRA CORE</p>
-                  <p className={`${isMobile ? 'text-[8px]' : 'text-[11px]'} text-white font-black uppercase mt-3 tracking-widest bg-emerald-500/40 px-6 py-2 rounded-full border-2 border-white/50 inline-block backdrop-blur-md shadow-xl`}>INTELLIGENCE ACTIVE</p>
+                <div className={`${isMobile ? 'mt-4' : 'mt-14'} opacity-100 transition-all duration-500`}>
+                  <p className={`${isMobile ? 'text-[8px]' : 'text-sm'} font-black tracking-[0.5em] text-white uppercase drop-shadow-[0_0_20px_rgba(52,211,153,1)]`}>MÔRA CORE</p>
+                  <p className={`${isMobile ? 'text-[7px] px-3 py-1' : 'text-[11px] px-6 py-2'} text-white font-black uppercase mt-2 tracking-widest bg-emerald-500/40 rounded-full border border-white/50 inline-block backdrop-blur-md shadow-xl`}>ACTIVE</p>
                 </div>
               </div>
             </motion.div>

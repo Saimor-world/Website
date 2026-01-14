@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, Play, ChevronDown } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 type Locale = 'de' | 'en';
 

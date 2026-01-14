@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Brain, Network, MessageSquare, Shield, Zap, ChevronRight, Eye, Radio } from "lucide-react";
+import { Sparkles, Brain, Network, MessageSquare, Eye, Radio } from "lucide-react";
 import { motion } from "framer-motion";
 import MoraDashboard from "@/components/MoraDashboard";
 import dynamic from "next/dynamic";
