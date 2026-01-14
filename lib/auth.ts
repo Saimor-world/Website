@@ -2,8 +2,10 @@ import type { AuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { JWT } from 'next-auth/jwt';
 
-export const authOptions: AuthOptions = {
-  providers: [
+const providers = [];
+
+if (process.env.EMAIL_SERVER_HOST && process.env.EMAIL_FROM) {
+  providers.push(
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -14,8 +16,12 @@ export const authOptions: AuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
-    }),
-  ],
+    })
+  );
+}
+
+export const authOptions: AuthOptions = {
+  providers,
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days

@@ -42,10 +42,10 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   }[locale];
 
   return (
-    <footer className="relative py-24 border-t border-white/10 bg-[#020504] overflow-hidden">
+    <footer className="relative py-24 border-t border-white/10 bg-[#030806] overflow-hidden">
       {/* Atmosphere */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">

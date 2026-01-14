@@ -21,10 +21,11 @@ export default function ContactSection({ locale }: Props) {
   };
 
   return (
-    <section id="kontakt" className="relative py-32 sm:py-48 bg-[#020504] overflow-hidden">
-      {/* Background Atmosphere */}
+    <section id="kontakt" className="relative py-32 sm:py-48 bg-[#030806] overflow-hidden">
+      {/* Background Atmosphere - Brighter */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-emerald-500/5 blur-[150px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-emerald-500/15 blur-[180px] rounded-full opacity-70" />
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[150px] rounded-full opacity-40" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">

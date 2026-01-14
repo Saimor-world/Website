@@ -58,14 +58,15 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   }[locale];
 
   return (
-    <section className="relative py-32 bg-[#020504] overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full" />
+    <section className="relative py-32 bg-[#030806] overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-60">
+        <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-emerald-500/20 blur-[180px] rounded-full" />
+        <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/15 blur-[180px] rounded-full" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <motion.div
-          className="p-12 sm:p-20 rounded-[3rem] border border-white/10 bg-white/[0.03] backdrop-blur-3xl overflow-hidden shadow-2xl relative"
+          className="p-12 sm:p-20 rounded-[3rem] border border-white/10 bg-white/[0.06] backdrop-blur-3xl overflow-hidden shadow-2xl relative"
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}

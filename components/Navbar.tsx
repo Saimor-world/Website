@@ -93,7 +93,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
             className={`relative flex items-center justify-between transition-all duration-500 ${scrolled
-                ? 'px-6 py-3 rounded-full bg-black/20 backdrop-blur-xl border border-white/5 shadow-2xl'
+                ? 'px-6 py-3 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl'
                 : 'px-6 py-4'
               }`}
             layout

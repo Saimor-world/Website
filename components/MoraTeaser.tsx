@@ -14,11 +14,12 @@ export default function MoraTeaser({ locale }: Props) {
     const t = (de: string, en: string) => (locale === 'de' ? de : en);
 
     return (
-        <section className="relative py-32 sm:py-48 overflow-hidden bg-[#020504]">
-            {/* Background Atmosphere */}
+        <section className="relative py-32 sm:py-48 overflow-hidden bg-[#030806]">
+            {/* Background Atmosphere - Brighter */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] rounded-full" />
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[100px] rounded-full" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/15 blur-[150px] rounded-full opacity-70" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/15 blur-[120px] rounded-full opacity-50" />
+                <div className="absolute bottom-0 left-0 w-full h-[20vh] bg-gradient-to-t from-emerald-500/10 to-transparent" />
             </div>
 
             <div className="relative z-10 mx-auto max-w-6xl px-6">

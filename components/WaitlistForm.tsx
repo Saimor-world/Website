@@ -93,10 +93,13 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   };
 
   return (
-    <section id="waitlist" className="relative py-32 bg-[#020504]">
-      <div className="max-w-4xl mx-auto px-6">
+    <section id="waitlist" className="relative py-32 bg-[#030806]">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/10 blur-[200px] rounded-full opacity-40" />
+      </div>
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
         <motion.div
-          className="rounded-[3rem] border border-white/10 bg-white/[0.03] backdrop-blur-3xl overflow-hidden shadow-2xl"
+          className="rounded-[3rem] border border-white/10 bg-white/[0.05] backdrop-blur-3xl overflow-hidden shadow-2xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

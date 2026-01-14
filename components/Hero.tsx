@@ -90,17 +90,17 @@ export default function Hero({ locale, calUrl }: Props) {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020504]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030806]"
       role="banner"
     >
       {/* === HIGH-END BACKGROUND LAYERS === */}
       <div className="absolute inset-0 z-0">
-        {/* Deep Space Gradients */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.15)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.1)_0%,transparent_50%)]" />
+        {/* Deep Space Gradients - Brighter */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.25)_0%,transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.2)_0%,transparent_60%)]" />
         
         {/* Subtle Forest Layer - High End & Professional */}
-        <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay">
+        <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay">
           <Image
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
             alt=""
@@ -111,28 +111,31 @@ export default function Hero({ locale, calUrl }: Props) {
         </div>
 
         {/* Mycelium Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
+        <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 10 50 50 T 90 90' stroke='rgba(16,185,129,0.5)' fill='none' stroke-width='0.5'/%3E%3C/svg%3E")`,
           backgroundSize: '120px 120px'
         }} />
 
-        {/* Animated Atmospheric Nebula */}
+        {/* Animated Atmospheric Nebula - More intense & vibrant */}
         <motion.div 
-          className="absolute -top-[10%] -left-[5%] w-[60%] h-[60%] bg-emerald-500/10 blur-[120px] rounded-full"
+          className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] bg-emerald-500/25 blur-[150px] rounded-full"
           animate={{ 
-            opacity: [0.3, 0.5, 0.3],
-            scale: [1, 1.1, 1] 
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute -bottom-[10%] -right-[5%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] rounded-full"
-          animate={{ 
-            opacity: [0.2, 0.4, 0.2],
-            scale: [1.1, 1, 1.1] 
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.2, 1] 
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
+        <motion.div 
+          className="absolute -bottom-[15%] -right-[10%] w-[70%] h-[70%] bg-cyan-500/20 blur-[150px] rounded-full"
+          animate={{ 
+            opacity: [0.4, 0.7, 0.4],
+            scale: [1.2, 1, 1.2] 
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        
+        {/* Central Glow for better readability and "inviting" feel */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-emerald-500/15 blur-[250px] rounded-full opacity-70" />
 
         {/* Neural Grid Overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
