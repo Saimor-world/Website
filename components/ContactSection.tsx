@@ -1,6 +1,6 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 type Props = { locale: 'de' | 'en' };

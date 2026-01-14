@@ -1,7 +1,7 @@
 ﻿'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Check, Loader2, Heart, Sparkles } from 'lucide-react';
+import { Mail, Check, Loader2, Heart, Sparkles, ArrowRight } from 'lucide-react';
 import type { CSSProperties } from 'react';
 
 type Locale = 'de' | 'en';
