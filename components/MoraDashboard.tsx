@@ -115,79 +115,81 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   if (!mounted) return null;
 
   return (
-    <div className="relative w-full h-[800px] bg-[#010302] group/os overflow-hidden font-sans select-none border border-white/10 rounded-[3rem]">
+    <div className="relative w-full h-[800px] bg-[#020804] group/os overflow-hidden font-sans select-none border border-white/10 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.1)]">
       
-      {/* 1. Scoped Universe Background - Enhanced Depth & Light */}
+      {/* 1. Scoped Universe Background - SIGNIFICANTLY BRIGHTER */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Deep Space Gradients - More Colorful & Inviting */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.08)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.08)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.03)_0%,transparent_80%)]" />
+        {/* Base Light - Central Illumination */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,rgba(2,8,4,1)_80%)]" />
         
-        {/* Atmospheric Nebula Glows */}
+        {/* Vibrant Nebula Glows */}
         <motion.div 
-          className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-emerald-500/10 blur-[120px] rounded-full"
+          className="absolute top-[10%] left-[10%] w-[70%] h-[70%] bg-emerald-500/20 blur-[140px] rounded-full"
           animate={{ 
-            opacity: [0.4, 0.6, 0.4],
-            scale: [1, 1.1, 1] 
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.2, 1] 
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-[10%] right-[10%] w-[70%] h-[70%] bg-cyan-500/15 blur-[140px] rounded-full"
+          animate={{ 
+            opacity: [0.4, 0.7, 0.4],
+            scale: [1.2, 1, 1.2] 
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] rounded-full"
-          animate={{ 
-            opacity: [0.3, 0.5, 0.3],
-            scale: [1.1, 1, 1.1] 
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
 
-        <div className="absolute inset-0 bg-noise opacity-[0.15] mix-blend-overlay" />
+        {/* Ambient Light from bottom */}
+        <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-emerald-500/10 to-transparent" />
+
+        <div className="absolute inset-0 bg-noise opacity-[0.2] mix-blend-overlay" />
         
-        {/* Scoped Stars */}
-        {Array.from({ length: 30 }).map((_, i) => (
+        {/* Scoped Stars - Brighter and more frequent */}
+        {Array.from({ length: 40 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-0.5 h-0.5 rounded-full bg-emerald-400/40"
+            className="absolute w-0.5 h-0.5 rounded-full bg-white"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              boxShadow: '0 0 4px rgba(255,255,255,0.8)'
             }}
-            animate={{ opacity: [0.2, 0.8, 0.2] }}
+            animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.5, 1] }}
             transition={{ duration: 2 + Math.random() * 3, repeat: Infinity }}
           />
         ))}
 
-        {/* Neural Grid Overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
+        {/* Neural Grid Overlay - More visible */}
+        <div className="absolute inset-0 opacity-[0.08]" style={{
+          backgroundImage: `linear-gradient(rgba(16,185,129,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.4) 1px, transparent 1px)`,
+          backgroundSize: '80px 80px'
         }} />
       </div>
 
-      {/* 2. Top Bar - OS Header - More Glassy */}
-      <div className="absolute top-0 inset-x-0 h-16 z-30 flex items-center justify-between px-8 border-b border-white/10 backdrop-blur-xl bg-white/[0.03]">
+      {/* 2. Top Bar - OS Header - High Contrast Glass */}
+      <div className="absolute top-0 inset-x-0 h-16 z-30 flex items-center justify-between px-8 border-b border-white/20 backdrop-blur-2xl bg-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-3">
             <motion.div 
-              className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+              className="w-9 h-9 rounded-xl bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.3)]"
               whileHover={{ scale: 1.1, rotate: 5 }}
             >
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <Sparkles className="w-5 h-5 text-white" />
             </motion.div>
-            <span className="text-[11px] font-bold tracking-[0.4em] text-white/90 drop-shadow-sm">{t.systemName}</span>
+            <span className="text-xs font-black tracking-[0.4em] text-white drop-shadow-md uppercase">{t.systemName}</span>
           </div>
           
           {!isMobile && (
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-inner">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                <span className="text-[10px] font-mono font-bold text-emerald-400/90">{t.status}</span>
+              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,1)]" />
+                <span className="text-[10px] font-mono font-black text-emerald-300 uppercase tracking-widest">{t.status}</span>
               </div>
-              <div className="h-4 w-px bg-white/10" />
-              <div className="flex items-center gap-2 text-white/50 text-[10px] font-mono tracking-wider">
-                <Users className="w-3 h-3 text-emerald-400/60" />
-                <span>24 ONLINE</span>
+              <div className="h-4 w-px bg-white/20" />
+              <div className="flex items-center gap-2 text-white/70 text-[10px] font-bold tracking-widest uppercase">
+                <Users className="w-3.5 h-3.5 text-emerald-400" />
+                <span>24 Online</span>
               </div>
             </div>
           )}
@@ -195,20 +197,20 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
         <div className="flex items-center gap-4">
           <div className="relative group/search">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/40 group-focus-within/search:text-emerald-400 transition-colors" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within/search:text-emerald-400 transition-colors" />
             <input 
               type="text" 
               placeholder={t.search} 
-              className="bg-white/[0.05] border border-white/10 rounded-full pl-9 pr-4 py-1.5 text-[11px] text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-500/40 w-48 focus:w-64 transition-all backdrop-blur-md"
+              className="bg-black/40 border border-white/20 rounded-full pl-10 pr-4 py-2 text-[11px] text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 w-48 focus:w-72 transition-all backdrop-blur-md shadow-inner"
             />
           </div>
-          <button className="p-2 rounded-lg hover:bg-white/10 text-white/50 hover:text-white transition-all relative group/btn">
+          <button className="p-2.5 rounded-xl hover:bg-white/20 text-white/70 hover:text-white transition-all relative group/btn bg-white/5 border border-white/10">
             <Bell className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-            <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-emerald-400 rounded-full border border-black shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
+            <div className="absolute top-2 right-2 w-2 h-2 bg-emerald-400 rounded-full border-2 border-black shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
           </button>
           <motion.div 
-            className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-white/20 flex items-center justify-center text-[10px] font-bold text-white shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.1, border: '1px solid rgba(255,255,255,0.4)' }}
+            className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400/40 to-cyan-400/40 border border-white/30 flex items-center justify-center text-[11px] font-black text-white shadow-xl cursor-pointer backdrop-blur-md"
+            whileHover={{ scale: 1.1, border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 0 25px rgba(52,211,153,0.3)' }}
           >
             SF
           </motion.div>
@@ -278,7 +280,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 const isSelected = selectedMetric === m.id;
                 const isHovered = hoveredNode === m.id;
                 const statusColor = m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444';
-                const statusGlow = m.status === 'good' ? 'rgba(16,185,129,0.4)' : m.status === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(239,68,68,0.4)';
+                const statusGlow = m.status === 'good' ? 'rgba(16,185,129,0.6)' : m.status === 'warning' ? 'rgba(245,158,11,0.6)' : 'rgba(239,68,68,0.6)';
 
                 return (
                   <motion.div
@@ -295,31 +297,31 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     onClick={() => setSelectedMetric(isSelected ? null : m.id)}
                     whileHover={{ scale: 1.1 }}
                   >
-                    {/* Outer Glow - More Inviting */}
+                    {/* Outer Glow - MUCH BRIGHTER */}
                     <motion.div
-                      className="absolute inset-[-20px] rounded-full blur-2xl opacity-30 group-hover/node:opacity-60 transition-opacity"
+                      className="absolute inset-[-30px] rounded-full blur-3xl opacity-40 group-hover/node:opacity-80 transition-opacity"
                       style={{ background: `radial-gradient(circle, ${statusColor} 0%, transparent 70%)` }}
                       animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [0.2, 0.4, 0.2]
+                        scale: [1, 1.3, 1],
+                        opacity: [0.3, 0.6, 0.3]
                       }}
                       transition={{ duration: 4, repeat: Infinity, delay: i * 0.5 }}
                     />
                     
-                    {/* Node Core - Glassy & 3D effect */}
+                    {/* Node Core - Lighter Glass */}
                     <motion.div
-                      className={`relative w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-2xl border transition-all duration-500 group/node ${
-                        isSelected ? 'scale-125 border-white/50 shadow-[0_0_30px_rgba(255,255,255,0.2)]' : 'border-white/20 hover:border-white/40'
+                      className={`relative w-20 h-20 rounded-full flex items-center justify-center backdrop-blur-2xl border transition-all duration-500 group/node ${
+                        isSelected ? 'scale-125 border-white/60 shadow-[0_0_40px_rgba(255,255,255,0.3)]' : 'border-white/30 hover:border-white/50'
                       }`}
                       style={{
-                        background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.6) 100%)`,
-                        boxShadow: `inset 0 0 15px ${statusGlow}`
+                        background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, rgba(10,20,15,0.7) 100%)`,
+                        boxShadow: `0 0 25px ${statusGlow}, inset 0 0 20px rgba(255,255,255,0.1)`
                       }}
                     >
-                      <m.icon className="w-6 h-6 text-white group-hover/node:scale-110 transition-transform" />
+                      <m.icon className="w-8 h-8 text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]" />
                       
-                      {/* Floating Indicator */}
-                      <div className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-black/80 border border-white/20 flex items-center justify-center text-[8px] font-mono font-bold text-emerald-400 shadow-lg">
+                      {/* Floating Indicator - High Contrast */}
+                      <div className="absolute -top-1 -right-1 px-2 py-1 rounded-full bg-white border border-emerald-500 flex items-center justify-center text-[10px] font-black text-emerald-600 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
                         {m.value}%
                       </div>
                     </motion.div>
@@ -342,30 +344,30 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 );
               })}
 
-              {/* Center Intelligence Orb - More Light & Glow */}
+              {/* Center Intelligence Orb - BRIGHTER & LARGER */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center group/core">
                 <motion.div
-                  className="w-40 h-40 rounded-full relative flex items-center justify-center"
+                  className="w-48 h-48 rounded-full relative flex items-center justify-center"
                   animate={{
                     scale: [1, 1.05, 1],
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  {/* Rotating Rings */}
-                  <div className="absolute inset-0 rounded-full border border-emerald-500/30 animate-[spin_12s_linear_infinite]" />
-                  <div className="absolute inset-4 rounded-full border border-emerald-500/20 animate-[spin_18s_linear_infinite_reverse]" />
-                  <div className="absolute inset-[-30px] rounded-full bg-emerald-500/10 blur-3xl opacity-40 animate-pulse" />
+                  {/* Rotating Rings - More Contrast */}
+                  <div className="absolute inset-0 rounded-full border-2 border-emerald-500/40 animate-[spin_12s_linear_infinite]" />
+                  <div className="absolute inset-6 rounded-full border border-emerald-400/30 animate-[spin_18s_linear_infinite_reverse]" />
+                  <div className="absolute inset-[-40px] rounded-full bg-emerald-400/20 blur-[60px] opacity-60 animate-pulse" />
                   
                   <div 
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_50px_rgba(52,211,153,0.6)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_70px_rgba(52,211,153,0.8)] border border-white/30"
+                    className="w-28 h-24 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_60px_rgba(52,211,153,0.8)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_90px_rgba(52,211,153,1)] border-2 border-white/50"
                     onClick={() => setViewMode('chat')}
                   >
-                    <Sparkles className="w-12 h-12 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]" />
+                    <Sparkles className="w-14 h-14 text-white drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)]" />
                   </div>
                 </motion.div>
-                <div className="mt-8 opacity-0 group-hover/core:opacity-100 transition-all duration-500 translate-y-2 group-hover/core:translate-y-0">
-                  <p className="text-[11px] font-black tracking-[0.6em] text-emerald-400 uppercase drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">Resonanz-Kern</p>
-                  <p className="text-[9px] text-white/50 uppercase mt-1 tracking-widest">Bereit für Analyse</p>
+                <div className="mt-10 opacity-100 transition-all duration-500">
+                  <p className="text-xs font-black tracking-[0.6em] text-white uppercase drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]">Resonanz-Kern</p>
+                  <p className="text-[10px] text-emerald-400 font-bold uppercase mt-2 tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 inline-block">MÔRA INTELLIGENCE</p>
                 </div>
               </div>
             </motion.div>
