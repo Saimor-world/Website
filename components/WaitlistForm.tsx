@@ -93,7 +93,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   };
 
   return (
-    <section id="waitlist" className="relative py-32 bg-[#030806]">
+    <section id="waitlist" className="relative py-32 bg-[#081410]">
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/10 blur-[200px] rounded-full opacity-40" />
       </div>
@@ -123,9 +123,9 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
               <div className="relative z-10 pt-12">
                 <div className="flex -space-x-3">
                   {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-[#030806] bg-white/10" />
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-[#081410] bg-white/10" />
                   ))}
-                  <div className="w-10 h-10 rounded-full border-2 border-[#030806] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
+                  <div className="w-10 h-10 rounded-full border-2 border-[#081410] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
                 </div>
                 <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20 mt-4">System Access Pending</p>
               </div>

@@ -57,7 +57,7 @@ export function UniverseBackground({
       <div 
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(180deg, #030806 0%, #000000 100%)'
+          background: 'linear-gradient(180deg, #081410 0%, #020504 100%)'
         }}
       />
 

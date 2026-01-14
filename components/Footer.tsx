@@ -42,7 +42,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   }[locale];
 
   return (
-    <footer className="relative py-24 border-t border-white/10 bg-[#030806] overflow-hidden">
+    <footer className="relative py-24 border-t border-white/10 bg-[#081410] overflow-hidden">
       {/* Atmosphere */}
       <div className="absolute inset-0 z-0">
         <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
@@ -54,8 +54,14 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           {/* Brand */}
           <div className="md:col-span-2 space-y-8">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-emerald-400" />
+              <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden">
+                <Image 
+                  src="/saimor-logo-new.png"
+                  alt="Saimôr"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <span className="text-2xl font-light tracking-tight text-white uppercase" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
             </div>

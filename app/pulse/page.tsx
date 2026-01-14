@@ -25,7 +25,7 @@ export default function PulsePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#030806] text-white pt-32 pb-24 selection:bg-emerald-500/30">
+    <div className="min-h-screen bg-[#081410] text-white pt-32 pb-24 selection:bg-emerald-500/30">
       
       {/* Background Atmosphere */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">

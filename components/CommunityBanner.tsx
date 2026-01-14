@@ -58,7 +58,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   }[locale];
 
   return (
-    <section className="relative py-32 bg-[#030806] overflow-hidden">
+    <section className="relative py-32 bg-[#081410] overflow-hidden">
       <div className="absolute inset-0 z-0 opacity-60">
         <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-emerald-500/20 blur-[180px] rounded-full" />
         <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/15 blur-[180px] rounded-full" />

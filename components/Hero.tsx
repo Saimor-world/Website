@@ -90,17 +90,17 @@ export default function Hero({ locale, calUrl }: Props) {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030806]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#081410]"
       role="banner"
     >
       {/* === HIGH-END BACKGROUND LAYERS === */}
       <div className="absolute inset-0 z-0">
-        {/* Deep Space Gradients - Brighter */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.25)_0%,transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.2)_0%,transparent_60%)]" />
+        {/* Deep Space Gradients - Even Brighter and more inviting */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(16,185,129,0.3)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.25)_0%,transparent_70%)]" />
         
         {/* Subtle Forest Layer - High End & Professional */}
-        <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay">
+        <div className="absolute inset-0 opacity-[0.18] mix-blend-overlay">
           <Image
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
             alt=""
@@ -111,31 +111,31 @@ export default function Hero({ locale, calUrl }: Props) {
         </div>
 
         {/* Mycelium Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.05]" style={{
+        <div className="absolute inset-0 opacity-[0.08]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 10 50 50 T 90 90' stroke='rgba(16,185,129,0.5)' fill='none' stroke-width='0.5'/%3E%3C/svg%3E")`,
           backgroundSize: '120px 120px'
         }} />
 
         {/* Animated Atmospheric Nebula - More intense & vibrant */}
         <motion.div 
-          className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] bg-emerald-500/25 blur-[150px] rounded-full"
+          className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] bg-emerald-500/30 blur-[150px] rounded-full"
           animate={{ 
-            opacity: [0.5, 0.8, 0.5],
+            opacity: [0.6, 0.9, 0.6],
             scale: [1, 1.2, 1] 
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
-          className="absolute -bottom-[15%] -right-[10%] w-[70%] h-[70%] bg-cyan-500/20 blur-[150px] rounded-full"
+          className="absolute -bottom-[15%] -right-[10%] w-[70%] h-[70%] bg-cyan-500/25 blur-[150px] rounded-full"
           animate={{ 
-            opacity: [0.4, 0.7, 0.4],
+            opacity: [0.5, 0.8, 0.5],
             scale: [1.2, 1, 1.2] 
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
         
         {/* Central Glow for better readability and "inviting" feel */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-emerald-500/15 blur-[250px] rounded-full opacity-70" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-emerald-500/20 blur-[250px] rounded-full opacity-80" />
 
         {/* Neural Grid Overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -166,20 +166,22 @@ export default function Hero({ locale, calUrl }: Props) {
 
           {/* Main Headline */}
           <div className="space-y-4 relative">
-            {/* User Logo Integration - Creative Handwriting */}
+            {/* User Logo Integration - Beautiful botanical design with white card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 1 }}
-              className="absolute -top-32 left-1/2 -translate-x-1/2 w-48 h-48 pointer-events-none select-none"
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.8 }}
+              className="absolute -top-36 left-1/2 -translate-x-1/2 pointer-events-none select-none"
             >
-              <Image 
-                src="/Logo neu.png"
-                alt="Saimôr Logo"
-                width={192}
-                height={192}
-                className="opacity-60 blur-[1px] hover:blur-none transition-all duration-700 invert-0 grayscale brightness-150"
-              />
+              <div className="w-24 h-24 rounded-2xl bg-white shadow-2xl shadow-black/20 flex items-center justify-center overflow-hidden">
+                <Image 
+                  src="/saimor-logo-new.png"
+                  alt="Saimôr Logo"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                />
+              </div>
             </motion.div>
 
             <motion.h1

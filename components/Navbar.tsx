@@ -112,13 +112,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center group-hover:border-emerald-500/50 transition-colors">
+                <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-white/95 flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/20 transition-shadow">
                   <Image 
-                    src="/Logo neu.png"
+                    src="/saimor-logo-new.png"
                     alt="Saimôr"
                     width={32}
                     height={32}
-                    className="brightness-150 transition-all duration-500 group-hover:scale-110"
+                    className="object-contain scale-[1.4]"
                   />
                 </div>
                 <span

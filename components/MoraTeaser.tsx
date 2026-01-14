@@ -14,7 +14,7 @@ export default function MoraTeaser({ locale }: Props) {
     const t = (de: string, en: string) => (locale === 'de' ? de : en);
 
     return (
-        <section className="relative py-32 sm:py-48 overflow-hidden bg-[#030806]">
+        <section className="relative py-32 sm:py-48 overflow-hidden bg-[#081410]">
             {/* Background Atmosphere - Brighter */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/15 blur-[150px] rounded-full opacity-70" />
