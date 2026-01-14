@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useId, useCallback, useRef, useMemo, CSSProperties } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, TrendingUp, TrendingDown, Users, Target, BarChart3,
-  MessageSquare, Send, Loader2, CheckCircle2, ChevronRight,
-  Activity, AlertCircle, CheckCircle, LayoutGrid, Folder, Info,
-  Building2, FolderOpen, Zap, Clock, RefreshCw, FileText, Eye, ArrowUpDown, X,
-  Search, Shield, Bell, Settings, User, Compass
+  MessageSquare, Send, X,
+  Activity, LayoutGrid, Building2, Zap, Settings, User, Compass, Search, Bell, Eye
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -39,14 +37,13 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('universe');
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
   const [hoveredNode, setHoveredMetric] = useState<string | null>(null);
-  const [isAsking, setIsAsking] = useState(false);
   const [userQuestion, setUserQuestion] = useState('');
   const [moraResponse, setMoraResponse] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -115,81 +112,81 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   if (!mounted) return null;
 
   return (
-    <div className="relative w-full h-[800px] bg-[#020804] group/os overflow-hidden font-sans select-none border border-white/10 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.1)]">
+    <div className={`relative w-full ${isMobile ? 'h-auto min-h-[100vh]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
       
-      {/* 1. Scoped Universe Background - SIGNIFICANTLY BRIGHTER */}
+      {/* 1. Scoped Universe Background - MAXIMUM BRIGHTNESS & VIBRANCY */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Base Light - Central Illumination */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,rgba(2,8,4,1)_80%)]" />
+        {/* Base Light - More intense central glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.25)_0%,rgba(5,18,8,1)_90%)]" />
         
-        {/* Vibrant Nebula Glows */}
+        {/* Vibrant Nebula Glows - Increased visibility */}
         <motion.div 
-          className="absolute top-[10%] left-[10%] w-[70%] h-[70%] bg-emerald-500/20 blur-[140px] rounded-full"
+          className="absolute top-[5%] left-[5%] w-[80%] h-[80%] bg-emerald-400/25 blur-[160px] rounded-full"
+          animate={{ 
+            opacity: [0.6, 0.9, 0.6],
+            scale: [1, 1.15, 1] 
+          }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-[5%] right-[5%] w-[80%] h-[80%] bg-cyan-400/20 blur-[160px] rounded-full"
           animate={{ 
             opacity: [0.5, 0.8, 0.5],
-            scale: [1, 1.2, 1] 
+            scale: [1.15, 1, 1.15] 
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-[10%] right-[10%] w-[70%] h-[70%] bg-cyan-500/15 blur-[140px] rounded-full"
-          animate={{ 
-            opacity: [0.4, 0.7, 0.4],
-            scale: [1.2, 1, 1.2] 
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Ambient Light from bottom */}
-        <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-emerald-500/10 to-transparent" />
+        {/* Ambient Light from bottom - Stronger */}
+        <div className="absolute bottom-0 inset-x-0 h-2/3 bg-gradient-to-t from-emerald-400/15 to-transparent" />
 
-        <div className="absolute inset-0 bg-noise opacity-[0.2] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-noise opacity-[0.25] mix-blend-overlay" />
         
-        {/* Scoped Stars - Brighter and more frequent */}
-        {Array.from({ length: 40 }).map((_, i) => (
+        {/* Scoped Stars - White and Crisp */}
+        {Array.from({ length: 50 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-0.5 h-0.5 rounded-full bg-white"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              boxShadow: '0 0 4px rgba(255,255,255,0.8)'
+              boxShadow: '0 0 6px rgba(255,255,255,1)'
             }}
-            animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.5, 1] }}
-            transition={{ duration: 2 + Math.random() * 3, repeat: Infinity }}
+            animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.8, 1] }}
+            transition={{ duration: 1.5 + Math.random() * 2, repeat: Infinity }}
           />
         ))}
 
-        {/* Neural Grid Overlay - More visible */}
-        <div className="absolute inset-0 opacity-[0.08]" style={{
-          backgroundImage: `linear-gradient(rgba(16,185,129,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.4) 1px, transparent 1px)`,
-          backgroundSize: '80px 80px'
+        {/* Neural Grid Overlay - High visibility */}
+        <div className="absolute inset-0 opacity-[0.12]" style={{
+          backgroundImage: `linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)`,
+          backgroundSize: '100px 100px'
         }} />
       </div>
 
-      {/* 2. Top Bar - OS Header - High Contrast Glass */}
-      <div className="absolute top-0 inset-x-0 h-16 z-30 flex items-center justify-between px-8 border-b border-white/20 backdrop-blur-2xl bg-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+      {/* 2. Top Bar - OS Header - Ultra Bright Glass */}
+      <div className="absolute top-0 inset-x-0 h-16 z-30 flex items-center justify-between px-8 border-b border-white/30 backdrop-blur-2xl bg-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-3">
             <motion.div 
-              className="w-9 h-9 rounded-xl bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.3)]"
+              className="w-10 h-10 rounded-xl bg-emerald-400/40 border border-white/40 flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.5)]"
               whileHover={{ scale: 1.1, rotate: 5 }}
             >
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-6 h-6 text-white" />
             </motion.div>
-            <span className="text-xs font-black tracking-[0.4em] text-white drop-shadow-md uppercase">{t.systemName}</span>
+            <span className="text-sm font-black tracking-[0.4em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] uppercase">{t.systemName}</span>
           </div>
           
           {!isMobile && (
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,1)]" />
-                <span className="text-[10px] font-mono font-black text-emerald-300 uppercase tracking-widest">{t.status}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-400/30 border border-white/40 shadow-lg">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-300 animate-pulse shadow-[0_0_12px_rgba(110,231,183,1)]" />
+                <span className="text-[11px] font-mono font-black text-white uppercase tracking-widest">{t.status}</span>
               </div>
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex items-center gap-2 text-white/70 text-[10px] font-bold tracking-widest uppercase">
-                <Users className="w-3.5 h-3.5 text-emerald-400" />
-                <span>24 Online</span>
+              <div className="h-5 w-px bg-white/30" />
+              <div className="flex items-center gap-2 text-white text-[11px] font-black tracking-widest uppercase">
+                <Users className="w-4 h-4 text-emerald-300" />
+                <span>24 ONLINE</span>
               </div>
             </div>
           )}
@@ -197,20 +194,20 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
         <div className="flex items-center gap-4">
           <div className="relative group/search">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within/search:text-emerald-400 transition-colors" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white group-focus-within/search:text-emerald-300 transition-colors" />
             <input 
               type="text" 
               placeholder={t.search} 
-              className="bg-black/40 border border-white/20 rounded-full pl-10 pr-4 py-2 text-[11px] text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 w-48 focus:w-72 transition-all backdrop-blur-md shadow-inner"
+              className="bg-black/50 border border-white/30 rounded-full pl-10 pr-4 py-2.5 text-[11px] text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 w-48 focus:w-80 transition-all backdrop-blur-md shadow-2xl font-bold"
             />
           </div>
-          <button className="p-2.5 rounded-xl hover:bg-white/20 text-white/70 hover:text-white transition-all relative group/btn bg-white/5 border border-white/10">
-            <Bell className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
-            <div className="absolute top-2 right-2 w-2 h-2 bg-emerald-400 rounded-full border-2 border-black shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+          <button className="p-2.5 rounded-xl hover:bg-white/30 text-white hover:text-white transition-all relative group/btn bg-white/10 border border-white/20 shadow-lg">
+            <Bell className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+            <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-black shadow-[0_0_10px_rgba(52,211,153,1)]" />
           </button>
           <motion.div 
-            className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400/40 to-cyan-400/40 border border-white/30 flex items-center justify-center text-[11px] font-black text-white shadow-xl cursor-pointer backdrop-blur-md"
-            whileHover={{ scale: 1.1, border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 0 25px rgba(52,211,153,0.3)' }}
+            className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 border border-white/40 flex items-center justify-center text-[12px] font-black text-white shadow-2xl cursor-pointer backdrop-blur-md"
+            whileHover={{ scale: 1.1, border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 35px rgba(52,211,153,0.5)' }}
           >
             SF
           </motion.div>
@@ -280,7 +277,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 const isSelected = selectedMetric === m.id;
                 const isHovered = hoveredNode === m.id;
                 const statusColor = m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444';
-                const statusGlow = m.status === 'good' ? 'rgba(16,185,129,0.6)' : m.status === 'warning' ? 'rgba(245,158,11,0.6)' : 'rgba(239,68,68,0.6)';
+                const statusGlow = m.status === 'good' ? 'rgba(52,211,153,0.8)' : m.status === 'warning' ? 'rgba(251,191,36,0.8)' : 'rgba(248,113,113,0.8)';
 
                 return (
                   <motion.div
@@ -289,39 +286,41 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     style={{
                       left: `${pos.x}%`,
                       top: `${pos.y}%`,
-                      transform: 'translate(-50%, -50%)',
                       zIndex: isSelected ? 50 : 10
                     }}
+                    initial={{ x: "-50%", y: "-50%", scale: 0, opacity: 0 }}
+                    animate={{ x: "-50%", y: "-50%", scale: 1, opacity: 1 }}
                     onMouseEnter={() => setHoveredMetric(m.id)}
                     onMouseLeave={() => setHoveredMetric(null)}
                     onClick={() => setSelectedMetric(isSelected ? null : m.id)}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    {/* Outer Glow - MUCH BRIGHTER */}
+                    {/* Outer Glow - MAXIMUM RADIANCE */}
                     <motion.div
-                      className="absolute inset-[-30px] rounded-full blur-3xl opacity-40 group-hover/node:opacity-80 transition-opacity"
+                      className="absolute inset-[-40px] rounded-full blur-[50px] opacity-60 group-hover/node:opacity-100 transition-opacity"
                       style={{ background: `radial-gradient(circle, ${statusColor} 0%, transparent 70%)` }}
                       animate={{ 
-                        scale: [1, 1.3, 1],
-                        opacity: [0.3, 0.6, 0.3]
+                        scale: [1, 1.4, 1],
+                        opacity: [0.4, 0.7, 0.4]
                       }}
-                      transition={{ duration: 4, repeat: Infinity, delay: i * 0.5 }}
+                      transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
                     />
                     
-                    {/* Node Core - Lighter Glass */}
+                    {/* Node Core - Lighter Crystal Glass */}
                     <motion.div
-                      className={`relative w-20 h-20 rounded-full flex items-center justify-center backdrop-blur-2xl border transition-all duration-500 group/node ${
-                        isSelected ? 'scale-125 border-white/60 shadow-[0_0_40px_rgba(255,255,255,0.3)]' : 'border-white/30 hover:border-white/50'
+                      className={`relative w-24 h-24 rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
+                        isSelected ? 'scale-125 border-white shadow-[0_0_60px_rgba(255,255,255,0.5)]' : 'border-white/40 hover:border-white/60'
                       }`}
                       style={{
-                        background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, rgba(10,20,15,0.7) 100%)`,
-                        boxShadow: `0 0 25px ${statusGlow}, inset 0 0 20px rgba(255,255,255,0.1)`
+                        background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, rgba(10,20,15,0.6) 100%)`,
+                        boxShadow: `0 0 40px ${statusGlow}, inset 0 0 30px rgba(255,255,255,0.2)`
                       }}
                     >
-                      <m.icon className="w-8 h-8 text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]" />
+                      <m.icon className="w-10 h-10 text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]" />
                       
-                      {/* Floating Indicator - High Contrast */}
-                      <div className="absolute -top-1 -right-1 px-2 py-1 rounded-full bg-white border border-emerald-500 flex items-center justify-center text-[10px] font-black text-emerald-600 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+                      {/* Floating Indicator - High Visibility White Badge */}
+                      <div className="absolute -top-2 -right-2 px-3 py-1.5 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center text-xs font-black text-emerald-700 shadow-[0_8px_20px_rgba(0,0,0,0.4)]">
                         {m.value}%
                       </div>
                     </motion.div>
@@ -344,75 +343,78 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 );
               })}
 
-              {/* Center Intelligence Orb - BRIGHTER & LARGER */}
+              {/* Center Intelligence Orb - BLINDING RADIANCE */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center group/core">
                 <motion.div
-                  className="w-48 h-48 rounded-full relative flex items-center justify-center"
+                  className="w-64 h-64 rounded-full relative flex items-center justify-center"
                   animate={{
-                    scale: [1, 1.05, 1],
+                    scale: [1, 1.08, 1],
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  {/* Rotating Rings - More Contrast */}
-                  <div className="absolute inset-0 rounded-full border-2 border-emerald-500/40 animate-[spin_12s_linear_infinite]" />
-                  <div className="absolute inset-6 rounded-full border border-emerald-400/30 animate-[spin_18s_linear_infinite_reverse]" />
-                  <div className="absolute inset-[-40px] rounded-full bg-emerald-400/20 blur-[60px] opacity-60 animate-pulse" />
+                  {/* Rotating Rings - High Visibility */}
+                  <div className="absolute inset-0 rounded-full border-4 border-emerald-400/50 animate-[spin_12s_linear_infinite]" />
+                  <div className="absolute inset-10 rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]" />
+                  <div className="absolute inset-[-60px] rounded-full bg-emerald-400/30 blur-[80px] opacity-80 animate-pulse" />
                   
                   <div 
-                    className="w-28 h-24 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_60px_rgba(52,211,153,0.8)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_90px_rgba(52,211,153,1)] border-2 border-white/50"
+                    className="w-36 h-36 rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] border-4 border-white shadow-2xl"
                     onClick={() => setViewMode('chat')}
                   >
-                    <Sparkles className="w-14 h-14 text-white drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)]" />
+                    <Sparkles className="w-20 h-20 text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]" />
                   </div>
                 </motion.div>
-                <div className="mt-10 opacity-100 transition-all duration-500">
-                  <p className="text-xs font-black tracking-[0.6em] text-white uppercase drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]">Resonanz-Kern</p>
-                  <p className="text-[10px] text-emerald-400 font-bold uppercase mt-2 tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 inline-block">MÔRA INTELLIGENCE</p>
+                <div className="mt-14 opacity-100 transition-all duration-500">
+                  <p className="text-sm font-black tracking-[0.8em] text-white uppercase drop-shadow-[0_0_20px_rgba(52,211,153,1)]">MÔRA CORE</p>
+                  <p className="text-[11px] text-white font-black uppercase mt-3 tracking-widest bg-emerald-500/40 px-6 py-2 rounded-full border-2 border-white/50 inline-block backdrop-blur-md shadow-xl">INTELLIGENCE ACTIVE</p>
                 </div>
               </div>
             </motion.div>
           )}
 
-          {/* VIEW: FOLDERS (Traditional Grid) */}
+          {/* VIEW: FOLDERS (Traditional Grid) - Lighter & High Contrast */}
           {viewMode === 'folders' && (
             <motion.div
               key="folders"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="w-full h-full p-12 overflow-y-auto"
+              className="w-full h-full p-12 overflow-y-auto custom-scrollbar"
             >
-              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {metrics.map((m, i) => (
                   <motion.div
                     key={m.id}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.05 }}
-                    className="p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all group/card cursor-pointer backdrop-blur-xl"
+                    className="p-8 rounded-[2.5rem] bg-white/[0.08] border-2 border-white/20 hover:bg-white/[0.12] hover:border-emerald-400/40 transition-all group/card cursor-pointer backdrop-blur-3xl shadow-2xl relative overflow-hidden"
                     onClick={() => { setSelectedMetric(m.id); setViewMode('universe'); }}
                   >
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover/card:scale-110 transition-transform">
-                        <m.icon className="w-6 h-6 text-white/60 group-hover/card:text-white transition-colors" />
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-mono font-bold text-white mb-1">{m.value}%</div>
-                        <div className={`text-[10px] font-bold flex items-center justify-end gap-1 ${m.change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                          {m.change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                          {m.change}%
+                    <div className="absolute inset-0 bg-noise opacity-20" />
+                    <div className="relative z-10">
+                      <div className="flex items-start justify-between mb-8">
+                        <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-white/20 flex items-center justify-center group-hover/card:scale-110 transition-transform shadow-inner">
+                          <m.icon className="w-7 h-7 text-emerald-300" />
+                        </div>
+                        <div className="text-right">
+                          <div className="text-3xl font-black font-mono text-white mb-1 drop-shadow-md">{m.value}%</div>
+                          <div className={`text-xs font-black flex items-center justify-end gap-1 px-2 py-1 rounded-lg bg-black/20 ${m.change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                            {m.change > 0 ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                            {m.change}%
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <h3 className="text-sm font-bold text-white/90 mb-4 tracking-wide uppercase">{m.label}</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <p className="text-[9px] text-white/20 uppercase font-bold tracking-widest">Knoten</p>
-                        <p className="text-xs text-white/60 font-mono">{m.nodeCount}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-[9px] text-white/20 uppercase font-bold tracking-widest">Aktivität</p>
-                        <p className="text-xs text-white/60 font-mono">{m.lastActivity}</p>
+                      <h3 className="text-lg font-black text-white mb-6 tracking-widest uppercase drop-shadow-sm">{m.label}</h3>
+                      <div className="grid grid-cols-2 gap-6 p-4 rounded-2xl bg-black/20 border border-white/10">
+                        <div className="space-y-1">
+                          <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.2em]">Knoten</p>
+                          <p className="text-sm text-white font-mono font-bold">{m.nodeCount}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.2em]">Aktivität</p>
+                          <p className="text-sm text-white font-mono font-bold whitespace-nowrap">{m.lastActivity}</p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -421,7 +423,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </motion.div>
           )}
 
-          {/* VIEW: CHAT (The Intelligence) */}
+          {/* VIEW: CHAT (The Intelligence) - High Clarity */}
           {viewMode === 'chat' && (
             <motion.div
               key="chat"
@@ -430,60 +432,64 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               exit={{ opacity: 0, x: -20 }}
               className="w-full h-full flex items-center justify-center p-8"
             >
-              <div className="w-full max-w-3xl h-full flex flex-col bg-white/5 border border-white/5 rounded-[2.5rem] backdrop-blur-3xl shadow-2xl overflow-hidden relative">
+              <div className="w-full max-w-4xl h-full flex flex-col bg-white/[0.1] border-2 border-white/20 rounded-[3rem] backdrop-blur-[40px] shadow-[0_32px_64px_rgba(0,0,0,0.5)] overflow-hidden relative">
                 
                 {/* Chat Header */}
-                <div className="p-8 border-b border-white/5 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 text-emerald-400" />
+                <div className="p-8 border-b border-white/20 flex items-center justify-between bg-white/5">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-white/30 flex items-center justify-center shadow-inner">
+                      <Sparkles className="w-8 h-8 text-emerald-300" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold tracking-wider text-white uppercase">{t.chatTitle}</h3>
-                      <p className="text-[10px] text-white/30 uppercase tracking-widest">Semantisches Gedächtnis v4.2</p>
+                      <h3 className="text-xl font-black tracking-widest text-white uppercase">{t.chatTitle}</h3>
+                      <p className="text-[11px] text-white/50 uppercase tracking-[0.3em] font-bold">Semantisches Gedächtnis v4.2</p>
                     </div>
                   </div>
-                  <button onClick={() => setViewMode('universe')} className="p-2 rounded-xl hover:bg-white/5 text-white/40">
-                    <X className="w-5 h-5" />
+                  <button onClick={() => setViewMode('universe')} className="p-3 rounded-2xl hover:bg-white/10 text-white/40 hover:text-white transition-all">
+                    <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                {/* Messages Area */}
-                <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                {/* Messages Area - High Contrast Text */}
+                <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar">
                   {moraResponse ? (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-4">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-4 h-4 text-white" />
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-6">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(52,211,153,0.5)]">
+                        <Sparkles className="w-6 h-6 text-white" />
                       </div>
-                      <div className="space-y-4 max-w-[80%]">
-                        <p className="text-white/80 leading-relaxed text-sm">{moraResponse}</p>
-                        <div className="flex gap-2">
-                          <button className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] text-white/40 hover:text-white transition-colors uppercase font-bold tracking-wider">Metriken korrelieren</button>
-                          <button className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] text-white/40 hover:text-white transition-colors uppercase font-bold tracking-wider">Report generieren</button>
+                      <div className="space-y-6 max-w-[85%]">
+                        <div className="p-6 rounded-[2rem] bg-white/[0.08] border border-white/20 shadow-xl backdrop-blur-md">
+                          <p className="text-white text-base leading-relaxed font-medium">{moraResponse}</p>
+                        </div>
+                        <div className="flex gap-3">
+                          <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-[11px] hover:bg-emerald-400 transition-all font-black uppercase tracking-widest shadow-lg">Metriken korrelieren</button>
+                          <button className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-[11px] text-white hover:bg-white/20 transition-all font-black uppercase tracking-widest">Report generieren</button>
                         </div>
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
-                      <MessageSquare className="w-16 h-16 text-white mb-6" />
-                      <p className="text-sm uppercase tracking-[0.2em] text-white">Stelle eine Frage zur Resonanz deiner Organisation</p>
+                    <div className="h-full flex flex-col items-center justify-center text-center">
+                      <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center mb-8 border-2 border-white/10">
+                        <MessageSquare className="w-10 h-10 text-emerald-400 opacity-60" />
+                      </div>
+                      <p className="text-base font-black uppercase tracking-[0.3em] text-white/40">Stelle eine Frage zur Resonanz deiner Organisation</p>
                     </div>
                   )}
                 </div>
 
-                {/* Input Area */}
-                <div className="p-8 bg-black/20 border-t border-white/5">
-                  <div className="relative">
+                {/* Input Area - Bright & Clear */}
+                <div className="p-10 bg-white/5 border-t border-white/20 backdrop-blur-xl">
+                  <div className="relative max-w-4xl mx-auto">
                     <input 
                       type="text"
                       value={userQuestion}
                       onChange={(e) => setUserQuestion(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && userQuestion.trim() && (setMoraResponse("Ich analysiere die semantischen Verbindungen in deinem System... Basierend auf der aktuellen Gesundheitsscore von 87% sehe ich ein starkes Potenzial zur Optimierung im Bereich 'Velocity' durch engere Verzahnung mit dem 'Clarity Index'."), setUserQuestion(''))}
                       placeholder="Frage nach Zusammenhängen..."
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-16 py-5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
+                      className="w-full bg-black/40 border-2 border-white/30 rounded-3xl pl-8 pr-20 py-6 text-base text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 shadow-2xl backdrop-blur-2xl"
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform">
-                      <Send className="w-5 h-5" />
+                    <button className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.4)] active:scale-95 transition-all hover:bg-emerald-400">
+                      <Send className="w-6 h-6" />
                     </button>
                   </div>
                 </div>
@@ -493,9 +499,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         </AnimatePresence>
       </div>
 
-      {/* 4. Bottom Dock - Integrated Navigation - More Premium Glass */}
-      <div className="absolute bottom-6 inset-x-0 z-30 flex justify-center">
-        <div className="flex items-center gap-2 p-2 px-4 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      {/* 4. Bottom Dock - Integrated Navigation - Ultra Bright White Glass */}
+      <div className="absolute bottom-10 inset-x-0 z-30 flex justify-center">
+        <div className="flex items-center gap-3 p-3 px-6 rounded-[3rem] bg-white/20 border-2 border-white/40 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
           {[
             { id: 'universe', icon: Compass, label: t.universe },
             { id: 'folders', icon: LayoutGrid, label: t.folders },
@@ -504,25 +510,25 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             <button
               key={item.id}
               onClick={() => setViewMode(item.id as any)}
-              className={`flex items-center gap-3 px-6 py-3 rounded-2xl transition-all group relative overflow-hidden ${
-                viewMode === item.id ? 'text-white' : 'text-white/40 hover:text-white'
+              className={`flex items-center gap-4 px-8 py-4 rounded-[2rem] transition-all group relative overflow-hidden ${
+                viewMode === item.id ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/10'
               }`}
             >
               {viewMode === item.id && (
                 <motion.div 
                   layoutId="activeDock"
-                  className="absolute inset-0 bg-gradient-to-r from-emerald-500/80 to-emerald-600/80 shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 shadow-[0_0_30px_rgba(52,211,153,0.6)] border border-white/40"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <item.icon className="w-5 h-5 relative z-10" />
+              <item.icon className="w-6 h-6 relative z-10" />
               <AnimatePresence>
                 {viewMode === item.id && (
                   <motion.span 
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: 'auto', opacity: 1 }}
                     exit={{ width: 0, opacity: 0 }}
-                    className="text-[11px] font-bold uppercase tracking-[0.2em] overflow-hidden whitespace-nowrap relative z-10"
+                    className="text-xs font-black uppercase tracking-[0.25em] overflow-hidden whitespace-nowrap relative z-10"
                   >
                     {item.label}
                   </motion.span>
@@ -530,12 +536,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </AnimatePresence>
             </button>
           ))}
-          <div className="w-px h-8 bg-white/10 mx-2" />
-          <button className="p-3 rounded-2xl text-white/40 hover:bg-white/10 hover:text-white transition-all">
-            <Settings className="w-5 h-5" />
+          <div className="w-px h-10 bg-white/30 mx-3" />
+          <button className="p-4 rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all">
+            <Settings className="w-6 h-6" />
           </button>
-          <button className="p-3 rounded-2xl text-white/40 hover:bg-white/10 hover:text-white transition-all">
-            <User className="w-5 h-5" />
+          <button className="p-4 rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all">
+            <User className="w-6 h-6" />
           </button>
         </div>
       </div>
