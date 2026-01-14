@@ -14,21 +14,13 @@ const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ss
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
-  title: 'Saimôr – Klarheit im Wandel',
+  title: {
+    default: 'Saimôr – Klarheit im Wandel',
+    template: '%s | Saimôr'
+  },
   description:
     'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
-  icons: {
-    icon: [
-      { url: '/saimor-logo-new.png', type: 'image/png' },
-      { url: '/saimor-logo-new.png', sizes: '192x192', type: 'image/png' },
-      { url: '/saimor-logo-new.png', sizes: '32x32', type: 'image/png' },
-      { url: '/saimor-logo-new.png', sizes: '16x16', type: 'image/png' }
-    ],
-    apple: [
-      { url: '/saimor-logo-new.png', sizes: '180x180', type: 'image/png' }
-    ],
-    shortcut: '/saimor-logo-new.png',
-  },
+  // Icons are now handled by app/icon.png and app/apple-icon.png (Next.js convention)
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',
     description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
@@ -51,6 +43,14 @@ export const metadata: Metadata = {
     description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
     images: ['/og'],
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -59,6 +59,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/saimor-logo-new.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/saimor-logo-new.png" />
+        <meta name="theme-color" content="#10B981" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
