@@ -117,6 +117,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     width={28}
                     height={28}
                     className="object-contain scale-[1.3]"
+                    priority
                   />
                 </div>
                 <span

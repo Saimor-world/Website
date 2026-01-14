@@ -8,7 +8,6 @@ type Locale = 'de' | 'en';
 
 type Props = {
   locale?: Locale;
-  startInDeepView?: boolean;
 };
 
 type Copy = {
@@ -160,27 +159,17 @@ const scale = [
   130.81, 155.56, 174.61, 196.0, 233.08, 261.63, 311.13, 349.23, 392.0
 ];
 
-export default function MoraAnalogAffect({ locale = 'de', startInDeepView = false }: Props) {
+export default function MoraAnalogAffect({ locale = 'de' }: Props) {
   const copy = copyByLocale[locale];
   const [audioOn, setAudioOn] = useState(false);
   const [bootVisible, setBootVisible] = useState(false);
   const [bootSequenceVisible, setBootSequenceVisible] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const sequencerTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const hasAutoStarted = useRef(false);
 
   useEffect(() => {
     // Ensure body doesn't have is-mora-active on mount
     document.body.classList.remove('is-mora-active');
-
-    // Auto-start deep view if prop is set
-    if (startInDeepView && !hasAutoStarted.current) {
-      hasAutoStarted.current = true;
-      setTimeout(() => {
-        document.body.classList.add('is-mora-active');
-        setBootVisible(true);
-      }, 500);
-    }
 
     return () => {
       // Cleanup on unmount
@@ -191,7 +180,7 @@ export default function MoraAnalogAffect({ locale = 'de', startInDeepView = fals
         clearInterval(sequencerTimerRef.current);
       }
     };
-  }, [startInDeepView]);
+  }, []);
 
   const initAudio = () => {
     if (typeof window === 'undefined') return;

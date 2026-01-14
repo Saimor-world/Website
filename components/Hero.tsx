@@ -100,7 +100,7 @@ export default function Hero({ locale, calUrl }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.25)_0%,transparent_70%)]" />
         
         {/* Subtle Forest Layer - High End & Professional */}
-        <div className="absolute inset-0 opacity-[0.18] mix-blend-overlay">
+        <div className="absolute inset-0 opacity-[0.18] mix-blend-overlay" aria-hidden="true">
           <Image
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
             alt=""
