@@ -114,8 +114,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   // --- UNIVERSE POSITIONS ---
   const nodePositions = useMemo(() => {
     return metrics.map((_, i) => {
-      const angle = (i / metrics.length) * Math.PI * 2;
-      const radius = isMobile ? 22 : 35; // Smaller radius on mobile
+      const angle = (i / metrics.length) * Math.PI * 2 - Math.PI / 2; // Start from top
+      const radius = isMobile ? 28 : 35; // Adjusted radius for better mobile spacing
       return {
         x: 50 + Math.cos(angle) * radius,
         y: 50 + Math.sin(angle) * radius
@@ -126,7 +126,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   if (!mounted) return null;
 
   return (
-    <div className={`relative w-full ${isMobile ? 'h-[100dvh] min-h-[600px]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
+    <div className={`relative w-full ${isMobile ? 'h-[600px]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
       
       {/* 1. Scoped Universe Background - MAXIMUM BRIGHTNESS & VIBRANCY */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -240,7 +240,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       </div>
 
       {/* 3. Main Content Area */}
-      <div className={`${isMobile ? 'relative min-h-[600px] py-24' : 'absolute top-16 bottom-24 inset-x-0'} z-10 overflow-hidden`}>
+      <div className={`absolute ${isMobile ? 'top-16 bottom-20' : 'top-16 bottom-24'} inset-x-0 z-10 overflow-hidden`}>
         <AnimatePresence mode="wait">
           
           {/* VIEW: UNIVERSE (The Network) */}
@@ -250,7 +250,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full h-full"
+              className="absolute inset-0"
             >
               {/* Mycelium Lines - Higher Visibility & Glowing Particles */}
               <svg 

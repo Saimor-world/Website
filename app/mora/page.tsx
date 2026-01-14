@@ -2,18 +2,37 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Brain, Network, MessageSquare, Shield, Zap, ChevronRight } from "lucide-react";
+import { Sparkles, Brain, Network, MessageSquare, Shield, Zap, ChevronRight, Eye, Radio } from "lucide-react";
 import { motion } from "framer-motion";
 import MoraDashboard from "@/components/MoraDashboard";
+import dynamic from "next/dynamic";
+
+const MoraAnalogAffect = dynamic(() => import("@/components/MoraAnalogAffect"), { ssr: false });
 
 export default function MoraPage() {
   const [mounted, setMounted] = useState(false);
+  const [showAnalogView, setShowAnalogView] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return <div className="min-h-screen bg-black" />;
+
+  // Show Analog View fullscreen when activated
+  if (showAnalogView) {
+    return (
+      <div className="min-h-screen bg-black">
+        <button 
+          onClick={() => setShowAnalogView(false)}
+          className="fixed top-6 right-6 z-[100] px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-sm font-bold hover:bg-white/20 transition-all backdrop-blur-md"
+        >
+          ← Zurück zum Dashboard
+        </button>
+        <MoraAnalogAffect locale="de" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#081410] text-white selection:bg-emerald-500/30">
@@ -81,6 +100,31 @@ export default function MoraPage() {
               className="relative rounded-[3rem] border border-white/5 bg-black overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)]"
             >
               <MoraDashboard locale="de" />
+            </motion.div>
+
+            {/* Analog View / Deep View Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <button
+                onClick={() => setShowAnalogView(true)}
+                className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 hover:border-amber-400/50 transition-all hover:scale-105 flex items-center justify-center gap-3"
+              >
+                <Radio className="w-5 h-5 text-amber-400 group-hover:animate-pulse" />
+                <span className="text-amber-200 font-bold">VHS Analog View</span>
+                <span className="text-[10px] text-amber-400/60 uppercase tracking-wider">Deep View</span>
+              </button>
+              <button
+                onClick={() => setShowAnalogView(true)}
+                className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 hover:border-purple-400/50 transition-all hover:scale-105 flex items-center justify-center gap-3"
+              >
+                <Eye className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
+                <span className="text-purple-200 font-bold">Affect Analysis</span>
+                <span className="text-[10px] text-purple-400/60 uppercase tracking-wider">Experimental</span>
+              </button>
             </motion.div>
           </div>
         </section>
