@@ -1,11 +1,6 @@
-﻿import type { Metadata } from 'next';
+﻿'use client';
 import { Shield, Lock, Globe, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-export const metadata: Metadata = {
-  title: 'Trust & Sicherheit – Saimôr',
-  description: 'Transparenz über Demo-Daten, lokale Verarbeitung und EU-Datenschutz.'
-};
 
 export default function TrustPage() {
   const techItems = [
@@ -70,7 +65,7 @@ export default function TrustPage() {
               <div className="space-y-4">
                 <h4 className="text-xl font-bold text-white uppercase tracking-widest">DSGVO Standard</h4>
                 <p className="text-white/60 leading-relaxed italic">
-                  "In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."
+                  &quot;In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar.&quot;
                 </p>
               </div>
             </div>

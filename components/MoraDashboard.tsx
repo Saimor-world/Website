@@ -643,8 +643,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">KI ANALYSE</span>
                     </div>
                     <p className="text-xs text-white/60 leading-relaxed italic">
-                      "Die Resonanz im Bereich {m.label} zeigt eine starke Korrelation mit dem Team-Engagement. 
-                      Empfehlung: Vertiefung der semantischen Knoten in Abteilung 3."
+                      &quot;Die Resonanz im Bereich {m.label} zeigt eine starke Korrelation mit dem Team-Engagement. 
+                      Empfehlung: Vertiefung der semantischen Knoten in Abteilung 3.&quot;
                     </p>
                     <button className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20">
                       Tiefenanalyse starten

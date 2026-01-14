@@ -69,7 +69,7 @@ export default function OrbitPage() {
         <section className="mb-32">
           <div className="p-12 sm:p-20 rounded-[4rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md text-center space-y-8">
             <p className="text-3xl sm:text-5xl font-light leading-tight tracking-tight text-white italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              "Erst verstehen, dann verändern. Orbit schafft den verlässlichen Raum für bewusste Entscheidungen."
+              &quot;Erst verstehen, dann verändern. Orbit schafft den verlässlichen Raum für bewusste Entscheidungen.&quot;
             </p>
             <div className="pt-8">
               <a
