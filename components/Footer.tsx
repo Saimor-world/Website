@@ -4,9 +4,11 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   const [year, setYear] = useState('2025');
+  const router = useRouter();
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());
@@ -41,6 +43,17 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     }
   }[locale];
 
+  const handleScrollToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const kontaktSection = document.getElementById('kontakt');
+    if (kontaktSection) {
+      kontaktSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If not on homepage, navigate there first
+      router.push(`/${locale}#kontakt`);
+    }
+  };
+
   return (
     <footer className="relative py-24 border-t border-white/10 bg-[#081410] overflow-hidden">
       {/* Atmosphere */}
@@ -53,8 +66,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           
           {/* Brand */}
           <div className="md:col-span-2 space-y-8">
-            <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden">
+            <Link href={`/${locale}`} className="flex items-center gap-4 group">
+              <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
                 <Image 
                   src="/saimor-logo-new.png"
                   alt="Saimôr"
@@ -63,8 +76,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-light tracking-tight text-white uppercase" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
-            </div>
+              <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
+            </Link>
             <p className="text-white/40 max-w-sm text-lg leading-relaxed">
               {footerText.tagline}
             </p>
@@ -74,9 +87,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
-              <Link href={`/${locale}`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.services}</Link>
-              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/40 hover:text-emerald-400 transition-colors">Môra</Link>
-              <Link href={`/${locale}#kontakt`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.contact}</Link>
+              <Link href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</Link>
+              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</Link>
+              <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
           </div>
 
@@ -84,15 +97,15 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
             <div className="flex flex-col gap-4">
-              <Link href={`/${locale}/trust`} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.trust}</Link>
-              <Link href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.imprint}</Link>
-              <Link href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/40 hover:text-emerald-400 transition-colors">{footerText.privacy}</Link>
+              <Link href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</Link>
+              <Link href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</Link>
+              <Link href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</Link>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-12 border-t border-white/5 flex flex-col sm:row items-center justify-between gap-8">
+        <div className="pt-12 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">© {year} Saimôr</span>
             <span className="w-1 h-1 rounded-full bg-white/10" />
