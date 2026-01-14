@@ -39,7 +39,7 @@ export default function MatomoTracker() {
     // Cleanup function
     return () => {
       // Remove script on component unmount
-      const existingScript = document.querySelector('script[src="https://cdn.matomo.cloud/saimorworld.matomo.cloud/matomo.js"]');
+      const existingScript = document.querySelector('script[src="https://saimorworld.matomo.cloud/matomo.js"]');
       if (existingScript) {
         existingScript.remove();
       }
