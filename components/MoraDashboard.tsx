@@ -40,14 +40,28 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [userQuestion, setUserQuestion] = useState('');
   const [moraResponse, setMoraResponse] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
     setMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString(locale === 'de' ? 'de-DE' : 'en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+      }));
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearInterval(timer);
+    };
+  }, [locale]);
 
   // --- CONTENT ---
   const t = {
@@ -112,7 +126,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   if (!mounted) return null;
 
   return (
-    <div className={`relative w-full ${isMobile ? 'h-auto min-h-[100vh]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
+    <div className={`relative w-full ${isMobile ? 'h-[700px]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
       
       {/* 1. Scoped Universe Background - MAXIMUM BRIGHTNESS & VIBRANCY */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -188,25 +202,31 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 <Users className="w-4 h-4 text-emerald-300" />
                 <span>24 ONLINE</span>
               </div>
+              <div className="h-5 w-px bg-white/30" />
+              <div className="text-white font-mono font-black text-[12px] tracking-[0.2em] bg-black/40 px-4 py-2 rounded-xl border border-white/20">
+                {currentTime}
+              </div>
             </div>
           )}
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative group/search">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white group-focus-within/search:text-emerald-300 transition-colors" />
-            <input 
-              type="text" 
-              placeholder={t.search} 
-              className="bg-black/50 border border-white/30 rounded-full pl-10 pr-4 py-2.5 text-[11px] text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 w-48 focus:w-80 transition-all backdrop-blur-md shadow-2xl font-bold"
-            />
-          </div>
+          {!isMobile && (
+            <div className="relative group/search">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white group-focus-within/search:text-emerald-300 transition-colors" />
+              <input 
+                type="text" 
+                placeholder={t.search} 
+                className="bg-black/50 border border-white/30 rounded-full pl-10 pr-4 py-2.5 text-[11px] text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 w-48 focus:w-80 transition-all backdrop-blur-md shadow-2xl font-bold"
+              />
+            </div>
+          )}
           <button className="p-2.5 rounded-xl hover:bg-white/30 text-white hover:text-white transition-all relative group/btn bg-white/10 border border-white/20 shadow-lg">
-            <Bell className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+            <Bell className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} group-hover/btn:scale-110 transition-transform`} />
             <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-black shadow-[0_0_10px_rgba(52,211,153,1)]" />
           </button>
           <motion.div 
-            className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 border border-white/40 flex items-center justify-center text-[12px] font-black text-white shadow-2xl cursor-pointer backdrop-blur-md"
+            className={`${isMobile ? 'w-9 h-9 text-[10px]' : 'w-11 h-11 text-[12px]'} rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 border border-white/40 flex items-center justify-center font-black text-white shadow-2xl cursor-pointer backdrop-blur-md`}
             whileHover={{ scale: 1.1, border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 35px rgba(52,211,153,0.5)' }}
           >
             SF
@@ -215,7 +235,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       </div>
 
       {/* 3. Main Content Area */}
-      <div className="absolute inset-0 pt-16 pb-20 z-10 overflow-hidden">
+      <div className={`${isMobile ? 'relative min-h-[600px] py-24' : 'absolute inset-0 pt-16 pb-20'} z-10 overflow-hidden`}>
         <AnimatePresence mode="wait">
           
           {/* VIEW: UNIVERSE (The Network) */}
@@ -228,7 +248,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               className="relative w-full h-full"
             >
               {/* Mycelium Lines - Higher Visibility & Glowing Particles */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+              <svg 
+                className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
                 <defs>
                   <linearGradient id="netGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="rgba(16,185,129,0)" />
@@ -236,7 +260,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     <stop offset="100%" stopColor="rgba(16,185,129,0)" />
                   </linearGradient>
                   <filter id="glowLine">
-                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feGaussianBlur stdDeviation="0.5" result="blur" />
                     <feComposite in="SourceGraphic" in2="blur" operator="over" />
                   </filter>
                 </defs>
@@ -244,13 +268,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   const next = nodePositions[(i + 1) % nodePositions.length];
                   const midX = (pos.x + next.x) / 2;
                   const midY = (pos.y + next.y) / 2;
-                  const path = `M ${pos.x}% ${pos.y}% Q ${midX + (i % 2 === 0 ? 5 : -5)}% ${midY - (i % 2 === 0 ? 5 : -5)}% ${next.x}% ${next.y}%`;
+                  const curveOffset = i % 2 === 0 ? 5 : -5;
+                  const path = `M ${pos.x} ${pos.y} Q ${midX + curveOffset} ${midY - curveOffset} ${next.x} ${next.y}`;
+                  
                   return (
                     <g key={i}>
                       <motion.path
                         d={path}
                         stroke="url(#netGrad)"
-                        strokeWidth="1.5"
+                        strokeWidth="0.3"
                         fill="none"
                         filter="url(#glowLine)"
                         initial={{ pathLength: 0, opacity: 0 }}
@@ -259,12 +285,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       />
                       {/* Flowing Signal Particles */}
                       <motion.circle
-                        r="1.5"
+                        r="0.4"
                         fill="#34D399"
                         initial={{ offsetDistance: "0%" }}
                         animate={{ offsetDistance: "100%" }}
                         transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: i * 0.5 }}
-                        style={{ offsetPath: `path('${path.replace(/%/g, 'px')}')`, filter: 'blur(1px)' }} // Note: SVG paths in CSS offsetPath need absolute units, using a trick or just skipping for now if it's too complex
+                        style={{ offsetPath: `path('${path}')` }}
                       />
                     </g>
                   );
@@ -309,7 +335,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     
                     {/* Node Core - Lighter Crystal Glass */}
                     <motion.div
-                      className={`relative w-24 h-24 rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
+                      className={`relative ${isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
                         isSelected ? 'scale-125 border-white shadow-[0_0_60px_rgba(255,255,255,0.5)]' : 'border-white/40 hover:border-white/60'
                       }`}
                       style={{
@@ -317,10 +343,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                         boxShadow: `0 0 40px ${statusGlow}, inset 0 0 30px rgba(255,255,255,0.2)`
                       }}
                     >
-                      <m.icon className="w-10 h-10 text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]" />
+                      <m.icon className={`${isMobile ? 'w-7 h-7' : 'w-10 h-10'} text-white group-hover/node:scale-110 transition-transform drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]`} />
                       
                       {/* Floating Indicator - High Visibility White Badge */}
-                      <div className="absolute -top-2 -right-2 px-3 py-1.5 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center text-xs font-black text-emerald-700 shadow-[0_8px_20px_rgba(0,0,0,0.4)]">
+                      <div className={`absolute -top-1 -right-1 ${isMobile ? 'px-2 py-1 text-[10px]' : 'px-3 py-1.5 text-xs'} rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center font-black text-emerald-700 shadow-[0_8px_20px_rgba(0,0,0,0.4)]`}>
                         {m.value}%
                       </div>
                     </motion.div>
@@ -346,27 +372,27 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               {/* Center Intelligence Orb - BLINDING RADIANCE */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center group/core">
                 <motion.div
-                  className="w-64 h-64 rounded-full relative flex items-center justify-center"
+                  className={`${isMobile ? 'w-40 h-40' : 'w-64 h-64'} rounded-full relative flex items-center justify-center`}
                   animate={{
                     scale: [1, 1.08, 1],
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {/* Rotating Rings - High Visibility */}
-                  <div className="absolute inset-0 rounded-full border-4 border-emerald-400/50 animate-[spin_12s_linear_infinite]" />
-                  <div className="absolute inset-10 rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]" />
-                  <div className="absolute inset-[-60px] rounded-full bg-emerald-400/30 blur-[80px] opacity-80 animate-pulse" />
+                  <div className={`absolute inset-0 rounded-full border-4 border-emerald-400/50 animate-[spin_12s_linear_infinite]`} />
+                  <div className={`absolute ${isMobile ? 'inset-6' : 'inset-10'} rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]`} />
+                  <div className={`absolute ${isMobile ? 'inset-[-30px]' : 'inset-[-60px]'} rounded-full bg-emerald-400/30 blur-[80px] opacity-80 animate-pulse`} />
                   
                   <div 
-                    className="w-36 h-36 rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] border-4 border-white shadow-2xl"
+                    className={`${isMobile ? 'w-24 h-24' : 'w-36 h-36'} rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] border-4 border-white shadow-2xl`}
                     onClick={() => setViewMode('chat')}
                   >
-                    <Sparkles className="w-20 h-20 text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]" />
+                    <Sparkles className={`${isMobile ? 'w-12 h-12' : 'w-20 h-20'} text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]`} />
                   </div>
                 </motion.div>
-                <div className="mt-14 opacity-100 transition-all duration-500">
-                  <p className="text-sm font-black tracking-[0.8em] text-white uppercase drop-shadow-[0_0_20px_rgba(52,211,153,1)]">MÔRA CORE</p>
-                  <p className="text-[11px] text-white font-black uppercase mt-3 tracking-widest bg-emerald-500/40 px-6 py-2 rounded-full border-2 border-white/50 inline-block backdrop-blur-md shadow-xl">INTELLIGENCE ACTIVE</p>
+                <div className={`${isMobile ? 'mt-8' : 'mt-14'} opacity-100 transition-all duration-500`}>
+                  <p className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-black tracking-[0.8em] text-white uppercase drop-shadow-[0_0_20px_rgba(52,211,153,1)]`}>MÔRA CORE</p>
+                  <p className={`${isMobile ? 'text-[8px]' : 'text-[11px]'} text-white font-black uppercase mt-3 tracking-widest bg-emerald-500/40 px-6 py-2 rounded-full border-2 border-white/50 inline-block backdrop-blur-md shadow-xl`}>INTELLIGENCE ACTIVE</p>
                 </div>
               </div>
             </motion.div>
@@ -500,8 +526,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       </div>
 
       {/* 4. Bottom Dock - Integrated Navigation - Ultra Bright White Glass */}
-      <div className="absolute bottom-10 inset-x-0 z-30 flex justify-center">
-        <div className="flex items-center gap-3 p-3 px-6 rounded-[3rem] bg-white/20 border-2 border-white/40 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
+      <div className={`absolute ${isMobile ? 'bottom-4' : 'bottom-10'} inset-x-0 z-30 flex justify-center`}>
+        <div className={`flex items-center ${isMobile ? 'gap-1 p-1.5' : 'gap-3 p-3'} px-6 rounded-[3rem] bg-white/20 border-2 border-white/40 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)]`}>
           {[
             { id: 'universe', icon: Compass, label: t.universe },
             { id: 'folders', icon: LayoutGrid, label: t.folders },
@@ -510,7 +536,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             <button
               key={item.id}
               onClick={() => setViewMode(item.id as any)}
-              className={`flex items-center gap-4 px-8 py-4 rounded-[2rem] transition-all group relative overflow-hidden ${
+              className={`flex items-center ${isMobile ? 'gap-2 px-4 py-3' : 'gap-4 px-8 py-4'} rounded-[2rem] transition-all group relative overflow-hidden ${
                 viewMode === item.id ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -521,14 +547,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <item.icon className="w-6 h-6 relative z-10" />
+              <item.icon className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} relative z-10`} />
               <AnimatePresence>
                 {viewMode === item.id && (
                   <motion.span 
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: 'auto', opacity: 1 }}
                     exit={{ width: 0, opacity: 0 }}
-                    className="text-xs font-black uppercase tracking-[0.25em] overflow-hidden whitespace-nowrap relative z-10"
+                    className={`${isMobile ? 'text-[10px]' : 'text-xs'} font-black uppercase tracking-[0.25em] overflow-hidden whitespace-nowrap relative z-10`}
                   >
                     {item.label}
                   </motion.span>
@@ -536,12 +562,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               </AnimatePresence>
             </button>
           ))}
-          <div className="w-px h-10 bg-white/30 mx-3" />
-          <button className="p-4 rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all">
-            <Settings className="w-6 h-6" />
+          <div className={`w-px ${isMobile ? 'h-6 mx-1' : 'h-10 mx-3'} bg-white/30`} />
+          <button className={`${isMobile ? 'p-3' : 'p-4'} rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all`}>
+            <Settings className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
           </button>
-          <button className="p-4 rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all">
-            <User className="w-6 h-6" />
+          <button className={`${isMobile ? 'p-3' : 'p-4'} rounded-full text-white/60 hover:bg-white/20 hover:text-white transition-all`}>
+            <User className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
           </button>
         </div>
       </div>
@@ -550,10 +576,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       <AnimatePresence>
         {selectedMetric && (
           <motion.div
-            initial={{ x: 400, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 400, opacity: 0 }}
-            className="absolute top-20 right-8 bottom-24 w-96 z-40 p-8 rounded-[2.5rem] bg-black/60 border border-white/10 backdrop-blur-3xl shadow-2xl overflow-y-auto"
+            initial={{ x: isMobile ? 0 : 400, y: isMobile ? 400 : 0, opacity: 0 }}
+            animate={{ x: 0, y: 0, opacity: 1 }}
+            exit={{ x: isMobile ? 0 : 400, y: isMobile ? 400 : 0, opacity: 0 }}
+            className={`absolute ${isMobile ? 'inset-x-4 bottom-24 h-[60%]' : 'top-20 right-8 bottom-24 w-96'} z-40 p-8 rounded-[2.5rem] bg-black/80 border-2 border-white/20 backdrop-blur-[40px] shadow-[0_32px_64px_rgba(0,0,0,0.8)] overflow-y-auto custom-scrollbar`}
           >
             {(() => {
               const m = metrics.find(x => x.id === selectedMetric);
@@ -617,6 +643,21 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       <style jsx global>{`
         .bg-noise {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(16, 185, 129, 0.3);
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(16, 185, 129, 0.5);
         }
       `}</style>
     </div>
