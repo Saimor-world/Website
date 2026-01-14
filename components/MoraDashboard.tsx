@@ -617,52 +617,89 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const connections = getConnections();
 
   return (
-    <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden min-h-screen"
-      style={{ background: 'linear-gradient(135deg, #030806 0%, #040a08 50%, #030806 100%)' }}>
+    <section id="mora-dashboard" className="relative py-20 sm:py-24 overflow-hidden">
+      {/* Universe OS Container - Compact Showcase */}
+      <div className="relative rounded-[2.5rem] border border-white/10 overflow-hidden" 
+        style={{ 
+          background: 'linear-gradient(135deg, #030806 0%, #040a08 50%, #030806 100%)',
+          minHeight: '800px'
+        }}>
 
-      {/* Noise Texture Overlay (Universe OS) */}
-      <div className="absolute inset-0 bg-noise pointer-events-none opacity-30 mix-blend-overlay" />
+        {/* Noise Texture Overlay (Universe OS) */}
+        <div className="absolute inset-0 bg-noise pointer-events-none opacity-30 mix-blend-overlay" />
 
-      {/* Premium Background with parallax stars */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
-        <defs>
-          <radialGradient id="saimorGlow" cx="50%" cy="30%" r="60%">
-            <stop offset="0%" stopColor="#D4A857" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#saimorGlow)" />
-        {Array.from({ length: isMobile ? 30 : 60 }).map((_, i) => {
-          const seededRandom = (seed: number) => {
-            const x = Math.sin(seed + i * 7.3) * 10000;
-            return x - Math.floor(x);
-          };
-          const cx = seededRandom(i) * 100;
-          const cy = seededRandom(i + 100) * 100;
-          const r = seededRandom(i + 200) * 1.8 + 0.3;
-          return (
-            <motion.circle
-              key={i}
-              cx={`${cx}%`}
-              cy={`${cy}%`}
-              r={r}
-              fill={i % 3 === 0 ? "#D4A857" : "#4A6741"}
-              animate={{
-                opacity: [0.1, 0.6, 0.1],
-                x: safeMousePosition.x * (r * 0.5),
-                y: safeMousePosition.y * (r * 0.5)
-              }}
-              transition={{
-                opacity: { duration: 3 + (i % 5), repeat: Infinity, delay: (i % 20) * 0.1 },
-                x: { type: 'spring', stiffness: 50, damping: 20 },
-                y: { type: 'spring', stiffness: 50, damping: 20 }
-              }}
-            />
-          );
-        })}
-      </svg>
+        {/* Universe Background - Compact */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Space gradient */}
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(180deg, #030806 0%, #000000 100%)'
+          }} />
+          
+          {/* Compact starfield */}
+          {mounted && Array.from({ length: 25 }).map((_, i) => {
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const size = Math.random() * 2 + 0.5;
+            return (
+              <div
+                key={i}
+                className="absolute rounded-full animate-pulse"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  width: size,
+                  height: size,
+                  backgroundColor: i % 3 === 0 ? '#10B981' : i % 3 === 1 ? '#ffffff' : '#06B6D4',
+                  opacity: 0.6,
+                  animation: `pulse ${2 + Math.random() * 3}s ease-in-out infinite`
+                }}
+              />
+            );
+          })}
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+          {/* Subtle grid */}
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: `
+              linear-gradient(rgba(16, 185, 129, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(16, 185, 129, 0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px'
+          }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Compact Môra Orb - Top Right Corner */}
+        <motion.div
+          className="absolute top-8 right-8 z-20"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.5, type: 'spring' }}
+        >
+          <motion.div
+            className="relative w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+            style={{
+              background: 'radial-gradient(circle at 30% 30%, #A855F7FF 0%, #A855F7CC 50%, #A855F788 100%)',
+              boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4), 0 0 20px rgba(168, 85, 247, 0.3)',
+              border: '2px solid rgba(255, 255, 255, 0.2)'
+            }}
+            animate={{
+              scale: [1, 1.05, 1],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            whileHover={{ scale: 1.15 }}
+            title="Universe OS Demo"
+          >
+            <Sparkles className="w-5 h-5 text-white drop-shadow-lg" />
+            <div className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider bg-purple-500 text-white">
+              OS
+            </div>
+          </motion.div>
+        </motion.div>
+
         {/* Premium Header with glassmorphism */}
         <motion.div
           className="text-center mb-16"
@@ -1918,6 +1955,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </Link>
           </div>
         </motion.div>
+      </div>
       </div>
     </section>
   );

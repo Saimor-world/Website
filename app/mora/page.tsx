@@ -1,21 +1,5 @@
-'use client';
-
 import Link from "next/link";
-import { useState } from "react";
 import MoraDashboard from "@/components/MoraDashboard";
-import { UniverseBackground } from "@/components/UniverseBackground";
-import { MoraOrbWebsite } from "@/components/MoraOrbWebsite";
-import { PlanetsNavigation } from "@/components/PlanetsNavigation";
-import { UniverseDock } from "@/components/UniverseDock";
-import { StarConstellations } from "@/components/StarConstellations";
-import { 
-  Users, 
-  Target, 
-  TrendingUp, 
-  Zap, 
-  BarChart3, 
-  Activity 
-} from 'lucide-react';
 
 const featureCards = [
   {
@@ -34,109 +18,11 @@ const featureCards = [
 
 // Note: metadata moved to layout for client component
 export default function MoraPage() {
-  const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
-  const [selectedSection, setSelectedSection] = useState<string | null>(null);
-
-  // Demo metrics for planets (matching dashboard metrics)
-  const planetMetrics = [
-    { 
-      id: 'team-engagement', 
-      label: 'Team-Engagement', 
-      value: 87, 
-      status: 'good' as const, 
-      category: 'people' as const, 
-      icon: Users,
-      color: '#10B981'
-    },
-    { 
-      id: 'process-efficiency', 
-      label: 'Prozess-Effizienz', 
-      value: 92, 
-      status: 'good' as const, 
-      category: 'process' as const, 
-      icon: Target,
-      color: '#10B981'
-    },
-    { 
-      id: 'satisfaction', 
-      label: 'Zufriedenheit', 
-      value: 78, 
-      status: 'warning' as const, 
-      category: 'people' as const, 
-      icon: BarChart3,
-      color: '#D4A857'
-    },
-    { 
-      id: 'workload', 
-      label: 'Arbeitsbelastung', 
-      value: 68, 
-      status: 'critical' as const, 
-      category: 'resources' as const, 
-      icon: Zap,
-      color: '#EF4444'
-    },
-    { 
-      id: 'velocity', 
-      label: 'Umsetzungsgeschwindigkeit', 
-      value: 85, 
-      status: 'good' as const, 
-      category: 'process' as const, 
-      icon: TrendingUp,
-      color: '#10B981'
-    },
-    { 
-      id: 'clarity', 
-      label: 'Klarheitsindex', 
-      value: 91, 
-      status: 'good' as const, 
-      category: 'people' as const, 
-      icon: Activity,
-      color: '#10B981'
-    }
-  ];
-
-  // Semantic connections between metrics
-  const connections = [
-    { from: 'team-engagement', to: 'satisfaction', strength: 0.8, type: 'strong' as const },
-    { from: 'satisfaction', to: 'clarity', strength: 0.7, type: 'strong' as const },
-    { from: 'team-engagement', to: 'clarity', strength: 0.6, type: 'medium' as const },
-    { from: 'process-efficiency', to: 'velocity', strength: 0.8, type: 'strong' as const },
-    { from: 'workload', to: 'satisfaction', strength: 0.5, type: 'medium' as const },
-    { from: 'clarity', to: 'process-efficiency', strength: 0.4, type: 'weak' as const },
-    { from: 'team-engagement', to: 'velocity', strength: 0.4, type: 'weak' as const }
-  ];
-
-  // Handle dock item clicks
-  const handleDockClick = (itemId: string) => {
-    switch (itemId) {
-      case 'chat':
-        document.getElementById('mora-dashboard')?.scrollIntoView({ behavior: 'smooth' });
-        break;
-      case 'apps':
-        setSelectedSection('dashboard');
-        break;
-      case 'recent':
-        setSelectedSection('activity');
-        break;
-      case 'user':
-        window.location.href = '/account';
-        break;
-      case 'settings':
-        setSelectedSection('settings');
-        break;
-    }
-  };
-
-  // Handle planet clicks
-  const handlePlanetClick = (planetId: string) => {
-    setSelectedSection(planetId);
-    document.getElementById('mora-dashboard')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <div className="min-h-screen relative text-slate-100">
-      {/* Universe Background */}
-      <UniverseBackground intensity={0.8} showGrid={true} />
+    <div className="min-h-screen bg-gradient-to-b from-[#0a1410] via-[#0F1F17] to-[#0a1410] text-slate-100">
+      {/* Premium Background */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 30% 20%, rgba(212,168,87,0.12), transparent 50%)' }} />
+      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 70% 80%, rgba(74,103,65,0.15), transparent 50%)' }} />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-32 pb-16 sm:pt-40 sm:pb-24 space-y-16 sm:space-y-24">
 
@@ -260,34 +146,6 @@ export default function MoraPage() {
           </div>
         </section>
 
-        {/* Universe OS Navigation Elements */}
-        
-        {/* Planets Navigation */}
-        <PlanetsNavigation 
-          metrics={planetMetrics}
-          onPlanetClick={handlePlanetClick}
-        />
-
-        {/* Star Constellations */}
-        <StarConstellations 
-          metrics={planetMetrics}
-          connections={connections}
-          hoveredMetricId={hoveredPlanet}
-        />
-
-        {/* Dock System */}
-        <UniverseDock 
-          onItemClick={handleDockClick}
-        />
-
-        {/* Môra Orb */}
-        <MoraOrbWebsite 
-          state="demo" 
-          size={92}
-          onClick={() => {
-            document.getElementById('mora-dashboard')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-        />
       </div>
     </div>
   );
