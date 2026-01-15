@@ -13,6 +13,8 @@ const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
 const AchievementButton = dynamic(() => import('@/components/AchievementButton'), { ssr: false });
 const BackToTop = dynamic(() => import('@/components/BackToTop'), { ssr: false });
+const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
+const KeyboardHint = dynamic(() => import('@/components/KeyboardHint'), { ssr: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -67,6 +69,70 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#10B981" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Saimôr",
+              "url": "https://saimor.world",
+              "logo": "https://saimor.world/saimor-logo-new.png",
+              "description": "Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.",
+              "foundingDate": "2024",
+              "sameAs": [],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "contact@saimor.world",
+                "contactType": "customer service",
+                "availableLanguage": ["German", "English"]
+              },
+              "areaServed": {
+                "@type": "GeoCircle",
+                "geoMidpoint": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "48.137154",
+                  "longitude": "11.576124"
+                },
+                "geoRadius": "2000 km"
+              }
+            })
+          }}
+        />
+        
+        {/* Structured Data - Software Application (Môra) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "Môra",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "description": "Semantisches Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung.",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/ComingSoon"
+              },
+              "featureList": [
+                "Semantic Analysis",
+                "Real-time Pattern Recognition",
+                "DSGVO-compliant",
+                "EU-hosted",
+                "Local-first Architecture"
+              ],
+              "author": {
+                "@type": "Organization",
+                "name": "Saimôr"
+              }
+            })
+          }}
+        />
       </head>
       <body className="bg-[#081410] text-white antialiased" suppressHydrationWarning>
         <AuthProvider>
@@ -76,6 +142,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CookieBanner />
           <AchievementButton />
           <BackToTop />
+          <CommandPalette />
+          <KeyboardHint />
           <LayoutWrapper>
             {children}
           </LayoutWrapper>
