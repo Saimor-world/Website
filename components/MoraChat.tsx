@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Send, X, Loader2, User, Bot } from 'lucide-react';
+import MoraTypingIndicator from '@/components/MoraTypingIndicator';
 
 interface Message {
   id: string;
@@ -241,10 +242,7 @@ export default function MoraChat() {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4A6741] to-[#5D7C54] flex items-center justify-center shadow-md">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
-                <div className="px-4 py-2.5 rounded-2xl bg-white border border-gray-200 flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin text-[#4A6741]" />
-                  <span className="text-sm text-gray-600">Denke nach...</span>
-                </div>
+                <MoraTypingIndicator isTyping />
               </motion.div>
             )}
 

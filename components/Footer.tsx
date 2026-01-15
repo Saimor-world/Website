@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ShareButton from '@/components/ShareButton';
 
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   const [year, setYear] = useState('2025');
@@ -132,9 +133,12 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             <span className="w-1 h-1 rounded-full bg-white/10" />
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">{footerText.copyright}</span>
           </div>
-          <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] uppercase tracking-[0.2em] font-black text-emerald-500/60">{footerText.made}</span>
+          <div className="flex items-center gap-4">
+            <ShareButton />
+            <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] uppercase tracking-[0.2em] font-black text-emerald-500/60">{footerText.made}</span>
+            </div>
           </div>
         </div>
       </div>

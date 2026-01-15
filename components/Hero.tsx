@@ -2,8 +2,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
+import AnimatedButton from '@/components/AnimatedButton';
 
 type Locale = 'de' | 'en';
 
@@ -203,20 +203,23 @@ export default function Hero({ locale, calUrl }: Props) {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
-            <Link
+            <AnimatedButton
               href={locale === 'en' ? '/en/mora' : '/mora'}
-              className="px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center justify-center cursor-pointer"
+              variant="gradient"
+              size="lg"
+              className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
             >
               {content.ctaPrimary}
-            </Link>
-            <a
+            </AnimatedButton>
+            <AnimatedButton
               href={cal}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-10 py-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl text-white font-bold hover:bg-white/10 transition-all hover:scale-105 flex items-center justify-center cursor-pointer"
+              external
+              variant="secondary"
+              size="lg"
+              className="backdrop-blur-xl"
             >
               {content.ctaSecondary}
-            </a>
+            </AnimatedButton>
           </motion.div>
 
           {/* Stats */}
