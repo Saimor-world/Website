@@ -1,7 +1,8 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Sparkles, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { MatomoEvents } from '@/lib/matomo';
 
 type Props = { locale: 'de' | 'en' };
 
@@ -10,20 +11,44 @@ export default function ContactSection({ locale }: Props) {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
+  useEffect(() => {
+    // Track form view
+    MatomoEvents.formStart('Contact Form');
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    setTimeout(() => {
-      setStatus('sent');
-      setFormState({ name: '', email: '', message: '' });
+    
+    try {
+      // Simulate API call
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formState),
+      });
+
+      const success = response.ok;
+      setStatus(success ? 'sent' : 'error');
       
-      // Trigger achievement for first contact
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+      // Track form submission
+      MatomoEvents.formSubmit('Contact Form', success);
+      
+      if (success) {
+        setFormState({ name: '', email: '', message: '' });
+        
+        // Trigger achievement for first contact
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+        }
       }
       
       setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+    } catch (error) {
+      setStatus('error');
+      MatomoEvents.formSubmit('Contact Form', false);
+      setTimeout(() => setStatus('idle'), 3000);
+    }
   };
 
   return (

@@ -2,6 +2,7 @@
 
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { forwardRef, ReactNode } from 'react';
+import { MatomoEvents } from '@/lib/matomo';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'gradient';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -153,6 +154,9 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.2 }}
+          onClick={() => {
+            MatomoEvents.ctaClick('Button', href);
+          }}
         >
           {content}
         </motion.a>
@@ -167,6 +171,13 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
         whileHover={disabled ? {} : { scale: 1.02, y: -2 }}
         whileTap={disabled ? {} : { scale: 0.98 }}
         transition={{ duration: 0.2 }}
+        onClick={(e) => {
+          // Track CTA clicks on buttons without href
+          if (!href && !disabled && !loading) {
+            MatomoEvents.ctaClick('Button', props['aria-label'] || String(children));
+          }
+          props.onClick?.(e as any);
+        }}
         {...props}
       >
         {content}

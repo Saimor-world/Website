@@ -375,6 +375,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     if (selectedMetric && mode !== 'universe') {
       setSelectedMetric(null);
     }
+    // Track dashboard view change
+    if (typeof window !== 'undefined' && (window as any)._paq) {
+      const { MatomoEvents } = require('@/lib/matomo');
+      MatomoEvents.dashboardView(mode);
+    }
   }, [selectedMetric]);
 
   if (!mounted) return null;
@@ -610,7 +615,13 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     animate={{ x: "-50%", y: "-50%", scale: 1, opacity: 1 }}
                     onMouseEnter={() => setHoveredMetric(m.id)}
                     onMouseLeave={() => setHoveredMetric(null)}
-                    onClick={() => setSelectedMetric(isSelected ? null : m.id)}
+                    onClick={() => {
+                      setSelectedMetric(isSelected ? null : m.id);
+                      if (!isSelected && typeof window !== 'undefined' && (window as any)._paq) {
+                        const { MatomoEvents } = require('@/lib/matomo');
+                        MatomoEvents.dashboardMetricClick(m.id);
+                      }
+                    }}
                     whileHover={{ scale: 1.15 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >

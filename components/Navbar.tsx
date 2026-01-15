@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MatomoEvents } from '@/lib/matomo';
 
 export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,8 +62,11 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
   ];
 
-  const handleNavClick = (href: string, isAnchor: boolean, e: React.MouseEvent) => {
+  const handleNavClick = (href: string, isAnchor: boolean, label: string, e: React.MouseEvent) => {
     setMenuOpen(false);
+    
+    // Track navigation
+    MatomoEvents.navClick(label);
 
     if (isAnchor) {
       const [path, hash] = href.split('#');
@@ -135,7 +139,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 item.isAnchor ? (
                   <button
                     key={item.href}
-                    onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                    onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
                     className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
                   >
                     {item.label}
@@ -144,6 +148,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   <a
                     key={item.href}
                     href={item.href}
+                    onClick={() => MatomoEvents.navClick(item.label)}
                     className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
                   >
                     {item.label}
@@ -294,7 +299,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   >
                     {item.isAnchor ? (
                       <motion.button
-                        onClick={(e) => handleNavClick(item.href, item.isAnchor, e)}
+                        onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
                         className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
@@ -305,7 +310,10 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     ) : (
                       <motion.a
                         href={item.href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          MatomoEvents.navClick(item.label);
+                        }}
                         className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors block"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}

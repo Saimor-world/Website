@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Star, Heart, Crown } from 'lucide-react';
 import { getAchievementManager, type Achievement } from '@/lib/achievements';
+import { MatomoEvents } from '@/lib/matomo';
 import AchievementToast from './AchievementToast';
 import AchievementMenu from './AchievementMenu';
 
@@ -120,6 +121,10 @@ export default function EasterEggs() {
     if (achievement) {
       triggerHapticFeedback();
       setNewAchievement(achievement);
+      
+      // Track achievement unlock
+      MatomoEvents.achievementUnlock(id);
+      
       if (achievementTimeoutRef.current) {
         clearTimeout(achievementTimeoutRef.current);
       }

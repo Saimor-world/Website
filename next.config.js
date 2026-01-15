@@ -9,6 +9,15 @@ const nextConfig = {
   },
   swcMinify: true, // Faster minification
   productionBrowserSourceMaps: false, // Save memory/CPU during build
+  
+  // Compression
+  compress: true,
+  
+  // PoweredBy header removal (security)
+  poweredByHeader: false,
+  
+  // React Strict Mode (development only to avoid double renders)
+  reactStrictMode: process.env.NODE_ENV === 'development',
 
   // === RESOURCE MANAGEMENT ===
   experimental: {
