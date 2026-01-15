@@ -7,6 +7,7 @@ import AuthProvider from '../components/AuthProvider'
 import LayoutWrapper from '../components/LayoutWrapper'
 
 import dynamic from 'next/dynamic'
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
@@ -171,17 +172,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-[#081410] text-white antialiased" suppressHydrationWarning>
-        <AuthProvider>
-          <ClientProviders />
-          <ScrollProgress />
-          <EasterEggs />
-          <CookieBanner />
-          <CommandPalette />
-          <KeyboardHint />
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
-        </AuthProvider>
+        <ErrorBoundary>
+          <AuthProvider>
+            <ClientProviders />
+            <ScrollProgress />
+            <EasterEggs />
+            <CookieBanner />
+            <CommandPalette />
+            <KeyboardHint />
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </AuthProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

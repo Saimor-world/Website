@@ -10,6 +10,7 @@
     "test": "vitest run --environment jsdom"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.34.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",

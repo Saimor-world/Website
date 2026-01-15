@@ -1,6 +1,7 @@
 export const runtime = 'nodejs';
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
+import { captureApiError } from '@/lib/analytics';
 
 const Body = z.object({
   name: z.string().trim().min(1).max(200),
@@ -84,6 +85,9 @@ Gesendet am: ${new Date().toLocaleString('de-DE')}
     });
 
   } catch (error) {
+    captureApiError('/api/contact', error, {
+      method: 'POST',
+    });
     console.error('Contact form error:', error);
     return new Response(JSON.stringify({
       error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'
