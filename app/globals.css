@@ -954,3 +954,43 @@ kbd {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Ripple animation for buttons */
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+    margin-left: -250px;
+    margin-top: -250px;
+  }
+}
+
+.animate-ripple {
+  animation: ripple 0.6s ease-out;
+}
+
+/* Focus ring styles */
+.focus-ring {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#081410];
+}
+
+/* Interactive element base styles */
+.interactive {
+  @apply transition-all duration-200 ease-out;
+  @apply hover:scale-[1.02] active:scale-[0.98];
+}
+
+/* Glow effect on hover */
+.glow-hover {
+  @apply transition-shadow duration-300;
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+}
