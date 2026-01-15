@@ -1,6 +1,6 @@
 ﻿'use client';
 import { Shield, Lock, Globe, Server } from 'lucide-react';
-import { motion } from 'framer-motion';
+// Removed motion import
 
 export default function TrustPage() {
   const techItems = [

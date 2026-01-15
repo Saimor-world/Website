@@ -1,5 +1,5 @@
 ﻿'use client';
-import { motion } from 'framer-motion';
+// Removed motion import
 import { Zap, Target, Heart, Sparkles } from 'lucide-react';
 
 export default function PulsePage() {

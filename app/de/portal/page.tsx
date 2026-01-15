@@ -1,5 +1,8 @@
 ﻿import Link from 'next/link';
 import PortalPreview from '@/components/PortalPreview';
+
+// Remove motion import
+const motion = { div: 'div', h1: 'h1', p: 'p' };
 import { TransformationGuideLeadMagnet } from '@/components/LeadMagnet';
 import { DemoCTA } from '@/components/BusinessCTA';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+// Removed motion import
 import { Mail, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 

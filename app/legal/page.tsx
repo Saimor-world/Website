@@ -1,6 +1,6 @@
 ﻿import { Metadata } from 'next';
 import { AlertCircle, Shield } from 'lucide-react';
-import * as motion from 'framer-motion/client';
+// Removed motion import
 
 export const metadata: Metadata = {
   title: 'Impressum & Datenschutz – Saimôr',

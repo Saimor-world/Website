@@ -1,6 +1,8 @@
 'use client';
 import { Shield, Lock, Globe, Server } from 'lucide-react';
-import { motion } from 'framer-motion';
+
+// Remove motion import
+const motion = { div: 'div', h1: 'h1', p: 'p', section: 'section' };
 import { SecurityChecklistLeadMagnet } from '@/components/LeadMagnet';
 import { ContactCTA } from '@/components/BusinessCTA';
 

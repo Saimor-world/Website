@@ -1,5 +1,5 @@
 ﻿'use client';
-import { motion } from 'framer-motion';
+// Removed motion import
 import { Repeat, Target, Heart, Sparkles } from 'lucide-react';
 
 export default function OrbitPage() {
