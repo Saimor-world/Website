@@ -102,8 +102,31 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           </div>
         </div>
 
+        {/* Keyboard Shortcuts Hint */}
+        <motion.div 
+          className="py-6 mb-8 border-y border-white/5"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] text-white/30">
+            <span className="flex items-center gap-2">
+              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">AAA</kbd>
+              <span>{locale === 'de' ? 'Erfolge öffnen' : 'Open achievements'}</span>
+            </span>
+            <span className="hidden md:flex items-center gap-2">
+              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">↑↑↓↓←→←→BA</kbd>
+              <span>{locale === 'de' ? 'Geheimer Modus' : 'Secret mode'}</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">ESC</kbd>
+              <span>{locale === 'de' ? 'Intro überspringen' : 'Skip intro'}</span>
+            </span>
+          </div>
+        </motion.div>
+
         {/* Bottom */}
-        <div className="pt-12 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
+        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">© {year} Saimôr</span>
             <span className="w-1 h-1 rounded-full bg-white/10" />
