@@ -1,4 +1,7 @@
 import ContactForm from '@/components/ContactForm';
+import dynamic from 'next/dynamic';
+
+const NewsletterSignup = dynamic(() => import('@/components/NewsletterSignup'), { ssr: false });
 
 export const metadata = {
   title: 'Kontakt & Beratung – Saimôr',
@@ -67,7 +70,7 @@ export default function Page() {
         </div>
 
         {/* Contact Form Section */}
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-16 mb-24">
           {/* Info Side */}
           <div className="space-y-8">
             <div>
@@ -120,6 +123,20 @@ export default function Page() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Newsletter Section */}
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-white">
+              Mehr als nur ein Newsletter
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto">
+              Erhalte exklusive Einblicke in unsere Entwicklung, Early Access zu neuen Features
+              und direkten Kontakt zu unserem Team.
+            </p>
+          </div>
+          <NewsletterSignup />
         </div>
       </div>
     </main>

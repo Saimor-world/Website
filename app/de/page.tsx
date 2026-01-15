@@ -3,12 +3,12 @@ import MoraTeaser from '@/components/MoraTeaser';
 import CommunityBanner from '@/components/CommunityBanner';
 import WaitlistForm from '@/components/WaitlistForm';
 import ContactSection from '@/components/ContactSection';
-import SocialProof from '@/components/SocialProof';
-import { StickyCTA } from '@/components/BusinessCTA';
 import dynamic from 'next/dynamic';
 
 const MoraIntroAnimation = dynamic(() => import('@/components/MoraIntroAnimation'), { ssr: false });
 const MyceliumNetwork = dynamic(() => import('@/components/MyceliumNetwork'), { ssr: false });
+const SocialProof = dynamic(() => import('@/components/SocialProof'), { ssr: false });
+const StickyCTA = dynamic(() => import('@/components/BusinessCTA').then(mod => mod.StickyCTA), { ssr: false });
 
 export const metadata = {
   title: 'Saimôr – Das Ökosystem für bewusste Organisationen',
