@@ -1,89 +1,63 @@
-'use client';
-// Removed motion import
 import { Repeat, Target, Heart, Sparkles } from 'lucide-react';
 
 export default function OrbitPage() {
   const benefits = [
-    { icon: Target, title: 'Orientierung', text: 'Regelmäßiger Rhythmus statt Meeting-Chaos.', color: '#10B981' },
-    { icon: Heart, title: 'Tiefe', text: 'Raum für das, was wirklich zählt.', color: '#06B6D4' },
-    { icon: Sparkles, title: 'Kontinuität', text: 'Begleitung im permanenten Wandel.', color: '#8B5CF6' }
+    { icon: Target, title: 'Orientierung', text: 'RegelmÃ¤ÃŸiger Rhythmus statt Meeting-Chaos.', color: '#10B981' },
+    { icon: Heart, title: 'Tiefe', text: 'Raum fÃ¼r das, was wirklich zÃ¤hlt.', color: '#06B6D4' },
+    { icon: Sparkles, title: 'KontinuitÃ¤t', text: 'Begleitung im permanenten Wandel.', color: '#8B5CF6' }
   ];
 
   return (
-    <div className="min-h-screen bg-[#081410] text-white pt-32 pb-24 selection:bg-emerald-500/30">
-      
-      {/* Background Atmosphere */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-purple-900/10 blur-[150px] rounded-full" />
-      </div>
+    <main className="min-h-screen bg-gradient-to-b from-[#081410] via-[#0a1612] to-[#081410] text-white">
+      <div className="max-w-6xl mx-auto px-6 py-24">
+        <div className="text-center space-y-8 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+            <span className="text-emerald-400">ðŸ”„</span>
+            <span className="text-sm font-medium text-emerald-300">Orbit Framework</span>
+          </div>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-6">
-        
-        {/* Hero Section */}
-        <section className="mb-32 space-y-12 text-center">
-          <divdiv
-            }
-            }
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md"
-          >
-            <Repeat className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">System: Orbit</span>
-          </motion.div>
-          
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            <span className="block opacity-90">Rhythmus statt</span>
+          <h1 className="text-5xl md:text-7xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            RegelmÃ¤ÃŸige
             <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
-              Meetings.
+              Begleitung
             </span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-white/40 leading-relaxed max-w-3xl mx-auto">
-            Systematische Begleitung für bewusste Transformation. Ein natürlicher Takt, der Klarheit und echte Resonanz schafft.
+
+          <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+            Strukturierte Prozesse fÃ¼r kontinuierliche Entwicklung. Kein Meeting-Marathon,
+            sondern zielgerichtete Begleitung im Wandel.
           </p>
-        </section>
+        </div>
 
-        {/* Benefits Grid */}
-        <section className="grid md:grid-cols-3 gap-8 mb-32">
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
           {benefits.map((benefit, i) => (
-            <divdiv
-              key={i}
-              }
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              }
-              className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-6 group hover:bg-white/[0.05] transition-colors"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <benefit.icon className="w-7 h-7 text-emerald-400" />
+            <div key={benefit.title} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
+              <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: `${benefit.color}20` }}>
+                <benefit.icon className="w-6 h-6" style={{ color: benefit.color }} />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white uppercase tracking-widest">{benefit.title}</h3>
-                <p className="text-white/40 leading-relaxed">{benefit.text}</p>
-              </div>
-            </motion.div>
-          ))}
-        </section>
-
-        {/* Callout */}
-        <section className="mb-32">
-          <div className="p-12 sm:p-20 rounded-[4rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md text-center space-y-8">
-            <p className="text-3xl sm:text-5xl font-light leading-tight tracking-tight text-white italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              &quot;Erst verstehen, dann verändern. Orbit schafft den verlässlichen Raum für bewusste Entscheidungen.&quot;
-            </p>
-            <div className="pt-8">
-              <a
-                href="https://cal.com/saimor/30min"
-                target="_blank"
-                className="px-12 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 inline-block"
-              >
-                Showcase buchen
-              </a>
+              <h3 className="text-xl font-semibold mb-3 text-white">{benefit.title}</h3>
+              <p className="text-white/70 leading-relaxed">{benefit.text}</p>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
 
-      </main>
-    </div>
+        <div className="text-center">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12">
+            <Repeat className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-semibold mb-4 text-white">Orbit-Framework</h3>
+            <p className="text-white/70 max-w-2xl mx-auto mb-8">
+              Das Orbit-Framework bietet strukturierte Begleitung fÃ¼r Teams und Organisationen,
+              die kontinuierliche Entwicklung suchen.
+            </p>
+            <a
+              href="/de/kontakt"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold hover:shadow-lg transition-all"
+            >
+              <span>Mehr erfahren</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

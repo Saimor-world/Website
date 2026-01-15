@@ -1,92 +1,88 @@
-import { Metadata } from 'next';
 import { AlertCircle, Shield } from 'lucide-react';
-// Removed motion import
-
-export const metadata: Metadata = {
-  title: 'Impressum & Datenschutz ñ SaimÙr',
-  description: 'Rechtliche Informationen ñ Vorabversion',
-};
 
 export default function LegalPage() {
   return (
-    <div className="min-h-screen bg-[#081410] text-white pt-32 pb-24 selection:bg-emerald-500/30">
-      
-      {/* Background Atmosphere */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-900/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-900/10 blur-[150px] rounded-full" />
-      </div>
-
-      <main className="relative z-10 max-w-4xl mx-auto px-6">
-        
-        {/* Warning Banner */}
-        <divdiv
-          }
-          }
-          className="mb-16 p-8 rounded-[2.5rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md flex items-start gap-6"
-        >
-          <AlertCircle className="w-8 h-8 text-emerald-400 flex-shrink-0 mt-1" />
-          <div>
-            <h2 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Vorabversion ñ Juristische Pr¸fung folgt</h2>
-            <p className="text-white/60 leading-relaxed">
-              Diese Seite befindet sich in Bearbeitung. Die rechtlich verbindlichen Dokumente werden vor dem offiziellen Launch finalisiert.
-            </p>
+    <main className="min-h-screen bg-gradient-to-b from-[#081410] via-[#0a1612] to-[#081410] text-white">
+      <div className="max-w-4xl mx-auto px-6 py-24">
+        <div className="text-center space-y-8 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+            <Shield className="w-4 h-4 text-emerald-400" />
+            <span className="text-sm font-medium text-emerald-300">Rechtliches</span>
           </div>
-        </motion.div>
 
-        {/* Title */}
-        <section className="mb-24 space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
-            <Shield className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">Legal Protocol</span>
-          </div>
-          
-          <h1 className="text-5xl sm:text-7xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            <span className="block opacity-90">Impressum &</span>
+          <h1 className="text-5xl md:text-7xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            Impressum &
             <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
-              Datenschutz.
+              Datenschutz
             </span>
           </h1>
-        </section>
 
-        {/* Content */}
-        <div className="space-y-24 text-white/60">
-          
-          {/* Impressum */}
-          <section className="space-y-8">
-            <h2 className="text-3xl font-light text-white tracking-tight italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Impressum</h2>
-            <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-6">
-              <p><strong className="text-white">Angaben gem‰ﬂ ß 5 TMG:</strong></p>
-              <p>SaimÙr<br />[Firmenname wird erg‰nzt]<br />[Adresse wird erg‰nzt]<br />Deutschland</p>
-              <p><strong className="text-white">Kontakt:</strong><br />E-Mail: contact@saimor.world</p>
-            </div>
-          </section>
-
-          {/* Datenschutz */}
-          <section className="space-y-12">
-            <h2 className="text-3xl font-light text-white tracking-tight italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Datenschutzerkl‰rung</h2>
-            
-            <div className="space-y-8">
-              <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-4">
-                <h3 className="text-xl font-bold text-white uppercase tracking-wider">1. Allgemeines</h3>
-                <p>Wir nehmen den schutz Ihrer Daten ernst. Diese Erkl‰rung beschreibt, wie wir Daten erheben und verwenden ñ n‰mlich so sparsam wie mˆglich.</p>
-              </div>
-
-              <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-4">
-                <h3 className="text-xl font-bold text-white uppercase tracking-wider">2. Datenerfassung</h3>
-                <p>Diese Website wird auf Vercel gehostet. Es werden nur technisch notwendige Logs gespeichert. Wir setzen keine Marketing-Cookies ein.</p>
-              </div>
-            </div>
-          </section>
-
+          <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+            Rechtliche Informationen und Datenschutzbestimmungen f√ºr Saim√¥r.
+          </p>
         </div>
 
-        {/* Footer info */}
-        <div className="mt-24 pt-12 border-t border-white/5 text-center">
-          <p className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">Stand: Januar 2026 ∑ Version 1.0.4</p>
-        </div>
+        <div className="space-y-12">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+            <h2 className="text-2xl font-semibold mb-6 text-white">Impressum</h2>
+            <div className="space-y-4 text-white/80">
+              <div>
+                <h3 className="font-semibold text-white mb-2">Verantwortlich</h3>
+                <p>Saim√¥r GmbH</p>
+                <p>Musterstra√üe 123</p>
+                <p>12345 Musterstadt</p>
+                <p>Deutschland</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2">Kontakt</h3>
+                <p>E-Mail: contact@saimor.world</p>
+                <p>Telefon: +49 (0) 123 456789</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2">Handelsregister</h3>
+                <p>HRB 123456</p>
+                <p>Amtsgericht Musterstadt</p>
+              </div>
+            </div>
+          </div>
 
-      </main>
-    </div>
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+            <h2 className="text-2xl font-semibold mb-6 text-white">Datenschutz</h2>
+            <div className="space-y-6 text-white/80">
+              <div>
+                <h3 className="font-semibold text-white mb-2">Datenschutz-Grunds√§tze</h3>
+                <p>
+                  Bei Saim√¥r steht der Datenschutz an erster Stelle. Wir verarbeiten nur die Daten,
+                  die f√ºr die Erbringung unserer Dienstleistungen unbedingt erforderlich sind.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2">Ihre Rechte</h3>
+                <p>
+                  Sie haben das Recht auf Auskunft, Berichtigung, L√∂schung und Einschr√§nkung der Verarbeitung
+                  Ihrer personenbezogenen Daten. Kontaktieren Sie uns jederzeit bei datenschutz@saimor.world.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-2">Cookies</h3>
+                <p>
+                  Wir verwenden nur technisch notwendige Cookies. Weitere Informationen finden Sie
+                  in unserer Cookie-Richtlinie.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <AlertCircle className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-4 text-white">Wichtiger Hinweis</h3>
+            <p className="text-white/70 max-w-2xl mx-auto">
+              Diese Seite befindet sich noch in der Entwicklung. Die rechtlichen Informationen
+              werden laufend aktualisiert und vervollst√§ndigt.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
