@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, TrendingUp, TrendingDown, Users, Target, BarChart3,
   MessageSquare, Send, X,
-  Activity, LayoutGrid, Building2, Zap, Settings, User, Compass, Search, Bell, Eye
+  Activity, LayoutGrid, Building2, Zap, Settings, User, Compass, Search, Bell, Eye, Minimize2, Maximize2
 } from 'lucide-react';
 
 type Locale = 'de' | 'en';
@@ -30,6 +30,7 @@ interface DashboardMetric {
   activeUsers?: number;
   lastActivity?: string;
   icon: any;
+  trend?: number[]; // Time series data for trend chart
 }
 
 export default function MoraDashboard({ locale }: MoraDashboardProps) {
@@ -41,6 +42,83 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [moraResponse, setMoraResponse] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
+  const [showMiniMap, setShowMiniMap] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [liveData, setLiveData] = useState<any>(null);
+  const metricsRef = useRef<DashboardMetric[]>([]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only handle if not typing in input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        if (e.key === 'Enter') return; // Allow Enter in inputs
+        return;
+      }
+
+      switch (e.key) {
+        case '1':
+          e.preventDefault();
+          setViewMode('universe');
+          break;
+        case '2':
+          e.preventDefault();
+          setViewMode('folders');
+          break;
+        case '3':
+          e.preventDefault();
+          setViewMode('chat');
+          break;
+        case 'Escape':
+          e.preventDefault();
+          setSelectedMetric(null);
+          setShowMiniMap(false);
+          break;
+        case 'm':
+        case 'M':
+          e.preventDefault();
+          setShowMiniMap(!showMiniMap);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [mounted, showMiniMap]);
+
+  // Real-time data polling
+  useEffect(() => {
+    if (!mounted) return;
+
+    const fetchLiveData = async () => {
+      try {
+        setIsLoadingData(true);
+        const response = await fetch('/api/dashboard/overview', {
+          cache: 'no-store',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setLiveData(data);
+          
+          // Update metrics with live data if available
+          if (data.memory && !data.isDemo) {
+            // In a real implementation, map API data to metrics
+            // For now, we keep demo data but could enhance
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    fetchLiveData();
+    const interval = setInterval(fetchLiveData, 30000); // Poll every 30s
+    return () => clearInterval(interval);
+  }, [mounted]);
 
   useEffect(() => {
     setMounted(true);
@@ -101,21 +179,31 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     }
   }[locale];
 
-  // --- DEMO DATA ---
-  const metrics: DashboardMetric[] = useMemo(() => [
-    { id: 'team', label: t.metrics.team, value: 87, change: 12, status: 'good', category: 'people', icon: Users, nodeCount: 156, departmentCount: 4, spaceCount: 12, folderCount: 28, activeUsers: 24, lastActivity: 'vor 2 Std' },
-    { id: 'process', label: t.metrics.process, value: 92, change: 8, status: 'good', category: 'process', icon: Target, nodeCount: 134, departmentCount: 3, spaceCount: 9, folderCount: 22, activeUsers: 18, lastActivity: 'vor 45 Min' },
-    { id: 'clarity', label: t.metrics.clarity, value: 91, change: 18, status: 'good', category: 'people', icon: Eye, nodeCount: 148, departmentCount: 4, spaceCount: 11, folderCount: 26, activeUsers: 22, lastActivity: 'vor 30 Min' },
-    { id: 'velocity', label: t.metrics.velocity, value: 85, change: 5, status: 'good', category: 'process', icon: Zap, nodeCount: 142, departmentCount: 3, spaceCount: 10, folderCount: 24, activeUsers: 20, lastActivity: 'vor 1 Std' },
-    { id: 'satisfaction', label: t.metrics.satisfaction, value: 78, change: -3, status: 'warning', category: 'people', icon: Activity, nodeCount: 198, departmentCount: 5, spaceCount: 15, folderCount: 35, activeUsers: 32, lastActivity: 'vor 5 Std' },
-    { id: 'workload', label: t.metrics.workload, value: 68, change: -15, status: 'critical', category: 'resources', icon: BarChart3, nodeCount: 89, departmentCount: 2, spaceCount: 6, folderCount: 14, activeUsers: 12, lastActivity: 'vor 8 Std' },
-  ], [t]);
+  // Generate trend data for charts
+  const generateTrend = useCallback(() => {
+    return Array.from({ length: 12 }, () => Math.floor(Math.random() * 20) + 70);
+  }, []);
+
+  // --- DEMO DATA with Trends ---
+  const metrics: DashboardMetric[] = useMemo(() => {
+    const baseMetrics = [
+      { id: 'team', label: t.metrics.team, value: 87, change: 12, status: 'good' as const, category: 'people' as const, icon: Users, nodeCount: 156, departmentCount: 4, spaceCount: 12, folderCount: 28, activeUsers: 24, lastActivity: 'vor 2 Std' },
+      { id: 'process', label: t.metrics.process, value: 92, change: 8, status: 'good' as const, category: 'process' as const, icon: Target, nodeCount: 134, departmentCount: 3, spaceCount: 9, folderCount: 22, activeUsers: 18, lastActivity: 'vor 45 Min' },
+      { id: 'clarity', label: t.metrics.clarity, value: 91, change: 18, status: 'good' as const, category: 'people' as const, icon: Eye, nodeCount: 148, departmentCount: 4, spaceCount: 11, folderCount: 26, activeUsers: 22, lastActivity: 'vor 30 Min' },
+      { id: 'velocity', label: t.metrics.velocity, value: 85, change: 5, status: 'good' as const, category: 'process' as const, icon: Zap, nodeCount: 142, departmentCount: 3, spaceCount: 10, folderCount: 24, activeUsers: 20, lastActivity: 'vor 1 Std' },
+      { id: 'satisfaction', label: t.metrics.satisfaction, value: 78, change: -3, status: 'warning' as const, category: 'people' as const, icon: Activity, nodeCount: 198, departmentCount: 5, spaceCount: 15, folderCount: 35, activeUsers: 32, lastActivity: 'vor 5 Std' },
+      { id: 'workload', label: t.metrics.workload, value: 68, change: -15, status: 'critical' as const, category: 'resources' as const, icon: BarChart3, nodeCount: 89, departmentCount: 2, spaceCount: 6, folderCount: 14, activeUsers: 12, lastActivity: 'vor 8 Std' },
+    ];
+    
+    metricsRef.current = baseMetrics.map(m => ({ ...m, trend: generateTrend() }));
+    return metricsRef.current;
+  }, [t, generateTrend]);
 
   // --- UNIVERSE POSITIONS ---
   const nodePositions = useMemo(() => {
     return metrics.map((_, i) => {
-      const angle = (i / metrics.length) * Math.PI * 2 - Math.PI / 2; // Start from top
-      const radius = isMobile ? 28 : 35; // Adjusted radius for better mobile spacing
+      const angle = (i / metrics.length) * Math.PI * 2 - Math.PI / 2;
+      const radius = isMobile ? 28 : 35;
       return {
         x: 50 + Math.cos(angle) * radius,
         y: 50 + Math.sin(angle) * radius
@@ -123,11 +211,146 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     });
   }, [metrics.length, isMobile]);
 
+  // Mini-Map Component
+  const MiniMap = useCallback(() => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      className="absolute bottom-24 left-6 w-32 h-32 rounded-2xl bg-black/80 border-2 border-white/20 backdrop-blur-xl z-50 p-3"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="text-[8px] text-white/60 uppercase tracking-widest mb-2 font-bold">Mini-Map</div>
+      <div className="relative w-full h-full">
+        {nodePositions.map((pos, i) => {
+          const m = metrics[i];
+          const isSelected = selectedMetric === m.id;
+          return (
+            <div
+              key={m.id}
+              className="absolute rounded-full cursor-pointer transition-all"
+              style={{
+                left: `${pos.x * 0.26}px`,
+                top: `${pos.y * 0.24}px`,
+                width: isSelected ? '6px' : '4px',
+                height: isSelected ? '6px' : '4px',
+                backgroundColor: m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444',
+                boxShadow: isSelected ? '0 0 8px currentColor' : 'none',
+              }}
+              onClick={() => setSelectedMetric(m.id)}
+            />
+          );
+        })}
+        {/* Center */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '8px',
+            height: '8px',
+            backgroundColor: '#06B6D4',
+            boxShadow: '0 0 12px #06B6D4',
+          }}
+        />
+      </div>
+      <button
+        onClick={() => setShowMiniMap(false)}
+        className="absolute top-2 right-2 w-4 h-4 rounded bg-white/10 hover:bg-white/20 flex items-center justify-center"
+      >
+        <Minimize2 className="w-3 h-3 text-white/60" />
+      </button>
+    </motion.div>
+  ), [nodePositions, metrics, selectedMetric]);
+
+  // Trend Chart Component
+  const TrendChart = useCallback(({ data, color }: { data: number[], color: string }) => {
+    const max = Math.max(...data, 100);
+    const min = Math.min(...data, 0);
+    const range = max - min || 1;
+    const width = 200;
+    const height = 60;
+    const stepX = width / (data.length - 1);
+
+    const points = data.map((value, i) => {
+      const x = i * stepX;
+      const y = height - ((value - min) / range) * height;
+      return `${x},${y}`;
+    }).join(' ');
+
+    return (
+      <svg width={width} height={height} className="overflow-visible">
+        <defs>
+          <linearGradient id={`gradient-${color}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={color} stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+        <polyline
+          fill={`url(#gradient-${color})`}
+          stroke={color}
+          strokeWidth="2"
+          points={`0,${height} ${points} ${width},${height}`}
+        />
+        <polyline
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+          points={points}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {data.map((value, i) => (
+          <circle
+            key={i}
+            cx={i * stepX}
+            cy={height - ((value - min) / range) * height}
+            r="2"
+            fill={color}
+          />
+        ))}
+      </svg>
+    );
+  }, []);
+
   if (!mounted) return null;
 
   return (
     <div className={`relative w-full ${isMobile ? 'h-[600px]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
       
+      {/* Loading indicator */}
+      {isLoadingData && (
+        <div className="absolute top-20 right-6 z-50 px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-[10px] text-emerald-300 uppercase tracking-widest font-bold">
+          Syncing...
+        </div>
+      )}
+
+      {/* Mini-Map Toggle Button */}
+      {!showMiniMap && !isMobile && (
+        <button
+          onClick={() => setShowMiniMap(true)}
+          className="absolute bottom-24 left-6 z-40 w-10 h-10 rounded-xl bg-black/60 border border-white/20 backdrop-blur-md text-white/60 hover:text-white hover:bg-black/80 transition-all flex items-center justify-center"
+          title="Toggle Mini-Map (M)"
+        >
+          <Maximize2 className="w-4 h-4" />
+        </button>
+      )}
+
+      {/* Mini-Map */}
+      <AnimatePresence>
+        {showMiniMap && !isMobile && <MiniMap />}
+      </AnimatePresence>
+
+      {/* Keyboard Shortcuts Hint */}
+      {!isMobile && (
+        <div className="absolute top-20 left-6 z-40 px-3 py-2 rounded-xl bg-black/60 border border-white/10 backdrop-blur-md text-[9px] text-white/40 uppercase tracking-wider font-bold">
+          <div>1-3: Views</div>
+          <div>ESC: Close</div>
+          <div>M: Map</div>
+        </div>
+      )}
+
       {/* 1. Scoped Universe Background - MAXIMUM BRIGHTNESS & VIBRANCY */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Base Light - More intense central glow */}
@@ -194,13 +417,13 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           {!isMobile && (
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-400/30 border border-white/40 shadow-lg">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-300 animate-pulse shadow-[0_0_12px_rgba(110,231,183,1)]" />
+                <div className={`w-2.5 h-2.5 rounded-full bg-emerald-300 ${isLoadingData ? 'animate-pulse' : ''} shadow-[0_0_12px_rgba(110,231,183,1)]`} />
                 <span className="text-[11px] font-mono font-black text-white uppercase tracking-widest">{t.status}</span>
               </div>
               <div className="h-5 w-px bg-white/30" />
               <div className="flex items-center gap-2 text-white text-[11px] font-black tracking-widest uppercase">
                 <Users className="w-4 h-4 text-emerald-300" />
-                <span>24 ONLINE</span>
+                <span>{liveData?.memory?.facts || 24} ONLINE</span>
               </div>
               <div className="h-5 w-px bg-white/30" />
               <div className="text-white font-mono font-black text-[12px] tracking-[0.2em] bg-black/40 px-4 py-2 rounded-xl border border-white/20">
@@ -534,9 +757,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       <div className={`absolute ${isMobile ? 'bottom-4' : 'bottom-10'} inset-x-0 z-30 flex justify-center`}>
         <div className={`flex items-center ${isMobile ? 'gap-1 p-1.5' : 'gap-3 p-3'} px-6 rounded-[3rem] bg-white/20 border-2 border-white/40 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)]`}>
           {[
-            { id: 'universe', icon: Compass, label: t.universe },
-            { id: 'folders', icon: LayoutGrid, label: t.folders },
-            { id: 'chat', icon: MessageSquare, label: t.chat },
+            { id: 'universe', icon: Compass, label: t.universe, key: '1' },
+            { id: 'folders', icon: LayoutGrid, label: t.folders, key: '2' },
+            { id: 'chat', icon: MessageSquare, label: t.chat, key: '3' },
           ].map((item) => (
             <button
               key={item.id}
@@ -544,6 +767,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               className={`flex items-center ${isMobile ? 'gap-2 px-4 py-3' : 'gap-4 px-8 py-4'} rounded-[2rem] transition-all group relative overflow-hidden ${
                 viewMode === item.id ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/10'
               }`}
+              title={`${item.label} (${item.key})`}
             >
               {viewMode === item.id && (
                 <motion.div 
@@ -577,7 +801,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         </div>
       </div>
 
-      {/* 5. Detail Sidebar (Overlay) */}
+      {/* 5. Detail Sidebar (Overlay) with Trend Chart */}
       <AnimatePresence>
         {selectedMetric && (
           <motion.div
@@ -601,6 +825,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             {(() => {
               const m = metrics.find(x => x.id === selectedMetric);
               if (!m) return null;
+              const chartColor = m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444';
               return (
                 <div className="space-y-10">
                   <div className="flex items-center justify-between">
@@ -623,6 +848,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       </div>
                     </div>
                   </div>
+
+                  {/* Trend Chart */}
+                  {m.trend && (
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+                      <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.2em] mb-3">Trend (12h)</p>
+                      <TrendChart data={m.trend} color={chartColor} />
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-2 gap-6">
                     <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
