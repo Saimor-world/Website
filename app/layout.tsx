@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic'
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
+const AchievementButton = dynamic(() => import('@/components/AchievementButton'), { ssr: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ScrollProgress />
           <EasterEggs />
           <CookieBanner />
+          <AchievementButton />
           <LayoutWrapper>
             {children}
           </LayoutWrapper>

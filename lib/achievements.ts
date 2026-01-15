@@ -232,6 +232,56 @@ export const ACHIEVEMENTS: Achievement[] = [
     unlocked: false,
     secret: false
   },
+  {
+    id: 'first-contact',
+    name: 'First Contact',
+    nameDE: 'Erstkontakt',
+    description: 'Initial consultation request submitted. Strategic dialogue initiated.',
+    descriptionDE: 'Erste Kontaktanfrage gesendet. Strategischer Dialog initiiert.',
+    icon: '🤝',
+    unlocked: false,
+    secret: false
+  },
+  {
+    id: 'demo-explorer',
+    name: 'Demo Pioneer',
+    nameDE: 'Demo-Pionier',
+    description: 'Live demonstration accessed. Hands-on evaluation mode activated.',
+    descriptionDE: 'Live-Demo gestartet. Praxisorientierte Evaluation aktiviert.',
+    icon: '🎮',
+    unlocked: false,
+    secret: false
+  },
+  {
+    id: 'documentation-reader',
+    name: 'Due Diligence',
+    nameDE: 'Sorgfaltsprüfung',
+    description: 'Technical documentation reviewed. Informed decision-making in progress.',
+    descriptionDE: 'Technische Dokumentation geprüft. Informierte Entscheidungsfindung aktiv.',
+    icon: '📚',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'network-builder',
+    name: 'Network Effect',
+    nameDE: 'Netzwerk-Effekt',
+    description: 'Multiple system touchpoints explored. Ecosystem understanding expanding.',
+    descriptionDE: 'Mehrere System-Touchpoints erkundet. Ökosystem-Verständnis wächst.',
+    icon: '🕸️',
+    unlocked: false,
+    secret: true
+  },
+  {
+    id: 'strategic-thinker',
+    name: 'Strategic Mindset',
+    nameDE: 'Strategisches Denken',
+    description: 'Deep engagement with transformation concepts. Long-term vision aligned.',
+    descriptionDE: 'Tiefes Engagement mit Transformationskonzepten. Langfristige Vision ausgerichtet.',
+    icon: '♟️',
+    unlocked: false,
+    secret: true
+  },
 ];
 
 const STORAGE_KEY = 'saimor-achievements';

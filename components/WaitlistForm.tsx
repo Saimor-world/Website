@@ -89,6 +89,11 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
       setEmail('');
       setName('');
       setInterest([]);
+      
+      // Trigger achievement for first contact (waitlist is also a form of contact)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+      }
     }, 1500);
   };
 

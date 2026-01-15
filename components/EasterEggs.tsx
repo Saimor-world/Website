@@ -477,7 +477,39 @@ export default function EasterEggs() {
         showTransientMessage('Môra entdeckt – das semantische Gedächtnis wartet auf dich.');
       }, 2000);
     }
+    
+    // Demo page visit
+    if (path.includes('/demo') && !achievementManager.current.getAll().find(a => a.id === 'demo-explorer' && a.unlocked)) {
+      setTimeout(() => {
+        unlockAchievement('demo-explorer');
+        showTransientMessage('Demo-Pionier – du testest, bevor du entscheidest. Klug.');
+      }, 2000);
+    }
+    
+    // Docs page visit
+    if (path.includes('/docs') && !achievementManager.current.getAll().find(a => a.id === 'documentation-reader' && a.unlocked)) {
+      setTimeout(() => {
+        unlockAchievement('documentation-reader');
+        showTransientMessage('Sorgfaltsprüfung – du liest die Details. Das unterscheidet die Besten.');
+      }, 3000);
+    }
   }, [mounted, unlockAchievement, showTransientMessage]);
+  
+  // === "FIRST CONTACT" - Contact Form Submission ===
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const handleContactSubmitted = () => {
+      if (!achievementManager.current.getAll().find(a => a.id === 'first-contact' && a.unlocked)) {
+        unlockAchievement('first-contact');
+        showTransientMessage('Erstkontakt hergestellt – der Beginn einer strategischen Partnerschaft.');
+        createSubtleFireworks();
+      }
+    };
+    
+    window.addEventListener('saimor-contact-submitted', handleContactSubmitted);
+    return () => window.removeEventListener('saimor-contact-submitted', handleContactSubmitted);
+  }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
 
   // === "COMPLETIONIST" - Check when achievements are unlocked ===
   useEffect(() => {
@@ -504,6 +536,53 @@ export default function EasterEggs() {
       void unsubscribe();
     };
   }, [mounted, unlockAchievement, showTransientMessage, createSubtleFireworks]);
+  
+  // === "NETWORK BUILDER" - Track multiple page visits ===
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const pagesVisited = new Set<string>();
+    const storedPages = sessionStorage.getItem('saimor-pages-visited');
+    if (storedPages) {
+      JSON.parse(storedPages).forEach((p: string) => pagesVisited.add(p));
+    }
+    
+    const currentPath = window.location.pathname;
+    pagesVisited.add(currentPath);
+    sessionStorage.setItem('saimor-pages-visited', JSON.stringify(Array.from(pagesVisited)));
+    
+    // Network builder: visited 5+ different pages
+    if (pagesVisited.size >= 5 && !achievementManager.current.getAll().find(a => a.id === 'network-builder' && a.unlocked)) {
+      setTimeout(() => {
+        unlockAchievement('network-builder');
+        showTransientMessage('Netzwerk-Effekt – du erkundest das gesamte Ökosystem.');
+      }, 3000);
+    }
+  }, [mounted, unlockAchievement, showTransientMessage]);
+  
+  // === "STRATEGIC THINKER" - Deep engagement (3+ minutes on site) ===
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const startTime = sessionStorage.getItem('saimor-session-start');
+    if (!startTime) {
+      sessionStorage.setItem('saimor-session-start', Date.now().toString());
+    }
+    
+    const checkStrategicThinker = () => {
+      const start = parseInt(sessionStorage.getItem('saimor-session-start') || '0');
+      const duration = Date.now() - start;
+      
+      // 3 minutes = 180000ms
+      if (duration >= 180000 && !achievementManager.current.getAll().find(a => a.id === 'strategic-thinker' && a.unlocked)) {
+        unlockAchievement('strategic-thinker');
+        showTransientMessage('Strategisches Denken – du nimmst dir Zeit für fundierte Entscheidungen.');
+      }
+    };
+    
+    const timer = setTimeout(checkStrategicThinker, 180000);
+    return () => clearTimeout(timer);
+  }, [mounted, unlockAchievement, showTransientMessage]);
 
   // === "FELDFORSCHER" - Dashboard Exploration Tracking ===
   useEffect(() => {

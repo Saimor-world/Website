@@ -16,6 +16,12 @@ export default function ContactSection({ locale }: Props) {
     setTimeout(() => {
       setStatus('sent');
       setFormState({ name: '', email: '', message: '' });
+      
+      // Trigger achievement for first contact
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+      }
+      
       setTimeout(() => setStatus('idle'), 3000);
     }, 1500);
   };
