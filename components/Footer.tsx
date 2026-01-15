@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import NewsletterSignup from './NewsletterSignup';
 import ShareButton from '@/components/ShareButton';
 
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
@@ -90,6 +91,11 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
+          </div>
+
+          {/* Newsletter */}
+          <div className="space-y-6">
+            <NewsletterSignup variant="footer" />
           </div>
 
           {/* Legal */}

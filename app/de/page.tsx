@@ -3,6 +3,8 @@ import MoraTeaser from '@/components/MoraTeaser';
 import CommunityBanner from '@/components/CommunityBanner';
 import WaitlistForm from '@/components/WaitlistForm';
 import ContactSection from '@/components/ContactSection';
+import SocialProof from '@/components/SocialProof';
+import { StickyCTA } from '@/components/BusinessCTA';
 import dynamic from 'next/dynamic';
 
 const MoraIntroAnimation = dynamic(() => import('@/components/MoraIntroAnimation'), { ssr: false });
@@ -22,9 +24,11 @@ export default function Page() {
         <Hero locale="de" />
         <MoraTeaser locale="de" />
         <CommunityBanner locale="de" />
+        <SocialProof />
         <WaitlistForm locale="de" />
         <ContactSection locale="de" />
       </div>
+      <StickyCTA />
     </main>
   );
 }

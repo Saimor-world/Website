@@ -1,6 +1,8 @@
 'use client';
 import { Shield, Lock, Globe, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { SecurityChecklistLeadMagnet } from '@/components/LeadMagnet';
+import { ContactCTA } from '@/components/BusinessCTA';
 
 export default function TrustPageDE() {
   const techItems = [
@@ -56,8 +58,13 @@ export default function TrustPageDE() {
             ))}
           </section>
 
-          {/* Note */}
-          <section className="p-10 rounded-[3rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md">
+          {/* DSGVO Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-10 rounded-[3rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md"
+          >
             <div className="flex flex-col sm:flex-row items-start gap-8">
               <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
                 <Shield className="w-8 h-8 text-emerald-400" />
@@ -65,11 +72,138 @@ export default function TrustPageDE() {
               <div className="space-y-4">
                 <h4 className="text-xl font-bold text-white uppercase tracking-widest">DSGVO Standard</h4>
                 <p className="text-white/60 leading-relaxed italic">
-                  &quot;In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar.&quot;
+                  "In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."
                 </p>
               </div>
             </div>
-          </section>
+          </motion.section>
+
+          {/* Security Certifications */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="text-center">
+              <h3 className="text-3xl font-semibold mb-4 text-white">Sicherheitsstandards</h3>
+              <p className="text-white/70 max-w-2xl mx-auto">
+                Wir setzen von Anfang an auf Enterprise-Level-Sicherheit und Transparenz.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: 'EU-Hosting',
+                  description: 'Alle Daten bleiben in der EU. Keine US-Clouds.',
+                  icon: '🇪🇺',
+                  status: 'Aktiv'
+                },
+                {
+                  title: 'Ende-zu-Ende Verschlüsselung',
+                  description: 'Alle Datenverbindungen sind verschlüsselt.',
+                  icon: '🔐',
+                  status: 'Geplant'
+                },
+                {
+                  title: 'Audit-Ready',
+                  description: 'Vollständige Protokollierung für Compliance.',
+                  icon: '📋',
+                  status: 'Geplant'
+                }
+              ].map((cert, i) => (
+                <motion.div
+                  key={cert.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-3xl">{cert.icon}</div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      cert.status === 'Aktiv'
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : 'bg-amber-500/20 text-amber-300'
+                    }`}>
+                      {cert.status}
+                    </span>
+                  </div>
+                  <h4 className="text-lg font-semibold mb-2 text-white">{cert.title}</h4>
+                  <p className="text-white/70 text-sm">{cert.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+
+          {/* Trust Signals */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div className="text-center">
+              <h3 className="text-3xl font-semibold mb-4 text-white">Warum uns vertrauen?</h3>
+              <p className="text-white/70 max-w-2xl mx-auto">
+                Wir bauen keine Blackbox-Produkte. Jeder Aspekt unserer Arbeit ist nachvollziehbar.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <h4 className="text-xl font-semibold text-white">Open Source Philosophy</h4>
+                <p className="text-white/70">
+                  Soweit möglich setzen wir auf Open-Source-Technologien. Transparenz beginnt bei der Technologie-Auswahl.
+                </p>
+
+                <h4 className="text-xl font-semibold text-white">Privacy by Design</h4>
+                <p className="text-white/70">
+                  Datenschutz ist kein Add-on, sondern integraler Bestandteil unserer Architektur.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <h4 className="text-xl font-semibold text-white">Audit-Trail</h4>
+                <p className="text-white/70">
+                  Alle Änderungen sind dokumentiert und nachvollziehbar. Keine "magischen" Algorithmen.
+                </p>
+
+                <h4 className="text-xl font-semibold text-white">EU-First</h4>
+                <p className="text-white/70">
+                  Wir sind ein EU-Unternehmen für EU-Unternehmen. Lokale Gesetze haben Priorität.
+                </p>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Lead Magnet Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-white">Kostenloser DSGVO-Leitfaden</h3>
+              <p className="text-white/70">
+                Sichere dir unsere umfassende Checkliste für DSGVO-Konformität im Unternehmen.
+              </p>
+            </div>
+            <SecurityChecklistLeadMagnet />
+          </motion.section>
+
+          {/* Contact CTA */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <ContactCTA />
+          </motion.section>
 
         </div>
       </main>
