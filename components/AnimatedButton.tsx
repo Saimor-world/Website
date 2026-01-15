@@ -178,6 +178,8 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           }
           props.onClick?.(e as any);
         }}
+        aria-disabled={disabled || loading}
+        aria-busy={loading}
         {...props}
       >
         {content}

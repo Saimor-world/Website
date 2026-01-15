@@ -8,6 +8,7 @@ import LayoutWrapper from '../components/LayoutWrapper'
 
 import dynamic from 'next/dynamic'
 import ErrorBoundary from '@/components/ErrorBoundary';
+import SkipLink from '@/components/SkipLink';
 
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
@@ -15,6 +16,7 @@ const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ss
 const BackToTop = dynamic(() => import('@/components/BackToTop'), { ssr: false });
 const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
 const KeyboardHint = dynamic(() => import('@/components/KeyboardHint'), { ssr: false });
+const PWARegistration = dynamic(() => import('@/components/PWARegistration'), { ssr: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -173,15 +175,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-[#081410] text-white antialiased" suppressHydrationWarning>
         <ErrorBoundary>
+          <SkipLink />
           <AuthProvider>
             <ClientProviders />
+            <PWARegistration />
             <ScrollProgress />
             <EasterEggs />
             <CookieBanner />
             <CommandPalette />
             <KeyboardHint />
             <LayoutWrapper>
-              {children}
+              <main id="main-content" role="main">
+                {children}
+              </main>
             </LayoutWrapper>
           </AuthProvider>
         </ErrorBoundary>

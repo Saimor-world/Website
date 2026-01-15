@@ -108,6 +108,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 window.dispatchEvent(new CustomEvent('saimor-logo-click'));
               }}
               className="relative z-10 group"
+              aria-label="Saimôr - Zur Startseite"
             >
               <motion.div
                 className="flex items-center gap-2.5"
@@ -134,13 +135,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             </a>
 
             {/* Desktop Navigation - Centered */}
-            <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+            <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2" role="navigation" aria-label="Hauptnavigation">
               {navItems.map((item) => (
                 item.isAnchor ? (
                   <button
                     key={item.href}
                     onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
                     className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                    aria-label={`Zu ${item.label} navigieren`}
                   >
                     {item.label}
                   </button>
@@ -150,6 +152,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                     href={item.href}
                     onClick={() => MatomoEvents.navClick(item.label)}
                     className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                    aria-label={`Zu ${item.label} navigieren`}
                   >
                     {item.label}
                   </a>
@@ -165,6 +168,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label={`Sprache wechseln zu ${switchLabel}`}
               >
                 {switchLabel}
               </motion.a>
@@ -177,6 +181,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.98 }}
+                aria-label="Termin buchen - Öffnet in neuem Tab"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span className="tracking-wide">{nav.book}</span>
@@ -188,6 +193,9 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
               >
                 <AnimatePresence mode="wait">
                   {menuOpen ? (
@@ -265,6 +273,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(16, 185, 129, 0.1)' }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="Menü schließen"
               >
                 <X className="w-6 h-6" />
               </motion.button>
@@ -288,7 +297,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               </motion.div>
 
               {/* Navigation Items */}
-              <nav className="flex flex-col items-center gap-2">
+              <nav id="mobile-menu" className="flex flex-col items-center gap-2" role="navigation" aria-label="Mobile Navigation">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.href}
@@ -304,6 +313,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
                         whileTap={{ scale: 0.98 }}
+                        aria-label={`Zu ${item.label} navigieren`}
                       >
                         {item.label}
                       </motion.button>
@@ -318,6 +328,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
                         whileTap={{ scale: 0.98 }}
+                        aria-label={`Zu ${item.label} navigieren`}
                       >
                         {item.label}
                       </motion.a>

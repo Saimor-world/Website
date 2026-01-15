@@ -1,11 +1,16 @@
 {
   "name": "Saimôr – Klarheit im Wandel",
   "short_name": "Saimôr",
-  "description": "Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops.",
+  "description": "Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#081410",
   "theme_color": "#10B981",
+  "dir": "ltr",
+  "lang": "de",
+  "categories": ["business", "productivity", "education"],
   "icons": [
     {
       "src": "/saimor-logo-new.png",
@@ -19,6 +24,34 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Môra Dashboard",
+      "short_name": "Môra",
+      "description": "Zum Môra Dashboard",
+      "url": "/mora",
+      "icons": [
+        {
+          "src": "/saimor-logo-new.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Kontakt",
+      "short_name": "Kontakt",
+      "description": "Kontakt aufnehmen",
+      "url": "/de#kontakt",
+      "icons": [
+        {
+          "src": "/saimor-logo-new.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
-
