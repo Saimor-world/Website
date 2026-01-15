@@ -44,19 +44,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full space-y-8"
-      >
+      <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
+          <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <Mail className="w-8 h-8 text-slate-900" />
           </motion.div>
           <h2 className="text-3xl font-serif text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -68,10 +59,10 @@ export default function LoginPage() {
         </div>
 
         {/* Form */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+        <divdiv
+          }
+          }
+          }
           className="bg-white/70 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-xl"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -90,7 +81,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <motion.button
+            <divbutton
               type="submit"
               disabled={isLoading}
               whileHover={{ scale: 1.02 }}
@@ -98,12 +89,12 @@ export default function LoginPage() {
               className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-slate-900 font-semibold py-3 px-6 rounded-xl hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? 'Wird gesendet...' : 'Anmeldelink senden'}
-            </motion.button>
+            </button>
 
             {message && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+              <divdiv
+                }
+                }
                 className={`p-4 rounded-xl text-sm ${
                   message.includes('gesendet')
                     ? 'bg-green-50 text-green-700 border border-green-200'
@@ -127,10 +118,10 @@ export default function LoginPage() {
         </motion.div>
 
         {/* Back Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+        <divdiv
+          }
+          }
+          }
           className="text-center"
         >
           <Link

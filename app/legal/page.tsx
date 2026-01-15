@@ -1,10 +1,10 @@
-ï»¿import { Metadata } from 'next';
+import { Metadata } from 'next';
 import { AlertCircle, Shield } from 'lucide-react';
 // Removed motion import
 
 export const metadata: Metadata = {
-  title: 'Impressum & Datenschutz â€“ SaimÃ´r',
-  description: 'Rechtliche Informationen â€“ Vorabversion',
+  title: 'Impressum & Datenschutz – Saimôr',
+  description: 'Rechtliche Informationen – Vorabversion',
 };
 
 export default function LegalPage() {
@@ -20,14 +20,14 @@ export default function LegalPage() {
       <main className="relative z-10 max-w-4xl mx-auto px-6">
         
         {/* Warning Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <divdiv
+          }
+          }
           className="mb-16 p-8 rounded-[2.5rem] border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-md flex items-start gap-6"
         >
           <AlertCircle className="w-8 h-8 text-emerald-400 flex-shrink-0 mt-1" />
           <div>
-            <h2 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Vorabversion â€“ Juristische PrÃ¼fung folgt</h2>
+            <h2 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Vorabversion – Juristische Prüfung folgt</h2>
             <p className="text-white/60 leading-relaxed">
               Diese Seite befindet sich in Bearbeitung. Die rechtlich verbindlichen Dokumente werden vor dem offiziellen Launch finalisiert.
             </p>
@@ -56,20 +56,20 @@ export default function LegalPage() {
           <section className="space-y-8">
             <h2 className="text-3xl font-light text-white tracking-tight italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Impressum</h2>
             <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-6">
-              <p><strong className="text-white">Angaben gemÃ¤ÃŸ Â§ 5 TMG:</strong></p>
-              <p>SaimÃ´r<br />[Firmenname wird ergÃ¤nzt]<br />[Adresse wird ergÃ¤nzt]<br />Deutschland</p>
+              <p><strong className="text-white">Angaben gemäß § 5 TMG:</strong></p>
+              <p>Saimôr<br />[Firmenname wird ergänzt]<br />[Adresse wird ergänzt]<br />Deutschland</p>
               <p><strong className="text-white">Kontakt:</strong><br />E-Mail: contact@saimor.world</p>
             </div>
           </section>
 
           {/* Datenschutz */}
           <section className="space-y-12">
-            <h2 className="text-3xl font-light text-white tracking-tight italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>DatenschutzerklÃ¤rung</h2>
+            <h2 className="text-3xl font-light text-white tracking-tight italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Datenschutzerklärung</h2>
             
             <div className="space-y-8">
               <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-4">
                 <h3 className="text-xl font-bold text-white uppercase tracking-wider">1. Allgemeines</h3>
-                <p>Wir nehmen den schutz Ihrer Daten ernst. Diese ErklÃ¤rung beschreibt, wie wir Daten erheben und verwenden â€“ nÃ¤mlich so sparsam wie mÃ¶glich.</p>
+                <p>Wir nehmen den schutz Ihrer Daten ernst. Diese Erklärung beschreibt, wie wir Daten erheben und verwenden – nämlich so sparsam wie möglich.</p>
               </div>
 
               <div className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-4">
@@ -83,7 +83,7 @@ export default function LegalPage() {
 
         {/* Footer info */}
         <div className="mt-24 pt-12 border-t border-white/5 text-center">
-          <p className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">Stand: Januar 2026 Â· Version 1.0.4</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">Stand: Januar 2026 · Version 1.0.4</p>
         </div>
 
       </main>
