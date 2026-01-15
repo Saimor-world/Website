@@ -211,18 +211,78 @@ export default function EasterEggs() {
 
   const activateResonanzMode = useCallback(() => {
     setResonanzModeActive(true);
-    showTransientMessage('Du hast einen alten Pfad gefunden. Willkommen im Resonanzmodus.', 4000);
+    showTransientMessage('🎮 KONAMI CODE AKTIVIERT! 🌟 Matrix-Modus für 10 Sekunden!', 4000);
 
-    // Subtle golden shimmer effect
-    document.body.style.animation = 'goldenShimmer 8s ease-in-out';
+    // Mega golden shimmer effect
+    document.body.style.animation = 'goldenShimmer 10s ease-in-out infinite';
 
+    // Create massive golden rain
+    createGoldenRain();
+    createGoldenRain();
     createGoldenRain();
 
+    // Trigger multiple fireworks
+    createSubtleFireworks();
+
+    // Add matrix-style overlay
+    const matrixOverlay = document.createElement('div');
+    matrixOverlay.id = 'matrix-overlay';
+    matrixOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(45deg, transparent 30%, rgba(16, 185, 129, 0.1) 50%, transparent 70%);
+      background-size: 200% 200%;
+      animation: matrixPulse 2s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 9997;
+    `;
+    document.body.appendChild(matrixOverlay);
+
+    // Konami code particles
+    const konamiParticles = [
+      '↑', '↑', '↓', '↓', '←', '→', '←', '→', 'B', 'A',
+      '🎮', '🕹️', '👾', '🎯', '🚀', '⭐', '🌟', '✨', '💫', '🎪'
+    ];
+
+    for (let i = 0; i < 50; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.textContent = konamiParticles[Math.floor(Math.random() * konamiParticles.length)];
+        particle.style.cssText = `
+          position: fixed;
+          left: ${Math.random() * 100}vw;
+          top: -20px;
+          font-size: ${20 + Math.random() * 30}px;
+          color: #D4A857;
+          text-shadow: 0 0 10px rgba(212, 168, 87, 0.8);
+          animation: konamiFall 3s linear forwards;
+          pointer-events: none;
+          z-index: 9998;
+        `;
+        document.body.appendChild(particle);
+
+        setTimeout(() => particle.remove(), 3000);
+      }, i * 100);
+    }
+
+    // Unlock achievement immediately
+    unlockAchievement('konami');
+
+    // Clear everything after 10 seconds
     setTimeout(() => {
       document.body.style.animation = '';
       setResonanzModeActive(false);
-    }, 8000);
-  }, [createGoldenRain, showTransientMessage]);
+
+      const overlay = document.getElementById('matrix-overlay');
+      if (overlay) overlay.remove();
+
+      // Remove any remaining konami particles
+      document.querySelectorAll('[style*="konamiFall"]').forEach(el => el.remove());
+    }, 10000);
+  }, [createGoldenRain, showTransientMessage, createSubtleFireworks, unlockAchievement]);
 
   const activateKlarheitsfunke = useCallback(
     (coords?: { x: number; y: number }) => {
