@@ -34,20 +34,18 @@ export function UniverseBackground({
   // Generate stars once on mount
   const stars = useMemo(() => {
     if (!mounted) return [];
-    const count = Math.floor(40 * intensity); // 40 stars at full intensity
+    const count = Math.floor(20 * intensity); // Reduced to 20 stars
     return Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.6 + 0.3,
+      size: Math.random() * 1.5 + 0.5,
+      opacity: Math.random() * 0.4 + 0.2,
       delay: Math.random() * 5,
-      duration: 2 + Math.random() * 3,
-      color: i % 3 === 0 
-        ? 'rgba(16, 185, 129, 0.9)' // Emerald
-        : i % 3 === 1 
-          ? 'rgba(255, 255, 255, 0.8)' // White
-          : 'rgba(6, 182, 212, 0.7)' // Cyan
+      duration: 3 + Math.random() * 4,
+      color: i % 2 === 0 
+        ? 'rgba(16, 185, 129, 0.7)' // Emerald
+        : 'rgba(255, 255, 255, 0.6)' // White
     }));
   }, [mounted, intensity]);
 

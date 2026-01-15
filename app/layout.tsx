@@ -11,7 +11,6 @@ import dynamic from 'next/dynamic'
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
 const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
-const AchievementButton = dynamic(() => import('@/components/AchievementButton'), { ssr: false });
 const BackToTop = dynamic(() => import('@/components/BackToTop'), { ssr: false });
 const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
 const KeyboardHint = dynamic(() => import('@/components/KeyboardHint'), { ssr: false });
@@ -140,8 +139,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ScrollProgress />
           <EasterEggs />
           <CookieBanner />
-          <AchievementButton />
-          <BackToTop />
           <CommandPalette />
           <KeyboardHint />
           <LayoutWrapper>

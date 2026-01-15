@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Play, Users, Shield, ArrowRight, CheckCircle, Zap } from 'lucide-react';
 import Link from 'next/link';
 import NewsletterSignup from './NewsletterSignup';
-import { StickyCTA } from './BusinessCTA';
 
 export default function DemoContent() {
   return (
@@ -214,8 +213,6 @@ export default function DemoContent() {
           <NewsletterSignup />
         </motion.div>
       </section>
-
-      <StickyCTA />
     </div>
   );
 }

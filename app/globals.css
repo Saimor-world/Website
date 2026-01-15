@@ -23,6 +23,9 @@ body {
   height: 100%;
   background: #0B0F10;
   scroll-behavior: smooth;
+  overflow-x: hidden !important; /* Fix mobile horizontal overflow */
+  width: 100%;
+  position: relative;
 
   /* Enhanced font rendering */
   -webkit-font-smoothing: antialiased;
@@ -40,10 +43,24 @@ body {
   touch-action: manipulation;
 }
 
+/* Ensure all containers respect overflow-x */
+main,
+#__next,
+[data-saimor] {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
 /* GPU Acceleration for Smooth Animations - Optimized */
-* {
+/* Only apply to elements that need it for performance */
+.animate-element,
+[motion],
+[data-framer-component] {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Strategic will-change usage - only for actively animating elements */
@@ -53,10 +70,6 @@ body {
 
 .will-change-opacity {
   will-change: opacity;
-}
-
-.will-change-auto {
-  will-change: auto;
 }
 
 /* Prevent layout shift */
@@ -101,184 +114,33 @@ a,
 
 /* ========================================
    DESIGN TOKENS - SAIMÔR MÔRA BIBEL COLORS
-   Based on: Saimor Mora Masterbibel
    ======================================== */
 
 :root {
   /* === BIBEL PRIMARY COLORS === */
-  /* Waldgrün - Saimôr Primary (Bibel: #1A3C32) */
   --saimor-waldgruen: #1A3C32;
   --saimor-green-900: #0F231C;
   --saimor-green-800: #1A3C32;
-  --saimor-green-700: #2A5244;
-  --saimor-green-600: #3D6857;
   --saimor-green-500: #4A7A68;
-  --saimor-green-400: #6B9A88;
-  --saimor-green-300: #8FBAA8;
-  --saimor-green-200: #C5DDD4;
-  --saimor-green-100: #E8F2EE;
-
-  /* Gold - Môra/Meaning/Awareness (Bibel: #D6A848) */
   --saimor-mora-gold: #D6A848;
-  --saimor-gold-700: #B8913A;
-  --saimor-gold-600: #C79E42;
-  --saimor-gold-500: #D6A848;
-  --saimor-gold-400: #E4BE6D;
-  --saimor-gold-300: #EDD092;
-  --saimor-gold-200: #F5E3B8;
-  --saimor-gold-100: #FBF3E0;
-
-  /* Tiefschwarz - Space/Deep (Bibel: #0B0F10) */
   --saimor-space: #0B0F10;
   --saimor-ink-900: #0B0F10;
-  --saimor-ink-800: #141A1C;
-  --saimor-ink-700: #1E2628;
-
-  /* Nebelgrau - Glass/Icons (Bibel: #AAB0B2) */
   --saimor-nebel: #AAB0B2;
   --saimor-cream: #F8F7F3;
   --saimor-white: #FFFFFF;
 
-  /* === AWARENESS COLORS (Bibel) === */
-  --awareness-idle: #22C55E;
-  /* Green - Idle */
-  --awareness-info: #FBBF24;
-  /* Yellow - Info */
-  --awareness-thinking: #3B82F6;
-  /* Blue - Thinking */
-  --awareness-problem: #EF4444;
-  /* Red - Problem */
-  --awareness-insight: #D6A848;
-  /* Gold - Insight */
-
-  /* === LEGACY ALIASES (for backwards compatibility) === */
-  --saimor-green: var(--saimor-waldgruen);
-  --saimor-green-light: var(--saimor-green-600);
-  --saimor-green-dark: var(--saimor-green-900);
-  --saimor-accent: var(--saimor-green-500);
-  --saimor-gold: var(--saimor-mora-gold);
-  --saimor-gold-light: var(--saimor-gold-400);
-  --forest-primary: var(--saimor-waldgruen);
-  --gold-primary: var(--saimor-mora-gold);
-  --off: var(--saimor-cream);
-  --ink: var(--saimor-nebel);
-  --line: var(--saimor-ink-800);
-
-  /* Spacing Scale (8px base) */
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2rem;
-  --space-6: 3rem;
-  --space-8: 4rem;
-  --space-12: 6rem;
-  --space-16: 8rem;
-
-  /* Border Radius Scale */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
-
-  /* Shadows - Enhanced */
-  --shadow-sm: 0 1px 2px rgba(14, 26, 27, 0.05);
-  --shadow-md: 0 4px 6px rgba(14, 26, 27, 0.07);
-  --shadow-lg: 0 10px 15px rgba(14, 26, 27, 0.1);
-  --shadow-xl: 0 20px 25px rgba(14, 26, 27, 0.15);
-  --shadow-2xl: 0 25px 50px rgba(14, 26, 27, 0.25);
-  --shadow-glow: 0 0 20px rgba(212, 180, 131, 0.3);
-  --shadow-glow-strong: 0 0 40px rgba(212, 180, 131, 0.5);
-
-  /* Typography Scale */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-
-  /* Animation Durations - Optimized */
-  --duration-instant: 100ms;
-  --duration-fast: 150ms;
-  --duration-base: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 600ms;
-
-  /* Easing Curves - Modern & Smooth */
+  /* Easing Curves */
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* ========================================
-   COMPONENT STYLES
-   ======================================== */
-
-/* Golden pills (Principles) - Enhanced */
-.s-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
-  color: var(--ink);
-  transition: transform var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    background var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
-  will-change: transform;
-}
-
-.s-pill::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: rgba(249, 231, 159, 0.85);
-  box-shadow: 0 0 0 4px rgba(249, 231, 159, 0.18);
-  transition: box-shadow var(--duration-base) var(--ease-out);
-}
-
-.s-pill:hover {
-  transform: translateY(-2px);
-  border-color: rgba(249, 231, 159, 0.28);
-  box-shadow: 0 4px 12px rgba(249, 231, 159, 0.15);
-}
-
-.s-pill:hover::before {
-  box-shadow: 0 0 0 6px rgba(249, 231, 159, 0.25);
-}
-
-/* Section orbits background */
-.section-orbits {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.section-orbits .stroke {
-  stroke: var(--gold-primary);
-  opacity: 0.18;
-}
-
-/* Reveal animation with GPU acceleration - Optimized */
+/* Reveal animation */
 @keyframes fade-up {
   from {
     opacity: 0;
     transform: translateY(12px) translateZ(0);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) translateZ(0);
@@ -289,608 +151,23 @@ a,
   animation: fade-up 0.5s var(--ease-out) both;
 }
 
-/* Stagger children for sequential reveals */
-.reveal-stagger>* {
-  animation: fade-up 0.5s var(--ease-out) both;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.reveal-stagger>*:nth-child(1) {
-  animation-delay: 0.05s;
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.reveal-stagger>*:nth-child(2) {
-  animation-delay: 0.1s;
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
 }
 
-.reveal-stagger>*:nth-child(3) {
-  animation-delay: 0.15s;
-}
-
-.reveal-stagger>*:nth-child(4) {
-  animation-delay: 0.2s;
-}
-
-.reveal-stagger>*:nth-child(5) {
-  animation-delay: 0.25s;
-}
-
-/* ========================================
-   CUSTOM SCROLLBAR - JUNGLE THEME
-   ======================================== */
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(212, 180, 131, 0.05);
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #D4A857 0%, #E6C897 100%);
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: background var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #C6A36C 0%, #D4A857 100%);
-  box-shadow: 0 0 8px rgba(212, 180, 131, 0.6);
-}
-
-/* Firefox scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #D4A857 rgba(212, 180, 131, 0.05);
-}
-
-/* ========================================
-   UTILITY ANIMATIONS
-   ======================================== */
-
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(212, 180, 131, 0.3);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgba(212, 180, 131, 0.6);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s var(--ease-in-out) infinite;
-}
-
-.animate-shimmer {
-  --shadow-sm: 0 1px 2px rgba(14, 26, 27, 0.05);
-  --shadow-md: 0 4px 6px rgba(14, 26, 27, 0.07);
-  --shadow-lg: 0 10px 15px rgba(14, 26, 27, 0.1);
-  --shadow-xl: 0 20px 25px rgba(14, 26, 27, 0.15);
-  --shadow-2xl: 0 25px 50px rgba(14, 26, 27, 0.25);
-  --shadow-glow: 0 0 20px rgba(212, 180, 131, 0.3);
-  --shadow-glow-strong: 0 0 40px rgba(212, 180, 131, 0.5);
-
-  /* Typography Scale */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-
-  /* Animation Durations - Optimized */
-  --duration-instant: 100ms;
-  --duration-fast: 150ms;
-  --duration-base: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 600ms;
-
-  /* Easing Curves - Modern & Smooth */
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* ========================================
-   COMPONENT STYLES
-   ======================================== */
-
-/* Golden pills (Principles) - Enhanced */
-.s-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
-  color: var(--ink);
-  transition: transform var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    background var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
-  will-change: transform;
-}
-
-.s-pill::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: rgba(249, 231, 159, 0.85);
-  box-shadow: 0 0 0 4px rgba(249, 231, 159, 0.18);
-  transition: box-shadow var(--duration-base) var(--ease-out);
-}
-
-.s-pill:hover {
-  transform: translateY(-2px);
-  border-color: rgba(249, 231, 159, 0.28);
-  box-shadow: 0 4px 12px rgba(249, 231, 159, 0.15);
-}
-
-.s-pill:hover::before {
-  box-shadow: 0 0 0 6px rgba(249, 231, 159, 0.25);
-}
-
-/* Section orbits background */
-.section-orbits {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.section-orbits .stroke {
-  stroke: var(--gold-primary);
-  opacity: 0.18;
-}
-
-/* Reveal animation with GPU acceleration - Optimized */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px) translateZ(0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) translateZ(0);
-  }
-}
-
-.reveal {
-  animation: fade-up 0.5s var(--ease-out) both;
-}
-
-/* Stagger children for sequential reveals */
-.reveal-stagger>* {
-  animation: fade-up 0.5s var(--ease-out) both;
-}
-
-.reveal-stagger>*:nth-child(1) {
-  animation-delay: 0.05s;
-}
-
-.reveal-stagger>*:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.reveal-stagger>*:nth-child(3) {
-  animation-delay: 0.15s;
-}
-
-.reveal-stagger>*:nth-child(4) {
-  animation-delay: 0.2s;
-}
-
-.reveal-stagger>*:nth-child(5) {
-  animation-delay: 0.25s;
-}
-
-/* ========================================
-   CUSTOM SCROLLBAR - JUNGLE THEME
-   ======================================== */
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(212, 180, 131, 0.05);
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #D4A857 0%, #E6C897 100%);
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: background var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #C6A36C 0%, #D4A857 100%);
-  box-shadow: 0 0 8px rgba(212, 180, 131, 0.6);
-}
-
-/* Firefox scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #D4A857 rgba(212, 180, 131, 0.05);
-}
-
-/* ========================================
-   UTILITY ANIMATIONS
-   ======================================== */
-
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(212, 180, 131, 0.3);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgba(212, 180, 131, 0.6);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s var(--ease-in-out) infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* ========================================
-   MORA ANALOG AFFECT - DEEP VIEW STYLES
-   ======================================== */
-
-/* Base Styles (Simple View / Default) */
-.hero-title-line {
-  color: #1a3c34;
-  font-weight: 700;
-  transition: all 0.5s ease;
-}
-
-.hero-title-line.italic {
-  color: #10b981;
-  font-style: italic;
-}
-
-.hero-desc-text {
-  color: #333;
-  transition: all 0.5s ease;
-}
-
-.hero-desc-text strong {
-  color: #1a3c34;
-}
-
-/* Glass Panel in Simple View */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-  position: relative;
-  transition: border-color 0.3s ease, transform 0.3s ease, background 1s ease;
-}
-
-/* VHS SVG Simple View Colors */
-#vhs-svg .vhs-body {
-  fill: #fff;
-  stroke: #999;
-}
-
-#vhs-svg .vhs-inner {
-  fill: #e0e0e0;
-}
-
-#vhs-svg .vhs-spool-outline {
-  stroke: #ccc;
-  fill: none;
-}
-
-#vhs-svg .vhs-spool-center {
-  fill: #ccc;
-}
-
-/* ========================================
-   DEEP VIEW STYLES (body.is-mora-active)
-   ======================================== */
-
-/* Deep View Body State */
-body.is-mora-active {
-  background-color: #020d0a !important;
-  color: #e0e0e0 !important;
-  background-image: radial-gradient(circle at 50% 0%, #0d2620 0%, #020d0a 80%) !important;
-}
-
-/* Hero Text Deep View */
-body.is-mora-active .hero-title-line {
-  color: #e0e0e0;
-}
-
-body.is-mora-active .hero-title-line.italic {
-  color: #10b981;
-}
-
-body.is-mora-active .hero-desc-text {
-  color: #e0e0e0;
-}
-
-body.is-mora-active .hero-desc-text strong {
-  color: #10b981;
-}
-
-/* Glass Panel Deep View */
-body.is-mora-active .glass-panel {
-  background: rgba(5, 20, 16, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(16, 185, 129, 0.15);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
-
-/* VHS SVG Deep View Colors (Dark/Metallic) */
-body.is-mora-active #vhs-svg .vhs-body {
-  fill: #0d2620;
-  stroke: #10b981;
-  stroke-width: 1.5;
-}
-
-body.is-mora-active #vhs-svg .vhs-inner {
-  fill: #1a3c34;
-}
-
-body.is-mora-active #vhs-svg .vhs-spool-outline {
-  stroke: #CEB676;
-  stroke-width: 2;
-}
-
-body.is-mora-active #vhs-svg .vhs-spool-center {
-  fill: #CEB676;
-}
-
-body.is-mora-active #vhs-svg .vhs-reel-glow {
-  filter: drop-shadow(0 0 5px rgba(206, 182, 118, 0.8));
-  transition: all 1s ease;
-}
-
-/* FX Layers */
-.crt-overlay,
-.scanlines {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-body.is-mora-active .crt-overlay {
-  visibility: visible;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.6) 100%);
-  z-index: 100;
-}
-
-body.is-mora-active .scanlines {
-  visibility: visible;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
-  background-size: 100% 4px;
-  z-index: 99;
-}
-
-/* Glitch Effect (Deep View Only) */
-@keyframes glitch-skew {
-  0% {
-    transform: skew(0deg);
-  }
-
-  20% {
-    transform: skew(-2deg);
-  }
-
-  40% {
-    transform: skew(2deg);
-  }
-
-  60% {
-    transform: skew(-1deg);
-  }
-
-  80% {
-    transform: skew(1deg);
-  }
-
-  100% {
-    transform: skew(0deg);
-  }
-}
-
-body.is-mora-active .glitch-hover:hover {
-  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-  color: #10b981;
-  text-shadow: 2px 0 #CEB676, -2px 0 #ff0055;
-}
-
-/* Neural Path Animation */
-.neural-path {
-  stroke: #4A6741;
-  fill: none;
-  stroke-dasharray: 12;
-  stroke-width: 1.5;
-  animation: flow 30s linear infinite;
-}
-
-body.is-mora-active .neural-path {
-  stroke: #10b981;
-  filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.6));
-}
-
-@keyframes flow {
-  to {
-    stroke-dashoffset: -1000;
-  }
-}
-
-/* Artifact Visuals */
-.artifact-visuals {
-  opacity: 0.3;
-  transition: opacity 1s ease-in-out;
-}
-
-body.is-mora-active .artifact-visuals {
-  opacity: 1;
-}
-
-/* Clip Path Slant */
-.clip-path-slant {
-  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-/* VHS Content Switching */
-#vhs-simple-content {
-  display: block;
-}
-
-body.is-mora-active #vhs-simple-content {
-  display: none;
-}
-
-#vhs-deep-content-container {
-  display: none;
-}
-
-body.is-mora-active #vhs-deep-content-container {
-  display: block;
-}
-
-/* Boot Lines Animation */
-.boot-line {
-  opacity: 0;
-  white-space: pre;
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* ========================================
-   PAGE LOAD & ENTRANCE ANIMATIONS
-   ======================================== */
-
-/* Staggered fade-in for page elements */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
-  }
-}
-
-/* Utility classes for page animations */
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fade-in-scale {
-  animation: fadeInScale 0.5s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.5);
 }
 
 /* Stagger delays for elements */
@@ -900,38 +177,9 @@ body.is-mora-active #vhs-deep-content-container {
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 
-/* Custom scrollbar for achievement menu and other scrollable areas */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(212, 180, 131, 0.3);
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 180, 131, 0.5);
-}
-
 /* Keyboard key styling */
 kbd {
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
-}
-
-/* Smooth hover transitions for interactive elements */
-.hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 /* Glass morphism effect */
@@ -976,26 +224,6 @@ kbd {
     background-position: 100% 50%;
     opacity: 0.3;
   }
-}
-
-/* Ripple animation for buttons */
-@keyframes ripple {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0.5;
-  }
-  100% {
-    width: 500px;
-    height: 500px;
-    opacity: 0;
-    margin-left: -250px;
-    margin-top: -250px;
-  }
-}
-
-.animate-ripple {
-  animation: ripple 0.6s ease-out;
 }
 
 /* Focus ring styles */
