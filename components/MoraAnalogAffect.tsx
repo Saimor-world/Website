@@ -164,6 +164,7 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
   const [audioOn, setAudioOn] = useState(false);
   const [bootVisible, setBootVisible] = useState(false);
   const [bootSequenceVisible, setBootSequenceVisible] = useState(false);
+  const [isDeepMode, setIsDeepMode] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const sequencerTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -278,11 +279,29 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
 
     setBootSequenceVisible(true);
 
-    // Animate boot sequence
+    // Animate boot sequence then reveal deep content
     setTimeout(() => {
       setBootVisible(false);
       setBootSequenceVisible(false);
+      setIsDeepMode(true);
+      // Show the deep content and hide simple content
+      const simpleContent = document.getElementById('vhs-simple-content');
+      const deepContent = document.getElementById('vhs-deep-content-container');
+      if (simpleContent) simpleContent.classList.add('hidden');
+      if (deepContent) deepContent.classList.remove('hidden');
+      // Scroll to top of VHS section
+      const vhsSection = document.getElementById('vhs');
+      if (vhsSection) vhsSection.scrollIntoView({ behavior: 'smooth' });
     }, 3000);
+  };
+
+  const exitDeepMode = () => {
+    setIsDeepMode(false);
+    document.body.classList.remove('is-mora-active');
+    const simpleContent = document.getElementById('vhs-simple-content');
+    const deepContent = document.getElementById('vhs-deep-content-container');
+    if (simpleContent) simpleContent.classList.remove('hidden');
+    if (deepContent) deepContent.classList.add('hidden');
   };
 
   return (
@@ -451,6 +470,12 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
                   ))}
                   <div className="text-white animate-pulse">{copy.vhsConsoleLines[copy.vhsConsoleLines.length - 1]}</div>
                 </div>
+                <button
+                  onClick={exitDeepMode}
+                  className="mt-8 px-6 py-3 border border-saimor-teal text-saimor-teal hover:bg-saimor-teal hover:text-black transition-all font-mono text-sm uppercase tracking-wider"
+                >
+                  ← Zurück zur strukturierten Sicht
+                </button>
               </div>
             </div>
           </div>

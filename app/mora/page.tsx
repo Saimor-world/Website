@@ -17,6 +17,13 @@ export default function MoraPage() {
     setMounted(true);
   }, []);
 
+  // Scroll to top when analog view is activated
+  useEffect(() => {
+    if (showAnalogView) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [showAnalogView]);
+
   if (!mounted) return <div className="min-h-screen bg-black" />;
 
   // Show Analog View fullscreen when activated
