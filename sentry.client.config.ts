@@ -44,6 +44,10 @@ Sentry.init({
 
     // Don't send events without DSN
     if (!SENTRY_DSN) {
+      // In development, log that DSN is missing
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('[Sentry] DSN not configured - events will not be sent');
+      }
       return null;
     }
 
