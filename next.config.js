@@ -104,6 +104,6 @@ const sentryWebpackPluginOptions = {
 };
 
 // Export with Sentry configuration
-module.exports = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
-  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
-  : nextConfig;
+// Always use withSentryConfig - DSN can be set at runtime
+// This allows DSN to be set in Vercel after initial deployment
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
