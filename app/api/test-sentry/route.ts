@@ -9,9 +9,13 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'error';
 
+  const hasEnvDsn = !!process.env.SENTRY_DSN;
+  const hasPublicEnvDsn = !!process.env.NEXT_PUBLIC_SENTRY_DSN;
+  // We consider it configured if either env var is present or if hardcoded fallback exists in config files
+  const isConfigured = hasEnvDsn || hasPublicEnvDsn;
+
   try {
     if (type === 'error') {
-      // Test exception tracking
       const testError = new Error('Sentry Test Error - This is intentional');
       testError.name = 'SentryTestError';
       captureException(testError, {
@@ -22,6 +26,8 @@ export async function GET(request: Request) {
         extra: {
           timestamp: new Date().toISOString(),
           environment: process.env.NODE_ENV,
+          hasEnvDsn,
+          hasPublicEnvDsn
         },
       });
 
@@ -30,21 +36,19 @@ export async function GET(request: Request) {
         message: 'Test error sent to Sentry',
         type: 'exception',
         sentry: {
-          dsn: process.env.SENTRY_DSN ? 'configured' : 'missing',
-          dsnPublic: process.env.NEXT_PUBLIC_SENTRY_DSN ? 'configured' : 'missing',
+          dsn: isConfigured ? 'configured' : 'missing',
+          dsnPublic: hasPublicEnvDsn ? 'configured' : 'missing',
           environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
           nodeEnv: process.env.NODE_ENV,
-          // Debug info
           debug: {
-            hasSentryDsn: !!process.env.SENTRY_DSN,
-            hasPublicDsn: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+            hasSentryDsn: hasEnvDsn,
+            hasPublicDsn: hasPublicEnvDsn,
             sentryEnv: process.env.SENTRY_ENVIRONMENT,
             publicSentryEnv: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
           },
         },
       });
-    } else if (type === 'message') {
-      // Test message tracking
+    } else {
       captureMessage('Sentry Test Message - This is intentional', {
         level: 'info',
         tags: {
@@ -53,6 +57,8 @@ export async function GET(request: Request) {
         },
         extra: {
           timestamp: new Date().toISOString(),
+          hasEnvDsn,
+          hasPublicEnvDsn
         },
       });
 
@@ -61,24 +67,18 @@ export async function GET(request: Request) {
         message: 'Test message sent to Sentry',
         type: 'message',
         sentry: {
-          dsn: process.env.SENTRY_DSN ? 'configured' : 'missing',
-          dsnPublic: process.env.NEXT_PUBLIC_SENTRY_DSN ? 'configured' : 'missing',
+          dsn: isConfigured ? 'configured' : 'missing',
+          dsnPublic: hasPublicEnvDsn ? 'configured' : 'missing',
           environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
           nodeEnv: process.env.NODE_ENV,
-          // Debug info
           debug: {
-            hasSentryDsn: !!process.env.SENTRY_DSN,
-            hasPublicDsn: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+            hasSentryDsn: hasEnvDsn,
+            hasPublicDsn: hasPublicEnvDsn,
             sentryEnv: process.env.SENTRY_ENVIRONMENT,
             publicSentryEnv: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
           },
         },
       });
-    } else {
-      return NextResponse.json({
-        success: false,
-        error: 'Invalid type. Use ?type=error or ?type=message',
-      }, { status: 400 });
     }
   } catch (error) {
     return NextResponse.json({
@@ -88,4 +88,3 @@ export async function GET(request: Request) {
     }, { status: 500 });
   }
 }
-

@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, Brain, Network, MessageSquare, Eye, Radio } from "lucide-react";
-// Remove motion import
-const motion = { div: 'div' };
+import { motion } from "framer-motion";
 import MoraDashboard from "@/components/MoraDashboard";
 import dynamic from "next/dynamic";
 
@@ -24,7 +23,7 @@ export default function MoraPage() {
   if (showAnalogView) {
     return (
       <div className="min-h-screen bg-black">
-        <button 
+        <button
           onClick={() => setShowAnalogView(false)}
           className="fixed top-6 right-6 z-[100] px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-sm font-bold hover:bg-white/20 transition-all backdrop-blur-md"
         >
@@ -37,7 +36,7 @@ export default function MoraPage() {
 
   return (
     <div className="min-h-screen bg-[#081410] text-white selection:bg-emerald-500/30">
-      
+
       {/* 🌌 Atmospheric Background (Subtle & Scoped) */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-900/10 blur-[120px] rounded-full" />
@@ -45,7 +44,7 @@ export default function MoraPage() {
       </div>
 
       <main className="relative z-10">
-        
+
         {/* 1. Cinematic Hero */}
         <section className="min-h-[80vh] flex flex-col items-center justify-center px-6 text-center pt-20">
           <motion.div
@@ -75,7 +74,7 @@ export default function MoraPage() {
         {/* 2. THE OS SHOWCASE - The Centerpiece */}
         <section id="showcase" className="py-20 px-4 md:px-10">
           <div className="max-w-[1600px] mx-auto">
-            
+
             {/* Window Frame Header */}
             <div className="flex items-center justify-between mb-4 px-8">
               <div className="flex items-center gap-6">
@@ -169,9 +168,9 @@ export default function MoraPage() {
               Dein Universum <br />
               <span className="italic text-emerald-400">wartet.</span>
             </h2>
-            
+
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <a 
+              <a
                 href="https://cal.com/saimor/30min"
                 target="_blank"
                 className="px-12 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105"
