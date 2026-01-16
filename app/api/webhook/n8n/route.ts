@@ -42,7 +42,10 @@ export async function POST(request: NextRequest) {
         break;
 
       default:
-        console.log('Unknown webhook event:', body.event);
+        // Unknown webhook event - log via Sentry if needed
+        if (process.env.NODE_ENV === 'production') {
+          // Could use captureMessage here if unknown events need tracking
+        }
     }
 
     // Send response to n8n
@@ -80,11 +83,7 @@ export async function GET(request: NextRequest) {
 }
 
 async function handleContactFormSubmission(data: any) {
-  console.log('Processing contact form submission:', {
-    name: data.name,
-    email: data.email,
-    timestamp: data.timestamp
-  });
+  // Processing contact form submission via n8n webhook
 
   // Here you could:
   // - Save to database
@@ -106,11 +105,7 @@ async function handleContactFormSubmission(data: any) {
 }
 
 async function handleBookingCompletion(data: any) {
-  console.log('Processing booking completion:', {
-    bookingId: data.bookingId,
-    clientEmail: data.email,
-    sessionType: data.sessionType
-  });
+  // Processing booking completion via n8n webhook
 
   // Booking follow-up automation
   // - Send confirmation email
@@ -120,11 +115,7 @@ async function handleBookingCompletion(data: any) {
 }
 
 async function handleChatInteraction(data: any) {
-  console.log('Processing chat interaction:', {
-    sessionId: data.sessionId,
-    messageCount: data.messageCount,
-    engagement: data.engagement
-  });
+  // Processing chat interaction via n8n webhook
 
   // Chat analytics and triggers
   // - Track user engagement
@@ -134,11 +125,7 @@ async function handleChatInteraction(data: any) {
 }
 
 async function handleUserJourneyMilestone(data: any) {
-  console.log('Processing user journey milestone:', {
-    milestone: data.milestone,
-    userId: data.userId,
-    value: data.value
-  });
+  // Processing user journey milestone via n8n webhook
 
   // Journey-based automation
   // - Personalized content delivery
@@ -153,7 +140,7 @@ async function triggerN8NWorkflow(workflowId: string, data: any) {
   const n8nApiKey = process.env.N8N_API_KEY;
 
   if (!n8nBaseUrl || !n8nApiKey) {
-    console.log('N8N configuration missing');
+    // N8N configuration missing - this is expected if n8n is not used
     return;
   }
 

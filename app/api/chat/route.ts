@@ -499,7 +499,7 @@ async function sendToN8N(eventType: string, data: any) {
   const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
 
   if (!n8nWebhookUrl) {
-    console.log('N8N webhook URL not configured');
+    // N8N webhook not configured - this is expected in some setups
     return;
   }
 

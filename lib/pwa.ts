@@ -25,7 +25,6 @@ export const registerServiceWorker = async () => {
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
             // New service worker available - show update notification
-            console.log('New service worker available');
             // You could show a toast notification here
           }
         });
@@ -46,7 +45,7 @@ export const unregisterServiceWorker = async () => {
   try {
     const registration = await navigator.serviceWorker.ready;
     await registration.unregister();
-    console.log('Service Worker unregistered');
+    // Service worker unregistered successfully
   } catch (error) {
     console.error('Service Worker unregistration failed:', error);
   }

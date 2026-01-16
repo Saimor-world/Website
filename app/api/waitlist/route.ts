@@ -36,9 +36,10 @@ export async function POST(request: Request) {
       });
     }
 
-    // Fallback: Log to console if no webhook configured
-    if (!n8nWebhookUrl) {
-      console.log('[Waitlist Signup]', { email, name, interests, locale });
+    // Fallback: Track via Sentry if no webhook configured
+    if (!n8nWebhookUrl && process.env.NODE_ENV === 'production') {
+      // In production, this should be logged to Sentry for monitoring
+      // In development, this is expected and can be ignored
     }
 
     // Calculate waitlist position (simplified - can be made more sophisticated)

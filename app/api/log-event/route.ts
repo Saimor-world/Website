@@ -5,7 +5,8 @@ export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log("log-event", body);
+    // Event is logged client-side via logEvent() helper
+    // No server-side logging needed here
     return NextResponse.json({ success: true });
   } catch (error) {
     console.warn("log-event error", error);

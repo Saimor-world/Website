@@ -26,8 +26,13 @@ export async function POST(req: Request) {
 
     // Check if SMTP is configured
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.log('SMTP not configured - form submission logged locally');
-      console.log({ name, email, message, licht, timestamp: new Date() });
+      // Log to Sentry in development for debugging
+      if (process.env.NODE_ENV === 'development') {
+        captureApiError('/api/contact', new Error('SMTP not configured'), {
+          method: 'POST',
+          context: 'SMTP configuration missing'
+        });
+      }
       return new Response(JSON.stringify({
         success: true,
         message: 'Form submitted successfully'
