@@ -9,6 +9,7 @@ import LayoutWrapper from '../components/LayoutWrapper'
 import dynamic from 'next/dynamic'
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
+import * as Sentry from '@sentry/nextjs';
 
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
 const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
@@ -18,82 +19,87 @@ const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ss
 const KeyboardHint = dynamic(() => import('@/components/KeyboardHint'), { ssr: false });
 const PWARegistration = dynamic(() => import('@/components/PWARegistration'), { ssr: false });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://saimor.world'),
-  title: {
-    default: 'Saimôr – Klarheit im Wandel',
-    template: '%s | Saimôr'
-  },
-  description:
-    'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
-  keywords: [
-    'Saimôr',
-    'Môra OS',
-    'Semantisches Betriebssystem',
-    'Organisationsentwicklung',
-    'DSGVO-konform',
-    'EU-basiert',
-    'Digitale Transformation',
-    'Beratung',
-    'Dashboard',
-    'Workshop',
-    'Klarheit',
-    'Wandel'
-  ],
-  authors: [{ name: 'Saimôr' }],
-  creator: 'Saimôr',
-  publisher: 'Saimôr',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  // Icons are now handled by app/icon.png and app/apple-icon.png (Next.js convention)
-  openGraph: {
-    title: 'Saimôr – Klarheit im Wandel',
-    description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
-    url: 'https://saimor.world',
-    siteName: 'Saimôr',
-    images: [
-      {
-        url: '/og',
-        width: 1200,
-        height: 630,
-        alt: 'Saimôr – Klarheit im Wandel',
-      },
+export function generateMetadata(): Metadata {
+  return {
+    metadataBase: new URL('https://saimor.world'),
+    title: {
+      default: 'Saimôr – Klarheit im Wandel',
+      template: '%s | Saimôr'
+    },
+    description:
+      'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+    keywords: [
+      'Saimôr',
+      'Môra OS',
+      'Semantisches Betriebssystem',
+      'Organisationsentwicklung',
+      'DSGVO-konform',
+      'EU-basiert',
+      'Digitale Transformation',
+      'Beratung',
+      'Dashboard',
+      'Workshop',
+      'Klarheit',
+      'Wandel'
     ],
-    locale: 'de_DE',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Saimôr – Klarheit im Wandel',
-    description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
-    images: ['/og'],
-    creator: '@saimorworld',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: 'Saimôr' }],
+    creator: 'Saimôr',
+    publisher: 'Saimôr',
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    // Icons are now handled by app/icon.png and app/apple-icon.png (Next.js convention)
+    openGraph: {
+      title: 'Saimôr – Klarheit im Wandel',
+      description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+      url: 'https://saimor.world',
+      siteName: 'Saimôr',
+      images: [
+        {
+          url: '/og',
+          width: 1200,
+          height: 630,
+          alt: 'Saimôr – Klarheit im Wandel',
+        },
+      ],
+      locale: 'de_DE',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Saimôr – Klarheit im Wandel',
+      description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+      images: ['/og'],
+      creator: '@saimorworld',
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  alternates: {
-    canonical: 'https://saimor.world',
-    languages: {
-      'de-DE': 'https://saimor.world/de',
-      'en-US': 'https://saimor.world/en',
+    alternates: {
+      canonical: 'https://saimor.world',
+      languages: {
+        'de-DE': 'https://saimor.world/de',
+        'en-US': 'https://saimor.world/en',
+      },
     },
-  },
-  verification: {
-    // Google Search Console (wenn vorhanden)
-    // google: 'verification-code',
-  },
+    verification: {
+      // Google Search Console (wenn vorhanden)
+      // google: 'verification-code',
+    },
+    other: {
+      ...Sentry.getTraceData()
+    },
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
