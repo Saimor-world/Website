@@ -31,7 +31,16 @@ export async function GET(request: Request) {
         type: 'exception',
         sentry: {
           dsn: process.env.SENTRY_DSN ? 'configured' : 'missing',
+          dsnPublic: process.env.NEXT_PUBLIC_SENTRY_DSN ? 'configured' : 'missing',
           environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
+          nodeEnv: process.env.NODE_ENV,
+          // Debug info
+          debug: {
+            hasSentryDsn: !!process.env.SENTRY_DSN,
+            hasPublicDsn: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+            sentryEnv: process.env.SENTRY_ENVIRONMENT,
+            publicSentryEnv: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+          },
         },
       });
     } else if (type === 'message') {
@@ -53,7 +62,16 @@ export async function GET(request: Request) {
         type: 'message',
         sentry: {
           dsn: process.env.SENTRY_DSN ? 'configured' : 'missing',
+          dsnPublic: process.env.NEXT_PUBLIC_SENTRY_DSN ? 'configured' : 'missing',
           environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
+          nodeEnv: process.env.NODE_ENV,
+          // Debug info
+          debug: {
+            hasSentryDsn: !!process.env.SENTRY_DSN,
+            hasPublicDsn: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+            sentryEnv: process.env.SENTRY_ENVIRONMENT,
+            publicSentryEnv: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+          },
         },
       });
     } else {
