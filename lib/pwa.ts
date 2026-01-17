@@ -33,7 +33,12 @@ export const registerServiceWorker = async () => {
 
     return registration;
   } catch (error) {
-    console.error('Service Worker registration failed:', error);
+    // Silently handle Service Worker errors - they're common and non-critical
+    // Service Workers can fail due to browser cache, network issues, or user privacy settings
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Service Worker registration failed (non-critical):', error);
+    }
+    // Don't throw or report to Sentry - Service Worker failures are expected
   }
 };
 

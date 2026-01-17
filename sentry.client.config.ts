@@ -40,6 +40,15 @@ Sentry.init({
         ) {
           return null;
         }
+        // Filter Service Worker errors (common and non-critical)
+        if (
+          error.message.includes('ServiceWorker') ||
+          error.message.includes('service worker') ||
+          error.message.includes('Failed to update a ServiceWorker') ||
+          error.message.includes('An unknown error occurred when fetching the script')
+        ) {
+          return null;
+        }
       }
     }
 
@@ -82,5 +91,10 @@ Sentry.init({
     'Load failed',
     'ResizeObserver loop limit exceeded',
     'ResizeObserver loop completed with undelivered notifications',
+    // Service Worker errors (common and usually non-critical)
+    'Failed to update a ServiceWorker',
+    'ServiceWorker registration failed',
+    'An unknown error occurred when fetching the script',
+    'ServiceWorker',
   ],
 });
