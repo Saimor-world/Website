@@ -17,10 +17,25 @@ export default function MoraPage() {
     setMounted(true);
   }, []);
 
-  // Scroll to top when analog view is activated
+  // Force scroll to top when analog view is activated
   useEffect(() => {
     if (showAnalogView) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      // Immediate scroll
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      // Fallback with RAF to catch any late renders
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+
+      // Extra safety timeout
+      const timer = setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 50);
+
+      return () => clearTimeout(timer);
     }
   }, [showAnalogView]);
 
@@ -29,7 +44,7 @@ export default function MoraPage() {
   // Show Analog View fullscreen when activated
   if (showAnalogView) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-black" style={{ position: 'relative', top: 0 }}>
         <button
           onClick={() => setShowAnalogView(false)}
           className="fixed top-6 right-6 z-[100] px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-sm font-bold hover:bg-white/20 transition-all backdrop-blur-md"
