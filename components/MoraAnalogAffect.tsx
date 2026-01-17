@@ -183,6 +183,18 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     };
   }, []);
 
+  // Scroll to VHS section when Deep View is activated
+  useEffect(() => {
+    if (isDeepMode) {
+      setTimeout(() => {
+        const vhsSection = document.getElementById('vhs');
+        if (vhsSection) {
+          vhsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [isDeepMode]);
+
   const initAudio = () => {
     if (typeof window === 'undefined') return;
     if (audioCtxRef.current) return;
@@ -197,17 +209,23 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     const droneOsc = ctx.createOscillator();
     const droneGain = ctx.createGain();
 
-    droneOsc.type = 'sine'; // Changed from triangle to sine
-    droneOsc.frequency.setValueAtTime(40, ctx.currentTime); // Lower frequency hum
-    droneGain.gain.value = 0.03;
+    droneOsc.type = 'sine';
+    droneOsc.frequency.setValueAtTime(40, ctx.currentTime);
+    droneGain.gain.value = 0.08; // Increased from 0.03
 
     droneOsc.connect(droneGain);
     droneGain.connect(ctx.destination);
+
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+
     droneOsc.start();
 
     // Start sequencer
     startSequencer();
     setAudioOn(true);
+    console.log("Mora Audio Initialized: state =", ctx.state);
   };
 
   const playBlip = () => {
@@ -225,7 +243,7 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
       ctx.currentTime + 0.3
     );
 
-    gain.gain.setValueAtTime(0.015, ctx.currentTime);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime); // Increased from 0.015
     gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
 
     osc.connect(gain);
@@ -284,24 +302,14 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
       setBootVisible(false);
       setBootSequenceVisible(false);
       setIsDeepMode(true);
-      // Show the deep content and hide simple content
-      const simpleContent = document.getElementById('vhs-simple-content');
-      const deepContent = document.getElementById('vhs-deep-content-container');
-      if (simpleContent) simpleContent.classList.add('hidden');
-      if (deepContent) deepContent.classList.remove('hidden');
-      // Scroll to top of VHS section
-      const vhsSection = document.getElementById('vhs');
-      if (vhsSection) vhsSection.scrollIntoView({ behavior: 'smooth' });
+      // Removed DOM manipulation
+      // The scrolling logic will now be handled by a useEffect triggered by isDeepMode
     }, 3000);
   };
 
   const exitDeepMode = () => {
     setIsDeepMode(false);
     document.body.classList.remove('is-mora-active');
-    const simpleContent = document.getElementById('vhs-simple-content');
-    const deepContent = document.getElementById('vhs-deep-content-container');
-    if (simpleContent) simpleContent.classList.remove('hidden');
-    if (deepContent) deepContent.classList.add('hidden');
   };
 
   return (
@@ -329,12 +337,12 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
               <rect x="80" y="130" width="240" height="80" fill="transparent" stroke="#ccc" strokeWidth="1" strokeDasharray="4" opacity="0.5" className="transition-stroke duration-500" />
 
               {/* Spools/Reels */}
-              <g className="vhs-reel-glow" style={{ transformOrigin: '130px 170px' }}>
-                <circle cx="130" cy="170" r="28" className="vhs-spool-outline animate-spin-slow" strokeDasharray="8 4" />
+              <g className="vhs-reel-glow animate-spin-slow" style={{ transformOrigin: '130px 170px' }}>
+                <circle cx="130" cy="170" r="28" className="vhs-spool-outline" strokeDasharray="8 4" />
                 <circle cx="130" cy="170" r="10" className="vhs-spool-center" />
               </g>
-              <g className="vhs-reel-glow" style={{ transformOrigin: '270px 170px' }}>
-                <circle cx="270" cy="170" r="28" className="vhs-spool-outline animate-spin-slow" strokeDasharray="8 4" />
+              <g className="vhs-reel-glow animate-spin-slow" style={{ transformOrigin: '270px 170px' }}>
+                <circle cx="270" cy="170" r="28" className="vhs-spool-outline" strokeDasharray="8 4" />
                 <circle cx="270" cy="170" r="10" className="vhs-spool-center" />
               </g>
 
@@ -430,54 +438,58 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url(\'data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%221%22/%3E%3C/svg%3E\')' }}></div>
           <div className="max-w-4xl mx-auto relative z-10 text-center">
             {/* Simple View Content (Default) */}
-            <div id="vhs-simple-content">
-              <span className="inline-block px-3 py-1 bg-saimor-forest-dark text-white font-sans text-xl mb-8 transform -rotate-2 shadow-md">{copy.vhsTagSimple}</span>
-              <h2 className="text-6xl md:text-8xl font-sans font-bold mb-12 tracking-wide cursor-help">{copy.vhsTitleSimple}</h2>
+            {!isDeepMode && (
+              <div id="vhs-simple-content">
+                <span className="inline-block px-3 py-1 bg-saimor-forest-dark text-white font-sans text-xl mb-8 transform -rotate-2 shadow-md">{copy.vhsTagSimple}</span>
+                <h2 className="text-6xl md:text-8xl font-sans font-bold mb-12 tracking-wide cursor-help">{copy.vhsTitleSimple}</h2>
 
-              <div
-                onClick={activateDeepView}
-                className="glass-panel p-10 md:p-14 text-center max-w-3xl mx-auto border-t-4 border-t-saimor-forest-dark hover:border-t-saimor-gold-retro cursor-pointer transition-all"
-              >
-                <div className="text-2xl font-sans mb-4">{copy.vhsQuestion}</div>
-                <p className="text-gray-600 mb-8 font-sans text-lg leading-relaxed font-light">
-                  {copy.vhsBody}
-                </p>
-                <button className="group flex items-center gap-3 px-8 py-4 bg-saimor-forest-dark text-white hover:bg-saimor-gold-retro hover:text-black transition-all duration-300 uppercase font-bold tracking-wider clip-path-slant shadow-lg hover:shadow-2xl mx-auto">
-                  <span className="vhs-toggle-status w-4 h-4 rounded-full bg-saimor-gold-retro animate-pulse-fast"></span>
-                  <span className="text-xl group-hover:translate-x-1 transition-transform">{copy.vhsActivate}</span>
-                </button>
+                <div
+                  onClick={activateDeepView}
+                  className="glass-panel p-10 md:p-14 text-center max-w-3xl mx-auto border-t-4 border-t-saimor-forest-dark hover:border-t-saimor-gold-retro cursor-pointer transition-all"
+                >
+                  <div className="text-2xl font-sans mb-4">{copy.vhsQuestion}</div>
+                  <p className="text-gray-600 mb-8 font-sans text-lg leading-relaxed font-light">
+                    {copy.vhsBody}
+                  </p>
+                  <button className="group flex items-center gap-3 px-8 py-4 bg-saimor-forest-dark text-white hover:bg-saimor-gold-retro hover:text-black transition-all duration-300 uppercase font-bold tracking-wider clip-path-slant shadow-lg hover:shadow-2xl mx-auto">
+                    <span className="vhs-toggle-status w-4 h-4 rounded-full bg-saimor-gold-retro animate-pulse-fast"></span>
+                    <span className="text-xl group-hover:translate-x-1 transition-transform">{copy.vhsActivate}</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Deep View Content (Hidden by default, shown after boot) */}
-            <div id="vhs-deep-content-container" className="hidden">
-              <span className="inline-block px-3 py-1 bg-saimor-teal text-black font-vcr text-xl mb-8 transform -rotate-2 transition-all duration-500">{copy.vhsTagDeep}</span>
-              <h2 className="text-6xl md:text-8xl font-vcr text-white mb-12 tracking-wide glitch-hover cursor-help transition-all duration-500">{copy.vhsTitleDeep}</h2>
-              <div className="glass-panel p-10 md:p-14 text-left max-w-3xl mx-auto border-t-4 border-t-saimor-gold-retro transition-all duration-500">
-                <div className="flex justify-between items-center mb-8 border-b border-gray-700 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
-                    <span className="font-mono text-xs text-gray-400">PLAYBACK: SOURCE 1980-2000</span>
+            {isDeepMode && (
+              <div id="vhs-deep-content-container">
+                <span className="inline-block px-3 py-1 bg-saimor-teal text-black font-vcr text-xl mb-8 transform -rotate-2 transition-all duration-500">{copy.vhsTagDeep}</span>
+                <h2 className="text-6xl md:text-8xl font-vcr text-white mb-12 tracking-wide glitch-hover cursor-help transition-all duration-500">{copy.vhsTitleDeep}</h2>
+                <div className="glass-panel p-10 md:p-14 text-left max-w-3xl mx-auto border-t-4 border-t-saimor-gold-retro transition-all duration-500">
+                  <div className="flex justify-between items-center mb-8 border-b border-gray-700 pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
+                      <span className="font-mono text-xs text-gray-400">PLAYBACK: SOURCE 1980-2000</span>
+                    </div>
+                    <div className="font-vcr text-xl text-saimor-gold-retro">SP - 02:34:12</div>
                   </div>
-                  <div className="font-vcr text-xl text-saimor-gold-retro">SP - 02:34:12</div>
+                  <p className="text-gray-300 mb-8 font-sans text-xl leading-relaxed font-light">
+                    {copy.vhsBodyDeep}
+                  </p>
+                  <div className="font-mono text-sm text-saimor-teal bg-black/40 p-4 rounded border-l-2 border-saimor-teal">
+                    {copy.vhsConsoleLines.map((line, i) => (
+                      <div key={i} className="opacity-70">{line}</div>
+                    ))}
+                    <div className="text-white animate-pulse">{copy.vhsConsoleLines[copy.vhsConsoleLines.length - 1]}</div>
+                  </div>
+                  <button
+                    onClick={exitDeepMode}
+                    className="mt-8 px-6 py-3 border border-saimor-teal text-saimor-teal hover:bg-saimor-teal hover:text-black transition-all font-mono text-sm uppercase tracking-wider"
+                  >
+                    ← Zurück zur strukturierten Sicht
+                  </button>
                 </div>
-                <p className="text-gray-300 mb-8 font-sans text-xl leading-relaxed font-light">
-                  {copy.vhsBodyDeep}
-                </p>
-                <div className="font-mono text-sm text-saimor-teal bg-black/40 p-4 rounded border-l-2 border-saimor-teal">
-                  {copy.vhsConsoleLines.map((line, i) => (
-                    <div key={i} className="opacity-70">{line}</div>
-                  ))}
-                  <div className="text-white animate-pulse">{copy.vhsConsoleLines[copy.vhsConsoleLines.length - 1]}</div>
-                </div>
-                <button
-                  onClick={exitDeepMode}
-                  className="mt-8 px-6 py-3 border border-saimor-teal text-saimor-teal hover:bg-saimor-teal hover:text-black transition-all font-mono text-sm uppercase tracking-wider"
-                >
-                  ← Zurück zur strukturierten Sicht
-                </button>
               </div>
-            </div>
+            )}
           </div>
         </section>
 
@@ -567,6 +579,112 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .scanlines {
+          pointer-events: none;
+          position: fixed;
+          top: 0; left: 0; width: 100%; height: 100%;
+          background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%
+          ), linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.06),
+            rgba(0, 255, 0, 0.02),
+            rgba(0, 0, 255, 0.06)
+          );
+          background-size: 100% 4px, 3px 100%;
+          z-index: 1000;
+          opacity: 0;
+          transition: opacity 2s ease;
+        }
+
+        .crt-overlay {
+          pointer-events: none;
+          position: fixed;
+          top: 0; left: 0; width: 100%; height: 100%;
+          background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%);
+          z-index: 1001;
+          opacity: 0;
+          transition: opacity 2s ease;
+        }
+
+        .is-mora-active .scanlines,
+        .is-mora-active .crt-overlay {
+          opacity: 1;
+        }
+
+        .vhs-body {
+          fill: #1a1a1a;
+          stroke: #333;
+          stroke-width: 2;
+        }
+
+        .vhs-inner {
+          fill: #0d0d0d;
+        }
+
+        .vhs-reel-glow {
+          fill: #222;
+          filter: drop-shadow(0 0 5px rgba(214, 168, 72, 0.2));
+        }
+
+        .vhs-spool-outline {
+          stroke: #8C7548;
+          stroke-width: 1;
+          fill: none;
+          opacity: 0.8;
+        }
+
+        .vhs-spool-center {
+          fill: #8C7548;
+        }
+
+        .neural-path {
+          stroke: #8C7548;
+          stroke-width: 1.5;
+          fill: none;
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: drawPath 8s ease-in-out infinite;
+          opacity: 0.4;
+        }
+
+        @keyframes drawPath {
+          0% { stroke-dashoffset: 1000; opacity: 0; }
+          20% { opacity: 0.4; }
+          80% { opacity: 0.4; }
+          100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        .is-mora-active .vhs-body { fill: #000; stroke: #8C7548; }
+        .is-mora-active .vhs-inner { fill: #081410; }
+        .is-mora-active .vhs-reel-glow { filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.4)); }
+        .is-mora-active .neural-path { stroke: #10b981; opacity: 0.8; stroke-width: 2; }
+
+        .glitch-hover:hover {
+          animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+        }
+
+        @keyframes glitch {
+          0% { transform: translate(0) }
+          20% { transform: translate(-2px, 2px) }
+          40% { transform: translate(-2px, -2px) }
+          60% { transform: translate(2px, 2px) }
+          80% { transform: translate(2px, -2px) }
+          100% { transform: translate(0) }
+        }
+
+        .animate-pulse-fast {
+          animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+      `}</style>
     </>
   );
 }
