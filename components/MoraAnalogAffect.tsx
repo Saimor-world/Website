@@ -228,6 +228,38 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     console.log("Mora Audio Initialized: state =", ctx.state);
   };
 
+  const playPowerUp = () => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(40, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 1.5);
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 1.6);
+  };
+
+  const playClick = () => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(150, ctx.currentTime);
+    gain.gain.setValueAtTime(0.01, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.06);
+  };
+
   const playBlip = () => {
     const ctx = audioCtxRef.current;
     if (!ctx) return;
@@ -290,21 +322,41 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     setBootVisible(true);
   };
 
+  const [bootLines, setBootLines] = useState<string[]>([]);
+
+  const fullBootLines = [
+    "> SAIMÔR BIOS v2.6.1 (1984-2026)",
+    "> MEMORY CHECK: 640KB... OK",
+    "> DETECTING NEURAL CORE... FOUND (ID: MORA-001)",
+    "> MOUNTING VOLUME: /DEV/VHS_ARCHIVE",
+    "> LOADING CRYSTAL SEMANTICS... DONE",
+    "> ANALOG AFFECT INITIALIZED.",
+    "> SYSTEM ONLINE."
+  ];
+
   const handleBootClick = () => {
     if (!audioOn) {
       initAudio();
     }
 
+    playPowerUp();
     setBootSequenceVisible(true);
+    setBootLines([]);
+
+    // Typewriter effect for boot lines
+    fullBootLines.forEach((line, index) => {
+      setTimeout(() => {
+        setBootLines(prev => [...prev, line]);
+        playClick();
+      }, 300 + index * 400);
+    });
 
     // Animate boot sequence then reveal deep content
     setTimeout(() => {
       setBootVisible(false);
       setBootSequenceVisible(false);
       setIsDeepMode(true);
-      // Removed DOM manipulation
-      // The scrolling logic will now be handled by a useEffect triggered by isDeepMode
-    }, 3000);
+    }, 300 + fullBootLines.length * 400 + 1000);
   };
 
   const exitDeepMode = () => {
@@ -568,12 +620,15 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
                 <div className="text-gray-500 text-sm font-sans tracking-widest uppercase">{copy.bootPromptSubtitle}</div>
               </motion.div>
             ) : (
-              <div className="text-xl md:text-2xl font-vcr space-y-1 text-left text-saimor-teal">
-                <div className="boot-line">&gt; SAIMÔR BIOS v2.6.1 DETECTED</div>
-                <div className="boot-line">&gt; MOUNTING VOLUME: /DEV/VHS_ARCHIVE</div>
-                <div className="boot-line">&gt; LOADING KERNEL: MORA_NEURAL_NET</div>
-                <div className="boot-line">&gt; GENERATING AUDIO CONTEXT... [OK]</div>
-                <div className="boot-line text-saimor-gold-retro">&gt; SYSTEM ONLINE.</div>
+              <div className="text-xl md:text-2xl font-vcr space-y-1 text-left text-saimor-teal drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
+                {bootLines.map((line, i) => (
+                  <div key={i} className={`boot-line ${i === bootLines.length - 1 && i === fullBootLines.length - 1 ? 'text-saimor-gold-retro' : ''}`}>
+                    {line}
+                  </div>
+                ))}
+                {bootLines.length < fullBootLines.length && (
+                  <span className="inline-block w-3 h-5 bg-saimor-teal animate-pulse ml-1 align-middle"></span>
+                )}
               </div>
             )}
           </motion.div>
@@ -598,6 +653,12 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           z-index: 1000;
           opacity: 0;
           transition: opacity 2s ease;
+          animation: scanlineScroll 20s linear infinite;
+        }
+
+        @keyframes scanlineScroll {
+          from { background-position: 0 0; }
+          to { background-position: 0 100%; }
         }
 
         .crt-overlay {
@@ -608,6 +669,18 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           z-index: 1001;
           opacity: 0;
           transition: opacity 2s ease;
+          animation: crtFlicker 0.15s infinite;
+        }
+
+        @keyframes crtFlicker {
+          0% { opacity: 0.97; }
+          5% { opacity: 0.95; }
+          10% { opacity: 0.9; }
+          15% { opacity: 0.98; }
+          30% { opacity: 0.95; }
+          50% { opacity: 0.92; }
+          80% { opacity: 0.96; }
+          100% { opacity: 0.95; }
         }
 
         .is-mora-active .scanlines,
