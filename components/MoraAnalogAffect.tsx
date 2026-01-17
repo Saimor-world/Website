@@ -359,6 +359,36 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     }, 300 + fullBootLines.length * 400 + 1000);
   };
 
+  const [deepLogs, setDeepLogs] = useState<string[]>([]);
+  const logIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isDeepMode) {
+      setDeepLogs([copy.vhsConsoleLines[0]]);
+      let count = 1;
+      logIntervalRef.current = setInterval(() => {
+        if (count < 20) {
+          const fakeLogs = [
+            `> ANALYZING NEURAL CLUSTER ${Math.floor(Math.random() * 9999)}`,
+            `> EXTRACTION QUALITY: ${(80 + Math.random() * 20).toFixed(2)}%`,
+            `> NOSTALGIC FREQUENCY: ${(Math.random() * 100).toFixed(1)}Hz`,
+            `> DETECTED PATTERN: ${['AWKWARDNESS', 'IRONY', 'NOSTALGIA', 'SILENCE'][Math.floor(Math.random() * 4)]}`,
+            `> CORE TEMP: ${(35 + Math.random() * 5).toFixed(1)}C`
+          ];
+          setDeepLogs(prev => [...prev.slice(-10), fakeLogs[Math.floor(Math.random() * fakeLogs.length)]]);
+          playClick();
+          count++;
+        }
+      }, 2000);
+    } else {
+      if (logIntervalRef.current) clearInterval(logIntervalRef.current);
+      setDeepLogs([]);
+    }
+    return () => {
+      if (logIntervalRef.current) clearInterval(logIntervalRef.current);
+    };
+  }, [isDeepMode, copy.vhsConsoleLines]);
+
   const exitDeepMode = () => {
     setIsDeepMode(false);
     document.body.classList.remove('is-mora-active');
@@ -513,31 +543,66 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
 
             {/* Deep View Content (Hidden by default, shown after boot) */}
             {isDeepMode && (
-              <div id="vhs-deep-content-container">
-                <span className="inline-block px-3 py-1 bg-saimor-teal text-black font-vcr text-xl mb-8 transform -rotate-2 transition-all duration-500">{copy.vhsTagDeep}</span>
-                <h2 className="text-6xl md:text-8xl font-vcr text-white mb-12 tracking-wide glitch-hover cursor-help transition-all duration-500">{copy.vhsTitleDeep}</h2>
-                <div className="glass-panel p-10 md:p-14 text-left max-w-3xl mx-auto border-t-4 border-t-saimor-gold-retro transition-all duration-500">
+              <div id="vhs-deep-content-container" className="relative">
+                {/* Background Neural Core */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 pointer-events-none overflow-hidden">
+                  <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow scale-150">
+                    <defs>
+                      <radialGradient id="neuralGrad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
+                        <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+                      </radialGradient>
+                    </defs>
+                    <circle cx="100" cy="100" r="80" fill="url(#neuralGrad)" className="animate-pulse" />
+                    {[...Array(8)].map((_, i) => (
+                      <path
+                        key={i}
+                        d={`M 100 100 L ${100 + 80 * Math.cos(i * Math.PI / 4)} ${100 + 80 * Math.sin(i * Math.PI / 4)}`}
+                        stroke="#10b981"
+                        strokeWidth="0.5"
+                        strokeDasharray="4 4"
+                        className="animate-pulse"
+                        style={{ animationDelay: `${i * 0.2}s` }}
+                      />
+                    ))}
+                  </svg>
+                </div>
+
+                <span className="inline-block px-3 py-1 bg-saimor-teal text-black font-vcr text-xl mb-8 transform -rotate-2 transition-all duration-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]">{copy.vhsTagDeep}</span>
+                <h2 className="text-6xl md:text-8xl font-vcr text-white mb-12 tracking-wide glitch-hover cursor-help transition-all duration-500 [text-shadow:0_0_20px_rgba(16,185,129,0.4)]">{copy.vhsTitleDeep}</h2>
+                <div className="glass-panel p-10 md:p-14 text-left max-w-3xl mx-auto border-t-4 border-t-saimor-gold-retro transition-all duration-500 bg-black/60 relative z-10">
                   <div className="flex justify-between items-center mb-8 border-b border-gray-700 pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
-                      <span className="font-mono text-xs text-gray-400">PLAYBACK: SOURCE 1980-2000</span>
+                      <div className="w-3 h-3 rounded-full bg-red-600 animate-pulse shadow-[0_0_8px_rgba(220,38,38,0.8)]"></div>
+                      <span className="font-mono text-xs text-gray-400">PLAYBACK: SOURCE 1980-2000 [ACTIVE]</span>
                     </div>
                     <div className="font-vcr text-xl text-saimor-gold-retro">SP - 02:34:12</div>
                   </div>
-                  <p className="text-gray-300 mb-8 font-sans text-xl leading-relaxed font-light">
+                  <p className="text-gray-100 mb-8 font-sans text-xl leading-relaxed font-light italic">
                     {copy.vhsBodyDeep}
                   </p>
-                  <div className="font-mono text-sm text-saimor-teal bg-black/40 p-4 rounded border-l-2 border-saimor-teal">
-                    {copy.vhsConsoleLines.map((line, i) => (
-                      <div key={i} className="opacity-70">{line}</div>
-                    ))}
-                    <div className="text-white animate-pulse">{copy.vhsConsoleLines[copy.vhsConsoleLines.length - 1]}</div>
+                  <div className="font-mono text-xs md:text-sm text-saimor-teal bg-black/80 p-6 rounded border-l-2 border-saimor-teal shadow-inner min-h-[200px] flex flex-col justify-end">
+                    <div className="space-y-1">
+                      {deepLogs.map((line, i) => (
+                        <div key={i} className="opacity-80 transition-opacity duration-300">
+                          {line}
+                        </div>
+                      ))}
+                      <div className="text-white animate-pulse flex items-center gap-2">
+                        <span>&gt; SEMANTIC BUFFERING...</span>
+                        <div className="flex gap-1">
+                          <div className="w-1 h-1 bg-white animate-bounce"></div>
+                          <div className="w-1 h-1 bg-white animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-1 h-1 bg-white animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <button
                     onClick={exitDeepMode}
-                    className="mt-8 px-6 py-3 border border-saimor-teal text-saimor-teal hover:bg-saimor-teal hover:text-black transition-all font-mono text-sm uppercase tracking-wider"
+                    className="mt-8 px-6 py-3 border border-saimor-teal text-saimor-teal hover:bg-saimor-teal hover:text-black transition-all font-mono text-sm uppercase tracking-wider group"
                   >
-                    ← Zurück zur strukturierten Sicht
+                    <span className="group-hover:-translate-x-1 inline-block transition-transform">←</span> Zurück zur strukturierten Sicht
                   </button>
                 </div>
               </div>
