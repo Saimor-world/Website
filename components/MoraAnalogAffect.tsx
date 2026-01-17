@@ -80,11 +80,11 @@ const copyByLocale: Record<Locale, Copy> = {
     vhsTagDeep: 'Dataset: VHS_Archive_DE',
     vhsTitleDeep: 'The Emotional Fossil',
     vhsBodyDeep:
-      'We train Mora on German broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The &quot;Static&quot; of human interaction.',
+      'Wir trainieren Mora auf historischen Analog-Archiven, um die "Phänomenologische Latenz" menschlicher Kommunikation zu erfassen. Während digitale Systeme nur diskrete Signale verarbeiten, erkennt Mora das affektive Rauschen: Die Stille zwischen Sätzen, die Ironie im Unterton und die semantische Schwerkraft der Nostalgie.',
     vhsConsoleLines: [
-      '> Extracting emotional semantics... [OK]',
-      '> Analyzing nostalgic codes... [OK]',
-      '> Result: 98% Human-Adjacent.'
+      '> Extracting affective resonance... [OK]',
+      '> Analyzing phenomenological latency... [OK]',
+      '> Result: High-Fidelity Human-Adjacent Semantic Web.'
     ],
     techEyebrow: 'Core Technology',
     techTitle: 'Verschachtelte Reflexion',
@@ -131,11 +131,11 @@ const copyByLocale: Record<Locale, Copy> = {
     vhsTagDeep: 'Dataset: VHS_Archive_EN',
     vhsTitleDeep: 'The Emotional Fossil',
     vhsBodyDeep:
-      'We train Mora on broadcast archives to capture what clean data misses: Awkwardness. Silence. Irony. The &quot;Static&quot; of human interaction.',
+      'We train Mora on historical analog archives to capture the "Phenomenological Latency" of human communication. While digital systems process only discrete signals, Mora recognizes affective noise: the silence between sentences, the irony in undertones, and the semantic gravity of nostalgia.',
     vhsConsoleLines: [
-      '> Extracting emotional semantics... [OK]',
-      '> Analyzing nostalgic codes... [OK]',
-      '> Result: 98% Human-Adjacent.'
+      '> Extracting affective resonance... [OK]',
+      '> Analyzing phenomenological latency... [OK]',
+      '> Result: High-Fidelity Human-Adjacent Semantic Web.'
     ],
     techEyebrow: 'Core Technology',
     techTitle: 'Nested Reflection',
@@ -183,15 +183,29 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     };
   }, []);
 
-  // Scroll to VHS section when Deep View is activated
+  // Robust scroll to VHS section when Deep View is activated
   useEffect(() => {
     if (isDeepMode) {
-      setTimeout(() => {
+      const scrollToVhs = () => {
         const vhsSection = document.getElementById('vhs');
         if (vhsSection) {
-          vhsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const top = vhsSection.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({ top, behavior: 'smooth' });
         }
-      }, 100);
+      };
+
+      // Immediate attempt
+      scrollToVhs();
+
+      // Multiple fallbacks to ensure it works after layout shifts
+      const timers = [
+        setTimeout(scrollToVhs, 50),
+        setTimeout(scrollToVhs, 150),
+        setTimeout(scrollToVhs, 300),
+        setTimeout(scrollToVhs, 600)
+      ];
+
+      return () => timers.forEach(clearTimeout);
     }
   }, [isDeepMode]);
 
@@ -370,10 +384,11 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
         if (count < 20) {
           const fakeLogs = [
             `> ANALYZING NEURAL CLUSTER ${Math.floor(Math.random() * 9999)}`,
-            `> EXTRACTION QUALITY: ${(80 + Math.random() * 20).toFixed(2)}%`,
-            `> NOSTALGIC FREQUENCY: ${(Math.random() * 100).toFixed(1)}Hz`,
-            `> DETECTED PATTERN: ${['AWKWARDNESS', 'IRONY', 'NOSTALGIA', 'SILENCE'][Math.floor(Math.random() * 4)]}`,
-            `> CORE TEMP: ${(35 + Math.random() * 5).toFixed(1)}C`
+            `> AFFECTIVE ENTROPY: ${(0.01 + Math.random() * 0.05).toFixed(3)}`,
+            `> PHENOMENOLOGICAL LATENCY: ${(Math.random() * 10).toFixed(1)}ms`,
+            `> CALIBRATING SEMANTIC GRAVITY... [OK]`,
+            `> CROSS-CORRELATING NOSTALGIC VECTORS`,
+            `> CORE HARMONICS: ${(40 + Math.random() * 2).toFixed(2)}Hz`
           ];
           setDeepLogs(prev => [...prev.slice(-10), fakeLogs[Math.floor(Math.random() * fakeLogs.length)]]);
           playClick();
