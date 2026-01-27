@@ -157,7 +157,7 @@ export default function MoraPage() {
               transition={{ duration: 1 }}
               className="relative rounded-[3rem] border border-white/5 bg-black overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)]"
             >
-              <MoraDashboard locale="de" onDeepView={() => setShowAnalogView(true)} />
+              <MoraDashboard locale="de" />
             </motion.div>
 
             {/* Analog Affect Deep View Button */}

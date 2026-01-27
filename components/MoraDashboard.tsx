@@ -12,7 +12,6 @@ type Locale = 'de' | 'en';
 
 interface MoraDashboardProps {
   locale: Locale;
-  onDeepView?: () => void;
 }
 
 type ViewMode = 'universe' | 'folders' | 'chat';
@@ -34,7 +33,7 @@ interface DashboardMetric {
   trend?: number[];
 }
 
-export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps) {
+export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('universe');
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
@@ -49,6 +48,26 @@ export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps
   const [liveData, setLiveData] = useState<any>(null);
   const [sessionId, setSessionId] = useState<string>('');
   const chartIdRef = useRef(0);
+  const chatScrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollChatToBottom = useCallback((behavior: ScrollBehavior = 'auto') => {
+    const el = chatScrollContainerRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior });
+  }, []);
+
+  useEffect(() => {
+    if (viewMode !== 'chat') return;
+
+    // Keep scrolling strictly inside the chat panel. `scrollIntoView` may scroll the whole page,
+    // which caused the viewport to jump down towards the "Analog Affect" button.
+    requestAnimationFrame(() => scrollChatToBottom('auto'));
+  }, [viewMode, scrollChatToBottom]);
+
+  useEffect(() => {
+    if (viewMode !== 'chat') return;
+    scrollChatToBottom(chatHistory.length > 0 ? 'smooth' : 'auto');
+  }, [viewMode, chatHistory.length, isThinking, scrollChatToBottom]);
 
   const getContextualResponse = (question: string) => {
     const q = (question || "").toLowerCase();
@@ -753,7 +772,10 @@ export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps
                   </button>
                 </div>
 
-                <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-6' : 'p-10'} space-y-8 custom-scrollbar`}>
+                <div
+                  ref={chatScrollContainerRef}
+                  className={`flex-1 overflow-y-auto ${isMobile ? 'p-6' : 'p-10'} space-y-8 custom-scrollbar`}
+                >
                   {chatHistory.length === 0 && !isThinking && (
                     <div className="h-full flex flex-col items-center justify-center text-center px-4 space-y-6">
                       <div className="relative">
@@ -802,8 +824,6 @@ export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps
                     </motion.div>
                   )}
 
-                  {/* Scroll Anchor */}
-                  <div ref={(el) => el?.scrollIntoView({ behavior: 'smooth' })} />
                 </div>
 
                 <div className={`${isMobile ? 'p-6' : 'p-8'} bg-white/[0.02] border-t border-white/10 backdrop-blur-xl`}>
@@ -967,11 +987,13 @@ export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps
                       }
                     </p>
                     <button
-                      onClick={onDeepView}
-                      className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors group/btn flex items-center justify-center gap-2"
+                      type="button"
+                      disabled
+                      title="Demnächst"
+                      className="w-full py-3 rounded-xl bg-emerald-500/50 text-white/80 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2 cursor-not-allowed"
                     >
                       <span>Tiefenanalyse</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3 h-3" />
                     </button>
                   </div>
                 </div>
