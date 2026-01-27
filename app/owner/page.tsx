@@ -12,8 +12,9 @@ function fmtDate(value: Date | string | null | undefined) {
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
 }
 
-export default async function OwnerPage() {
+export default async function OwnerPage({ searchParams }: { searchParams: { q?: string } }) {
   const session = await getServerSession(authOptions);
+  const query = searchParams.q?.trim().toLowerCase();
 
   if (!session?.user) {
     redirect('/owner/login?callbackUrl=/owner');
@@ -50,6 +51,13 @@ export default async function OwnerPage() {
   }
 
   try {
+    const whereClause = query ? {
+      OR: [
+        { email: { contains: query, mode: 'insensitive' } as any },
+        { name: { contains: query, mode: 'insensitive' } as any }
+      ]
+    } : {};
+
     const [
       waitlistCount,
       contactCount,
@@ -64,8 +72,16 @@ export default async function OwnerPage() {
       prisma.contactMessage.count(),
       prisma.chatSession.count(),
       prisma.message.count(),
-      prisma.waitlist.findMany({ take: 10, orderBy: { createdAt: 'desc' } }),
-      prisma.contactMessage.findMany({ take: 10, orderBy: { createdAt: 'desc' } }),
+      prisma.waitlist.findMany({
+        where: whereClause,
+        take: 10,
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.contactMessage.findMany({
+        where: whereClause,
+        take: 10,
+        orderBy: { createdAt: 'desc' }
+      }),
       prisma.chatSession.findMany({ take: 10, orderBy: { lastActivity: 'desc' } }),
       prisma.dashboardStats.findFirst({ orderBy: { updatedAt: 'desc' } }),
     ]);
@@ -73,14 +89,34 @@ export default async function OwnerPage() {
     return (
       <main className="min-h-screen bg-[#081410] text-white">
         <div className="mx-auto max-w-6xl px-6 py-14 space-y-10">
-          <header className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.32em] text-saimor-gold">Owner</p>
-            <h1 className="text-4xl font-semibold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Datenbank Übersicht
-            </h1>
-            <p className="text-white/70 text-sm">
-              Eingeloggt als <span className="text-white">{session.user.email}</span>
-            </p>
+          <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-[0.32em] text-saimor-gold">Owner</p>
+              <h1 className="text-4xl font-semibold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Datenbank Übersicht
+              </h1>
+              <p className="text-white/70 text-sm">
+                Eingeloggt als <span className="text-white">{session.user.email}</span>
+              </p>
+            </div>
+
+            <form action="/owner" className="flex items-center gap-2">
+              <input
+                type="text"
+                name="q"
+                defaultValue={query}
+                placeholder="Email oder Name suchen..."
+                className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm focus:outline-none focus:border-saimor-gold min-w-[240px]"
+              />
+              <button type="submit" className="rounded-xl bg-saimor-gold/10 border border-saimor-gold/20 px-4 py-2 text-sm hover:bg-saimor-gold/20 text-saimor-gold">
+                Suchen
+              </button>
+              {query && (
+                <Link href="/owner" className="text-xs text-white/30 hover:text-white/60 ml-2 underline underline-offset-4">
+                  Reset
+                </Link>
+              )}
+            </form>
           </header>
 
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -138,7 +174,7 @@ export default async function OwnerPage() {
                 {waitlist.length === 0 ? (
                   <p className="text-white/60">Noch keine Einträge.</p>
                 ) : (
-                  waitlist.map((row) => (
+                  waitlist.map((row: any) => (
                     <div key={row.id} className="rounded-2xl border border-white/10 bg-black/10 p-3">
                       <div className="flex items-center justify-between gap-3">
                         <div className="truncate">
@@ -159,7 +195,7 @@ export default async function OwnerPage() {
                 {contacts.length === 0 ? (
                   <p className="text-white/60">Noch keine Nachrichten.</p>
                 ) : (
-                  contacts.map((row) => (
+                  contacts.map((row: any) => (
                     <div key={row.id} className="rounded-2xl border border-white/10 bg-black/10 p-3 space-y-1">
                       <div className="flex items-center justify-between gap-3">
                         <div className="truncate">
@@ -184,13 +220,20 @@ export default async function OwnerPage() {
               {chatSessions.length === 0 ? (
                 <p className="text-white/60">Noch keine Sessions.</p>
               ) : (
-                chatSessions.map((row) => (
-                  <div key={row.id} className="rounded-2xl border border-white/10 bg-black/10 p-4 space-y-1">
-                    <div className="text-xs text-white/50 uppercase tracking-[0.22em]">externalId</div>
+                chatSessions.map((row: any) => (
+                  <Link
+                    key={row.id}
+                    href={`/owner/chat/${row.id}`}
+                    className="group rounded-2xl border border-white/10 bg-black/10 p-4 space-y-1 hover:border-saimor-gold hover:bg-white/5 transition-all block"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="text-xs text-white/50 uppercase tracking-[0.22em] group-hover:text-saimor-gold transition-colors">externalId</div>
+                      <div className="text-[10px] text-white/30 font-mono">DETAIL →</div>
+                    </div>
                     <div className="font-mono text-sm text-white truncate">{row.externalId}</div>
                     <div className="text-xs text-white/60">lastActivity: {fmtDate(row.lastActivity)}</div>
                     <div className="text-xs text-white/60">userId: {row.userId || '-'}</div>
-                  </div>
+                  </Link>
                 ))
               )}
             </div>

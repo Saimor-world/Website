@@ -24,6 +24,12 @@ Example:
 DATABASE_URL=postgresql://saimor_user:pass@localhost:5433/saimor_ai
 ```
 
+If you use a provider with a pooler (common for serverless), you can also set:
+
+```bash
+DIRECT_URL=postgresql://... (direct connection, usually port 5432)
+```
+
 3. Create tables via Prisma:
 
 ```bash

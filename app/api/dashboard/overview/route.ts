@@ -27,28 +27,39 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // 2. Fetch from local database (Real Database Integration)
-    let stats = await prisma.dashboardStats.findFirst({
-      orderBy: { updatedAt: 'desc' }
-    });
+    // 2. Real-time KPI Calculation from Database
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // Seed initial data if empty
-    if (!stats) {
-      stats = await prisma.dashboardStats.create({
-        data: {
-          facts: 247,
-          callsToday: 12,
-          costsToday: 2.34
-        }
-      });
-    }
+    const [msgCount, sessionsToday, waitlistCount, totalSessions] = await Promise.all([
+      prisma.message.count(),
+      prisma.chatSession.count({
+        where: { createdAt: { gte: startOfToday } }
+      }),
+      prisma.waitlist.count(),
+      prisma.chatSession.count()
+    ]);
+
+    // Simulate "Facts" based on message count + waitlist (just for some dynamic movement)
+    const dynamicFacts = 247 + msgCount + (waitlistCount * 2);
+
+    // Simulate Costs based on total messages (e.g. $0.015 per message)
+    const simulatedCosts = msgCount * 0.015 + 1.20; // Base floor of $1.20
 
     return NextResponse.json({
-      memory: { facts: stats.facts },
-      voice: { calls_today: stats.callsToday },
-      costs: { today_usd: stats.costsToday },
+      memory: {
+        facts: dynamicFacts,
+        msgCount // Adding raw counts for more transparency
+      },
+      voice: {
+        calls_today: sessionsToday || 0,
+        total_sessions: totalSessions
+      },
+      costs: {
+        today_usd: Number(simulatedCosts.toFixed(2))
+      },
       isDemo: true,
-      lastUpdate: stats.updatedAt
+      lastUpdate: now
     });
 
   } catch (error) {
@@ -58,7 +69,8 @@ export async function GET(request: NextRequest) {
       voice: { calls_today: 12 },
       costs: { today_usd: 2.34 },
       isDemo: true,
-      error: 'Database error'
+      error: 'Database calculation error'
     });
   }
 }
+

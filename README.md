@@ -108,7 +108,7 @@ saimor-live/
 â”œâ”€â”€ next.config.js            # Next.js Config
 â”œâ”€â”€ tailwind.config.ts        # TailwindCSS Config
 â”‚
-â”œâ”€â”€ DEPLOYMENT.md             # ðŸ†• Deployment Guide
+â”œâ”€â”€ DEPLOY.md                  # ðŸ†• Deployment Guide
 â”œâ”€â”€ SOCIAL_MEDIA_LAUNCH.md    # ðŸ†• Social Media Strategie
 â””â”€â”€ README.md                 # Diese Datei
 ```
@@ -190,13 +190,16 @@ NEXT_PUBLIC_MATOMO_SITE_ID=1
 
 ## ðŸš¢ Deployment
 
-### **Vercel (Empfohlen)**
+### **Deployment Checklist**
 
-1. **GitHub verbinden:** Vercel Dashboard â†’ New Project
-2. **Environment Variables setzen:** Settings â†’ Environment Variables
-3. **Auto-Deploy:** Bei jedem Push auf `main`
+1. **Vercel Setup**: Connect repository to Vercel.
+2. **Environment Variables**: Add all variables from `.env.example`.
+3. **Database**: Use a hosted PostgreSQL (Supabase/Neon).
+4. **Prisma**: Run `npx prisma db push` to initialize the production DB.
 
-Detaillierte Anleitung: [`DEPLOYMENT.md`](./DEPLOYMENT.md)
+Detailed guides: 
+- [`DEPLOY.md`](./DEPLOY.md) (Standard)
+- [`VERCEL_DEPLOYMENT.md`](./docs/setup-guides/VERCEL_DEPLOYMENT.md) (Step-by-Step Vercel & Prisma)
 
 ### **Andere Hosts**
 
@@ -304,7 +307,7 @@ chore: Build/Tooling
 
 ## ðŸ“š Dokumentation
 
-- **Deployment:** [`DEPLOYMENT.md`](./DEPLOYMENT.md)
+- **Deployment:** [`DEPLOY.md`](./DEPLOY.md)
 - **Social Media Launch:** [`SOCIAL_MEDIA_LAUNCH.md`](./SOCIAL_MEDIA_LAUNCH.md)
 - **Backend Integration:** [`MORA_INTERACTIVITY_PLAN.md`](../saimor-core/MORA_INTERACTIVITY_PLAN.md)
 - **Claude Communication:** [`SHARED_CONTEXT.md`](../saimor-core/SHARED_CONTEXT.md)
