@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import PortalPreview from './PortalPreview';
-import { TransformationGuideLeadMagnet } from './LeadMagnet';
 import { DemoCTA } from './BusinessCTA';
 
 export default function PortalContent({ locale = 'de' }: { locale?: string }) {
@@ -132,22 +131,6 @@ export default function PortalContent({ locale = 'de' }: { locale?: string }) {
         ))}
       </motion.div>
 
-      {/* Lead Magnet Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="max-w-4xl mx-auto mb-20"
-      >
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-semibold mb-4 text-white">Kostenloser Transformations-Guide</h3>
-          <p className="text-white/70 max-w-2xl mx-auto">
-            Erfahre, wie du die digitale Transformation erfolgreich umsetzt.
-            Mit praktischen Tipps und Fallbeispielen.
-          </p>
-        </div>
-        <TransformationGuideLeadMagnet />
-      </motion.div>
 
       {/* Demo CTA */}
       <motion.div
