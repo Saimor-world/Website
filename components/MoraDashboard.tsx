@@ -42,7 +42,6 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [moraResponse, setMoraResponse] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
-  const [showMiniMap, setShowMiniMap] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [liveData, setLiveData] = useState<any>(null);
   const chartIdRef = useRef(0);
@@ -91,21 +90,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           e.preventDefault();
           if (selectedMetric) {
             setSelectedMetric(null);
-          } else if (showMiniMap) {
-            setShowMiniMap(false);
           }
-          break;
-        case 'm':
-        case 'M':
-          e.preventDefault();
-          setShowMiniMap(prev => !prev);
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [mounted, selectedMetric, showMiniMap]);
+  }, [mounted, selectedMetric]);
 
   // Real-time data polling - improved error handling
   useEffect(() => {
@@ -120,7 +112,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           signal: AbortSignal.timeout(5000) // 5s timeout
         });
         if (!isMounted) return;
-        
+
         if (response.ok) {
           const data = await response.json();
           setLiveData(data);
@@ -151,8 +143,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
     const timer = setInterval(() => {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString(locale === 'de' ? 'de-DE' : 'en-US', { 
-        hour: '2-digit', 
+      setCurrentTime(now.toLocaleTimeString(locale === 'de' ? 'de-DE' : 'en-US', {
+        hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       }));
@@ -226,7 +218,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       { id: 'satisfaction', label: t.metrics.satisfaction, value: 78, change: -3, status: 'warning' as const, category: 'people' as const, icon: Activity, nodeCount: 198, departmentCount: 5, spaceCount: 15, folderCount: 35, activeUsers: 32, lastActivity: 'vor 5 Std' },
       { id: 'workload', label: t.metrics.workload, value: 68, change: -15, status: 'critical' as const, category: 'resources' as const, icon: BarChart3, nodeCount: 89, departmentCount: 2, spaceCount: 6, folderCount: 14, activeUsers: 12, lastActivity: 'vor 8 Std' },
     ];
-    
+
     return baseMetrics.map(m => ({ ...m, trend: generateTrendForMetric(m.id) }));
   }, [t, generateTrendForMetric]);
 
@@ -242,85 +234,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     });
   }, [metrics.length, isMobile]);
 
-  // Mini-Map Component - fixed positioning
-  const MiniMap = useCallback(() => {
-    const mapWidth = 120;
-    const mapHeight = 120;
-    const scale = mapWidth / 100; // Convert percentage to pixels
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        className="absolute bottom-24 left-6 z-50 rounded-2xl bg-black/90 border-2 border-white/20 backdrop-blur-xl p-3 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-[9px] text-white/70 uppercase tracking-widest font-bold">Mini-Map</div>
-          <button
-            onClick={() => setShowMiniMap(false)}
-            className="w-5 h-5 rounded bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-            title="Schließen (ESC)"
-          >
-            <X className="w-3 h-3 text-white/60" />
-          </button>
-        </div>
-        <div className="relative" style={{ width: mapWidth, height: mapHeight }}>
-          {nodePositions.map((pos, i) => {
-            const m = metrics[i];
-            if (!m) return null;
-            const isSelected = selectedMetric === m.id;
-            const x = (pos.x / 100) * mapWidth;
-            const y = (pos.y / 100) * mapHeight;
-            
-            return (
-              <div
-                key={m.id}
-                className="absolute rounded-full cursor-pointer transition-all hover:scale-125"
-                style={{
-                  left: `${x}px`,
-                  top: `${y}px`,
-                  transform: 'translate(-50%, -50%)',
-                  width: isSelected ? '8px' : '6px',
-                  height: isSelected ? '8px' : '6px',
-                  backgroundColor: m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444',
-                  boxShadow: isSelected ? `0 0 8px ${m.status === 'good' ? '#10B981' : m.status === 'warning' ? '#F59E0B' : '#EF4444'}` : 'none',
-                  zIndex: isSelected ? 10 : 5,
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedMetric(m.id);
-                  setViewMode('universe');
-                }}
-                title={m.label}
-              />
-            );
-          })}
-          {/* Center Core */}
-          <div
-            className="absolute rounded-full"
-            style={{
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '10px',
-              height: '10px',
-              backgroundColor: '#06B6D4',
-              boxShadow: '0 0 12px #06B6D4',
-              zIndex: 15,
-            }}
-          />
-        </div>
-      </motion.div>
-    );
-  }, [nodePositions, metrics, selectedMetric]);
-
   // Trend Chart Component - unique IDs
   const TrendChart = useCallback(({ data, color }: { data: number[], color: string }) => {
     chartIdRef.current += 1;
     const chartId = `chart-${chartIdRef.current}-${Date.now()}`;
-    
+
     const max = Math.max(...data, 100);
     const min = Math.min(...data, 0);
     const range = max - min || 1;
@@ -386,7 +304,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
   return (
     <div className={`relative w-full ${isMobile ? 'h-[600px]' : 'h-[800px]'} bg-[#051208] group/os overflow-hidden font-sans select-none border border-white/20 rounded-[3rem] shadow-[0_0_100px_rgba(16,185,129,0.2)]`}>
-      
+
       {/* Loading indicator */}
       {isLoadingData && (
         <motion.div
@@ -398,22 +316,6 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         </motion.div>
       )}
 
-      {/* Mini-Map Toggle Button */}
-      {!showMiniMap && !isMobile && (
-        <button
-          onClick={() => setShowMiniMap(true)}
-          className="absolute bottom-24 left-6 z-40 w-10 h-10 rounded-xl bg-black/60 border border-white/20 backdrop-blur-md text-white/60 hover:text-white hover:bg-black/80 transition-all flex items-center justify-center shadow-lg"
-          title="Mini-Map öffnen (M)"
-        >
-          <Maximize2 className="w-4 h-4" />
-        </button>
-      )}
-
-      {/* Mini-Map */}
-      <AnimatePresence>
-        {showMiniMap && !isMobile && <MiniMap />}
-      </AnimatePresence>
-
       {/* Keyboard Shortcuts Hint */}
       {!isMobile && !selectedMetric && (
         <motion.div
@@ -423,34 +325,33 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         >
           <div>1-3: Views</div>
           <div>ESC: Close</div>
-          <div>M: Map</div>
         </motion.div>
       )}
 
       {/* 1. Scoped Universe Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.25)_0%,rgba(5,18,8,1)_90%)]" />
-        
-        <motion.div 
+
+        <motion.div
           className="absolute top-[5%] left-[5%] w-[80%] h-[80%] bg-emerald-400/25 blur-[160px] rounded-full"
-          animate={{ 
+          animate={{
             opacity: [0.6, 0.9, 0.6],
-            scale: [1, 1.15, 1] 
+            scale: [1, 1.15, 1]
           }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
+        <motion.div
           className="absolute bottom-[5%] right-[5%] w-[80%] h-[80%] bg-cyan-400/20 blur-[160px] rounded-full"
-          animate={{ 
+          animate={{
             opacity: [0.5, 0.8, 0.5],
-            scale: [1.15, 1, 1.15] 
+            scale: [1.15, 1, 1.15]
           }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="absolute bottom-0 inset-x-0 h-2/3 bg-gradient-to-t from-emerald-400/15 to-transparent" />
         <div className="absolute inset-0 bg-noise opacity-[0.25] mix-blend-overlay" />
-        
+
         {/* Stable Stars */}
         {starPositions.map((star, i) => (
           <motion.div
@@ -476,7 +377,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       <div className="absolute top-0 inset-x-0 h-16 z-30 flex items-center justify-between px-8 border-b border-white/30 backdrop-blur-2xl bg-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-3">
-            <motion.div 
+            <motion.div
               className="w-10 h-10 rounded-xl bg-emerald-400/40 border border-white/40 flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.5)]"
               whileHover={{ scale: 1.1, rotate: 5 }}
             >
@@ -484,7 +385,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             </motion.div>
             <span className="text-sm font-black tracking-[0.4em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] uppercase">{t.systemName}</span>
           </div>
-          
+
           {!isMobile && (
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-400/30 border border-white/40 shadow-lg">
@@ -513,9 +414,9 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
           {!isMobile && (
             <div className="relative group/search">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white group-focus-within/search:text-emerald-300 transition-colors" />
-              <input 
-                type="text" 
-                placeholder={t.search} 
+              <input
+                type="text"
+                placeholder={t.search}
                 className="bg-black/50 border border-white/30 rounded-full pl-10 pr-4 py-2.5 text-[11px] text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 w-48 focus:w-80 transition-all backdrop-blur-md shadow-2xl font-bold"
               />
             </div>
@@ -524,7 +425,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             <Bell className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} group-hover/btn:scale-110 transition-transform`} />
             <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-black shadow-[0_0_10px_rgba(52,211,153,1)]" />
           </button>
-          <motion.div 
+          <motion.div
             className={`${isMobile ? 'w-9 h-9 text-[10px]' : 'w-11 h-11 text-[12px]'} rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 border border-white/40 flex items-center justify-center font-black text-white shadow-2xl cursor-pointer backdrop-blur-md`}
             whileHover={{ scale: 1.1, border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 35px rgba(52,211,153,0.5)' }}
           >
@@ -536,17 +437,17 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       {/* 3. Main Content Area */}
       <div className={`absolute ${isMobile ? 'top-16 bottom-20' : 'top-16 bottom-24'} inset-x-0 z-10 overflow-hidden`}>
         <AnimatePresence mode="wait">
-          
+
           {/* VIEW: UNIVERSE */}
           {viewMode === 'universe' && (
-            <motion.div 
+            <motion.div
               key="universe"
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className="absolute inset-0"
             >
-              <svg 
+              <svg
                 className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
@@ -568,7 +469,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   const midY = (pos.y + next.y) / 2;
                   const curveOffset = i % 2 === 0 ? 5 : -5;
                   const path = `M ${pos.x} ${pos.y} Q ${midX + curveOffset} ${midY - curveOffset} ${next.x} ${next.y}`;
-                  
+
                   return (
                     <g key={i}>
                       <motion.path
@@ -628,17 +529,16 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     <motion.div
                       className={`absolute ${isMobile ? 'inset-[-20px] blur-[30px]' : 'inset-[-40px] blur-[50px]'} rounded-full opacity-60`}
                       style={{ background: `radial-gradient(circle, ${statusColor} 0%, transparent 70%)` }}
-                      animate={{ 
+                      animate={{
                         scale: [1, 1.4, 1],
                         opacity: [0.4, 0.7, 0.4]
                       }}
                       transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
                     />
-                    
+
                     <motion.div
-                      className={`relative ${isMobile ? 'w-12 h-12' : 'w-24 h-24'} rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${
-                        isSelected ? 'scale-125 border-white shadow-[0_0_60px_rgba(255,255,255,0.5)]' : 'border-white/40 hover:border-white/60'
-                      }`}
+                      className={`relative ${isMobile ? 'w-12 h-12' : 'w-24 h-24'} rounded-full flex items-center justify-center backdrop-blur-3xl border-2 transition-all duration-500 group/node ${isSelected ? 'scale-125 border-white shadow-[0_0_60px_rgba(255,255,255,0.5)]' : 'border-white/40 hover:border-white/60'
+                        }`}
                       style={{
                         background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, rgba(10,20,15,0.6) 100%)`,
                         boxShadow: `0 0 40px ${statusGlow}, inset 0 0 30px rgba(255,255,255,0.2)`
@@ -677,8 +577,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   <div className={`absolute inset-0 rounded-full ${isMobile ? 'border-2' : 'border-4'} border-emerald-400/50 animate-[spin_12s_linear_infinite]`} />
                   <div className={`absolute ${isMobile ? 'inset-3' : 'inset-10'} rounded-full border-2 border-white/40 animate-[spin_18s_linear_infinite_reverse]`} />
                   <div className={`absolute ${isMobile ? 'inset-[-20px] blur-[40px]' : 'inset-[-60px] blur-[80px]'} rounded-full bg-emerald-400/30 opacity-80 animate-pulse`} />
-                  
-                  <div 
+
+                  <div
                     className={`${isMobile ? 'w-16 h-16' : 'w-36 h-36'} rounded-full bg-gradient-to-br from-emerald-300 via-emerald-500 to-emerald-600 flex items-center justify-center cursor-pointer shadow-[0_0_80px_rgba(52,211,153,1)] transition-all active:scale-95 group-hover/core:scale-110 group-hover/core:shadow-[0_0_120px_rgba(52,211,153,1)] ${isMobile ? 'border-2' : 'border-4'} border-white shadow-2xl`}
                     onClick={() => handleViewModeChange('chat')}
                   >
@@ -797,7 +697,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
 
                 <div className={`${isMobile ? 'p-6' : 'p-10'} bg-white/5 border-t border-white/20 backdrop-blur-xl`}>
                   <div className="relative max-w-4xl mx-auto">
-                    <input 
+                    <input
                       type="text"
                       value={userQuestion}
                       onChange={(e) => setUserQuestion(e.target.value)}
@@ -810,7 +710,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       placeholder={isMobile ? "Frage..." : "Frage nach Zusammenhängen..."}
                       className={`w-full bg-black/40 border-2 border-white/30 rounded-3xl ${isMobile ? 'pl-6 pr-16 py-4 text-sm' : 'pl-8 pr-20 py-6 text-base'} text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 shadow-2xl backdrop-blur-2xl`}
                     />
-                    <button 
+                    <button
                       onClick={() => {
                         if (userQuestion.trim()) {
                           setMoraResponse("Ich analysiere die semantischen Verbindungen in deinem System... Basierend auf der aktuellen Gesundheitsscore von 87% sehe ich ein starkes Potenzial zur Optimierung im Bereich 'Velocity' durch engere Verzahnung mit dem 'Clarity Index'.");
@@ -840,13 +740,12 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
             <button
               key={item.id}
               onClick={() => handleViewModeChange(item.id as ViewMode)}
-              className={`flex items-center ${isMobile ? 'gap-2 px-4 py-3' : 'gap-4 px-8 py-4'} rounded-[2rem] transition-all group relative overflow-hidden ${
-                viewMode === item.id ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
+              className={`flex items-center ${isMobile ? 'gap-2 px-4 py-3' : 'gap-4 px-8 py-4'} rounded-[2rem] transition-all group relative overflow-hidden ${viewMode === item.id ? 'text-white' : 'text-white/60 hover:text-white hover:bg-white/10'
+                }`}
               title={`${item.label} (${item.key})`}
             >
               {viewMode === item.id && (
-                <motion.div 
+                <motion.div
                   layoutId="activeDock"
                   className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 shadow-[0_0_30px_rgba(52,211,153,0.6)] border border-white/40"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
@@ -855,7 +754,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
               <item.icon className={`${isMobile ? 'w-5 h-5' : 'w-6 h-6'} relative z-10`} />
               <AnimatePresence>
                 {viewMode === item.id && (
-                  <motion.span 
+                  <motion.span
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: 'auto', opacity: 1 }}
                     exit={{ width: 0, opacity: 0 }}
@@ -881,20 +780,20 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       <AnimatePresence>
         {selectedMetric && (
           <motion.div
-            initial={{ 
-              x: isMobile ? 0 : 400, 
-              y: isMobile ? 100 : 0, 
-              opacity: 0 
+            initial={{
+              x: isMobile ? 0 : 400,
+              y: isMobile ? 100 : 0,
+              opacity: 0
             }}
-            animate={{ 
-              x: 0, 
-              y: 0, 
-              opacity: 1 
+            animate={{
+              x: 0,
+              y: 0,
+              opacity: 1
             }}
-            exit={{ 
-              x: isMobile ? 0 : 400, 
-              y: isMobile ? 100 : 0, 
-              opacity: 0 
+            exit={{
+              x: isMobile ? 0 : 400,
+              y: isMobile ? 100 : 0,
+              opacity: 0
             }}
             className={`absolute ${isMobile ? 'inset-4 z-[100]' : 'top-20 right-8 bottom-24 w-96 z-40'} p-8 rounded-[2.5rem] bg-black/90 border-2 border-white/20 backdrop-blur-[40px] shadow-[0_32px_64px_rgba(0,0,0,0.8)] overflow-y-auto custom-scrollbar`}
           >
@@ -908,8 +807,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center">
                       <m.icon className="w-7 h-7 text-white/80" />
                     </div>
-                    <button 
-                      onClick={() => setSelectedMetric(null)} 
+                    <button
+                      onClick={() => setSelectedMetric(null)}
                       className="p-2 rounded-xl hover:bg-white/5 text-white/20 hover:text-white transition-colors"
                       title="Schließen (ESC)"
                     >
@@ -921,11 +820,10 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     <h3 className="text-3xl font-light italic mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{m.label}</h3>
                     <div className="flex items-center gap-4">
                       <span className="text-4xl font-mono font-bold text-white">{m.value}%</span>
-                      <div className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${
-                        m.status === 'good' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 
-                        m.status === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/10 border-red-500/20 text-red-400'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${m.status === 'good' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
+                          m.status === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
+                            'bg-red-500/10 border-red-500/20 text-red-400'
+                        }`}>
                         {m.status}
                       </div>
                     </div>
@@ -958,7 +856,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">KI ANALYSE</span>
                     </div>
                     <p className="text-xs text-white/60 leading-relaxed italic">
-                      &quot;Die Resonanz im Bereich {m.label} zeigt eine starke Korrelation mit dem Team-Engagement. 
+                      &quot;Die Resonanz im Bereich {m.label} zeigt eine starke Korrelation mit dem Team-Engagement.
                       Empfehlung: Vertiefung der semantischen Knoten in Abteilung 3.&quot;
                     </p>
                     <button className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors">
