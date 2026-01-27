@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, TrendingUp, TrendingDown, Users, Target, BarChart3,
-  MessageSquare, Send, X,
+  MessageSquare, Send, X, ArrowRight,
   Activity, LayoutGrid, Building2, Zap, Settings, User, Compass, Search, Bell, Eye, Minimize2, Maximize2
 } from 'lucide-react';
 
@@ -43,8 +43,42 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [liveData, setLiveData] = useState<any>(null);
   const chartIdRef = useRef(0);
+
+  const getContextualResponse = (question: string) => {
+    const q = question.toLowerCase();
+    const responses = {
+      team: [
+        "Die Resonanzanalyse zeigt eine fluktuierende Dynamik. Der 'Clarity Index' im Team-Backend ist auf 87% gestiegen, was auf verbesserte interne Kommunikation hindeutet.",
+        "Ich erkenne eine starke semantische Kopplung zwischen Team-Zufriedenheit und Output-Velocity. Ein leichter Drift in Abteilung 3 sollte beobachtet werden.",
+        "Die sozialen Knotenpunkte im System sind hochaktiv. Die Resonanz im Bereich 'Collaboration' ist auf einem Allzeithoch."
+      ],
+      finanz: [
+        "Finanz-Knoten stabil. Ich erkenne jedoch eine semantische Reibung im Bereich 'Resource Allocation'. Eine Optimierung würde die Effizienz um ca. 12% steigern.",
+        "Die Budget-Resonanz ist im grünen Bereich. Die semantische Schicht empfiehlt eine Re-Investigation der Fixkosten-Cluster in Q3.",
+        "Positive Korrelation zwischen F&E-Investitionen und der zukünftigen Velocity-Prognose detektiert."
+      ],
+      vision: [
+        "Ich bin MÔRA Intelligence, die semantische Schicht deines Unternehmens. Ich sehe keine isolierten Daten, sondern ganzheitliche Resonanzen.",
+        "Meine Aufgabe ist es, die verborgenen Muster in deinem Organisations-Universum sichtbar zu machen. Aktueller Systemstatus: Harmonisch.",
+        "Resonanz v4.2 aktiv. Ich verarbeite aktuell über 150.000 semantische Knoten pro Sekunde für maximale Klarheit."
+      ],
+      default: [
+        "Interessante Beobachtung. Die Korrelation zwischen 'Velocity' und 'Clarity' hat sich verdichtet. Ich empfehle tiefergehende Analysen in Cluster 7.",
+        "Analyse abgeschlossen. Ich habe eine minimale Anomalie in den Kommunikations-Clustern gefunden, die auf Informationsverlust hindeuten könnte.",
+        "Die Datenströme fließen synchron. Fokus liegt aktuell auf der Erhaltung des hohen Resonanzniveaus von 91% in der Prozess-Effizienz.",
+        "System-Check: Alle semantischen Pfade sind offen. Die Resonanz-Matrix zeigt keine nennenswerten Interferenzen."
+      ]
+    };
+
+    if (q.includes('team') || q.includes('mitarbeiter') || q.includes('leute')) return responses.team[Math.floor(Math.random() * responses.team.length)];
+    if (q.includes('geld') || q.includes('umsatz') || q.includes('kosten') || q.includes('finanz')) return responses.finanz[Math.floor(Math.random() * responses.finanz.length)];
+    if (q.includes('wer bist') || q.includes('mora') || q.includes('was tust')) return responses.vision[Math.floor(Math.random() * responses.vision.length)];
+
+    return responses.default[Math.floor(Math.random() * responses.default.length)];
+  };
 
   // Stable star positions - only generate once
   const starPositions = useMemo(() => {
@@ -670,19 +704,29 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                 </div>
 
                 <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-6' : 'p-10'} space-y-10 custom-scrollbar`}>
-                  {moraResponse ? (
+                  {moraResponse || isThinking ? (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${isMobile ? 'gap-4' : 'gap-6'}`}>
                       <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(52,211,153,0.5)]">
-                        <Sparkles className="w-6 h-6 text-white" />
+                        <Sparkles className={`w-6 h-6 text-white ${isThinking ? 'animate-spin' : ''}`} />
                       </div>
                       <div className="space-y-6 max-w-[85%]">
                         <div className={`${isMobile ? 'p-4' : 'p-6'} rounded-[2rem] bg-white/[0.08] border border-white/20 shadow-xl backdrop-blur-md`}>
-                          <p className="text-white text-base leading-relaxed font-medium">{moraResponse}</p>
+                          {isThinking ? (
+                            <div className="flex gap-2 p-2">
+                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2 h-2 rounded-full bg-emerald-400" />
+                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }} className="w-2 h-2 rounded-full bg-emerald-400" />
+                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }} className="w-2 h-2 rounded-full bg-emerald-400" />
+                            </div>
+                          ) : (
+                            <p className="text-white text-base leading-relaxed font-medium">{moraResponse}</p>
+                          )}
                         </div>
-                        <div className="flex flex-wrap gap-3">
-                          <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-[11px] hover:bg-emerald-400 transition-all font-black uppercase tracking-widest shadow-lg">Metriken korrelieren</button>
-                          <button className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-[11px] text-white hover:bg-white/20 transition-all font-black uppercase tracking-widest">Report</button>
-                        </div>
+                        {!isThinking && (
+                          <div className="flex flex-wrap gap-3">
+                            <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-[11px] hover:bg-emerald-400 transition-all font-black uppercase tracking-widest shadow-lg">Metriken korrelieren</button>
+                            <button className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-[11px] text-white hover:bg-white/20 transition-all font-black uppercase tracking-widest">Report</button>
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   ) : (
@@ -702,22 +746,36 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       value={userQuestion}
                       onChange={(e) => setUserQuestion(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' && userQuestion.trim()) {
-                          setMoraResponse("Ich analysiere die semantischen Verbindungen in deinem System... Basierend auf der aktuellen Gesundheitsscore von 87% sehe ich ein starkes Potenzial zur Optimierung im Bereich 'Velocity' durch engere Verzahnung mit dem 'Clarity Index'.");
+                        if (e.key === 'Enter' && userQuestion.trim() && !isThinking) {
+                          const question = userQuestion;
                           setUserQuestion('');
+                          setIsThinking(true);
+                          setMoraResponse(null);
+                          setTimeout(() => {
+                            setMoraResponse(getContextualResponse(question));
+                            setIsThinking(false);
+                          }, 1500 + Math.random() * 1000);
                         }
                       }}
                       placeholder={isMobile ? "Frage..." : "Frage nach Zusammenhängen..."}
-                      className={`w-full bg-black/40 border-2 border-white/30 rounded-3xl ${isMobile ? 'pl-6 pr-16 py-4 text-sm' : 'pl-8 pr-20 py-6 text-base'} text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 shadow-2xl backdrop-blur-2xl`}
+                      disabled={isThinking}
+                      className={`w-full bg-black/40 border-2 border-white/30 rounded-3xl ${isMobile ? 'pl-6 pr-16 py-4 text-sm' : 'pl-8 pr-20 py-6 text-base'} text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 shadow-2xl backdrop-blur-2xl disabled:opacity-50`}
                     />
                     <button
                       onClick={() => {
-                        if (userQuestion.trim()) {
-                          setMoraResponse("Ich analysiere die semantischen Verbindungen in deinem System... Basierend auf der aktuellen Gesundheitsscore von 87% sehe ich ein starkes Potenzial zur Optimierung im Bereich 'Velocity' durch engere Verzahnung mit dem 'Clarity Index'.");
+                        if (userQuestion.trim() && !isThinking) {
+                          const question = userQuestion;
                           setUserQuestion('');
+                          setIsThinking(true);
+                          setMoraResponse(null);
+                          setTimeout(() => {
+                            setMoraResponse(getContextualResponse(question));
+                            setIsThinking(false);
+                          }, 1500 + Math.random() * 1000);
                         }
                       }}
-                      className={`absolute ${isMobile ? 'right-2' : 'right-4'} top-1/2 -translate-y-1/2 ${isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.4)] active:scale-95 transition-all hover:bg-emerald-400`}
+                      className={`absolute ${isMobile ? 'right-2' : 'right-4'} top-1/2 -translate-y-1/2 ${isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.4)] active:scale-95 transition-all hover:bg-emerald-400 disabled:opacity-50`}
+                      disabled={isThinking}
                     >
                       <Send className={`${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
                     </button>
@@ -821,8 +879,8 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                     <div className="flex items-center gap-4">
                       <span className="text-4xl font-mono font-bold text-white">{m.value}%</span>
                       <div className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${m.status === 'good' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                          m.status === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
-                            'bg-red-500/10 border-red-500/20 text-red-400'
+                        m.status === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
+                          'bg-red-500/10 border-red-500/20 text-red-400'
                         }`}>
                         {m.status}
                       </div>
@@ -856,11 +914,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">KI ANALYSE</span>
                     </div>
                     <p className="text-xs text-white/60 leading-relaxed italic">
-                      &quot;Die Resonanz im Bereich {m.label} zeigt eine starke Korrelation mit dem Team-Engagement.
-                      Empfehlung: Vertiefung der semantischen Knoten in Abteilung 3.&quot;
+                      {m.status === 'good'
+                        ? `&quot;Die Resonanz im Bereich ${m.label} ist exzellent. Ich sehe eine starke Kopplung mit dem ${m.category}-Cluster. Fokus auf Erhaltung empfohlen.&quot;`
+                        : `&quot;Ich erkenne eine semantische Divergenz im Bereich ${m.label}. Die Korrelation mit dem Clarity-Index sinkt. Sofortige Tiefenanalyse ratsam.&quot;`
+                      }
                     </p>
-                    <button className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors">
-                      Tiefenanalyse starten
+                    <button className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors group/btn flex items-center justify-center gap-2">
+                      <span>Tiefenanalyse</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>
                 </div>

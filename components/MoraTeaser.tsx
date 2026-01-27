@@ -24,7 +24,7 @@ export default function MoraTeaser({ locale }: Props) {
 
             <div className="relative z-10 mx-auto max-w-6xl px-6">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    
+
                     {/* Text Side */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -70,27 +70,32 @@ export default function MoraTeaser({ locale }: Props) {
                         </div>
                     </motion.div>
 
-                    {/* Visual Side - Abstract Representation */}
+                    {/* Visual Side - High Fidelity Semantic Network */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1 }}
-                        className="relative h-[400px] flex items-center justify-center"
+                        className="relative h-[450px] flex items-center justify-center"
                     >
-                        <div className="absolute w-64 h-64 bg-emerald-500/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative w-48 h-48 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl rotate-12 flex items-center justify-center overflow-hidden group hover:rotate-0 transition-transform duration-700">
-                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <Sparkles className="w-16 h-16 text-emerald-400 opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+                        <div className="absolute w-80 h-80 bg-emerald-500/20 blur-[100px] rounded-full animate-pulse" />
+                        <div className="relative w-full max-w-md aspect-square rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-2xl rotate-3 flex items-center justify-center overflow-hidden shadow-2xl group hover:rotate-0 transition-all duration-700">
+                            <img
+                                src="/images/mora_showcase.png"
+                                alt="Mora Semantic Intelligence"
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 blur-[0.5px] group-hover:blur-0"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#081410] via-transparent to-transparent opacity-60" />
                         </div>
+
                         {/* Orbiting particles */}
-                        <motion.div 
-                            className="absolute w-full h-full"
+                        <motion.div
+                            className="absolute w-full h-full pointer-events-none"
                             animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                         >
-                            <div className="absolute top-0 left-1/2 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,1)]" />
-                            <div className="absolute bottom-10 right-20 w-1.5 h-1.5 bg-cyan-400 rounded-full" />
+                            <div className="absolute top-10 left-1/2 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_15px_rgba(52,211,153,1)]" />
+                            <div className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px]" />
                         </motion.div>
                     </motion.div>
                 </div>
