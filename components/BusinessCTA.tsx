@@ -31,7 +31,7 @@ export default function BusinessCTA({
   },
   secondaryAction = {
     text: "Live Demo",
-    href: "/demo",
+    href: "/mora",
     icon: <Zap className="w-5 h-5" />
   }
 }: BusinessCTAProps) {
@@ -164,12 +164,12 @@ export function DemoCTA() {
       subtitle="Entdecke das semantische Dashboard in Aktion. Voll funktionsfähig, sicher & kostenlos."
       primaryAction={{
         text: "Demo starten",
-        href: "/demo",
+        href: "/mora",
         icon: <Zap className="w-5 h-5" />
       }}
       secondaryAction={{
         text: "Persönliche Demo",
-        href: "/de/kontakt",
+        href: "https://cal.com/saimor/30min",
         icon: <Calendar className="w-5 h-5" />
       }}
     />
@@ -208,7 +208,7 @@ export function StickyCTA() {
       }}
       secondaryAction={{
         text: "Demo",
-        href: "/demo",
+        href: "/mora",
         icon: <Zap className="w-4 h-4" />
       }}
     />
