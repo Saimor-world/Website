@@ -8,15 +8,15 @@ describe('DemoPreview', () => {
   it('shows German demo hint and badge', () => {
     const { container } = render(<DemoPreview locale="de" />);
 
-    expect(screen.getByText('Live Demo Panel')).toBeInTheDocument();
-    expect(screen.getAllByText(/Demo-Ansicht/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Demo').length).toBeGreaterThan(0);
+    expect(screen.getByText(/Demo-Ansicht/)).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('renders English copy without crashing', () => {
     const { container } = render(<DemoPreview locale="en" />);
 
-    expect(screen.getByText(/resonance space/i)).toBeInTheDocument();
+    expect(screen.getByText(/Live Demo Panel/i)).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
 });

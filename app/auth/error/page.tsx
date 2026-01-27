@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-// Removed motion import
+import { motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';

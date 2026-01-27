@@ -63,7 +63,9 @@ export default function TrustContent() {
           <div className="space-y-4">
             <h4 className="text-xl font-bold text-white uppercase tracking-widest">DSGVO Standard</h4>
             <p className="text-white/60 leading-relaxed italic">
-              "In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."
+              {
+                '"In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."'
+              }
             </p>
           </div>
         </div>
@@ -159,7 +161,7 @@ export default function TrustContent() {
           <div className="space-y-6">
             <h4 className="text-xl font-semibold text-white">Audit-Trail</h4>
             <p className="text-white/70">
-              Alle Änderungen sind dokumentiert und nachvollziehbar. Keine "magischen" Algorithmen.
+              {'Alle Änderungen sind dokumentiert und nachvollziehbar. Keine "magischen" Algorithmen.'}
             </p>
 
             <h4 className="text-xl font-semibold text-white">EU-First</h4>

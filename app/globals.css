@@ -23,7 +23,8 @@ body {
   height: 100%;
   background: #0B0F10;
   scroll-behavior: smooth;
-  overflow-x: hidden !important; /* Fix mobile horizontal overflow */
+  overflow-x: hidden !important;
+  /* Fix mobile horizontal overflow */
   width: 100%;
   position: relative;
 
@@ -165,6 +166,7 @@ a,
     opacity: 0;
     transform: translateY(12px) translateZ(0);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) translateZ(0);
@@ -195,11 +197,25 @@ a,
 }
 
 /* Stagger delays for elements */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.stagger-5 {
+  animation-delay: 0.5s;
+}
 
 /* Keyboard key styling */
 kbd {
@@ -233,6 +249,7 @@ kbd {
     transform: translateY(-20px) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(100vh) rotate(360deg);
     opacity: 0;
@@ -240,10 +257,13 @@ kbd {
 }
 
 @keyframes matrixPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
     opacity: 0.1;
   }
+
   50% {
     background-position: 100% 50%;
     opacity: 0.3;
@@ -268,4 +288,18 @@ kbd {
 
 .glow-hover:hover {
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
 }

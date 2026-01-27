@@ -5,6 +5,8 @@ import { getToken } from 'next-auth/jwt';
 import { authOptions } from '@/lib/auth';
 import { publicChatLimiter, authChatLimiter, getClientIP } from '@/lib/rate-limit';
 import { SessionStore } from '@/lib/session-store';
+import { prisma } from '@/lib/prisma';
+
 
 interface ChatMessage {
   id: string;
@@ -21,8 +23,7 @@ interface ChatSession {
   lastActivity: Date;
 }
 
-// In-memory storage for demo (replace with database in production)
-const chatSessions = new Map<string, ChatSession>();
+// Sessions are now managed via Prisma
 
 export async function POST(request: NextRequest) {
   try {
@@ -113,33 +114,40 @@ export async function POST(request: NextRequest) {
       SessionStore.incrementMessageCount(sessionId);
     }
 
-    // Create or get session
-    let chatSession = chatSessions.get(sessionId);
-    if (!chatSession) {
-      chatSession = {
-        id: sessionId,
-        messages: [],
-        createdAt: new Date(),
+    // Create or get session in DB
+    const dbSession = await prisma.chatSession.upsert({
+      where: { externalId: sessionId },
+      update: { lastActivity: new Date(), updatedAt: new Date() },
+      create: {
+        externalId: sessionId,
+        userId: session?.user?.email || null,
         lastActivity: new Date()
-      };
-      chatSessions.set(sessionId, chatSession);
-    }
+      }
+    });
 
-    // Add user message
-    const userMessage: ChatMessage = {
-      id: `msg_${Date.now()}_user`,
-      content: message,
-      role: 'user',
-      timestamp: new Date(),
-      sessionId
-    };
-    chatSession.messages.push(userMessage);
+    // Add user message to DB
+    await prisma.message.create({
+      data: {
+        role: 'user',
+        content: message,
+        sessionId: dbSession.id
+      }
+    });
+
+    // Get message history for AI context
+    const dbMessages = await prisma.message.findMany({
+      where: { sessionId: dbSession.id },
+      orderBy: { timestamp: 'desc' },
+      take: 10
+    });
+
+    const messagesForAI = dbMessages.reverse();
 
     // Route to appropriate AI service based on authentication
     let aiResponse: string;
     let isBackendResponse = false;
 
-    if (session?.user?.role === 'pro') {
+    if (session?.user?.role === 'pro' || session?.user?.role === 'owner') {
       // Pro users: Try backend first, fallback to Sonnet
       try {
         // Get JWT token for backend authentication
@@ -153,32 +161,41 @@ export async function POST(request: NextRequest) {
         isBackendResponse = true;
       } catch (error) {
         console.warn('Backend unavailable, using direct Sonnet:', error);
-        aiResponse = await generateSonnetResponse(message, chatSession);
+        aiResponse = await generateSonnetResponse(message, {
+          id: sessionId,
+          messages: messagesForAI as any,
+          createdAt: dbSession.createdAt,
+          lastActivity: dbSession.lastActivity
+        });
         aiResponse += '\n\n_Hinweis: Antwort via direkten KI-Zugang (Backend temporär nicht verfügbar)._';
       }
     } else {
       // Public users: Claude Haiku with limits
-      aiResponse = await generateHaikuResponse(message, chatSession);
+      aiResponse = await generateHaikuResponse(message, {
+        id: sessionId,
+        messages: messagesForAI as any,
+        createdAt: dbSession.createdAt,
+        lastActivity: dbSession.lastActivity
+      });
     }
 
-    const assistantMessage: ChatMessage = {
-      id: `msg_${Date.now()}_assistant`,
-      content: aiResponse,
-      role: 'assistant',
-      timestamp: new Date(),
-      sessionId
-    };
-    chatSession.messages.push(assistantMessage);
-    chatSession.lastActivity = new Date();
+    // Add assistant message to DB
+    const assistantMessage = await prisma.message.create({
+      data: {
+        role: 'assistant',
+        content: aiResponse,
+        sessionId: dbSession.id
+      }
+    });
 
     // Send to n8n webhook if configured
     await sendToN8N('chat_message', {
       sessionId,
-      userMessage,
+      userMessage: { role: 'user', content: message },
       assistantMessage,
       sessionContext: {
-        messageCount: chatSession.messages.length,
-        duration: Date.now() - chatSession.createdAt.getTime(),
+        messageCount: messagesForAI.length + 1,
+        duration: Date.now() - dbSession.createdAt.getTime(),
         isAuthenticated: !!session?.user,
         userRole: session?.user?.role || 'public',
         isBackendResponse
@@ -188,8 +205,8 @@ export async function POST(request: NextRequest) {
     const responseData: any = {
       message: assistantMessage,
       session: {
-        id: chatSession.id,
-        messageCount: chatSession.messages.length
+        id: dbSession.externalId,
+        messageCount: messagesForAI.length + 1
       }
     };
 
@@ -227,7 +244,11 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const session = chatSessions.get(sessionId);
+  const session = await prisma.chatSession.findUnique({
+    where: { externalId: sessionId },
+    include: { messages: { orderBy: { timestamp: 'asc' } } }
+  });
+
   if (!session) {
     return NextResponse.json(
       { error: 'Session not found' },
@@ -237,7 +258,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     session: {
-      id: session.id,
+      id: session.externalId,
       messages: session.messages,
       messageCount: session.messages.length,
       createdAt: session.createdAt,

@@ -2,69 +2,64 @@
 
 exports[`MyceliumSection > renders German forest and mycelium copy 1`] = `
 <section
-  class="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24"
+  class="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-[#0c1813] via-[#0f1f17] to-[#0c1813]"
   id="mycelium"
-  style="background: linear-gradient(180deg, rgba(12, 24, 19, 0.98) 0%, rgba(14, 26, 22, 0.94) 40%, rgba(10, 20, 16, 0.96) 100%);"
 >
   <div
-    class="absolute inset-0 opacity-25 pointer-events-none"
-    style="background: radial-gradient(circle at 25% 20%, rgba(212, 168, 87, 0.35), transparent 55%);"
+    class="absolute inset-0 opacity-30 pointer-events-none"
+    style="background: radial-gradient(circle at 20% 15%, rgba(212, 168, 87, 0.15), transparent 55%), radial-gradient(circle at 80% 10%, rgba(74, 103, 65, 0.18), transparent 60%);"
   />
   <div
-    class="absolute inset-0 opacity-20 pointer-events-none"
-    style="background: radial-gradient(circle at 75% 10%, rgba(74, 103, 65, 0.25), transparent 55%);"
-  />
-  <div
-    class="relative mx-auto max-w-6xl px-6 lg:px-8 space-y-10"
+    class="relative mx-auto max-w-6xl px-6 lg:px-8 space-y-8 text-white"
   >
     <header
-      class="space-y-3 text-center text-white"
+      class="text-center space-y-4"
     >
       <p
-        class="text-xs uppercase tracking-[0.45em] text-saimor-gold"
+        class="text-xs uppercase tracking-[0.35em] text-saimor-gold"
       >
-        Wald · Myzel · Demo-Ansicht
+        So funktioniert's
       </p>
       <h2
         class="text-3xl sm:text-4xl font-semibold"
         style="font-family: "Cormorant Garamond", serif;"
       >
-        Was oben rauscht, fließt unten zusammen
+        Oben der Wald, unten das Myzel
       </h2>
       <p
         class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
       >
-        Unter jeder Organisation liegt ein Myzel aus Daten, Entscheidungen und Beziehungen. Môra macht dieses Geflecht sichtbar – als Demo-Ansicht, Feld und ruhigen Dialog.
+        Môra bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.
       </p>
-      <p
-        class="text-xs text-white/60"
+      <div
+        class="flex flex-wrap justify-center gap-3 text-[10px] uppercase tracking-[0.4em] text-white/65"
       >
-        Demo-Ansicht ansehen
-         
-        Â·
-         
-        <a
-          class="text-saimor-gold underline-offset-4 hover:underline"
-          href="#demo-preview"
+        <span
+          class="rounded-full border border-white/10 bg-white/5 px-4 py-1"
         >
-          Zum Live Demo Panel
-        </a>
-      </p>
+          Ruhig
+        </span>
+        <span
+          class="rounded-full border border-white/10 bg-white/5 px-4 py-1"
+        >
+          Klar
+        </span>
+      </div>
     </header>
     <div
-      class="grid lg:grid-cols-2 gap-8 items-start"
+      class="grid gap-6 lg:grid-cols-3"
     >
       <div
-        class="space-y-6"
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22)]"
       >
         <div
-          class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+          class="flex items-center gap-3 text-white"
         >
-          <div
-            class="flex items-center gap-2 text-saimor-gold mb-3"
+          <span
+            class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
           >
             <svg
-              class="lucide lucide-leaf w-5 h-5"
+              class="lucide lucide-leaf h-5 w-5 text-saimor-gold"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -82,61 +77,65 @@ exports[`MyceliumSection > renders German forest and mycelium copy 1`] = `
                 d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
               />
             </svg>
-            <span
-              class="text-sm font-semibold"
-            >
-              Oben: der Wald
-            </span>
-          </div>
-          <ul
-            class="space-y-2 text-white/80 leading-relaxed text-sm sm:text-base"
+          </span>
+          <h3
+            class="text-lg font-semibold"
           >
-            <li
-              class="flex gap-2"
-            >
-              <span
-                class="text-saimor-gold font-semibold"
-              >
-                •
-              </span>
-              <span>
-                Teams, Projekte, Signale – viele Stimmen, wenig Zeit
-              </span>
-            </li>
-            <li
-              class="flex gap-2"
-            >
-              <span
-                class="text-saimor-gold font-semibold"
-              >
-                •
-              </span>
-              <span>
-                Wir sammeln nur, was für Klarheit nötig ist
-              </span>
-            </li>
-            <li
-              class="flex gap-2"
-            >
-              <span
-                class="text-saimor-gold font-semibold"
-              >
-                •
-              </span>
-              <span>
-                Kein Lärm, keine Versprechen, die noch nicht existieren
-              </span>
-            </li>
-          </ul>
+            Der Wald
+          </h3>
         </div>
-        <div
-          class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+        <ul
+          class="mt-4 space-y-2 text-sm text-white/80"
         >
-          <div
-            class="flex items-center gap-2 text-saimor-gold mb-3"
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Teams & Projekte an einem Ort
+            </span>
+          </li>
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Nur was wichtig ist
+            </span>
+          </li>
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Ruhiger Überblick
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22)]"
+      >
+        <div
+          class="flex items-center gap-3 text-white"
+        >
+          <span
+            class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
           >
             <svg
-              class="lucide lucide-network w-5 h-5"
+              class="lucide lucide-network h-5 w-5 text-saimor-gold"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -175,95 +174,65 @@ exports[`MyceliumSection > renders German forest and mycelium copy 1`] = `
                 d="M12 12V8"
               />
             </svg>
-            <span
-              class="text-sm font-semibold"
-            >
-              Unten: das Myzel
-            </span>
-          </div>
-          <div
-            class="flex flex-wrap gap-2 mb-4"
+          </span>
+          <h3
+            class="text-lg font-semibold"
           >
-            <span
-              class="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/80"
-            >
-              Demo-Ansicht (simulierte Daten)
-            </span>
-          </div>
-          <div
-            class="grid grid-cols-2 gap-2 text-sm sm:text-base text-white/85"
-          >
-            <div
-              class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 flex items-center gap-2"
-            >
-              <span
-                class="w-1.5 h-1.5 rounded-full bg-saimor-gold flex-shrink-0"
-              />
-              <span>
-                Quellen verbinden (Connectoren)
-              </span>
-            </div>
-            <div
-              class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 flex items-center gap-2"
-            >
-              <span
-                class="w-1.5 h-1.5 rounded-full bg-saimor-gold flex-shrink-0"
-              />
-              <span>
-                Myzel erkennen (Feld)
-              </span>
-            </div>
-            <div
-              class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 flex items-center gap-2"
-            >
-              <span
-                class="w-1.5 h-1.5 rounded-full bg-saimor-gold flex-shrink-0"
-              />
-              <span>
-                Kontext & Insights
-              </span>
-            </div>
-            <div
-              class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 flex items-center gap-2"
-            >
-              <span
-                class="w-1.5 h-1.5 rounded-full bg-saimor-gold flex-shrink-0"
-              />
-              <span>
-                Dialog mit Môra (Chat)
-              </span>
-            </div>
-          </div>
+            Das Myzel
+          </h3>
         </div>
+        <ul
+          class="mt-4 space-y-2 text-sm text-white/80"
+        >
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Verbindet alle Systeme
+            </span>
+          </li>
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Zeigt Zusammenhänge
+            </span>
+          </li>
+          <li
+            class="flex gap-3"
+          >
+            <span
+              class="text-saimor-gold mt-0.5"
+            >
+              •
+            </span>
+            <span>
+              Schlägt nächste Schritte vor
+            </span>
+          </li>
+        </ul>
       </div>
       <div
-        class="rounded-3xl border border-white/15 bg-white/8 backdrop-blur-xl p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.28)]"
+        class="rounded-3xl border border-white/15 bg-white/5 backdrop-blur-xl p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22)]"
       >
         <div
-          class="flex items-center justify-between gap-3 mb-4"
+          class="flex items-center gap-3 text-white"
         >
-          <div>
-            <p
-              class="text-xs uppercase tracking-[0.3em] text-saimor-gold"
-            >
-              Demo-Ansicht (simulierte Daten)
-            </p>
-            <h3
-              class="text-lg sm:text-xl font-semibold text-white"
-            >
-              Môra Blick in das Myzel
-            </h3>
-            <p
-              class="text-sm text-white/70"
-            >
-              Folder · Field · Insights · Chat
-            </p>
-          </div>
           <span
-            class="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-white/85"
+            class="rounded-2xl bg-white/10 border border-white/10 p-2 inline-flex"
           >
             <svg
-              class="lucide lucide-monitor-smartphone w-4 h-4"
+              class="lucide lucide-panels-top-left h-5 w-5 text-saimor-gold"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -274,138 +243,155 @@ exports[`MyceliumSection > renders German forest and mycelium copy 1`] = `
               width="24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"
-              />
-              <path
-                d="M10 19v-3.96 3.15"
-              />
-              <path
-                d="M7 19h5"
-              />
               <rect
-                height="10"
+                height="18"
                 rx="2"
-                width="6"
-                x="16"
-                y="12"
+                width="18"
+                x="3"
+                y="3"
+              />
+              <path
+                d="M3 9h18"
+              />
+              <path
+                d="M9 21V9"
               />
             </svg>
-            MÃ´ra
           </span>
+          <div>
+            <h3
+              class="text-lg font-semibold"
+            >
+              Demo-Panel
+            </h3>
+            <p
+              class="text-xs text-white/65"
+            >
+              Folder - Field - Insights - Chat
+            </p>
+          </div>
         </div>
-        <div
-          class="grid sm:grid-cols-2 gap-3"
+        <dl
+          class="mt-4 space-y-3 text-sm text-white/85"
         >
           <div
-            class="rounded-2xl border border-white/10 bg-white/10 p-3 space-y-2"
+            class="flex items-center justify-between gap-3 border-b border-white/10 pb-2"
           >
-            <div
-              class="flex items-center gap-2 text-sm font-semibold text-white"
+            <dt
+              class="text-white/60"
             >
-              <svg
-                class="lucide lucide-network w-4 h-4"
-                fill="none"
-                height="24"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  height="6"
-                  rx="1"
-                  width="6"
-                  x="16"
-                  y="16"
-                />
-                <rect
-                  height="6"
-                  rx="1"
-                  width="6"
-                  x="2"
-                  y="16"
-                />
-                <rect
-                  height="6"
-                  rx="1"
-                  width="6"
-                  x="9"
-                  y="2"
-                />
-                <path
-                  d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"
-                />
-                <path
-                  d="M12 12V8"
-                />
-              </svg>
-              Feld-Ansicht
-            </div>
-            <div
-              class="space-y-2"
+              Modus
+            </dt>
+            <dd
+              class="font-medium text-white"
             >
-              <div
-                class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white/80"
-              >
-                Quellen verbinden (Connectoren)
-              </div>
-              <div
-                class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white/80"
-              >
-                Myzel erkennen (Feld)
-              </div>
-              <div
-                class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white/80"
-              >
-                Kontext & Insights
-              </div>
-              <div
-                class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white/80"
-              >
-                Dialog mit Môra (Chat)
-              </div>
-            </div>
+              Simulierte Daten - Calm sync
+            </dd>
           </div>
           <div
-            class="rounded-2xl border border-white/10 bg-white/10 p-3 space-y-2"
+            class="flex items-center justify-between gap-3 border-b border-white/10 pb-2"
           >
-            <div
-              class="flex items-center gap-2 text-sm font-semibold text-white"
+            <dt
+              class="text-white/60"
             >
-              <svg
-                class="lucide lucide-message-circle w-4 h-4"
-                fill="none"
-                height="24"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
-                />
-              </svg>
-              Dialog mit MÃ´ra
-            </div>
-            <div
-              class="rounded-xl bg-[#0f1f17] border border-white/10 px-3 py-2 text-sm text-white/85 shadow-inner"
+              Fokus
+            </dt>
+            <dd
+              class="font-medium text-white"
             >
-              Welche Signale verbinden People & Process?
-            </div>
-            <div
-              class="rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-white/80"
-            >
-              Antwort nach kurzer Reflexion – ruhig, mit Kontext.
-            </div>
+              People x Process
+            </dd>
           </div>
-        </div>
+          <div
+            class="flex items-center justify-between gap-3 border-b border-white/10 pb-2"
+          >
+            <dt
+              class="text-white/60"
+            >
+              Status
+            </dt>
+            <dd
+              class="font-medium text-white"
+            >
+              Live Demo Panel
+            </dd>
+          </div>
+        </dl>
+        <p
+          class="mt-3 text-xs text-white/60"
+        >
+          Direkter Sprung in die UI ohne Marketing-Tour.
+        </p>
+        <a
+          class="mt-5 inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:border-saimor-gold hover:text-saimor-gold transition-colors"
+          href="#demo-preview"
+        >
+          Demo öffnen
+        </a>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+    >
+      <div
+        class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 flex flex-col gap-1"
+      >
+        <span
+          class="text-xs uppercase tracking-[0.3em] text-white/55"
+        >
+          Signals
+        </span>
+        <span
+          class="text-lg font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          12 ruhig
+        </span>
+      </div>
+      <div
+        class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 flex flex-col gap-1"
+      >
+        <span
+          class="text-xs uppercase tracking-[0.3em] text-white/55"
+        >
+          Dialog
+        </span>
+        <span
+          class="text-lg font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          MA'ra antwortet nach Kontext
+        </span>
+      </div>
+      <div
+        class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 flex flex-col gap-1"
+      >
+        <span
+          class="text-xs uppercase tracking-[0.3em] text-white/55"
+        >
+          Kontext
+        </span>
+        <span
+          class="text-lg font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          Folder + Field kombiniert
+        </span>
+      </div>
+      <div
+        class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 flex flex-col gap-1"
+      >
+        <span
+          class="text-xs uppercase tracking-[0.3em] text-white/55"
+        >
+          Tempo
+        </span>
+        <span
+          class="text-lg font-semibold"
+          style="font-family: "Cormorant Garamond", serif;"
+        >
+          Calm - keine Hektik
+        </span>
       </div>
     </div>
   </div>

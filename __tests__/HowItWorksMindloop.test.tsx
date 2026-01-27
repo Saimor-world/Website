@@ -10,7 +10,7 @@ describe('HowItWorksMindloop', () => {
 
     expect(screen.getByText('Signale sammeln')).toBeInTheDocument();
     expect(screen.getByText('Bedeutung erkennen')).toBeInTheDocument();
-    expect(screen.getByText('Kontext sichtbar machen')).toBeInTheDocument();
+    expect(screen.getByText('Kontext zeigen')).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
 });

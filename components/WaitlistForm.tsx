@@ -84,17 +84,40 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    setTimeout(() => {
-      setStatus('success');
-      setEmail('');
-      setName('');
-      setInterest([]);
-      
-      // Trigger achievement for first contact (waitlist is also a form of contact)
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          name,
+          interests: interest,
+          locale: locale,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setEmail('');
+        setName('');
+        setInterest([]);
+
+        // Trigger achievement for first contact
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
+        }
+      } else {
+        setStatus('error');
+        setMessage(data.error || 'Submission failed');
       }
-    }, 1500);
+    } catch (err) {
+      console.error('Waitlist submission error:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -110,7 +133,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
           viewport={{ once: true }}
         >
           <div className="grid md:grid-cols-5 h-full">
-            
+
             {/* Left Decor */}
             <div className="md:col-span-2 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 p-12 flex flex-col justify-between border-r border-white/5 relative overflow-hidden">
               <div className="absolute inset-0 bg-noise opacity-20" />
@@ -127,7 +150,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
               </div>
               <div className="relative z-10 pt-12">
                 <div className="flex -space-x-3">
-                  {[1,2,3,4].map(i => (
+                  {[1, 2, 3, 4].map(i => (
                     <div key={i} className="w-10 h-10 rounded-full border-2 border-[#081410] bg-white/10" />
                   ))}
                   <div className="w-10 h-10 rounded-full border-2 border-[#081410] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
@@ -186,9 +209,8 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                               key={item.id}
                               type="button"
                               onClick={() => toggleInterest(item.id)}
-                              className={`p-4 rounded-2xl border transition-all text-left group ${
-                                isActive ? 'bg-emerald-500 border-emerald-400' : 'bg-white/5 border-white/10 hover:border-white/20'
-                              }`}
+                              className={`p-4 rounded-2xl border transition-all text-left group ${isActive ? 'bg-emerald-500 border-emerald-400' : 'bg-white/5 border-white/10 hover:border-white/20'
+                                }`}
                             >
                               <div className="flex items-center gap-3">
                                 <span className={`text-sm font-bold uppercase tracking-wider ${isActive ? 'text-black' : 'text-white/60 group-hover:text-white'}`}>

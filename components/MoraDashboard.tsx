@@ -12,6 +12,7 @@ type Locale = 'de' | 'en';
 
 interface MoraDashboardProps {
   locale: Locale;
+  onDeepView?: () => void;
 }
 
 type ViewMode = 'universe' | 'folders' | 'chat';
@@ -33,7 +34,7 @@ interface DashboardMetric {
   trend?: number[];
 }
 
-export default function MoraDashboard({ locale }: MoraDashboardProps) {
+export default function MoraDashboard({ locale, onDeepView }: MoraDashboardProps) {
   const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('universe');
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
@@ -44,11 +45,13 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
   const [currentTime, setCurrentTime] = useState('');
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
+  const [chatHistory, setChatHistory] = useState<{ q: string, a: string }[]>([]);
   const [liveData, setLiveData] = useState<any>(null);
+  const [sessionId, setSessionId] = useState<string>('');
   const chartIdRef = useRef(0);
 
   const getContextualResponse = (question: string) => {
-    const q = question.toLowerCase();
+    const q = (question || "").toLowerCase();
     const responses = {
       team: [
         "Die Resonanzanalyse zeigt eine fluktuierende Dynamik. Der 'Clarity Index' im Team-Backend ist auf 87% gestiegen, was auf verbesserte interne Kommunikation hindeutet.",
@@ -78,6 +81,45 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     if (q.includes('wer bist') || q.includes('mora') || q.includes('was tust')) return responses.vision[Math.floor(Math.random() * responses.vision.length)];
 
     return responses.default[Math.floor(Math.random() * responses.default.length)];
+  };
+
+  const handleSendMessage = async () => {
+    if (userQuestion.trim() && !isThinking) {
+      const question = userQuestion;
+      setUserQuestion('');
+      setIsThinking(true);
+      setMoraResponse(null);
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: question,
+            sessionId: sessionId || 'temp-session'
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const answer = data.message.content;
+          setMoraResponse(answer);
+          setChatHistory(prev => [...prev, { q: question, a: answer }].slice(-10));
+        } else {
+          // Fallback to contextual response if API fails
+          const answer = getContextualResponse(question);
+          setMoraResponse(answer);
+          setChatHistory(prev => [...prev, { q: question, a: answer }].slice(-10));
+        }
+      } catch (error) {
+        console.error('Chat error:', error);
+        const answer = getContextualResponse(question);
+        setMoraResponse(answer);
+        setChatHistory(prev => [...prev, { q: question, a: answer }].slice(-10));
+      } finally {
+        setIsThinking(false);
+      }
+    }
   };
 
   // Stable star positions - only generate once
@@ -183,6 +225,14 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         second: '2-digit'
       }));
     }, 1000);
+
+    // Initialize session ID
+    let sid = localStorage.getItem('saimor-mora-session');
+    if (!sid) {
+      sid = 'mora_' + Math.random().toString(36).substring(2, 11);
+      localStorage.setItem('saimor-mora-session', sid);
+    }
+    setSessionId(sid);
 
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -703,81 +753,78 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   </button>
                 </div>
 
-                <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-6' : 'p-10'} space-y-10 custom-scrollbar`}>
-                  {moraResponse || isThinking ? (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${isMobile ? 'gap-4' : 'gap-6'}`}>
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(52,211,153,0.5)]">
-                        <Sparkles className={`w-6 h-6 text-white ${isThinking ? 'animate-spin' : ''}`} />
-                      </div>
-                      <div className="space-y-6 max-w-[85%]">
-                        <div className={`${isMobile ? 'p-4' : 'p-6'} rounded-[2rem] bg-white/[0.08] border border-white/20 shadow-xl backdrop-blur-md`}>
-                          {isThinking ? (
-                            <div className="flex gap-2 p-2">
-                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2 h-2 rounded-full bg-emerald-400" />
-                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }} className="w-2 h-2 rounded-full bg-emerald-400" />
-                              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }} className="w-2 h-2 rounded-full bg-emerald-400" />
-                            </div>
-                          ) : (
-                            <p className="text-white text-base leading-relaxed font-medium">{moraResponse}</p>
-                          )}
+                <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-6' : 'p-10'} space-y-8 custom-scrollbar`}>
+                  {chatHistory.length === 0 && !isThinking && (
+                    <div className="h-full flex flex-col items-center justify-center text-center px-4 space-y-6">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full" />
+                        <div className="relative w-24 h-24 rounded-3xl bg-emerald-500/10 flex items-center justify-center border-2 border-white/10 rotate-3 hover:rotate-0 transition-transform duration-500">
+                          <MessageSquare className="w-10 h-10 text-emerald-400 opacity-60" />
                         </div>
-                        {!isThinking && (
-                          <div className="flex flex-wrap gap-3">
-                            <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-[11px] hover:bg-emerald-400 transition-all font-black uppercase tracking-widest shadow-lg">Metriken korrelieren</button>
-                            <button className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-[11px] text-white hover:bg-white/20 transition-all font-black uppercase tracking-widest">Report</button>
-                          </div>
-                        )}
                       </div>
-                    </motion.div>
-                  ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-center px-4">
-                      <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center mb-6 border-2 border-white/10">
-                        <MessageSquare className="w-8 h-8 text-emerald-400 opacity-60" />
+                      <div className="space-y-2">
+                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} font-black uppercase tracking-[0.4em] text-white/60`}>System bereit</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/20 font-medium">Stelle eine Frage zur semantischen Schicht</p>
                       </div>
-                      <p className={`${isMobile ? 'text-xs' : 'text-base'} font-black uppercase tracking-[0.3em] text-white/40`}>Stelle eine Frage zur Resonanz deiner Organisation</p>
                     </div>
                   )}
+
+                  {chatHistory.map((chat, idx) => (
+                    <div key={idx} className="space-y-6">
+                      <div className="flex justify-end">
+                        <div className="max-w-[80%] p-4 rounded-2xl bg-white/5 border border-white/10 text-white/80 text-sm">
+                          {chat.q}
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
+                          <Sparkles className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="max-w-[85%] p-5 rounded-2xl bg-white/[0.05] border border-white/10 text-white text-base leading-relaxed">
+                          {chat.a}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {isThinking && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-4">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="w-4 h-4 text-white animate-spin-slow" />
+                      </div>
+                      <div className="p-4 rounded-2xl bg-white/[0.05] border border-white/10">
+                        <div className="flex gap-1.5 p-1">
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Scroll Anchor */}
+                  <div ref={(el) => el?.scrollIntoView({ behavior: 'smooth' })} />
                 </div>
 
-                <div className={`${isMobile ? 'p-6' : 'p-10'} bg-white/5 border-t border-white/20 backdrop-blur-xl`}>
+                <div className={`${isMobile ? 'p-6' : 'p-8'} bg-white/[0.02] border-t border-white/10 backdrop-blur-xl`}>
                   <div className="relative max-w-4xl mx-auto">
                     <input
                       type="text"
                       value={userQuestion}
                       onChange={(e) => setUserQuestion(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' && userQuestion.trim() && !isThinking) {
-                          const question = userQuestion;
-                          setUserQuestion('');
-                          setIsThinking(true);
-                          setMoraResponse(null);
-                          setTimeout(() => {
-                            setMoraResponse(getContextualResponse(question));
-                            setIsThinking(false);
-                          }, 1500 + Math.random() * 1000);
-                        }
+                        if (e.key === 'Enter') handleSendMessage();
                       }}
-                      placeholder={isMobile ? "Frage..." : "Frage nach Zusammenhängen..."}
+                      placeholder={isMobile ? "Frage MÔRA..." : "Frage nach strategischen Zusammenhängen..."}
                       disabled={isThinking}
-                      className={`w-full bg-black/40 border-2 border-white/30 rounded-3xl ${isMobile ? 'pl-6 pr-16 py-4 text-sm' : 'pl-8 pr-20 py-6 text-base'} text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 shadow-2xl backdrop-blur-2xl disabled:opacity-50`}
+                      className={`w-full bg-black/40 border-2 border-white/10 rounded-2xl ${isMobile ? 'pl-6 pr-14 py-4 text-sm' : 'pl-8 pr-20 py-5 text-base'} text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 transition-all disabled:opacity-50`}
                     />
                     <button
-                      onClick={() => {
-                        if (userQuestion.trim() && !isThinking) {
-                          const question = userQuestion;
-                          setUserQuestion('');
-                          setIsThinking(true);
-                          setMoraResponse(null);
-                          setTimeout(() => {
-                            setMoraResponse(getContextualResponse(question));
-                            setIsThinking(false);
-                          }, 1500 + Math.random() * 1000);
-                        }
-                      }}
-                      className={`absolute ${isMobile ? 'right-2' : 'right-4'} top-1/2 -translate-y-1/2 ${isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(52,211,153,0.4)] active:scale-95 transition-all hover:bg-emerald-400 disabled:opacity-50`}
+                      onClick={handleSendMessage}
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 ${isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all hover:bg-emerald-400 disabled:opacity-50`}
                       disabled={isThinking}
                     >
-                      <Send className={`${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
+                      <Send className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
                     </button>
                   </div>
                 </div>
@@ -896,15 +943,15 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                   )}
 
                   <div className="grid grid-cols-2 gap-6">
-                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                      <Building2 className="w-4 h-4 text-emerald-400 mb-3 opacity-60" />
-                      <div className="text-xl font-mono text-white mb-1">{m.departmentCount}</div>
-                      <div className="text-[9px] text-white/30 uppercase tracking-tighter font-bold">ABTEILUNGEN</div>
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center text-center">
+                      <Building2 className="w-5 h-5 text-emerald-400 mb-2 opacity-60" />
+                      <div className="text-2xl font-mono text-white mb-1">{m.departmentCount}</div>
+                      <div className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-black">Abteilungen</div>
                     </div>
-                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                      <Activity className="w-4 h-4 text-emerald-400 mb-3 opacity-60" />
-                      <div className="text-xl font-mono text-white mb-1">{m.spaceCount}</div>
-                      <div className="text-[9px] text-white/30 uppercase tracking-tighter font-bold">BEREICHE</div>
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center text-center">
+                      <Activity className="w-5 h-5 text-emerald-400 mb-2 opacity-60" />
+                      <div className="text-2xl font-mono text-white mb-1">{m.spaceCount}</div>
+                      <div className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-black">Bereiche</div>
                     </div>
                   </div>
 
@@ -913,13 +960,16 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
                       <Sparkles className="w-4 h-4 text-emerald-400" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">KI ANALYSE</span>
                     </div>
-                    <p className="text-xs text-white/60 leading-relaxed italic">
+                    <p className="text-xs text-white/70 leading-relaxed italic font-medium bg-black/20 p-4 rounded-xl border border-white/5">
                       {m.status === 'good'
-                        ? `&quot;Die Resonanz im Bereich ${m.label} ist exzellent. Ich sehe eine starke Kopplung mit dem ${m.category}-Cluster. Fokus auf Erhaltung empfohlen.&quot;`
-                        : `&quot;Ich erkenne eine semantische Divergenz im Bereich ${m.label}. Die Korrelation mit dem Clarity-Index sinkt. Sofortige Tiefenanalyse ratsam.&quot;`
+                        ? `"${m.label} zeigt eine stabile Resonanz. Strategische Kopplung mit ${m.category} ist optimal. Fokus auf Erhaltung empfohlen."`
+                        : `"Warnung: Semantische Reibung im Bereich ${m.label}. Korrelation sinkt. Tiefenanalyse wird dringend empfohlen."`
                       }
                     </p>
-                    <button className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors group/btn flex items-center justify-center gap-2">
+                    <button
+                      onClick={onDeepView}
+                      className="w-full py-3 rounded-xl bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors group/btn flex items-center justify-center gap-2"
+                    >
                       <span>Tiefenanalyse</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     </button>

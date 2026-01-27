@@ -1,7 +1,7 @@
-export const runtime = 'nodejs';
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
 import { captureApiError } from '@/lib/analytics';
+import { prisma } from '@/lib/prisma';
 
 const Body = z.object({
   name: z.string().trim().min(1).max(200),
@@ -24,15 +24,22 @@ export async function POST(req: Request) {
 
     const { name, email, message, licht } = result.data;
 
+    // Save to database
+    try {
+      await prisma.contactMessage.create({
+        data: {
+          name,
+          email,
+          message,
+          licht: !!licht
+        }
+      });
+    } catch (dbError) {
+      console.error('[Contact DB Error]', dbError);
+    }
+
     // Check if SMTP is configured
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      // Log to Sentry in development for debugging
-      if (process.env.NODE_ENV === 'development') {
-        captureApiError('/api/contact', new Error('SMTP not configured'), {
-          method: 'POST',
-          context: 'SMTP configuration missing'
-        });
-      }
       return new Response(JSON.stringify({
         success: true,
         message: 'Form submitted successfully'
@@ -46,13 +53,12 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
       tls: {
-        ciphers: 'SSLv3',
         rejectUnauthorized: false
       }
     });

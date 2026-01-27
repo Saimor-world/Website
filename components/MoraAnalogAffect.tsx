@@ -48,6 +48,13 @@ type Copy = {
   bootPromptSubtitle: string;
   ctaBlink: string;
   ctaTitle: string;
+  techSpecsTitle: string;
+  techSpec1Label: string;
+  techSpec1Value: string;
+  techSpec2Label: string;
+  techSpec2Value: string;
+  techSpec3Label: string;
+  techSpec3Value: string;
 };
 
 const copyByLocale: Record<Locale, Copy> = {
@@ -100,7 +107,14 @@ const copyByLocale: Record<Locale, Copy> = {
     bootPromptTitle: '> System initialisieren',
     bootPromptSubtitle: 'Klicken für Deep View Experience',
     ctaBlink: 'Bereit zum Starten',
-    ctaTitle: 'Sind Sie bereit für das Signal?'
+    ctaTitle: 'Sind Sie bereit für das Signal?',
+    techSpecsTitle: 'System-Spezifikationen',
+    techSpec1Label: 'Latenz',
+    techSpec1Value: '< 5ms (Lokal)',
+    techSpec2Label: 'Architektur',
+    techSpec2Value: 'Semantic Mesh',
+    techSpec3Label: 'Verschlüsselung',
+    techSpec3Value: 'AES-256-K'
   },
   en: {
     badge: 'Sector: VHS Archive',
@@ -151,7 +165,14 @@ const copyByLocale: Record<Locale, Copy> = {
     bootPromptTitle: '> Initialize System',
     bootPromptSubtitle: 'Click for Deep View Experience',
     ctaBlink: 'Ready to Start',
-    ctaTitle: 'Are you ready for the signal?'
+    ctaTitle: 'Are you ready for the signal?',
+    techSpecsTitle: 'Technical Specifications',
+    techSpec1Label: 'Latency',
+    techSpec1Value: '< 5ms (Local)',
+    techSpec2Label: 'Architecture',
+    techSpec2Value: 'Semantic Mesh',
+    techSpec3Label: 'Encryption',
+    techSpec3Value: 'AES-256-K'
   }
 };
 
@@ -165,6 +186,7 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
   const [bootVisible, setBootVisible] = useState(false);
   const [bootSequenceVisible, setBootSequenceVisible] = useState(false);
   const [isDeepMode, setIsDeepMode] = useState(false);
+  const [signalFlash, setSignalFlash] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const sequencerTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -175,11 +197,12 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     return () => {
       // Cleanup on unmount
       if (audioCtxRef.current) {
-        audioCtxRef.current.close();
+        audioCtxRef.current.close().catch(() => { });
       }
       if (sequencerTimerRef.current) {
         clearInterval(sequencerTimerRef.current);
       }
+      document.body.classList.remove('is-mora-active');
     };
   }, []);
 
@@ -219,22 +242,60 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
     const ctx = new AudioCtx();
     audioCtxRef.current = ctx;
 
-    // Drone oscillator
-    const droneOsc = ctx.createOscillator();
-    const droneGain = ctx.createGain();
+    // Drone oscillator - Sub low
+    const subOsc = ctx.createOscillator();
+    const subGain = ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(65, ctx.currentTime);
+    subGain.gain.value = 0.05;
 
-    droneOsc.type = 'sine';
-    droneOsc.frequency.setValueAtTime(40, ctx.currentTime);
-    droneGain.gain.value = 0.08; // Increased from 0.03
+    // Harmonic oscillator - Retrowave vibe
+    const harmOsc = ctx.createOscillator();
+    const harmGain = ctx.createGain();
+    harmOsc.type = 'sawtooth';
+    harmOsc.frequency.setValueAtTime(130, ctx.currentTime);
+    harmGain.gain.value = 0.01;
 
-    droneOsc.connect(droneGain);
-    droneGain.connect(ctx.destination);
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(400, ctx.currentTime);
+
+    // FM-Style lead oscillator
+    const leadOsc = ctx.createOscillator();
+    const leadGain = ctx.createGain();
+    leadOsc.type = 'triangle';
+    leadOsc.frequency.setValueAtTime(220, ctx.currentTime);
+    leadGain.gain.value = 0.02;
+
+    const modOsc = ctx.createOscillator();
+    const modGain = ctx.createGain();
+    modOsc.frequency.setValueAtTime(5, ctx.currentTime);
+    modGain.gain.setValueAtTime(10, ctx.currentTime);
+
+    modOsc.connect(modGain);
+    modGain.connect(leadOsc.frequency);
+
+    subOsc.connect(subGain);
+    harmOsc.connect(harmGain);
+    leadOsc.connect(leadGain);
+
+    subGain.connect(filter);
+    harmGain.connect(filter);
+    leadGain.connect(filter);
+    filter.connect(ctx.destination);
+
+    subOsc.start();
+    harmOsc.start();
+    modOsc.start();
+    leadOsc.start();
+
+    (ctx as any).activeOscillators = [subOsc, harmOsc, modOsc, leadOsc];
 
     if (ctx.state === 'suspended') {
       ctx.resume();
     }
 
-    droneOsc.start();
+
 
     // Start sequencer
     startSequencer();
@@ -367,6 +428,8 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
 
     // Animate boot sequence then reveal deep content
     setTimeout(() => {
+      setSignalFlash(true);
+      setTimeout(() => setSignalFlash(false), 800);
       setBootVisible(false);
       setBootSequenceVisible(false);
       setIsDeepMode(true);
@@ -407,6 +470,12 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
   const exitDeepMode = () => {
     setIsDeepMode(false);
     document.body.classList.remove('is-mora-active');
+
+    // Stop audio if running
+    if (audioCtxRef.current && audioCtxRef.current.state === 'running') {
+      audioCtxRef.current.suspend();
+      setAudioOn(false);
+    }
   };
 
   return (
@@ -414,6 +483,28 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
       {/* FX Layers (only visible in Deep View via CSS) */}
       <div className="scanlines" />
       <div className="crt-overlay" />
+      <div className="retrowave-grid" />
+
+      {/* Cyber Sun Background */}
+      <div className="cyber-sun-container pointer-events-none">
+        <div className="cyber-sun" />
+      </div>
+
+      {/* Signal Flash Effect */}
+      <AnimatePresence>
+        {signalFlash && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-white pointer-events-none mix-blend-overlay"
+            style={{
+              backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+              backgroundSize: '100px 100px'
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="relative min-h-screen px-6 md:px-20 transition-colors duration-1000">
         {/* Hero Section with VHS Visual */}
@@ -625,6 +716,32 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           </div>
         </section>
 
+        {/* Tech Specs Section */}
+        <section id="specs" className="py-24 px-6 md:px-20 border-t border-saimor-forest-dark/20">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-mono text-saimor-teal mb-16 uppercase tracking-[0.4em] italic text-center">
+              {"// Technical_Log.sys"}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1px bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+              {[
+                { label: 'Kern-Typ', value: 'Neural OS' },
+                { label: 'Resonanz', value: 'Variabel' },
+                { label: 'Modus', value: 'Lokal-First' },
+                { label: 'Interface', value: 'Semantisch' },
+                { label: 'Latenz', value: '0.002ms' },
+                { label: 'Knoten', value: '∞ Dynamisch' },
+                { label: 'Sicherheit', value: 'Air-Gapped' },
+                { label: 'Layer', value: 'VHS Analog' }
+              ].map((spec, i) => (
+                <div key={i} className="bg-[#081410] p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.02] transition-colors group">
+                  <div className="text-[10px] text-white/30 uppercase tracking-widest mb-3 font-bold group-hover:text-saimor-teal transition-colors">{spec.label}</div>
+                  <div className="text-xl font-mono text-white tracking-tighter">{spec.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Tech Cards */}
         <section id="tech" className="py-32 px-6 md:px-20 transition-colors duration-500">
           <div className="max-w-6xl mx-auto">
@@ -723,49 +840,98 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
           background: linear-gradient(
             rgba(18, 16, 16, 0) 50%,
             rgba(0, 0, 0, 0.25) 50%
-          ), linear-gradient(
-            90deg,
-            rgba(255, 0, 0, 0.06),
-            rgba(0, 255, 0, 0.02),
-            rgba(0, 0, 255, 0.06)
           );
-          background-size: 100% 4px, 3px 100%;
+          background-size: 100% 4px;
           z-index: 1000;
           opacity: 0;
-          transition: opacity 2s ease;
-          animation: scanlineScroll 20s linear infinite;
+          transition: opacity 1s ease;
         }
 
-        @keyframes scanlineScroll {
-          from { background-position: 0 0; }
-          to { background-position: 0 100%; }
-        }
-
-        .crt-overlay {
-          pointer-events: none;
+        .cyber-sun-container {
           position: fixed;
-          top: 0; left: 0; width: 100%; height: 100%;
-          background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%);
-          z-index: 1001;
+          top: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 500px;
+          height: 500px;
+          z-index: -2;
+          opacity: 0;
+          transition: opacity 3s ease;
+        }
+
+        .is-mora-active .cyber-sun-container {
+          opacity: 0.6;
+        }
+
+        .cyber-sun {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: linear-gradient(to bottom, #ff0080 0%, #ff8c00 100%);
+          box-shadow: 0 0 100px #ff0080, 0 0 200px rgba(255, 140, 0, 0.4);
+          mask-image: linear-gradient(to bottom, 
+            black 0%, black 50%, 
+            transparent 52%, transparent 54%, 
+            black 56%, black 58%, 
+            transparent 61%, transparent 64%, 
+            black 67%, black 72%, 
+            transparent 76%, transparent 82%, 
+            black 87%, black 100%);
+        }
+
+        .retrowave-grid {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: 
+            linear-gradient(transparent 0%, rgba(0, 255, 204, 0.2) 2%, transparent 3%),
+            linear-gradient(90deg, transparent 0%, rgba(0, 255, 204, 0.2) 2%, transparent 3%);
+          background-size: 80px 80px;
+          transform: perspective(600px) rotateX(60deg) translateY(200px);
+          transform-origin: bottom;
           opacity: 0;
           transition: opacity 2s ease;
-          animation: crtFlicker 0.15s infinite;
+          pointer-events: none;
+          z-index: -1;
+          animation: gridMove 10s linear infinite;
         }
 
-        @keyframes crtFlicker {
-          0% { opacity: 0.97; }
-          5% { opacity: 0.95; }
-          10% { opacity: 0.9; }
-          15% { opacity: 0.98; }
-          30% { opacity: 0.95; }
-          50% { opacity: 0.92; }
-          80% { opacity: 0.96; }
-          100% { opacity: 0.95; }
+        @keyframes gridMove {
+          from { background-position: 0 0; }
+          to { background-position: 0 80px; }
         }
 
-        .is-mora-active .scanlines,
+        .is-mora-active .scanlines {
+          opacity: 0.2;
+        }
+
         .is-mora-active .crt-overlay {
           opacity: 1;
+        }
+
+        .is-mora-active .retrowave-grid {
+          opacity: 1;
+        }
+        
+        .is-mora-active {
+          background-color: #0d0218 !important;
+          color: #00ffcc !important;
+        }
+
+        .is-mora-active .vhs-body {
+          fill: #2a0a4a;
+          stroke: #ff0080;
+        }
+
+        .is-mora-active .vhs-inner {
+          fill: #1a0530;
+        }
+
+        .is-mora-active .neural-path {
+          stroke: #ff0080;
+          filter: drop-shadow(0 0 8px #ff0080);
         }
 
         .vhs-body {
@@ -831,6 +997,24 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
 
         .animate-pulse-fast {
           animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .boot-line {
+          margin-bottom: 4px;
+          text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+          position: relative;
+        }
+
+        .boot-line::before {
+          content: '';
+          position: absolute;
+          left: -15px;
+          top: 50%;
+          width: 8px;
+          height: 2px;
+          background: #10b981;
+          opacity: 0.5;
+          transform: translateY(-50%);
         }
 
         @keyframes pulse {

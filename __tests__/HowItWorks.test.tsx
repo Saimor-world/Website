@@ -8,15 +8,15 @@ describe('HowItWorks', () => {
   it('renders German steps and snapshot', () => {
     const { container } = render(<HowItWorks locale="de" />);
 
-    expect(screen.getByText(/Wald oben, Myzel unten/i)).toBeInTheDocument();
-    expect(screen.getByText(/Signale sammeln/)).toBeInTheDocument();
+    expect(screen.getByText(/So arbeitet/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /Signale sammeln/ })).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('renders English copy', () => {
     render(<HowItWorks locale="en" />);
 
-    expect(screen.getByText(/Forest above, mycelium below/i)).toBeInTheDocument();
-    expect(screen.getByText(/Collect signals/)).toBeInTheDocument();
+    expect(screen.getByText(/How .* works/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /Collect signals/ })).toBeInTheDocument();
   });
 });

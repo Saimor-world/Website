@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
-// Removed motion import
+import { motion } from 'framer-motion';
 import { User, Mail, LogOut, MessageCircle, Crown } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

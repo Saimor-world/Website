@@ -160,7 +160,7 @@ export default function LeadMagnet({
                             <ul className="space-y-2 text-sm text-white/80">
                               <li className="flex items-center gap-2">
                                 <Check className="w-4 h-4 text-emerald-400" />
-                                Vollständiger {contentLabels[contentType].toLowerCase()}
+                                Vollständiger {contentLabels[contentType]?.toLowerCase() || 'inhalte'}
                               </li>
                               <li className="flex items-center gap-2">
                                 <Check className="w-4 h-4 text-emerald-400" />

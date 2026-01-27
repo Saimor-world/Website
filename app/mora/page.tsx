@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Brain, Network, MessageSquare, Eye, Radio } from "lucide-react";
+import { Sparkles, Brain, Network, MessageSquare, Eye, Radio, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import MoraDashboard from "@/components/MoraDashboard";
 import dynamic from "next/dynamic";
@@ -87,9 +87,22 @@ export default function MoraPage() {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto font-light leading-relaxed mb-12">
               Môra ist das erste semantische Betriebssystem, das <span className="text-white/80">Bedeutung</span> über Daten stellt.
             </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <a href="#showcase" className="px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-xl">
+                <span>Showcase öffnen</span>
+                <ArrowRight className="w-5 h-5" />
+              </a>
+              <button
+                onClick={() => setShowAnalogView(true)}
+                className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105"
+              >
+                Technische Details
+              </button>
+            </div>
           </motion.div>
         </section>
 
@@ -144,7 +157,7 @@ export default function MoraPage() {
               transition={{ duration: 1 }}
               className="relative rounded-[3rem] border border-white/5 bg-black overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.9)]"
             >
-              <MoraDashboard locale="de" />
+              <MoraDashboard locale="de" onDeepView={() => setShowAnalogView(true)} />
             </motion.div>
 
             {/* Analog Affect Deep View Button */}

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  interests String[]
+  locale    String   @default("de")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  licht     Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ChatSession {
+  id           String    @id @default(cuid())
+  externalId   String    @unique // The sessionId from the frontend
+  userId       String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastActivity DateTime  @default(now())
+  messages     Message[]
+}
+
+model Message {
+  id        String      @id @default(cuid())
+  role      String      // "user" or "assistant"
+  content   String
+  timestamp DateTime    @default(now())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model SystemMetric {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Float
+  unit      String?
+  timestamp DateTime @default(now())
+}
+
+model DashboardStats {
+  id          String   @id @default(cuid())
+  facts       Int      @default(0)
+  callsToday  Int      @default(0)
+  costsToday  Float    @default(0.0)
+  updatedAt   DateTime @updatedAt
+}

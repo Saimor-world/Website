@@ -22,12 +22,12 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
         class="text-3xl sm:text-4xl font-semibold"
         style="font-family: "Cormorant Garamond", serif;"
       >
-        Wo Môra sofort Resonanz stiftet
+        Kurz und funktional
       </h2>
       <p
         class="text-base sm:text-lg text-white/80 leading-relaxed"
       >
-        Klare Einsatzfelder aus dem aktuellen Produkt: ruhig, fokussiert, nah an echten Abläufen.
+        Drei Felder, in denen wir MA'ra heute nutzen koennen – jeweils mit klaren Datenstroemen.
       </p>
     </div>
     <div
@@ -103,7 +103,7 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Sprint-Signale, Entscheidungsnotizen, ruhige Zusammenfassung in Folder und Field. Keine Lärmwände.
+          Sprint-Signale, Entscheidungsnotizen, ruhige Ordner-Ansicht. Keine Laermwaende.
         </p>
         <div
           class="mt-4 inline-flex items-center gap-2 text-sm text-saimor-gold"
@@ -174,7 +174,7 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
             <h3
               class="text-xl font-semibold text-white"
             >
-              Café / kleiner Standort
+              Café / Standort
             </h3>
           </div>
           <svg
@@ -200,7 +200,7 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Oben: Gästezahlen, Tagesumsatz, ruhige/volle Tage. Unten im Myzel: Öffnungszeiten, Angebote, Events und Auslastung. Môra schlägt keine Preise vor, zeigt aber Muster.
+          Oben Zahlen & Auslastung, unten oeffnungszeiten, Events, Angebote. Muster statt Hype.
         </p>
         <div
           class="mt-4 inline-flex items-center gap-2 text-sm text-saimor-gold"
@@ -306,7 +306,7 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Beteiligungs-Impulse, Anfragen, Beschlüsse im Kontextpanel. Nachvollziehbar, auditierbar.
+          Beteiligung, Anfragen, Beschluesse im Kontextpanel – auditierbar und ruhig.
         </p>
         <div
           class="mt-4 inline-flex items-center gap-2 text-sm text-saimor-gold"

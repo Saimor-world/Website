@@ -16,18 +16,18 @@ exports[`HowItWorksMindloop > renders three German steps 1`] = `
       <p
         class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-saimor-gold shadow-sm"
       >
-        Mind Loop
+        Überblick
       </p>
       <h2
         class="text-3xl sm:text-4xl font-semibold"
         style="font-family: "Cormorant Garamond", serif;"
       >
-        Wie der Mind Loop arbeitet
+        Klarheit statt Chaos
       </h2>
       <p
         class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
       >
-        Drei ruhige Schritte verbinden Signale, Bedeutung und Myzel. Keine Autonomieversprechen, nur Klarheit mit Demo-Daten.
+        Môra bringt Ordnung in deine Daten.
       </p>
     </div>
     <div
@@ -80,7 +80,7 @@ exports[`HowItWorksMindloop > renders three German steps 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Systeme, Dokumente und Notizen liefern Zustände und Ereignisse.
+          Systeme, Dokumente und Notizen liefern Zustände – wir speichern nur Relevantes.
         </p>
       </div>
       <div
@@ -154,7 +154,7 @@ exports[`HowItWorksMindloop > renders three German steps 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Die semantische Schicht verdichtet Muster, Hinweise und Auffälligkeiten (Mind Loop).
+          Eine schlanke Semantik-Schicht markiert Muster, Hinweise und Risiken.
         </p>
       </div>
       <div
@@ -201,7 +201,7 @@ exports[`HowItWorksMindloop > renders three German steps 1`] = `
             <h3
               class="text-xl font-semibold text-white"
             >
-              Kontext sichtbar machen
+              Kontext zeigen
             </h3>
           </div>
           <span
@@ -214,7 +214,7 @@ exports[`HowItWorksMindloop > renders three German steps 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Môra zeigt im Myzelraum, welche Themen, Risiken oder Chancen gerade wichtig sind.
+          Feld, Folder und Chat bleiben ruhig und erklären, was zusammengehört.
         </p>
       </div>
     </div>

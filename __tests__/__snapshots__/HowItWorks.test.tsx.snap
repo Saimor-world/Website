@@ -17,23 +17,23 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
       <p
         class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-saimor-gold shadow-sm"
       >
-        So wirkt das Myzel
+        Drei Schritte
       </p>
       <h2
         class="text-3xl sm:text-4xl font-semibold"
         style="font-family: "Cormorant Garamond", serif;"
       >
-        Wald oben, Myzel unten – ein klarer Flow
+        So arbeitet Môra
       </h2>
       <p
         class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
       >
-        Drei Schritte, die Môra heute als Demo erfüllt: Signale annehmen, Bedeutung verdichten, Kontext zeigen.
+        Signale sammeln, Muster erkennen, Kontext zeigen.
       </p>
       <span
         class="text-xs text-white/60"
       >
-        Calm · Forest-Green · Gold
+        Ruhig · Klar
       </span>
     </div>
     <div
@@ -107,7 +107,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Beobachtungen, Snapshots und ruhige Pulse kommen geordnet an – kein Lärm, nur Relevantes.
+          Beobachtungen und Pulse kommen sortiert an – kein Lärm.
         </p>
       </div>
       <div
@@ -166,7 +166,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
             <h3
               class="text-xl font-semibold text-white"
             >
-              Bedeutung erkennen
+              Bedeutung lesen
             </h3>
           </div>
           <span
@@ -179,7 +179,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Semantik + Mind Loop: Muster verdichten sich, damit der Kontext klar statt chaotisch bleibt.
+          Eine kurze Semantik-Schicht markiert Muster und Risiken.
         </p>
       </div>
       <div
@@ -224,7 +224,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
             <h3
               class="text-xl font-semibold text-white"
             >
-              Kontext sichtbar machen
+              Kontext zeigen
             </h3>
           </div>
           <span
@@ -237,7 +237,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
         <p
           class="text-sm sm:text-base text-white/80 leading-relaxed"
         >
-          Myzel-Karte + UI: Feld, Folder und Chat zeigen, was zusammengehört – transparent und ruhig.
+          Die Myzel-Karte erklärt, was zusammengehört.
         </p>
       </div>
     </div>

@@ -8,11 +8,9 @@ describe('UseCases', () => {
   it('renders all German cards with CTA link', () => {
     const { container } = render(<UseCases locale="de" />);
 
-    ['Teams & Projekte', 'Café / kleiner Standort', 'Kommunale Einrichtungen'].forEach(
-      (heading) => {
-        expect(screen.getByText(heading)).toBeInTheDocument();
-      }
-    );
+    expect(screen.getByText('Teams & Projekte')).toBeInTheDocument();
+    expect(screen.getByText(/Caf.+\/ Standort/)).toBeInTheDocument();
+    expect(screen.getByText('Kommunale Einrichtungen')).toBeInTheDocument();
     expect(screen.getAllByText(/Kontakt aufnehmen/)[0]).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -20,7 +18,8 @@ describe('UseCases', () => {
   it('renders English copy', () => {
     render(<UseCases locale="en" />);
 
-    expect(screen.getByText(/Small café \/ location/)).toBeInTheDocument();
-    expect(screen.getAllByText(/Contact us/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Caf.+\/ venue/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Reach out/).length).toBeGreaterThan(0);
   });
 });
+

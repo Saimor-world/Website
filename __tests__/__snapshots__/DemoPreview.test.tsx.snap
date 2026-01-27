@@ -46,12 +46,12 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
           class="text-3xl sm:text-4xl font-semibold"
           style="font-family: "Cormorant Garamond", serif;"
         >
-          Demo view · Môra UI
+          Demo view - MA'ra UI
         </h2>
         <p
           class="text-base sm:text-lg text-white/80 leading-relaxed"
         >
-          Here’s a real preview of Môra’s resonance space — all elements come directly from the UI (demo data).
+          Fast preview of the real interface with simulated data. No slides, just UI.
         </p>
       </div>
       <div
@@ -96,7 +96,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
               />
             </svg>
             <span>
-              Demo view (simulated data)
+              Demo - simulated data
             </span>
           </div>
           <div
@@ -262,7 +262,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                       d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
                     />
                   </svg>
-                  Field · Mycelium
+                  Field - Mycelium
                 </div>
                 <div
                   class="flex items-center gap-2 text-xs text-white/70"
@@ -319,7 +319,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                     style="background-color: rgb(212, 168, 87);"
                   />
                   <span>
-                    Chat (calm)
+                    Chat
                   </span>
                 </div>
               </div>
@@ -426,7 +426,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                     class="h-1.5 w-1.5 rounded-full bg-emerald-300"
                   />
                   <span>
-                    Signals: 12 calm, 2 open
+                    Signals: 12 calm / 2 open
                   </span>
                 </li>
                 <li
@@ -446,7 +446,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                     class="h-1.5 w-1.5 rounded-full bg-emerald-300"
                   />
                   <span>
-                    Example: calm café view · simulated data
+                    Example: calm cafe flow
                   </span>
                 </li>
               </ul>
@@ -476,7 +476,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                       d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
                     />
                   </svg>
-                  Chat · calm mode
+                  Chat - calm
                 </div>
                 <span
                   class="text-xs text-white/65"
@@ -498,7 +498,7 @@ exports[`DemoPreview > renders English copy without crashing 1`] = `
                   class="rounded-2xl bg-[#0f1f17] border border-white/12 px-3 py-3 shadow-inner text-white/80"
                 >
                   <p>
-                    Answer: three clusters, ready for a focus call.
+                    Three clusters, ready for a focus call.
                   </p>
                 </div>
               </div>
@@ -551,18 +551,18 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
               d="m9 12 2 2 4-4"
             />
           </svg>
-          Live Demo Panel
+          Demo
         </p>
         <h2
           class="text-3xl sm:text-4xl font-semibold"
           style="font-family: "Cormorant Garamond", serif;"
         >
-          Demo-Ansicht · Môra UI
+          Demo-Ansicht - MA'ra UI
         </h2>
         <p
           class="text-base sm:text-lg text-white/80 leading-relaxed"
         >
-          Hier siehst du einen echten Einblick in Môras Resonanzraum — alle Elemente stammen direkt aus der UI (Demo-Daten). So könnte der Raum für ein Café aussehen – mit simulierten Daten.
+          Sieh dir Môra direkt an – mit Beispieldaten.
         </p>
       </div>
       <div
@@ -607,7 +607,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
               />
             </svg>
             <span>
-              Demo-Ansicht (simulierte Daten)
+              Demo
             </span>
           </div>
           <div
@@ -773,7 +773,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                       d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
                     />
                   </svg>
-                  Feld · Myzel
+                  Feld - Myzel
                 </div>
                 <div
                   class="flex items-center gap-2 text-xs text-white/70"
@@ -830,7 +830,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                     style="background-color: rgb(212, 168, 87);"
                   />
                   <span>
-                    Chat (ruhig)
+                    Chat
                   </span>
                 </div>
               </div>
@@ -937,7 +937,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                     class="h-1.5 w-1.5 rounded-full bg-emerald-300"
                   />
                   <span>
-                    Signals: 12 ruhig, 2 offen
+                    Signals: 12 ruhig / 2 offen
                   </span>
                 </li>
                 <li
@@ -957,7 +957,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                     class="h-1.5 w-1.5 rounded-full bg-emerald-300"
                   />
                   <span>
-                    Beispiel: Café-Raum mit simulierten Daten
+                    Beispiel: Café-Szenario
                   </span>
                 </li>
               </ul>
@@ -987,7 +987,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                       d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
                     />
                   </svg>
-                  Chat · ruhiger Modus
+                  Chat - ruhig
                 </div>
                 <span
                   class="text-xs text-white/65"
@@ -1009,7 +1009,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
                   class="rounded-2xl bg-[#0f1f17] border border-white/12 px-3 py-3 shadow-inner text-white/80"
                 >
                   <p>
-                    Antwort: drei Cluster, bereit für Fokusgespräch.
+                    Drei Cluster, bereit für ein Fokusgespräch.
                   </p>
                 </div>
               </div>
