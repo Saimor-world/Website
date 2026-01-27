@@ -75,9 +75,9 @@ export default function MoraPage() {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">Universe OS Showcase</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/5 border border-amber-500/10 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-amber-400/80">Concept Demo — In Development</span>
             </div>
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -97,6 +97,29 @@ export default function MoraPage() {
         <section id="showcase" className="py-20 px-4 md:px-10">
           <div className="max-w-[1600px] mx-auto">
 
+            {/* Honest Disclaimer */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-8 px-8 py-6 rounded-2xl bg-amber-500/5 border border-amber-500/10 backdrop-blur-md"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                  <Eye className="w-5 h-5 text-amber-400" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-bold text-amber-300">Eine grobe Darstellung — nicht das echte System</h3>
+                  <p className="text-sm text-white/50 leading-relaxed max-w-3xl">
+                    Was du hier siehst, ist eine <span className="text-amber-300 font-semibold">konzeptuelle Demonstration</span>.
+                    Das echte MÔRA OS ist noch in aktiver Entwicklung und wird <span className="text-white/70">völlig anders aussehen</span> —
+                    mit deutlich mehr Tiefe, visueller Komplexität und semantischer Intelligenz.
+                    Das hier dient nur dazu, die <span className="italic text-amber-200">Idee</span> zu vermitteln.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Window Frame Header */}
             <div className="flex items-center justify-between mb-4 px-8">
               <div className="flex items-center gap-6">
@@ -105,7 +128,7 @@ export default function MoraPage() {
                   <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                   <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 </div>
-                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/20">System: Resonance Field v1.0</span>
+                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-400/40">Concept Mockup — Not Final</span>
               </div>
               <div className="flex items-center gap-4 text-white/30 text-[10px] font-mono tracking-widest">
                 <span>0xFF_SAIMOR</span>
@@ -179,17 +202,100 @@ export default function MoraPage() {
           </div>
         </section>
 
-        {/* 4. Final CTA */}
-        <section className="py-40 px-6 text-center">
+        {/* 4. Vision & Reality Section */}
+        <section className="py-32 px-6">
+          <div className="max-w-5xl mx-auto space-y-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center space-y-6"
+            >
+              <h2 className="text-5xl md:text-6xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Das <span className="italic text-emerald-400">echte</span> MÔRA OS
+              </h2>
+              <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
+                ist eine lebendige, sich entwickelnde Intelligenz.
+                Ein System, das nicht nur verwaltet, sondern <span className="text-white/80 font-semibold">versteht</span>.
+                Das sich an deine Denkweise anpasst und mit dir wächst.
+              </p>
+            </motion.div>
+
+            {/* The Vision Grid */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/5 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-light mb-4 text-emerald-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>3D-Universum Interface</h3>
+                <p className="text-sm text-white/40 leading-relaxed">
+                  Navigiere durch deine Daten wie durch ein lebendiges Universum. Jede Abteilung ein Planet, jedes Projekt ein Orbit.
+                  Semantische Verbindungen werden als <span className="text-white/60">leuchtende Gravitationsfelder</span> sichtbar.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/5 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-light mb-4 text-cyan-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Aktive Gedächtnisschicht</h3>
+                <p className="text-sm text-white/40 leading-relaxed">
+                  MÔRA lernt mit jedem Klick. Sie erkennt Muster, die du nicht siehst.
+                  Sie schlägt Verbindungen vor, <span className="text-white/60">bevor du danach suchst</span>.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/5 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-light mb-4 text-purple-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Embodied Agent</h3>
+                <p className="text-sm text-white/40 leading-relaxed">
+                  Sie ist kein Chatbot. Sie ist ein <span className="text-white/60">lebendiger Teil deines Workflows</span>.
+                  Sie beobachtet, antizipiert und handelt proaktiv.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/5 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-light mb-4 text-amber-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Closed-Loop Learning</h3>
+                <p className="text-sm text-white/40 leading-relaxed">
+                  Jede Interaktion verfeinert ihr Verständnis. Das System wird nicht nur benutzt —
+                  <span className="text-white/60">es entwickelt sich</span>.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Honest CTA - Support the Vision */}
+        <section className="py-32 px-6 text-center">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="max-w-3xl mx-auto space-y-12"
+            className="max-w-4xl mx-auto space-y-12"
           >
-            <h2 className="text-5xl md:text-7xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Dein Universum <br />
-              <span className="italic text-emerald-400">wartet.</span>
-            </h2>
+            <div className="space-y-6">
+              <h2 className="text-5xl md:text-7xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Diese Vision <br />
+                <span className="italic text-emerald-400">braucht dich.</span>
+              </h2>
+              <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
+                MÔRA ist kein fertiges Produkt, sondern eine <span className="text-white/70 font-semibold">lebendige Entwicklung</span>.
+                Wir bauen ein System, das die Art und Weise verändert, wie Menschen mit Wissen arbeiten.
+                Und wir suchen <span className="text-emerald-300">Partner, Pioniere und Unterstützer</span>, die an diese Zukunft glauben.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a
@@ -197,15 +303,20 @@ export default function MoraPage() {
                 target="_blank"
                 className="px-12 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105"
               >
-                Showcase buchen
+                Gespräch vereinbaren
               </a>
               <Link
                 href="/de/portal"
                 className="px-12 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all"
               >
-                Portal Zugang
+                Portal erkunden
               </Link>
             </div>
+
+            <p className="text-xs text-white/30 max-w-xl mx-auto">
+              Ob als Early Adopter, Investor oder einfach als Enthusiast —
+              jede Form von Unterstützung bringt uns dem Ziel näher.
+            </p>
           </motion.div>
         </section>
 
