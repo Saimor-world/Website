@@ -1,7 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
 import { captureApiError } from '@/lib/analytics';
 import { prisma } from '@/lib/prisma';
+import { contactFormLimiter, getClientIP } from '@/lib/rate-limit';
 
 const Body = z.object({
   name: z.string().trim().min(1).max(200),
@@ -10,13 +12,25 @@ const Body = z.object({
   licht: z.boolean().optional(),
 });
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    // Rate Limiting
+    const ip = getClientIP(req);
+    const { success } = await contactFormLimiter.check(req, ip);
+
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' },
+        { status: 429 }
+      );
+    }
+
+    // Parse Body
     const json = await req.json().catch(() => ({}));
     const result = Body.safeParse(json);
 
     if (!result.success) {
-      return new Response(JSON.stringify({ error: 'Invalid form data' }), {
+      return new NextResponse(JSON.stringify({ error: 'Invalid form data' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -59,7 +73,8 @@ export async function POST(req: Request) {
         pass: process.env.SMTP_PASS,
       },
       tls: {
-        rejectUnauthorized: false
+        // Only reject if not explicitly disabled for compatibility with some providers
+        rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false'
       }
     });
 

@@ -1,7 +1,23 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
+import { publicChatLimiter, getClientIP } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate Limiting for Public Chat
+    const ip = getClientIP(request);
+    const { success } = await publicChatLimiter.check(request, ip);
+
+    if (!success) {
+      return NextResponse.json(
+        {
+          reply: 'Ich erhalte gerade sehr viele Nachrichten. Bitte warte einen Moment.',
+          error: true,
+          rateLimit: true
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { message, conversationId, sessionId } = body;
 

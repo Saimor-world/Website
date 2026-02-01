@@ -76,17 +76,28 @@ export function getClientIP(request: NextRequest): string {
 }
 
 // Rate limiters for different scenarios
+// Rate limiters for different scenarios
 export const publicChatLimiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  limit: 5
+  interval: 60 * 1000,
+  limit: parseInt(process.env.RATE_LIMIT_CHAT_PUBLIC || '5')
 });
 
 export const authChatLimiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  limit: 30
+  interval: 60 * 1000,
+  limit: parseInt(process.env.RATE_LIMIT_CHAT_AUTH || '30')
 });
 
 export const globalLimiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  limit: 100
+  interval: 60 * 1000,
+  limit: parseInt(process.env.RATE_LIMIT_GLOBAL || '100')
+});
+
+export const contactFormLimiter = rateLimit({
+  interval: 60 * 60 * 1000, // 1 hour per submission
+  limit: parseInt(process.env.RATE_LIMIT_CONTACT || '3')
+});
+
+export const waitlistLimiter = rateLimit({
+  interval: 60 * 60 * 1000, // 1 hour per submission
+  limit: parseInt(process.env.RATE_LIMIT_WAITLIST || '3')
 });

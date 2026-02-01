@@ -29,8 +29,8 @@ export const viewport: Viewport = {
 
 export default function RouteLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className={`${inter.className} min-h-screen`}>
-      <main id="main-content" className="" role="main">{children}</main>
+    <div className={`${inter.className} min-h-screen font-sans`}>
+      {children}
     </div>
   )
 }

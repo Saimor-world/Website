@@ -124,7 +124,11 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
   const markSeen = useCallback(() => {
     if (typeof window === 'undefined') return;
-    window.localStorage.setItem('mora-intro-seen', 'true');
+    try {
+      window.localStorage.setItem('mora-intro-seen', 'true');
+    } catch (e) {
+      console.warn('Failed to save intro state to localStorage:', e);
+    }
   }, []);
 
   const endIntro = useCallback(
@@ -146,10 +150,10 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
   // Typewriter effect for system init lines
   useEffect(() => {
     if (phase !== 2 || currentInitLine >= copy.systemInit.length) return;
-    
+
     const line = copy.systemInit[currentInitLine];
     let charIndex = 0;
-    
+
     const typeInterval = setInterval(() => {
       if (charIndex <= line.length) {
         setTypedText(line.slice(0, charIndex));
@@ -171,7 +175,12 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
       return;
     }
 
-    const seen = window.localStorage.getItem('mora-intro-seen');
+    let seen = false;
+    try {
+      seen = window.localStorage.getItem('mora-intro-seen') === 'true';
+    } catch (e) {
+      console.warn('Failed to read intro state from localStorage:', e);
+    }
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     setReady(true);
@@ -349,10 +358,10 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
               animate={{
                 boxShadow: phase >= 2
                   ? [
-                      '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
-                      '0 0 100px rgba(16,185,129,0.7), 0 0 150px rgba(6,182,212,0.5)',
-                      '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
-                    ]
+                    '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
+                    '0 0 100px rgba(16,185,129,0.7), 0 0 150px rgba(6,182,212,0.5)',
+                    '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
+                  ]
                   : '0 0 60px rgba(16,185,129,0.4), 0 0 100px rgba(6,182,212,0.2)',
               }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
