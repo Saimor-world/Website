@@ -53,13 +53,13 @@ export default function MoraTeaser({ locale }: Props) {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-6 pt-4 relative z-30 pointer-events-auto">
-                            <Link
+                            <a
                                 href={locale === 'en' ? '/en/mora' : '/mora'}
                                 className="group px-10 py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)] cursor-pointer"
                             >
                                 <span>{t('Showcase öffnen', 'Open Showcase')}</span>
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
+                            </a>
 
                             <Link
                                 href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
