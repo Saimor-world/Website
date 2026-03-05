@@ -59,14 +59,14 @@ type Copy = {
 
 const copyByLocale: Record<Locale, Copy> = {
   de: {
-    badge: 'Sektor: VHS-Archiv',
-    heroStatus: 'Strukturierter Kern',
+    badge: 'Konzept: Semantic Resonance',
+    heroStatus: 'Philosophisches Fundament',
     heroLine1: 'Kein Spiegel.',
     heroLine2: 'Ein Gedächtnis.',
     heroDesc1:
       'Mora ist die semantische Schnittstelle von Saimôr OS. Sie versteht nicht nur Syntax; sie erkennt die Ursache von Verhaltensmustern.',
     heroDesc2:
-      'Basierend auf der Analog Affect Theorie, wurzelt sie in Ihren lokalen Daten, um den Kontext zu reflektieren, anstatt nur Prompts zu verarbeiten.',
+      'Anstatt lediglich Prompts zu verarbeiten, orientiert sich Môra an der Vision eines analogen, kontextbasierten Gedächtnisses: Wahre Intelligenz speichert keine Daten, sondern Bedeutung.',
     heroPrimaryCta: 'Zur Vertiefung',
     heroSecondaryCta: 'Dokumentation',
     heroSecondaryHref: '/#mora-dashboard',
@@ -78,22 +78,22 @@ const copyByLocale: Record<Locale, Copy> = {
     archFeature1Value: 'Lokale GPU / On-Prem',
     archFeature2Label: 'Kontextfenster',
     archFeature2Value: 'Verschachteltes Gedächtnis',
-    vhsTagSimple: 'Sektor: VHS-Archiv (Vorschau)',
+    vhsTagSimple: 'Theorie: Der analoge Gedanke',
     vhsTitleSimple: 'Strukturierte Sicht',
-    vhsQuestion: 'Möchten Sie in die Tiefe gehen?',
+    vhsQuestion: 'Die Philosophie hinter Mora',
     vhsBody:
-      'Klicken Sie, um die Myzelium-Ansicht zu aktivieren. Dadurch wird das volle, analoge Affekt-System geladen.',
-    vhsActivate: 'Eintauchen in die Welt (Deep View)',
-    vhsTagDeep: 'Dataset: VHS_Archive_DE',
-    vhsTitleDeep: 'The Emotional Fossil',
+      'Wir glauben, dass digitale Systeme von der Art lernen müssen, wie Menschen Erinnerungen speichern – nicht als Nullen und Einsen, sondern als ein dichtes Netz aus Kontext, Emotionen und Bedeutungen.',
+    vhsActivate: 'Das Konzept erkunden',
+    vhsTagDeep: 'Vision: Emotional Fossil',
+    vhsTitleDeep: 'Menschliche Resonanz',
     vhsBodyDeep:
-      'Wir trainieren Mora auf historischen Analog-Archiven, um die "Phänomenologische Latenz" menschlicher Kommunikation zu erfassen. Während digitale Systeme nur diskrete Signale verarbeiten, erkennt Mora das affektive Rauschen: Die Stille zwischen Sätzen, die Ironie im Unterton und die semantische Schwerkraft der Nostalgie.',
+      'Unser konzeptioneller Ansatz betrachtet Datenrauschen nicht als Fehler, sondern als affektives Signal. Wie analoge Medien bewahren auch menschliche Interaktionen Nuancen: Die Stille zwischen Sätzen, die Ironie im Unterton und die semantische Schwerkraft von Erfahrungen. Mora ist unsere Vision, diese Tiefe digital zu simulieren.',
     vhsConsoleLines: [
-      '> Extracting affective resonance... [OK]',
-      '> Analyzing phenomenological latency... [OK]',
+      '> Conceptualizing affective resonance... [OK]',
+      '> Modeling phenomenological latency... [OK]',
       '> Result: High-Fidelity Human-Adjacent Semantic Web.'
     ],
-    techEyebrow: 'Core Technology',
+    techEyebrow: 'Conceptual Framework',
     techTitle: 'Verschachtelte Reflexion',
     techCard1Title: 'Schnelles Gedächtnis',
     techCard1Body:
@@ -117,14 +117,14 @@ const copyByLocale: Record<Locale, Copy> = {
     techSpec3Value: 'AES-256-K'
   },
   en: {
-    badge: 'Sector: VHS Archive',
-    heroStatus: 'Structured Core',
+    badge: 'Concept: Semantic Resonance',
+    heroStatus: 'Philosophical Foundation',
     heroLine1: 'Not a mirror.',
     heroLine2: 'A memory.',
     heroDesc1:
       'Mora is the semantic interface of Saimôr OS. It doesn\'t just understand syntax; it recognizes the cause of behavioral patterns.',
     heroDesc2:
-      'Based on Analog Affect theory, it\'s rooted in your local data to reflect context, not just process prompts.',
+      'Rather than just processing prompts, Môra is guided by the vision of an analog, context-based memory: true intelligence doesn\'t store data, it stores meaning.',
     heroPrimaryCta: 'Dive Deeper',
     heroSecondaryCta: 'Documentation',
     heroSecondaryHref: '/en#mora-dashboard',
@@ -136,22 +136,22 @@ const copyByLocale: Record<Locale, Copy> = {
     archFeature1Value: 'Local GPU / On-Prem',
     archFeature2Label: 'Context Window',
     archFeature2Value: 'Nested Memory',
-    vhsTagSimple: 'Sector: VHS Archive (Preview)',
+    vhsTagSimple: 'Theory: The Analog Thought',
     vhsTitleSimple: 'Structured View',
-    vhsQuestion: 'Ready to go deeper?',
+    vhsQuestion: 'The Philosophy Behind Mora',
     vhsBody:
-      'Click to activate the Mycelium View. This will load the full, analog affect system.',
-    vhsActivate: 'Dive into the World (Deep View)',
-    vhsTagDeep: 'Dataset: VHS_Archive_EN',
-    vhsTitleDeep: 'The Emotional Fossil',
+      'We believe digital systems must learn from how humans store memory — not as ones and zeros, but as a dense web of context, emotions, and meaning.',
+    vhsActivate: 'Explore the Concept',
+    vhsTagDeep: 'Vision: Emotional Fossil',
+    vhsTitleDeep: 'Human Resonance',
     vhsBodyDeep:
-      'We train Mora on historical analog archives to capture the "Phenomenological Latency" of human communication. While digital systems process only discrete signals, Mora recognizes affective noise: the silence between sentences, the irony in undertones, and the semantic gravity of nostalgia.',
+      'Our conceptual approach treats data noise not as an error, but as an affective signal. Like analog media, human interactions preserve nuances: the silence between sentences, the irony in undertones, and the semantic gravity of experience. Mora is our vision to digitally simulate this depth.',
     vhsConsoleLines: [
-      '> Extracting affective resonance... [OK]',
-      '> Analyzing phenomenological latency... [OK]',
+      '> Conceptualizing affective resonance... [OK]',
+      '> Modeling phenomenological latency... [OK]',
       '> Result: High-Fidelity Human-Adjacent Semantic Web.'
     ],
-    techEyebrow: 'Core Technology',
+    techEyebrow: 'Conceptual Framework',
     techTitle: 'Nested Reflection',
     techCard1Title: 'Fast Memory',
     techCard1Body:
@@ -400,12 +400,11 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
   const [bootLines, setBootLines] = useState<string[]>([]);
 
   const fullBootLines = [
-    "> SAIMÔR BIOS v2.6.1 (1984-2026)",
+    "> SAIMÔR BIOS v2.6.1 (1984-Current)",
     "> MEMORY CHECK: 640KB... OK",
     "> DETECTING NEURAL CORE... FOUND (ID: MORA-001)",
-    "> MOUNTING VOLUME: /DEV/VHS_ARCHIVE",
-    "> LOADING CRYSTAL SEMANTICS... DONE",
-    "> ANALOG AFFECT INITIALIZED.",
+    "> CONCEPTUALIZING SEMANTIC MESH...",
+    "> LOADING ANALOG AFFECT METAPHOR... DONE",
     "> SYSTEM ONLINE."
   ];
 
@@ -731,7 +730,7 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
                 { label: 'Latenz', value: '0.002ms' },
                 { label: 'Knoten', value: '∞ Dynamisch' },
                 { label: 'Sicherheit', value: 'Air-Gapped' },
-                { label: 'Layer', value: 'VHS Analog' }
+                { label: 'Layer', value: 'Philosophical' }
               ].map((spec, i) => (
                 <div key={i} className="bg-[#081410] p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.02] transition-colors group">
                   <div className="text-[10px] text-white/30 uppercase tracking-widest mb-3 font-bold group-hover:text-saimor-teal transition-colors">{spec.label}</div>
