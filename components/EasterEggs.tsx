@@ -48,6 +48,7 @@ const KONAMI_CODE = [
 ];
 
 const SECRET_WORDS = ['klarheit'] as const;
+const RESONANCE_DURATION = 14000;
 
 const PAGES_VISITED_KEY = 'saimor-pages-visited';
 const CORE_PAGES_KEY = 'saimor-core-pages';
@@ -103,6 +104,7 @@ export default function EasterEggs() {
   const messageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const achievementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const konamiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const konamiMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logoResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logoClickCountRef = useRef(0);
 
@@ -112,41 +114,70 @@ export default function EasterEggs() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [resonanceModeActive, setResonanceModeActive] = useState(false);
   const [resonanceGlyphs, setResonanceGlyphs] = useState<ResonanceGlyph[]>([]);
+  const [resonancePulseSeed, setResonancePulseSeed] = useState(0);
+  const [discoveryProgress, setDiscoveryProgress] = useState(() => achievementManager.current.getProgress());
+  const [explorationStats, setExplorationStats] = useState({ pages: 0, views: 0, cards: 0 });
 
   const copy = locale === 'de'
     ? {
-        konami: 'Resonanzmodus aktiviert. Der Code bleibt geheim, die Wirkung nicht.',
-        logo: 'Klarheitsfunke freigesetzt.',
-        secretMenu: 'Geheimes Archiv geöffnet.',
-        clarity: 'Klarheit gefunden. Sie war die ganze Zeit da.',
-        hero: 'Du nimmst dir Zeit zum Hinschauen. Genau hier beginnt Klarheit.',
-        navigator: 'Du prüfst die Basis. Gute Entscheidungen beginnen mit Transparenz.',
-        mora: 'Môra entdeckt. Das semantische Gedächtnis ist offen.',
-        demo: 'Demo-Pionier. Erst verstehen, dann entscheiden.',
-        docs: 'Sorgfalt zahlt sich aus. Du liest die Details.',
-        contact: 'Erstkontakt hergestellt. Der Dialog ist eröffnet.',
-        scroll: 'Du hast bis fast zum Ende gelesen.',
-        returning: 'Willkommen zurück.',
-        field: 'Alle Perspektiven geprüft. Gute Entscheidungen mögen Vielfalt.',
-        pattern: 'Muster erkannt. Du verbindest Punkte.',
-        diver: 'Tiefe Ansicht geöffnet. Jetzt wird es interessant.',
+        konami: 'Resonanzschicht aktiv. Die Oberfläche zeigt für einen Moment ihre zweite Ebene.',
+        logo: 'Markierung erkannt. Zweite Ebene freigelegt.',
+        secretMenu: 'Archivzugang geöffnet.',
+        clarity: 'Signalphrase erkannt.',
+        hero: 'Aufmerksamkeit registriert.',
+        navigator: 'Orientierung vollständig.',
+        mora: 'Semantik-Layer geöffnet.',
+        demo: 'Live-Vorschau geladen.',
+        docs: 'Referenzpfad geöffnet.',
+        contact: 'Kanal geöffnet.',
+        command: 'Schnellzugang erkannt.',
+        scroll: 'Vollständiger Durchgang erkannt.',
+        returning: 'Wiederkehr erkannt.',
+        field: 'Mehrfachansicht vollständig.',
+        pattern: 'Musterverdichtung erkannt.',
+        diver: 'Tiefe Ansicht aktiv.',
+        resonanceLabel: 'Resonanzschicht',
+        resonanceTitle: 'Override aktiv',
+        resonanceBody: 'Die Seite blendet kurz ihre zweite Ebene ein. Das Entdeckungslog wird erweitert und die Signale werden sichtbarer.',
+        resonanceCode: 'Sequenz erkannt',
+        resonancePrompt: 'AAA öffnet das Log sofort.',
+        metrics: {
+          log: 'Log',
+          pages: 'Seiten',
+          depth: 'Tiefe',
+          window: 'Fenster',
+          windowValue: '14s',
+        },
       }
     : {
-        konami: 'Resonance mode activated. The code stays secret, the effect does not.',
-        logo: 'Clarity spark released.',
-        secretMenu: 'Hidden archive opened.',
-        clarity: 'Clarity found. It was there all along.',
-        hero: 'You take time to really look. That is where clarity starts.',
-        navigator: 'You checked the fundamentals. Good decisions begin with transparency.',
-        mora: 'Môra discovered. The semantic memory is open.',
-        demo: 'Demo pioneer. Understand first, decide second.',
-        docs: 'Thorough work pays off. You read the details.',
-        contact: 'First contact made. The conversation is open.',
-        scroll: 'You read almost all the way through.',
-        returning: 'Welcome back.',
-        field: 'All perspectives explored. Good decisions like range.',
-        pattern: 'Patterns recognized. You connect the dots.',
-        diver: 'Deep view opened. Now it gets interesting.',
+        konami: 'Resonance layer active. The interface is showing its second state for a moment.',
+        logo: 'Mark detected. Second layer revealed.',
+        secretMenu: 'Archive access opened.',
+        clarity: 'Signal phrase detected.',
+        hero: 'Attention registered.',
+        navigator: 'Orientation complete.',
+        mora: 'Semantic layer opened.',
+        demo: 'Live preview loaded.',
+        docs: 'Reference path opened.',
+        contact: 'Channel opened.',
+        command: 'Command access detected.',
+        scroll: 'Full pass registered.',
+        returning: 'Return visit detected.',
+        field: 'Multi-view complete.',
+        pattern: 'Pattern density detected.',
+        diver: 'Deep view active.',
+        resonanceLabel: 'Resonance Layer',
+        resonanceTitle: 'Override Active',
+        resonanceBody: 'The site briefly exposes its second layer. The discovery log expands and signals become easier to spot.',
+        resonanceCode: 'Sequence detected',
+        resonancePrompt: 'AAA opens the log instantly.',
+        metrics: {
+          log: 'Log',
+          pages: 'Pages',
+          depth: 'Depth',
+          window: 'Window',
+          windowValue: '14s',
+        },
       };
 
   const dismissAchievement = useCallback(() => {
@@ -155,6 +186,10 @@ export default function EasterEggs() {
       clearTimeout(achievementTimeoutRef.current);
       achievementTimeoutRef.current = null;
     }
+  }, []);
+
+  const updateDiscoveryProgress = useCallback(() => {
+    setDiscoveryProgress(achievementManager.current.getProgress());
   }, []);
 
   const showTransientMessage = useCallback((message: string, duration = 3200) => {
@@ -182,6 +217,7 @@ export default function EasterEggs() {
     const achievement = achievementManager.current.unlock(id);
     if (!achievement) return null;
 
+    updateDiscoveryProgress();
     triggerHapticFeedback();
     setNewAchievement(achievement);
     MatomoEvents.achievementUnlock(id);
@@ -196,7 +232,7 @@ export default function EasterEggs() {
     }, 3600);
 
     return achievement;
-  }, [triggerHapticFeedback]);
+  }, [triggerHapticFeedback, updateDiscoveryProgress]);
 
   const createParticleBatch = useCallback((nextParticles: Particle[], lifetime = 2600) => {
     setParticles((current) => [...current, ...nextParticles]);
@@ -219,7 +255,7 @@ export default function EasterEggs() {
         y,
         vx: Math.cos(angle) * velocity,
         vy: Math.sin(angle) * velocity,
-        color: ['#D4A857', '#E6C897', '#7CBF95'][index % 3],
+        color: ['#D6A848', '#75C6A0', '#689EFF'][index % 3],
         size: 4 + Math.random() * 4,
         icon: index % 2 === 0 ? Sparkles : Star,
       };
@@ -237,7 +273,7 @@ export default function EasterEggs() {
       y: -24 - Math.random() * 40,
       vx: (Math.random() - 0.5) * 0.5,
       vy: 1.8 + Math.random() * 2.4,
-      color: index % 2 === 0 ? '#D4A857' : '#E6C897',
+      color: index % 2 === 0 ? '#D6A848' : '#E2C88D',
       size: 4 + Math.random() * 4,
       icon: Crown,
     }));
@@ -258,30 +294,42 @@ export default function EasterEggs() {
   }, [createSubtleParticles]);
 
   const buildResonanceGlyphs = useCallback((): ResonanceGlyph[] => {
-    const symbols = ['↑', '↓', '←', '→', 'B', 'A', '✦', '◌', '◇', '◦'];
+    const symbols = ['↑', '↓', '←', '→', 'A', 'B', '◈', '◎', '⊙', '△'];
 
-    return Array.from({ length: 14 }, (_, index) => ({
+    return Array.from({ length: 18 }, (_, index) => ({
       id: Date.now() + index,
       symbol: symbols[index % symbols.length],
-      left: 8 + Math.random() * 84,
-      delay: index * 0.12,
-      duration: 3.8 + Math.random() * 1.8,
-      size: 16 + Math.random() * 14,
-      drift: (Math.random() - 0.5) * 36,
+      left: 6 + Math.random() * 88,
+      delay: index * 0.1,
+      duration: 4.2 + Math.random() * 2.4,
+      size: 15 + Math.random() * 18,
+      drift: (Math.random() - 0.5) * 42,
     }));
   }, []);
 
   const activateResonanceMode = useCallback(() => {
-    if (resonanceModeActive) return;
+    const firstUnlock = unlockAchievement('konami');
 
     setResonanceModeActive(true);
+    setResonancePulseSeed((current) => current + 1);
     setResonanceGlyphs(buildResonanceGlyphs());
-    unlockAchievement('konami');
-    showTransientMessage(copy.konami, 3600);
+    showTransientMessage(copy.konami, 4200);
 
-    if (!prefersReducedMotionRef.current) {
+    if (!prefersReducedMotionRef.current && typeof window !== 'undefined') {
       createSubtleFireworks();
-      createGoldenRain(20);
+      createGoldenRain(24);
+      createSubtleParticles(window.innerWidth / 2, window.innerHeight * 0.42, 18);
+    }
+
+    if (firstUnlock && typeof window !== 'undefined') {
+      if (konamiMenuTimeoutRef.current) {
+        clearTimeout(konamiMenuTimeoutRef.current);
+      }
+
+      konamiMenuTimeoutRef.current = setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
+        konamiMenuTimeoutRef.current = null;
+      }, 900);
     }
 
     if (konamiTimeoutRef.current) {
@@ -292,12 +340,35 @@ export default function EasterEggs() {
       setResonanceModeActive(false);
       setResonanceGlyphs([]);
       konamiTimeoutRef.current = null;
-    }, 10000);
-  }, [buildResonanceGlyphs, copy.konami, createGoldenRain, createSubtleFireworks, resonanceModeActive, showTransientMessage, unlockAchievement]);
+    }, RESONANCE_DURATION);
+  }, [
+    buildResonanceGlyphs,
+    copy.konami,
+    createGoldenRain,
+    createSubtleFireworks,
+    createSubtleParticles,
+    showTransientMessage,
+    unlockAchievement,
+  ]);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    updateDiscoveryProgress();
+  }, [updateDiscoveryProgress]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (resonanceModeActive) {
+      document.documentElement.dataset.saimorResonance = 'active';
+      return () => {
+        delete document.documentElement.dataset.saimorResonance;
+      };
+    }
+
+    delete document.documentElement.dataset.saimorResonance;
+    return undefined;
+  }, [resonanceModeActive]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
@@ -333,6 +404,7 @@ export default function EasterEggs() {
       if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
       if (achievementTimeoutRef.current) clearTimeout(achievementTimeoutRef.current);
       if (konamiTimeoutRef.current) clearTimeout(konamiTimeoutRef.current);
+      if (konamiMenuTimeoutRef.current) clearTimeout(konamiMenuTimeoutRef.current);
       if (logoResetRef.current) clearTimeout(logoResetRef.current);
       if (heroObserverTimerRef.current) clearTimeout(heroObserverTimerRef.current);
     };
@@ -365,7 +437,6 @@ export default function EasterEggs() {
             unlockAchievement('secret-klarheit');
             showTransientMessage(copy.clarity);
           }
-
         });
       }
 
@@ -381,6 +452,20 @@ export default function EasterEggs() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activateResonanceMode, copy.clarity, copy.secretMenu, mounted, showTransientMessage, unlockAchievement]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleCommandPaletteUsed = () => {
+      if (hasAchievementUnlocked('curiosity-driven')) return;
+
+      unlockAchievement('curiosity-driven');
+      showTransientMessage(copy.command);
+    };
+
+    window.addEventListener('saimor-command-palette-used', handleCommandPaletteUsed);
+    return () => window.removeEventListener('saimor-command-palette-used', handleCommandPaletteUsed);
+  }, [copy.command, hasAchievementUnlocked, mounted, showTransientMessage, unlockAchievement]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -464,6 +549,7 @@ export default function EasterEggs() {
     const visitedPages = readStoredSet(PAGES_VISITED_KEY);
     visitedPages.add(normalizedPath);
     writeStoredSet(PAGES_VISITED_KEY, visitedPages);
+    setExplorationStats((current) => ({ ...current, pages: visitedPages.size }));
 
     const bucket = getCorePageBucket(normalizedPath);
     if (bucket) {
@@ -582,6 +668,7 @@ export default function EasterEggs() {
       if (!metricId) return;
 
       dashboardCardIdsRef.current.add(metricId);
+      setExplorationStats((current) => ({ ...current, cards: dashboardCardIdsRef.current.size }));
       unlockAchievement('mora-explorer');
 
       if (dashboardCardIdsRef.current.size >= 4 && !hasAchievementUnlocked('pattern-recognizer')) {
@@ -595,6 +682,7 @@ export default function EasterEggs() {
       if (!viewMode) return;
 
       dashboardViewModesRef.current.add(viewMode);
+      setExplorationStats((current) => ({ ...current, views: dashboardViewModesRef.current.size }));
       unlockAchievement('mora-explorer');
 
       if (dashboardViewModesRef.current.size >= 3 && !hasAchievementUnlocked('field-explorer')) {
@@ -645,8 +733,43 @@ export default function EasterEggs() {
     return () => clearInterval(interval);
   }, []);
 
+  const resonanceMetrics = [
+    { label: copy.metrics.log, value: `${discoveryProgress.unlocked}/${discoveryProgress.total}` },
+    { label: copy.metrics.pages, value: `${explorationStats.pages}` },
+    { label: copy.metrics.depth, value: `${Math.max(explorationStats.views, explorationStats.cards)}` },
+    { label: copy.metrics.window, value: copy.metrics.windowValue },
+  ];
+
   return (
     <>
+      <style jsx global>{`
+        html[data-saimor-resonance='active'] body {
+          background-image:
+            radial-gradient(circle at 20% 10%, rgba(214, 168, 72, 0.08), transparent 26%),
+            radial-gradient(circle at 82% 2%, rgba(104, 158, 255, 0.07), transparent 28%);
+        }
+
+        html[data-saimor-resonance='active'] ::selection {
+          background: rgba(214, 168, 72, 0.26);
+          color: #ffffff;
+        }
+
+        html[data-saimor-resonance='active'] a,
+        html[data-saimor-resonance='active'] button {
+          transition:
+            box-shadow 220ms ease,
+            border-color 220ms ease,
+            transform 220ms ease;
+        }
+
+        html[data-saimor-resonance='active'] a:hover,
+        html[data-saimor-resonance='active'] button:hover {
+          box-shadow:
+            0 0 0 1px rgba(214, 168, 72, 0.18),
+            0 0 34px rgba(104, 158, 255, 0.1);
+        }
+      `}</style>
+
       <AchievementToast achievement={newAchievement} onClose={dismissAchievement} locale={locale} />
       <AchievementButton />
 
@@ -656,20 +779,20 @@ export default function EasterEggs() {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
             className="pointer-events-none fixed bottom-24 left-1/2 z-[10000] -translate-x-1/2"
           >
             <motion.div
-              className="max-w-md rounded-2xl px-6 py-4 text-center text-sm font-medium md:text-base"
+              className="max-w-md rounded-[22px] px-6 py-4 text-center text-sm font-medium md:text-base"
               style={{
-                background: 'linear-gradient(135deg, rgba(24, 48, 33, 0.95) 0%, rgba(92, 126, 88, 0.92) 100%)',
+                background: 'linear-gradient(180deg, rgba(9, 16, 27, 0.96) 0%, rgba(14, 24, 38, 0.94) 100%)',
                 backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(212, 180, 131, 0.45)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.28)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 12px 36px rgba(0, 0, 0, 0.28)',
                 color: '#fff',
               }}
-              animate={{ scale: [1, 1.015, 1] }}
-              transition={{ duration: 1.8 }}
+              animate={{ scale: [1, 1.012, 1] }}
+              transition={{ duration: 1.6 }}
             >
               {showMessage}
             </motion.div>
@@ -683,7 +806,7 @@ export default function EasterEggs() {
         return (
           <motion.div
             key={particle.id}
-            className="fixed z-[9999] pointer-events-none"
+            className="pointer-events-none fixed z-[9999]"
             style={{
               left: particle.x,
               top: particle.y,
@@ -708,7 +831,7 @@ export default function EasterEggs() {
       <AnimatePresence>
         {resonanceModeActive && (
           <motion.div
-            className="pointer-events-none fixed inset-0 z-[9998] overflow-hidden"
+            className="pointer-events-none fixed inset-0 z-[9997] overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -716,38 +839,121 @@ export default function EasterEggs() {
             <motion.div
               className="absolute inset-0"
               style={{
-                background: 'radial-gradient(circle at 50% 45%, rgba(212, 180, 131, 0.12) 0%, rgba(16, 24, 20, 0.08) 45%, transparent 72%)',
+                background: 'radial-gradient(circle at 50% 45%, rgba(214, 168, 72, 0.12) 0%, rgba(30, 42, 68, 0.1) 36%, transparent 72%)',
               }}
-              animate={{ opacity: [0.45, 0.7, 0.45] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ opacity: [0.42, 0.72, 0.42] }}
+              transition={{ duration: 2.3, repeat: Infinity, ease: 'easeInOut' }}
             />
 
             <motion.div
-              className="absolute inset-x-[12%] top-16 h-px"
+              key={`ring-${resonancePulseSeed}`}
+              className="absolute left-1/2 top-[44%] h-[42vmin] w-[42vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+              style={{ borderColor: 'rgba(214, 168, 72, 0.2)' }}
+              initial={{ opacity: 0.65, scale: 0.72 }}
+              animate={{ opacity: 0, scale: 1.45 }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeOut' }}
+            />
+
+            <motion.div
+              className="absolute left-1/2 top-[44%] h-[52vmin] w-[52vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+              style={{ borderColor: 'rgba(117, 198, 160, 0.14)' }}
+              animate={{ opacity: [0.1, 0.32, 0.1], scale: [0.96, 1.04, 0.96] }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            <motion.div
+              className="absolute inset-x-[10%] top-16 h-px"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(212, 180, 131, 0.55), transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(214, 168, 72, 0.55), transparent)',
               }}
-              animate={{ opacity: [0.2, 0.8, 0.2], scaleX: [0.92, 1, 0.92] }}
+              animate={{ opacity: [0.18, 0.82, 0.18], scaleX: [0.92, 1, 0.92] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
             />
 
             <motion.div
-              className="absolute inset-x-[12%] bottom-16 h-px"
+              className="absolute inset-x-[10%] bottom-16 h-px"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(124, 191, 149, 0.45), transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(104, 158, 255, 0.4), transparent)',
               }}
-              animate={{ opacity: [0.15, 0.5, 0.15], scaleX: [1, 0.94, 1] }}
+              animate={{ opacity: [0.14, 0.48, 0.14], scaleX: [1, 0.95, 1] }}
               transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
             />
+
+            <motion.div
+              key={`panel-${resonancePulseSeed}`}
+              className="absolute left-4 top-4 w-[min(24rem,calc(100vw-2rem))] rounded-[28px] border px-5 py-5 md:left-6 md:top-6"
+              style={{
+                background: 'linear-gradient(180deg, rgba(7, 12, 20, 0.9) 0%, rgba(13, 22, 36, 0.78) 100%)',
+                borderColor: 'rgba(255, 255, 255, 0.12)',
+                backdropFilter: 'blur(22px)',
+                boxShadow: '0 18px 48px rgba(0, 0, 0, 0.28)',
+              }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, ease: 'easeOut' }}
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/46">
+                {copy.resonanceLabel}
+              </p>
+              <div className="mt-3 flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-2xl font-semibold text-white">
+                    {copy.resonanceTitle}
+                  </h3>
+                  <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/62">
+                    {copy.resonanceBody}
+                  </p>
+                </div>
+                <div
+                  className="flex h-12 min-w-[3rem] items-center justify-center rounded-full px-3 text-lg font-semibold text-white"
+                  style={{
+                    background: 'rgba(214, 168, 72, 0.14)',
+                    border: '1px solid rgba(214, 168, 72, 0.2)',
+                  }}
+                >
+                  {discoveryProgress.unlocked}
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {resonanceMetrics.map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="rounded-[18px] border border-white/8 bg-white/5 px-3 py-3"
+                  >
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/38">{metric.label}</p>
+                    <p className="mt-1 text-lg font-semibold text-white">{metric.value}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="absolute right-6 top-6 hidden rounded-[24px] border border-white/10 bg-[#090f19]/70 px-4 py-4 md:block"
+              style={{ backdropFilter: 'blur(18px)' }}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.28, ease: 'easeOut', delay: 0.1 }}
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/42">
+                {copy.resonanceCode}
+              </p>
+              <p className="mt-2 font-mono text-sm tracking-[0.34em] text-white/78">
+                ↑ ↑ ↓ ↓ ← → ← → B A
+              </p>
+              <p className="mt-3 text-xs text-white/42">
+                {copy.resonancePrompt}
+              </p>
+            </motion.div>
 
             {resonanceGlyphs.map((glyph) => (
               <motion.div
                 key={glyph.id}
-                className="absolute top-[-10%] text-[#D4A857]/70"
+                className="absolute top-[-10%] text-[#D6A848]/70"
                 style={{
                   left: `${glyph.left}%`,
                   fontSize: glyph.size,
-                  textShadow: '0 0 12px rgba(212, 180, 131, 0.35)',
+                  textShadow: '0 0 12px rgba(214, 168, 72, 0.35)',
                 }}
                 initial={{ opacity: 0, y: '-10vh', x: 0 }}
                 animate={{

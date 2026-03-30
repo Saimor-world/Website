@@ -1,30 +1,35 @@
-# SAIMOR Achievements
+# SAIMOR Discovery Log
 
-Die spielerische Ebene ist bewusst reduziert: weniger Zufall, mehr echte Entdeckung.
+Die spielerische Ebene ist kein klassisches Achievement-Brett mehr, sondern ein kuratiertes Entdeckungslog: weniger Gimmick, mehr beobachtete Interaktion.
 
-| Icon | Name | Beschreibung | Auslöser | Geheim? |
+| Kategorie | Zeichen | Eintrag | Auslöser | Verborgen |
 | :--- | :--- | :--- | :--- | :--- |
-| 🕹️ | **Retro-Gamer** | Der klassische Konami-Code. | `↑ ↑ ↓ ↓ ← → ← → B A` eingeben. | Nein |
-| 🕵️ | **Logo-Detektiv** | Genau hingeschaut. | Das Logo viermal schnell hintereinander anklicken. | Ja |
-| 🧘 | **Geduldiger Betrachter** | Aufmerksamkeit statt Hektik. | Rund 12 Sekunden in der Hero-Section verweilen. | Ja |
-| 🗺️ | **Explorer** | Die Grundlagen ernst nehmen. | Home, Trust und Legal besuchen. | Ja |
-| 🎯 | **Wortspiel** | Klarheit gefunden. | `klarheit` auf der Seite tippen, ohne in ein Feld zu schreiben. | Ja |
-| 🎪 | **Tastenakrobat** | Das versteckte Archiv öffnen. | `AAA` eingeben. | Ja |
-| 📖 | **Leseratte** | Fast bis ganz nach unten gelesen. | Etwa 95% der Seite scrollen. | Ja |
-| 🔁 | **Wiederholungstäter** | Willkommen zurück. | Die Website erneut besuchen. | Ja |
-| 🌟 | **Môra-Fan** | Môra entdeckt. | Die Môra-Seite besuchen. | Nein |
-| 🌊 | **Tiefgang** | Die Detailansicht öffnen. | In Môra eine Metrik bzw. tiefe Ansicht anwählen. | Ja |
-| 🧩 | **Muster-Experte** | Zusammenhänge erkennen. | Mehrere unterschiedliche Dashboard-Karten erkunden. | Ja |
-| 🧐 | **Neugierig** | Versteckte Navigation gefunden. | Die Command Palette nutzen. | Nein |
-| 🔭 | **Vielseitig** | Alle Perspektiven geprüft. | Im Môra-Dashboard alle drei View-Modi nutzen. | Ja |
-| 📞 | **Erster Kontakt** | Das Gespräch gestartet. | Kontaktformular erfolgreich absenden. | Nein |
-| 🎥 | **Demo-Liebhaber** | Mehr sehen wollen. | Die Demo-Seite besuchen. | Nein |
-| 📋 | **Gründlich** | Details zählen. | Die Dokumentation besuchen. | Ja |
+| `Hidden` | `◈` | **Override** | Konami-Code eingeben. Aktiviert für kurze Zeit die Resonanzschicht und öffnet beim ersten Fund automatisch das Log. | Nein |
+| `Hidden` | `◌` | **Mark Study** | Das Logo viermal schnell hintereinander anklicken. | Ja |
+| `Signal` | `◐` | **Stillness** | Rund 12 Sekunden in der Hero-Section verweilen. | Ja |
+| `Path` | `△` | **Orientation** | Home, Trust und Legal besuchen. | Ja |
+| `Hidden` | `∴` | **Signal Phrase** | `klarheit` auf der Seite tippen, ohne in ein Feld zu schreiben. | Ja |
+| `Hidden` | `⋄` | **Archive Access** | `AAA` eingeben und das Log direkt öffnen. | Ja |
+| `Signal` | `↧` | **Full Pass** | Etwa 95% der Seite scrollen. | Ja |
+| `Depth` | `◫` | **Multi-View** | Im Môra-Dashboard alle drei View-Modi nutzen. | Ja |
+| `Signal` | `↺` | **Re-entry** | Die Website erneut besuchen. | Ja |
+| `Depth` | `◎` | **Semantic Layer** | Môra öffnen. | Nein |
+| `Depth` | `⊙` | **Detail Layer** | In Môra eine tiefe Ansicht bzw. Detailansicht öffnen. | Ja |
+| `Depth` | `◬` | **Pattern Map** | Mehrere unterschiedliche Môra-Karten erkunden. | Ja |
+| `Path` | `⌘` | **Command Access** | Die Command Palette nutzen. | Nein |
+| `Path` | `↗` | **Open Channel** | Kontaktformular erfolgreich absenden. | Nein |
+| `Path` | `□` | **Live Preview** | Die Demo-Seite besuchen. | Nein |
+| `Path` | `▣` | **Reference Check** | Die Dokumentation besuchen. | Ja |
+
+## Prinzip
+
+- Weniger Gamification, mehr Discovery-Log
+- Namen und Texte bewusst neutraler, systemischer und markenkompatibler
+- Konami ist jetzt ein echter temporärer Modus statt nur ein kurzer Effekt
 
 ## Technische Hinweise
 
 - Speicherung: `localStorage` unter `saimor-achievements`
-- Zentrale Logik: `lib/achievements.ts`
-- Trigger und UI: `components/EasterEggs.tsx`
-
-Bewusst gestrichen wurden rein zufällige oder zu verspielte Trigger wie Uhrzeit-, Shake- oder Speed-Read-Achievements.
+- Zentrale Definitionen: `lib/achievements.ts`
+- Trigger, Resonanzmodus und UI-Feedback: `components/EasterEggs.tsx`
+- Visuelle Oberfläche des Logs: `components/AchievementButton.tsx`, `components/AchievementMenu.tsx`, `components/AchievementToast.tsx`

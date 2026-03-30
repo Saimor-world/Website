@@ -11,7 +11,7 @@
 
 1. [Übersicht & Status](#übersicht--status)
 2. [Wichtige Dateien & Struktur](#wichtige-dateien--struktur)
-3. [Achievements System](#achievements-system)
+3. [Discovery Layer](#discovery-layer)
 4. [API Routes & Endpoints](#api-routes--endpoints)
 5. [Environment Variables](#environment-variables)
 6. [Security & Hardening](#security--hardening)
@@ -94,7 +94,7 @@ saimor-live/
 - `components/ErrorBoundary.tsx` - React Error Boundary
 
 #### **Libraries**
-- `lib/achievements.ts` - Achievement System (26 Achievements)
+- `lib/achievements.ts` - Discovery Log / Achievement Definitionen (16 Einträge)
 - `lib/matomo.ts` - Matomo Analytics Helper
 - `lib/analytics.ts` - Sentry Analytics Helper
 - `lib/pwa.ts` - PWA Utilities
@@ -108,42 +108,45 @@ saimor-live/
 
 ---
 
-## 🏆 ACHIEVEMENTS SYSTEM
+## DISCOVERY LAYER
 
-### **Kuratiertes Achievement-Set**
+### **Kuratiertes Discovery-Set**
 
-#### **Öffentliche Achievements (Secret: false)**
-1. **Retro Gamer** (`konami`) - Konami Code aktiviert
-2. **Môra-Fan** (`mora-explorer`) - Môra besucht
-3. **Neugierig** (`curiosity-driven`) - Command Palette verwendet
-4. **Erster Kontakt** (`first-contact`) - Kontaktformular abgeschickt
-5. **Demo-Liebhaber** (`demo-explorer`) - Demo-Seite besucht
+Das System ist technisch weiter ein Achievement-System, wird sprachlich und visuell aber als Discovery-Log geführt.
 
-#### **Secret Achievements (Secret: true)**
-- **Logo-Detektiv** (`quad_logo`) - Logo 4x geklickt
-- **Geduldiger Betrachter** (`silent-observer`) - 12s in Hero Section
-- **Explorer** (`clarity-navigator`) - Home, Trust, Legal besucht
-- **Wortspiel** (`secret-klarheit`) - "Klarheit" getippt
-- **Tastenakrobat** (`secret-menu`) - "AAA" getippt (Secret Menu)
-- **Leseratte** (`scroll-champion`) - 95% gescrollt
-- **Vielseitig** (`field-explorer`) - 3 Dashboard-Views ausprobiert
-- **Wiederholungstäter** (`return-visitor`) - Wiederkehrender Besucher
-- **Tiefgang** (`deep-diver`) - Deep View in Môra aktiviert
-- **Muster-Experte** (`pattern-recognizer`) - Mehrere Dashboard-Karten erkundet
-- **Gründlich** (`documentation-reader`) - Dokumentation gelesen
+#### **Öffentliche Einträge (Secret: false)**
+1. **Override** (`konami`) - Konami-Code aktiviert die Resonanzschicht
+2. **Semantic Layer** (`mora-explorer`) - Môra geöffnet
+3. **Command Access** (`curiosity-driven`) - Command Palette genutzt
+4. **Open Channel** (`first-contact`) - Kontaktformular abgeschickt
+5. **Live Preview** (`demo-explorer`) - Demo-Seite besucht
+
+#### **Verborgene Einträge (Secret: true)**
+- **Mark Study** (`quad_logo`) - Logo 4x geklickt
+- **Stillness** (`silent-observer`) - 12s in der Hero-Section verweilt
+- **Orientation** (`clarity-navigator`) - Home, Trust und Legal besucht
+- **Signal Phrase** (`secret-klarheit`) - `klarheit` getippt
+- **Archive Access** (`secret-menu`) - `AAA` getippt
+- **Full Pass** (`scroll-champion`) - 95% gescrollt
+- **Multi-View** (`field-explorer`) - 3 Dashboard-Views ausprobiert
+- **Re-entry** (`return-visitor`) - wiederkehrender Besuch
+- **Detail Layer** (`deep-diver`) - tiefe Môra-Ansicht geöffnet
+- **Pattern Map** (`pattern-recognizer`) - mehrere Dashboard-Karten erkundet
+- **Reference Check** (`documentation-reader`) - Dokumentation gelesen
 
 ### **Prinzip**
-- Weniger Zufall, mehr echte Entdeckung
-- Keine Uhrzeit-, Shake- oder Sammel-Mechaniken mehr
+- Weniger Gamification, mehr Discovery-Log
+- Neutralere, systemischere Begriffe statt Trophy-Ton
 - Fokus auf Aufmerksamkeit, Produkt-Erkundung und bewusste Interaktion
+- Konami ist ein echter temporärer Modus mit HUD und globalen Akzenten
 
 ### **Storage**
-- Achievements werden in `localStorage` gespeichert (Key: `saimor-achievements`)
+- Discovery-Einträge werden in `localStorage` gespeichert (Key: `saimor-achievements`)
 - Persistenz über Sessions hinweg
 - Reset-Funktion vorhanden
 
 ### **Tracking**
-- Alle Achievement Unlocks werden zu Matomo gesendet
+- Alle Discovery-Unlocks werden zu Matomo gesendet
 - Event Category: `Achievements`
 - Event Action: `Unlock`
 

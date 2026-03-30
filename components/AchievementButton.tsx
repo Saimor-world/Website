@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Trophy, Sparkles } from 'lucide-react';
+import { Compass, Sparkles } from 'lucide-react';
 import { getAchievementManager, type Achievement } from '@/lib/achievements';
 import AchievementMenu from './AchievementMenu';
 
@@ -19,14 +19,18 @@ export default function AchievementButton() {
   const locale = pathname?.startsWith('/en') ? 'en' : 'de';
   const copy = locale === 'de'
     ? {
-        title: 'Erfolge',
-        progress: 'Fortschritt',
+        title: 'Entdeckungen',
+        progress: 'protokolliert',
+        idle: 'bereit',
         newLabel: 'Neu',
+        open: 'Entdeckungslog öffnen',
       }
     : {
-        title: 'Achievements',
-        progress: 'Progress',
+        title: 'Discoveries',
+        progress: 'logged',
+        idle: 'ready',
         newLabel: 'New',
+        open: 'Open discovery log',
       };
 
   useEffect(() => {
@@ -84,86 +88,83 @@ export default function AchievementButton() {
 
   if (!mounted) return null;
 
-  const shouldShowButton = progress.unlocked > 0;
+  const summary = progress.unlocked > 0
+    ? `${progress.unlocked} / ${progress.total} ${copy.progress}`
+    : `${progress.total} ${copy.idle}`;
 
   return (
     <>
-      {shouldShowButton && (
-        <motion.button
-          onClick={openMenu}
-          className="group fixed bottom-6 right-6 z-[9998]"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.35, ease: 'easeOut' }}
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          aria-label={copy.title}
+      <motion.button
+        onClick={openMenu}
+        className="group fixed bottom-6 right-6 z-[9998]"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: progress.unlocked > 0 ? 1 : 0.82, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.35, ease: 'easeOut' }}
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.985 }}
+        aria-label={copy.open}
+      >
+        <div
+          className="relative flex min-w-[176px] items-center gap-3 rounded-[24px] px-4 py-3 text-left transition-all duration-300"
+          style={{
+            background: hasNewAchievement
+              ? 'linear-gradient(180deg, rgba(11, 18, 31, 0.98) 0%, rgba(16, 28, 44, 0.96) 100%)'
+              : 'linear-gradient(180deg, rgba(7, 12, 20, 0.96) 0%, rgba(12, 20, 33, 0.94) 100%)',
+            border: hasNewAchievement
+              ? '1px solid rgba(214, 168, 72, 0.34)'
+              : '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(22px)',
+            boxShadow: hasNewAchievement
+              ? '0 16px 40px rgba(0, 0, 0, 0.32)'
+              : '0 14px 34px rgba(0, 0, 0, 0.24)',
+          }}
         >
           <div
-            className="relative flex min-w-[148px] items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-300"
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[18px]"
             style={{
               background: hasNewAchievement
-                ? 'linear-gradient(135deg, rgba(42, 65, 45, 0.96) 0%, rgba(110, 93, 53, 0.96) 100%)'
-                : 'linear-gradient(135deg, rgba(15, 28, 22, 0.95) 0%, rgba(28, 48, 36, 0.92) 100%)',
-              border: hasNewAchievement
-                ? '1px solid rgba(212, 180, 131, 0.55)'
-                : '1px solid rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(22px)',
-              boxShadow: hasNewAchievement
-                ? '0 14px 36px rgba(0, 0, 0, 0.28)'
-                : '0 12px 28px rgba(0, 0, 0, 0.22)',
+                ? 'linear-gradient(135deg, rgba(214, 168, 72, 0.22) 0%, rgba(117, 198, 160, 0.14) 100%)'
+                : 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
-            <div
-              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
-              style={{
-                background: hasNewAchievement
-                  ? 'linear-gradient(135deg, rgba(212, 180, 131, 0.35) 0%, rgba(230, 200, 151, 0.18) 100%)'
-                  : 'rgba(212, 180, 131, 0.12)',
-                border: '1px solid rgba(212, 180, 131, 0.24)',
-              }}
-            >
-              {hasNewAchievement ? (
-                <Sparkles className="h-5 w-5 text-[#F2D39A]" />
-              ) : (
-                <Trophy className="h-5 w-5 text-[#D4A857]" />
+            {hasNewAchievement ? (
+              <Sparkles className="h-5 w-5 text-[#D6A848]" />
+            ) : (
+              <Compass className="h-5 w-5 text-white/72" />
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <span className="truncate text-[11px] font-semibold uppercase tracking-[0.2em] text-white/58">
+                {copy.title}
+              </span>
+              {hasNewAchievement && (
+                <span className="rounded-full border border-[#D6A848]/20 bg-[#D6A848]/12 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#E9C981]">
+                  {copy.newLabel}
+                </span>
               )}
             </div>
 
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="truncate text-xs font-semibold uppercase tracking-[0.18em] text-white/72">
-                  {copy.title}
-                </span>
-                {hasNewAchievement && (
-                  <span className="rounded-full bg-[#D4A857]/18 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F2D39A]">
-                    {copy.newLabel}
-                  </span>
-                )}
-              </div>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="text-lg font-semibold text-white">
-                  {progress.unlocked}
-                </span>
-                <span className="text-xs text-white/45">
-                  / {progress.total}
-                </span>
-                <span className="text-xs text-white/55">
-                  {copy.progress}
-                </span>
-              </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/8">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[#D4A857] via-[#E6C897] to-[#7CBF95]"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress.percentage}%` }}
-                  transition={{ duration: 0.7, ease: 'easeOut' }}
-                />
-              </div>
+            <div className="mt-1 text-sm font-medium text-white/88">
+              {summary}
+            </div>
+
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/8">
+              <motion.div
+                className="h-full rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(214, 168, 72, 0.95), rgba(117, 198, 160, 0.82), rgba(104, 158, 255, 0.72))',
+                }}
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.max(progress.percentage, progress.unlocked === 0 ? 8 : progress.percentage)}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
             </div>
           </div>
-        </motion.button>
-      )}
+        </div>
+      </motion.button>
 
       <AchievementMenu
         achievements={achievements}

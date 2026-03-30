@@ -1,53 +1,50 @@
-# SAIMOR Easter Eggs
+# SAIMOR Discovery Layer
 
 ## Überblick
 
-Die spielerischen Features liegen zentral in `components/EasterEggs.tsx`.
-Sie sind absichtlich subtil gehalten:
+Die spielerische Schicht ist jetzt als zurückhaltende Discovery-Layer gedacht, nicht als lautes Gimmick-System.
 
-- Konami-Code aktiviert einen ruhigen Resonanzmodus statt eines lauten Vollbild-Gimmicks.
-- Achievements werden zentral über `lib/achievements.ts` verwaltet.
-- Freischaltungen werden lokal im Browser gespeichert.
-- Das Achievements-Menü lässt sich über `AAA` oder die Command Palette öffnen.
+- Zentrale Runtime: `components/EasterEggs.tsx`
+- Zentrale Definitionen: `lib/achievements.ts`
+- Sichtbare Oberfläche: Discovery-Button, Toast und Log-Menü
+- Speicherung: lokal im Browser über `localStorage` und `sessionStorage`
 
-## Wichtige Trigger
+## Konami-Code
 
-### Konami-Code
-
-Reihenfolge:
+Sequenz:
 
 ```text
 ↑ ↑ ↓ ↓ ← → ← → B A
 ```
 
-Effekt:
+Wirkung:
 
-- Achievement `konami`
-- temporärer Resonanz-Overlay
-- dezente Partikel- und Glyphen-Animation
+- schaltet den Eintrag `konami` / **Override** frei
+- aktiviert für rund 14 Sekunden die Resonanzschicht
+- blendet HUD, Pulsringe, Glyphen und globale Hover-/Selection-Akzente ein
+- öffnet beim ersten Fund automatisch das Entdeckungslog
 
-### Weitere spielerische Trigger
+## Weitere Trigger
 
-- `AAA` öffnet das versteckte Achievements-Menü
-- 4x Klick auf das Logo löst `quad_logo` aus
-- bestimmte Begriffe wie `klarheit`, `saimor`, `wandel`
-- längere Aufmerksamkeit, Scrolltiefe und wiederkehrende Besuche
-- Môra-Interaktionen wie Karten öffnen oder View-Modi wechseln
+- `AAA` öffnet das Log direkt und schaltet `Archive Access` frei
+- `klarheit` triggert `Signal Phrase`
+- 4x Klick auf das Logo triggert `Mark Study`
+- längere Aufmerksamkeit, Scrolltiefe und Wiederkehr erzeugen Signal-Einträge
+- Môra-Interaktionen erzeugen Depth-Einträge
+- Nutzung der Command Palette erzeugt `Command Access`
 
-## Technische Struktur
+## Gestaltungsprinzip
+
+- weniger Trophy-/Retro-Gamification
+- neutralere, hochwertigere Begriffe
+- echte Interaktion statt Zufall oder reine Sammelmechanik
+- `prefers-reduced-motion` wird respektiert
+
+## Relevante Dateien
 
 - `components/EasterEggs.tsx`
-  Zentrale Trigger, UI-Feedback, Resonanzmodus
-- `lib/achievements.ts`
-  Definitionen, Speicherung, Fortschritt, Unlock-Logik
-- `components/AchievementToast.tsx`
-  Toast für neue Freischaltungen
+- `components/AchievementButton.tsx`
 - `components/AchievementMenu.tsx`
-  Übersicht aller sichtbaren und versteckten Achievements
-
-## Hinweise
-
-- Das System respektiert `prefers-reduced-motion`.
-- Es gibt keine serverseitige Persistenz, nur `localStorage` und `sessionStorage`.
-- Die Môra-bezogenen Achievements reagieren auf echte UI-Events aus `components/MoraDashboard.tsx`.
-- Bewusst entfernt wurden zufällige Trigger wie Uhrzeit, Device-Shake oder rein quantitative Sammel-Mechaniken.
+- `components/AchievementToast.tsx`
+- `components/CommandPalette.tsx`
+- `lib/achievements.ts`

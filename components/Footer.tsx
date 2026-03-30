@@ -123,11 +123,11 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             </span>
             <span className="flex items-center gap-2">
               <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">AAA</kbd>
-              <span>{locale === 'de' ? 'Erfolge' : 'Achievements'}</span>
+              <span>{locale === 'de' ? 'Archiv' : 'Archive'}</span>
             </span>
             <span className="hidden md:flex items-center gap-2">
               <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">↑↑↓↓←→←→BA</kbd>
-              <span>{locale === 'de' ? 'Geheim' : 'Secret'}</span>
+              <span>{locale === 'de' ? 'Layer' : 'Layer'}</span>
             </span>
           </div>
         </motion.div>

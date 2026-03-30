@@ -1,8 +1,10 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trophy, Lock, Check } from 'lucide-react';
+import { Check, Compass, Lock, X } from 'lucide-react';
 import {
+  ACHIEVEMENT_CATEGORY_ORDER,
+  getAchievementCategoryLabel,
   getAchievementDescription,
   getAchievementTitle,
   type Achievement,
@@ -16,37 +18,142 @@ interface Props {
   locale?: AchievementLocale;
 }
 
+const categoryAccentMap = {
+  signal: 'rgba(214, 168, 72, 0.24)',
+  path: 'rgba(117, 198, 160, 0.18)',
+  depth: 'rgba(104, 158, 255, 0.18)',
+  hidden: 'rgba(255, 255, 255, 0.12)',
+} as const;
+
 export default function AchievementMenu({
   achievements,
   isOpen,
   onClose,
   locale = 'de',
 }: Props) {
-  const unlocked = achievements
-    .filter((achievement) => achievement.unlocked)
-    .sort((left, right) => (right.unlockedAt ?? 0) - (left.unlockedAt ?? 0));
-  const locked = achievements
-    .filter((achievement) => !achievement.unlocked)
-    .sort((left, right) => Number(left.secret) - Number(right.secret));
+  const orderIndex = new Map(achievements.map((achievement, index) => [achievement.id, index]));
   const progress = achievements.length === 0
     ? 0
-    : Math.round((unlocked.length / achievements.length) * 100);
+    : Math.round((achievements.filter((achievement) => achievement.unlocked).length / achievements.length) * 100);
+
+  const unlocked = achievements
+    .filter((achievement) => achievement.unlocked)
+    .sort((left, right) => {
+      const categoryDelta = ACHIEVEMENT_CATEGORY_ORDER.indexOf(left.category)
+        - ACHIEVEMENT_CATEGORY_ORDER.indexOf(right.category);
+      if (categoryDelta !== 0) return categoryDelta;
+      return (right.unlockedAt ?? 0) - (left.unlockedAt ?? 0);
+    });
+
+  const locked = achievements
+    .filter((achievement) => !achievement.unlocked)
+    .sort((left, right) => {
+      const categoryDelta = ACHIEVEMENT_CATEGORY_ORDER.indexOf(left.category)
+        - ACHIEVEMENT_CATEGORY_ORDER.indexOf(right.category);
+      if (categoryDelta !== 0) return categoryDelta;
+      return (orderIndex.get(left.id) ?? 0) - (orderIndex.get(right.id) ?? 0);
+    });
+
+  const hiddenRemaining = locked.filter((achievement) => achievement.secret).length;
 
   const copy = locale === 'de'
     ? {
-        title: 'Erfolge',
-        unlockedCount: 'freigeschaltet',
-        unlocked: 'Freigeschaltet',
-        locked: 'Offen',
-        hidden: 'Geheimer Erfolg',
+        title: 'Entdeckungslog',
+        subtitle: 'Beobachtete Interaktionen, versteckte Ebenen und erkundete Pfade.',
+        recorded: 'Protokolliert',
+        remaining: 'Offen',
+        hidden: 'Verborgen',
+        coverage: 'Abdeckung',
+        unlockedSection: 'Erfasst',
+        lockedSection: 'Noch offen',
+        hiddenTitle: 'Verborgener Eintrag',
+        hiddenDescription: 'Bleibt verborgen, bis du die passende Interaktion auslöst.',
+        close: 'Log schließen',
       }
     : {
-        title: 'Achievements',
-        unlockedCount: 'unlocked',
-        unlocked: 'Unlocked',
-        locked: 'Open',
-        hidden: 'Secret achievement',
+        title: 'Discovery Log',
+        subtitle: 'Observed interactions, hidden layers, and explored paths.',
+        recorded: 'Logged',
+        remaining: 'Open',
+        hidden: 'Hidden',
+        coverage: 'Coverage',
+        unlockedSection: 'Logged',
+        lockedSection: 'Open',
+        hiddenTitle: 'Hidden Entry',
+        hiddenDescription: 'Stays hidden until you trigger the matching interaction.',
+        close: 'Close log',
       };
+
+  const renderCard = (achievement: Achievement, state: 'unlocked' | 'locked', index: number) => {
+    const isUnlocked = state === 'unlocked';
+    const accent = categoryAccentMap[achievement.category];
+    const title = achievement.secret && !isUnlocked
+      ? copy.hiddenTitle
+      : getAchievementTitle(achievement, locale);
+    const description = achievement.secret && !isUnlocked
+      ? copy.hiddenDescription
+      : getAchievementDescription(achievement, locale);
+
+    return (
+      <motion.div
+        key={achievement.id}
+        className="rounded-[24px] border p-4"
+        style={{
+          background: isUnlocked
+            ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%)'
+            : 'linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.015) 100%)',
+          borderColor: isUnlocked ? 'rgba(255, 255, 255, 0.11)' : 'rgba(255, 255, 255, 0.07)',
+          opacity: isUnlocked ? 1 : 0.72,
+        }}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: isUnlocked ? 1 : 0.72, y: 0 }}
+        transition={{ delay: index * 0.03, duration: 0.28, ease: 'easeOut' }}
+      >
+        <div className="flex items-start gap-4">
+          <div
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[18px] text-2xl"
+            style={{
+              background: accent,
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+          >
+            {achievement.secret && !isUnlocked ? (
+              <Lock className="h-5 w-5 text-white/38" />
+            ) : (
+              achievement.icon
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/56">
+                {getAchievementCategoryLabel(achievement.category, locale)}
+              </span>
+              {isUnlocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#75C6A0]">
+                  <Check className="h-3.5 w-3.5" />
+                  {copy.recorded}
+                </span>
+              )}
+            </div>
+
+            <h4 className="text-base font-semibold text-white">
+              {title}
+            </h4>
+            <p className="mt-1 text-sm leading-relaxed text-white/68">
+              {description}
+            </p>
+
+            {isUnlocked && achievement.unlockedAt && (
+              <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white/36">
+                {new Date(achievement.unlockedAt).toLocaleDateString(locale === 'de' ? 'de-DE' : 'en-US')}
+              </p>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <AnimatePresence>
@@ -59,152 +166,113 @@ export default function AchievementMenu({
           onClick={onClose}
         >
           <motion.div
-            className="absolute inset-0 bg-black/80"
-            style={{ backdropFilter: 'blur(12px)' }}
+            className="absolute inset-0 bg-[#02060d]/80"
+            style={{ backdropFilter: 'blur(18px)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
 
           <motion.div
-            className="relative max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a2e1a]/98 via-[#4A6741]/95 to-[#2d4a2d]/98 shadow-2xl"
+            className="relative max-h-[86vh] w-full max-w-5xl overflow-hidden rounded-[32px]"
             style={{
-              backdropFilter: 'blur(20px)',
-              border: '2px solid rgba(212, 180, 131, 0.3)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(212, 180, 131, 0.2)',
+              background: 'linear-gradient(180deg, rgba(7, 12, 20, 0.98) 0%, rgba(11, 18, 31, 0.96) 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 28px 80px rgba(0, 0, 0, 0.48)',
+              backdropFilter: 'blur(28px)',
             }}
-            initial={{ scale: 0.8, y: 50 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.8, y: 50 }}
+            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 28, scale: 0.98 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative border-b border-[#D4A857]/20 p-6">
+            <div
+              className="pointer-events-none absolute inset-x-10 top-0 h-px"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(214, 168, 72, 0.85), transparent)',
+              }}
+            />
+
+            <div className="border-b border-white/8 px-6 py-6 md:px-8">
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+                className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/55 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label={copy.close}
               >
                 <X className="h-5 w-5" />
               </button>
 
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] shadow-lg">
-                  <Trophy className="h-8 w-8 text-white" />
-                </div>
-                <div>
-                  <h2
-                    className="mb-1 text-2xl font-bold text-white"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                  >
+              <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                <div className="max-w-2xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] uppercase tracking-[0.22em] text-white/55">
+                    <Compass className="h-4 w-4 text-[#D6A848]" />
                     {copy.title}
+                  </div>
+                  <h2 className="mt-4 text-3xl font-semibold text-white md:text-[2rem]">
+                    {achievements.filter((achievement) => achievement.unlocked).length} / {achievements.length} {copy.recorded.toLowerCase()}
                   </h2>
-                  <p className="text-sm text-white/70">
-                    {unlocked.length} / {achievements.length} {copy.unlockedCount}
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/62 md:text-base">
+                    {copy.subtitle}
                   </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 md:min-w-[320px]">
+                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.recorded}</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{achievements.filter((achievement) => achievement.unlocked).length}</p>
+                  </div>
+                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.hidden}</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{hiddenRemaining}</p>
+                  </div>
+                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.coverage}</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{progress}%</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="relative h-3 overflow-hidden rounded-full bg-black/30">
+              <div className="mt-5 h-px overflow-hidden rounded-full bg-white/8">
                 <motion.div
-                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#D4A857] to-[#E6C897]"
+                  className="h-full"
+                  style={{
+                    background: 'linear-gradient(90deg, rgba(214, 168, 72, 0.92), rgba(117, 198, 160, 0.86), rgba(104, 158, 255, 0.78))',
+                  }}
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
-                />
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white mix-blend-difference"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  {progress}%
-                </motion.div>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  animate={{ x: ['-100%', '200%'] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
                 />
               </div>
             </div>
 
-            <div className="custom-scrollbar max-h-[calc(80vh-180px)] overflow-y-auto p-6">
+            <div className="custom-scrollbar max-h-[calc(86vh-220px)] overflow-y-auto px-6 py-6 md:px-8">
               {unlocked.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#D4A857]">
-                    {copy.unlocked}
-                  </h3>
-                  <div className="space-y-3">
-                    {unlocked.map((achievement, index) => (
-                      <motion.div
-                        key={achievement.id}
-                        className="flex items-start gap-4 rounded-xl border border-[#D4A857]/20 bg-white/5 p-4 transition-all hover:border-[#D4A857]/40 hover:bg-white/10"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
-                        <motion.div
-                          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4A857] to-[#E6C897] text-2xl shadow-lg"
-                          whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {achievement.icon}
-                        </motion.div>
-                        <div className="min-w-0 flex-1">
-                          <div className="mb-1 flex items-center gap-2">
-                            <h4 className="text-base font-bold text-white">
-                              {getAchievementTitle(achievement, locale)}
-                            </h4>
-                            <Check className="h-4 w-4 text-[#D4A857]" />
-                          </div>
-                          <p className="mb-2 text-sm text-white/70">
-                            {getAchievementDescription(achievement, locale)}
-                          </p>
-                          {achievement.unlockedAt && (
-                            <p className="text-xs text-white/50">
-                              {new Date(achievement.unlockedAt).toLocaleDateString(
-                                locale === 'de' ? 'de-DE' : 'en-US'
-                              )}
-                            </p>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
+                <section>
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#75C6A0]">
+                      {copy.unlockedSection}
+                    </span>
+                    <div className="h-px flex-1 bg-white/8" />
                   </div>
-                </div>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {unlocked.map((achievement, index) => renderCard(achievement, 'unlocked', index))}
+                  </div>
+                </section>
               )}
 
               {locked.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/50">
-                    {copy.locked}
-                  </h3>
-                  <div className="space-y-3">
-                    {locked.map((achievement, index) => (
-                      <motion.div
-                        key={achievement.id}
-                        className="flex items-start gap-4 rounded-xl border border-white/5 bg-black/20 p-4 opacity-60"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 0.6, x: 0 }}
-                        transition={{ delay: (unlocked.length + index) * 0.05 }}
-                      >
-                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-black/30 shadow-lg">
-                          {achievement.secret ? (
-                            <Lock className="h-6 w-6 text-white/40" />
-                          ) : (
-                            <span className="text-2xl opacity-40">{achievement.icon}</span>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h4 className="mb-1 text-base font-bold text-white/50">
-                            {achievement.secret ? '???' : getAchievementTitle(achievement, locale)}
-                          </h4>
-                          <p className="text-sm text-white/40">
-                            {achievement.secret ? copy.hidden : getAchievementDescription(achievement, locale)}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
+                <section className={unlocked.length > 0 ? 'mt-8' : ''}>
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                      {copy.lockedSection}
+                    </span>
+                    <div className="h-px flex-1 bg-white/8" />
                   </div>
-                </div>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {locked.map((achievement, index) => renderCard(achievement, 'locked', index))}
+                  </div>
+                </section>
               )}
             </div>
           </motion.div>

@@ -10,7 +10,7 @@ import {
   FileText,
   Mail,
   Globe,
-  Trophy,
+  Compass,
   Zap,
   BookOpen,
   Users,
@@ -18,7 +18,6 @@ import {
   CornerDownLeft,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { getAchievementManager } from '@/lib/achievements';
 
 interface CommandItem {
   id: string;
@@ -157,16 +156,16 @@ export default function CommandPalette() {
     },
     {
       id: 'achievements',
-      title: 'Erfolge anzeigen',
-      titleEN: 'Show achievements',
-      description: 'Deine freigeschalteten Erfolge',
-      descriptionEN: 'Your unlocked achievements',
-      icon: <Trophy className="w-4 h-4" />,
+      title: 'Entdeckungen öffnen',
+      titleEN: 'Open discoveries',
+      description: 'Das Entdeckungslog mit allen Signalen',
+      descriptionEN: 'Open the discovery log with all logged signals',
+      icon: <Compass className="w-4 h-4" />,
       action: () => {
         window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
       },
       category: 'action',
-      keywords: ['achievements', 'erfolge', 'trophy', 'gamification'],
+      keywords: ['achievements', 'discoveries', 'erfolge', 'entdeckungen', 'archive'],
     },
     {
       id: 'language',
@@ -226,9 +225,7 @@ export default function CommandPalette() {
     command.action();
     setIsOpen(false);
     setSearch('');
-
-    const manager = getAchievementManager();
-    manager.unlock('curiosity-driven');
+    window.dispatchEvent(new CustomEvent('saimor-command-palette-used'));
   }, []);
 
   useEffect(() => {
