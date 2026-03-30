@@ -1,17 +1,33 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Trophy, Sparkles } from 'lucide-react';
-import { getAchievementManager } from '@/lib/achievements';
+import { getAchievementManager, type Achievement } from '@/lib/achievements';
 import AchievementMenu from './AchievementMenu';
 
 export default function AchievementButton() {
+  const pathname = usePathname();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [progress, setProgress] = useState({ unlocked: 0, total: 0, percentage: 0 });
   const [hasNewAchievement, setHasNewAchievement] = useState(false);
-  const [achievements, setAchievements] = useState<any[]>([]);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+
+  const locale = pathname?.startsWith('/en') ? 'en' : 'de';
+  const copy = locale === 'de'
+    ? {
+        title: 'Erfolge',
+        progress: 'Fortschritt',
+        newLabel: 'Neu',
+      }
+    : {
+        title: 'Achievements',
+        progress: 'Progress',
+        newLabel: 'New',
+      };
 
   useEffect(() => {
     setMounted(true);
@@ -19,136 +35,142 @@ export default function AchievementButton() {
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const manager = getAchievementManager();
-    
+
     const updateProgress = () => {
       setProgress(manager.getProgress());
       setAchievements(manager.getAll());
     };
-    
+
     updateProgress();
-    
+
     const unsubscribe = manager.subscribe(() => {
       setHasNewAchievement(true);
       updateProgress();
-      
-      // Clear the "new" indicator after 5 seconds
-      setTimeout(() => setHasNewAchievement(false), 5000);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setHasNewAchievement(false);
+        timeoutRef.current = null;
+      }, 4800);
     });
-    
-    return () => { void unsubscribe(); };
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      void unsubscribe();
+    };
   }, [mounted]);
 
-  const handleOpen = useCallback(() => {
+  useEffect(() => {
+    const handleOpen = () => {
+      setShowMenu(true);
+      setHasNewAchievement(false);
+    };
+
+    window.addEventListener('saimor-achievement-menu-open', handleOpen);
+    return () => window.removeEventListener('saimor-achievement-menu-open', handleOpen);
+  }, []);
+
+  const openMenu = useCallback(() => {
     setShowMenu(true);
     setHasNewAchievement(false);
   }, []);
 
   if (!mounted) return null;
 
-  // Only show if user has at least 1 achievement
-  if (progress.unlocked === 0) return null;
+  const shouldShowButton = progress.unlocked > 0;
 
   return (
     <>
-      {/* Floating Button */}
-      <motion.button
-        onClick={handleOpen}
-        className="fixed bottom-6 right-6 z-[9998] group"
-        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ delay: 2, duration: 0.5, type: 'spring' }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {/* Pulse effect when new achievement */}
-        <AnimatePresence>
-          {hasNewAchievement && (
-            <motion.div
-              className="absolute inset-0 rounded-full bg-amber-400"
-              initial={{ scale: 1, opacity: 0.5 }}
-              animate={{ scale: 2, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, repeat: Infinity }}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* Button background */}
-        <div
-          className="relative w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
-          style={{
-            background: hasNewAchievement 
-              ? 'linear-gradient(135deg, #D4A857 0%, #E6C897 100%)'
-              : 'linear-gradient(135deg, rgba(26, 46, 26, 0.95) 0%, rgba(74, 103, 65, 0.9) 100%)',
-            border: hasNewAchievement 
-              ? '2px solid rgba(212, 180, 131, 0.8)'
-              : '2px solid rgba(212, 180, 131, 0.3)',
-            boxShadow: hasNewAchievement
-              ? '0 8px 32px rgba(212, 180, 131, 0.5)'
-              : '0 8px 32px rgba(0, 0, 0, 0.3)',
-          }}
+      {shouldShowButton && (
+        <motion.button
+          onClick={openMenu}
+          className="group fixed bottom-6 right-6 z-[9998]"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.35, ease: 'easeOut' }}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          aria-label={copy.title}
         >
-          {hasNewAchievement ? (
-            <Sparkles className="w-6 h-6 text-white" />
-          ) : (
-            <Trophy className="w-6 h-6 text-amber-400 group-hover:text-amber-300 transition-colors" />
-          )}
-
-          {/* Progress ring */}
-          <svg
-            className="absolute inset-0 -rotate-90"
-            viewBox="0 0 56 56"
+          <div
+            className="relative flex min-w-[148px] items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-300"
+            style={{
+              background: hasNewAchievement
+                ? 'linear-gradient(135deg, rgba(42, 65, 45, 0.96) 0%, rgba(110, 93, 53, 0.96) 100%)'
+                : 'linear-gradient(135deg, rgba(15, 28, 22, 0.95) 0%, rgba(28, 48, 36, 0.92) 100%)',
+              border: hasNewAchievement
+                ? '1px solid rgba(212, 180, 131, 0.55)'
+                : '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(22px)',
+              boxShadow: hasNewAchievement
+                ? '0 14px 36px rgba(0, 0, 0, 0.28)'
+                : '0 12px 28px rgba(0, 0, 0, 0.22)',
+            }}
           >
-            <circle
-              cx="28"
-              cy="28"
-              r="26"
-              fill="none"
-              stroke="rgba(212, 180, 131, 0.2)"
-              strokeWidth="2"
-            />
-            <motion.circle
-              cx="28"
-              cy="28"
-              r="26"
-              fill="none"
-              stroke="#D4A857"
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: progress.percentage / 100 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+            <div
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
               style={{
-                strokeDasharray: '163.36',
+                background: hasNewAchievement
+                  ? 'linear-gradient(135deg, rgba(212, 180, 131, 0.35) 0%, rgba(230, 200, 151, 0.18) 100%)'
+                  : 'rgba(212, 180, 131, 0.12)',
+                border: '1px solid rgba(212, 180, 131, 0.24)',
               }}
-            />
-          </svg>
-        </div>
+            >
+              {hasNewAchievement ? (
+                <Sparkles className="h-5 w-5 text-[#F2D39A]" />
+              ) : (
+                <Trophy className="h-5 w-5 text-[#D4A857]" />
+              )}
+            </div>
 
-        {/* Badge with count */}
-        <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#081410] flex items-center justify-center">
-          <span className="text-[10px] font-bold text-white">{progress.unlocked}</span>
-        </div>
-
-        {/* Tooltip */}
-        <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          <div className="px-3 py-2 rounded-lg bg-black/90 border border-white/10 text-xs text-white whitespace-nowrap">
-            <span className="text-amber-400 font-bold">{progress.unlocked}</span>
-            <span className="text-white/50">/{progress.total}</span>
-            <span className="text-white/70 ml-2">Erfolge</span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="truncate text-xs font-semibold uppercase tracking-[0.18em] text-white/72">
+                  {copy.title}
+                </span>
+                {hasNewAchievement && (
+                  <span className="rounded-full bg-[#D4A857]/18 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F2D39A]">
+                    {copy.newLabel}
+                  </span>
+                )}
+              </div>
+              <div className="mt-1 flex items-baseline gap-2">
+                <span className="text-lg font-semibold text-white">
+                  {progress.unlocked}
+                </span>
+                <span className="text-xs text-white/45">
+                  / {progress.total}
+                </span>
+                <span className="text-xs text-white/55">
+                  {copy.progress}
+                </span>
+              </div>
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/8">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-[#D4A857] via-[#E6C897] to-[#7CBF95]"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress.percentage}%` }}
+                  transition={{ duration: 0.7, ease: 'easeOut' }}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </motion.button>
+        </motion.button>
+      )}
 
-      {/* Achievement Menu */}
       <AchievementMenu
         achievements={achievements}
         isOpen={showMenu}
         onClose={() => setShowMenu(false)}
+        locale={locale}
       />
     </>
   );
 }
-

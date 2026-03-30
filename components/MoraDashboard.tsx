@@ -56,6 +56,11 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     el.scrollTo({ top: el.scrollHeight, behavior });
   }, []);
 
+  const dispatchDashboardSignal = useCallback((name: string, detail?: unknown) => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent(name, { detail }));
+  }, []);
+
   useEffect(() => {
     if (viewMode !== 'chat') return;
 
@@ -402,6 +407,17 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
       MatomoEvents.dashboardView(mode);
     }
   }, [selectedMetric]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    dispatchDashboardSignal('mora-dashboard-view-switch', viewMode);
+  }, [dispatchDashboardSignal, mounted, viewMode]);
+
+  useEffect(() => {
+    if (!mounted || !selectedMetric) return;
+    dispatchDashboardSignal('mora-dashboard-card-visited', selectedMetric);
+    dispatchDashboardSignal('mora-node-select', selectedMetric);
+  }, [dispatchDashboardSignal, mounted, selectedMetric]);
 
   if (!mounted) return null;
 

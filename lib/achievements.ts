@@ -1,290 +1,245 @@
-// Achievement System für Easter Eggs
-export interface Achievement {
+export type AchievementLocale = 'de' | 'en';
+
+interface LocalizedAchievementCopy {
+  de: string;
+  en: string;
+}
+
+export interface AchievementDefinition {
   id: string;
-  name: string;
-  nameDE: string;
-  description: string;
-  descriptionDE: string;
+  title: LocalizedAchievementCopy;
+  description: LocalizedAchievementCopy;
   icon: string;
-  unlocked: boolean;
-  unlockedAt?: number;
   secret: boolean;
 }
 
-export const ACHIEVEMENTS: Achievement[] = [
-  {
-    id: 'konami',
-    name: 'Retro Gamer',
-    nameDE: 'Retro-Gamer',
-    description: 'Du hast den berühmten Konami-Code entdeckt. Die 80er Jahre grüßen!',
-    descriptionDE: 'You discovered the famous Konami code. The 80s say hello!',
-    icon: '🕹️',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'quad_logo',
-    name: 'Logo-Detektiv',
-    nameDE: 'Logo Detective',
-    description: 'Vier Mal das Logo angeklickt? Du siehst wirklich genau hin!',
-    descriptionDE: 'Clicked the logo four times? You really pay attention!',
-    icon: '🕵️',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'silent-observer',
-    name: 'Geduldiger Betrachter',
-    nameDE: 'Patient Observer',
-    description: 'Du hast dir 12 Sekunden Zeit genommen, die Hero-Section zu betrachten. Schön langsam.',
-    descriptionDE: 'You took 12 seconds to look at the hero section. Nice and slow.',
-    icon: '🧘',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'clarity-navigator',
-    name: 'Explorer',
-    nameDE: 'Explorer',
-    description: 'Du hast dir alle wichtigen Seiten angeschaut: Home, Trust und Legal. Gründlich!',
-    descriptionDE: 'You visited all important pages: Home, Trust and Legal. Thorough!',
-    icon: '🗺️',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'shake',
-    name: 'Shake It!',
-    nameDE: 'Shake It!',
-    description: 'Du hast dein Gerät geschüttelt und das System hat\'s bemerkt. Cool!',
-    descriptionDE: 'You shook your device and the system noticed. Cool!',
-    icon: '📱',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'secret-klarheit',
-    name: 'Wortspiel',
-    nameDE: 'Word Game',
-    description: 'Du hast "Klarheit" getippt. Wortspiele sind unser Ding!',
-    descriptionDE: 'You typed "Klarheit". Word games are our thing!',
-    icon: '🎯',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'secret-saimor',
-    name: 'Namensgeber',
-    nameDE: 'Name Dropper',
-    description: 'Du hast "Saimôr" getippt. Unser Name klingt gut, oder?',
-    descriptionDE: 'You typed "Saimôr". Our name sounds good, right?',
-    icon: '🎤',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'secret-wandel',
-    name: 'Change Agent',
-    nameDE: 'Change Agent',
-    description: 'Du hast "Wandel" getippt. Du weißt, worum es geht!',
-    descriptionDE: 'You typed "Wandel". You know what it\'s about!',
-    icon: '🔄',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'all-unlocked',
-    name: 'Meisterspieler',
-    nameDE: 'Master Player',
-    description: 'Du hast ALLE Achievements freigeschaltet. Wow, du bist echt dabei!',
-    descriptionDE: 'You unlocked ALL achievements. Wow, you\'re really into it!',
-    icon: '👑',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'secret-menu',
-    name: 'Tastenakrobat',
-    nameDE: 'Key Acrobat',
-    description: 'Du hast AAA getippt und das geheime Menü gefunden. Geschickt!',
-    descriptionDE: 'You typed AAA and found the secret menu. Clever!',
-    icon: '🎪',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'night-owl',
-    name: 'Nachteule',
-    nameDE: 'Night Owl',
-    description: 'Du bist zwischen 00:00 und 06:00 hier. Gute Nacht, oder was?',
-    descriptionDE: 'You\'re here between 00:00 and 06:00. Good night, or what?',
-    icon: '🦉',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'early-bird',
-    name: 'Früher Vogel',
-    nameDE: 'Early Bird',
-    description: 'Du bist zwischen 05:00 und 07:00 hier. Frühaufsteher!',
-    descriptionDE: 'You\'re here between 05:00 and 07:00. Early riser!',
-    icon: '🐦',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'patient-visitor',
-    name: 'Treuer Begleiter',
-    nameDE: 'Loyal Companion',
-    description: 'Du bist seit 5 Minuten hier. Das ist echtes Interesse!',
-    descriptionDE: 'You\'ve been here for 5 minutes. That\'s real interest!',
-    icon: '🤝',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'scroll-champion',
-    name: 'Leseratte',
-    nameDE: 'Bookworm',
-    description: 'Du hast die Seite zu 95% gescrollt. Du liest wirklich alles!',
-    descriptionDE: 'You scrolled 95% of the page. You really read everything!',
-    icon: '📖',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'field-explorer',
-    name: 'Vielseitig',
-    nameDE: 'Versatile',
-    description: 'Du hast 3 verschiedene Dashboard-Ansichten ausprobiert. Neugierig!',
-    descriptionDE: 'You tried 3 different dashboard views. Curious!',
-    icon: '🔭',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'speed-reader',
-    name: 'Schnell-Leser',
-    nameDE: 'Speed Reader',
-    description: 'Du hast die Seite extrem schnell gelesen. Beeindruckend!',
-    descriptionDE: 'You read the page extremely fast. Impressive!',
-    icon: '💨',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'return-visitor',
-    name: 'Wiederholungstäter',
-    nameDE: 'Repeat Offender',
-    description: 'Du bist schon einmal hier gewesen. Schön, dich wiederzusehen!',
-    descriptionDE: 'You\'ve been here before. Nice to see you again!',
-    icon: '🔄',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'mora-explorer',
-    name: 'Môra-Fan',
-    nameDE: 'Môra Fan',
-    description: 'Du hast Môra besucht und ausprobiert. Willkommen im Club!',
-    descriptionDE: 'You visited Môra and tried it out. Welcome to the club!',
-    icon: '🌟',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'deep-diver',
-    name: 'Tiefgang',
-    nameDE: 'Deep Diver',
-    description: 'Du hast die Deep View in Môra aktiviert. Du gehst tief!',
-    descriptionDE: 'You activated the Deep View in Môra. You go deep!',
-    icon: '🌊',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'pattern-recognizer',
-    name: 'Muster-Experte',
-    nameDE: 'Pattern Expert',
-    description: 'Du hast mehrere Dashboard-Karten erkundet. Du siehst Muster!',
-    descriptionDE: 'You explored multiple dashboard cards. You see patterns!',
-    icon: '🧩',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'curiosity-driven',
-    name: 'Neugierig',
-    nameDE: 'Curious',
-    description: 'Du hast den Command Palette ausprobiert. Techie!',
-    descriptionDE: 'You tried the Command Palette. Techie!',
-    icon: '🧐',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'completionist',
-    name: 'Perfektionist',
-    nameDE: 'Perfectionist',
-    description: 'Du hast über 75% aller Achievements freigeschaltet. Unglaublich!',
-    descriptionDE: 'You unlocked over 75% of all achievements. Incredible!',
-    icon: '🎖️',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'first-contact',
-    name: 'Erster Kontakt',
-    nameDE: 'First Contact',
-    description: 'Du hast dich über das Kontaktformular gemeldet. Wir freuen uns!',
-    descriptionDE: 'You contacted us via the contact form. We\'re excited!',
-    icon: '📞',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'demo-explorer',
-    name: 'Demo-Liebhaber',
-    nameDE: 'Demo Lover',
-    description: 'Du hast die Demo-Page besucht. Du willst es wirklich wissen!',
-    descriptionDE: 'You visited the demo page. You really want to know!',
-    icon: '🎥',
-    unlocked: false,
-    secret: false
-  },
-  {
-    id: 'documentation-reader',
-    name: 'Gründlich',
-    nameDE: 'Thorough',
-    description: 'Du hast die Dokumentation gelesen. Ernsthaft interessiert!',
-    descriptionDE: 'You read the documentation. Seriously interested!',
-    icon: '📋',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'network-builder',
-    name: 'Netzwerker',
-    nameDE: 'Networker',
-    description: 'Du hast 5 verschiedene Seiten besucht. Du erkundest fleißig!',
-    descriptionDE: 'You visited 5 different pages. You explore diligently!',
-    icon: '🌐',
-    unlocked: false,
-    secret: true
-  },
-  {
-    id: 'strategic-thinker',
-    name: 'Strategisch',
-    nameDE: 'Strategic',
-    description: 'Du bist seit über 3 Minuten hier und denkst strategisch. Beeindruckend!',
-    descriptionDE: 'You\'ve been here for over 3 minutes thinking strategically. Impressive!',
-    icon: '🧠',
-    unlocked: false,
-    secret: true
-  },
-];
+export interface Achievement extends AchievementDefinition {
+  unlocked: boolean;
+  unlockedAt?: number;
+}
+
+interface SavedAchievementState {
+  id: string;
+  unlocked?: boolean;
+  unlockedAt?: number;
+}
 
 const STORAGE_KEY = 'saimor-achievements';
+
+function achievement(
+  id: string,
+  titleDE: string,
+  titleEN: string,
+  descriptionDE: string,
+  descriptionEN: string,
+  icon: string,
+  secret: boolean
+): AchievementDefinition {
+  return {
+    id,
+    title: {
+      de: titleDE,
+      en: titleEN,
+    },
+    description: {
+      de: descriptionDE,
+      en: descriptionEN,
+    },
+    icon,
+    secret,
+  };
+}
+
+export const ACHIEVEMENTS: AchievementDefinition[] = [
+  achievement(
+    'konami',
+    'Retro-Gamer',
+    'Retro Gamer',
+    'Du hast den berühmten Konami-Code entdeckt. Die 80er Jahre grüßen!',
+    'You discovered the famous Konami code. The 80s say hello!',
+    '🕹️',
+    false
+  ),
+  achievement(
+    'quad_logo',
+    'Logo-Detektiv',
+    'Logo Detective',
+    'Vier Mal das Logo angeklickt? Du siehst wirklich genau hin!',
+    'Clicked the logo four times? You really pay attention!',
+    '🕵️',
+    true
+  ),
+  achievement(
+    'silent-observer',
+    'Geduldiger Betrachter',
+    'Patient Observer',
+    'Du hast dir 12 Sekunden Zeit genommen, die Hero-Section zu betrachten. Schön langsam.',
+    'You took 12 seconds to look at the hero section. Nice and slow.',
+    '🧘',
+    true
+  ),
+  achievement(
+    'clarity-navigator',
+    'Explorer',
+    'Explorer',
+    'Du hast dir alle wichtigen Seiten angeschaut: Home, Trust und Legal. Gründlich!',
+    'You visited all important pages: Home, Trust and Legal. Thorough!',
+    '🗺️',
+    true
+  ),
+  achievement(
+    'secret-klarheit',
+    'Wortspiel',
+    'Word Game',
+    'Du hast "Klarheit" getippt. Wortspiele sind unser Ding!',
+    'You typed "Klarheit". Word games are our thing!',
+    '🎯',
+    true
+  ),
+  achievement(
+    'secret-menu',
+    'Tastenakrobat',
+    'Key Acrobat',
+    'Du hast AAA getippt und das geheime Menü gefunden. Geschickt!',
+    'You typed AAA and found the secret menu. Clever!',
+    '🎪',
+    true
+  ),
+  achievement(
+    'scroll-champion',
+    'Leseratte',
+    'Bookworm',
+    'Du hast die Seite zu 95% gescrollt. Du liest wirklich alles!',
+    'You scrolled 95% of the page. You really read everything!',
+    '📖',
+    true
+  ),
+  achievement(
+    'field-explorer',
+    'Vielseitig',
+    'Versatile',
+    'Du hast alle drei Dashboard-Ansichten ausprobiert. Neugierig!',
+    'You tried all three dashboard views. Curious!',
+    '🔭',
+    true
+  ),
+  achievement(
+    'return-visitor',
+    'Wiederholungstäter',
+    'Repeat Visitor',
+    'Du bist schon einmal hier gewesen. Schön, dich wiederzusehen!',
+    'You have been here before. Nice to see you again!',
+    '🔁',
+    true
+  ),
+  achievement(
+    'mora-explorer',
+    'Môra-Fan',
+    'Môra Fan',
+    'Du hast Môra besucht und ausprobiert. Willkommen im Club!',
+    'You visited Môra and tried it out. Welcome to the club!',
+    '🌟',
+    false
+  ),
+  achievement(
+    'deep-diver',
+    'Tiefgang',
+    'Deep Diver',
+    'Du hast in die Detailansicht von Môra hineingezoomt. Du gehst tief!',
+    'You opened Môra detail views. You go deep!',
+    '🌊',
+    true
+  ),
+  achievement(
+    'pattern-recognizer',
+    'Muster-Experte',
+    'Pattern Expert',
+    'Du hast mehrere Dashboard-Karten erkundet. Du siehst Muster!',
+    'You explored multiple dashboard cards. You see patterns!',
+    '🧩',
+    true
+  ),
+  achievement(
+    'curiosity-driven',
+    'Neugierig',
+    'Curious',
+    'Du hast die Command Palette ausprobiert. Techie!',
+    'You tried the command palette. Techie!',
+    '🧐',
+    false
+  ),
+  achievement(
+    'first-contact',
+    'Erster Kontakt',
+    'First Contact',
+    'Du hast dich über das Kontaktformular gemeldet. Wir freuen uns!',
+    'You contacted us via the contact form. We are excited!',
+    '📞',
+    false
+  ),
+  achievement(
+    'demo-explorer',
+    'Demo-Liebhaber',
+    'Demo Lover',
+    'Du hast die Demo-Seite besucht. Du willst es wirklich wissen!',
+    'You visited the demo page. You really want to know!',
+    '🎥',
+    false
+  ),
+  achievement(
+    'documentation-reader',
+    'Gründlich',
+    'Thorough',
+    'Du hast die Dokumentation gelesen. Ernsthaft interessiert!',
+    'You read the documentation. Seriously interested!',
+    '📋',
+    true
+  ),
+];
+
+function cloneAchievement(achievement: Achievement): Achievement {
+  return {
+    ...achievement,
+    title: { ...achievement.title },
+    description: { ...achievement.description },
+  };
+}
+
+function hydrateAchievements(savedStates: SavedAchievementState[] = []): Achievement[] {
+  return ACHIEVEMENTS.map((definition) => {
+    const savedState = savedStates.find((entry) => entry.id === definition.id);
+
+    return {
+      ...definition,
+      title: { ...definition.title },
+      description: { ...definition.description },
+      unlocked: savedState?.unlocked === true,
+      unlockedAt: savedState?.unlockedAt,
+    };
+  });
+}
+
+function serializeAchievements(achievements: Achievement[]): SavedAchievementState[] {
+  return achievements.map(({ id, unlocked, unlockedAt }) => ({
+    id,
+    unlocked,
+    unlockedAt,
+  }));
+}
+
+export function getAchievementTitle(
+  achievement: Achievement,
+  locale: AchievementLocale = 'de'
+): string {
+  return achievement.title[locale];
+}
+
+export function getAchievementDescription(
+  achievement: Achievement,
+  locale: AchievementLocale = 'de'
+): string {
+  return achievement.description[locale];
+}
 
 export class AchievementManager {
   private achievements: Achievement[] = [];
@@ -299,18 +254,17 @@ export class AchievementManager {
 
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const savedAchievements = JSON.parse(saved) as Achievement[];
-        this.achievements = ACHIEVEMENTS.map(a => {
-          const saved = savedAchievements.find(s => s.id === a.id);
-          return saved ? { ...a, unlocked: saved.unlocked, unlockedAt: saved.unlockedAt } : a;
-        });
-      } else {
-        this.achievements = [...ACHIEVEMENTS];
+
+      if (!saved) {
+        this.achievements = hydrateAchievements();
+        return;
       }
-    } catch (e) {
-      console.error('Failed to load achievements:', e);
-      this.achievements = [...ACHIEVEMENTS];
+
+      const savedAchievements = JSON.parse(saved) as SavedAchievementState[];
+      this.achievements = hydrateAchievements(savedAchievements);
+    } catch (error) {
+      console.error('Failed to load achievements:', error);
+      this.achievements = hydrateAchievements();
     }
   }
 
@@ -318,50 +272,40 @@ export class AchievementManager {
     if (typeof window === 'undefined') return;
 
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.achievements));
-    } catch (e) {
-      console.error('Failed to save achievements:', e);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeAchievements(this.achievements)));
+    } catch (error) {
+      console.error('Failed to save achievements:', error);
     }
   }
 
   unlock(id: string): Achievement | null {
-    const achievement = this.achievements.find(a => a.id === id);
+    const achievement = this.achievements.find((entry) => entry.id === id);
     if (!achievement || achievement.unlocked) return null;
 
     achievement.unlocked = true;
     achievement.unlockedAt = Date.now();
 
-    // Check if all main achievements are unlocked
-    const mainAchievements = this.achievements.filter(a => a.id !== 'all-unlocked');
-    const allUnlocked = mainAchievements.every(a => a.unlocked);
-    if (allUnlocked) {
-      const allAchievement = this.achievements.find(a => a.id === 'all-unlocked');
-      if (allAchievement && !allAchievement.unlocked) {
-        allAchievement.unlocked = true;
-        allAchievement.unlockedAt = Date.now();
-      }
-    }
-
     this.save();
     this.notifyListeners();
-    return achievement;
+    return cloneAchievement(achievement);
   }
 
   getAll(): Achievement[] {
-    return [...this.achievements];
+    return this.achievements.map(cloneAchievement);
   }
 
   getUnlocked(): Achievement[] {
-    return this.achievements.filter(a => a.unlocked);
+    return this.achievements.filter((achievement) => achievement.unlocked).map(cloneAchievement);
   }
 
   getProgress(): { unlocked: number; total: number; percentage: number } {
     const total = this.achievements.length;
-    const unlocked = this.achievements.filter(a => a.unlocked).length;
+    const unlocked = this.achievements.filter((achievement) => achievement.unlocked).length;
+
     return {
       unlocked,
       total,
-      percentage: Math.round((unlocked / total) * 100)
+      percentage: total === 0 ? 0 : Math.round((unlocked / total) * 100),
     };
   }
 
@@ -371,22 +315,23 @@ export class AchievementManager {
   }
 
   private notifyListeners() {
-    this.listeners.forEach(listener => listener([...this.achievements]));
+    const snapshot = this.getAll();
+    this.listeners.forEach((listener) => listener(snapshot));
   }
 
   reset() {
-    this.achievements = ACHIEVEMENTS.map(a => ({ ...a, unlocked: false, unlockedAt: undefined }));
+    this.achievements = hydrateAchievements();
     this.save();
     this.notifyListeners();
   }
 }
 
-// Singleton instance
 let instance: AchievementManager | null = null;
 
 export function getAchievementManager(): AchievementManager {
   if (!instance) {
     instance = new AchievementManager();
   }
+
   return instance;
 }

@@ -2,21 +2,20 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  Home, 
-  Sparkles, 
-  Shield, 
-  FileText, 
-  Mail, 
-  Globe, 
+import {
+  Search,
+  Home,
+  Sparkles,
+  Shield,
+  FileText,
+  Mail,
+  Globe,
   Trophy,
   Zap,
   BookOpen,
   Users,
-  ArrowRight,
   Command,
-  CornerDownLeft
+  CornerDownLeft,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getAchievementManager } from '@/lib/achievements';
@@ -41,7 +40,6 @@ export default function CommandPalette() {
   const router = useRouter();
   const [locale, setLocale] = useState<'de' | 'en'>('de');
 
-  // Detect locale from URL
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setLocale(window.location.pathname.startsWith('/en') ? 'en' : 'de');
@@ -49,7 +47,6 @@ export default function CommandPalette() {
   }, [isOpen]);
 
   const commands = useMemo<CommandItem[]>(() => [
-    // Navigation
     {
       id: 'home',
       title: 'Startseite',
@@ -57,7 +54,9 @@ export default function CommandPalette() {
       description: 'Zur Hauptseite gehen',
       descriptionEN: 'Go to homepage',
       icon: <Home className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/de' : '/en'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/de' : '/en';
+      },
       category: 'navigation',
       keywords: ['start', 'home', 'hauptseite', 'anfang'],
     },
@@ -67,7 +66,9 @@ export default function CommandPalette() {
       description: 'Môra kennenlernen und ausprobieren',
       descriptionEN: 'Discover and try Môra',
       icon: <Sparkles className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/mora' : '/en/mora'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/mora' : '/en/mora';
+      },
       category: 'navigation',
       keywords: ['mora', 'dashboard', 'os', 'semantic', 'ai'],
     },
@@ -77,7 +78,9 @@ export default function CommandPalette() {
       description: 'Live-Demo des Portals ansehen',
       descriptionEN: 'View portal live demo',
       icon: <Zap className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/de/portal' : '/en/portal'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/de/portal' : '/en/portal';
+      },
       category: 'navigation',
       keywords: ['portal', 'demo', 'live', 'preview'],
     },
@@ -88,7 +91,9 @@ export default function CommandPalette() {
       description: 'Alles über Datenschutz und Sicherheit',
       descriptionEN: 'Everything about privacy and security',
       icon: <Shield className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/de/trust' : '/en/trust'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/de/trust' : '/en/trust';
+      },
       category: 'navigation',
       keywords: ['trust', 'security', 'sicherheit', 'dsgvo', 'gdpr', 'privacy'],
     },
@@ -99,7 +104,9 @@ export default function CommandPalette() {
       description: 'Technische Details und Anleitungen',
       descriptionEN: 'Technical details and guides',
       icon: <BookOpen className="w-4 h-4" />,
-      action: () => window.location.href = '/docs',
+      action: () => {
+        window.location.href = '/docs';
+      },
       category: 'navigation',
       keywords: ['docs', 'documentation', 'api', 'technical'],
     },
@@ -110,7 +117,9 @@ export default function CommandPalette() {
       description: 'Rechtliche Informationen',
       descriptionEN: 'Legal information',
       icon: <FileText className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint';
+      },
       category: 'navigation',
       keywords: ['impressum', 'imprint', 'legal', 'rechtlich'],
     },
@@ -121,11 +130,12 @@ export default function CommandPalette() {
       description: 'Datenschutzerklärung lesen',
       descriptionEN: 'Read privacy policy',
       icon: <FileText className="w-4 h-4" />,
-      action: () => window.location.href = (locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'),
+      action: () => {
+        window.location.href = locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy';
+      },
       category: 'navigation',
       keywords: ['datenschutz', 'privacy', 'dsgvo'],
     },
-    // Actions
     {
       id: 'contact',
       title: 'Kontakt aufnehmen',
@@ -134,12 +144,13 @@ export default function CommandPalette() {
       descriptionEN: 'Scroll to contact form',
       icon: <Mail className="w-4 h-4" />,
       action: () => {
-        const el = document.getElementById('kontakt');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          router.push(locale === 'de' ? '/de#kontakt' : '/en#kontakt');
+        const element = document.getElementById('kontakt');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          return;
         }
+
+        router.push(locale === 'de' ? '/de#kontakt' : '/en#kontakt');
       },
       category: 'action',
       keywords: ['kontakt', 'contact', 'email', 'nachricht', 'message'],
@@ -152,11 +163,7 @@ export default function CommandPalette() {
       descriptionEN: 'Your unlocked achievements',
       icon: <Trophy className="w-4 h-4" />,
       action: () => {
-        // Trigger achievement menu via keyboard event
-        const event = new KeyboardEvent('keydown', { key: 'a' });
-        window.dispatchEvent(event);
-        window.dispatchEvent(event);
-        window.dispatchEvent(event);
+        window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
       },
       category: 'action',
       keywords: ['achievements', 'erfolge', 'trophy', 'gamification'],
@@ -170,14 +177,14 @@ export default function CommandPalette() {
         const currentPath = window.location.pathname;
         if (locale === 'de') {
           router.push(currentPath.replace(/^\/de/, '/en').replace(/^\/mora/, '/en/mora') || '/en');
-        } else {
-          router.push(currentPath.replace(/^\/en/, '/de') || '/de');
+          return;
         }
+
+        router.push(currentPath.replace(/^\/en/, '/de') || '/de');
       },
       category: 'action',
       keywords: ['language', 'sprache', 'english', 'deutsch', 'german'],
     },
-    // External
     {
       id: 'cal',
       title: 'Gespräch buchen',
@@ -195,85 +202,80 @@ export default function CommandPalette() {
 
   const filteredCommands = useMemo(() => {
     if (!search.trim()) return commands;
-    
+
     const searchLower = search.toLowerCase();
-    return commands.filter(cmd => {
-      const title = (locale === 'en' && cmd.titleEN) ? cmd.titleEN : cmd.title;
-      const desc = (locale === 'en' && cmd.descriptionEN) ? cmd.descriptionEN : cmd.description;
-      
+    return commands.filter((command) => {
+      const title = locale === 'en' && command.titleEN ? command.titleEN : command.title;
+      const description = locale === 'en' && command.descriptionEN
+        ? command.descriptionEN
+        : command.description;
+
       return (
         title.toLowerCase().includes(searchLower) ||
-        desc.toLowerCase().includes(searchLower) ||
-        cmd.keywords.some(k => k.includes(searchLower))
+        description.toLowerCase().includes(searchLower) ||
+        command.keywords.some((keyword) => keyword.includes(searchLower))
       );
     });
   }, [search, commands, locale]);
 
-  // Reset selection when filtered results change
   useEffect(() => {
     setSelectedIndex(0);
   }, [filteredCommands.length]);
 
-  // Keyboard shortcuts
+  const runCommand = useCallback((command: CommandItem) => {
+    command.action();
+    setIsOpen(false);
+    setSearch('');
+
+    const manager = getAchievementManager();
+    manager.unlock('curiosity-driven');
+  }, []);
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Open with Cmd+K or Ctrl+K
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsOpen(prev => !prev);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault();
+        setIsOpen((current) => !current);
         return;
       }
 
       if (!isOpen) return;
 
-      // Close with Escape
-      if (e.key === 'Escape') {
+      if (event.key === 'Escape') {
         setIsOpen(false);
         return;
       }
 
-      // Navigate with arrows
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSelectedIndex(prev => 
-          prev < filteredCommands.length - 1 ? prev + 1 : 0
-        );
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setSelectedIndex((current) => current < filteredCommands.length - 1 ? current + 1 : 0);
         return;
       }
 
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSelectedIndex(prev => 
-          prev > 0 ? prev - 1 : filteredCommands.length - 1
-        );
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setSelectedIndex((current) => current > 0 ? current - 1 : filteredCommands.length - 1);
         return;
       }
 
-      // Execute with Enter
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (filteredCommands[selectedIndex]) {
-          filteredCommands[selectedIndex].action();
-          setIsOpen(false);
-          setSearch('');
-          
-          // Unlock achievement for using command palette
-          const manager = getAchievementManager();
-          manager.unlock('curiosity-driven');
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const command = filteredCommands[selectedIndex];
+        if (command) {
+          runCommand(command);
         }
-        return;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, filteredCommands, selectedIndex]);
+  }, [filteredCommands, isOpen, runCommand, selectedIndex]);
 
-  // Focus input when opening
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
+
     if (!isOpen) {
       setSearch('');
       setSelectedIndex(0);
@@ -286,18 +288,21 @@ export default function CommandPalette() {
       action: locale === 'de' ? 'Aktionen' : 'Actions',
       external: locale === 'de' ? 'Extern' : 'External',
     };
+
     return labels[category as keyof typeof labels] || category;
   };
 
-  // Group commands by category
   const groupedCommands = useMemo(() => {
     const groups: Record<string, CommandItem[]> = {};
-    filteredCommands.forEach(cmd => {
-      if (!groups[cmd.category]) {
-        groups[cmd.category] = [];
+
+    filteredCommands.forEach((command) => {
+      if (!groups[command.category]) {
+        groups[command.category] = [];
       }
-      groups[cmd.category].push(cmd);
+
+      groups[command.category].push(command);
     });
+
     return groups;
   }, [filteredCommands]);
 
@@ -305,7 +310,6 @@ export default function CommandPalette() {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 z-[10003] bg-black/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -314,9 +318,8 @@ export default function CommandPalette() {
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Palette */}
           <motion.div
-            className="fixed top-[20%] left-1/2 z-[10004] w-full max-w-xl -translate-x-1/2"
+            className="fixed left-1/2 top-[20%] z-[10004] w-full max-w-xl -translate-x-1/2"
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -330,78 +333,76 @@ export default function CommandPalette() {
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(16, 185, 129, 0.1)',
               }}
             >
-              {/* Search Input */}
               <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4">
-                <Search className="w-5 h-5 text-emerald-400/60" />
+                <Search className="h-5 w-5 text-emerald-400/60" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(event) => setSearch(event.target.value)}
                   placeholder={locale === 'de' ? 'Suchen oder Befehl eingeben...' : 'Search or type a command...'}
                   className="flex-1 bg-transparent text-white placeholder-white/40 focus:outline-none"
                 />
-                <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 rounded bg-white/5 border border-white/10 text-[10px] text-white/40">
+                <kbd className="hidden items-center gap-1 rounded border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-white/40 sm:flex">
                   ESC
                 </kbd>
               </div>
 
-              {/* Results */}
-              <div className="max-h-80 overflow-y-auto custom-scrollbar p-2">
+              <div className="custom-scrollbar max-h-80 overflow-y-auto p-2">
                 {filteredCommands.length === 0 ? (
-                  <div className="py-8 text-center text-white/40 text-sm">
+                  <div className="py-8 text-center text-sm text-white/40">
                     {locale === 'de' ? 'Keine Ergebnisse gefunden' : 'No results found'}
                   </div>
                 ) : (
                   Object.entries(groupedCommands).map(([category, items]) => (
                     <div key={category} className="mb-2">
-                      <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-white/30 font-bold">
+                      <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white/30">
                         {getCategoryLabel(category)}
                       </div>
-                      {items.map((cmd) => {
-                        const globalIndex = filteredCommands.findIndex(c => c.id === cmd.id);
+                      {items.map((command) => {
+                        const globalIndex = filteredCommands.findIndex((entry) => entry.id === command.id);
                         const isSelected = globalIndex === selectedIndex;
-                        const title = (locale === 'en' && cmd.titleEN) ? cmd.titleEN : cmd.title;
-                        const description = (locale === 'en' && cmd.descriptionEN) ? cmd.descriptionEN : cmd.description;
+                        const title = locale === 'en' && command.titleEN ? command.titleEN : command.title;
+                        const description = locale === 'en' && command.descriptionEN
+                          ? command.descriptionEN
+                          : command.description;
 
                         return (
                           <motion.button
-                            key={cmd.id}
-                            onClick={() => {
-                              cmd.action();
-                              setIsOpen(false);
-                              setSearch('');
-                            }}
+                            key={command.id}
+                            onClick={() => runCommand(command)}
                             onMouseEnter={() => setSelectedIndex(globalIndex)}
-                            className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all ${
-                              isSelected 
-                                ? 'bg-emerald-500/20 border border-emerald-500/30' 
-                                : 'hover:bg-white/5 border border-transparent'
+                            className={`w-full rounded-xl border px-3 py-3 text-left transition-all ${
+                              isSelected
+                                ? 'border-emerald-500/30 bg-emerald-500/20'
+                                : 'border-transparent hover:bg-white/5'
                             }`}
                             layout
                           >
-                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                              isSelected 
-                                ? 'bg-emerald-500/30 text-emerald-300' 
-                                : 'bg-white/5 text-white/50'
-                            }`}>
-                              {cmd.icon}
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                                  isSelected
+                                    ? 'bg-emerald-500/30 text-emerald-300'
+                                    : 'bg-white/5 text-white/50'
+                                }`}
+                              >
+                                {command.icon}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className={`truncate font-medium ${isSelected ? 'text-white' : 'text-white/80'}`}>
+                                  {title}
+                                </div>
+                                <div className="truncate text-xs text-white/40">
+                                  {description}
+                                </div>
+                              </div>
+                              {isSelected && (
+                                <div className="flex items-center gap-1 text-emerald-400/60">
+                                  <CornerDownLeft className="h-4 w-4" />
+                                </div>
+                              )}
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <div className={`font-medium truncate ${
-                                isSelected ? 'text-white' : 'text-white/80'
-                              }`}>
-                                {title}
-                              </div>
-                              <div className="text-xs text-white/40 truncate">
-                                {description}
-                              </div>
-                            </div>
-                            {isSelected && (
-                              <div className="flex items-center gap-1 text-emerald-400/60">
-                                <CornerDownLeft className="w-4 h-4" />
-                              </div>
-                            )}
                           </motion.button>
                         );
                       })}
@@ -410,21 +411,20 @@ export default function CommandPalette() {
                 )}
               </div>
 
-              {/* Footer */}
               <div className="flex items-center justify-between border-t border-white/10 px-4 py-3 text-[10px] text-white/30">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">↑</kbd>
-                    <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">↓</kbd>
+                    <kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5">↑</kbd>
+                    <kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5">↓</kbd>
                     <span className="ml-1">{locale === 'de' ? 'Navigieren' : 'Navigate'}</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">↵</kbd>
+                    <kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5">↵</kbd>
                     <span className="ml-1">{locale === 'de' ? 'Auswählen' : 'Select'}</span>
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Command className="w-3 h-3" />
+                  <Command className="h-3 w-3" />
                   <span>K</span>
                 </div>
               </div>
@@ -435,4 +435,3 @@ export default function CommandPalette() {
     </AnimatePresence>
   );
 }
-

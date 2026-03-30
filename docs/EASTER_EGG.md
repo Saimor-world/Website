@@ -1,252 +1,53 @@
-# 🎮 SAIMOR EASTER EGG - KONAMI CODE
+# SAIMOR Easter Eggs
 
-## WIE MAN ES AUSLÖST:
+## Überblick
 
-### **Schritt-für-Schritt:**
+Die spielerischen Features liegen zentral in `components/EasterEggs.tsx`.
+Sie sind absichtlich subtil gehalten:
 
-1. **Gehe auf die Website:**
-   - https://saimor.world
-   - https://website-phiyeee9x-marius-projects-20aa51eb.vercel.app
+- Konami-Code aktiviert einen ruhigen Resonanzmodus statt eines lauten Vollbild-Gimmicks.
+- Achievements werden zentral über `lib/achievements.ts` verwaltet.
+- Freischaltungen werden lokal im Browser gespeichert.
+- Das Achievements-Menü lässt sich über `AAA` oder die Command Palette öffnen.
 
-2. **Stelle sicher, dass du auf einer Seite bist** (nicht in einem Input-Feld)
+## Wichtige Trigger
 
-3. **Drücke diese Tasten in EXAKT dieser Reihenfolge:**
+### Konami-Code
 
-   ```
-   ↑  (Pfeil-Hoch)
-   ↑  (Pfeil-Hoch)
-   ↓  (Pfeil-Runter)
-   ↓  (Pfeil-Runter)
-   ←  (Pfeil-Links)
-   →  (Pfeil-Rechts)
-   ←  (Pfeil-Links)
-   →  (Pfeil-Rechts)
-   B  (Taste B)
-   A  (Taste A)
-   ```
+Reihenfolge:
 
-4. **💥 BOOM! Das passiert:**
-
----
-
-## 💥 WAS PASSIERT:
-
-### **1. AKTIVIERUNGS-MESSAGE - ENHANCED**
-- Große Message: "RESONANZ AKTIVIERT!"
-- Emojis: 🌟✨🎮
-- **16 Partikel explodieren** (vorher 12)
-- **Haptisches Feedback** (Vibration auf mobilen Geräten)
-- Enhanced Glowing Effect mit stärkeren Schatten
-- Spring-Animation für natürlichere Bewegung
-- Rotation & Scale Animation
-
-### **2. MATRIX RAIN EFFEKT - VERBESSERT**
-- **25 vertikale Kolonnen** (vorher 20)
-- **35 Zeichen pro Kolonne** (vorher 30)
-- Japanische Zeichen (Katakana)
-- Grüner Text mit Drop-Shadow für bessere Sichtbarkeit
-- Fließt von oben nach unten
-- Opacity 0.12 (subtle, vorher 0.1)
-
-### **3. RAINBOW ANIMATION**
-- Die GANZE Website bekommt Hue-Rotation
-- Farben drehen sich durch 360°
-- Duration: 3s, infinite loop
-- Alle Elemente betroffen
-
-### **4. FLOATING PARTIKEL - ENHANCED**
-- **40 schwebende Punkte** (vorher 30)
-- Gold/Grün/Accent Mix mit 4 Farben
-- Y-Bewegung: -40px (vorher -30px)
-- X-Bewegung: random
-- **Individuelle Glow Effects** für jedes Partikel
-- Blur-Effekt für weicheren Look
-
-### **5. RIESIGES SAIMÔR LOGO - OPTIMIERT**
-- Zentral platziert
-- Opacity 0.06 (sehr subtle, vorher 0.05)
-- Rotiert 360° in **25s** (vorher 20s)
-- Scale-Animation 1 → 1.15 → 1
-- Enhanced Blur-Effekt (120px)
-
-### **6. DATA CONNECTION LINES - NEU! 🆕**
-- **8 animierte Datenverbindungen** (komplett neu)
-- Gestrichelte Linien zwischen Random-Points
-- Opacity 0.3
-- Path-Length Animation
-- Infinite Reverse Loop
-
-### **7. HAPTIC FEEDBACK - NEU! 🆕**
-- Vibrationsmuster: [100, 50, 100, 50, 200]
-- Nur auf mobilen Geräten mit Vibrations-Support
-- Verstärkt das Gefühl der Aktivierung
-
----
-
-## 🎯 TASTATUR-LAYOUT WICHTIG:
-
-### **Deutsche Tastatur (QWERTZ):**
-```
+```text
 ↑ ↑ ↓ ↓ ← → ← → B A
 ```
-- Die Pfeiltasten sind oben rechts
-- B ist links von N
-- A ist links von S
 
-### **US Tastatur (QWERTY):**
-```
-↑ ↑ ↓ ↓ ← → ← → B A
-```
-- Gleich!
+Effekt:
 
----
+- Achievement `konami`
+- temporärer Resonanz-Overlay
+- dezente Partikel- und Glyphen-Animation
 
-## 💡 TIPPS ZUM AUSLÖSEN:
+### Weitere spielerische Trigger
 
-### **DO:**
-✅ Drücke die Tasten einzeln nacheinander
-✅ Warte kurz zwischen jedem Tastendruck (~0.5s)
-✅ Stelle sicher, dass kein Input-Feld fokussiert ist
-✅ Nutze die Pfeil-Tasten auf der Tastatur
+- `AAA` öffnet das versteckte Achievements-Menü
+- 4x Klick auf das Logo löst `quad_logo` aus
+- bestimmte Begriffe wie `klarheit`, `saimor`, `wandel`
+- längere Aufmerksamkeit, Scrolltiefe und wiederkehrende Besuche
+- Môra-Interaktionen wie Karten öffnen oder View-Modi wechseln
 
-### **DON'T:**
-❌ Nicht zu schnell drücken
-❌ Nicht in Chat-Input oder Formular-Feld tippen
-❌ Nicht mit Maus klicken während du tippst
-❌ Nicht mit Numpad-Pfeilen (nutze Haupt-Pfeiltasten)
+## Technische Struktur
 
----
+- `components/EasterEggs.tsx`
+  Zentrale Trigger, UI-Feedback, Resonanzmodus
+- `lib/achievements.ts`
+  Definitionen, Speicherung, Fortschritt, Unlock-Logik
+- `components/AchievementToast.tsx`
+  Toast für neue Freischaltungen
+- `components/AchievementMenu.tsx`
+  Übersicht aller sichtbaren und versteckten Achievements
 
-## 🔧 TROUBLESHOOTING:
+## Hinweise
 
-**"Es funktioniert nicht!"**
-
-1. **Bist du in einem Input-Feld?**
-   - Click außerhalb davon
-   - Drücke ESC
-   - Dann erneut versuchen
-
-2. **Hast du die richtige Reihenfolge?**
-   - Es muss EXAKT sein: ↑ ↑ ↓ ↓ ← → ← → B A
-   - Nicht: ↑ ↓ ← → oder andere Variationen
-
-3. **Browser-Konsole checken:**
-   - F12 öffnen
-   - Gehe zu Console
-   - Schau ob Fehler angezeigt werden
-
-4. **Seite neu laden:**
-   - CTRL+F5 (Hard Reload)
-   - Dann erneut versuchen
-
----
-
-## 🎨 WIE ES FUNKTIONIERT (Technisch):
-
-### **Code-Location:**
-```
-components/KonamiCode.tsx
-```
-
-### **State Management:**
-```typescript
-const [sequence, setSequence] = useState<string[]>([]);
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-                    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-                    'b', 'a'];
-
-// Lauscht auf Tastendruck
-useEffect(() => {
-  const handleKeyPress = (e: KeyboardEvent) => {
-    const newSequence = [...sequence, e.key].slice(-10);
-    if (JSON.stringify(newSequence) === JSON.stringify(konamiCode)) {
-      setActivated(true); // 💥 BOOM!
-    }
-  };
-  window.addEventListener('keydown', handleKeyPress);
-}, [sequence]);
-```
-
-### **Aktivierung:**
-```typescript
-if (activated) {
-  // Rainbow Animation auf <body>
-  document.body.style.animation = 'rainbow 3s linear infinite';
-
-  // Inject CSS
-  @keyframes rainbow {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
-  }
-}
-```
-
----
-
-## 🎭 DEAKTIVIEREN:
-
-**Reload the page:**
-- F5 oder CMD+R
-- Alles geht zurück zu normal
-
-**Kein Persist:**
-- Easter Egg bleibt nicht nach Reload
-- Nur während Session aktiv
-
----
-
-## 🚀 FÜR SCREENSHOTS/DEMOS:
-
-1. Öffne Website
-2. Öffne DevTools (F12)
-3. Gehe zu Console
-4. Type:
-   ```javascript
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'b'}));
-   document.dispatchEvent(new KeyboardEvent('keydown', {key: 'a'}));
-   ```
-
-5. **💥 BOOM!**
-
----
-
-## 📱 MOBILE:
-
-**Funktioniert NICHT auf Mobile/Touch!**
-- Konami Code benötigt Tastatur
-- Nur Desktop/Laptop
-
-**Alternative für Mobile:**
-- Könnte man bauen: Swipe-Pattern
-- Oder: Button-Sequence
-- Aktuell: Nicht implementiert
-
----
-
-## 🎉 WEITERE EASTER EGGS:
-
-### **Ideen für später:**
-
-1. **Triple-Click auf Logo**
-   - → Secret Admin Panel
-
-2. **Hover Logo 10 Sekunden**
-   - → Animiertes Saimôr-Maskottchen
-
-3. **Type "saimor" irgendwo**
-   - → Secret Feature Unlock
-
-4. **Scroll 10x hoch und runter schnell**
-   - → Disco Mode
-
----
-
-**VIEL SPASS BEIM ENTDECKEN! 🎮✨**
+- Das System respektiert `prefers-reduced-motion`.
+- Es gibt keine serverseitige Persistenz, nur `localStorage` und `sessionStorage`.
+- Die Môra-bezogenen Achievements reagieren auf echte UI-Events aus `components/MoraDashboard.tsx`.
+- Bewusst entfernt wurden zufällige Trigger wie Uhrzeit, Device-Shake oder rein quantitative Sammel-Mechaniken.

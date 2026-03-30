@@ -104,9 +104,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             {/* Logo */}
             <a
               href={`/${locale}`}
-              onClick={() => {
+              onClick={(event) => {
                 setMenuOpen(false);
-                window.dispatchEvent(new CustomEvent('saimor-logo-click'));
+                window.dispatchEvent(new CustomEvent('saimor-logo-click', {
+                  detail: {
+                    x: event.clientX,
+                    y: event.clientY,
+                  },
+                }));
               }}
               className="relative z-10 group"
               aria-label="Saimôr - Zur Startseite"

@@ -110,38 +110,32 @@ saimor-live/
 
 ## 🏆 ACHIEVEMENTS SYSTEM
 
-### **26 Achievements insgesamt**
+### **Kuratiertes Achievement-Set**
 
 #### **Öffentliche Achievements (Secret: false)**
 1. **Retro Gamer** (`konami`) - Konami Code aktiviert
-2. **Môra-Fan** (`mora-explorer`) - Môra Dashboard besucht
+2. **Môra-Fan** (`mora-explorer`) - Môra besucht
 3. **Neugierig** (`curiosity-driven`) - Command Palette verwendet
-4. **Perfektionist** (`completionist`) - 75%+ Achievements freigeschaltet
-5. **Erster Kontakt** (`first-contact`) - Kontaktformular abgeschickt
-6. **Demo-Liebhaber** (`demo-explorer`) - Demo-Page besucht
+4. **Erster Kontakt** (`first-contact`) - Kontaktformular abgeschickt
+5. **Demo-Liebhaber** (`demo-explorer`) - Demo-Seite besucht
 
 #### **Secret Achievements (Secret: true)**
 - **Logo-Detektiv** (`quad_logo`) - Logo 4x geklickt
 - **Geduldiger Betrachter** (`silent-observer`) - 12s in Hero Section
 - **Explorer** (`clarity-navigator`) - Home, Trust, Legal besucht
-- **Shake It!** (`shake`) - Gerät geschüttelt
 - **Wortspiel** (`secret-klarheit`) - "Klarheit" getippt
-- **Namensgeber** (`secret-saimor`) - "Saimôr" getippt
-- **Change Agent** (`secret-wandel`) - "Wandel" getippt
 - **Tastenakrobat** (`secret-menu`) - "AAA" getippt (Secret Menu)
-- **Nachteule** (`night-owl`) - Besuch zwischen 00:00-06:00
-- **Früher Vogel** (`early-bird`) - Besuch zwischen 05:00-07:00
-- **Treuer Begleiter** (`patient-visitor`) - 5+ Minuten auf Seite
 - **Leseratte** (`scroll-champion`) - 95% gescrollt
 - **Vielseitig** (`field-explorer`) - 3 Dashboard-Views ausprobiert
-- **Schnell-Leser** (`speed-reader`) - Seite sehr schnell gelesen
 - **Wiederholungstäter** (`return-visitor`) - Wiederkehrender Besucher
 - **Tiefgang** (`deep-diver`) - Deep View in Môra aktiviert
 - **Muster-Experte** (`pattern-recognizer`) - Mehrere Dashboard-Karten erkundet
 - **Gründlich** (`documentation-reader`) - Dokumentation gelesen
-- **Netzwerker** (`network-builder`) - 5 verschiedene Seiten besucht
-- **Strategisch** (`strategic-thinker`) - 3+ Minuten auf Seite
-- **Meisterspieler** (`all-unlocked`) - ALLE Achievements freigeschaltet
+
+### **Prinzip**
+- Weniger Zufall, mehr echte Entdeckung
+- Keine Uhrzeit-, Shake- oder Sammel-Mechaniken mehr
+- Fokus auf Aufmerksamkeit, Produkt-Erkundung und bewusste Interaktion
 
 ### **Storage**
 - Achievements werden in `localStorage` gespeichert (Key: `saimor-achievements`)
