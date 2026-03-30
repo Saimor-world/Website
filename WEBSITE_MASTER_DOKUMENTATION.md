@@ -115,30 +115,30 @@ saimor-live/
 Das System ist technisch weiter ein Achievement-System, wird sprachlich und visuell aber als Discovery-Log geführt.
 
 #### **Öffentliche Einträge (Secret: false)**
-1. **Override** (`konami`) - Konami-Code aktiviert die Resonanzschicht
-2. **Semantic Layer** (`mora-explorer`) - Môra geöffnet
-3. **Command Access** (`curiosity-driven`) - Command Palette genutzt
-4. **Open Channel** (`first-contact`) - Kontaktformular abgeschickt
-5. **Live Preview** (`demo-explorer`) - Demo-Seite besucht
+1. **Ueberlagerung** (`konami`) - Konami-Code aktiviert die Resonanzschicht
+2. **Semantische Ebene** (`mora-explorer`) - Môra geöffnet
+3. **Schnellzugang** (`curiosity-driven`) - Command Palette genutzt
+4. **Offener Kanal** (`first-contact`) - Kontaktformular abgeschickt
+5. **Vorschau** (`demo-explorer`) - Demo-Seite besucht
 
 #### **Verborgene Einträge (Secret: true)**
-- **Mark Study** (`quad_logo`) - Logo 4x geklickt
-- **Stillness** (`silent-observer`) - 12s in der Hero-Section verweilt
-- **Orientation** (`clarity-navigator`) - Home, Trust und Legal besucht
-- **Signal Phrase** (`secret-klarheit`) - `klarheit` getippt
-- **Archive Access** (`secret-menu`) - `AAA` getippt
-- **Full Pass** (`scroll-champion`) - 95% gescrollt
-- **Multi-View** (`field-explorer`) - 3 Dashboard-Views ausprobiert
-- **Re-entry** (`return-visitor`) - wiederkehrender Besuch
-- **Detail Layer** (`deep-diver`) - tiefe Môra-Ansicht geöffnet
-- **Pattern Map** (`pattern-recognizer`) - mehrere Dashboard-Karten erkundet
-- **Reference Check** (`documentation-reader`) - Dokumentation gelesen
+- **Zeichenstudie** (`quad_logo`) - Logo 4x geklickt
+- **Stille** (`silent-observer`) - 12s in der Hero-Section verweilt
+- **Orientierung** (`clarity-navigator`) - Home, Trust und Legal besucht
+- **Signalwort** (`secret-klarheit`) - `klarheit` getippt
+- **Archivzugang** (`secret-menu`) - `AAA` getippt
+- **Durchgang** (`scroll-champion`) - 95% gescrollt
+- **Mehrfachansicht** (`field-explorer`) - 3 Dashboard-Views ausprobiert
+- **Wiederkehr** (`return-visitor`) - wiederkehrender Besuch
+- **Tiefenansicht** (`deep-diver`) - tiefe Môra-Ansicht geöffnet
+- **Musterkarte** (`pattern-recognizer`) - mehrere Dashboard-Karten erkundet
+- **Referenz** (`documentation-reader`) - Dokumentation gelesen
 
 ### **Prinzip**
 - Weniger Gamification, mehr Discovery-Log
 - Neutralere, systemischere Begriffe statt Trophy-Ton
 - Fokus auf Aufmerksamkeit, Produkt-Erkundung und bewusste Interaktion
-- Konami ist ein echter temporärer Modus mit HUD und globalen Akzenten
+- Konami ist ein echter temporärer Modus, aber visuell kontrollierter und stärker integriert
 
 ### **Storage**
 - Discovery-Einträge werden in `localStorage` gespeichert (Key: `saimor-achievements`)

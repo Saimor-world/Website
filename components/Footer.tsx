@@ -119,15 +119,15 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-[10px] text-white/30">
             <span className="flex items-center gap-2">
               <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">⌘K</kbd>
-              <span>{locale === 'de' ? 'Schnellsuche' : 'Quick search'}</span>
+              <span>{locale === 'de' ? 'Menü' : 'Menu'}</span>
             </span>
             <span className="flex items-center gap-2">
               <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">AAA</kbd>
-              <span>{locale === 'de' ? 'Archiv' : 'Archive'}</span>
+              <span>{locale === 'de' ? 'Log' : 'Log'}</span>
             </span>
             <span className="hidden md:flex items-center gap-2">
               <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">↑↑↓↓←→←→BA</kbd>
-              <span>{locale === 'de' ? 'Layer' : 'Layer'}</span>
+              <span>{locale === 'de' ? 'Resonanz' : 'Resonance'}</span>
             </span>
           </div>
         </motion.div>

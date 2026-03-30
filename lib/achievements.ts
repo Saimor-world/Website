@@ -72,19 +72,19 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'konami',
     'hidden',
-    'Override',
-    'Override',
-    'Du hast die verborgene Resonanzschicht aktiviert und die Oberfläche kurz in einen anderen Zustand versetzt.',
-    'You activated the hidden resonance layer and briefly shifted the interface into a different state.',
+    'Ueberlagerung',
+    'Overlay',
+    'Die verborgene Resonanzschicht aktiviert und die Oberflaeche kurz in ihren zweiten Zustand versetzt.',
+    'You activated the hidden resonance layer and briefly shifted the interface into its second state.',
     '◈',
     false
   ),
   achievement(
     'quad_logo',
     'hidden',
+    'Zeichenstudie',
     'Mark Study',
-    'Mark Study',
-    'Das Zeichen oft genug geprüft, um die zweite Ebene darunter zu finden.',
+    'Das Zeichen genau genug gelesen, um die zweite Ebene darunter zu finden.',
     'You studied the mark closely enough to find the second layer beneath it.',
     '◌',
     true
@@ -92,9 +92,9 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'silent-observer',
     'signal',
+    'Stille',
     'Stillness',
-    'Stillness',
-    'Du hast dir Zeit genommen, bevor du weitergegangen bist.',
+    'Nicht sofort weitergegangen, sondern erst wahrgenommen.',
     'You took a moment before moving on.',
     '◐',
     true
@@ -102,9 +102,9 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'clarity-navigator',
     'path',
+    'Orientierung',
     'Orientation',
-    'Orientation',
-    'Home, Trust und Legal gelesen. Erst Kontext, dann Entscheidung.',
+    'Home, Trust und Legal gelesen. Erst Kontext, dann Richtung.',
     'You read Home, Trust, and Legal. Context first, decision second.',
     '△',
     true
@@ -112,19 +112,19 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'secret-klarheit',
     'hidden',
-    'Signal Phrase',
-    'Signal Phrase',
-    'Das richtige Wort am richtigen Ort.',
-    'The right word in the right place.',
+    'Signalwort',
+    'Signal Word',
+    'Das richtige Wort an der richtigen Stelle hinterlassen.',
+    'You left the right word in the right place.',
     '∴',
     true
   ),
   achievement(
     'secret-menu',
     'hidden',
+    'Archivzugang',
     'Archive Access',
-    'Archive Access',
-    'Das verborgene Log geöffnet, ohne dass es dir gezeigt wurde.',
+    'Das verborgene Log geoeffnet, ohne dass es dir gezeigt wurde.',
     'You opened the hidden log without being shown where it was.',
     '⋄',
     true
@@ -132,9 +132,9 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'scroll-champion',
     'signal',
+    'Durchgang',
     'Full Pass',
-    'Full Pass',
-    'Du bist bis fast zum Ende gegangen und hast den Kontext vollständig mitgenommen.',
+    'Bis fast zum Ende gegangen und den Zusammenhang komplett mitgenommen.',
     'You went almost all the way through and took in the full context.',
     '↧',
     true
@@ -142,8 +142,8 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'field-explorer',
     'depth',
-    'Multi-View',
-    'Multi-View',
+    'Mehrfachansicht',
+    'Multi View',
     'Alle drei Perspektiven im Môra-Dashboard aktiviert.',
     'You activated all three perspectives in the Môra dashboard.',
     '◫',
@@ -152,19 +152,19 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'return-visitor',
     'signal',
-    'Re-entry',
-    'Re-entry',
-    'Du bist nicht nur vorbeigekommen, sondern zurückgekehrt.',
-    'You did not just stop by, you returned.',
+    'Wiederkehr',
+    'Return',
+    'Nicht nur vorbeigekommen, sondern bewusst zurueckgekehrt.',
+    'You did not just stop by, you deliberately returned.',
     '↺',
     true
   ),
   achievement(
     'mora-explorer',
     'depth',
+    'Semantische Ebene',
     'Semantic Layer',
-    'Semantic Layer',
-    'Môra geöffnet und den semantischen Layer betreten.',
+    'Môra geoeffnet und in die semantische Ebene eingetreten.',
     'You opened Môra and stepped into the semantic layer.',
     '◎',
     false
@@ -172,9 +172,9 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'deep-diver',
     'depth',
-    'Detail Layer',
-    'Detail Layer',
-    'Von der Übersicht in eine tiefe Ansicht gewechselt.',
+    'Tiefenansicht',
+    'Depth View',
+    'Von der Uebersicht in eine tiefere Ansicht gewechselt.',
     'You moved from the overview into a deeper view.',
     '⊙',
     true
@@ -182,39 +182,39 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'pattern-recognizer',
     'depth',
+    'Musterkarte',
     'Pattern Map',
-    'Pattern Map',
-    'Genug Signale verbunden, um Muster sichtbar zu machen.',
-    'You connected enough signals to make patterns visible.',
+    'Genug Signale verbunden, um ein Muster lesbar zu machen.',
+    'You connected enough signals to make a pattern readable.',
     '◬',
     true
   ),
   achievement(
     'curiosity-driven',
     'path',
+    'Schnellzugang',
     'Command Access',
-    'Command Access',
-    'Die schnelle Navigation statt des offensichtlichen Wegs gewählt.',
-    'You chose the fast route instead of the obvious one.',
+    'Die direkte Navigation statt des offensichtlichen Wegs genutzt.',
+    'You chose the direct route instead of the obvious one.',
     '⌘',
     false
   ),
   achievement(
     'first-contact',
     'path',
+    'Offener Kanal',
     'Open Channel',
-    'Open Channel',
-    'Den Dialog nicht nur gelesen, sondern begonnen.',
-    'You did not just read the dialogue, you started it.',
+    'Den Dialog nicht nur gelesen, sondern geoeffnet.',
+    'You did not just read the dialogue, you opened it.',
     '↗',
     false
   ),
   achievement(
     'demo-explorer',
     'path',
-    'Live Preview',
-    'Live Preview',
-    'Die Vorschau geöffnet, statt nur über Möglichkeiten zu lesen.',
+    'Vorschau',
+    'Preview',
+    'Die Vorschau geoeffnet, statt nur ueber Moeglichkeiten zu lesen.',
     'You opened the preview instead of only reading about the possibilities.',
     '□',
     false
@@ -222,9 +222,9 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement(
     'documentation-reader',
     'path',
-    'Reference Check',
-    'Reference Check',
-    'Die Referenz geprüft, statt an der Oberfläche stehenzubleiben.',
+    'Referenz',
+    'Reference',
+    'Die Referenz geprueft, statt an der Oberflaeche stehenzubleiben.',
     'You checked the reference instead of staying at the surface.',
     '▣',
     true

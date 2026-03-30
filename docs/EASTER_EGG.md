@@ -6,7 +6,7 @@ Die spielerische Schicht ist jetzt als zurückhaltende Discovery-Layer gedacht, 
 
 - Zentrale Runtime: `components/EasterEggs.tsx`
 - Zentrale Definitionen: `lib/achievements.ts`
-- Sichtbare Oberfläche: Discovery-Button, Toast und Log-Menü
+- Sichtbare Oberfläche: kompakter Log-Button, Toast und Log-Menü
 - Speicherung: lokal im Browser über `localStorage` und `sessionStorage`
 
 ## Konami-Code
@@ -19,23 +19,23 @@ Sequenz:
 
 Wirkung:
 
-- schaltet den Eintrag `konami` / **Override** frei
+- schaltet den Eintrag `konami` / **Ueberlagerung** frei
 - aktiviert für rund 14 Sekunden die Resonanzschicht
-- blendet HUD, Pulsringe, Glyphen und globale Hover-/Selection-Akzente ein
+- blendet ein reduziertes Overlay mit Pulsringen, Glyphen und leichten globalen Akzenten ein
 - öffnet beim ersten Fund automatisch das Entdeckungslog
 
 ## Weitere Trigger
 
-- `AAA` öffnet das Log direkt und schaltet `Archive Access` frei
-- `klarheit` triggert `Signal Phrase`
-- 4x Klick auf das Logo triggert `Mark Study`
+- `AAA` öffnet das Log direkt und schaltet `Archivzugang` frei
+- `klarheit` triggert `Signalwort`
+- 4x Klick auf das Logo triggert `Zeichenstudie`
 - längere Aufmerksamkeit, Scrolltiefe und Wiederkehr erzeugen Signal-Einträge
 - Môra-Interaktionen erzeugen Depth-Einträge
-- Nutzung der Command Palette erzeugt `Command Access`
+- Nutzung der Command Palette erzeugt `Schnellzugang`
 
 ## Gestaltungsprinzip
 
-- weniger Trophy-/Retro-Gamification
+- weniger Trophy-/Retro-Gamification und weniger Selbstinszenierung im Overlay
 - neutralere, hochwertigere Begriffe
 - echte Interaktion statt Zufall oder reine Sammelmechanik
 - `prefers-reduced-motion` wird respektiert

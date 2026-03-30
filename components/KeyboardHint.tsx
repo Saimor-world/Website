@@ -15,14 +15,16 @@ export default function KeyboardHint() {
   const locale = pathname?.startsWith('/en') ? 'en' : 'de';
   const copy = locale === 'de'
     ? {
-        intro: 'Schnellnavigation',
-        text: 'Öffne die Command Palette mit',
-        end: 'für direkte Sprünge.',
+        intro: 'Schnellzugang',
+        text: 'Mit',
+        end: 'oeffnest du das Kommando-Menue.',
+        dismiss: 'Hinweis schliessen',
       }
     : {
-        intro: 'Quick navigation',
-        text: 'Open the command palette with',
-        end: 'for direct jumps.',
+        intro: 'Quick access',
+        text: 'Use',
+        end: 'to open the command menu.',
+        dismiss: 'Dismiss keyboard hint',
       };
 
   useEffect(() => {
@@ -62,16 +64,16 @@ export default function KeyboardHint() {
           transition={{ duration: 0.28, ease: 'easeOut' }}
         >
           <div
-            className="flex items-center gap-4 rounded-2xl px-5 py-3 shadow-2xl"
+            className="flex items-center gap-4 rounded-[20px] px-4 py-3 shadow-2xl"
             style={{
-              background: 'linear-gradient(135deg, rgba(13, 26, 21, 0.96) 0%, rgba(21, 37, 29, 0.92) 100%)',
+              background: 'linear-gradient(180deg, rgba(9, 16, 27, 0.96) 0%, rgba(14, 24, 38, 0.93) 100%)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
-              boxShadow: '0 10px 28px rgba(0, 0, 0, 0.26)',
+              boxShadow: '0 10px 28px rgba(0, 0, 0, 0.24)',
             }}
           >
             <div className="flex items-center gap-3 text-sm text-white/78">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/48">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/46">
                 {copy.intro}
               </span>
               <span>{copy.text}</span>
@@ -84,7 +86,7 @@ export default function KeyboardHint() {
             <button
               onClick={() => setIsVisible(false)}
               className="flex h-6 w-6 items-center justify-center rounded-full bg-white/8 text-white/45 transition-colors hover:bg-white/12 hover:text-white"
-              aria-label="Dismiss keyboard hint"
+              aria-label={copy.dismiss}
             >
               <X className="h-3 w-3" />
             </button>

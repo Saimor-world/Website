@@ -120,44 +120,42 @@ export default function EasterEggs() {
 
   const copy = locale === 'de'
     ? {
-        konami: 'Resonanzschicht aktiv. Die Oberfläche zeigt für einen Moment ihre zweite Ebene.',
+        konami: 'Resonanz aktiv. Die zweite Ebene ist kurz sichtbar.',
         logo: 'Markierung erkannt. Zweite Ebene freigelegt.',
         secretMenu: 'Archivzugang geöffnet.',
         clarity: 'Signalphrase erkannt.',
         hero: 'Aufmerksamkeit registriert.',
         navigator: 'Orientierung vollständig.',
-        mora: 'Semantik-Layer geöffnet.',
-        demo: 'Live-Vorschau geladen.',
+        mora: 'Semantische Ebene geöffnet.',
+        demo: 'Vorschau geöffnet.',
         docs: 'Referenzpfad geöffnet.',
         contact: 'Kanal geöffnet.',
         command: 'Schnellzugang erkannt.',
-        scroll: 'Vollständiger Durchgang erkannt.',
+        scroll: 'Durchgang erkannt.',
         returning: 'Wiederkehr erkannt.',
         field: 'Mehrfachansicht vollständig.',
         pattern: 'Musterverdichtung erkannt.',
-        diver: 'Tiefe Ansicht aktiv.',
-        resonanceLabel: 'Resonanzschicht',
-        resonanceTitle: 'Override aktiv',
-        resonanceBody: 'Die Seite blendet kurz ihre zweite Ebene ein. Das Entdeckungslog wird erweitert und die Signale werden sichtbarer.',
-        resonanceCode: 'Sequenz erkannt',
-        resonancePrompt: 'AAA öffnet das Log sofort.',
+        diver: 'Tiefenansicht aktiv.',
+        resonanceLabel: 'Resonanz',
+        resonanceTitle: 'Zweite Ebene aktiv',
+        resonanceBody: 'Fuer einen Moment ziehen Konturen, Signale und Bewegung leicht schaerfer an. Mehr nicht.',
         metrics: {
           log: 'Log',
           pages: 'Seiten',
           depth: 'Tiefe',
-          window: 'Fenster',
-          windowValue: '14s',
+          mode: 'Modus',
+          modeValue: '14s',
         },
       }
     : {
-        konami: 'Resonance layer active. The interface is showing its second state for a moment.',
+        konami: 'Resonance active. The second layer is briefly visible.',
         logo: 'Mark detected. Second layer revealed.',
         secretMenu: 'Archive access opened.',
         clarity: 'Signal phrase detected.',
         hero: 'Attention registered.',
         navigator: 'Orientation complete.',
         mora: 'Semantic layer opened.',
-        demo: 'Live preview loaded.',
+        demo: 'Preview opened.',
         docs: 'Reference path opened.',
         contact: 'Channel opened.',
         command: 'Command access detected.',
@@ -165,18 +163,16 @@ export default function EasterEggs() {
         returning: 'Return visit detected.',
         field: 'Multi-view complete.',
         pattern: 'Pattern density detected.',
-        diver: 'Deep view active.',
-        resonanceLabel: 'Resonance Layer',
-        resonanceTitle: 'Override Active',
-        resonanceBody: 'The site briefly exposes its second layer. The discovery log expands and signals become easier to spot.',
-        resonanceCode: 'Sequence detected',
-        resonancePrompt: 'AAA opens the log instantly.',
+        diver: 'Depth view active.',
+        resonanceLabel: 'Resonance',
+        resonanceTitle: 'Second layer active',
+        resonanceBody: 'For a moment, contours, signals, and motion sharpen slightly. Nothing more.',
         metrics: {
           log: 'Log',
           pages: 'Pages',
           depth: 'Depth',
-          window: 'Window',
-          windowValue: '14s',
+          mode: 'Mode',
+          modeValue: '14s',
         },
       };
 
@@ -737,7 +733,7 @@ export default function EasterEggs() {
     { label: copy.metrics.log, value: `${discoveryProgress.unlocked}/${discoveryProgress.total}` },
     { label: copy.metrics.pages, value: `${explorationStats.pages}` },
     { label: copy.metrics.depth, value: `${Math.max(explorationStats.views, explorationStats.cards)}` },
-    { label: copy.metrics.window, value: copy.metrics.windowValue },
+    { label: copy.metrics.mode, value: copy.metrics.modeValue },
   ];
 
   return (
@@ -765,8 +761,8 @@ export default function EasterEggs() {
         html[data-saimor-resonance='active'] a:hover,
         html[data-saimor-resonance='active'] button:hover {
           box-shadow:
-            0 0 0 1px rgba(214, 168, 72, 0.18),
-            0 0 34px rgba(104, 158, 255, 0.1);
+            0 0 0 1px rgba(214, 168, 72, 0.14),
+            0 0 20px rgba(104, 158, 255, 0.06);
         }
       `}</style>
 
@@ -881,12 +877,12 @@ export default function EasterEggs() {
 
             <motion.div
               key={`panel-${resonancePulseSeed}`}
-              className="absolute left-4 top-4 w-[min(24rem,calc(100vw-2rem))] rounded-[28px] border px-5 py-5 md:left-6 md:top-6"
+              className="absolute left-4 top-4 w-[min(21rem,calc(100vw-2rem))] rounded-[26px] border px-5 py-5 md:left-6 md:top-6"
               style={{
-                background: 'linear-gradient(180deg, rgba(7, 12, 20, 0.9) 0%, rgba(13, 22, 36, 0.78) 100%)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
+                background: 'linear-gradient(180deg, rgba(7, 12, 20, 0.86) 0%, rgba(13, 22, 36, 0.72) 100%)',
+                borderColor: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(22px)',
-                boxShadow: '0 18px 48px rgba(0, 0, 0, 0.28)',
+                boxShadow: '0 16px 42px rgba(0, 0, 0, 0.24)',
               }}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -895,55 +891,24 @@ export default function EasterEggs() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/46">
                 {copy.resonanceLabel}
               </p>
-              <div className="mt-3 flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-2xl font-semibold text-white">
-                    {copy.resonanceTitle}
-                  </h3>
-                  <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/62">
-                    {copy.resonanceBody}
-                  </p>
-                </div>
-                <div
-                  className="flex h-12 min-w-[3rem] items-center justify-center rounded-full px-3 text-lg font-semibold text-white"
-                  style={{
-                    background: 'rgba(214, 168, 72, 0.14)',
-                    border: '1px solid rgba(214, 168, 72, 0.2)',
-                  }}
-                >
-                  {discoveryProgress.unlocked}
-                </div>
-              </div>
+              <h3 className="mt-3 text-xl font-semibold text-white">
+                {copy.resonanceTitle}
+              </h3>
+              <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/60">
+                {copy.resonanceBody}
+              </p>
 
-              <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="mt-4 grid grid-cols-3 gap-2">
                 {resonanceMetrics.map((metric) => (
                   <div
                     key={metric.label}
-                    className="rounded-[18px] border border-white/8 bg-white/5 px-3 py-3"
+                    className="rounded-[16px] border border-white/8 bg-white/5 px-3 py-2.5"
                   >
                     <p className="text-[10px] uppercase tracking-[0.18em] text-white/38">{metric.label}</p>
-                    <p className="mt-1 text-lg font-semibold text-white">{metric.value}</p>
+                    <p className="mt-1 text-sm font-semibold text-white">{metric.value}</p>
                   </div>
                 ))}
               </div>
-            </motion.div>
-
-            <motion.div
-              className="absolute right-6 top-6 hidden rounded-[24px] border border-white/10 bg-[#090f19]/70 px-4 py-4 md:block"
-              style={{ backdropFilter: 'blur(18px)' }}
-              initial={{ opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.28, ease: 'easeOut', delay: 0.1 }}
-            >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/42">
-                {copy.resonanceCode}
-              </p>
-              <p className="mt-2 font-mono text-sm tracking-[0.34em] text-white/78">
-                ↑ ↑ ↓ ↓ ← → ← → B A
-              </p>
-              <p className="mt-3 text-xs text-white/42">
-                {copy.resonancePrompt}
-              </p>
             </motion.div>
 
             {resonanceGlyphs.map((glyph) => (

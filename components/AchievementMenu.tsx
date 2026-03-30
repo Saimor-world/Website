@@ -19,10 +19,10 @@ interface Props {
 }
 
 const categoryAccentMap = {
-  signal: 'rgba(214, 168, 72, 0.24)',
-  path: 'rgba(117, 198, 160, 0.18)',
-  depth: 'rgba(104, 158, 255, 0.18)',
-  hidden: 'rgba(255, 255, 255, 0.12)',
+  signal: 'rgba(214, 168, 72, 0.18)',
+  path: 'rgba(117, 198, 160, 0.16)',
+  depth: 'rgba(104, 158, 255, 0.16)',
+  hidden: 'rgba(255, 255, 255, 0.1)',
 } as const;
 
 export default function AchievementMenu({
@@ -32,9 +32,10 @@ export default function AchievementMenu({
   locale = 'de',
 }: Props) {
   const orderIndex = new Map(achievements.map((achievement, index) => [achievement.id, index]));
+  const unlockedCount = achievements.filter((achievement) => achievement.unlocked).length;
   const progress = achievements.length === 0
     ? 0
-    : Math.round((achievements.filter((achievement) => achievement.unlocked).length / achievements.length) * 100);
+    : Math.round((unlockedCount / achievements.length) * 100);
 
   const unlocked = achievements
     .filter((achievement) => achievement.unlocked)
@@ -58,29 +59,27 @@ export default function AchievementMenu({
 
   const copy = locale === 'de'
     ? {
-        title: 'Entdeckungslog',
-        subtitle: 'Beobachtete Interaktionen, versteckte Ebenen und erkundete Pfade.',
-        recorded: 'Protokolliert',
-        remaining: 'Offen',
-        hidden: 'Verborgen',
-        coverage: 'Abdeckung',
-        unlockedSection: 'Erfasst',
-        lockedSection: 'Noch offen',
-        hiddenTitle: 'Verborgener Eintrag',
-        hiddenDescription: 'Bleibt verborgen, bis du die passende Interaktion auslöst.',
-        close: 'Log schließen',
+        title: 'Log',
+        subtitle: 'Signale, Pfade und Tiefen, die bereits sichtbar geworden sind.',
+        recorded: 'Im Log',
+        hidden: 'Verdeckt',
+        coverage: 'Stand',
+        unlockedSection: 'Freigelegt',
+        lockedSection: 'Noch verdeckt',
+        hiddenTitle: 'Verdeckter Eintrag',
+        hiddenDescription: 'Wird erst sichtbar, wenn du die passende Interaktion ausloest.',
+        close: 'Log schliessen',
       }
     : {
-        title: 'Discovery Log',
-        subtitle: 'Observed interactions, hidden layers, and explored paths.',
+        title: 'Log',
+        subtitle: 'Signals, paths, and depths that have already become visible.',
         recorded: 'Logged',
-        remaining: 'Open',
         hidden: 'Hidden',
         coverage: 'Coverage',
-        unlockedSection: 'Logged',
-        lockedSection: 'Open',
+        unlockedSection: 'Visible',
+        lockedSection: 'Still hidden',
         hiddenTitle: 'Hidden Entry',
-        hiddenDescription: 'Stays hidden until you trigger the matching interaction.',
+        hiddenDescription: 'Becomes visible once you trigger the matching interaction.',
         close: 'Close log',
       };
 
@@ -97,28 +96,28 @@ export default function AchievementMenu({
     return (
       <motion.div
         key={achievement.id}
-        className="rounded-[24px] border p-4"
+        className="rounded-[22px] border p-4"
         style={{
           background: isUnlocked
-            ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%)'
-            : 'linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.015) 100%)',
-          borderColor: isUnlocked ? 'rgba(255, 255, 255, 0.11)' : 'rgba(255, 255, 255, 0.07)',
+            ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.025) 100%)'
+            : 'linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.012) 100%)',
+          borderColor: isUnlocked ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.06)',
           opacity: isUnlocked ? 1 : 0.72,
         }}
-        initial={{ opacity: 0, y: 18 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: isUnlocked ? 1 : 0.72, y: 0 }}
-        transition={{ delay: index * 0.03, duration: 0.28, ease: 'easeOut' }}
+        transition={{ delay: index * 0.03, duration: 0.24, ease: 'easeOut' }}
       >
         <div className="flex items-start gap-4">
           <div
-            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[18px] text-2xl"
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[16px] text-xl"
             style={{
               background: accent,
               border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
             {achievement.secret && !isUnlocked ? (
-              <Lock className="h-5 w-5 text-white/38" />
+              <Lock className="h-4.5 w-4.5 text-white/35" />
             ) : (
               achievement.icon
             )}
@@ -126,7 +125,7 @@ export default function AchievementMenu({
 
           <div className="min-w-0 flex-1">
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/56">
+              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/52">
                 {getAchievementCategoryLabel(achievement.category, locale)}
               </span>
               {isUnlocked && (
@@ -140,12 +139,12 @@ export default function AchievementMenu({
             <h4 className="text-base font-semibold text-white">
               {title}
             </h4>
-            <p className="mt-1 text-sm leading-relaxed text-white/68">
+            <p className="mt-1 text-sm leading-relaxed text-white/66">
               {description}
             </p>
 
             {isUnlocked && achievement.unlockedAt && (
-              <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white/36">
+              <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white/34">
                 {new Date(achievement.unlockedAt).toLocaleDateString(locale === 'de' ? 'de-DE' : 'en-US')}
               </p>
             )}
@@ -166,7 +165,7 @@ export default function AchievementMenu({
           onClick={onClose}
         >
           <motion.div
-            className="absolute inset-0 bg-[#02060d]/80"
+            className="absolute inset-0 bg-[#02060d]/82"
             style={{ backdropFilter: 'blur(18px)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -174,23 +173,23 @@ export default function AchievementMenu({
           />
 
           <motion.div
-            className="relative max-h-[86vh] w-full max-w-5xl overflow-hidden rounded-[32px]"
+            className="relative max-h-[86vh] w-full max-w-4xl overflow-hidden rounded-[30px]"
             style={{
               background: 'linear-gradient(180deg, rgba(7, 12, 20, 0.98) 0%, rgba(11, 18, 31, 0.96) 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.09)',
               boxShadow: '0 28px 80px rgba(0, 0, 0, 0.48)',
               backdropFilter: 'blur(28px)',
             }}
-            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            initial={{ opacity: 0, y: 24, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 28, scale: 0.98 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
+            exit={{ opacity: 0, y: 24, scale: 0.985 }}
+            transition={{ duration: 0.26, ease: 'easeOut' }}
             onClick={(event) => event.stopPropagation()}
           >
             <div
               className="pointer-events-none absolute inset-x-10 top-0 h-px"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(214, 168, 72, 0.85), transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(214, 168, 72, 0.78), transparent)',
               }}
             />
 
@@ -203,50 +202,45 @@ export default function AchievementMenu({
                 <X className="h-5 w-5" />
               </button>
 
-              <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-                <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] uppercase tracking-[0.22em] text-white/55">
-                    <Compass className="h-4 w-4 text-[#D6A848]" />
-                    {copy.title}
-                  </div>
-                  <h2 className="mt-4 text-3xl font-semibold text-white md:text-[2rem]">
-                    {achievements.filter((achievement) => achievement.unlocked).length} / {achievements.length} {copy.recorded.toLowerCase()}
-                  </h2>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/62 md:text-base">
-                    {copy.subtitle}
-                  </p>
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] uppercase tracking-[0.22em] text-white/52">
+                  <Compass className="h-4 w-4 text-[#D6A848]" />
+                  {copy.title}
                 </div>
-
-                <div className="grid grid-cols-3 gap-3 md:min-w-[320px]">
-                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.recorded}</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">{achievements.filter((achievement) => achievement.unlocked).length}</p>
-                  </div>
-                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.hidden}</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">{hiddenRemaining}</p>
-                  </div>
-                  <div className="rounded-[22px] border border-white/10 bg-white/5 p-4">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-white/42">{copy.coverage}</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">{progress}%</p>
-                  </div>
-                </div>
+                <h2 className="mt-4 text-3xl font-semibold text-white md:text-[2rem]">
+                  {unlockedCount} / {achievements.length}
+                </h2>
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/60 md:text-base">
+                  {copy.subtitle}
+                </p>
               </div>
 
-              <div className="mt-5 h-px overflow-hidden rounded-full bg-white/8">
+              <div className="mt-5 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-white/42">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                  {copy.recorded}: {unlockedCount}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                  {copy.hidden}: {hiddenRemaining}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                  {copy.coverage}: {progress}%
+                </span>
+              </div>
+
+              <div className="mt-4 h-px overflow-hidden rounded-full bg-white/8">
                 <motion.div
                   className="h-full"
                   style={{
-                    background: 'linear-gradient(90deg, rgba(214, 168, 72, 0.92), rgba(117, 198, 160, 0.86), rgba(104, 158, 255, 0.78))',
+                    background: 'linear-gradient(90deg, rgba(214, 168, 72, 0.9), rgba(117, 198, 160, 0.82), rgba(104, 158, 255, 0.72))',
                   }}
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
                 />
               </div>
             </div>
 
-            <div className="custom-scrollbar max-h-[calc(86vh-220px)] overflow-y-auto px-6 py-6 md:px-8">
+            <div className="custom-scrollbar max-h-[calc(86vh-210px)] overflow-y-auto px-6 py-6 md:px-8">
               {unlocked.length > 0 && (
                 <section>
                   <div className="mb-4 flex items-center gap-3">
@@ -264,7 +258,7 @@ export default function AchievementMenu({
               {locked.length > 0 && (
                 <section className={unlocked.length > 0 ? 'mt-8' : ''}>
                   <div className="mb-4 flex items-center gap-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/45">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/42">
                       {copy.lockedSection}
                     </span>
                     <div className="h-px flex-1 bg-white/8" />

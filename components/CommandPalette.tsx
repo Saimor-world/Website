@@ -156,16 +156,16 @@ export default function CommandPalette() {
     },
     {
       id: 'achievements',
-      title: 'Entdeckungen öffnen',
-      titleEN: 'Open discoveries',
-      description: 'Das Entdeckungslog mit allen Signalen',
-      descriptionEN: 'Open the discovery log with all logged signals',
+      title: 'Log öffnen',
+      titleEN: 'Open log',
+      description: 'Das Entdeckungslog mit allen sichtbaren Einträgen',
+      descriptionEN: 'Open the discovery log with all visible entries',
       icon: <Compass className="w-4 h-4" />,
       action: () => {
         window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
       },
       category: 'action',
-      keywords: ['achievements', 'discoveries', 'erfolge', 'entdeckungen', 'archive'],
+      keywords: ['achievements', 'log', 'archive', 'entdeckungen', 'archiv'],
     },
     {
       id: 'language',
