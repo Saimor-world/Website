@@ -1,6 +1,4 @@
-import dynamic from 'next/dynamic';
-
-const DemoContent = dynamic(() => import('@/components/DemoContent'), { ssr: false });
+import DemoContent from '@/components/DemoContent';
 
 export const metadata = {
   title: 'Môra Live Demo – Saimôr',

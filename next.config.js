@@ -10,7 +10,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Speeds up build significantly
   },
-  swcMinify: true, // Faster minification
   productionBrowserSourceMaps: false, // Save memory/CPU during build
 
   // Compression

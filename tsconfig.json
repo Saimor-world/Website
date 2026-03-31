@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "types": ["node", "react", "react-dom"],
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "strict": true,
     "noEmit": true,
     "moduleResolution": "bundler",
@@ -23,8 +27,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

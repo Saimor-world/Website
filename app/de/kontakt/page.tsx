@@ -1,7 +1,5 @@
 import ContactForm from '@/components/ContactForm';
-import dynamic from 'next/dynamic';
-
-const NewsletterSignup = dynamic(() => import('@/components/NewsletterSignup'), { ssr: false });
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 export const metadata = {
   title: 'Kontakt & Beratung – Saimôr',

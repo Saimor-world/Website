@@ -9,6 +9,7 @@ exports[`UseCases > renders all German cards with CTA link 1`] = `
   >
     <div
       class="absolute inset-0 pointer-events-none opacity-35"
+      style="background: radial-gradient(800px 260px at 25% 15%, rgba(212, 168, 87, 0.12), transparent 60%), radial-gradient(900px 320px at 75% 10%, rgba(74, 103, 65, 0.14), transparent 60%);"
     />
     <div
       class="relative text-center text-white space-y-3 max-w-3xl mx-auto mb-10"

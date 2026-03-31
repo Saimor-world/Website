@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Sparkles, Brain, Network, MessageSquare, Eye, Radio, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import MoraDashboard from "@/components/MoraDashboard";
-import dynamic from "next/dynamic";
-
-const MoraAnalogAffect = dynamic(() => import("@/components/MoraAnalogAffect"), { ssr: false });
+import MoraAnalogAffect from "@/components/MoraAnalogAffect";
 
 export default function MoraPage() {
   const [mounted, setMounted] = useState(false);

@@ -6,15 +6,22 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
+type OwnerPageProps = {
+  searchParams: Promise<{
+    q?: string;
+  }>;
+};
+
 function fmtDate(value: Date | string | null | undefined) {
   if (!value) return '-';
   const date = typeof value === 'string' ? new Date(value) : value;
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
 }
 
-export default async function OwnerPage({ searchParams }: { searchParams: { q?: string } }) {
+export default async function OwnerPage({ searchParams }: OwnerPageProps) {
   const session = await getServerSession(authOptions);
-  const query = searchParams.q?.trim().toLowerCase();
+  const { q } = await searchParams;
+  const query = q?.trim().toLowerCase();
 
   if (!session?.user) {
     redirect('/owner/login?callbackUrl=/owner');

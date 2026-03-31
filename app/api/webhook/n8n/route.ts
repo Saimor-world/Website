@@ -11,7 +11,7 @@ interface N8NWebhookPayload {
 export async function POST(request: NextRequest) {
   try {
     // Validate webhook secret for security
-    const headersList = headers();
+    const headersList = await headers();
     const webhookSecret = headersList.get('x-webhook-secret');
 
     if (webhookSecret !== process.env.N8N_WEBHOOK_SECRET) {

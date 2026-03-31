@@ -41,7 +41,7 @@ export const captureMessage = (message: string, level: 'info' | 'warning' | 'err
 export const trackPerformance = (metricName: string, value: number, tags?: Record<string, string>) => {
   try {
     Sentry.metrics.distribution(metricName, value, {
-      tags,
+      attributes: tags,
       unit: 'millisecond',
     });
   } catch (e) {

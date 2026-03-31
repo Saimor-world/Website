@@ -5,19 +5,16 @@ import './globals.css'
 import ClientProviders from '../components/ClientProviders'
 import AuthProvider from '../components/AuthProvider'
 import LayoutWrapper from '../components/LayoutWrapper'
-
-import dynamic from 'next/dynamic'
+import CookieBanner from '@/components/CookieBanner';
+import EasterEggs from '@/components/EasterEggs';
+import ScrollProgress from '@/components/ScrollProgress';
+import BackToTop from '@/components/BackToTop';
+import CommandPalette from '@/components/CommandPalette';
+import KeyboardHint from '@/components/KeyboardHint';
+import PWARegistration from '@/components/PWARegistration';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 import * as Sentry from '@sentry/nextjs';
-
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false });
-const EasterEggs = dynamic(() => import('@/components/EasterEggs'), { ssr: false });
-const ScrollProgress = dynamic(() => import('@/components/ScrollProgress'), { ssr: false });
-const BackToTop = dynamic(() => import('@/components/BackToTop'), { ssr: false });
-const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
-const KeyboardHint = dynamic(() => import('@/components/KeyboardHint'), { ssr: false });
-const PWARegistration = dynamic(() => import('@/components/PWARegistration'), { ssr: false });
 
 export function generateMetadata(): Metadata {
   return {

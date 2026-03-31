@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
+import { cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import HowItWorksMindloop from '@/components/HowItWorksMindloop';
 

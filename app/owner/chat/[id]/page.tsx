@@ -6,17 +6,24 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
+type OwnerChatSessionPageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
 function fmtDate(value: Date | string | null | undefined) {
   if (!value) return '-';
   const date = typeof value === 'string' ? new Date(value) : value;
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
 }
 
-export default async function OwnerChatSessionPage({ params }: { params: { id: string } }) {
+export default async function OwnerChatSessionPage({ params }: OwnerChatSessionPageProps) {
   const session = await getServerSession(authOptions);
+  const { id } = await params;
 
   if (!session?.user) {
-    redirect(`/owner/login?callbackUrl=/owner/chat/${encodeURIComponent(params.id)}`);
+    redirect(`/owner/login?callbackUrl=/owner/chat/${encodeURIComponent(id)}`);
   }
 
   if (session.user.role !== 'owner') {
@@ -24,7 +31,7 @@ export default async function OwnerChatSessionPage({ params }: { params: { id: s
   }
 
   const chatSession = await prisma.chatSession.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { messages: { orderBy: { timestamp: 'asc' } } },
   });
 
@@ -35,7 +42,7 @@ export default async function OwnerChatSessionPage({ params }: { params: { id: s
           <h1 className="text-3xl font-semibold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
             Session nicht gefunden
           </h1>
-          <p className="text-white/70">Keine ChatSession mit ID: <span className="font-mono">{params.id}</span></p>
+          <p className="text-white/70">Keine ChatSession mit ID: <span className="font-mono">{id}</span></p>
           <Link
             href="/owner"
             className="inline-flex rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm hover:border-saimor-gold"
@@ -129,4 +136,3 @@ export default async function OwnerChatSessionPage({ params }: { params: { id: s
     </main>
   );
 }
-
