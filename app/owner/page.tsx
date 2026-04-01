@@ -199,13 +199,13 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
           </p>
           <div className="flex gap-3">
             <Link
-              href="/de"
+              href="https://www.saimor.world/de"
               className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm hover:border-saimor-gold"
             >
               Zur Website
             </Link>
             <Link
-              href="/login"
+              href="/owner/login"
               className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm hover:border-saimor-gold"
             >
               Anderer Login

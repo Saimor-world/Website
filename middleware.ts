@@ -2,6 +2,29 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const host = request.headers.get('host')?.toLowerCase() || '';
+  const pathname = request.nextUrl.pathname;
+  const isOwnerHost = host === 'owner.saimor.world' || host.startsWith('owner.saimor.world:');
+
+  if (isOwnerHost) {
+    const ownerUrl = request.nextUrl.clone();
+
+    if (pathname === '/') {
+      ownerUrl.pathname = '/owner';
+      return NextResponse.rewrite(ownerUrl);
+    }
+
+    if (pathname === '/login') {
+      ownerUrl.pathname = '/owner/login';
+      return NextResponse.rewrite(ownerUrl);
+    }
+
+    if (pathname.startsWith('/chat/')) {
+      ownerUrl.pathname = `/owner${pathname}`;
+      return NextResponse.rewrite(ownerUrl);
+    }
+  }
+
   const response = NextResponse.next();
 
   // Enhanced Content Security Policy

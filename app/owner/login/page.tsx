@@ -109,7 +109,10 @@ export default function OwnerLoginPage() {
         </div>
 
         <div className="text-center">
-          <Link href="/de" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors">
+          <Link
+            href="https://www.saimor.world/de"
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
+          >
             <ArrowLeft className="w-4 h-4" />
             Zurueck zur Startseite
           </Link>
