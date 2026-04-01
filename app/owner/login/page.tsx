@@ -31,7 +31,7 @@ export default function OwnerLoginPage() {
       });
 
       if (result?.error) {
-        setMessage('Login fehlgeschlagen. Prüfe OWNER_EMAILS / OWNER_PASSWORD.');
+        setMessage('Login fehlgeschlagen. Pruefe OWNER_EMAILS / OWNER_PASSWORD.');
       } else if (result?.url) {
         window.location.href = result.url;
       }
@@ -50,9 +50,9 @@ export default function OwnerLoginPage() {
             <Shield className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-serif text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Owner Login
+            Owner Console Login
           </h1>
-          <p className="text-slate-600 mt-2">Passwort-Login für Admin/Owner Bereich.</p>
+          <p className="text-slate-600 mt-2">Separate Anmeldung fuer die externe Owner-Ebene.</p>
         </div>
 
         <div className="bg-white/70 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-xl">
@@ -80,7 +80,7 @@ export default function OwnerLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-white/80 backdrop-blur-sm"
-                placeholder="••••••••••••••••"
+                placeholder="****************"
               />
             </div>
 
@@ -111,11 +111,10 @@ export default function OwnerLoginPage() {
         <div className="text-center">
           <Link href="/de" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Zurück zur Startseite
+            Zurueck zur Startseite
           </Link>
         </div>
       </div>
     </main>
   );
 }
-
