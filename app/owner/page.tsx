@@ -139,6 +139,39 @@ function fmtDate(value: Date | string | null | undefined) {
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
 }
 
+function getWebsiteDataRuntime() {
+  const raw = process.env.DATABASE_URL?.trim();
+  if (!raw) {
+    return {
+      enabled: false,
+      reason: 'DATABASE_URL is missing on the website runtime.',
+    };
+  }
+
+  try {
+    const parsed = new URL(raw);
+    const isLocalHost = ['localhost', '127.0.0.1', '::1'].includes(parsed.hostname);
+    if (isLocalHost && (process.env.VERCEL === '1' || process.env.NODE_ENV === 'production')) {
+      return {
+        enabled: false,
+        reason: `DATABASE_URL points to local host (${parsed.hostname}) on this production surface.`,
+      };
+    }
+  } catch {
+    if (raw.includes('localhost') && (process.env.VERCEL === '1' || process.env.NODE_ENV === 'production')) {
+      return {
+        enabled: false,
+        reason: 'DATABASE_URL points to localhost on this production surface.',
+      };
+    }
+  }
+
+  return {
+    enabled: true,
+    reason: null,
+  };
+}
+
 function describeFeedback(kind: 'notice' | 'error', value?: string | null) {
   if (!value) return null;
 
@@ -235,37 +268,42 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
   let chatSessions: any[] = [];
   let stats: any = null;
   let websiteDataError: string | null = null;
+  const websiteDataRuntime = getWebsiteDataRuntime();
 
-  try {
-    [
-      waitlistCount,
-      contactCount,
-      sessionCount,
-      messageCount,
-      waitlist,
-      contacts,
-      chatSessions,
-      stats,
-    ] = await Promise.all([
-      prisma.waitlist.count(),
-      prisma.contactMessage.count(),
-      prisma.chatSession.count(),
-      prisma.message.count(),
-      prisma.waitlist.findMany({
-        where: whereClause,
-        take: 10,
-        orderBy: { createdAt: 'desc' },
-      }),
-      prisma.contactMessage.findMany({
-        where: whereClause,
-        take: 10,
-        orderBy: { createdAt: 'desc' },
-      }),
-      prisma.chatSession.findMany({ take: 10, orderBy: { lastActivity: 'desc' } }),
-      prisma.dashboardStats.findFirst({ orderBy: { updatedAt: 'desc' } }),
-    ]);
-  } catch (err) {
-    websiteDataError = String(err);
+  if (!websiteDataRuntime.enabled) {
+    websiteDataError = websiteDataRuntime.reason;
+  } else {
+    try {
+      [
+        waitlistCount,
+        contactCount,
+        sessionCount,
+        messageCount,
+        waitlist,
+        contacts,
+        chatSessions,
+        stats,
+      ] = await Promise.all([
+        prisma.waitlist.count(),
+        prisma.contactMessage.count(),
+        prisma.chatSession.count(),
+        prisma.message.count(),
+        prisma.waitlist.findMany({
+          where: whereClause,
+          take: 10,
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.contactMessage.findMany({
+          where: whereClause,
+          take: 10,
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.chatSession.findMany({ take: 10, orderBy: { lastActivity: 'desc' } }),
+        prisma.dashboardStats.findFirst({ orderBy: { updatedAt: 'desc' } }),
+      ]);
+    } catch (err) {
+      websiteDataError = String(err);
+    }
   }
 
   return (
