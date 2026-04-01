@@ -216,18 +216,28 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
     );
   }
 
-  try {
-    const ownerConsole = await getOwnerConsoleSnapshot();
-    const whereClause = query
-      ? {
-          OR: [
-            { email: { contains: query, mode: 'insensitive' } as any },
-            { name: { contains: query, mode: 'insensitive' } as any },
-          ],
-        }
-      : {};
+  const ownerConsole = await getOwnerConsoleSnapshot();
+  const whereClause = query
+    ? {
+        OR: [
+          { email: { contains: query, mode: 'insensitive' } as any },
+          { name: { contains: query, mode: 'insensitive' } as any },
+        ],
+      }
+    : {};
 
-    const [
+  let waitlistCount: number | null = null;
+  let contactCount: number | null = null;
+  let sessionCount: number | null = null;
+  let messageCount: number | null = null;
+  let waitlist: any[] = [];
+  let contacts: any[] = [];
+  let chatSessions: any[] = [];
+  let stats: any = null;
+  let websiteDataError: string | null = null;
+
+  try {
+    [
       waitlistCount,
       contactCount,
       sessionCount,
@@ -254,10 +264,13 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
       prisma.chatSession.findMany({ take: 10, orderBy: { lastActivity: 'desc' } }),
       prisma.dashboardStats.findFirst({ orderBy: { updatedAt: 'desc' } }),
     ]);
+  } catch (err) {
+    websiteDataError = String(err);
+  }
 
-    return (
-      <main className="min-h-screen bg-[#081410] text-white">
-        <div className="mx-auto max-w-6xl px-6 py-14 space-y-10">
+  return (
+    <main className="min-h-screen bg-[#081410] text-white">
+      <div className="mx-auto max-w-6xl px-6 py-14 space-y-10">
           <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.32em] text-saimor-gold">Owner Console</p>
@@ -301,6 +314,13 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
               }`}
             >
               {feedback.text}
+            </section>
+          )}
+
+          {websiteDataError && (
+            <section className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-white/80">
+              Website-CRM-Daten sind auf dieser Surface gerade nicht verfuegbar. Die Owner Console bleibt trotzdem
+              nutzbar, weil Policy, Health, Bridge-Status und Instanzverwaltung direkt aus dem Core geladen werden.
             </section>
           )}
 
@@ -426,19 +446,19 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
               <p className="text-xs text-white/60 uppercase tracking-[0.28em]">Waitlist</p>
-              <p className="mt-2 text-3xl font-semibold">{waitlistCount}</p>
+              <p className="mt-2 text-3xl font-semibold">{waitlistCount ?? '—'}</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
               <p className="text-xs text-white/60 uppercase tracking-[0.28em]">Kontakt</p>
-              <p className="mt-2 text-3xl font-semibold">{contactCount}</p>
+              <p className="mt-2 text-3xl font-semibold">{contactCount ?? '—'}</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
               <p className="text-xs text-white/60 uppercase tracking-[0.28em]">Chat Sessions</p>
-              <p className="mt-2 text-3xl font-semibold">{sessionCount}</p>
+              <p className="mt-2 text-3xl font-semibold">{sessionCount ?? '—'}</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
               <p className="text-xs text-white/60 uppercase tracking-[0.28em]">Messages</p>
-              <p className="mt-2 text-3xl font-semibold">{messageCount}</p>
+              <p className="mt-2 text-3xl font-semibold">{messageCount ?? '—'}</p>
             </div>
           </section>
 
@@ -866,7 +886,12 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
           <section className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
               <h2 className="text-xl font-semibold">Website signal</h2>
-              {stats ? (
+              {websiteDataError ? (
+                <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-white/75 space-y-2">
+                  <div>Website-Datenbank ist auf dieser Production-Surface aktuell nicht erreichbar.</div>
+                  <div className="text-xs text-white/55 font-mono break-all">{websiteDataError}</div>
+                </div>
+              ) : stats ? (
                 <div className="text-sm text-white/80 space-y-2">
                   <div className="flex justify-between gap-4">
                     <span className="text-white/60">facts</span>
@@ -896,7 +921,9 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
               <h2 className="text-xl font-semibold">Letzte Waitlist</h2>
               <div className="space-y-3 text-sm">
-                {waitlist.length === 0 ? (
+                {websiteDataError ? (
+                  <p className="text-white/60">Website-Datenbank derzeit nicht verfuegbar.</p>
+                ) : waitlist.length === 0 ? (
                   <p className="text-white/60">Noch keine Eintraege.</p>
                 ) : (
                   waitlist.map((row: any) => (
@@ -917,7 +944,9 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
               <h2 className="text-xl font-semibold">Letzte Kontakte</h2>
               <div className="space-y-3 text-sm">
-                {contacts.length === 0 ? (
+                {websiteDataError ? (
+                  <p className="text-white/60">Website-Datenbank derzeit nicht verfuegbar.</p>
+                ) : contacts.length === 0 ? (
                   <p className="text-white/60">Noch keine Nachrichten.</p>
                 ) : (
                   contacts.map((row: any) => (
@@ -942,7 +971,9 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
           <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
             <h2 className="text-xl font-semibold">Letzte Chat Sessions</h2>
             <div className="grid gap-3 md:grid-cols-2">
-              {chatSessions.length === 0 ? (
+              {websiteDataError ? (
+                <p className="text-white/60">Website-Datenbank derzeit nicht verfuegbar.</p>
+              ) : chatSessions.length === 0 ? (
                 <p className="text-white/60">Noch keine Sessions.</p>
               ) : (
                 chatSessions.map((row: any) => (
@@ -965,38 +996,7 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
               )}
             </div>
           </section>
-        </div>
-      </main>
-    );
-  } catch (err) {
-    return (
-      <main className="min-h-screen bg-[#081410] text-white">
-        <div className="mx-auto max-w-4xl px-6 py-16 space-y-6">
-          <h1 className="text-3xl font-semibold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Owner Console
-          </h1>
-          <p className="text-white/70">
-            Datenbank ist nicht erreichbar. Starte Postgres (Docker) und setze <span className="font-mono">DATABASE_URL</span>.
-          </p>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/60 font-mono">
-            {String(err)}
-          </div>
-          <div className="flex gap-3">
-            <Link
-              href="/docs"
-              className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm hover:border-saimor-gold"
-            >
-              Setup Guide
-            </Link>
-            <Link
-              href="/de"
-              className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm hover:border-saimor-gold"
-            >
-              Zur Website
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
-  }
+      </div>
+    </main>
+  );
 }
