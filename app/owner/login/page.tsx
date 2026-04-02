@@ -99,11 +99,12 @@ export default function OwnerLoginPage() {
             )}
 
             <div className="text-xs text-slate-600">
-              Kein Owner-Passwort gesetzt? Dann konfiguriere SMTP und nutze den Magic-Link Login unter{' '}
+              Diese Seite ist die separate Owner-Anmeldung. Sie nutzt die Allowlist in <code>OWNER_EMAILS</code> und das
+              Passwort aus <code>OWNER_PASSWORD</code>. Die normale{' '}
               <Link href="/login" className="text-yellow-700 hover:underline">
                 /login
               </Link>
-              .
+              -Strecke ist davon getrennt und derzeit nicht die verlaessliche Owner-Anmeldung.
             </div>
           </form>
         </div>
