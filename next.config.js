@@ -57,13 +57,7 @@ const nextConfig = {
 
   // === ROUTING ===
   async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/de',
-        permanent: true,
-      },
-    ]
+    return []
   },
 };
 
