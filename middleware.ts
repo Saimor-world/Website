@@ -8,10 +8,11 @@ export function middleware(request: NextRequest) {
 
   if (isOwnerHost) {
     const ownerUrl = request.nextUrl.clone();
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = '/owner/login';
 
-    if (pathname === '/') {
-      ownerUrl.pathname = '/owner';
-      return NextResponse.rewrite(ownerUrl);
+    if (pathname === '/' || pathname === '/de' || pathname === '/en') {
+      return NextResponse.redirect(loginUrl);
     }
 
     if (pathname === '/login') {
