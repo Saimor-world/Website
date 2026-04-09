@@ -321,26 +321,43 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
               </p>
             </div>
 
-            <form action="/owner" className="flex items-center gap-2">
-              <input
-                type="text"
-                name="q"
-                defaultValue={query}
-                placeholder="Email oder Name suchen..."
-                className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm focus:outline-none focus:border-saimor-gold min-w-[240px]"
-              />
-              <button
-                type="submit"
-                className="rounded-xl bg-saimor-gold/10 border border-saimor-gold/20 px-4 py-2 text-sm hover:bg-saimor-gold/20 text-saimor-gold"
-              >
-                Suchen
-              </button>
-              {query && (
-                <Link href="/owner" className="text-xs text-white/30 hover:text-white/60 ml-2 underline underline-offset-4">
-                  Reset
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-2 justify-end">
+                <Link
+                  href="/systems/control"
+                  className="rounded-xl border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-100 hover:bg-cyan-500/15"
+                >
+                  Operations Control
                 </Link>
-              )}
-            </form>
+                <Link
+                  href="https://hq.saimor.world/home"
+                  target="_blank"
+                  className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+                >
+                  HQ Demo
+                </Link>
+              </div>
+              <form action="/owner" className="flex items-center gap-2">
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={query}
+                  placeholder="Email oder Name suchen..."
+                  className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm focus:outline-none focus:border-saimor-gold min-w-[240px]"
+                />
+                <button
+                  type="submit"
+                  className="rounded-xl bg-saimor-gold/10 border border-saimor-gold/20 px-4 py-2 text-sm hover:bg-saimor-gold/20 text-saimor-gold"
+                >
+                  Suchen
+                </button>
+                {query && (
+                  <Link href="/owner" className="text-xs text-white/30 hover:text-white/60 ml-2 underline underline-offset-4">
+                    Reset
+                  </Link>
+                )}
+              </form>
+            </div>
           </header>
 
           {feedback && (
@@ -362,7 +379,7 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
             </section>
           )}
 
-          <section className="grid gap-4 lg:grid-cols-3">
+          <section className="grid gap-4 lg:grid-cols-4">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.28em] text-white/50">Surface Model</p>
@@ -383,6 +400,11 @@ export default async function OwnerPage({ searchParams }: OwnerPageProps) {
                   <div className="text-xs uppercase tracking-[0.22em] text-white/45">Owner Console</div>
                   <div className="mt-2 font-medium">separate management plane</div>
                   <div className="mt-1 text-white/60">Instance policy, system oversight and owner-only control.</div>
+                </div>
+                <div className="rounded-2xl border border-cyan-400/15 bg-cyan-500/[0.06] p-4">
+                  <div className="text-xs uppercase tracking-[0.22em] text-cyan-100/70">Operations Control</div>
+                  <div className="mt-2 font-medium">local truth and integrations</div>
+                  <div className="mt-1 text-white/65">Runtime, Gemma/Ollama path, browser bridge and demo mirror.</div>
                 </div>
               </div>
             </div>
