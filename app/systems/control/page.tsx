@@ -17,12 +17,35 @@ type CoreHealth = {
   };
 };
 
+type ProviderMeta = {
+  healthy?: boolean;
+  available?: boolean;
+  priority?: number;
+  error?: string;
+};
+
 type OwnerRuntime = {
   assistant?: {
     status?: string;
     recommended_provider?: string | null;
     routing_profile?: string | null;
-    providers?: Record<string, { healthy?: boolean; available?: boolean; priority?: number; error?: string }>;
+    providers?: Record<string, ProviderMeta>;
+  };
+  mail?: {
+    configured?: boolean;
+    enabled?: boolean;
+    provider?: string;
+    email?: string;
+    status?: string;
+    error?: string;
+  };
+  calendar?: {
+    configured?: boolean;
+    provider?: string;
+    email?: string;
+    calendar_id?: string;
+    status?: string;
+    error?: string;
   };
   runtime?: {
     local_truth?: {
@@ -75,6 +98,10 @@ function Badge({ label, tone = 'neutral' }: { label: string; tone?: 'neutral' | 
   );
 }
 
+function IntegrationBadge({ configured, label }: { configured?: boolean; label: string }) {
+  return <Badge label={label} tone={configured ? 'emerald' : 'neutral'} />;
+}
+
 export default async function SystemsControlPage() {
   const session = await getServerSession(authOptions);
 
@@ -109,8 +136,8 @@ export default async function SystemsControlPage() {
               Betrieb, Integrationen und Runtime
             </h1>
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/60">
-              Diese Fläche ist bewusst getrennt von der Owner-Konsole. Hier geht es nicht um globale Instanzverwaltung,
-              sondern um operative Laufzeit, lokale Wahrheit, Demo-Spiegel und die nächste Stufe echter Verbindungen.
+              Diese Flaeche ist bewusst getrennt von der Owner-Konsole. Hier geht es nicht um globale Instanzverwaltung,
+              sondern um operative Laufzeit, lokale Wahrheit, Demo-Spiegel und die naechste Stufe echter Verbindungen.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -118,7 +145,7 @@ export default async function SystemsControlPage() {
               Owner Console
             </Link>
             <a href="https://hq.saimor.world/home" target="_blank" rel="noreferrer" className="rounded-xl border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-100 hover:bg-cyan-500/15">
-              HQ Demo öffnen
+              HQ Demo oeffnen
             </a>
           </div>
         </div>
@@ -173,6 +200,10 @@ export default async function SystemsControlPage() {
                     <div className="text-white">Owner Console</div>
                     <div className="text-xs text-white/45">{runtime?.runtime?.surfaces?.owner_console || 'https://owner.saimor.world/login'}</div>
                   </div>
+                  <div>
+                    <div className="text-white">Operations Control</div>
+                    <div className="text-xs text-white/45">{runtime?.runtime?.surfaces?.operations_console || 'https://www.saimor.world/systems/control'}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -210,7 +241,7 @@ export default async function SystemsControlPage() {
                 Empfehlung: <span className="text-white/85">{runtime?.assistant?.recommended_provider || 'automatisch'}</span>
               </div>
               <div className="rounded-2xl bg-black/20 px-4 py-3 text-sm text-white/60">
-                Assistant: <span className="text-white/85">{runtime?.capabilities?.assistant_available ? 'verfügbar' : 'nicht verfügbar'}</span>
+                Assistant: <span className="text-white/85">{runtime?.capabilities?.assistant_available ? 'verfuegbar' : 'nicht verfuegbar'}</span>
               </div>
             </div>
             <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -219,7 +250,7 @@ export default async function SystemsControlPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="text-sm font-medium text-white">{provider}</div>
-                      <div className="mt-1 text-xs text-white/45">Priorität {meta.priority ?? '-'}</div>
+                      <div className="mt-1 text-xs text-white/45">Prioritaet {meta.priority ?? '-'}</div>
                     </div>
                     <Badge label={meta.healthy ? 'gesund' : meta.available ? 'konfiguriert' : 'inaktiv'} tone={meta.healthy ? 'emerald' : meta.available ? 'amber' : 'neutral'} />
                   </div>
@@ -227,7 +258,7 @@ export default async function SystemsControlPage() {
                 </div>
               )) : (
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/50">
-                  Keine Provider-Daten verfügbar.
+                  Keine Provider-Daten verfuegbar.
                 </div>
               )}
             </div>
@@ -246,13 +277,26 @@ export default async function SystemsControlPage() {
               <div className="rounded-2xl bg-black/20 px-4 py-3">
                 Owner Console: <span className="text-white/85">{runtime?.capabilities?.owner_console_enabled ? 'aktiv' : 'deaktiviert'}</span>
               </div>
+              <div className="rounded-2xl bg-black/20 px-4 py-3">
+                Postfach: <span className="text-white/85">{runtime?.mail?.configured ? (runtime.mail.email || runtime.mail.provider || 'verbunden') : 'nicht verbunden'}</span>
+              </div>
+              <div className="rounded-2xl bg-black/20 px-4 py-3">
+                Kalender: <span className="text-white/85">{runtime?.calendar?.configured ? (runtime.calendar.email || runtime.calendar.provider || 'verbunden') : 'nicht verbunden'}</span>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <IntegrationBadge configured={runtime?.mail?.configured} label={runtime?.mail?.status || 'mail'} />
+              <IntegrationBadge configured={runtime?.calendar?.configured} label={runtime?.calendar?.status || 'calendar'} />
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
               <a href="https://hq.saimor.world/home" target="_blank" rel="noreferrer" className="rounded-xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-100 hover:bg-emerald-500/15">
-                HQ Integrationen prüfen
+                HQ Integrationen pruefen
               </a>
               <a href="https://owner.saimor.world/login" target="_blank" rel="noreferrer" className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-white/80 hover:bg-white/[0.08]">
                 Owner Login
+              </a>
+              <a href="http://127.0.0.1:3000" target="_blank" rel="noreferrer" className="rounded-xl border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-100 hover:bg-cyan-500/15">
+                Local Truth oeffnen
               </a>
             </div>
           </section>
