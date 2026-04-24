@@ -18,6 +18,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     de: {
       quickLinks: 'Navigation',
       services: 'Leistungen',
+      entry: 'Einstieg',
       contact: 'Kontakt',
       legal: 'Rechtliches',
       trust: 'Sicherheit',
@@ -31,6 +32,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     en: {
       quickLinks: 'Navigation',
       services: 'Services',
+      entry: 'Entry',
       contact: 'Contact',
       legal: 'Legal',
       trust: 'Security',
@@ -89,6 +91,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             <div className="flex flex-col gap-4">
               <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
+              <a href={locale === 'de' ? '/de/einstieg' : '/en/entry'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.entry}</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
           </div>

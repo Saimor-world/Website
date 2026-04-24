@@ -19,6 +19,7 @@ export default function UserAccount({ locale }: { locale: 'de' | 'en' }) {
             owner: 'Besitzer',
             free: 'Konto',
             dashboard: 'Owner Dashboard',
+            mora: 'Mora Dashboard',
             upgrade: 'Upgrade auf Pro'
         },
         en: {
@@ -28,6 +29,7 @@ export default function UserAccount({ locale }: { locale: 'de' | 'en' }) {
             owner: 'Owner',
             free: 'Account',
             dashboard: 'Owner Dashboard',
+            mora: 'Mora Dashboard',
             upgrade: 'Upgrade to Pro'
         }
     }[locale];
@@ -46,13 +48,13 @@ export default function UserAccount({ locale }: { locale: 'de' | 'en' }) {
 
     if (!session) {
         return (
-            <Link
-                href="/login"
+            <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-login'))}
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
                 title={t.login}
             >
                 <LogIn className="w-4 h-4" />
-            </Link>
+            </button>
         );
     }
 
@@ -95,6 +97,15 @@ export default function UserAccount({ locale }: { locale: 'de' | 'en' }) {
                         <div className="px-3 py-2 border-b border-white/5 mb-2">
                             <p className="text-[10px] text-white/30 truncate">{session.user?.email}</p>
                         </div>
+
+                        <Link
+                            href="/account/dashboard"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <User className="w-4 h-4 text-emerald-400" />
+                            <span className="text-xs font-medium">{t.mora}</span>
+                        </Link>
 
                         {isOwner && (
                             <Link

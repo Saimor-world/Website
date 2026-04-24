@@ -164,7 +164,7 @@ export function DemoCTA() {
       subtitle="Entdecke das semantische Dashboard in Aktion. Voll funktionsfähig, sicher & kostenlos."
       primaryAction={{
         text: "Demo starten",
-        href: "/mora",
+        href: "/demo",
         icon: <Zap className="w-5 h-5" />
       }}
       secondaryAction={{

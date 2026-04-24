@@ -16,6 +16,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const getSwitchHref = () => {
     if (!pathname) return `/${switchLocale}`;
+    if (pathname.startsWith('/de/einstieg')) return pathname.replace('/de/einstieg', '/en/entry');
+    if (pathname.startsWith('/en/entry')) return pathname.replace('/en/entry', '/de/einstieg');
     const segments = pathname.split('/').filter(Boolean);
     if (segments[0] === 'de' || segments[0] === 'en') {
       segments[0] = switchLocale;
@@ -33,6 +35,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     de: {
       home: 'Start',
       mora: 'Môra',
+      entry: 'Einstieg',
       portal: 'Portal',
       contact: 'Kontakt',
       book: 'Gespräch buchen'
@@ -40,6 +43,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     en: {
       home: 'Home',
       mora: 'Môra',
+      entry: 'Entry',
       portal: 'Portal',
       contact: 'Contact',
       book: 'Book a Call'
@@ -59,6 +63,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
     { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
+    { href: locale === 'de' ? '/de/einstieg' : '/en/entry', label: nav.entry, isAnchor: false },
     { href: `/${locale}/portal`, label: nav.portal, isAnchor: false },
     { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
   ];
@@ -408,3 +413,5 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     </>
   );
 }
+
+

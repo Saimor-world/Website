@@ -1,8 +1,6 @@
-// This file configures the initialization of Sentry on the client.
-// The config you add here will be used whenever a users loads a page in their browser.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
 import * as Sentry from "@sentry/nextjs";
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
 
 // Priority: Env Var > Hardcoded Fallback
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN || "https://0287484514575ed20ba4b22bf03512fa@o4510719412273152.ingest.de.sentry.io/4510719418433616";

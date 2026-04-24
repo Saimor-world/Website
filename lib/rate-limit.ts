@@ -101,3 +101,8 @@ export const waitlistLimiter = rateLimit({
   interval: 60 * 60 * 1000, // 1 hour per submission
   limit: parseInt(process.env.RATE_LIMIT_WAITLIST || '3')
 });
+
+export const magicLinkLimiter = rateLimit({
+  interval: 60 * 60 * 1000, // 1 hour per login link sender
+  limit: parseInt(process.env.RATE_LIMIT_MAGIC_LINK || '8')
+});

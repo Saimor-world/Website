@@ -22,6 +22,7 @@ const nextConfig = {
   reactStrictMode: process.env.NODE_ENV === 'development',
 
   // === RESOURCE MANAGEMENT ===
+  serverExternalPackages: ["@prisma/client"],
   experimental: {
     // Limit CPU threads to prevent system hanging
     cpus: 1,
@@ -84,7 +85,9 @@ const sentryWebpackPluginOptions = {
   tunnelRoute: "/monitoring",
 
   // Don't automatically instrument server (manual setup preferred for stability)
-  automaticVercelMonitors: true,
+  webpack: {
+    automaticVercelMonitors: true,
+  },
 
   // Tree-shaking options for reducing bundle size
   treeshake: {

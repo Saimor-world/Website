@@ -45,9 +45,9 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       quickActions: {
         title: 'Quick Actions',
         chat: 'ðŸ’¬ Mit Môra chatten',
-        about: 'ðŸ“š Über Saimôr',
-        services: 'ðŸŽ¯ Services',
-        close: 'âœ• Schließen'
+        about: 'Ueber Saimor',
+        services: 'Services',
+        close: 'Schliessen'
       }
     },
     en: {
@@ -67,9 +67,9 @@ export default function MoraAvatar({ locale = 'de' }: MoraAvatarProps) {
       quickActions: {
         title: 'Quick Actions',
         chat: 'ðŸ’¬ Chat with Môra',
-        about: 'ðŸ“š About Saimôr',
-        services: 'ðŸŽ¯ Services',
-        close: 'âœ• Close'
+        about: 'About Saimor',
+        services: 'Services',
+        close: 'Close'
       }
     }
   }[locale];

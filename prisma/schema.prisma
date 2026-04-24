@@ -4,18 +4,88 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
-model Waitlist {
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Hashed password
+  role          String    @default("free")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  securityAudits       SecurityAudit[]
+  digitalBlueprints    DigitalSelfBlueprint[]
+  facts                UserFact[]
+}
+
+model UserFact {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  interests String[]
-  locale    String   @default("de")
-  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  key       String   // e.g., "tech_stack", "tone_preference", "daily_goal"
+  value     String
+  source    String   // e.g., "chat", "onboarding", "scan"
+  confidence Float    @default(1.0)
   updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model SecurityAudit {
+  id                String     @id @default(cuid())
+  userId            String?
+  user              User?      @relation(fields: [userId], references: [id])        
+  name              String
+  email             String
+  industry          String?
+  companySize       String?
+  domain            String?    // Legacy/Input domain
+  targetDomain      String?    // Normalized real domain scanned
+  score             Int
+  level             String
+  analysis          String
+  attackerPath      String?    @map("attacker_path") // The LLM generated attack path
+  reconData         Json?      @map("recon_data")    // Technical findings (headers, dns, etc.)
+  recommendations   Json
+  followUpQuestions Json?      // [{id, question, options[]}] â€” KI-generiert      
+  followUpAnswers   Json?      // [{id, answer}] â€” User-Antworten
+  createdAt         DateTime   @default(now())
+
+  wallEntry         WallEntry?
+}
+
+
+model WallEntry {
+  id        String        @id @default(cuid())
+  auditId   String        @unique
+  audit     SecurityAudit @relation(fields: [auditId], references: [id])
+  name      String
+  company   String?
+  tag       String?
+  domain    String?
+  score     Int
+  createdAt DateTime      @default(now())
+
+  @@index([createdAt])
+}
+
+model DigitalSelfBlueprint {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  name        String
+  email       String
+  goal        String
+  focus       String
+  painPoints  String?
+  techStack   String?
+  automations Json
+  guardrails  Json
+  roadmap     Json
+  createdAt   DateTime @default(now())
 }
 
 model ContactMessage {
@@ -25,6 +95,16 @@ model ContactMessage {
   message   String
   licht     Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  interests Json     @default("[]")
+  locale    String   @default("de")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ChatSession {
@@ -60,4 +140,29 @@ model DashboardStats {
   callsToday  Int      @default(0)
   costsToday  Float    @default(0.0)
   updatedAt   DateTime @updatedAt
+}
+
+model MagicLoginToken {
+  id          String   @id @default(cuid())
+  email       String
+  tokenHash   String   @unique
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([email, expiresAt])
+}
+
+model WebsiteEvent {
+  id        String   @id @default(cuid())
+  event     String
+  path      String?
+  sessionId String?
+  visitorId String?
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  @@index([event, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([visitorId, createdAt])
 }

@@ -52,7 +52,7 @@ export default function PortalContent({ locale = 'de' }: { locale?: string }) {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            href="/mora"
+            href="/demo"
             className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
@@ -60,7 +60,7 @@ export default function PortalContent({ locale = 'de' }: { locale?: string }) {
               <path d="M21 3V9M21 9H15M21 9L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span>Live Demo starten</span>
+            <span>Mora Lab starten</span>
           </Link>
           <Link
             href="https://cal.com/saimor/30min"

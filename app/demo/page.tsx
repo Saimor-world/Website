@@ -1,14 +1,18 @@
 import DemoContent from '@/components/DemoContent';
+import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Môra Live Demo – Saimôr',
-  description: 'Erlebe das semantische Dashboard live. Analysiere Daten in Echtzeit und entdecke die Möglichkeiten von Môra.',
+  title: 'Mora Lab - Saimor',
+  description:
+    'Lab-Seite fuer Standbein-Softwarepfade mit Live-KPI-Strecke, Use Cases und direkten Einstiegs-CTAs.',
 };
 
 export default function DemoPage() {
   return (
     <main className="min-h-screen bg-[#081410] text-white">
-      <DemoContent />
+      <Suspense fallback={null}>
+        <DemoContent />
+      </Suspense>
     </main>
   );
 }

@@ -6,6 +6,7 @@ import { authOptions } from '@/lib/auth';
 import { publicChatLimiter, authChatLimiter, getClientIP } from '@/lib/rate-limit';
 import { SessionStore } from '@/lib/session-store';
 import { prisma } from '@/lib/prisma';
+import { extractAndSaveFacts } from '@/lib/memory';
 
 
 interface ChatMessage {
@@ -126,13 +127,23 @@ export async function POST(request: NextRequest) {
     });
 
     // Add user message to DB
-    await prisma.message.create({
+    const userMessage = await prisma.message.create({
       data: {
         role: 'user',
         content: message,
         sessionId: dbSession.id
       }
     });
+
+    // --- FACT EXTRACTION ---
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+      if (user) {
+        // Run extraction in background
+        extractAndSaveFacts(user.id, message).catch(console.error);
+      }
+    }
+    // -----------------------
 
     // Get message history for AI context
     const dbMessages = await prisma.message.findMany({

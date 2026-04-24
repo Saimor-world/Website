@@ -18,8 +18,8 @@ export default function DataJungle() {
   useEffect(() => {
     // Erstelle Daten-Chaos im Hintergrund
     const sampleData = [
-      '0101', '1010', 'DATA', 'âˆž', '{}', '[]', 'KPI', 'AI',
-      'â‚¬', '%', 'âš¡', 'âˆ‘', 'Î”', 'â‰ˆ', '→', '←“', '←‘',
+      '0101', '1010', 'DATA', 'INF', '{}', '[]', 'KPI', 'AI',
+      'EUR', '%', 'FAST', 'SUM', 'DELTA', '~', '->', '<-', '<>',
       'JSON', 'SQL', 'CSV', 'API', 'DB'
     ];
 

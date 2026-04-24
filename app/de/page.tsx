@@ -6,6 +6,7 @@ import ContactSection from '@/components/ContactSection';
 import MoraIntroAnimation from '@/components/MoraIntroAnimation';
 import MyceliumNetwork from '@/components/MyceliumNetwork';
 import SocialProof from '@/components/SocialProof';
+import EntryTeaser from '@/components/EntryTeaser';
 
 export const metadata = {
   title: 'Saimôr – Das Ökosystem für bewusste Organisationen',
@@ -20,6 +21,7 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="de" />
         <MoraTeaser locale="de" />
+        <EntryTeaser locale="de" />
         <CommunityBanner locale="de" />
         <SocialProof />
         <WaitlistForm locale="de" />

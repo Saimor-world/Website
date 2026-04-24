@@ -22,10 +22,10 @@ export default function PortalPageEn() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/en#waitlist"
+                href="/demo"
                 className="inline-flex items-center justify-center rounded-2xl border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-widest text-white transition hover:bg-white/10 min-h-[44px]"
               >
-                Experience the demo
+                Open Mora Lab
               </Link>
               <Link
                 href="/en/mora"

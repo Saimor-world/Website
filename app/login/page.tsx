@@ -1,14 +1,24 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { Mail, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { safeInternalPath } from '@/lib/safe-redirect';
 
 export default function LoginPage() {
+  const [callbackUrl, setCallbackUrl] = useState('/account/bridge');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginMode, setLoginMode] = useState<'magic' | 'password'>('magic');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const next = new URLSearchParams(window.location.search).get('callbackUrl');
+    setCallbackUrl(safeInternalPath(next, '/account/bridge'));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,15 +32,52 @@ export default function LoginPage() {
     setMessage('');
 
     try {
-      const result = await signIn('email', {
-        email,
-        redirect: false,
-      });
+      if (loginMode === 'magic') {
+        const response = await fetch('/api/auth/magic-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            callbackUrl,
+            locale: 'de',
+          }),
+        });
 
-      if (result?.error) {
-        setMessage('Fehler beim Versenden der E-Mail. Bitte versuchen Sie es erneut.');
+        const payload = await response.json().catch(() => ({} as any));
+        if (!response.ok) {
+          if (response.status === 429) {
+            setMessage('Zu viele Versuche. Bitte warte kurz und versuche es erneut.');
+          } else if (response.status === 503) {
+            setMessage('Magic-Link-Mail ist aktuell nicht konfiguriert.');
+          } else {
+            setMessage(payload?.error || 'Fehler beim Versenden der E-Mail. Bitte versuchen Sie es erneut.');
+          }
+        } else {
+          if (payload?.debugUrl) {
+            window.location.href = payload.debugUrl;
+            return;
+          }
+          setMessage('Ein Anmeldelink wurde an Ihre E-Mail-Adresse gesendet. Bitte pruefen Sie Ihr Postfach.');
+        }
       } else {
-        setMessage('Ein Anmeldelink wurde an Ihre E-Mail-Adresse gesendet. Bitte prÃ¼fen Sie Ihr Postfach.');
+        const result = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+          callbackUrl,
+        });
+
+        if (result?.error) {
+          if (result.error === 'CredentialsSignin') {
+            setMessage('Login fehlgeschlagen. Bitte E-Mail/Passwort pruefen.');
+          } else {
+            setMessage(`Login fehlgeschlagen (${result.error}).`);
+          }
+        } else if (result?.url) {
+          window.location.href = result.url;
+        } else {
+          window.location.href = callbackUrl;
+        }
       }
     } catch (error) {
       setMessage('Ein unerwarteter Fehler ist aufgetreten.');
@@ -40,47 +87,81 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#060d0b] flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Mail className="w-8 h-8 text-emerald-400" />
           </div>
-          <h1 className="text-3xl font-serif text-slate-800" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Login
+          <h1 className="text-4xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            Mora CORE Login
           </h1>
-          <p className="text-slate-600 mt-2">Wir senden Ihnen einen sicheren Anmeldelink.</p>
+          <p className="text-white/50 mt-2">Waehlen Sie Ihre bevorzugte Login-Methode.</p>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
+          <button
+            onClick={() => setLoginMode('magic')}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'magic' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'}`}
+          >
+            Magic Link
+          </button>
+          <button
+            onClick={() => setLoginMode('password')}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${loginMode === 'password' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'}`}
+          >
+            Passwort
+          </button>
         </div>
 
         {/* Form */}
-        <div className="bg-white/70 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-xl">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-xs uppercase tracking-widest text-white/40 font-bold ml-1">
                 E-Mail-Adresse
               </label>
               <input
                 id="email"
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ihre@email.de"
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-white/80 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white outline-none"
               />
             </div>
+
+            {loginMode === 'password' && (
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-xs uppercase tracking-widest text-white/40 font-bold ml-1">
+                  Passwort
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white outline-none"
+                />
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-yellow-500 text-slate-900 px-6 py-3 rounded-xl hover:bg-yellow-400 transition-colors font-medium disabled:opacity-50"
+              className="w-full bg-white text-black px-6 py-3 rounded-xl hover:bg-emerald-300 transition-colors font-bold disabled:opacity-50"
             >
-              {isLoading ? 'Wird gesendet...' : 'Anmeldelink senden'}
+              {isLoading ? 'Verarbeitung...' : loginMode === 'magic' ? 'Anmeldelink senden' : 'Anmelden'}
             </button>
 
             {message && (
-              <div className={`p-4 rounded-xl text-sm ${
-                message.includes('gesendet') ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
+              <div className={`p-4 rounded-xl text-sm border ${
+                message.includes('gesendet') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'
               }`}>
                 {message}
               </div>
@@ -92,7 +173,7 @@ export default function LoginPage() {
         <div className="text-center">
           <Link href="/de" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            ZurÃ¼ck zur Startseite
+            Zurueck zur Startseite
           </Link>
         </div>
       </div>

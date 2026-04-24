@@ -84,6 +84,32 @@ export default function CommandPalette() {
       keywords: ['portal', 'demo', 'live', 'preview'],
     },
     {
+      id: 'mora-lab',
+      title: 'Mora Lab',
+      titleEN: 'Mora Lab',
+      description: 'Kombinierte Demo + Pulse Seite',
+      descriptionEN: 'Combined demo + pulse page',
+      icon: <Zap className="w-4 h-4" />,
+      action: () => {
+        window.location.href = '/demo';
+      },
+      category: 'navigation',
+      keywords: ['demo', 'pulse', 'lab', 'mora lab', 'kpi'],
+    },
+    {
+      id: 'entry',
+      title: 'Einstieg',
+      titleEN: 'Entry',
+      description: 'AI & Security Einstiegsseite',
+      descriptionEN: 'AI & Security entry layer',
+      icon: <BookOpen className="w-4 h-4" />,
+      action: () => {
+        window.location.href = locale === 'de' ? '/de/einstieg' : '/en/entry';
+      },
+      category: 'navigation',
+      keywords: ['einstieg', 'entry', 'ai', 'security', 'digital self'],
+    },
+    {
       id: 'trust',
       title: 'Sicherheit & Trust',
       titleEN: 'Security & Trust',
@@ -174,6 +200,14 @@ export default function CommandPalette() {
       icon: <Globe className="w-4 h-4" />,
       action: () => {
         const currentPath = window.location.pathname;
+        if (currentPath.startsWith('/de/einstieg')) {
+          router.push(currentPath.replace('/de/einstieg', '/en/entry'));
+          return;
+        }
+        if (currentPath.startsWith('/en/entry')) {
+          router.push(currentPath.replace('/en/entry', '/de/einstieg'));
+          return;
+        }
         if (locale === 'de') {
           router.push(currentPath.replace(/^\/de/, '/en').replace(/^\/mora/, '/en/mora') || '/en');
           return;

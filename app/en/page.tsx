@@ -5,6 +5,7 @@ import WaitlistForm from "@/components/WaitlistForm";
 import ContactSection from "@/components/ContactSection";
 import MoraIntroAnimation from "@/components/MoraIntroAnimation";
 import MyceliumNetwork from "@/components/MyceliumNetwork";
+import EntryTeaser from "@/components/EntryTeaser";
 
 export const metadata = {
   title: 'Saimôr – The Ecosystem for Conscious Organizations',
@@ -19,6 +20,7 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="en" />
         <MoraTeaser locale="en" />
+        <EntryTeaser locale="en" />
         <CommunityBanner locale="en" />
         <WaitlistForm locale="en" />
         <ContactSection locale="en" />

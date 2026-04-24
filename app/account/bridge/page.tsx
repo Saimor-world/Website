@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getOsBaseUrl, buildOsSsoUrl } from '@/lib/os-links';
+import { isSafeInternalPath } from '@/lib/safe-redirect';
 
 function getOsHomeUrl() {
   return getOsBaseUrl();
 }
 
 type BridgeProps = {
-  searchParams?: Promise<Record<string, string | string[] | undefined>> | Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
 function firstValue(value: string | string[] | undefined) {
@@ -24,13 +25,19 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
     redirect('/login?callbackUrl=/account/bridge');
   }
 
-  const query = await Promise.resolve(searchParams || {});
+  const query: Record<string, string | string[] | undefined> = searchParams ? await searchParams : {};
   const claimType = firstValue(query.claimType);
   const claimId = firstValue(query.claimId);
   const next = firstValue(query.next);
   const email = session.user.email.toLowerCase();
-  const currentUser = await prisma.user.findUnique({
+  const currentUser = await prisma.user.upsert({
     where: { email: session.user.email },
+    update: {},
+    create: {
+      email: session.user.email,
+      name: session.user.name || session.user.email.split('@')[0],
+      role: (session.user as any).role || 'free',
+    },
     select: { id: true, email: true },
   });
 
@@ -48,7 +55,7 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
         if (audit.email.toLowerCase() === email) {
           await prisma.securityAudit.update({
             where: { id: claimId },
-            data: { userId: currentUser?.id },
+            data: { userId: currentUser.id },
           });
           claimStatus = 'linked';
         } else {
@@ -72,7 +79,7 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
         if (blueprint.email.toLowerCase() === email) {
           await prisma.digitalSelfBlueprint.update({
             where: { id: claimId },
-            data: { userId: currentUser?.id },
+            data: { userId: currentUser.id },
           });
           claimStatus = 'linked';
         } else {
@@ -86,12 +93,18 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
     }
   }
 
-  if (next && next.startsWith('/') && (claimStatus === 'linked' || claimStatus === 'already_linked')) {
+  if (isSafeInternalPath(next) && (claimStatus === 'linked' || claimStatus === 'already_linked')) {
     redirect(next);
   }
 
   const osHomeUrl = getOsHomeUrl();
-  const osSsoUrl = buildOsSsoUrl(session.user.email);
+  const osContext =
+    claimType === 'audit' && claimId
+      ? { surface: 'website', entity: 'security-audit', id: claimId }
+      : claimType === 'blueprint' && claimId
+        ? { surface: 'website', entity: 'digital-blueprint', id: claimId }
+        : undefined;
+  const osSsoUrl = buildOsSsoUrl(session.user.email, osContext);
   const hasClaim = claimStatus !== 'none';
 
   const stepState = {
