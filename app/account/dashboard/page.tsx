@@ -66,7 +66,7 @@ export default async function MoraDashboardPage() {
             <p className="text-white/50 text-lg max-w-2xl">
               {isOwner 
                 ? 'Vollzugriff auf Operator-Metriken und globale System-Steuerung.' 
-                : 'Zentraler Zugriff auf deine Sicherheits-Audits, KI-Blueprints und dein digitales Gedaechtnis.'}
+                : 'Zentraler Zugriff auf deine Sicherheits-Audits, KI-Blueprints und dein digitales Gedächtnis.'}
             </p>
           </div>
           <div className="flex gap-4">
@@ -192,13 +192,13 @@ export default async function MoraDashboardPage() {
                       <span className="text-xs text-cyan-400 font-mono">{fact.value}</span>
                     </div>
                   ))}
-                  {facts.length === 0 && <p className="text-xs text-white/20 italic">Noch keine Daten verfuegbar.</p>}
+                  {facts.length === 0 && <p className="text-xs text-white/20 italic">Noch keine Daten verfügbar.</p>}
                 </div>
               </div>
               <div className="p-6 rounded-[2rem] border border-emerald-500/20 bg-emerald-500/5">
                 <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Efficiency Boost</p>
                 <p className="text-sm text-white/70 leading-relaxed">
-                  Basierend auf deinem Tech-Stack ({facts.find(f => f.key === 'tech_stack')?.value || 'unbekannt'}) kann Môra Automations-Skripte optimieren.
+                  Basierend auf deinem Tech-Stack ({facts.find(f => f.key === 'tech_stack')?.value || 'unbekannt'}) kann Môra Automations-Skripte für dich optimieren.
                 </p>
               </div>
             </div>
@@ -245,7 +245,7 @@ export default async function MoraDashboardPage() {
                 </div>
               )) : (
                 <div className="rounded-2xl border border-dashed border-white/10 p-10 text-center space-y-4">
-                  <p className="text-white/40">Noch keine Audits durchgefuehrt.</p>
+                  <p className="text-white/40">Noch keine Audits durchgeführt.</p>
                   <Link href="/de/einstieg/security-check" className="text-emerald-400 text-sm font-bold hover:underline">Jetzt ersten Scan starten</Link>
                 </div>
               )}
@@ -279,7 +279,7 @@ export default async function MoraDashboardPage() {
                     ))}
                   </div>
                   <Link href={`/account/dashboard/blueprint/${bp.id}`} className="mt-4 inline-flex items-center gap-2 text-xs text-cyan-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Vollstaendiger Blueprint</span>
+                    <span>Vollständiger Blueprint</span>
                     <ChevronRight className="w-3 h-3" />
                   </Link>
                 </div>
@@ -301,7 +301,7 @@ export default async function MoraDashboardPage() {
           <div className="space-y-4 flex-grow text-center md:text-left">
             <h3 className="text-2xl font-medium">Mora Intelligence Center</h3>
             <p className="text-white/60 leading-relaxed max-w-3xl">
-              Dein Interface lernt mit jeder Interaktion. Zukuenftig werden hier aggregierte Daten aus deinen Systemen (Slack, M365, Notion) direkt mit deinem Security-Score und deinem Digital-Self Blueprint korreliert.
+              Dein Interface lernt mit jeder Interaktion. Zukünftig werden hier aggregierte Daten aus deinen Systemen (Slack, M365, Notion) direkt mit deinem Security-Score und deinem Digital-Self Blueprint korreliert.
             </p>
           </div>
           <div className="shrink-0">

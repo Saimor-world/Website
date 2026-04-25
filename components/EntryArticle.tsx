@@ -16,7 +16,7 @@ export default function EntryArticle({ locale, slug }: Props) {
   }
 
   const homeHref = locale === 'de' ? '/de/einstieg' : '/en/entry';
-  const backLabel = locale === 'de' ? 'Zur Uebersicht' : 'Back to overview';
+  const backLabel = locale === 'de' ? 'Zur Übersicht' : 'Back to overview';
   const related = entryContent[locale]
     .filter((item) => item.pillar === article.pillar && item.slug !== article.slug)
     .slice(0, 2);
@@ -56,16 +56,27 @@ export default function EntryArticle({ locale, slug }: Props) {
           </div>
         </header>
 
-        <section className="space-y-8">
-          {article.sections.map((section) => (
-            <div key={section.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7">
-              <h2
-                className="text-3xl mb-3 text-white"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
-                {section.title}
-              </h2>
-              <p className="text-white/70 leading-relaxed text-lg">{section.body}</p>
+        <section className="space-y-6">
+          {article.sections.map((section, idx) => (
+            <div
+              key={section.title}
+              className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 sm:p-8 hover:bg-white/[0.04] transition-colors group"
+              style={{ borderLeft: '3px solid rgba(52,211,153,0.18)' }}
+            >
+              <div className="flex items-start gap-4">
+                <span className="text-[10px] font-mono text-emerald-400/40 mt-1 shrink-0 pt-1">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <div className="space-y-3 flex-1">
+                  <h2
+                    className="text-2xl sm:text-3xl text-white group-hover:text-emerald-50 transition-colors"
+                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                  >
+                    {section.title}
+                  </h2>
+                  <p className="text-white/65 leading-relaxed text-base sm:text-lg">{section.body}</p>
+                </div>
+              </div>
             </div>
           ))}
         </section>
@@ -94,16 +105,19 @@ export default function EntryArticle({ locale, slug }: Props) {
                 <Link
                   key={item.slug}
                   href={`${homeHref}/${item.slug}`}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:bg-white/[0.06] transition-colors"
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:bg-white/[0.06] hover:border-emerald-500/20 transition-all"
                 >
-                  <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80 mb-2">{item.category}</p>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80">{item.category}</p>
+                    <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                  </div>
                   <h3
-                    className="text-2xl text-white mb-2"
+                    className="text-xl sm:text-2xl text-white mb-2 group-hover:text-emerald-50 transition-colors"
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}
                   >
                     {item.title}
                   </h3>
-                  <p className="text-white/60 text-sm">{item.excerpt}</p>
+                  <p className="text-white/55 text-sm leading-relaxed">{item.excerpt}</p>
                 </Link>
               ))}
             </div>
