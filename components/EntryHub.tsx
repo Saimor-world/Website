@@ -45,41 +45,41 @@ const pillarTopAccent: Record<EntryPillar, string> = {
 export default function EntryHub({ locale }: { locale: EntryLocale }) {
   const content = {
     de: {
-      badge: 'SAIMOR STANDBEIN',
-      title: 'Blog Tree: AI, Security, Digital Self',
+      badge: 'WISSEN · PRAXIS · KLARHEIT',
+      title: 'AI, Security & digitale Souveränität',
       subtitle:
-        'Dieses Standbein ist dein Einstieg in den breiten Markt: niedrigschwellig, direkt nutzbar und sauber getrennt vom Hauptsystem.',
-      treeLabel: 'Standbein Tree',
+        'Kein Fachjargon, keine Verkaufspitches. Nur das, was wirklich zählt — für Einzelpersonen und lokale Unternehmen.',
+      treeLabel: 'Themen-Überblick',
       cta: 'Lesen',
       readTime: 'Lesezeit',
       pillarTitles: {
-        'digital-self': 'Digital AI Self',
-        security: 'Security / Datenschutz',
-        'ai-business': 'AI für lokale Businesses',
+        'digital-self': 'Dein digitales Ich',
+        security: 'Sicherheit & Datenschutz',
+        'ai-business': 'AI im Alltag',
       },
       pillarDescriptions: {
-        'digital-self': 'Dein digitales Gegenüber — produktiv, sicher, vertrauenswürdig',
-        security: 'Angriffsflächen verstehen und Grundlagen absichern',
-        'ai-business': 'Praktische Automationen für lokale Unternehmen',
+        'digital-self': 'Wie du KI produktiv, sicher und zu deinen Bedingungen einsetzt',
+        security: 'Angriffsflächen kennen, Risiken minimieren, ruhig schlafen',
+        'ai-business': 'Konkrete Automationen, die Zeit und Geld sparen',
       },
     },
     en: {
-      badge: 'SAIMOR TRACK',
-      title: 'Blog Tree: AI, Security, Digital Self',
+      badge: 'KNOWLEDGE · PRACTICE · CLARITY',
+      title: 'AI, Security & Digital Sovereignty',
       subtitle:
-        'This track is the low-friction market entry: practical, interactive and clearly separated from the core system.',
-      treeLabel: 'Track Tree',
+        'No jargon, no sales pitches. Just what actually matters — for individuals and local businesses.',
+      treeLabel: 'Topics',
       cta: 'Read',
       readTime: 'read',
       pillarTitles: {
-        'digital-self': 'Digital AI Self',
-        security: 'Security / Privacy',
-        'ai-business': 'AI for Local Businesses',
+        'digital-self': 'Your Digital Self',
+        security: 'Security & Privacy',
+        'ai-business': 'AI in Practice',
       },
       pillarDescriptions: {
-        'digital-self': 'Your digital counterpart — productive, secure, trustworthy',
-        security: 'Understand attack surface and secure the basics',
-        'ai-business': 'Practical automations for local businesses',
+        'digital-self': 'How to use AI productively, safely, and on your own terms',
+        security: 'Know your attack surface, reduce risk, sleep soundly',
+        'ai-business': 'Concrete automations that save time and money',
       },
     },
   }[locale];
@@ -158,21 +158,29 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
           <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
           <div className="relative">
             <p className="text-[10px] uppercase tracking-[0.32em] text-emerald-300/60 mb-1.5">
-              {locale === 'de' ? 'Besucher-Wall' : 'Visitor Wall'}
+              {locale === 'de' ? 'Security Wall' : 'Security Wall'}
             </p>
             <p className="text-sm text-white/70 leading-relaxed max-w-md">
               {locale === 'de'
-                ? 'Mach deinen kostenlosen Security-Audit und erscheine auf der öffentlichen Wall.'
-                : 'Run your free security audit and appear on the public wall.'}
+                ? 'Wie sicher ist deine Website? Kostenloser passiver Scan — keine Anmeldung, keine Installation.'
+                : 'How secure is your website? Free passive scan — no login, no installation.'}
             </p>
           </div>
-          <Link
-            href="/wall"
-            className="relative shrink-0 inline-flex items-center gap-2 rounded-xl border border-emerald-300/30 bg-emerald-400/10 px-5 py-2.5 text-sm font-semibold text-emerald-100 hover:bg-emerald-400/20 hover:border-emerald-300/50 transition-all duration-200"
-          >
-            {locale === 'de' ? 'Wall ansehen' : 'View Wall'}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="relative shrink-0 flex flex-col sm:flex-row gap-2">
+            <Link
+              href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
+              className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black hover:bg-emerald-400 transition-all duration-200"
+            >
+              {locale === 'de' ? 'Scan starten' : 'Start Scan'}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/wall"
+              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/30 bg-transparent px-5 py-2.5 text-sm text-emerald-200/70 hover:bg-emerald-400/10 transition-all duration-200"
+            >
+              {locale === 'de' ? 'Wall' : 'Wall'}
+            </Link>
+          </div>
         </div>
 
         {/* ── Article Sections by Pillar ── */}
