@@ -165,39 +165,28 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
           })}
         </div>
 
-        {/* Testimonials */}
+        {/* Transparency Note instead of Testimonials */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="grid md:grid-cols-2 gap-6 mb-16"
+          className="max-w-3xl mx-auto bg-emerald-500/5 border border-emerald-500/10 rounded-3xl p-10 text-center mb-16"
         >
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-white/8 bg-white/[0.025] p-8 relative overflow-hidden"
-            >
-              <div
-                className="text-5xl text-emerald-400/25 font-serif leading-none mb-4 select-none"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
-                &ldquo;
-              </div>
-              <p className="text-white/70 text-base leading-relaxed mb-6 italic">
-                {t.quote[locale]}
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
-                  {t.author.charAt(0)}
-                </div>
-                <div>
-                  <div className="text-white/80 text-sm font-medium">{t.author}</div>
-                  <div className="text-white/35 text-xs">{t.role[locale]}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/10 mb-6">
+            <Lock className="w-6 h-6 text-emerald-400" />
+          </div>
+          <h3
+            className="text-2xl font-semibold mb-4 text-white"
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+          >
+            {locale === 'de' ? 'Kein Marketing-Rauschen' : 'No Marketing Jargon'}
+          </h3>
+          <p className="text-white/60 leading-relaxed italic">
+            {locale === 'de' 
+              ? 'â€žWir verzichten auf gekaufte Stimmen oder fiktive Erfolgsgeschichten. SaimÃ´r ist ein Werkzeug für Menschen, die echte Souveränität suchen. Der beste Beweis für unsere Qualität ist die Technologie selbst, die Sie hier live testen können.â€œ'
+              : '"We avoid purchased testimonials or fictional success stories. SaimÃ´r is a tool for people seeking true sovereignty. The best proof of our quality is the technology itself, which you can test live right here."'}
+          </p>
         </motion.div>
 
         {/* Bottom status badge */}

@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Shield, Trophy, Star, ArrowRight } from 'lucide-react';
+import { Heart, ArrowRight } from 'lucide-react';
 
 export const metadata = {
-  title: 'Security Wall | Saimor',
-  description: 'Echte Audits von echten Unternehmen. Die sichersten digitalen Präsenzen im Saimor Universum.',
+  title: 'Gästebuch | Saimôr',
+  description: 'Ein digitales Gästebuch für die Saimôr Community. Wer hier steht, hat den ersten Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
 };
 
 type WallEntry = {
@@ -15,38 +15,6 @@ type WallEntry = {
   score: number;
   createdAt: string;
 };
-
-function scoreMeta(score: number) {
-  if (score >= 80)
-    return {
-      label: 'Sicher',
-      labelEn: 'Secure',
-      ringColor: '#34d399',
-      glowColor: 'rgba(52,211,153,0.35)',
-      bgColor: 'rgba(52,211,153,0.08)',
-      borderColor: 'rgba(52,211,153,0.25)',
-      emoji: '🛡️',
-    };
-  if (score >= 50)
-    return {
-      label: 'Mittel',
-      labelEn: 'Medium',
-      ringColor: '#fbbf24',
-      glowColor: 'rgba(251,191,36,0.35)',
-      bgColor: 'rgba(251,191,36,0.08)',
-      borderColor: 'rgba(251,191,36,0.25)',
-      emoji: '⚠️',
-    };
-  return {
-    label: 'Risiko',
-    labelEn: 'Risk',
-    ringColor: '#f87171',
-    glowColor: 'rgba(248,113,113,0.35)',
-    bgColor: 'rgba(248,113,113,0.08)',
-    borderColor: 'rgba(248,113,113,0.25)',
-    emoji: '🚨',
-  };
-}
 
 async function getEntries(): Promise<WallEntry[]> {
   try {
@@ -60,307 +28,269 @@ async function getEntries(): Promise<WallEntry[]> {
   }
 }
 
+// ─── Pastel palette: each entry rotates through these for variety ────────────
+const PALETTE = [
+  { bg: '#FCE8DD', ink: '#7A4A35', accent: '#E8A597', name: 'Pfirsich' },     // peach
+  { bg: '#E8F0E0', ink: '#3F5D3D', accent: '#9CB69E', name: 'Salbei' },        // sage
+  { bg: '#F8E0E5', ink: '#7C3D4A', accent: '#D4889B', name: 'Rose' },          // rose
+  { bg: '#E8EBF5', ink: '#3F4870', accent: '#8B95B8', name: 'Flieder' },       // lavender
+  { bg: '#FAF1D9', ink: '#6B5424', accent: '#D4B872', name: 'Honig' },         // butter / honey
+  { bg: '#E0EEF0', ink: '#2F5658', accent: '#7FB1B5', name: 'Mint' },          // mint
+];
+
+function paletteFor(seed: string) {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+
+// ─── Decorative SVG: tiny hand-drawn-feel heart, used as a stamp ────────────
+function StampHeart({ color, className = '' }: { color: string; className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M12 21s-7.5-4.5-9.5-9.5C1 7.5 3.5 4 7 4c2 0 3.5 1.2 5 3 1.5-1.8 3-3 5-3 3.5 0 6 3.5 4.5 7.5C19.5 16.5 12 21 12 21z"
+        stroke={color}
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function StampStar({ color, className = '' }: { color: string; className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M12 3l1.8 5.5h5.7l-4.6 3.4 1.8 5.6L12 14.1l-4.7 3.4 1.8-5.6L4.5 8.5h5.7L12 3z"
+        stroke={color}
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+// ─── Page ───────────────────────────────────────────────────────────────────
+
 export default async function WallPage() {
   const entries = await getEntries();
-  const sorted = [...entries].sort((a, b) => b.score - a.score);
-  const top3 = sorted.slice(0, 3);
-  const rest = sorted.slice(3);
-  const isEmpty = entries.length === 0;
+  const sorted = [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  const isEmpty = sorted.length === 0;
 
   return (
-    <main className="min-h-screen bg-[#070c0a] text-white overflow-x-hidden">
-      {/* Ambient background */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div style={{ background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(52,211,153,0.12) 0%, transparent 70%)' }} className="absolute inset-0" />
-        <div style={{ background: 'radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.07) 0%, transparent 60%)' }} className="absolute inset-0" />
-      </div>
+    <main
+      className="min-h-screen overflow-x-hidden"
+      style={{
+        background:
+          'radial-gradient(circle at 15% 10%, #FBE9D7 0%, transparent 45%),' +
+          'radial-gradient(circle at 85% 80%, #E8E0EE 0%, transparent 50%),' +
+          'radial-gradient(circle at 50% 50%, #FAF6EE 0%, #F4ECDD 100%)',
+        color: '#4A3826',
+        fontFamily: '"Cormorant Garamond", Georgia, serif',
+      }}
+    >
+      {/* Subtle paper-grain overlay (CSS-only, no asset) */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.04] z-0 mix-blend-multiply"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, #4A3826 1px, transparent 0)',
+          backgroundSize: '4px 4px',
+        }}
+      />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:py-28">
+      <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 md:py-28">
 
-        {/* ── Header ───────────────────────────────────────── */}
-        <div className="text-center mb-20 space-y-5">
-          <p className="text-[10px] uppercase tracking-[0.55em] text-emerald-400/70 font-bold">
-            Community Leaderboard
-          </p>
-          <h1
-            className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+        {/* ── Header ─────────────────────────────────────────────────────── */}
+        <header className="text-center mb-20 space-y-6">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
+            style={{ background: '#E8A59722', border: '1px solid #E8A59755' }}
           >
-            Security <span className="italic text-emerald-400">Wall</span>
+            <Heart size={12} fill="#E8A597" stroke="#E8A597" />
+            <span className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#A86B57', fontFamily: 'system-ui, sans-serif' }}>
+              Gästebuch
+            </span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-light leading-[1.05]" style={{ color: '#3E2C1C' }}>
+            Schön, dass du{' '}
+            <em className="italic" style={{ color: '#A86B57' }}>hier</em> bist
           </h1>
-          <p className="text-white/40 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Echte Audits. Echte Ergebnisse. Jede Domain, die hier erscheint, hat einen vollständigen
-            passiven Sicherheits-Scan durchlaufen.
+
+          <p
+            className="text-lg max-w-xl mx-auto leading-relaxed italic"
+            style={{ color: '#6B5240' }}
+          >
+            Ein Gästebuch für die Menschen, die Saimôr mitgestalten. Trag dich ein,
+            indem du deinen Security-Check machst — dein Name kommt dann hierher,
+            wenn du magst.
           </p>
 
-          {/* Stats row */}
-          <div className="flex justify-center gap-10 pt-4">
-            {[
-              { value: entries.length.toString(), label: 'Audits' },
-              { value: sorted.length > 0 ? String(Math.round(sorted.reduce((s, e) => s + e.score, 0) / sorted.length)) : '—', label: 'Ø Score' },
-              { value: sorted.filter(e => e.score >= 80).length.toString(), label: 'Grüne Zonen' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-light tabular-nums text-white/90">{stat.value}</div>
-                <div className="text-[9px] uppercase tracking-[0.3em] text-white/25 mt-0.5">{stat.label}</div>
-              </div>
-            ))}
+          {/* tiny ornamental rule */}
+          <div className="flex items-center justify-center gap-3 pt-4">
+            <span style={{ width: 40, height: 1, background: '#A86B5755' }} />
+            <StampHeart color="#A86B5788" className="w-4 h-4" />
+            <span style={{ width: 40, height: 1, background: '#A86B5755' }} />
           </div>
-        </div>
+        </header>
 
-        {/* ── Empty State ───────────────────────────────────── */}
-        {isEmpty && (
-          <div className="flex flex-col items-center text-center py-24 space-y-8">
-            <div className="w-24 h-24 rounded-full border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-center text-4xl">
-              🏆
-            </div>
-            <div className="space-y-3">
-              <h2 className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                Die Wall wartet auf ihren ersten Eintrag
-              </h2>
-              <p className="text-white/35 text-sm max-w-sm mx-auto">
-                Starte deinen kostenlosen Security-Audit und werde das erste Unternehmen auf der Wall.
-              </p>
-            </div>
-            <Link
-              href="/de/einstieg/security-check"
-              className="inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-emerald-300 transition-all"
-            >
-              <Shield size={16} />
-              Jetzt Audit starten
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        )}
-
-        {/* ── Podium (Top 3) ───────────────────────────────── */}
-        {top3.length > 0 && (
-          <div className="mb-24">
-            <p className="text-center text-[9px] uppercase tracking-[0.4em] text-white/20 mb-12">Top Performer</p>
-            <div className="flex flex-wrap justify-center items-end gap-4 md:gap-8">
-              {/* Silver — 2nd */}
-              {top3[1] && (
-                <PodiumCard entry={top3[1]} rank={2} heightClass="h-44 md:h-52" />
-              )}
-              {/* Gold — 1st */}
-              {top3[0] && (
-                <PodiumCard entry={top3[0]} rank={1} heightClass="h-56 md:h-64" gold />
-              )}
-              {/* Bronze — 3rd */}
-              {top3[2] && (
-                <PodiumCard entry={top3[2]} rank={3} heightClass="h-36 md:h-44" />
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ── Score Legend ─────────────────────────────────── */}
-        {!isEmpty && (
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
-            {[
-              { range: '80–100', label: 'Sicher', color: '#34d399' },
-              { range: '50–79', label: 'Mittel', color: '#fbbf24' },
-              { range: '0–49', label: 'Risiko', color: '#f87171' },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2.5">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ background: item.color, boxShadow: `0 0 8px ${item.color}` }} />
-                <span className="text-[10px] uppercase tracking-[0.25em] text-white/30">
-                  {item.range} — {item.label}
-                </span>
-              </div>
+        {/* ── Entries ────────────────────────────────────────────────────── */}
+        {isEmpty ? (
+          <EmptyState />
+        ) : (
+          <div className="columns-1 md:columns-2 gap-6 space-y-6">
+            {sorted.map((entry, idx) => (
+              <GuestbookEntry key={entry.id} entry={entry} index={idx} />
             ))}
           </div>
         )}
 
-        {/* ── Rest Grid (Polaroid Cards) ───────────────────── */}
-        {rest.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-10">
-            {rest.map((entry, i) => (
-              <ScoreCard key={entry.id} entry={entry} index={i} />
-            ))}
-          </div>
-        )}
-
-        {/* ── CTA ─────────────────────────────────────────── */}
-        <div className="mt-28 text-center space-y-6">
-          <div className="inline-flex flex-col items-center gap-4">
-            <p className="text-sm text-white/30">
-              {isEmpty
-                ? 'Sei das erste Unternehmen auf der Wall.'
-                : 'Bereit, deinen Platz auf der Wall zu sichern?'}
-            </p>
-            <Link
-              href="/de/einstieg/security-check"
-              className="inline-flex items-center gap-3 bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-emerald-300 transition-all hover:scale-105 active:scale-95"
-            >
-              <Shield size={18} />
-              Kostenloser Audit — Jetzt starten
-            </Link>
-            <p className="text-[10px] text-white/20 italic">
-              Alle Berichte werden anonymisiert. Kein Login erforderlich.
-            </p>
-          </div>
+        {/* ── CTA ────────────────────────────────────────────────────────── */}
+        <div className="mt-24 text-center space-y-5">
+          <Link
+            href="/de/einstieg/security-check"
+            className="group inline-flex items-center gap-3 px-10 py-4 rounded-full transition-all hover:scale-[1.02]"
+            style={{
+              background: '#3E2C1C',
+              color: '#FAF6EE',
+              fontFamily: 'system-ui, sans-serif',
+              fontSize: 14,
+              fontWeight: 500,
+              letterSpacing: '0.05em',
+              boxShadow: '0 4px 20px rgba(168, 107, 87, 0.2)',
+            }}
+          >
+            Trag dich ein
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <p className="text-xs italic" style={{ color: '#8B6E55' }}>
+            Kostenlos. Kein Login. Du entscheidest, ob dein Eintrag öffentlich wird.
+          </p>
         </div>
       </div>
     </main>
   );
 }
 
-// ── Podium Card ─────────────────────────────────────────────────────────────
-type PodiumCardProps = {
-  entry: WallEntry;
-  rank: number;
-  heightClass: string;
-  gold?: boolean;
-};
+// ─── Entry card ─────────────────────────────────────────────────────────────
 
-function PodiumCard({ entry, rank, heightClass, gold }: PodiumCardProps) {
-  const meta = scoreMeta(entry.score);
-  const rankColors = ['', '#f5c542', '#b0bec5', '#c8874b'];
-  const rankLabels = ['', '🥇', '🥈', '🥉'];
-  const ringSize = 528;
-
-  return (
-    <div className="flex flex-col items-center group" style={{ width: gold ? '168px' : '140px' }}>
-      {/* Score ring */}
-      <div
-        className="relative flex items-center justify-center mb-4"
-        style={{
-          width: gold ? 96 : 80,
-          height: gold ? 96 : 80,
-          filter: gold ? `drop-shadow(0 0 20px ${meta.glowColor})` : undefined,
-        }}
-      >
-        <svg
-          style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}
-          viewBox="0 0 64 64"
-        >
-          <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4" />
-          <circle
-            cx="32"
-            cy="32"
-            r="28"
-            fill="none"
-            stroke={meta.ringColor}
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeDasharray={`${2 * Math.PI * 28}`}
-            strokeDashoffset={`${2 * Math.PI * 28 * (1 - entry.score / 100)}`}
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span
-            className="font-light tabular-nums"
-            style={{ fontSize: gold ? 22 : 18, color: meta.ringColor }}
-          >
-            {entry.score}
-          </span>
-        </div>
-      </div>
-
-      {/* Rank badge */}
-      <div className="text-xl mb-3">{rankLabels[rank]}</div>
-
-      {/* Podium column */}
-      <div
-        className={`w-full ${heightClass} rounded-t-2xl flex flex-col items-center justify-end pb-4 px-3 text-center transition-all group-hover:brightness-110`}
-        style={{
-          background: gold
-            ? 'linear-gradient(180deg, rgba(245,197,66,0.18) 0%, rgba(245,197,66,0.06) 100%)'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
-          border: `1px solid ${gold ? 'rgba(245,197,66,0.3)' : 'rgba(255,255,255,0.08)'}`,
-          borderBottom: 'none',
-        }}
-      >
-        <p className="text-xs font-bold truncate w-full" style={{ color: 'rgba(255,255,255,0.9)' }}>
-          {entry.name}
-        </p>
-        {entry.company && (
-          <p className="text-[10px] text-white/35 truncate w-full mt-0.5">{entry.company}</p>
-        )}
-        <span
-          className="mt-2 text-[8px] uppercase tracking-[0.2em] font-bold px-2 py-0.5 rounded-full"
-          style={{
-            background: meta.bgColor,
-            color: meta.ringColor,
-            border: `1px solid ${meta.borderColor}`,
-          }}
-        >
-          {meta.label}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// ── Score Card (Polaroid-style) ──────────────────────────────────────────────
-const rotations = ['rotate-1', '-rotate-2', 'rotate-3', '-rotate-1', 'rotate-2', '-rotate-3'];
-
-type ScoreCardProps = { entry: WallEntry; index: number };
-
-function ScoreCard({ entry, index }: ScoreCardProps) {
-  const meta = scoreMeta(entry.score);
-  const rotation = rotations[index % rotations.length];
+function GuestbookEntry({ entry, index }: { entry: WallEntry; index: number }) {
+  const palette = paletteFor(entry.id || entry.name);
   const date = new Date(entry.createdAt).toLocaleDateString('de-DE', {
-    day: '2-digit',
-    month: '2-digit',
-    year: '2-digit',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
   });
 
-  return (
-    <div className={`relative group transition-all duration-300 hover:scale-105 hover:z-10 ${rotation} hover:rotate-0`}>
-      {/* Pin */}
-      <div
-        className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 w-3 h-3 rounded-full"
-        style={{
-          background: meta.ringColor,
-          boxShadow: `0 0 10px ${meta.glowColor}`,
-        }}
-      />
+  // Slight, deterministic rotation per card so it feels like a scrapbook.
+  const rotation = ((index * 7) % 5) - 2; // -2..+2 deg
+  const decoration = index % 3 === 0 ? 'heart' : index % 3 === 1 ? 'star' : null;
 
-      {/* Card */}
-      <div className="bg-[#f5f5f0] p-3 pb-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)] rounded-sm">
-        {/* Score visual */}
-        <div
-          className="aspect-square flex flex-col items-center justify-center relative overflow-hidden rounded-sm mb-2"
-          style={{ background: '#111', minHeight: 80 }}
+  // Score → warm warmth-level (not graded letter)
+  const warmth =
+    entry.score >= 90 ? 'sehr sicher unterwegs'
+    : entry.score >= 75 ? 'gut aufgestellt'
+    : entry.score >= 60 ? 'auf dem Weg'
+    : 'gerade angekommen';
+
+  return (
+    <article
+      className="break-inside-avoid relative rounded-[2rem] p-7 transition-all hover:rotate-0 hover:scale-[1.01]"
+      style={{
+        background: palette.bg,
+        color: palette.ink,
+        transform: `rotate(${rotation}deg)`,
+        boxShadow:
+          '0 1px 0 rgba(255,255,255,0.6) inset, 0 8px 24px rgba(168, 107, 87, 0.08), 0 1px 3px rgba(74, 56, 38, 0.06)',
+      }}
+    >
+      {/* Decorative stamp in corner */}
+      {decoration === 'heart' && (
+        <StampHeart color={palette.accent} className="absolute top-5 right-5 w-5 h-5 opacity-60" />
+      )}
+      {decoration === 'star' && (
+        <StampStar color={palette.accent} className="absolute top-5 right-5 w-5 h-5 opacity-60" />
+      )}
+
+      {/* Date — small, looks handwritten */}
+      <p
+        className="text-[11px] italic mb-3"
+        style={{ color: palette.accent, opacity: 0.85 }}
+      >
+        {date}
+      </p>
+
+      {/* Name — biggest element on the card */}
+      <h3
+        className="text-2xl md:text-3xl font-medium leading-tight mb-2"
+        style={{ color: palette.ink }}
+      >
+        {entry.name}
+      </h3>
+
+      {/* Company / domain — secondary */}
+      {(entry.company || entry.domain) && (
+        <p
+          className="text-sm mb-5"
+          style={{ color: palette.ink, opacity: 0.7, fontFamily: 'system-ui, sans-serif' }}
         >
-          {/* Background glow */}
+          {entry.company || entry.domain}
+        </p>
+      )}
+
+      {/* Footer line: warmth label + score, framed warmly */}
+      <div
+        className="flex items-end justify-between pt-4 mt-2"
+        style={{ borderTop: `1px dashed ${palette.accent}66` }}
+      >
+        <p className="text-xs italic leading-snug max-w-[140px]" style={{ color: palette.ink, opacity: 0.65 }}>
+          {warmth}
+        </p>
+        <div className="text-right">
           <div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: `radial-gradient(circle at center, ${meta.ringColor} 0%, transparent 65%)`,
-            }}
-          />
-          {/* Score number */}
-          <span
-            className="relative z-10 text-3xl md:text-4xl font-light tabular-nums"
-            style={{ color: meta.ringColor, textShadow: `0 0 20px ${meta.glowColor}` }}
+            className="text-[10px] uppercase tracking-[0.2em] mb-0.5"
+            style={{ color: palette.accent, fontFamily: 'system-ui, sans-serif' }}
+          >
+            Score
+          </div>
+          <div
+            className="text-2xl font-medium tabular-nums"
+            style={{ color: palette.ink, fontFamily: '"Cormorant Garamond", serif' }}
           >
             {entry.score}
-          </span>
-          {/* Label */}
-          <span
-            className="relative z-10 text-[8px] uppercase tracking-[0.2em] mt-1"
-            style={{ color: meta.ringColor, opacity: 0.7 }}
-          >
-            {meta.label}
-          </span>
-          {/* Emoji */}
-          <span className="absolute bottom-1.5 right-2 text-sm opacity-60">{meta.emoji}</span>
-        </div>
-
-        {/* Name & date */}
-        <div className="space-y-0.5 px-0.5">
-          <p className="text-black/80 text-[11px] font-bold truncate leading-tight">{entry.name}</p>
-          <div className="flex justify-between items-center">
-            <span className="text-black/35 text-[8px] font-mono uppercase tracking-wide truncate max-w-[60%]">
-              {entry.tag || entry.company || 'Audit'}
-            </span>
-            <span className="text-black/25 text-[8px] font-mono">{date}</span>
+            <span className="text-base opacity-50">/100</span>
           </div>
         </div>
       </div>
+    </article>
+  );
+}
+
+// ─── Empty state ────────────────────────────────────────────────────────────
+
+function EmptyState() {
+  return (
+    <div className="text-center py-20 px-8 mx-auto max-w-2xl">
+      <div
+        className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
+        style={{ background: '#FCE8DD', boxShadow: '0 4px 12px rgba(168, 107, 87, 0.15)' }}
+      >
+        <Heart size={32} fill="#E8A597" stroke="#A86B57" strokeWidth={1.5} />
+      </div>
+      <h2 className="text-3xl font-light mb-4" style={{ color: '#3E2C1C' }}>
+        Noch <em className="italic" style={{ color: '#A86B57' }}>ganz frisch</em>
+      </h2>
+      <p
+        className="text-lg italic leading-relaxed max-w-md mx-auto"
+        style={{ color: '#6B5240' }}
+      >
+        Niemand hat sich noch eingetragen. Das könntest du sein — der erste
+        Name in unserem Gästebuch. Wir freuen uns auf dich.
+      </p>
     </div>
   );
 }

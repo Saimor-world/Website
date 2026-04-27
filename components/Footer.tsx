@@ -7,7 +7,7 @@ import NewsletterSignup from './NewsletterSignup';
 import ShareButton from '@/components/ShareButton';
 
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
-  const [year, setYear] = useState('2025');
+  const [year, setYear] = useState('2026');
   const router = useRouter();
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       portal: 'Portal Demo',
       imprint: 'Impressum',
       privacy: 'Datenschutz',
-      tagline: 'Klarheit im Wandel. Saimôr ist das Ökosystem für bewusste Organisationen.',
-      made: 'System Status: Active',
-      copyright: 'Alle Rechte vorbehalten.'
+      tagline: 'SAIMÔR — Souveränität durch Technologie.',
+      made: 'System Status: Aktiv',
+      copyright: 'Copyright'
     },
     en: {
       quickLinks: 'Navigation',
@@ -39,9 +39,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       portal: 'Portal Demo',
       imprint: 'Imprint',
       privacy: 'Privacy',
-      tagline: 'Clarity in change. Saimôr is the ecosystem for conscious organizations.',
+      tagline: 'SAIMÔR — Sovereignty through technology.',
       made: 'System Status: Active',
-      copyright: 'All rights reserved.'
+      copyright: 'Copyright'
     }
   }[locale];
 
@@ -51,14 +51,12 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     if (kontaktSection) {
       kontaktSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // If not on homepage, navigate there first
       router.push(`/${locale}#kontakt`);
     }
   };
 
   return (
     <footer className="relative py-24 border-t border-white/10 bg-[#081410] overflow-hidden">
-      {/* Atmosphere */}
       <div className="absolute inset-0 z-0">
         <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
       </div>
@@ -66,7 +64,6 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
           
-          {/* Brand */}
           <div className="md:col-span-2 space-y-8">
             <a href={`/${locale}`} className="flex items-center gap-4 group">
               <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
@@ -80,12 +77,11 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               </div>
               <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
             </a>
-            <p className="text-white/40 max-w-sm text-lg leading-relaxed">
+            <p className="text-white/40 max-w-sm text-lg leading-relaxed italic">
               {footerText.tagline}
             </p>
           </div>
 
-          {/* Nav */}
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
@@ -96,12 +92,10 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             </div>
           </div>
 
-          {/* Newsletter */}
           <div className="space-y-6">
             <NewsletterSignup variant="footer" />
           </div>
 
-          {/* Legal */}
           <div className="space-y-6">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
             <div className="flex flex-col gap-4">
@@ -112,30 +106,6 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           </div>
         </div>
 
-        {/* Keyboard Shortcuts Hint */}
-        <motion.div 
-          className="py-6 mb-8 border-y border-white/5"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-[10px] text-white/30">
-            <span className="flex items-center gap-2">
-              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">⌘K</kbd>
-              <span>{locale === 'de' ? 'Menü' : 'Menu'}</span>
-            </span>
-            <span className="flex items-center gap-2">
-              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">AAA</kbd>
-              <span>{locale === 'de' ? 'Log' : 'Log'}</span>
-            </span>
-            <span className="hidden md:flex items-center gap-2">
-              <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono text-white/50">↑↑↓↓←→←→BA</kbd>
-              <span>{locale === 'de' ? 'Resonanz' : 'Resonance'}</span>
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Bottom */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">© {year} Saimôr</span>
