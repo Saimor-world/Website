@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Heart, ArrowRight } from 'lucide-react';
+import { Heart, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export const metadata = {
   title: 'Gästebuch | Saimôr',
-  description: 'Polaroid-Wand für die Saimôr Community. Wer hier hängt, hat den ersten Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
+  description: 'Ein offenes Buch an der Wand. Wer hier eingetragen ist, hat einen Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
 };
 
 type WallEntry = {
@@ -28,15 +28,13 @@ async function getEntries(): Promise<WallEntry[]> {
   }
 }
 
-// Photo-area pastel palette — soft enough to feel personal, saturated
-// enough to read as a real photograph against the white polaroid frame.
 const PHOTO_PALETTE = [
-  { photo: 'linear-gradient(135deg, #FCE8DD 0%, #F4C7B4 100%)', tack: '#C97D5E', label: '#7A4A35' }, // peach
-  { photo: 'linear-gradient(135deg, #E8F0E0 0%, #BFD7B5 100%)', tack: '#6B8B68', label: '#3F5D3D' }, // sage
-  { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', label: '#7C3D4A' }, // rose
-  { photo: 'linear-gradient(135deg, #E8EBF5 0%, #B5BFD9 100%)', tack: '#6E7A9F', label: '#3F4870' }, // lavender
-  { photo: 'linear-gradient(135deg, #FAF1D9 0%, #E5C988 100%)', tack: '#A88A4A', label: '#6B5424' }, // honey
-  { photo: 'linear-gradient(135deg, #E0EEF0 0%, #A8CACE 100%)', tack: '#4F8488', label: '#2F5658' }, // mint
+  { photo: 'linear-gradient(135deg, #FCE8DD 0%, #F4C7B4 100%)', tack: '#C97D5E', label: '#7A4A35' },
+  { photo: 'linear-gradient(135deg, #E8F0E0 0%, #BFD7B5 100%)', tack: '#6B8B68', label: '#3F5D3D' },
+  { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', label: '#7C3D4A' },
+  { photo: 'linear-gradient(135deg, #E8EBF5 0%, #B5BFD9 100%)', tack: '#6E7A9F', label: '#3F4870' },
+  { photo: 'linear-gradient(135deg, #FAF1D9 0%, #E5C988 100%)', tack: '#A88A4A', label: '#6B5424' },
+  { photo: 'linear-gradient(135deg, #E0EEF0 0%, #A8CACE 100%)', tack: '#4F8488', label: '#2F5658' },
 ];
 
 function paletteFor(seed: string) {
@@ -45,46 +43,64 @@ function paletteFor(seed: string) {
   return PHOTO_PALETTE[h % PHOTO_PALETTE.length];
 }
 
+const ENTRIES_PER_SPREAD = 2; // one polaroid left, one journal entry right
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 
-export default async function WallPage() {
+export default async function WallPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ s?: string }>;
+}) {
+  const sp = (await searchParams) ?? {};
+  const spread = Math.max(0, parseInt(sp.s ?? '0', 10) || 0);
+
   const entries = await getEntries();
   const sorted = [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  const totalSpreads = Math.max(1, Math.ceil(sorted.length / ENTRIES_PER_SPREAD));
+  const safeSpread = Math.min(spread, totalSpreads - 1);
+  const start = safeSpread * ENTRIES_PER_SPREAD;
+  const pair = sorted.slice(start, start + ENTRIES_PER_SPREAD);
+  const left = pair[0];
+  const right = pair[1];
+
   const isEmpty = sorted.length === 0;
 
   return (
     <main
       className="min-h-screen overflow-x-hidden relative"
       style={{
-        // Warm "wall" — wood-tone gradient, not cream-soft. Reads as a
-        // real surface where things can be pinned, not as a paper page.
+        // FRESH wall — soft warm cream + peach + dusty mint, light and airy.
+        // Not a heavy brown wall anymore.
         background:
-          'radial-gradient(circle at 20% 0%, #B89274 0%, transparent 55%),' +
-          'radial-gradient(circle at 80% 100%, #8E6147 0%, transparent 60%),' +
-          'linear-gradient(165deg, #C9A684 0%, #A07A5C 50%, #6F4E36 100%)',
-        color: '#2F2118',
+          'radial-gradient(circle at 20% 0%, #FBE4D0 0%, transparent 55%),' +
+          'radial-gradient(circle at 80% 100%, #E2EFE3 0%, transparent 60%),' +
+          'linear-gradient(165deg, #FCF6EC 0%, #F1E5D0 50%, #E8D5BA 100%)',
+        color: '#3E2C1C',
         fontFamily: '"Cormorant Garamond", Georgia, serif',
       }}
     >
-      {/* Wood-grain texture overlay — diagonal subtle stripes */}
+      {/* Subtle paper-grain so the wall feels like a real surface, not flat */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-[0.06] z-0"
+        className="fixed inset-0 pointer-events-none opacity-[0.05] z-0 mix-blend-multiply"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(110deg, rgba(60, 35, 18, 0.5) 0px, transparent 1px, transparent 5px, rgba(60, 35, 18, 0.4) 6px, transparent 7px, transparent 22px)',
+            'radial-gradient(circle at 1px 1px, #6B5240 1px, transparent 0)',
+          backgroundSize: '5px 5px',
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24">
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
-        <header className="text-center mb-20 space-y-6">
+        <header className="text-center mb-12 space-y-5">
           <div
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
             style={{
-              background: 'rgba(255,250,242,0.85)',
-              border: '1px solid rgba(122, 74, 53, 0.25)',
-              boxShadow: '0 2px 8px rgba(60, 35, 18, 0.15)',
+              background: 'rgba(255, 250, 242, 0.85)',
+              border: '1px solid rgba(168, 107, 87, 0.3)',
+              boxShadow: '0 2px 8px rgba(168, 107, 87, 0.12)',
             }}
           >
             <Heart size={12} fill="#C97D5E" stroke="#C97D5E" />
@@ -93,69 +109,73 @@ export default async function WallPage() {
             </span>
           </div>
 
-          <h1
-            className="text-5xl md:text-7xl font-light leading-[1.05]"
-            style={{
-              color: '#FAF6EE',
-              textShadow: '0 2px 12px rgba(60, 35, 18, 0.6)',
-            }}
-          >
+          <h1 className="text-5xl md:text-7xl font-light leading-[1.05]" style={{ color: '#3E2C1C' }}>
             Schön, dass du{' '}
-            <em className="italic" style={{ color: '#FFE4C4' }}>hier</em> bist
+            <em className="italic" style={{ color: '#A86B57' }}>hier</em> bist
           </h1>
 
-          <p
-            className="text-lg max-w-xl mx-auto leading-relaxed italic"
-            style={{
-              color: '#FAF6EE',
-              opacity: 0.85,
-              textShadow: '0 1px 6px rgba(60, 35, 18, 0.5)',
-            }}
-          >
-            Eine Wand für die Menschen, die Saimôr mitgestalten. Heft dich dazu —
-            indem du deinen Security-Check machst — wenn du magst, hängen wir dein
-            Polaroid hier auf.
+          <p className="text-lg max-w-xl mx-auto leading-relaxed italic" style={{ color: '#6B5240' }}>
+            Ein Buch an der Wand. Wer Saimôr mitgestaltet, hinterlässt eine
+            Seite — Polaroid links, ein paar Zeilen rechts. Heft dich dazu.
           </p>
-
-          {/* tiny ornamental rule */}
-          <div className="flex items-center justify-center gap-3 pt-4">
-            <span style={{ width: 50, height: 1, background: 'rgba(250, 246, 238, 0.4)' }} />
-            <Heart size={10} fill="#FFE4C4" stroke="#FFE4C4" />
-            <span style={{ width: 50, height: 1, background: 'rgba(250, 246, 238, 0.4)' }} />
-          </div>
         </header>
 
-        {/* ── Polaroid grid ──────────────────────────────────────────────── */}
-        {isEmpty ? (
-          <EmptyState />
-        ) : (
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-            {sorted.map((entry, idx) => (
-              <Polaroid key={entry.id} entry={entry} index={idx} />
-            ))}
-          </div>
-        )}
+        {/* ── Open book on the wall ───────────────────────────────────────── */}
+        <section className="relative mx-auto max-w-5xl">
+          <BookSpread left={left} right={right} isEmpty={isEmpty} />
+
+          {/* Pagination — only when there are real entries to flip through */}
+          {!isEmpty && totalSpreads > 1 && (
+            <nav className="flex items-center justify-center gap-6 mt-8 text-sm" style={{ color: '#6B5240' }}>
+              {safeSpread > 0 ? (
+                <Link
+                  href={`/wall${safeSpread - 1 === 0 ? '' : `?s=${safeSpread - 1}`}`}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-colors hover:bg-white/40"
+                  style={{ fontFamily: 'system-ui, sans-serif' }}
+                >
+                  <ArrowLeft size={14} />
+                  Vorherige Seite
+                </Link>
+              ) : <span className="opacity-30 px-4 py-2 inline-flex items-center gap-2"><ArrowLeft size={14} />Vorherige Seite</span>}
+
+              <span className="text-xs italic opacity-70 tabular-nums">
+                Seite {safeSpread + 1} von {totalSpreads}
+              </span>
+
+              {safeSpread < totalSpreads - 1 ? (
+                <Link
+                  href={`/wall?s=${safeSpread + 1}`}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-colors hover:bg-white/40"
+                  style={{ fontFamily: 'system-ui, sans-serif' }}
+                >
+                  Nächste Seite
+                  <ArrowRight size={14} />
+                </Link>
+              ) : <span className="opacity-30 px-4 py-2 inline-flex items-center gap-2">Nächste Seite<ArrowRight size={14} /></span>}
+            </nav>
+          )}
+        </section>
 
         {/* ── CTA ────────────────────────────────────────────────────────── */}
-        <div className="mt-28 text-center space-y-5">
+        <div className="mt-20 text-center space-y-4">
           <Link
             href="/de/einstieg/security-check"
             className="group inline-flex items-center gap-3 px-10 py-4 rounded-full transition-all hover:scale-[1.02]"
             style={{
-              background: '#FAF6EE',
-              color: '#3E2C1C',
+              background: '#3E2C1C',
+              color: '#FAF6EE',
               fontFamily: 'system-ui, sans-serif',
               fontSize: 14,
               fontWeight: 500,
               letterSpacing: '0.05em',
-              boxShadow: '0 6px 20px rgba(60, 35, 18, 0.35), 0 2px 0 rgba(255,255,255,0.4) inset',
+              boxShadow: '0 6px 20px rgba(168, 107, 87, 0.25)',
             }}
           >
-            Heft dich an die Wand
+            Trag dich ein
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <p className="text-xs italic" style={{ color: '#FAF6EE', opacity: 0.7 }}>
-            Kostenlos. Kein Login. Du entscheidest, ob dein Polaroid öffentlich wird.
+          <p className="text-xs italic" style={{ color: '#8B6E55' }}>
+            Kostenlos. Kein Login. Du entscheidest, ob deine Seite öffentlich wird.
           </p>
         </div>
       </div>
@@ -163,78 +183,99 @@ export default async function WallPage() {
   );
 }
 
-// ─── Polaroid card ──────────────────────────────────────────────────────────
+// ─── Book spread (the open-book centerpiece) ────────────────────────────────
 
-function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
-  const palette = paletteFor(entry.id || entry.name);
-  const date = new Date(entry.createdAt).toLocaleDateString('de-DE', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-
-  // Slight, deterministic rotation per polaroid so the wall feels real.
-  const rotation = ((index * 11) % 7) - 3; // -3..+3 deg
-  const tackOffset = ((index * 5) % 11) - 5; // -5..+5 px horizontal nudge of the tack
-
-  // Score → warmth label (no leaderboard cold)
-  const warmth =
-    entry.score >= 90 ? 'sehr sicher unterwegs'
-    : entry.score >= 75 ? 'gut aufgestellt'
-    : entry.score >= 60 ? 'auf dem Weg'
-    : 'gerade angekommen';
-
+function BookSpread({
+  left,
+  right,
+  isEmpty,
+}: {
+  left?: WallEntry;
+  right?: WallEntry;
+  isEmpty: boolean;
+}) {
   return (
-    <article
-      className="break-inside-avoid relative pt-5 transition-all hover:rotate-0 hover:scale-[1.02]"
-      style={{ transform: `rotate(${rotation}deg)` }}
+    <div
+      className="relative grid grid-cols-1 md:grid-cols-2 rounded-[8px] overflow-hidden"
+      style={{
+        background: 'linear-gradient(180deg, #FFFCF6 0%, #F8F0DD 100%)',
+        boxShadow:
+          '0 30px 60px rgba(60, 40, 28, 0.18), ' +
+          '0 12px 24px rgba(60, 40, 28, 0.12), ' +
+          '0 1px 0 rgba(255,255,255,0.7) inset',
+        minHeight: 540,
+      }}
     >
-      {/* Thumbtack at top */}
+      {/* Center binding fold — shadow on both sides of the gutter */}
+      <div
+        className="hidden md:block absolute top-4 bottom-4 left-1/2 -translate-x-1/2 pointer-events-none z-10"
+        style={{
+          width: 28,
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(122, 80, 53, 0.18) 30%, rgba(122, 80, 53, 0.28) 50%, rgba(122, 80, 53, 0.18) 70%, transparent 100%)',
+        }}
+      />
+
+      {/* Left page */}
+      <div className="relative p-8 md:p-12 flex items-center justify-center">
+        {isEmpty ? (
+          <BlankPagePolaroid />
+        ) : left ? (
+          <SmallPolaroid entry={left} />
+        ) : (
+          <BlankPagePolaroid />
+        )}
+      </div>
+
+      {/* Right page */}
+      <div className="relative p-8 md:p-12 flex items-center justify-center">
+        {isEmpty ? (
+          <BlankPageEntry />
+        ) : right ? (
+          <JournalEntry entry={right} />
+        ) : left ? (
+          <JournalEntry entry={left} />
+        ) : (
+          <BlankPageEntry />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Polaroid (left page) ───────────────────────────────────────────────────
+
+function SmallPolaroid({ entry }: { entry: WallEntry }) {
+  const palette = paletteFor(entry.id || entry.name);
+  return (
+    <article className="relative pt-4" style={{ transform: 'rotate(-2deg)' }}>
       <div
         className="absolute z-20 top-0 left-1/2 -translate-x-1/2 rounded-full"
         style={{
-          width: 14,
-          height: 14,
-          marginLeft: tackOffset,
+          width: 14, height: 14,
           background: `radial-gradient(circle at 35% 35%, ${palette.tack}EE 0%, ${palette.tack} 60%, ${palette.tack}88 100%)`,
-          boxShadow:
-            `0 1px 0 rgba(255,255,255,0.7) inset, ` +
-            `0 -1px 0 rgba(0,0,0,0.3) inset, ` +
-            `0 3px 4px rgba(0,0,0,0.35), ` +
-            `0 1px 0 ${palette.tack}66`,
+          boxShadow: `0 1px 0 rgba(255,255,255,0.7) inset, 0 -1px 0 rgba(0,0,0,0.3) inset, 0 3px 4px rgba(0,0,0,0.3)`,
         }}
         aria-hidden
       />
-
-      {/* Polaroid frame */}
       <div
         className="relative rounded-[6px] pt-3 px-3 pb-1"
         style={{
-          background: '#FAF6EE',
-          boxShadow:
-            '0 2px 0 rgba(255,255,255,0.6) inset, ' +
-            '0 12px 28px rgba(40, 22, 10, 0.45), ' +
-            '0 4px 8px rgba(40, 22, 10, 0.25)',
+          background: '#FFFCF6',
+          boxShadow: '0 8px 22px rgba(40, 22, 10, 0.25), 0 2px 0 rgba(255,255,255,0.7) inset',
         }}
       >
-        {/* Photo area (the colored portion of the polaroid) */}
         <div
-          className="relative aspect-[4/3] rounded-[3px] overflow-hidden flex items-end p-5"
-          style={{ background: palette.photo }}
+          className="relative aspect-[4/3] rounded-[3px] overflow-hidden flex items-end p-4"
+          style={{ background: palette.photo, minWidth: 220 }}
         >
-          {/* Subtle vignette for photographic feel */}
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.18) 100%)',
-            }}
+            style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.18) 100%)' }}
           />
-
-          {/* Name laid into the photo, like a stamped initial */}
           <div className="relative z-10">
             <h3
-              className="text-3xl md:text-4xl font-medium leading-tight"
+              className="text-2xl font-medium leading-tight"
               style={{
                 color: palette.label,
                 fontFamily: '"Cormorant Garamond", serif',
@@ -243,85 +284,143 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
             >
               {entry.name}
             </h3>
-            {(entry.company || entry.domain) && (
-              <p
-                className="text-xs mt-1"
-                style={{
-                  color: palette.label,
-                  opacity: 0.75,
-                  fontFamily: 'system-ui, sans-serif',
-                }}
-              >
-                {entry.company || entry.domain}
-              </p>
-            )}
           </div>
         </div>
-
-        {/* Caption strip — the white bottom of the polaroid */}
-        <div className="pt-3 pb-4 px-1 flex items-end justify-between gap-2">
+        <div className="pt-3 pb-3 px-1 text-center">
           <p
-            className="text-[11px] italic leading-tight max-w-[150px]"
-            style={{
-              color: '#5C4A3A',
-              fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
-              fontSize: '14px',
-            }}
+            className="text-[12px] italic"
+            style={{ color: '#5C4A3A', fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif', fontSize: 16 }}
           >
-            {warmth}
-            <br />
-            <span style={{ opacity: 0.6, fontSize: '12px' }}>{date}</span>
+            {entry.company || entry.domain || 'Saimôr Community'}
           </p>
-          <div
-            className="text-right shrink-0"
-            style={{ fontFamily: '"Cormorant Garamond", serif' }}
-          >
-            <div
-              className="text-[9px] uppercase tracking-[0.2em]"
-              style={{ color: palette.label, opacity: 0.7, fontFamily: 'system-ui, sans-serif' }}
-            >
-              Score
-            </div>
-            <div
-              className="text-2xl font-medium tabular-nums leading-none"
-              style={{ color: palette.label }}
-            >
-              {entry.score}
-              <span className="text-sm opacity-50">/100</span>
-            </div>
-          </div>
         </div>
       </div>
     </article>
   );
 }
 
-// ─── Empty state ────────────────────────────────────────────────────────────
-
-function EmptyState() {
+function BlankPagePolaroid() {
   return (
-    <div className="text-center py-20 px-8 mx-auto max-w-2xl">
+    <div className="text-center opacity-60">
       <div
-        className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
+        className="mx-auto mb-4 rounded-[6px]"
         style={{
-          background: 'rgba(250, 246, 238, 0.95)',
-          boxShadow: '0 6px 20px rgba(60, 35, 18, 0.4)',
+          width: 220, height: 200,
+          background: 'repeating-linear-gradient(45deg, #F0E6D5 0px, #F0E6D5 8px, #E8DCC4 8px, #E8DCC4 16px)',
+          boxShadow: 'inset 0 0 30px rgba(168, 107, 87, 0.1)',
+        }}
+      />
+      <p className="text-sm italic" style={{ color: '#A86B57' }}>
+        Hier hängt bald dein Polaroid.
+      </p>
+    </div>
+  );
+}
+
+// ─── Journal entry (right page) ─────────────────────────────────────────────
+
+function JournalEntry({ entry }: { entry: WallEntry }) {
+  const date = new Date(entry.createdAt).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+  const warmth =
+    entry.score >= 90 ? 'sehr sicher unterwegs'
+    : entry.score >= 75 ? 'gut aufgestellt'
+    : entry.score >= 60 ? 'auf dem Weg'
+    : 'gerade angekommen';
+
+  // Ruled-paper guidelines for a journal feel
+  return (
+    <article
+      className="relative w-full max-w-md"
+      style={{
+        backgroundImage: 'repeating-linear-gradient(transparent 0px, transparent 31px, rgba(168, 107, 87, 0.18) 32px)',
+        paddingTop: 4,
+      }}
+    >
+      <p
+        className="italic mb-3"
+        style={{ color: '#A86B57', fontSize: 13, lineHeight: '32px', fontFamily: 'system-ui, sans-serif' }}
+      >
+        {date}
+      </p>
+
+      <h4
+        className="font-medium mb-2"
+        style={{
+          color: '#3E2C1C',
+          fontSize: 28,
+          lineHeight: '32px',
+          fontFamily: '"Cormorant Garamond", serif',
         }}
       >
-        <Heart size={32} fill="#C97D5E" stroke="#7A4A35" strokeWidth={1.5} />
-      </div>
-      <h2
-        className="text-3xl font-light mb-4"
-        style={{ color: '#FAF6EE', textShadow: '0 1px 6px rgba(60, 35, 18, 0.5)' }}
-      >
-        Die Wand ist noch <em className="italic" style={{ color: '#FFE4C4' }}>ganz frisch</em>
-      </h2>
+        {entry.name}
+      </h4>
+
       <p
-        className="text-lg italic leading-relaxed max-w-md mx-auto"
-        style={{ color: '#FAF6EE', opacity: 0.85 }}
+        className="italic"
+        style={{
+          color: '#5C4A3A',
+          fontSize: 18,
+          lineHeight: '32px',
+          fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
+          maxWidth: 360,
+        }}
       >
-        Niemand hat sich noch eingeheftet. Das könntest du sein — das erste
-        Polaroid an der Wand. Wir freuen uns auf dich.
+        {warmth}.
+        <br />
+        Score: <span className="not-italic" style={{ fontFamily: '"Cormorant Garamond", serif' }}>{entry.score}/100</span>
+      </p>
+
+      {(entry.company || entry.domain) && (
+        <p
+          className="mt-2"
+          style={{
+            color: '#8B6E55',
+            fontSize: 13,
+            lineHeight: '32px',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          — {entry.company || entry.domain}
+        </p>
+      )}
+    </article>
+  );
+}
+
+function BlankPageEntry() {
+  return (
+    <div
+      className="relative w-full max-w-md text-center opacity-60"
+      style={{
+        backgroundImage: 'repeating-linear-gradient(transparent 0px, transparent 31px, rgba(168, 107, 87, 0.18) 32px)',
+        paddingTop: 4,
+        minHeight: 280,
+      }}
+    >
+      <p
+        className="italic mb-2 text-left"
+        style={{ color: '#A86B57', fontSize: 13, lineHeight: '32px', fontFamily: 'system-ui, sans-serif' }}
+      >
+        — heute —
+      </p>
+      <h4
+        className="font-medium mb-2 text-left"
+        style={{ color: '#3E2C1C', fontSize: 28, lineHeight: '32px', fontFamily: '"Cormorant Garamond", serif' }}
+      >
+        Dein Name
+      </h4>
+      <p
+        className="italic text-left"
+        style={{
+          color: '#8B6E55',
+          fontSize: 18,
+          lineHeight: '32px',
+          fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
+        }}
+      >
+        Eine Zeile, ein Polaroid,
+        <br />
+        ein erster Schritt.
       </p>
     </div>
   );

@@ -78,10 +78,10 @@ export default function MoraPage() {
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-amber-400/80">Concept Demo — In Development</span>
             </div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              <span className="block opacity-90">Kein Spiegel.</span>
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.95]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <span className="block opacity-90">Sie hört zu.</span>
               <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
-                Ein Gedächtnis.
+                Sie erinnert sich.
               </span>
             </h1>
 
@@ -98,7 +98,7 @@ export default function MoraPage() {
                 onClick={() => setShowAnalogView(true)}
                 className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105"
               >
-                Tiefer · Die Resonanz dahinter
+                Tiefer · Wie sie versteht
               </button>
             </div>
           </motion.div>

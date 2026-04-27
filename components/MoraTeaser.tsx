@@ -68,11 +68,11 @@ export default function MoraTeaser({ locale }: Props) {
             {/* Headline */}
             <div className="space-y-3">
               <h2
-                className="text-5xl sm:text-7xl font-light tracking-tight leading-[0.9]"
+                className="text-5xl sm:text-7xl font-light tracking-tight leading-[0.95]"
                 style={{ fontFamily: 'Cormorant Garamond, serif' }}
               >
                 <span className="block text-white/90">
-                  {t('Kein Spiegel.', 'Not a mirror.')}
+                  {t('Sie hört zu.', 'She listens.')}
                 </span>
                 <span
                   className="block italic text-white/30"
@@ -82,7 +82,7 @@ export default function MoraTeaser({ locale }: Props) {
                 </span>
               </h2>
               <p className="text-sm text-white/30 uppercase tracking-[0.2em] pl-0.5">
-                {t('Môra — die Antwort wartet auf der nächsten Seite', 'Môra — the answer waits on the next page')}
+                {t('Môra — die Geschichte geht weiter', 'Môra — the story continues')}
               </p>
             </div>
 
