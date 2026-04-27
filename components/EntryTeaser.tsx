@@ -9,8 +9,8 @@ type Locale = 'de' | 'en';
 const content = {
   de: {
     eyebrow: 'Wissensbasis',
-    title: 'Verstehen. Handeln.\nSchritt fÃ¼r Schritt.',
-    text: 'Klare Anleitungen fÃ¼r den ersten Security-Check, den Aufbau deines Digital AI Selfs oder den direkten Einstieg in die interaktiven Demo-Tracks.',
+    title: 'Verstehen. Handeln.\nSchritt für Schritt.',
+    text: 'Klare Anleitungen für den ersten Security-Check, den Aufbau deines Digital AI Selfs oder den direkten Einstieg in die interaktiven Demo-Tracks.',
     cta: 'Zur Wissensbasis',
     href: '/de/einstieg',
     tracks: [

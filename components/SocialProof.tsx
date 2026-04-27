@@ -183,9 +183,9 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
             {locale === 'de' ? 'Kein Marketing-Rauschen' : 'No Marketing Jargon'}
           </h3>
           <p className="text-white/60 leading-relaxed italic">
-            {locale === 'de' 
-              ? 'â€žWir verzichten auf gekaufte Stimmen oder fiktive Erfolgsgeschichten. SaimÃ´r ist ein Werkzeug für Menschen, die echte Souveränität suchen. Der beste Beweis für unsere Qualität ist die Technologie selbst, die Sie hier live testen können.â€œ'
-              : '"We avoid purchased testimonials or fictional success stories. SaimÃ´r is a tool for people seeking true sovereignty. The best proof of our quality is the technology itself, which you can test live right here."'}
+            {locale === 'de'
+              ? '„Wir verzichten auf gekaufte Stimmen oder fiktive Erfolgsgeschichten. Saimôr ist ein Werkzeug für Menschen, die echte Souveränität suchen. Der beste Beweis für unsere Qualität ist die Technologie selbst, die du hier live testen kannst."'
+              : '"We avoid purchased testimonials or fictional success stories. Saimôr is a tool for people seeking true sovereignty. The best proof of our quality is the technology itself, which you can test live right here."'}
           </p>
         </motion.div>
 
