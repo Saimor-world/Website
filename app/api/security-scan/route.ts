@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { contactFormLimiter, getClientIP } from '@/lib/rate-limit';
 import { performPassiveRecon } from '@/lib/recon';
+import { calculateSecurityScore } from '@/lib/scoring';
 import { runAisecurityAnalysis } from '@/lib/security-analysis';
 
 const Body = z.object({
@@ -41,16 +42,23 @@ export async function POST(req: NextRequest) {
     // 1. ECHTER RECON SCAN (0 Mock)
     const recon = domain ? await performPassiveRecon(domain) : null;
 
-    // 2. ECHTE LLM ANALYSE (Greyzone / Attacker Mindset)
-    const aiResult = recon ? await runAisecurityAnalysis({
+    // 2. DETERMINISTISCHES SCORING
+    const technicalAudit = recon ? calculateSecurityScore(recon) : null;
+    const allFindings = technicalAudit ? Object.values(technicalAudit.categories).flatMap(c => c.findings) : [];
+
+    // 3. ECHTE LLM ANALYSE (Greyzone / Attacker Mindset)
+    const aiResult = recon && technicalAudit ? await runAisecurityAnalysis({        
       domain: recon.domain,
       ip: recon.ip || undefined,
-      headers: (recon as any).rawHeaders || {}, // Wir mappen das später
+      headers: recon.rawHeaders,
       tls: recon.sslInfo,
-      subdomains: recon.subdomains
+      subdomains: recon.subdomains,
+      score: technicalAudit.totalScore,
+      grade: technicalAudit.grade,
+      findings: allFindings
     }) : null;
 
-    const score = aiResult?.score ?? (recon ? 70 : 100);
+    const score = technicalAudit?.totalScore ?? (recon ? 70 : 100);
     const level = score < 50 ? 'high' : score < 80 ? 'medium' : 'low';
 
     // 3. DATENBANK SPEICHERN
@@ -74,33 +82,32 @@ export async function POST(req: NextRequest) {
         analysis: aiResult?.summary || 'Standard Analyse abgeschlossen.',
         attackerPath: aiResult?.attacker_path,
         reconData: recon as any,
-        recommendations: (aiResult?.findings?.map((f: any) => ({
+        recommendations: (allFindings.map((f: any) => ({  
           title: f.title,
           text: f.desc,
-          priority: f.severity === 'risk' ? 'high' : 'medium'
+          priority: f.severity === 'risk' ? 'high' : 'medium'     
         })) || []) as any,
         followUpQuestions: (aiResult?.followUpQuestions || []) as any,
-      },
-    });
+        },
+        });
 
-    return NextResponse.json({
-      success: true,
-      result: {
+        return NextResponse.json({
+        success: true,
+        result: {
         id: createdAudit.id,
         score,
         level,
         summary: aiResult?.summary,
         attacker_path: aiResult?.attacker_path,
-        findings: aiResult?.findings,
+        findings: allFindings,
         recon: recon ? {
           domain: recon.domain,
           ip: recon.ip,
           ssl: recon.sslInfo,
           subdomains: recon.subdomains,
         } : null,
-      }
-    });
-
+        }
+        });
   } catch (error) {
     console.error('[Security Scan API Error]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

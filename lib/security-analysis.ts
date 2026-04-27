@@ -7,9 +7,12 @@ export type ReconData = {
   tls: any;
   subdomains: string[];
   techStack?: string[];
+  score: number;
+  grade: string;
+  findings: any[];
 };
 
-export async function runAisecurityAnalysis(data: ReconData) {
+export async function runAisecurityAnalysis(data: ReconData) {    
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     console.warn('[SecurityAnalysis] No ANTHROPIC_API_KEY — skipping AI analysis');
@@ -20,30 +23,27 @@ export async function runAisecurityAnalysis(data: ReconData) {
 
   const prompt = `Du bist ein Elite-Penetration-Tester. Analysiere die folgenden passiven Recon-Daten der Domain "${data.domain}" auf kritische Schwachstellen.
 
+WICHTIG: Die IT-Sicherheit wurde bereits technisch bewertet mit einem Score von ${data.score}/100 (Note: ${data.grade}).
+
 ROHDATEN:
 - IP: ${data.ip ?? 'unbekannt'}
 - Server-Header: ${JSON.stringify(data.headers)}
 - TLS/SSL: ${JSON.stringify(data.tls)}
 - Gefundene Subdomains: ${data.subdomains.length > 0 ? data.subdomains.slice(0, 20).join(', ') : 'keine'}
+- Technische Befunde: ${JSON.stringify(data.findings)}
 
 AUFGABE:
-1. Identifiziere "Low Hanging Fruits" (leicht ausnutzbare Schwachstellen).
-2. Bewerte die IT-Sicherheit mit einem Score von 0–100 (100 = perfekt gesichert).
-3. Erstelle einen "Attacker's Path": Wie würde ein gezielter Angriff ablaufen?
+1. Erstelle eine kognitive Einschätzung basierend auf dem Score und den Daten.
+2. Erstelle einen "Attacker's Path": Wie würde ein gezielter Angriff ablaufen? Erkläre dies basierend auf den realen Schwachstellen.
 
 TONFALL: Technisch, präzise, ehrlich. Nutze kurze Metaphern für Laien wo sinnvoll.
 
-ANTWORTE NUR MIT DIESEM JSON (kein Text davor oder danach):
+ANTWORTE NUR MIT DIESEM JSON (kein Text davor oder danach):       
 {
-  "score": <number 0-100>,
   "summary": "<1-2 Sätze kognitive Einschätzung>",
-  "findings": [
-    { "title": "<Kurztitel>", "severity": "risk|warn|ok", "desc": "<1 Satz Erklärung>" }
-  ],
   "attacker_path": "<Schritt-für-Schritt Angriffsszenario in 2-4 Sätzen>",
   "followUpQuestions": ["<Frage 1 die der Nutzer stellen sollte>", "<Frage 2>", "<Frage 3>"]
 }`;
-
   try {
     const response = await client.messages.create({
       model: 'claude-3-haiku-20240307',
