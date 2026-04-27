@@ -15,6 +15,7 @@ type Copy = {
   heroStatus: string;
   heroLine1: string;
   heroLine2: string;
+  heroLine3: string;
   heroDesc1: string;
   heroDesc2: string;
   heroPrimaryCta: string;
@@ -63,6 +64,7 @@ const copyByLocale: Record<Locale, Copy> = {
     heroStatus: 'Philosophisches Fundament',
     heroLine1: 'Kein Spiegel.',
     heroLine2: 'Ein Gedächtnis.',
+    heroLine3: 'Eine Resonanz.',
     heroDesc1:
       'Mora ist die semantische Schnittstelle von Saimôr OS. Sie versteht nicht nur Syntax; sie erkennt die Ursache von Verhaltensmustern.',
     heroDesc2:
@@ -121,6 +123,7 @@ const copyByLocale: Record<Locale, Copy> = {
     heroStatus: 'Philosophical Foundation',
     heroLine1: 'Not a mirror.',
     heroLine2: 'A memory.',
+    heroLine3: 'A resonance.',
     heroDesc1:
       'Mora is the semantic interface of Saimôr OS. It doesn\'t just understand syntax; it recognizes the cause of behavioral patterns.',
     heroDesc2:
@@ -552,6 +555,7 @@ export default function MoraAnalogAffect({ locale = 'de' }: Props) {
             <h1 className="text-6xl md:text-9xl font-sans leading-[0.85] mb-10 uppercase cursor-default drop-shadow-2xl">
               <span className="hero-title-line glitch-hover block text-white" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.3)' }}>{copy.heroLine1}</span>
               <span className="hero-title-line text-saimor-teal italic glitch-hover block" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(16,185,129,0.5)' }}>{copy.heroLine2}</span>
+              <span className="hero-title-line italic glitch-hover block" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(212,168,87,0.55)', backgroundImage: 'linear-gradient(135deg, #D4A857 0%, #E6C897 50%, #D4A857 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{copy.heroLine3}</span>
             </h1>
 
             <div className="grid md:grid-cols-12 gap-12 mt-8">

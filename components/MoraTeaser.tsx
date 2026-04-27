@@ -75,14 +75,14 @@ export default function MoraTeaser({ locale }: Props) {
                   {t('Kein Spiegel.', 'Not a mirror.')}
                 </span>
                 <span
-                  className="block italic text-transparent bg-clip-text"
-                  style={{ backgroundImage: 'linear-gradient(135deg, #34d399 0%, #22d3ee 100%)' }}
+                  className="block italic text-white/30"
+                  aria-hidden
                 >
-                  {t('Ein Gedächtnis.', 'A memory.')}
+                  …
                 </span>
               </h2>
               <p className="text-sm text-white/30 uppercase tracking-[0.2em] pl-0.5">
-                {t('Môra · Semantische KI-Ebene', 'Môra · Semantic AI Layer')}
+                {t('Môra — die Antwort wartet auf der nächsten Seite', 'Môra — the answer waits on the next page')}
               </p>
             </div>
 

@@ -3,7 +3,7 @@ import { Heart, ArrowRight } from 'lucide-react';
 
 export const metadata = {
   title: 'Gästebuch | Saimôr',
-  description: 'Ein digitales Gästebuch für die Saimôr Community. Wer hier steht, hat den ersten Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
+  description: 'Polaroid-Wand für die Saimôr Community. Wer hier hängt, hat den ersten Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
 };
 
 type WallEntry = {
@@ -28,49 +28,21 @@ async function getEntries(): Promise<WallEntry[]> {
   }
 }
 
-// ─── Pastel palette: each entry rotates through these for variety ────────────
-const PALETTE = [
-  { bg: '#FCE8DD', ink: '#7A4A35', accent: '#E8A597', name: 'Pfirsich' },     // peach
-  { bg: '#E8F0E0', ink: '#3F5D3D', accent: '#9CB69E', name: 'Salbei' },        // sage
-  { bg: '#F8E0E5', ink: '#7C3D4A', accent: '#D4889B', name: 'Rose' },          // rose
-  { bg: '#E8EBF5', ink: '#3F4870', accent: '#8B95B8', name: 'Flieder' },       // lavender
-  { bg: '#FAF1D9', ink: '#6B5424', accent: '#D4B872', name: 'Honig' },         // butter / honey
-  { bg: '#E0EEF0', ink: '#2F5658', accent: '#7FB1B5', name: 'Mint' },          // mint
+// Photo-area pastel palette — soft enough to feel personal, saturated
+// enough to read as a real photograph against the white polaroid frame.
+const PHOTO_PALETTE = [
+  { photo: 'linear-gradient(135deg, #FCE8DD 0%, #F4C7B4 100%)', tack: '#C97D5E', label: '#7A4A35' }, // peach
+  { photo: 'linear-gradient(135deg, #E8F0E0 0%, #BFD7B5 100%)', tack: '#6B8B68', label: '#3F5D3D' }, // sage
+  { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', label: '#7C3D4A' }, // rose
+  { photo: 'linear-gradient(135deg, #E8EBF5 0%, #B5BFD9 100%)', tack: '#6E7A9F', label: '#3F4870' }, // lavender
+  { photo: 'linear-gradient(135deg, #FAF1D9 0%, #E5C988 100%)', tack: '#A88A4A', label: '#6B5424' }, // honey
+  { photo: 'linear-gradient(135deg, #E0EEF0 0%, #A8CACE 100%)', tack: '#4F8488', label: '#2F5658' }, // mint
 ];
 
 function paletteFor(seed: string) {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return PALETTE[h % PALETTE.length];
-}
-
-// ─── Decorative SVG: tiny hand-drawn-feel heart, used as a stamp ────────────
-function StampHeart({ color, className = '' }: { color: string; className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M12 21s-7.5-4.5-9.5-9.5C1 7.5 3.5 4 7 4c2 0 3.5 1.2 5 3 1.5-1.8 3-3 5-3 3.5 0 6 3.5 4.5 7.5C19.5 16.5 12 21 12 21z"
-        stroke={color}
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function StampStar({ color, className = '' }: { color: string; className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M12 3l1.8 5.5h5.7l-4.6 3.4 1.8 5.6L12 14.1l-4.7 3.4 1.8-5.6L4.5 8.5h5.7L12 3z"
-        stroke={color}
-        strokeWidth="1.3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+  return PHOTO_PALETTE[h % PHOTO_PALETTE.length];
 }
 
 // ─── Page ───────────────────────────────────────────────────────────────────
@@ -82,93 +54,108 @@ export default async function WallPage() {
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden"
+      className="min-h-screen overflow-x-hidden relative"
       style={{
+        // Warm "wall" — wood-tone gradient, not cream-soft. Reads as a
+        // real surface where things can be pinned, not as a paper page.
         background:
-          'radial-gradient(circle at 15% 10%, #FBE9D7 0%, transparent 45%),' +
-          'radial-gradient(circle at 85% 80%, #E8E0EE 0%, transparent 50%),' +
-          'radial-gradient(circle at 50% 50%, #FAF6EE 0%, #F4ECDD 100%)',
-        color: '#4A3826',
+          'radial-gradient(circle at 20% 0%, #B89274 0%, transparent 55%),' +
+          'radial-gradient(circle at 80% 100%, #8E6147 0%, transparent 60%),' +
+          'linear-gradient(165deg, #C9A684 0%, #A07A5C 50%, #6F4E36 100%)',
+        color: '#2F2118',
         fontFamily: '"Cormorant Garamond", Georgia, serif',
       }}
     >
-      {/* Subtle paper-grain overlay (CSS-only, no asset) */}
+      {/* Wood-grain texture overlay — diagonal subtle stripes */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-[0.04] z-0 mix-blend-multiply"
+        className="fixed inset-0 pointer-events-none opacity-[0.06] z-0"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 1px 1px, #4A3826 1px, transparent 0)',
-          backgroundSize: '4px 4px',
+            'repeating-linear-gradient(110deg, rgba(60, 35, 18, 0.5) 0px, transparent 1px, transparent 5px, rgba(60, 35, 18, 0.4) 6px, transparent 7px, transparent 22px)',
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 md:py-28">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28">
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
         <header className="text-center mb-20 space-y-6">
           <div
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
-            style={{ background: '#E8A59722', border: '1px solid #E8A59755' }}
+            style={{
+              background: 'rgba(255,250,242,0.85)',
+              border: '1px solid rgba(122, 74, 53, 0.25)',
+              boxShadow: '0 2px 8px rgba(60, 35, 18, 0.15)',
+            }}
           >
-            <Heart size={12} fill="#E8A597" stroke="#E8A597" />
-            <span className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#A86B57', fontFamily: 'system-ui, sans-serif' }}>
+            <Heart size={12} fill="#C97D5E" stroke="#C97D5E" />
+            <span className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#7A4A35', fontFamily: 'system-ui, sans-serif' }}>
               Gästebuch
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-light leading-[1.05]" style={{ color: '#3E2C1C' }}>
+          <h1
+            className="text-5xl md:text-7xl font-light leading-[1.05]"
+            style={{
+              color: '#FAF6EE',
+              textShadow: '0 2px 12px rgba(60, 35, 18, 0.6)',
+            }}
+          >
             Schön, dass du{' '}
-            <em className="italic" style={{ color: '#A86B57' }}>hier</em> bist
+            <em className="italic" style={{ color: '#FFE4C4' }}>hier</em> bist
           </h1>
 
           <p
             className="text-lg max-w-xl mx-auto leading-relaxed italic"
-            style={{ color: '#6B5240' }}
+            style={{
+              color: '#FAF6EE',
+              opacity: 0.85,
+              textShadow: '0 1px 6px rgba(60, 35, 18, 0.5)',
+            }}
           >
-            Ein Gästebuch für die Menschen, die Saimôr mitgestalten. Trag dich ein,
-            indem du deinen Security-Check machst — dein Name kommt dann hierher,
-            wenn du magst.
+            Eine Wand für die Menschen, die Saimôr mitgestalten. Heft dich dazu —
+            indem du deinen Security-Check machst — wenn du magst, hängen wir dein
+            Polaroid hier auf.
           </p>
 
           {/* tiny ornamental rule */}
           <div className="flex items-center justify-center gap-3 pt-4">
-            <span style={{ width: 40, height: 1, background: '#A86B5755' }} />
-            <StampHeart color="#A86B5788" className="w-4 h-4" />
-            <span style={{ width: 40, height: 1, background: '#A86B5755' }} />
+            <span style={{ width: 50, height: 1, background: 'rgba(250, 246, 238, 0.4)' }} />
+            <Heart size={10} fill="#FFE4C4" stroke="#FFE4C4" />
+            <span style={{ width: 50, height: 1, background: 'rgba(250, 246, 238, 0.4)' }} />
           </div>
         </header>
 
-        {/* ── Entries ────────────────────────────────────────────────────── */}
+        {/* ── Polaroid grid ──────────────────────────────────────────────── */}
         {isEmpty ? (
           <EmptyState />
         ) : (
-          <div className="columns-1 md:columns-2 gap-6 space-y-6">
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
             {sorted.map((entry, idx) => (
-              <GuestbookEntry key={entry.id} entry={entry} index={idx} />
+              <Polaroid key={entry.id} entry={entry} index={idx} />
             ))}
           </div>
         )}
 
         {/* ── CTA ────────────────────────────────────────────────────────── */}
-        <div className="mt-24 text-center space-y-5">
+        <div className="mt-28 text-center space-y-5">
           <Link
             href="/de/einstieg/security-check"
             className="group inline-flex items-center gap-3 px-10 py-4 rounded-full transition-all hover:scale-[1.02]"
             style={{
-              background: '#3E2C1C',
-              color: '#FAF6EE',
+              background: '#FAF6EE',
+              color: '#3E2C1C',
               fontFamily: 'system-ui, sans-serif',
               fontSize: 14,
               fontWeight: 500,
               letterSpacing: '0.05em',
-              boxShadow: '0 4px 20px rgba(168, 107, 87, 0.2)',
+              boxShadow: '0 6px 20px rgba(60, 35, 18, 0.35), 0 2px 0 rgba(255,255,255,0.4) inset',
             }}
           >
-            Trag dich ein
+            Heft dich an die Wand
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <p className="text-xs italic" style={{ color: '#8B6E55' }}>
-            Kostenlos. Kein Login. Du entscheidest, ob dein Eintrag öffentlich wird.
+          <p className="text-xs italic" style={{ color: '#FAF6EE', opacity: 0.7 }}>
+            Kostenlos. Kein Login. Du entscheidest, ob dein Polaroid öffentlich wird.
           </p>
         </div>
       </div>
@@ -176,21 +163,21 @@ export default async function WallPage() {
   );
 }
 
-// ─── Entry card ─────────────────────────────────────────────────────────────
+// ─── Polaroid card ──────────────────────────────────────────────────────────
 
-function GuestbookEntry({ entry, index }: { entry: WallEntry; index: number }) {
+function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
   const palette = paletteFor(entry.id || entry.name);
   const date = new Date(entry.createdAt).toLocaleDateString('de-DE', {
     day: 'numeric',
-    month: 'long',
+    month: 'short',
     year: 'numeric',
   });
 
-  // Slight, deterministic rotation per card so it feels like a scrapbook.
-  const rotation = ((index * 7) % 5) - 2; // -2..+2 deg
-  const decoration = index % 3 === 0 ? 'heart' : index % 3 === 1 ? 'star' : null;
+  // Slight, deterministic rotation per polaroid so the wall feels real.
+  const rotation = ((index * 11) % 7) - 3; // -3..+3 deg
+  const tackOffset = ((index * 5) % 11) - 5; // -5..+5 px horizontal nudge of the tack
 
-  // Score → warm warmth-level (not graded letter)
+  // Score → warmth label (no leaderboard cold)
   const warmth =
     entry.score >= 90 ? 'sehr sicher unterwegs'
     : entry.score >= 75 ? 'gut aufgestellt'
@@ -199,70 +186,109 @@ function GuestbookEntry({ entry, index }: { entry: WallEntry; index: number }) {
 
   return (
     <article
-      className="break-inside-avoid relative rounded-[2rem] p-7 transition-all hover:rotate-0 hover:scale-[1.01]"
-      style={{
-        background: palette.bg,
-        color: palette.ink,
-        transform: `rotate(${rotation}deg)`,
-        boxShadow:
-          '0 1px 0 rgba(255,255,255,0.6) inset, 0 8px 24px rgba(168, 107, 87, 0.08), 0 1px 3px rgba(74, 56, 38, 0.06)',
-      }}
+      className="break-inside-avoid relative pt-5 transition-all hover:rotate-0 hover:scale-[1.02]"
+      style={{ transform: `rotate(${rotation}deg)` }}
     >
-      {/* Decorative stamp in corner */}
-      {decoration === 'heart' && (
-        <StampHeart color={palette.accent} className="absolute top-5 right-5 w-5 h-5 opacity-60" />
-      )}
-      {decoration === 'star' && (
-        <StampStar color={palette.accent} className="absolute top-5 right-5 w-5 h-5 opacity-60" />
-      )}
-
-      {/* Date — small, looks handwritten */}
-      <p
-        className="text-[11px] italic mb-3"
-        style={{ color: palette.accent, opacity: 0.85 }}
-      >
-        {date}
-      </p>
-
-      {/* Name — biggest element on the card */}
-      <h3
-        className="text-2xl md:text-3xl font-medium leading-tight mb-2"
-        style={{ color: palette.ink }}
-      >
-        {entry.name}
-      </h3>
-
-      {/* Company / domain — secondary */}
-      {(entry.company || entry.domain) && (
-        <p
-          className="text-sm mb-5"
-          style={{ color: palette.ink, opacity: 0.7, fontFamily: 'system-ui, sans-serif' }}
-        >
-          {entry.company || entry.domain}
-        </p>
-      )}
-
-      {/* Footer line: warmth label + score, framed warmly */}
+      {/* Thumbtack at top */}
       <div
-        className="flex items-end justify-between pt-4 mt-2"
-        style={{ borderTop: `1px dashed ${palette.accent}66` }}
+        className="absolute z-20 top-0 left-1/2 -translate-x-1/2 rounded-full"
+        style={{
+          width: 14,
+          height: 14,
+          marginLeft: tackOffset,
+          background: `radial-gradient(circle at 35% 35%, ${palette.tack}EE 0%, ${palette.tack} 60%, ${palette.tack}88 100%)`,
+          boxShadow:
+            `0 1px 0 rgba(255,255,255,0.7) inset, ` +
+            `0 -1px 0 rgba(0,0,0,0.3) inset, ` +
+            `0 3px 4px rgba(0,0,0,0.35), ` +
+            `0 1px 0 ${palette.tack}66`,
+        }}
+        aria-hidden
+      />
+
+      {/* Polaroid frame */}
+      <div
+        className="relative rounded-[6px] pt-3 px-3 pb-1"
+        style={{
+          background: '#FAF6EE',
+          boxShadow:
+            '0 2px 0 rgba(255,255,255,0.6) inset, ' +
+            '0 12px 28px rgba(40, 22, 10, 0.45), ' +
+            '0 4px 8px rgba(40, 22, 10, 0.25)',
+        }}
       >
-        <p className="text-xs italic leading-snug max-w-[140px]" style={{ color: palette.ink, opacity: 0.65 }}>
-          {warmth}
-        </p>
-        <div className="text-right">
+        {/* Photo area (the colored portion of the polaroid) */}
+        <div
+          className="relative aspect-[4/3] rounded-[3px] overflow-hidden flex items-end p-5"
+          style={{ background: palette.photo }}
+        >
+          {/* Subtle vignette for photographic feel */}
           <div
-            className="text-[10px] uppercase tracking-[0.2em] mb-0.5"
-            style={{ color: palette.accent, fontFamily: 'system-ui, sans-serif' }}
-          >
-            Score
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.18) 100%)',
+            }}
+          />
+
+          {/* Name laid into the photo, like a stamped initial */}
+          <div className="relative z-10">
+            <h3
+              className="text-3xl md:text-4xl font-medium leading-tight"
+              style={{
+                color: palette.label,
+                fontFamily: '"Cormorant Garamond", serif',
+                textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+              }}
+            >
+              {entry.name}
+            </h3>
+            {(entry.company || entry.domain) && (
+              <p
+                className="text-xs mt-1"
+                style={{
+                  color: palette.label,
+                  opacity: 0.75,
+                  fontFamily: 'system-ui, sans-serif',
+                }}
+              >
+                {entry.company || entry.domain}
+              </p>
+            )}
           </div>
-          <div
-            className="text-2xl font-medium tabular-nums"
-            style={{ color: palette.ink, fontFamily: '"Cormorant Garamond", serif' }}
+        </div>
+
+        {/* Caption strip — the white bottom of the polaroid */}
+        <div className="pt-3 pb-4 px-1 flex items-end justify-between gap-2">
+          <p
+            className="text-[11px] italic leading-tight max-w-[150px]"
+            style={{
+              color: '#5C4A3A',
+              fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
+              fontSize: '14px',
+            }}
           >
-            {entry.score}
-            <span className="text-base opacity-50">/100</span>
+            {warmth}
+            <br />
+            <span style={{ opacity: 0.6, fontSize: '12px' }}>{date}</span>
+          </p>
+          <div
+            className="text-right shrink-0"
+            style={{ fontFamily: '"Cormorant Garamond", serif' }}
+          >
+            <div
+              className="text-[9px] uppercase tracking-[0.2em]"
+              style={{ color: palette.label, opacity: 0.7, fontFamily: 'system-ui, sans-serif' }}
+            >
+              Score
+            </div>
+            <div
+              className="text-2xl font-medium tabular-nums leading-none"
+              style={{ color: palette.label }}
+            >
+              {entry.score}
+              <span className="text-sm opacity-50">/100</span>
+            </div>
           </div>
         </div>
       </div>
@@ -277,19 +303,25 @@ function EmptyState() {
     <div className="text-center py-20 px-8 mx-auto max-w-2xl">
       <div
         className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
-        style={{ background: '#FCE8DD', boxShadow: '0 4px 12px rgba(168, 107, 87, 0.15)' }}
+        style={{
+          background: 'rgba(250, 246, 238, 0.95)',
+          boxShadow: '0 6px 20px rgba(60, 35, 18, 0.4)',
+        }}
       >
-        <Heart size={32} fill="#E8A597" stroke="#A86B57" strokeWidth={1.5} />
+        <Heart size={32} fill="#C97D5E" stroke="#7A4A35" strokeWidth={1.5} />
       </div>
-      <h2 className="text-3xl font-light mb-4" style={{ color: '#3E2C1C' }}>
-        Noch <em className="italic" style={{ color: '#A86B57' }}>ganz frisch</em>
+      <h2
+        className="text-3xl font-light mb-4"
+        style={{ color: '#FAF6EE', textShadow: '0 1px 6px rgba(60, 35, 18, 0.5)' }}
+      >
+        Die Wand ist noch <em className="italic" style={{ color: '#FFE4C4' }}>ganz frisch</em>
       </h2>
       <p
         className="text-lg italic leading-relaxed max-w-md mx-auto"
-        style={{ color: '#6B5240' }}
+        style={{ color: '#FAF6EE', opacity: 0.85 }}
       >
-        Niemand hat sich noch eingetragen. Das könntest du sein — der erste
-        Name in unserem Gästebuch. Wir freuen uns auf dich.
+        Niemand hat sich noch eingeheftet. Das könntest du sein — das erste
+        Polaroid an der Wand. Wir freuen uns auf dich.
       </p>
     </div>
   );

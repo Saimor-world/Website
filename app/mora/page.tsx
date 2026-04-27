@@ -98,7 +98,7 @@ export default function MoraPage() {
                 onClick={() => setShowAnalogView(true)}
                 className="px-10 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center hover:scale-105"
               >
-                Technische Details
+                Tiefer · Die Resonanz dahinter
               </button>
             </div>
           </motion.div>
