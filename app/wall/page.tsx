@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import { Heart, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Building2, EyeOff, HeartHandshake, ShieldCheck, Sparkles, Users } from 'lucide-react';
 
 export const metadata = {
-  title: 'Gästebuch | Saimôr',
-  description: 'Ein offenes Buch an der Wand. Wer hier eingetragen ist, hat einen Schritt zur digitalen Souveränität gemacht — verifiziert, sichtbar, willkommen.',
+  title: 'Saimor Wall',
+  description: 'Verifizierte Supporter, Kunden, Partner, Team-Mitglieder und anonyme Security-Signale.',
 };
+
+export const dynamic = 'force-dynamic';
 
 type WallEntry = {
   id: string;
@@ -13,13 +15,18 @@ type WallEntry = {
   tag: string | null;
   domain: string | null;
   score: number;
+  kind?: string;
+  visibility?: string;
+  status?: string;
   createdAt: string;
+  claimed?: boolean;
+  note?: string | null;
 };
 
 async function getEntries(): Promise<WallEntry[]> {
   try {
     const base = process.env.NEXTAUTH_URL || 'http://localhost:3001';
-    const res = await fetch(`${base}/api/wall`, { next: { revalidate: 30 } });
+    const res = await fetch(`${base}/api/wall`, { cache: 'no-store' });
     if (!res.ok) return [];
     const data = await res.json();
     return data.entries ?? [];
@@ -28,399 +35,218 @@ async function getEntries(): Promise<WallEntry[]> {
   }
 }
 
-const PHOTO_PALETTE = [
-  { photo: 'linear-gradient(135deg, #FCE8DD 0%, #F4C7B4 100%)', tack: '#C97D5E', label: '#7A4A35' },
-  { photo: 'linear-gradient(135deg, #E8F0E0 0%, #BFD7B5 100%)', tack: '#6B8B68', label: '#3F5D3D' },
-  { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', label: '#7C3D4A' },
-  { photo: 'linear-gradient(135deg, #E8EBF5 0%, #B5BFD9 100%)', tack: '#6E7A9F', label: '#3F4870' },
-  { photo: 'linear-gradient(135deg, #FAF1D9 0%, #E5C988 100%)', tack: '#A88A4A', label: '#6B5424' },
-  { photo: 'linear-gradient(135deg, #E0EEF0 0%, #A8CACE 100%)', tack: '#4F8488', label: '#2F5658' },
-];
+const KIND_LABELS: Record<string, string> = {
+  supporter: 'Supporter',
+  customer: 'Kunde',
+  pilot: 'Pilotkunde',
+  partner: 'Partner',
+  investor: 'Investor:in',
+  team: 'Team',
+  community: 'Community',
+  'security-check': 'Security Signal',
+};
 
-function paletteFor(seed: string) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return PHOTO_PALETTE[h % PHOTO_PALETTE.length];
+const KIND_STYLES: Record<string, { accent: string; soft: string; icon: typeof HeartHandshake }> = {
+  supporter: { accent: '#86efac', soft: 'rgba(134,239,172,0.10)', icon: HeartHandshake },
+  customer: { accent: '#67e8f9', soft: 'rgba(103,232,249,0.10)', icon: Building2 },
+  pilot: { accent: '#fde68a', soft: 'rgba(253,230,138,0.12)', icon: Sparkles },
+  partner: { accent: '#c4b5fd', soft: 'rgba(196,181,253,0.12)', icon: Users },
+  investor: { accent: '#f9a8d4', soft: 'rgba(249,168,212,0.12)', icon: BadgeCheck },
+  team: { accent: '#d9f99d', soft: 'rgba(217,249,157,0.10)', icon: Users },
+  community: { accent: '#a7f3d0', soft: 'rgba(167,243,208,0.10)', icon: HeartHandshake },
+  'security-check': { accent: '#93c5fd', soft: 'rgba(147,197,253,0.12)', icon: ShieldCheck },
+};
+
+function roleFor(entry: WallEntry) {
+  return KIND_LABELS[entry.kind || 'supporter'] || 'Supporter';
 }
 
-const ENTRIES_PER_SPREAD = 2; // one polaroid left, one journal entry right
+function styleFor(entry: WallEntry) {
+  return KIND_STYLES[entry.kind || 'supporter'] || KIND_STYLES.supporter;
+}
 
-// ─── Page ───────────────────────────────────────────────────────────────────
+function visibilityLabel(entry: WallEntry) {
+  if (entry.visibility === 'anonymous') return 'anonym';
+  if (entry.visibility === 'company-anonymous') return 'Firma anonym';
+  return 'sichtbar';
+}
 
-export default async function WallPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ s?: string }>;
-}) {
-  const sp = (await searchParams) ?? {};
-  const spread = Math.max(0, parseInt(sp.s ?? '0', 10) || 0);
+function initials(entry: WallEntry) {
+  return (
+    entry.name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join('') || 'S'
+  );
+}
 
+function scoreBand(score: number) {
+  if (score >= 80) return 'starkes Signal';
+  if (score >= 60) return 'auf dem Weg';
+  if (score >= 40) return 'ehrlicher Start';
+  return 'frueher Check';
+}
+
+function formatDate(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
+}
+
+export default async function WallPage() {
   const entries = await getEntries();
   const sorted = [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-  const totalSpreads = Math.max(1, Math.ceil(sorted.length / ENTRIES_PER_SPREAD));
-  const safeSpread = Math.min(spread, totalSpreads - 1);
-  const start = safeSpread * ENTRIES_PER_SPREAD;
-  const pair = sorted.slice(start, start + ENTRIES_PER_SPREAD);
-  const left = pair[0];
-  const right = pair[1];
-
-  const isEmpty = sorted.length === 0;
+  const anonymousCount = sorted.filter((entry) => entry.visibility && entry.visibility !== 'named').length;
+  const claimedCount = sorted.filter((entry) => entry.claimed).length;
 
   return (
-    <main
-      className="min-h-screen overflow-x-hidden relative"
-      style={{
-        // FRESH wall — soft warm cream + peach + dusty mint, light and airy.
-        // Not a heavy brown wall anymore.
-        background:
-          'radial-gradient(circle at 20% 0%, #FBE4D0 0%, transparent 55%),' +
-          'radial-gradient(circle at 80% 100%, #E2EFE3 0%, transparent 60%),' +
-          'linear-gradient(165deg, #FCF6EC 0%, #F1E5D0 50%, #E8D5BA 100%)',
-        color: '#3E2C1C',
-        fontFamily: '"Cormorant Garamond", Georgia, serif',
-      }}
-    >
-      {/* Subtle paper-grain so the wall feels like a real surface, not flat */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.05] z-0 mix-blend-multiply"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, #6B5240 1px, transparent 0)',
-          backgroundSize: '5px 5px',
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24">
-
-        {/* ── Header ─────────────────────────────────────────────────────── */}
-        <header className="text-center mb-12 space-y-5">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full"
-            style={{
-              background: 'rgba(255, 250, 242, 0.85)',
-              border: '1px solid rgba(168, 107, 87, 0.3)',
-              boxShadow: '0 2px 8px rgba(168, 107, 87, 0.12)',
-            }}
-          >
-            <Heart size={12} fill="#C97D5E" stroke="#C97D5E" />
-            <span className="text-[10px] uppercase tracking-[0.4em]" style={{ color: '#7A4A35', fontFamily: 'system-ui, sans-serif' }}>
-              Gästebuch
-            </span>
+    <main className="min-h-screen text-[#f7f0df]" style={{ background: 'linear-gradient(180deg, #06100d 0%, #0d1511 52%, #100f0c 100%)' }}>
+      <section className="border-b border-white/10 px-5 pt-24 pb-8 md:px-8 md:pt-28">
+        <div className="mx-auto flex max-w-6xl flex-col gap-7 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/20 bg-emerald-300/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.26em] text-emerald-100/70">
+              <Sparkles size={12} />
+              Verified Wall
+            </div>
+            <h1 className="mt-4 text-5xl font-light leading-none md:text-7xl" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}>
+              Saimor Wall
+            </h1>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/58 md:text-lg">
+              Supporter, Kund:innen, Team, Partner und anonyme Signale.
+            </p>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-light leading-[1.05]" style={{ color: '#3E2C1C' }}>
-            Schön, dass du{' '}
-            <em className="italic" style={{ color: '#A86B57' }}>hier</em> bist
-          </h1>
-
-          <p className="text-lg max-w-xl mx-auto leading-relaxed italic" style={{ color: '#6B5240' }}>
-            Ein Buch an der Wand. Wer Saimôr mitgestaltet, hinterlässt eine
-            Seite — Polaroid links, ein paar Zeilen rechts. Heft dich dazu.
-          </p>
-        </header>
-
-        {/* ── Open book on the wall ───────────────────────────────────────── */}
-        <section className="relative mx-auto max-w-5xl">
-          <BookSpread left={left} right={right} isEmpty={isEmpty} />
-
-          {/* Pagination — only when there are real entries to flip through */}
-          {!isEmpty && totalSpreads > 1 && (
-            <nav className="flex items-center justify-center gap-6 mt-8 text-sm" style={{ color: '#6B5240' }}>
-              {safeSpread > 0 ? (
-                <Link
-                  href={`/wall${safeSpread - 1 === 0 ? '' : `?s=${safeSpread - 1}`}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-colors hover:bg-white/40"
-                  style={{ fontFamily: 'system-ui, sans-serif' }}
-                >
-                  <ArrowLeft size={14} />
-                  Vorherige Seite
-                </Link>
-              ) : <span className="opacity-30 px-4 py-2 inline-flex items-center gap-2"><ArrowLeft size={14} />Vorherige Seite</span>}
-
-              <span className="text-xs italic opacity-70 tabular-nums">
-                Seite {safeSpread + 1} von {totalSpreads}
-              </span>
-
-              {safeSpread < totalSpreads - 1 ? (
-                <Link
-                  href={`/wall?s=${safeSpread + 1}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-colors hover:bg-white/40"
-                  style={{ fontFamily: 'system-ui, sans-serif' }}
-                >
-                  Nächste Seite
-                  <ArrowRight size={14} />
-                </Link>
-              ) : <span className="opacity-30 px-4 py-2 inline-flex items-center gap-2">Nächste Seite<ArrowRight size={14} /></span>}
-            </nav>
-          )}
-        </section>
-
-        {/* ── CTA ────────────────────────────────────────────────────────── */}
-        <div className="mt-20 text-center space-y-4">
           <Link
             href="/de/einstieg/security-check"
-            className="group inline-flex items-center gap-3 px-10 py-4 rounded-full transition-all hover:scale-[1.02]"
+            className="inline-flex items-center justify-center gap-2 rounded-[8px] bg-emerald-300 px-5 py-3 text-sm font-semibold text-[#07100d] shadow-[0_18px_48px_rgba(52,211,153,0.24)] transition-transform hover:translate-y-[-1px]"
+          >
+            Check starten
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        <div className="mx-auto mt-7 grid max-w-6xl gap-3 sm:grid-cols-3">
+          <Stat label="Eintraege" value={String(sorted.length)} />
+          <Stat label="Anonym erlaubt" value={String(anonymousCount)} />
+          <Stat label="HQ verbunden" value={String(claimedCount)} />
+        </div>
+      </section>
+
+      <section className="px-5 py-8 md:px-8 md:py-12">
+        <div className="mx-auto max-w-6xl">
+          <div
+            className="relative overflow-hidden rounded-[8px] border border-white/12 p-4 shadow-[0_34px_110px_rgba(0,0,0,0.32)] md:p-7"
             style={{
-              background: '#3E2C1C',
-              color: '#FAF6EE',
-              fontFamily: 'system-ui, sans-serif',
-              fontSize: 14,
-              fontWeight: 500,
-              letterSpacing: '0.05em',
-              boxShadow: '0 6px 20px rgba(168, 107, 87, 0.25)',
+              background:
+                'linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)), repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 88px), repeating-linear-gradient(0deg, rgba(255,255,255,0.028) 0 1px, transparent 1px 72px), #111a15',
             }}
           >
-            Trag dich ein
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <p className="text-xs italic" style={{ color: '#8B6E55' }}>
-            Kostenlos. Kein Login. Du entscheidest, ob deine Seite öffentlich wird.
-          </p>
+            <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.28em] text-white/34">Live Board</p>
+                <p className="mt-1 text-sm text-white/54">{sorted.length} freigegebene Signale</p>
+              </div>
+              <div className="hidden rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white/42 sm:block">
+                Owner moderated
+              </div>
+            </div>
+            {sorted.length === 0 ? <EmptyWall /> : <WallGrid entries={sorted} />}
+          </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
 
-// ─── Book spread (the open-book centerpiece) ────────────────────────────────
-
-function BookSpread({
-  left,
-  right,
-  isEmpty,
-}: {
-  left?: WallEntry;
-  right?: WallEntry;
-  isEmpty: boolean;
-}) {
+function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      className="relative grid grid-cols-1 md:grid-cols-2 rounded-[8px] overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, #FFFCF6 0%, #F8F0DD 100%)',
-        boxShadow:
-          '0 30px 60px rgba(60, 40, 28, 0.18), ' +
-          '0 12px 24px rgba(60, 40, 28, 0.12), ' +
-          '0 1px 0 rgba(255,255,255,0.7) inset',
-        minHeight: 540,
-      }}
-    >
-      {/* Center binding fold — shadow on both sides of the gutter */}
-      <div
-        className="hidden md:block absolute top-4 bottom-4 left-1/2 -translate-x-1/2 pointer-events-none z-10"
-        style={{
-          width: 28,
-          background:
-            'linear-gradient(90deg, transparent 0%, rgba(122, 80, 53, 0.18) 30%, rgba(122, 80, 53, 0.28) 50%, rgba(122, 80, 53, 0.18) 70%, transparent 100%)',
-        }}
-      />
-
-      {/* Left page */}
-      <div className="relative p-8 md:p-12 flex items-center justify-center">
-        {isEmpty ? (
-          <BlankPagePolaroid />
-        ) : left ? (
-          <SmallPolaroid entry={left} />
-        ) : (
-          <BlankPagePolaroid />
-        )}
-      </div>
-
-      {/* Right page */}
-      <div className="relative p-8 md:p-12 flex items-center justify-center">
-        {isEmpty ? (
-          <BlankPageEntry />
-        ) : right ? (
-          <JournalEntry entry={right} />
-        ) : left ? (
-          <JournalEntry entry={left} />
-        ) : (
-          <BlankPageEntry />
-        )}
-      </div>
+    <div className="rounded-[8px] border border-white/10 bg-white/[0.035] px-4 py-3">
+      <p className="text-[10px] uppercase tracking-[0.22em] text-white/36">{label}</p>
+      <p className="mt-1 text-2xl font-semibold text-white/86">{value}</p>
     </div>
   );
 }
 
-// ─── Polaroid (left page) ───────────────────────────────────────────────────
-
-function SmallPolaroid({ entry }: { entry: WallEntry }) {
-  const palette = paletteFor(entry.id || entry.name);
+function WallGrid({ entries }: { entries: WallEntry[] }) {
   return (
-    <article className="relative pt-4" style={{ transform: 'rotate(-2deg)' }}>
-      <div
-        className="absolute z-20 top-0 left-1/2 -translate-x-1/2 rounded-full"
-        style={{
-          width: 14, height: 14,
-          background: `radial-gradient(circle at 35% 35%, ${palette.tack}EE 0%, ${palette.tack} 60%, ${palette.tack}88 100%)`,
-          boxShadow: `0 1px 0 rgba(255,255,255,0.7) inset, 0 -1px 0 rgba(0,0,0,0.3) inset, 0 3px 4px rgba(0,0,0,0.3)`,
-        }}
-        aria-hidden
-      />
-      <div
-        className="relative rounded-[6px] pt-3 px-3 pb-1"
-        style={{
-          background: '#FFFCF6',
-          boxShadow: '0 8px 22px rgba(40, 22, 10, 0.25), 0 2px 0 rgba(255,255,255,0.7) inset',
-        }}
-      >
-        <div
-          className="relative aspect-[4/3] rounded-[3px] overflow-hidden flex items-end p-4"
-          style={{ background: palette.photo, minWidth: 220 }}
-        >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.18) 100%)' }}
-          />
-          <div className="relative z-10">
-            <h3
-              className="text-2xl font-medium leading-tight"
-              style={{
-                color: palette.label,
-                fontFamily: '"Cormorant Garamond", serif',
-                textShadow: '0 1px 0 rgba(255,255,255,0.5)',
-              }}
-            >
-              {entry.name}
-            </h3>
-          </div>
-        </div>
-        <div className="pt-3 pb-3 px-1 text-center">
-          <p
-            className="text-[12px] italic"
-            style={{ color: '#5C4A3A', fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif', fontSize: 16 }}
-          >
-            {entry.company || entry.domain || 'Saimôr Community'}
-          </p>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function BlankPagePolaroid() {
-  return (
-    <div className="text-center opacity-60">
-      <div
-        className="mx-auto mb-4 rounded-[6px]"
-        style={{
-          width: 220, height: 200,
-          background: 'repeating-linear-gradient(45deg, #F0E6D5 0px, #F0E6D5 8px, #E8DCC4 8px, #E8DCC4 16px)',
-          boxShadow: 'inset 0 0 30px rgba(168, 107, 87, 0.1)',
-        }}
-      />
-      <p className="text-sm italic" style={{ color: '#A86B57' }}>
-        Hier hängt bald dein Polaroid.
-      </p>
+    <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {entries.map((entry, index) => (
+        <WallTile key={entry.id} entry={entry} index={index} />
+      ))}
     </div>
   );
 }
 
-// ─── Journal entry (right page) ─────────────────────────────────────────────
+function WallTile({ entry, index }: { entry: WallEntry; index: number }) {
+  const style = styleFor(entry);
+  const Icon = style.icon;
+  const tilt = index % 3 === 0 ? '-rotate-[0.7deg]' : index % 3 === 1 ? 'rotate-[0.45deg]' : '';
 
-function JournalEntry({ entry }: { entry: WallEntry }) {
-  const date = new Date(entry.createdAt).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
-  const warmth =
-    entry.score >= 90 ? 'sehr sicher unterwegs'
-    : entry.score >= 75 ? 'gut aufgestellt'
-    : entry.score >= 60 ? 'auf dem Weg'
-    : 'gerade angekommen';
-
-  // Ruled-paper guidelines for a journal feel
   return (
     <article
-      className="relative w-full max-w-md"
+      className={`relative min-h-[250px] rounded-[8px] border p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] transition-transform hover:-translate-y-1 ${tilt}`}
       style={{
-        backgroundImage: 'repeating-linear-gradient(transparent 0px, transparent 31px, rgba(168, 107, 87, 0.18) 32px)',
-        paddingTop: 4,
+        borderColor: `${style.accent}32`,
+        background: `linear-gradient(180deg, ${style.soft}, rgba(255,255,255,0.05) 56%, rgba(0,0,0,0.10)), linear-gradient(135deg, rgba(255,255,255,0.035), transparent), #132019`,
       }}
     >
-      <p
-        className="italic mb-3"
-        style={{ color: '#A86B57', fontSize: 13, lineHeight: '32px', fontFamily: 'system-ui, sans-serif' }}
-      >
-        {date}
-      </p>
-
-      <h4
-        className="font-medium mb-2"
+      <div
+        className="absolute left-1/2 top-3 h-3 w-3 -translate-x-1/2 rounded-full"
         style={{
-          color: '#3E2C1C',
-          fontSize: 28,
-          lineHeight: '32px',
-          fontFamily: '"Cormorant Garamond", serif',
+          background: style.accent,
+          boxShadow: `0 0 0 5px ${style.accent}18, 0 8px 18px rgba(0,0,0,0.28)`,
         }}
-      >
-        {entry.name}
-      </h4>
+      />
+      <div className="absolute inset-x-0 top-0 h-1 rounded-t-[8px]" style={{ background: style.accent }} />
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <div
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[8px] border text-sm font-semibold"
+            style={{ borderColor: `${style.accent}55`, background: `${style.accent}18`, color: style.accent }}
+          >
+            {entry.visibility === 'anonymous' ? <EyeOff size={17} /> : initials(entry)}
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.18em]" style={{ color: style.accent }}>
+              {roleFor(entry)}
+            </p>
+            <h2 className="mt-1 truncate text-lg font-semibold text-white/90">{entry.name}</h2>
+          </div>
+        </div>
+        <Icon size={18} style={{ color: style.accent }} />
+      </div>
 
-      <p
-        className="italic"
-        style={{
-          color: '#5C4A3A',
-          fontSize: 18,
-          lineHeight: '32px',
-          fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
-          maxWidth: 360,
-        }}
-      >
-        {warmth}.
-        <br />
-        Score: <span className="not-italic" style={{ fontFamily: '"Cormorant Garamond", serif' }}>{entry.score}/100</span>
-      </p>
+      <div className="mt-6 space-y-3">
+        <p className="text-sm text-white/52">{entry.company || entry.domain || visibilityLabel(entry)}</p>
+        {entry.note ? (
+          <p className="line-clamp-3 text-sm italic leading-relaxed text-white/70">"{entry.note}"</p>
+        ) : (
+          <p className="text-sm leading-relaxed text-white/42">
+            #{String(index + 1).padStart(2, '0')} auf der Wall. {scoreBand(entry.score)}.
+          </p>
+        )}
+      </div>
 
-      {(entry.company || entry.domain) && (
-        <p
-          className="mt-2"
-          style={{
-            color: '#8B6E55',
-            fontSize: 13,
-            lineHeight: '32px',
-            fontFamily: 'system-ui, sans-serif',
-          }}
-        >
-          — {entry.company || entry.domain}
-        </p>
-      )}
+      <div className="mt-5 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.12em]">
+        <span className="rounded-full border border-white/10 bg-black/20 px-2 py-1 text-white/46">{visibilityLabel(entry)}</span>
+        <span className="rounded-full border border-white/10 bg-black/20 px-2 py-1 text-white/46">{formatDate(entry.createdAt)}</span>
+        {entry.claimed ? <span className="rounded-full border border-cyan-200/20 bg-cyan-300/10 px-2 py-1 text-cyan-100/70">HQ verbunden</span> : null}
+      </div>
     </article>
   );
 }
 
-function BlankPageEntry() {
+function EmptyWall() {
   return (
-    <div
-      className="relative w-full max-w-md text-center opacity-60"
-      style={{
-        backgroundImage: 'repeating-linear-gradient(transparent 0px, transparent 31px, rgba(168, 107, 87, 0.18) 32px)',
-        paddingTop: 4,
-        minHeight: 280,
-      }}
-    >
-      <p
-        className="italic mb-2 text-left"
-        style={{ color: '#A86B57', fontSize: 13, lineHeight: '32px', fontFamily: 'system-ui, sans-serif' }}
-      >
-        — heute —
-      </p>
-      <h4
-        className="font-medium mb-2 text-left"
-        style={{ color: '#3E2C1C', fontSize: 28, lineHeight: '32px', fontFamily: '"Cormorant Garamond", serif' }}
-      >
-        Dein Name
-      </h4>
-      <p
-        className="italic text-left"
-        style={{
-          color: '#8B6E55',
-          fontSize: 18,
-          lineHeight: '32px',
-          fontFamily: '"Caveat", "Cormorant Garamond", cursive, serif',
-        }}
-      >
-        Eine Zeile, ein Polaroid,
-        <br />
-        ein erster Schritt.
+    <div className="flex min-h-[360px] flex-col items-center justify-center rounded-[8px] border border-dashed border-white/14 bg-black/12 px-6 text-center">
+      <ShieldCheck className="h-9 w-9 text-emerald-200/70" />
+      <h2 className="mt-5 text-3xl font-light" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}>
+        Noch keine freigegebenen Eintraege
+      </h2>
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-white/48">
+        Checks bleiben privat, bis E-Mail, Zustimmung und Owner-Freigabe passen. Anonyme Eintraege sind moeglich.
       </p>
     </div>
   );

@@ -5,6 +5,17 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import BrainGraph from '@/components/BrainGraph';
 import { Sparkles, LayoutDashboard, Shield, BarChart3, Zap, Calendar, ArrowRight, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { buildOsAuditUrl } from '@/lib/os-links';
+import { buildDemoCompanyProfile } from '@/lib/demo-company';
+import DemoHqPreview from '@/components/DemoHqPreview';
+
+function pipelineStatus(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
+  if (audit.userId) return { label: 'Account verbunden', className: 'text-cyan-200 bg-cyan-400/10 border-cyan-300/20' };
+  if (audit.wallEntry?.status === 'pending_review') return { label: 'Wall Review', className: 'text-amber-200 bg-amber-400/10 border-amber-300/20' };
+  if (audit.wallEntry?.status === 'private') return { label: 'Wall privat', className: 'text-white/55 bg-white/5 border-white/10' };
+  if (audit.wallEntry) return { label: 'Wall live', className: 'text-emerald-200 bg-emerald-400/10 border-emerald-300/20' };
+  return { label: 'Dossier privat', className: 'text-amber-200 bg-amber-400/10 border-amber-300/20' };
+}
 
 export default async function MoraDashboardPage() {
   const session = await getServerSession(authOptions);
@@ -39,9 +50,31 @@ export default async function MoraDashboardPage() {
   const facts = user.facts || [];
   const isOwner = user.role === 'owner';
   const hasPassword = !!user.password;
+  const pipelineAudits = isOwner
+    ? await prisma.securityAudit.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+        include: { wallEntry: true },
+      })
+    : audits;
 
   // Derived Product Insight Extraction (from stored blueprint/audit data)
   const latestBlueprint = blueprints[0];
+  const latestAudit = audits[0];
+  const latestAuditDemoProfile = latestAudit ? buildDemoCompanyProfile({
+    id: latestAudit.id,
+    name: latestAudit.name,
+    email: latestAudit.email,
+    industry: latestAudit.industry,
+    companySize: latestAudit.companySize,
+    domain: latestAudit.domain,
+    targetDomain: latestAudit.targetDomain,
+    score: latestAudit.score,
+    level: latestAudit.level,
+    analysis: latestAudit.analysis,
+    recommendations: latestAudit.recommendations,
+    reconData: latestAudit.reconData,
+  }) : null;
   const automationCount = latestBlueprint ? (((latestBlueprint.automations as string[]) || []).length) : 0;
   const baselineFromAudit = audits[0]?.score ? Math.max(0, 100 - audits[0].score) : 30;
   const efficiencyBoostValue = latestBlueprint
@@ -136,6 +169,18 @@ export default async function MoraDashboardPage() {
           </div>
         </section>
 
+        {latestAuditDemoProfile ? (
+          <DemoHqPreview
+            profile={latestAuditDemoProfile}
+            osHref={buildOsAuditUrl(latestAudit!.id, {
+              company: latestAudit!.name,
+              domain: latestAudit!.targetDomain || latestAudit!.domain || undefined,
+              score: String(latestAudit!.score),
+              level: latestAudit!.level,
+            })}
+          />
+        ) : null}
+
         {/* Operator Field Suite (Only for Owner) */}
         {isOwner && (
           <section className="rounded-[2.5rem] border border-saimor-gold/30 bg-gradient-to-br from-saimor-gold/10 to-transparent p-10 space-y-8">
@@ -169,6 +214,67 @@ export default async function MoraDashboardPage() {
               </div>
             </div>
             <p className="text-sm text-white/40 italic">Hinweis: Die Field Suite kommuniziert direkt mit dem parallelen OS-Backbone via API-V3.</p>
+          </section>
+        )}
+
+        {isOwner && (
+          <section className="rounded-[2.5rem] border border-cyan-400/20 bg-cyan-400/[0.045] p-8 space-y-6">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.28em] text-cyan-100/55">Website Pipeline</p>
+                <h2 className="mt-2 text-3xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  Firmen aus Security Checks
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/48">
+                  Das ist die Business-Sicht auf eingehende Checks: Firma, E-Mail, Domain, Score, Wall-Status und direkter Sprung ins HQ-Dossier.
+                </p>
+              </div>
+              <div className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm text-cyan-50/75">
+                {pipelineAudits.length} Lead{pipelineAudits.length === 1 ? '' : 's'}
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-white/10">
+              <div className="grid grid-cols-[1.1fr_1fr_0.7fr_0.55fr_0.8fr_0.45fr] gap-4 border-b border-white/10 bg-black/25 px-5 py-3 text-[10px] uppercase tracking-[0.18em] text-white/35">
+                <span>Firma</span>
+                <span>Kontakt</span>
+                <span>Domain</span>
+                <span>Score</span>
+                <span>Status</span>
+                <span>Aktion</span>
+              </div>
+              <div className="divide-y divide-white/[0.06]">
+                {pipelineAudits.map((audit) => {
+                  const status = pipelineStatus(audit);
+                  return (
+                  <Link
+                    key={audit.id}
+                    href={`/account/dashboard/audit/${audit.id}`}
+                    className="grid grid-cols-[1.1fr_1fr_0.7fr_0.55fr_0.8fr_0.45fr] gap-4 px-5 py-4 text-sm transition-colors hover:bg-white/[0.045]"
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate text-white/86">{audit.name}</span>
+                      <span className="mt-0.5 block text-xs text-white/32">{audit.industry || 'ohne Branche'} · {audit.companySize || 'Groesse offen'}</span>
+                    </span>
+                    <span className="min-w-0 truncate text-white/58">{audit.email}</span>
+                    <span className="min-w-0 truncate text-white/48">{audit.targetDomain || audit.domain || '-'}</span>
+                    <span className={audit.score < 50 ? 'text-red-300' : audit.score < 80 ? 'text-amber-300' : 'text-emerald-300'}>
+                      {audit.score}/100
+                    </span>
+                    <span>
+                      <span className={`inline-flex rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.12em] ${status.className}`}>
+                        {status.label}
+                      </span>
+                    </span>
+                    <span className="text-cyan-200/70">Öffnen</span>
+                  </Link>
+                  );
+                })}
+                {pipelineAudits.length === 0 ? (
+                  <div className="px-5 py-8 text-center text-sm text-white/35">Noch keine eingegangenen Checks.</div>
+                ) : null}
+              </div>
+            </div>
           </section>
         )}
 

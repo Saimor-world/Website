@@ -5,6 +5,8 @@ import { notFound, redirect } from 'next/navigation';
 import { Shield, ArrowLeft, Download, AlertTriangle, Info, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { buildOsAuditUrl } from '@/lib/os-links';
+import { buildDemoCompanyProfile } from '@/lib/demo-company';
+import DemoHqPreview from '@/components/DemoHqPreview';
 
 export default async function AuditReportPage({
   params,
@@ -26,9 +28,12 @@ export default async function AuditReportPage({
   const sessionEmail = session.user?.email?.toLowerCase();
   const ownerEmail = audit?.user?.email?.toLowerCase();
   const auditEmail = audit?.email?.toLowerCase();
+  const currentUser = sessionEmail
+    ? await prisma.user.findUnique({ where: { email: sessionEmail }, select: { role: true } })
+    : null;
   const isAllowed =
     !!audit &&
-    (!!audit.userId ? ownerEmail === sessionEmail : auditEmail === sessionEmail);
+    (currentUser?.role === 'owner' || (!!audit.userId ? ownerEmail === sessionEmail : auditEmail === sessionEmail));
 
   if (!isAllowed) {
     notFound();
@@ -36,7 +41,29 @@ export default async function AuditReportPage({
 
   const recommendations = audit.recommendations as any[] || [];
   const printHref = `/account/dashboard/audit/${resolvedParams.id}?print=true`;
-  const osHref = buildOsAuditUrl(resolvedParams.id);
+  const osHref = buildOsAuditUrl(resolvedParams.id, {
+    company: audit.name,
+    domain: audit.targetDomain || audit.domain || undefined,
+    score: String(audit.score),
+    level: audit.level,
+  }) +
+    `&email=${encodeURIComponent(audit.email)}` +
+    `&summary=${encodeURIComponent(audit.analysis.slice(0, 420))}` +
+    `&actions=${encodeURIComponent(recommendations.slice(0, 3).map((rec) => rec?.title).filter(Boolean).join('|'))}`;
+  const demoProfile = buildDemoCompanyProfile({
+    id: audit.id,
+    name: audit.name,
+    email: audit.email,
+    industry: audit.industry,
+    companySize: audit.companySize,
+    domain: audit.domain,
+    targetDomain: audit.targetDomain,
+    score: audit.score,
+    level: audit.level,
+    analysis: audit.analysis,
+    recommendations: audit.recommendations,
+    reconData: audit.reconData,
+  });
 
   return (
     <div className="min-h-screen bg-white text-slate-900 p-8 sm:p-16 print:p-0">
@@ -121,6 +148,8 @@ export default async function AuditReportPage({
             "{audit.analysis}"
           </div>
         </section>
+
+        <DemoHqPreview profile={demoProfile} osHref={osHref} />
 
         {/* Detailed Findings */}
         <section className="space-y-8 pt-8">

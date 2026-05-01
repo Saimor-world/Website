@@ -152,18 +152,18 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
           </div>
         </section>
 
-        {/* ── Visitor Wall Banner ── */}
+        {/* ── Supporter Universe Banner ── */}
         <div className="relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.06] px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* subtle glow behind */}
           <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
           <div className="relative">
             <p className="text-[10px] uppercase tracking-[0.32em] text-emerald-300/60 mb-1.5">
-              {locale === 'de' ? 'Security Wall' : 'Security Wall'}
+              {locale === 'de' ? 'Supporter Universe' : 'Supporter Universe'}
             </p>
             <p className="text-sm text-white/70 leading-relaxed max-w-md">
               {locale === 'de'
-                ? 'Wie sicher ist deine Website? Kostenloser passiver Scan — keine Anmeldung, keine Installation.'
-                : 'How secure is your website? Free passive scan — no login, no installation.'}
+                ? 'Gästebuch für frühe Supporter, Pilot:innen, Investor:innen und Partner. Der Security-Check ist nur ein Einstieg.'
+                : 'Guestbook for early supporters, pilots, investors and partners. The security check is only one entry path.'}
             </p>
           </div>
           <div className="relative shrink-0 flex flex-col sm:flex-row gap-2">
@@ -171,14 +171,14 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
               href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black hover:bg-emerald-400 transition-all duration-200"
             >
-              {locale === 'de' ? 'Scan starten' : 'Start Scan'}
+              {locale === 'de' ? 'Check starten' : 'Start Check'}
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/wall"
               className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/30 bg-transparent px-5 py-2.5 text-sm text-emerald-200/70 hover:bg-emerald-400/10 transition-all duration-200"
             >
-              {locale === 'de' ? 'Wall' : 'Wall'}
+              {locale === 'de' ? 'Universum ansehen' : 'View Universe'}
             </Link>
           </div>
         </div>

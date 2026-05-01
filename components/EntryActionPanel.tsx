@@ -40,6 +40,19 @@ type DigitalBlueprint = {
   } | null;
 };
 
+function buildPublicHqAuditUrl(auditId: string, result: SecurityResult | null, companyName: string) {
+  const base = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';
+  const url = new URL(base);
+  url.searchParams.set('surface', 'website');
+  url.searchParams.set('entity', 'security-audit');
+  url.searchParams.set('id', auditId);
+  if (companyName.trim()) url.searchParams.set('company', companyName.trim());
+  if (result?.recon?.domain) url.searchParams.set('domain', result.recon.domain);
+  if (typeof result?.score === 'number') url.searchParams.set('score', String(result.score));
+  if (result?.levelLabel) url.searchParams.set('level', result.levelLabel);
+  return url.toString();
+}
+
 export default function EntryActionPanel({ kind, locale }: Props) {
   if (kind === 'security-check-form') return <SecurityCheckInline locale={locale} />;
   if (kind === 'digital-self-form') return <DigitalSelfInline locale={locale} />;
@@ -50,6 +63,7 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
   const { data: session } = useSession();
   const [form, setForm] = useState({
     name: '',
+    companyName: '',
     email: '',
     industry: '',
     companySize: '',
@@ -63,6 +77,7 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
   const [result, setResult] = useState<SecurityResult | null>(null);
   const [emailed, setEmailed] = useState(false);
   const [auditId, setAuditId] = useState<string | null>(null);
+  const [previewAuditId, setPreviewAuditId] = useState<string | null>(null);
   const [magicState, setMagicState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
 
   const t = {
@@ -98,6 +113,8 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
     event.preventDefault();
     setState('loading');
     setResult(null);
+    setAuditId(null);
+    setPreviewAuditId(null);
     try {
       const response = await fetch('/api/security-scan', {
         method: 'POST',
@@ -124,7 +141,9 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
       const data = await response.json();
       setResult(data.result);
       setEmailed(!!data.emailed);
-      setAuditId(data.result?.id || null);
+      const storedAuditId = data.result?.id || null;
+      setAuditId(storedAuditId);
+      setPreviewAuditId(storedAuditId || `local-preview-${Date.now()}`);
       setState('success');
     } catch {
       setState('error');
@@ -168,8 +187,9 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
       </header>
 
       <form onSubmit={onSubmit} className="grid md:grid-cols-2 gap-4">
-        <input required value={form.name} onChange={(e) => setForm((v) => ({ ...v, name: e.target.value }))} placeholder="Name" className="rounded-xl bg-white/5 border border-white/15 px-4 py-3 text-white" />
+        <input required value={form.name} onChange={(e) => setForm((v) => ({ ...v, name: e.target.value }))} placeholder={locale === 'de' ? 'Kontaktname' : 'Contact name'} className="rounded-xl bg-white/5 border border-white/15 px-4 py-3 text-white" />
         <input type="email" required value={form.email} onChange={(e) => setForm((v) => ({ ...v, email: e.target.value }))} placeholder="Email" className="rounded-xl bg-white/5 border border-white/15 px-4 py-3 text-white" />
+        <input value={form.companyName} onChange={(e) => setForm((v) => ({ ...v, companyName: e.target.value }))} placeholder={locale === 'de' ? 'Firma / Organisation' : 'Company / organization'} className="rounded-xl bg-white/5 border border-white/15 px-4 py-3 text-white" />
         <input value={form.industry} onChange={(e) => setForm((v) => ({ ...v, industry: e.target.value }))} placeholder={locale === 'de' ? 'Branche (optional)' : 'Industry (optional)'} className="rounded-xl bg-white/5 border border-white/15 px-4 py-3 text-white" />
         <select value={form.companySize} onChange={(e) => setForm((v) => ({ ...v, companySize: e.target.value }))} className="rounded-xl bg-[#0d1b16] border border-white/15 px-4 py-3 text-white">
           <option value="">{locale === 'de' ? 'Unternehmensgroesse' : 'Company size'}</option>
@@ -283,45 +303,71 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 ) : null}
-              </div>
-            ) : auditId ? (
-              <div className="flex flex-wrap items-center gap-4">
-                <Link
-                  href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}`)}`}
-                  className="text-cyan-400 font-bold hover:underline inline-flex items-center gap-2"
-                >
-                  <span>{locale === 'de' ? 'Einloggen und Report speichern' : 'Login to save report'}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}?print=true`)}`}
-                  className="text-cyan-300 font-bold hover:underline inline-flex items-center gap-2"
-                >
-                  <span>{locale === 'de' ? 'Einloggen und direkt PDF' : 'Login and open PDF'}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <button
-                  type="button"
-                  onClick={sendMagicLink}
-                  disabled={magicState === 'loading' || magicState === 'sent'}
-                  className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/50 bg-emerald-300/10 px-4 py-2 text-emerald-200 font-bold hover:bg-emerald-300/20 transition-colors disabled:opacity-60"
-                >
-                  <span>
-                    {magicState === 'loading'
-                      ? locale === 'de'
-                        ? 'Sende Link...'
-                        : 'Sending link...'
-                      : locale === 'de'
-                        ? '1-Click Magic Link senden'
-                        : 'Send 1-click magic link'}
-                  </span>
-                </button>
+                {previewAuditId ? (
+                  <a
+                    href={buildPublicHqAuditUrl(previewAuditId, result, form.companyName || form.name)}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-emerald-300 font-bold hover:underline inline-flex items-center gap-2"
+                  >
+                    <span>{locale === 'de' ? 'Simulierte HQ-Demo' : 'Simulated HQ demo'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                ) : null}
               </div>
             ) : (
-              <a href="https://cal.com/saimor/30min" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline inline-flex items-center gap-2">
-                <span>{locale === 'de' ? 'Audit-Gespraech buchen' : 'Book Audit Call'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
+              <div className="flex flex-wrap items-center gap-4">
+                {auditId ? (
+                  <>
+                    <Link
+                      href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}`)}`}
+                      className="text-cyan-400 font-bold hover:underline inline-flex items-center gap-2"
+                    >
+                      <span>{locale === 'de' ? 'Einloggen und Report speichern' : 'Login to save report'}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <Link
+                      href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}?print=true`)}`}
+                      className="text-cyan-300 font-bold hover:underline inline-flex items-center gap-2"
+                    >
+                      <span>{locale === 'de' ? 'Einloggen und direkt PDF' : 'Login and open PDF'}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={sendMagicLink}
+                      disabled={magicState === 'loading' || magicState === 'sent'}
+                      className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/50 bg-emerald-300/10 px-4 py-2 text-emerald-200 font-bold hover:bg-emerald-300/20 transition-colors disabled:opacity-60"
+                    >
+                      <span>
+                        {magicState === 'loading'
+                          ? locale === 'de'
+                            ? 'Sende Link...'
+                            : 'Sending link...'
+                          : locale === 'de'
+                            ? '1-Click Magic Link senden'
+                            : 'Send 1-click magic link'}
+                      </span>
+                    </button>
+                  </>
+                ) : null}
+                {previewAuditId ? (
+                  <a
+                    href={buildPublicHqAuditUrl(previewAuditId, result, form.companyName || form.name)}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-emerald-300 font-bold hover:underline inline-flex items-center gap-2"
+                  >
+                    <span>{locale === 'de' ? 'HQ-Demo ansehen' : 'View HQ demo'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                ) : (
+                  <a href="https://cal.com/saimor/30min" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline inline-flex items-center gap-2">
+                    <span>{locale === 'de' ? 'Audit-Gespraech buchen' : 'Book Audit Call'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
             )}
           </div>
           {!session && auditId && magicState === 'sent' ? (

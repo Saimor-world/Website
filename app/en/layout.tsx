@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
-import { Inter, Cormorant_Garamond } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
-const corm = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: 'Saimôr – Clarity in Change',
@@ -29,7 +25,7 @@ export const viewport: Viewport = {
 
 export default function RouteLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className={`${inter.className} min-h-screen font-sans`}>
+    <div className="min-h-screen font-sans">
       {children}
     </div>
   )
