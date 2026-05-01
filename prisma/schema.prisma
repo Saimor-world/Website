@@ -67,9 +67,15 @@ model WallEntry {
   tag       String?
   domain    String?
   score     Int
+  kind      String        @default("supporter")
+  visibility String      @default("named")
+  message   String?
+  status    String       @default("published")
+  approvedAt DateTime?
   createdAt DateTime      @default(now())
 
   @@index([createdAt])
+  @@index([status, createdAt])
 }
 
 model DigitalSelfBlueprint {
