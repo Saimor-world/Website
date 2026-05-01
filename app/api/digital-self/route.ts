@@ -155,25 +155,35 @@ export async function POST(req: NextRequest) {
     const aiInsight = await generateAIProfile(parsed.data);
 
     let userId = null;
-    if (session?.user?.email) {
-      const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-      if (user) userId = user.id;
-    }
+    let blueprintId: string | null = null;
+    let registered = false;
 
-    const created = await prisma.digitalSelfBlueprint.create({
-      data: {
-        userId,
-        name,
-        email,
-        goal,
-        focus: aiInsight?.personaDescription || blueprint.focus,
-        painPoints,
-        techStack,
-        automations: blueprint.automations as any,
-        guardrails: blueprint.guardrails as any,
-        roadmap: blueprint.roadmap as any,
-      },
-    });
+    try {
+      if (session?.user?.email) {
+        const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+        if (user) userId = user.id;
+      }
+
+      const created = await prisma.digitalSelfBlueprint.create({
+        data: {
+          userId,
+          name,
+          email,
+          goal,
+          focus: aiInsight?.personaDescription || blueprint.focus,
+          painPoints,
+          techStack,
+          automations: blueprint.automations as any,
+          guardrails: blueprint.guardrails as any,
+          roadmap: blueprint.roadmap as any,
+        },
+      });
+
+      blueprintId = created.id;
+      registered = true;
+    } catch (dbError: any) {
+      console.warn('[Digital Self API] Blueprint generated without persistence:', dbError?.message ?? dbError);
+    }
 
     const summary =
       `Digital Self Blueprint\n` +
@@ -235,13 +245,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      id: created.id,
+      id: blueprintId,
       blueprint: {
         ...blueprint,
         focus: aiInsight?.personaDescription || blueprint.focus,
         aiInsight
       },
-      registered: true,
+      registered,
       accountLinked: !!session?.user,
       emailed,
     });

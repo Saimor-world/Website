@@ -1,43 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
 import { contactFormLimiter, getClientIP } from '@/lib/rate-limit';
+import { createWallEntryFromVerifiedIntent } from '@/lib/wall-entry-service';
+import { verifyWallVerificationToken } from '@/lib/wall-verification';
 
 const Body = z.object({
   auditId: z.string().cuid(),
   name: z.string().trim().min(1).max(120),
   company: z.string().trim().max(120).optional(),
+  verificationToken: z.string().min(20).optional(),
   followUpAnswers: z
     .array(z.object({ id: z.string(), answer: z.string().max(200) }))
     .max(5)
     .optional()
     .default([]),
 });
-
-/** Derive a short tag from industry or follow-up answers. */
-function deriveTag(industry?: string | null, answers?: { id: string; answer: string }[]): string {
-  if (industry) {
-    const map: Record<string, string> = {
-      finance: 'Finanzen',
-      health: 'Gesundheit',
-      tech: 'Tech',
-      legal: 'Recht',
-      retail: 'Handel',
-      marketing: 'Marketing',
-      consulting: 'Beratung',
-      handwerk: 'Handwerk',
-      manufacturing: 'Produktion',
-      logistics: 'Logistik',
-    };
-    for (const [key, label] of Object.entries(map)) {
-      if (industry.toLowerCase().includes(key)) return label;
-    }
-    // First word of the industry string (capitalised)
-    const first = industry.split(/[\s,/]/)[0];
-    if (first && first.length > 1) return first.charAt(0).toUpperCase() + first.slice(1);
-  }
-  return 'Unternehmen';
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,42 +29,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
 
-    const { auditId, name, company, followUpAnswers } = parsed.data;
-
-    // Fetch the audit
-    const audit = await prisma.securityAudit.findUnique({ where: { id: auditId } });
-    if (!audit) {
-      return NextResponse.json({ error: 'Audit not found' }, { status: 404 });
+    if (!parsed.data.verificationToken) {
+      return NextResponse.json({
+        error: 'E-Mail-Verifizierung erforderlich. Bitte fordere zuerst den Wall-Bestaetigungslink an.',
+        requiresVerification: true,
+      }, { status: 403 });
     }
 
-    // One wall entry per audit
-    const existing = await prisma.wallEntry.findUnique({ where: { auditId } });
-    if (existing) {
-      return NextResponse.json({ entry: existing, alreadyExists: true });
+    const intent = verifyWallVerificationToken(parsed.data.verificationToken);
+    if (intent.auditId !== parsed.data.auditId) {
+      return NextResponse.json({ error: 'Verification token does not match audit' }, { status: 403 });
     }
 
-    // Persist answers back to audit
-    if (followUpAnswers.length > 0) {
-      await prisma.securityAudit.update({
-        where: { id: auditId },
-        data: { followUpAnswers: followUpAnswers as any },
-      });
-    }
-
-    const tag = deriveTag(audit.industry, followUpAnswers);
-
-    const entry = await prisma.wallEntry.create({
-      data: {
-        auditId,
-        name,
-        company: company || null,
-        tag,
-        domain: audit.domain || null,
-        score: audit.score,
-      },
+    const result = await createWallEntryFromVerifiedIntent({
+      ...intent,
+      name: parsed.data.name,
+      company: parsed.data.company || intent.company || null,
+      followUpAnswers: parsed.data.followUpAnswers.length > 0
+        ? parsed.data.followUpAnswers
+        : intent.followUpAnswers,
     });
-
-    return NextResponse.json({ entry, alreadyExists: false });
+    return NextResponse.json(result.body, { status: result.status });
   } catch (error) {
     console.error('[Wall Entry Error]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
