@@ -7,7 +7,7 @@
     "dev:auto": "node scripts/dev-auto.js --clean",
     "dev:auto:noclean": "node scripts/dev-auto.js",
     "dev:clean": "npm run kill:3001 && npm run clean:next && next dev -p 3001",
-    "build": "next build",
+    "build": "node scripts/migrate-on-vercel-production.js && next build",
     "build:auto": "node scripts/build-auto.js",
     "build:clean": "npm run clean:next && next build",
     "start": "next start",
@@ -22,6 +22,7 @@
     "db:studio": "prisma studio",
     "auth:cleanup:magic": "node scripts/cleanup-magic-tokens.js",
     "preflight:auth": "node scripts/preflight-auth.js",
+    "preflight:go-live": "node scripts/preflight-go-live.js",
     "smoke:auth": "node scripts/smoke-auth.js",
     "postinstall": "prisma generate"
   },
