@@ -12,13 +12,15 @@ export function calculateSecurityScore(recon: ReconResult) {
   const categories: Record<string, CategoryScore> = {
     encryption: scoreEncryption(recon),
     headers: scoreHeaders(recon),
+    informationHygiene: scoreInformationHygiene(recon),
     infrastructure: scoreInfrastructure(recon)
   };
 
   const totalScore = Math.round(
-    (categories.encryption.score * 0.4) + 
-    (categories.headers.score * 0.4) + 
-    (categories.infrastructure.score * 0.2)
+    (categories.encryption.score * 0.35) +
+    (categories.headers.score * 0.30) +
+    (categories.informationHygiene.score * 0.20) +
+    (categories.infrastructure.score * 0.15)
   );
 
   return {
@@ -114,4 +116,55 @@ function scoreInfrastructure(recon: ReconResult): CategoryScore {
   }
 
   return { score, grade: getGrade(score), findings };
+}
+
+function scoreInformationHygiene(recon: ReconResult): CategoryScore {
+  let score = 100;
+  const findings: CategoryScore['findings'] = [];
+  const foundRiskFiles = recon.publicFiles.filter((file) => file.found && file.risk === 'risk');
+  const foundInfoFiles = recon.publicFiles.filter((file) => file.found && file.risk === 'info');
+  const hasSecurityTxt = recon.publicFiles.some((file) => file.found && file.path.includes('security.txt'));
+
+  foundRiskFiles.forEach((file) => {
+    score -= 35;
+    findings.push({
+      title: `Kritische Datei sichtbar: ${file.path}`,
+      severity: 'risk',
+      desc: `Der oeffentliche Pfad ${file.path} antwortet mit Status ${file.status}. Das kann interne Informationen preisgeben.`,
+    });
+  });
+
+  if (foundInfoFiles.length > 0) {
+    score -= Math.min(15, foundInfoFiles.length * 5);
+    findings.push({
+      title: 'Oeffentliche Index-Dateien sichtbar',
+      severity: 'warn',
+      desc: `${foundInfoFiles.map((file) => file.path).join(', ')} sind erreichbar. Das ist oft normal, sollte aber bewusst gepflegt werden.`,
+    });
+  }
+
+  if (hasSecurityTxt) {
+    findings.push({
+      title: 'security.txt vorhanden',
+      severity: 'ok',
+      desc: 'Es gibt einen oeffentlichen Kontaktpunkt fuer verantwortungsvolle Sicherheitsmeldungen.',
+    });
+  } else {
+    score -= 10;
+    findings.push({
+      title: 'security.txt fehlt',
+      severity: 'warn',
+      desc: 'Ein klarer Sicherheitskontakt fuer externe Finder ist nicht sichtbar.',
+    });
+  }
+
+  if (findings.length === 0) {
+    findings.push({
+      title: 'Keine auffaelligen Public-Files',
+      severity: 'ok',
+      desc: 'Die geprueften Standardpfade liefern keine offensichtlichen sensiblen Dateien aus.',
+    });
+  }
+
+  return { score: Math.max(0, score), grade: getGrade(Math.max(0, score)), findings };
 }

@@ -97,6 +97,11 @@ export const contactFormLimiter = rateLimit({
   limit: parseInt(process.env.RATE_LIMIT_CONTACT || '3')
 });
 
+export const securityScanLimiter = rateLimit({
+  interval: 60 * 60 * 1000,
+  limit: parseInt(process.env.RATE_LIMIT_SECURITY_SCAN || '20')
+});
+
 export const waitlistLimiter = rateLimit({
   interval: 60 * 60 * 1000, // 1 hour per submission
   limit: parseInt(process.env.RATE_LIMIT_WAITLIST || '3')

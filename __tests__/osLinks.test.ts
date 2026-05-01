@@ -46,4 +46,20 @@ describe('OS links', () => {
     expect(blueprint.searchParams.get('entity')).toBe('digital-blueprint');
     expect(blueprint.searchParams.get('id')).toBe('blueprint-1');
   });
+
+  it('adds optional audit preview context to HQ links', () => {
+    process.env.OS_HOME_URL = 'https://hq.saimor.world';
+
+    const audit = new URL(buildOsAuditUrl('audit-1', {
+      company: 'Coffee Test',
+      domain: 'coffee-test.de',
+      score: '58',
+      level: 'Mittel',
+    }));
+
+    expect(audit.searchParams.get('company')).toBe('Coffee Test');
+    expect(audit.searchParams.get('domain')).toBe('coffee-test.de');
+    expect(audit.searchParams.get('score')).toBe('58');
+    expect(audit.searchParams.get('level')).toBe('Mittel');
+  });
 });
