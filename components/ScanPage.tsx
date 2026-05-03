@@ -296,7 +296,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   };
 
   const requestHqLink = async () => {
-    if (!results?.id || !results?.hqUrl) return;
+    if (!results?.hqUrl) return;
     setHqState('sending');
     try {
       const res = await fetch('/api/security-scan/request-hq-link', {
@@ -574,15 +574,12 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   <p className="max-w-2xl text-sm leading-relaxed text-white/55">
                     Der Check ist jetzt ein Objekt: Notiz speichern, optional ins Supporter-Gaestebuch haengen oder den HQ-Einstieg per E-Mail freischalten.
                   </p>
-                  {!results.id ? (
-                    <p className="text-xs text-amber-200/70">Keine Audit-ID gespeichert. Wall und persistente Notizen sind erst mit Datenbank-Persistenz aktiv.</p>
-                  ) : null}
                 </div>
                 <button
                   type="button"
                   onClick={requestHqLink}
-                  disabled={!results.id || hqState === 'sending' || hqState === 'sent'}
-                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-cyan-200/20 bg-cyan-300/10 px-5 py-3 text-sm text-cyan-50 hover:bg-cyan-300/15"
+                  disabled={hqState === 'sending' || hqState === 'sent'}
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-cyan-200/20 bg-cyan-300/10 px-5 py-3 text-sm text-cyan-50 hover:bg-cyan-300/15 disabled:opacity-50"
                 >
                   {hqState === 'sending'
                     ? 'Sende HQ-Link...'
@@ -708,17 +705,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   Check deine E-Mail. Erst der Link bestaetigt den Eintrag; danach kann er vom Owner freigegeben oder privat gehalten werden.
                 </p>
               ) : null}
-              {hqState === 'sent' ? (
-                <p className="text-xs text-cyan-200/72">
-                  Der HQ-Einstieg wurde an die E-Mail aus dem Check geschickt. Im lokalen Dev-Modus wurde der Link direkt geoeffnet.
-                </p>
-              ) : hqState === 'error' ? (
-                <p className="text-xs text-red-300">HQ-Link konnte nicht gesendet werden. Bitte erneut versuchen.</p>
-              ) : null}
             </div>
 
             {/* Score ring + technical summary */}
-            <div className="flex flex-col md:flex-row gap-12 items-center bg-white/[0.02] border border-white/5 rounded-3xl p-10 print:bg-white print:border-black">
+            <div className={`flex flex-col md:flex-row gap-12 items-center border rounded-3xl p-10 print:bg-white print:border-black ${
+              results.score < 50
+                ? 'bg-red-500/[0.04] border-red-500/15'
+                : results.score < 80
+                  ? 'bg-amber-400/[0.04] border-amber-400/15'
+                  : 'bg-emerald-400/[0.04] border-emerald-400/15'
+            }`}>
               <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 192 192">
                   <circle cx="96" cy="96" r="84" fill="none" stroke="currentColor" strokeWidth="4" className="text-white/5" />
@@ -758,6 +754,42 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* ── HQ Preview — the "wow" step right after the score ── */}
+            {results.demoProfile && (
+              <div className="space-y-4">
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Dein Einstieg</p>
+                    <h3 className="mt-1 text-2xl font-light">So könnte Mora für <span className="italic">{results.companyName}</span> arbeiten</h3>
+                  </div>
+                  <p className="text-xs text-white/30 max-w-xs md:text-right">
+                    Simulierter HQ-Workspace aus deinen Scan-Daten — ohne echte Cloud-Anbindung.
+                  </p>
+                </div>
+                <DemoHqPreview
+                  profile={results.demoProfile}
+                  osHref={results.hqUrl}
+                  onRequestAccess={requestHqLink}
+                  accessState={hqState}
+                />
+                {hqState === 'sent' && (
+                  <p className="text-xs text-cyan-200/72 text-center">
+                    Der HQ-Einstieg wurde an {results.email} gesendet. Im Dev-Modus wurde der Link direkt geöffnet.
+                  </p>
+                )}
+                {hqState === 'error' && (
+                  <p className="text-xs text-red-300 text-center">HQ-Link konnte nicht gesendet werden. Bitte erneut versuchen.</p>
+                )}
+              </div>
+            )}
+
+            {/* ── Divider into technical details ── */}
+            <div className="flex items-center gap-4">
+              <div className="flex-1 h-px bg-white/5" />
+              <p className="text-[9px] uppercase tracking-[0.35em] text-white/20 shrink-0">Technische Details</p>
+              <div className="flex-1 h-px bg-white/5" />
             </div>
 
             {/* Deterministic report card */}
@@ -998,25 +1030,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </div>
             )}
 
-            {/* Demo HQ Preview - The "Schöne Übersichtsseite" */}
-            {results.demoProfile && (
-              <div className="pt-8 space-y-6">
-                <div className="space-y-2 text-center md:text-left">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Naechster Schritt</p>
-                  <h3 className="text-3xl font-light">Deine Firma in Saimor Mora erleben</h3>
-                  <p className="text-white/40 text-sm max-w-xl">
-                    Wir haben die Ergebnisse deines Checks in eine simulierte HQ-Instanz übertragen. 
-                    So könnte Mora für {results.companyName} arbeiten.
-                  </p>
-                </div>
-                <DemoHqPreview 
-                  profile={results.demoProfile} 
-                  osHref={results.hqUrl} 
-                  onRequestAccess={requestHqLink}
-                  accessState={hqState}
-                />
-              </div>
-            )}
+            {/* Demo HQ Preview moved above technical details — see placement after score ring */}
 
             <footer className="pt-16 pb-20 flex flex-col items-center gap-8 print:hidden border-t border-white/5">
               <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
