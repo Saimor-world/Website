@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, CheckCircle2, FileText, Shield, Sparkles } from 'lucide-react';
+import { ArrowRight, Building2, CheckCircle2, ExternalLink, FileText, Mail, Shield, Sparkles } from 'lucide-react';
 import type { DemoCompanyProfile } from '@/lib/demo-company';
 
 type Props = {
@@ -39,22 +39,38 @@ export default function DemoHqPreview({ profile, osHref, onRequestAccess, access
             </p>
           </div>
           <p className="text-sm leading-relaxed text-white/70">{profile.moraBriefing}</p>
-          <button
-            type="button"
-            onClick={onRequestAccess}
-            disabled={!onRequestAccess || accessState === 'sending' || accessState === 'sent'}
+
+          {/* Primary CTA: open HQ directly in browser */}
+          <a
+            href={osHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 hover:bg-cyan-200 transition-colors"
           >
+            Jetzt im Browser öffnen
+            <ExternalLink className="h-4 w-4" />
+          </a>
+
+          {/* Secondary: email status (auto-sent after scan) */}
+          <div className="flex items-center gap-2 text-xs text-white/45">
+            <Mail className="h-3.5 w-3.5 shrink-0" />
             {accessState === 'sending'
-              ? 'Sende HQ-Link...'
+              ? 'HQ-Link wird per E-Mail gesendet…'
               : accessState === 'sent'
-                ? 'HQ-Link gesendet'
-                : 'HQ-Link per E-Mail'}
-            <ArrowRight className="h-4 w-4" />
-          </button>
-          {accessState === 'sent' ? (
-            <p className="text-xs text-cyan-100/58">Der Einstieg wird erst ueber deine bestaetigte E-Mail freigeschaltet.</p>
-          ) : null}
+                ? 'HQ-Link wurde an deine E-Mail gesendet.'
+                : accessState === 'error'
+                  ? <span className="text-red-300">E-Mail konnte nicht gesendet werden.</span>
+                  : 'Du erhältst den Link auch per E-Mail.'}
+            {accessState === 'error' && onRequestAccess ? (
+              <button
+                type="button"
+                onClick={onRequestAccess}
+                className="underline underline-offset-2 text-white/55 hover:text-white transition-colors"
+              >
+                Erneut senden
+              </button>
+            ) : null}
+          </div>
         </div>
 
         <div className="flex-1 grid gap-4">

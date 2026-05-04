@@ -196,6 +196,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         companySize: companySize,
       };
 
+      const builtHqUrl = buildHqUrl({
+        ...auditData,
+        companyName: companyName.trim() || domainToCompanyName(target.trim()),
+        target: target.trim(),
+        recon: r.recon,
+        summary: r.summary,
+        grade: r.grade,
+        entryToken: r.entryToken,
+      });
+
       setResults({
         ...auditData,
         persisted: data.persisted,
@@ -218,16 +228,12 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           desc: f.desc,
         })),
         demoProfile: buildDemoCompanyProfile(auditData as any),
-        hqUrl: buildHqUrl({
-          ...auditData,
-          companyName: companyName.trim() || domainToCompanyName(target.trim()),
-          target: target.trim(),
-          recon: r.recon,
-          summary: r.summary,
-          grade: r.grade,
-          entryToken: r.entryToken,
-        }),
+        hqUrl: builtHqUrl,
       });
+
+      // Auto-send HQ link to the email provided — no manual click needed
+      void sendHqLinkEmail(builtHqUrl, r.id ?? null, email.trim());
+
       setStep(3);
     } catch (err: any) {
       clearInterval(timer);
@@ -295,16 +301,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
     }
   };
 
-  const requestHqLink = async () => {
-    if (!results?.hqUrl) return;
+  const sendHqLinkEmail = async (hqUrl: string, auditId: string | null, emailAddr: string) => {
     setHqState('sending');
     try {
       const res = await fetch('/api/security-scan/request-hq-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          auditId: results.id,
-          hqUrl: results.hqUrl,
+          ...(auditId ? { auditId } : {}),
+          email: emailAddr,
+          hqUrl,
           locale,
         }),
       });
@@ -312,13 +318,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       if (!res.ok) throw new Error(payload?.error || 'hq link failed');
       if (payload?.debugUrl) {
         window.open(payload.debugUrl, '_blank', 'noopener,noreferrer');
-        setHqState('sent');
-        return;
       }
       setHqState('sent');
     } catch {
       setHqState('error');
     }
+  };
+
+  const requestHqLink = () => {
+    if (!results?.hqUrl) return;
+    void sendHqLinkEmail(results.hqUrl, results.id ?? null, results.email);
   };
 
   return (
@@ -776,11 +785,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 />
                 {hqState === 'sent' && (
                   <p className="text-xs text-cyan-200/72 text-center">
-                    Der HQ-Einstieg wurde an {results.email} gesendet. Im Dev-Modus wurde der Link direkt geöffnet.
+                    ✓ HQ-Link wurde automatisch an <strong>{results.email}</strong> gesendet.
                   </p>
-                )}
-                {hqState === 'error' && (
-                  <p className="text-xs text-red-300 text-center">HQ-Link konnte nicht gesendet werden. Bitte erneut versuchen.</p>
                 )}
               </div>
             )}

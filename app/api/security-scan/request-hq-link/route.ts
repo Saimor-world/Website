@@ -5,9 +5,12 @@ import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
 
 const Body = z.object({
-  auditId: z.string().cuid(),
+  auditId: z.string().cuid().optional(),
+  email: z.string().email().optional(),
   hqUrl: z.string().url(),
   locale: z.enum(['de', 'en']).default('de'),
+}).refine((d) => d.auditId || d.email, {
+  message: 'Either auditId or email must be provided',
 });
 
 function createTransporter() {
@@ -61,9 +64,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid HQ target' }, { status: 400 });
     }
 
-    const audit = await prisma.securityAudit.findUnique({ where: { id: parsed.data.auditId } });
-    if (!audit) {
-      return NextResponse.json({ error: 'Audit not found' }, { status: 404 });
+    // Resolve recipient email: prefer DB lookup (audit ID), fall back to direct email param
+    let recipientEmail: string | null = null;
+    if (parsed.data.auditId) {
+      const audit = await prisma.securityAudit.findUnique({ where: { id: parsed.data.auditId } });
+      if (audit) recipientEmail = audit.email;
+    }
+    if (!recipientEmail && parsed.data.email) {
+      recipientEmail = parsed.data.email;
+    }
+    if (!recipientEmail) {
+      return NextResponse.json({ error: 'Recipient email could not be resolved' }, { status: 404 });
     }
 
     if (isLocalRequest(req)) {
@@ -76,16 +87,16 @@ export async function POST(req: NextRequest) {
     }
 
     const subject = parsed.data.locale === 'de'
-      ? 'Dein verifizierter Saimor HQ Einstieg'
-      : 'Your verified Saimor HQ entry';
+      ? 'Dein Saimor HQ Einstieg ist bereit'
+      : 'Your Saimor HQ entry is ready';
     const text = parsed.data.locale === 'de'
-      ? `Oeffne deinen Security Check im HQ:\n\n${parsed.data.hqUrl}\n\nDieser Link wurde an die E-Mail-Adresse geschickt, die den Check angefordert hat. Ein Account entsteht erst, wenn du ihn im HQ aktiv verbindest.`
-      : `Open your security check in HQ:\n\n${parsed.data.hqUrl}\n\nThis link was sent to the email address that requested the check. An account is only created after you actively connect it in HQ.`;
+      ? `Dein Security Check ist fertig — hier ist dein persönlicher HQ-Einstieg:\n\n${parsed.data.hqUrl}\n\nDu siehst dort deinen Workspace mit den Befunden aus dem Check. Ein richtiger Account entsteht erst, wenn du dich im HQ aktiv anmeldest.`
+      : `Your security check is done — here is your personal HQ entry:\n\n${parsed.data.hqUrl}\n\nYou will see your workspace with the findings from the check. A real account is only created after you actively sign up inside HQ.`;
 
     try {
       await transporter.sendMail({
         from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: audit.email,
+        to: recipientEmail,
         subject,
         text,
       });
