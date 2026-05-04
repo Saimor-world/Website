@@ -27,30 +27,30 @@ const deArticles: EntryArticle[] = [
     pillar: 'security',
     category: 'Sicherheit',
     readTime: '2 min',
-    title: 'Der Security-Check: Was das Internet über dich weiß',
+    title: 'Was Angreifer in 30 Sekunden über dich herausfinden',
     excerpt:
-      'In 60 Sekunden zum ehrlichen Lagebericht. Wir prüfen deine Domain auf die typischen Schwachstellen, die Angreifer als Erstes sehen.',
+      'Bevor du irgendwas investierst: Sieh erst, was wirklich offen steht. Kostenloser Scan — keine Anmeldung, 60 Sekunden, ehrliche Ergebnisse.',
     intro:
-      'Bevor man teure Software kauft, sollte man wissen, wo die Haustür offen steht. Unser Scan zeigt dir genau das – ohne Fachchinesisch, direkt auf den Punkt.', 
-    tags: ['Sicherheit', 'Transparenz', 'Check'],        
+      'Kein Unternehmen ist zu klein für einen Angriff. Die meisten Lücken sind bekannt und in wenigen Minuten zu schließen — wenn man weiß, wo sie sind.',
+    tags: ['Kostenlos', '60 Sekunden', 'Kein Login'],
     sections: [
       {
-        title: 'Sichtbarkeit verstehen',     
+        title: 'Was der Scan prüft',
         body:
-          'Viele technische Details deiner Website sind öffentlich einsehbar. Wir fassen diese Daten zusammen, damit du verstehst, was ein potenzieller Angreifer sieht.',
+          'Deine Domain, dein SSL-Zertifikat, deine öffentlichen Dateien und die wichtigsten Schutz-Header. Alles, was ein Angreifer in der ersten Minute sieht — wir zeigen es dir übersichtlich.',
       },
       {
-        title: 'Ehrliches Feedback',
+        title: 'Ehrliche Ergebnisse',
         body:
-          'Kein Marketing-Blabla. Wenn dein SSL-Zertifikat veraltet ist oder wichtige Schutzschilde fehlen, sagen wir es dir direkt.',
+          'Wenn etwas nicht stimmt, sagen wir es direkt. Kein Fachjargon, keine Verkaufsabsicht. Score von 0–100 mit konkreten Erklärungen — was gut ist und was nicht.',
       },
       {
-        title: 'Sofortige Schritte',  
+        title: 'Was danach passiert',
         body:
-          'Nach dem Scan weißt du genau, was zu tun ist. Die meisten Dinge lassen sich in wenigen Minuten beheben.',
+          'Du bekommst deinen persönlichen HQ-Link — ein Workspace mit deinen Befunden. Kein Passwort nötig. Einfach öffnen und mit Môra arbeiten.',
       },
     ],
-    ctaLabel: 'Jetzt kostenlos prüfen',
+    ctaLabel: 'Kostenlos prüfen',
     ctaHref: '/de/einstieg/security-check',
     actionKind: 'security-check-form',
   },

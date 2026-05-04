@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Bot, Cpu } from 'lucide-react';
 import { entryContent, type EntryLocale, type EntryPillar } from '@/lib/entry-content';
 
-const pillarOrder: EntryPillar[] = ['digital-self', 'security', 'ai-business'];
+// Security first — it's the primary product and strongest entry point
+const pillarOrder: EntryPillar[] = ['security', 'digital-self', 'ai-business'];
 
 // Per-pillar design tokens — single source of truth
 const pillarTheme: Record<
@@ -45,41 +46,43 @@ const pillarTopAccent: Record<EntryPillar, string> = {
 export default function EntryHub({ locale }: { locale: EntryLocale }) {
   const content = {
     de: {
-      badge: 'WISSEN · PRAXIS · KLARHEIT',
-      title: 'AI, Security & digitale Souveränität',
+      badge: 'FÜR LOKALE UNTERNEHMEN',
+      title: 'Was steckt hinter deiner digitalen Präsenz?',
       subtitle:
-        'Kein Fachjargon, keine Verkaufspitches. Nur das, was wirklich zählt — für Einzelpersonen und lokale Unternehmen.',
-      treeLabel: 'Themen-Überblick',
-      cta: 'Lesen',
+        'Ein kostenloser Security-Check zeigt dir in 60 Sekunden, was Angreifer über dein Unternehmen sehen — und was du dagegen tun kannst.',
+      treeLabel: 'Was dich erwartet',
+      cta: 'Mehr erfahren',
       readTime: 'Lesezeit',
+      featuredLabel: 'Empfohlen',
       pillarTitles: {
-        'digital-self': 'Dein digitales Ich',
-        security: 'Sicherheit & Datenschutz',
-        'ai-business': 'AI im Alltag',
+        'digital-self': 'Smarter arbeiten mit AI',
+        security: 'Sicherheit für dein Business',
+        'ai-business': 'AI-Automationen',
       },
       pillarDescriptions: {
-        'digital-self': 'Wie du KI produktiv, sicher und zu deinen Bedingungen einsetzt',
-        security: 'Angriffsflächen kennen, Risiken minimieren, ruhig schlafen',
-        'ai-business': 'Konkrete Automationen, die Zeit und Geld sparen',
+        'digital-self': 'Dein persönlicher AI-Assistent — der nie schläft und immer auf dich hört',
+        security: 'In 60 Sekunden sehen, was Angreifer über dich wissen. Kostenlos, ohne Anmeldung.',
+        'ai-business': 'Drei kleine Automationen, die sofort Zeit sparen',
       },
     },
     en: {
-      badge: 'KNOWLEDGE · PRACTICE · CLARITY',
-      title: 'AI, Security & Digital Sovereignty',
+      badge: 'FOR LOCAL BUSINESSES',
+      title: 'What does your digital footprint reveal?',
       subtitle:
-        'No jargon, no sales pitches. Just what actually matters — for individuals and local businesses.',
-      treeLabel: 'Topics',
-      cta: 'Read',
+        'A free security check shows you in 60 seconds what attackers can see about your business — and what you can do about it.',
+      treeLabel: 'What to expect',
+      cta: 'Read more',
       readTime: 'read',
+      featuredLabel: 'Recommended',
       pillarTitles: {
-        'digital-self': 'Your Digital Self',
-        security: 'Security & Privacy',
-        'ai-business': 'AI in Practice',
+        'digital-self': 'Work smarter with AI',
+        security: 'Security for your business',
+        'ai-business': 'AI automations',
       },
       pillarDescriptions: {
-        'digital-self': 'How to use AI productively, safely, and on your own terms',
-        security: 'Know your attack surface, reduce risk, sleep soundly',
-        'ai-business': 'Concrete automations that save time and money',
+        'digital-self': 'Your personal AI assistant — never sleeps, always listens',
+        security: 'See in 60 seconds what attackers know about you. Free, no signup.',
+        'ai-business': 'Three small automations that save time immediately',
       },
     },
   }[locale];
@@ -152,33 +155,32 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
           </div>
         </section>
 
-        {/* ── Supporter Universe Banner ── */}
-        <div className="relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.06] px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* subtle glow behind */}
-          <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl" />
+        {/* ── Primary CTA Banner ── */}
+        <div className="relative overflow-hidden rounded-2xl border border-amber-500/25 bg-amber-500/[0.05] px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-amber-400/8 blur-2xl" />
           <div className="relative">
-            <p className="text-[10px] uppercase tracking-[0.32em] text-emerald-300/60 mb-1.5">
-              {locale === 'de' ? 'Supporter Universe' : 'Supporter Universe'}
+            <p className="text-[10px] uppercase tracking-[0.32em] text-amber-300/60 mb-2">
+              {locale === 'de' ? 'Kostenlos · Kein Login · 60 Sekunden' : 'Free · No Login · 60 Seconds'}
             </p>
-            <p className="text-sm text-white/70 leading-relaxed max-w-md">
+            <p className="text-lg font-light text-white/90 leading-snug max-w-md" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {locale === 'de'
-                ? 'Gästebuch für frühe Supporter, Pilot:innen, Investor:innen und Partner. Der Security-Check ist nur ein Einstieg.'
-                : 'Guestbook for early supporters, pilots, investors and partners. The security check is only one entry path.'}
+                ? 'Dein kostenloser Security-Check — sieh sofort, wo dein Unternehmen angreifbar ist.'
+                : 'Your free security check — see immediately where your business is exposed.'}
             </p>
           </div>
           <div className="relative shrink-0 flex flex-col sm:flex-row gap-2">
             <Link
               href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black hover:bg-emerald-400 transition-all duration-200"
+              className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-black hover:bg-amber-400 transition-all duration-200"
             >
-              {locale === 'de' ? 'Check starten' : 'Start Check'}
+              {locale === 'de' ? 'Jetzt prüfen' : 'Check now'}
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/wall"
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/30 bg-transparent px-5 py-2.5 text-sm text-emerald-200/70 hover:bg-emerald-400/10 transition-all duration-200"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-transparent px-5 py-3 text-sm text-white/50 hover:text-white/70 hover:bg-white/5 transition-all duration-200"
             >
-              {locale === 'de' ? 'Universum ansehen' : 'View Universe'}
+              {locale === 'de' ? 'Ergebnisse anderer sehen' : 'See others\' results'}
             </Link>
           </div>
         </div>
@@ -205,13 +207,19 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
 
                 {/* Article cards */}
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-                  {list.map((article, index) => (
+                  {list.map((article, index) => {
+                    const isFeatured = article.slug === 'security-check';
+                    return (
                     <motion.article
                       key={article.slug}
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.07, duration: 0.4 }}
-                      className="group rounded-2xl border border-white/8 bg-white/[0.03] backdrop-blur-md flex flex-col overflow-hidden hover:border-white/15 hover:bg-white/[0.05] transition-all duration-300"
+                      className={`group rounded-2xl border flex flex-col overflow-hidden transition-all duration-300 ${
+                        isFeatured
+                          ? 'border-amber-400/30 bg-amber-400/[0.04] hover:border-amber-400/50 hover:bg-amber-400/[0.07]'
+                          : 'border-white/8 bg-white/[0.03] backdrop-blur-md hover:border-white/15 hover:bg-white/[0.05]'
+                      }`}
                     >
                       {/* Top accent bar */}
                       <div
@@ -222,11 +230,18 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                       <div className="p-6 flex flex-col flex-1">
                         {/* Category + reading time row */}
                         <div className="flex items-center justify-between mb-4">
-                          <span
-                            className={`text-[9px] uppercase tracking-[0.28em] font-semibold ${theme.tagColor}`}
-                          >
-                            {article.category}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`text-[9px] uppercase tracking-[0.28em] font-semibold ${theme.tagColor}`}
+                            >
+                              {article.category}
+                            </span>
+                            {isFeatured && (
+                              <span className="rounded-full bg-amber-400/20 px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] text-amber-300 font-semibold">
+                                {content.featuredLabel}
+                              </span>
+                            )}
+                          </div>
                           <span className="text-[10px] text-white/30 tabular-nums">
                             {article.readTime}{' '}
                             <span className="text-white/20">{content.readTime}</span>
@@ -268,7 +283,8 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                         </Link>
                       </div>
                     </motion.article>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );
