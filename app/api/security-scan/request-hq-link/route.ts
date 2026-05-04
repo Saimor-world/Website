@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
@@ -12,25 +12,6 @@ const Body = z.object({
 }).refine((d) => d.auditId || d.email, {
   message: 'Either auditId or email must be provided',
 });
-
-function createTransporter() {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    return null;
-  }
-
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587', 10),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-    tls: {
-      rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false',
-    },
-  });
-}
 
 function isAllowedHqUrl(value: string, req: NextRequest) {
   try {
@@ -81,27 +62,65 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, mode: 'local-link', debugUrl: parsed.data.hqUrl });
     }
 
-    const transporter = createTransporter();
-    if (!transporter) {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[HQ Link] RESEND_API_KEY not configured');
       return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
     }
 
-    const subject = parsed.data.locale === 'de'
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const isDE = parsed.data.locale === 'de';
+    const subject = isDE
       ? 'Dein Saimor HQ Einstieg ist bereit'
       : 'Your Saimor HQ entry is ready';
-    const text = parsed.data.locale === 'de'
-      ? `Dein Security Check ist fertig — hier ist dein persönlicher HQ-Einstieg:\n\n${parsed.data.hqUrl}\n\nDu siehst dort deinen Workspace mit den Befunden aus dem Check. Ein richtiger Account entsteht erst, wenn du dich im HQ aktiv anmeldest.`
-      : `Your security check is done — here is your personal HQ entry:\n\n${parsed.data.hqUrl}\n\nYou will see your workspace with the findings from the check. A real account is only created after you actively sign up inside HQ.`;
 
-    try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: recipientEmail,
-        subject,
-        text,
-      });
-    } catch (mailError) {
-      console.error('[HQ Link Mail Error]', mailError);
+    const htmlBody = isDE
+      ? `
+        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+          <p style="font-size: 16px; margin-bottom: 24px;">
+            Dein Security Check ist fertig — hier ist dein persönlicher HQ-Einstieg:
+          </p>
+          <a href="${parsed.data.hqUrl}"
+             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 28px;
+                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
+            HQ öffnen →
+          </a>
+          <p style="margin-top: 32px; font-size: 13px; color: #666;">
+            Du siehst dort deinen Workspace mit den Befunden aus dem Check.<br>
+            Ein richtiger Account entsteht erst, wenn du dich im HQ aktiv anmeldest.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #aaa;">Saimor · <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+        </div>
+      `
+      : `
+        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+          <p style="font-size: 16px; margin-bottom: 24px;">
+            Your security check is done — here is your personal HQ entry:
+          </p>
+          <a href="${parsed.data.hqUrl}"
+             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 28px;
+                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
+            Open HQ →
+          </a>
+          <p style="margin-top: 32px; font-size: 13px; color: #666;">
+            You will see your workspace with the findings from the check.<br>
+            A real account is only created after you actively sign up inside HQ.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #aaa;">Saimor · <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+        </div>
+      `;
+
+    const { error } = await resend.emails.send({
+      from: 'Saimor <contact@saimor.world>',
+      to: recipientEmail,
+      subject,
+      html: htmlBody,
+    });
+
+    if (error) {
+      console.error('[HQ Link Resend Error]', error);
       return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 });
     }
 
