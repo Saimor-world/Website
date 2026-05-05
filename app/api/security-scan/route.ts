@@ -195,16 +195,25 @@ export async function POST(req: NextRequest) {
       redirectChain: recon.redirectChain,
     } : null;
 
-    const entryToken = signWebsiteEntryToken({
-      id: createdAuditId || entryId,
-      company: data.name,
-      email: data.email,
-      domain,
-      score,
-      level: riskLabel(level, data.locale),
-      summary: analysis,
-      actions: recommendations.slice(0, 3).map((recommendation: any) => recommendation.title).filter(Boolean),
-    });
+    let entryToken: string | null = null;
+    let responseWarning = scanWarning;
+    try {
+      entryToken = signWebsiteEntryToken({
+        id: createdAuditId || entryId,
+        company: data.name,
+        email: data.email,
+        domain,
+        score,
+        level: riskLabel(level, data.locale),
+        summary: analysis,
+        actions: recommendations.slice(0, 3).map((recommendation: any) => recommendation.title).filter(Boolean),
+      });
+    } catch (tokenError: any) {
+      console.warn('[Security Scan API] HQ entry token skipped:', tokenError?.message ?? tokenError);
+      responseWarning = scanWarning
+        ? `${scanWarning} HQ-Preview-Token ist nicht konfiguriert.`
+        : 'HQ-Preview-Token ist nicht konfiguriert.';
+    }
 
     return NextResponse.json({
       success: true,
@@ -224,7 +233,7 @@ export async function POST(req: NextRequest) {
         recommendations,
         findings: allFindings,
         recon: reconPayload,
-        warning: scanWarning,
+        warning: responseWarning,
         entryToken,
       }
     });

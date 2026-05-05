@@ -14,7 +14,7 @@ type EntryTokenPayload = {
 };
 
 function getEntrySecret() {
-  const secret = process.env.SAIMOR_ENTRY_SECRET || process.env.SAIMOR_WALL_SECRET || process.env.NEXTAUTH_SECRET;
+  const secret = process.env.SAIMOR_ENTRY_SECRET;
   if (secret) return secret;
   if (process.env.NODE_ENV !== 'production') return 'local-dev-entry-secret';
   throw new Error('SAIMOR_ENTRY_SECRET is required');
