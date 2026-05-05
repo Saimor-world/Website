@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink, LayoutDashboard, BarChart3, Zap, Server, HardDrive, FolderTree } from 'lucide-react';
+import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink, LayoutDashboard, Zap, Server, HardDrive, FolderTree, Database, GitBranch, KeyRound, ListChecks } from 'lucide-react';
 import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreOwnerJson } from '@/lib/core-owner';
 import { buildOsAuditUrl } from '@/lib/os-links';
 import { signWebsiteEntryToken } from '@/lib/entry-token';
@@ -229,6 +229,10 @@ function hqStatusClass(preview?: CoreWebsitePreview | null) {
   return 'bg-cyan-500/10 text-cyan-200';
 }
 
+function ownerLifecycleStatus(audit: { ownerStatus?: string | null }) {
+  return audit.ownerStatus || 'new';
+}
+
 function ownerNextAction(audit: { userId?: string | null; ownerStatus?: string | null; wallEntry?: { status?: string | null } | null }) {
   const manualNext = leadStatusMeta(audit.ownerStatus).next;
   if (audit.ownerStatus && audit.ownerStatus !== 'new') return manualNext;
@@ -252,6 +256,72 @@ function followUpMailto(audit: { email: string; name: string; score: number; lev
     'Viele Gruesse',
   ].join('\n');
   return `mailto:${encodeURIComponent(audit.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function duplicateLeadGroups(audits: any[]) {
+  const groups = new Map<string, { label: string; source: string; items: any[] }>();
+
+  for (const audit of audits) {
+    const domain = auditDomain(audit);
+    const email = String(audit.email || '').trim().toLowerCase();
+    const name = normalizeName(audit.name);
+    const key = domain ? `domain:${domain}` : email ? `email:${email}` : name ? `name:${name}` : '';
+    if (!key) continue;
+
+    const label = domain || email || audit.name || 'Unbekannt';
+    const source = domain ? 'Domain' : email ? 'E-Mail' : 'Name';
+    const existing: { label: string; source: string; items: any[] } = groups.get(key) || { label, source, items: [] };
+    existing.items.push(audit);
+    groups.set(key, existing);
+  }
+
+  return Array.from(groups.values())
+    .filter((group) => group.items.length > 1)
+    .sort((a, b) => b.items.length - a.items.length || a.label.localeCompare(b.label))
+    .slice(0, 6);
+}
+
+function buildPriorityLeads(items: Array<{ audit: any; preview: CoreWebsitePreview | null }>) {
+  return items
+    .map(({ audit, preview }) => {
+      const reasons: string[] = [];
+      let weight = 0;
+      const score = Number(audit.score || 0);
+      const status = ownerLifecycleStatus(audit);
+
+      if (!preview) {
+        weight += 35;
+        reasons.push('HQ fehlt');
+      }
+      if (score >= 80) {
+        weight += 25;
+        reasons.push('hoher Score');
+      } else if (score >= 60) {
+        weight += 14;
+        reasons.push('brauchbarer Einstieg');
+      }
+      if (status === 'new') {
+        weight += 16;
+        reasons.push('neu');
+      }
+      if (status === 'qualified' || status === 'demo_ready') {
+        weight += 14;
+        reasons.push(leadStatusMeta(status).label);
+      }
+      if (audit.wallEntry?.status === 'pending_review') {
+        weight += 18;
+        reasons.push('Wall Review');
+      }
+      if (audit.userId) {
+        weight -= 12;
+        reasons.push('Account existiert');
+      }
+
+      return { audit, preview, weight, reasons };
+    })
+    .filter((item) => item.weight > 0)
+    .sort((a, b) => b.weight - a.weight || new Date(b.audit.createdAt).getTime() - new Date(a.audit.createdAt).getTime())
+    .slice(0, 5);
 }
 
 function auditRecommendations(audit: { recommendations?: any }) {
@@ -409,6 +479,20 @@ export default async function OwnerDashboard() {
   const liveWall = data.wallEntries.filter((entry) => !entry.status || entry.status === 'published').length;
   const disk = primaryDisk(data.coreHost);
   const healthyServiceCount = data.coreHost?.services ? Object.keys(data.coreHost.services).length : 0;
+  const auditsWithPreview = data.securityAudits.map((audit: any) => ({
+    audit,
+    preview: matchCorePreview(audit, data.corePreviews),
+  }));
+  const matchedPreviewCount = auditsWithPreview.filter((item) => item.preview).length;
+  const orphanLeadCount = Math.max(0, data.securityAudits.length - matchedPreviewCount);
+  const claimedPreviewCount = data.corePreviews.filter((preview) => preview.claimed || preview.status === 'claimed').length;
+  const previewOnlyCount = Math.max(0, data.corePreviewCount - claimedPreviewCount);
+  const lifecycleCounts = LEAD_STATUSES.map((status) => ({
+    ...status,
+    count: data.securityAudits.filter((audit: any) => ownerLifecycleStatus(audit) === status.value).length,
+  }));
+  const duplicateGroups = duplicateLeadGroups(data.securityAudits);
+  const priorityLeads = buildPriorityLeads(auditsWithPreview);
 
   return (
     <main className="min-h-screen bg-[#060a09] text-white p-8 md:p-16">
@@ -441,12 +525,157 @@ export default async function OwnerDashboard() {
         </header>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-           <StatCard label="Security Leads" value={data.securityAudits.length} icon={<Shield size={20}/>} />
-           <StatCard label="HQ Previews" value={data.corePreviewCount} icon={<ExternalLink size={20}/>} />
-           <StatCard label="Hetzner Disk" value={disk ? `${disk.used_percent ?? '-'}%` : '--'} icon={<HardDrive size={20}/>} />
-           <StatCard label="Wall Review" value={pendingWall} icon={<Activity size={20}/>} />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-5">
+           <StatCard
+             label="Security Leads"
+             value={data.securityAudits.length}
+             icon={<Shield size={20}/>}
+             source="WORLD.SecurityAudit"
+             detail="Jeder abgeschlossene Website-Check. Noch kein Account."
+           />
+           <StatCard
+             label="HQ Previews"
+             value={data.corePreviewCount}
+             icon={<ExternalLink size={20}/>}
+             source="CORE.EntryTenant"
+             detail="Temporare HQ-Dossiers aus Website-Entry-Tokens."
+           />
+           <StatCard
+             label="Kunden (Users)"
+             value={data.userCount}
+             icon={<Users size={20}/>}
+             source="WORLD.User"
+             detail="Echte eingeloggte Website-Accounts, nicht alle Leads."
+           />
+           <StatCard
+             label="Hetzner Disk"
+             value={disk ? `${disk.used_percent ?? '-'}%` : '--'}
+             icon={<HardDrive size={20}/>}
+             source="CORE Host"
+             detail="Live Snapshot vom Server hinter api/hq."
+           />
+           <StatCard
+             label="Wall Review"
+             value={pendingWall}
+             icon={<Activity size={20}/>}
+             source="WORLD.WallEntry"
+             detail="Nur Eintraege, die bewusst freigegeben werden muessen."
+           />
         </div>
+
+        <section className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 md:p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-emerald-200/55">Daten-Wahrheit</p>
+              <h2 className="mt-2 text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Was zaehlt wo?
+              </h2>
+            </div>
+            <div className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs text-white/48">
+              Lead != Preview != User != Wall
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4 lg:grid-cols-4">
+            <TruthStep
+              icon={<Database size={17} />}
+              step="01"
+              title="Website Lead"
+              value={data.securityAudits.length}
+              body="Entsteht sofort nach einem Security Check. Privat, intern, verkaufsrelevant."
+            />
+            <TruthStep
+              icon={<GitBranch size={17} />}
+              step="02"
+              title="HQ Preview"
+              value={data.corePreviewCount}
+              body="Entsteht erst, wenn aus dem Lead ein OS-Dossier mit Entry-Token geoeffnet wird."
+            />
+            <TruthStep
+              icon={<KeyRound size={17} />}
+              step="03"
+              title="Kundenaccount"
+              value={data.userCount}
+              body="Entsteht erst durch Login/Magic Link/Passwort. Das ist die echte Account-Ebene."
+            />
+            <TruthStep
+              icon={<ListChecks size={17} />}
+              step="04"
+              title="Wall Review"
+              value={pendingWall}
+              body="Oeffentliche Wall passiert nur nach Zustimmung und Review. Nicht jeder Check landet dort."
+            />
+          </div>
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-3xl border border-emerald-400/10 bg-emerald-400/[0.035] p-6 md:p-8">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.28em] text-emerald-200/55">Command Briefing</p>
+                <h2 className="mt-2 text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  Heute zuerst bearbeiten
+                </h2>
+              </div>
+              <span className="rounded-full border border-emerald-300/15 bg-black/20 px-4 py-2 text-xs text-emerald-100/65">
+                {priorityLeads.length} Prioritaeten
+              </span>
+            </div>
+            <div className="mt-6 grid gap-3 md:grid-cols-4">
+              <MiniMetric label="Leads ohne HQ" value={orphanLeadCount} />
+              <MiniMetric label="Preview ohne Claim" value={previewOnlyCount} />
+              <MiniMetric label="Duplikat-Gruppen" value={duplicateGroups.length} />
+              <MiniMetric label="Kundenaccounts" value={data.userCount} />
+            </div>
+            <div className="mt-6 space-y-3">
+              {priorityLeads.map((item, index) => (
+                <PriorityLeadRow key={item.audit.id} item={item} index={index + 1} />
+              ))}
+              {!priorityLeads.length ? (
+                <p className="rounded-2xl border border-white/8 bg-black/20 p-4 text-sm text-white/45">
+                  Keine kritische Queue. Neue Leads, Wall Reviews oder fehlende HQ-Previews erscheinen hier automatisch.
+                </p>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.028] p-6 md:p-8 space-y-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-white/38">Lead Lifecycle</p>
+              <h2 className="mt-2 text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Pipeline-Zustand
+              </h2>
+            </div>
+            <div className="space-y-2">
+              {lifecycleCounts.map((status) => (
+                <LifecycleRow key={status.value} label={status.label} count={status.count} tone={status.tone} />
+              ))}
+            </div>
+            <div className="rounded-2xl border border-cyan-300/10 bg-cyan-300/[0.035] p-4 text-xs leading-relaxed text-cyan-50/58">
+              HQ oeffnen erzeugt einen frischen, signierten Entry-Token. Damit wird der konkrete Lead im OS geladen, ohne deinen normalen HQ-Home-State dauerhaft zu ueberschreiben.
+            </div>
+          </div>
+        </section>
+
+        {duplicateGroups.length ? (
+          <section className="rounded-3xl border border-amber-400/15 bg-amber-400/[0.045] p-6 md:p-8">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.28em] text-amber-200/55">Dedupe Watch</p>
+                <h2 className="mt-2 text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  Mehrere Wahrheiten zum selben Kontakt
+                </h2>
+              </div>
+              <span className="rounded-full border border-amber-300/15 bg-black/20 px-4 py-2 text-xs text-amber-100/65">
+                {duplicateGroups.length} Gruppen
+              </span>
+            </div>
+            <div className="mt-6 grid gap-3 lg:grid-cols-3">
+              {duplicateGroups.map((group) => (
+                <DuplicateGroupCard key={`${group.source}-${group.label}`} group={group} />
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="rounded-[2.5rem] border border-saimor-gold/30 bg-gradient-to-br from-saimor-gold/10 to-transparent p-8 md:p-10 space-y-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -594,6 +823,10 @@ export default async function OwnerDashboard() {
                            {leadStatus.label}
                          </span>
                          <span className="px-2 py-1 rounded bg-emerald-500/10 text-[9px] uppercase tracking-widest text-emerald-200">{ownerNextAction(audit)}</span>
+                         <span className="px-2 py-1 rounded border border-white/8 bg-black/18 text-[9px] uppercase tracking-widest text-white/34">Quelle: Website</span>
+                         {hqPreview ? (
+                           <span className="px-2 py-1 rounded border border-cyan-300/12 bg-cyan-300/[0.045] text-[9px] uppercase tracking-widest text-cyan-100/55">OS verknuepft</span>
+                         ) : null}
                       </div>
                       {hqPreview ? (
                         <div className="rounded-xl border border-cyan-300/10 bg-cyan-300/[0.035] px-3 py-2 text-[11px] text-cyan-50/62">
@@ -718,7 +951,19 @@ export default async function OwnerDashboard() {
   );
 }
 
-function StatCard({ label, value, icon }: { label: string, value: number | string, icon: React.ReactNode }) {
+function StatCard({
+  label,
+  value,
+  icon,
+  source,
+  detail,
+}: {
+  label: string;
+  value: number | string;
+  icon: React.ReactNode;
+  source?: string;
+  detail?: string;
+}) {
   return (
     <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 space-y-4 transition-all hover:border-emerald-500/30 group">
        <div className="flex items-center justify-between text-white/30 group-hover:text-emerald-400 transition-colors">
@@ -726,6 +971,104 @@ function StatCard({ label, value, icon }: { label: string, value: number | strin
           {icon}
        </div>
        <p className="text-4xl font-light tabular-nums">{value}</p>
+       {source ? <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-200/45">{source}</p> : null}
+       {detail ? <p className="text-[11px] leading-relaxed text-white/36">{detail}</p> : null}
+    </div>
+  );
+}
+
+function TruthStep({
+  icon,
+  step,
+  title,
+  value,
+  body,
+}: {
+  icon: React.ReactNode;
+  step: string;
+  title: string;
+  value: number | string;
+  body: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/8 bg-black/20 p-5">
+      <div className="flex items-center justify-between gap-3 text-white/35">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em]">{step}</span>
+        {icon}
+      </div>
+      <div className="mt-5 flex items-end justify-between gap-4">
+        <h3 className="text-lg font-semibold text-white/86">{title}</h3>
+        <span className="text-3xl font-light tabular-nums text-white">{value}</span>
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-white/42">{body}</p>
+    </div>
+  );
+}
+
+function PriorityLeadRow({
+  item,
+  index,
+}: {
+  item: { audit: any; preview: CoreWebsitePreview | null; weight: number; reasons: string[] };
+  index: number;
+}) {
+  return (
+    <div className="grid gap-4 rounded-2xl border border-white/8 bg-black/22 p-4 md:grid-cols-[40px_1fr_auto] md:items-center">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-300/15 bg-emerald-300/10 font-mono text-sm text-emerald-100">
+        {index}
+      </div>
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="truncate font-semibold text-white/88">{item.audit.name}</p>
+          <span className={`rounded-full px-2 py-1 text-[9px] uppercase tracking-widest ${hqStatusClass(item.preview)}`}>
+            {hqStatusLabel(item.preview)}
+          </span>
+        </div>
+        <p className="mt-1 truncate text-xs text-white/42">{item.audit.email} - {item.audit.targetDomain || item.audit.domain || 'keine Domain'}</p>
+      </div>
+      <div className="flex flex-wrap gap-2 md:justify-end">
+        {item.reasons.slice(0, 3).map((reason) => (
+          <span key={reason} className="rounded-full border border-white/8 bg-white/[0.045] px-2 py-1 text-[9px] uppercase tracking-widest text-white/48">
+            {reason}
+          </span>
+        ))}
+        <span className="rounded-full border border-emerald-300/15 bg-emerald-300/10 px-2 py-1 text-[9px] uppercase tracking-widest text-emerald-100">
+          P{item.weight}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function LifecycleRow({ label, count, tone }: { label: string; count: number; tone: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-black/18 px-4 py-3">
+      <span className={`rounded-full px-2 py-1 text-[9px] uppercase tracking-widest ${tone}`}>{label}</span>
+      <span className="font-mono text-lg tabular-nums text-white/80">{count}</span>
+    </div>
+  );
+}
+
+function DuplicateGroupCard({ group }: { group: { label: string; source: string; items: any[] } }) {
+  return (
+    <div className="rounded-2xl border border-amber-300/12 bg-black/22 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="truncate font-semibold text-white/86">{group.label}</p>
+          <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-amber-100/45">{group.source}</p>
+        </div>
+        <span className="rounded-full border border-amber-300/15 bg-amber-300/10 px-2 py-1 text-[10px] text-amber-100">
+          {group.items.length}x
+        </span>
+      </div>
+      <div className="mt-4 space-y-2">
+        {group.items.slice(0, 3).map((item) => (
+          <div key={item.id} className="flex items-center justify-between gap-3 rounded-lg bg-white/[0.035] px-3 py-2 text-[11px]">
+            <span className="min-w-0 truncate text-white/58">{item.name}</span>
+            <span className="shrink-0 text-white/32">{fmtDate(item.createdAt)}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
