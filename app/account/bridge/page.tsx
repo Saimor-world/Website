@@ -38,8 +38,9 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
       name: session.user.name || session.user.email.split('@')[0],
       role: (session.user as any).role || 'free',
     },
-    select: { id: true, email: true },
+    select: { id: true, email: true, role: true },
   });
+  const isOwner = currentUser.role === 'owner' || (session.user as any).role === 'owner';
 
   let claimStatus: 'none' | 'linked' | 'already_linked' | 'mismatch' | 'not_found' = 'none';
 
@@ -171,13 +172,15 @@ export default async function AccountBridgePage({ searchParams }: BridgeProps) {
               Account Dashboard
             </h2>
             <p className="text-white/70">
-              Security Audits, Digital-Self Blueprints, Reports und Verlauf innerhalb der Website.
+              {isOwner
+                ? 'Eine einzige Owner-Sicht fuer Leads, HQ-Previews, Wall, Systemstatus und Betrieb.'
+                : 'Security Audits, Digital-Self Blueprints, Reports und Verlauf innerhalb der Website.'}
             </p>
             <Link
-              href="/account/dashboard"
+              href={isOwner ? '/owner' : '/account/dashboard'}
               className="inline-flex items-center rounded-xl bg-white text-black px-5 py-3 font-bold hover:bg-emerald-300 transition-colors"
             >
-              Dashboard oeffnen
+              {isOwner ? 'Kommandozentrale oeffnen' : 'Dashboard oeffnen'}
             </Link>
           </article>
 

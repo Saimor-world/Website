@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink } from 'lucide-react';
+import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink, LayoutDashboard, BarChart3, Zap, Server, HardDrive, FolderTree } from 'lucide-react';
 import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreOwnerJson } from '@/lib/core-owner';
 import { buildOsAuditUrl } from '@/lib/os-links';
 import { signWebsiteEntryToken } from '@/lib/entry-token';
@@ -34,6 +34,39 @@ type CoreWebsitePreview = {
 type CorePreviewLedger = {
   previews?: CoreWebsitePreview[];
   count?: number;
+};
+
+type CoreHostDisk = {
+  path?: string;
+  total_bytes?: number;
+  used_bytes?: number;
+  free_bytes?: number;
+  used_percent?: number;
+  status?: string;
+};
+
+type CoreHostInventoryItem = {
+  name?: string;
+  path?: string;
+  kind?: string;
+  size_bytes?: number | null;
+  modified_at?: string | null;
+};
+
+type CoreHostOverview = {
+  node?: {
+    provider?: string;
+    region?: string;
+    hostname?: string;
+    platform?: string;
+    uptime_seconds?: number | null;
+    load_average?: number[] | null;
+  };
+  storage?: {
+    disks?: CoreHostDisk[];
+    inventory?: Record<string, CoreHostInventoryItem[]>;
+  };
+  services?: Record<string, string>;
 };
 
 const LEAD_STATUSES = [
@@ -111,6 +144,33 @@ function fmtDate(value: Date | string | null | undefined) {
   if (!value) return '-';
   const date = typeof value === 'string' ? new Date(value) : value;
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
+}
+
+function formatBytes(value?: number | null) {
+  if (!value || value < 0) return '-';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  let next = value;
+  let unit = 0;
+  while (next >= 1024 && unit < units.length - 1) {
+    next /= 1024;
+    unit += 1;
+  }
+  return `${next >= 10 || unit === 0 ? next.toFixed(0) : next.toFixed(1)} ${units[unit]}`;
+}
+
+function formatUptime(seconds?: number | null) {
+  if (!seconds || seconds < 0) return '-';
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  if (days > 0) return `${days}d ${hours}h`;
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${hours}h ${minutes}m`;
+}
+
+function primaryDisk(host?: CoreHostOverview | null) {
+  return host?.storage?.disks?.find((disk) => disk.status === 'ok' && disk.path === '/')
+    || host?.storage?.disks?.find((disk) => disk.status === 'ok')
+    || null;
 }
 
 function normalizeDomain(value?: string | null) {
@@ -306,7 +366,7 @@ function readinessItems() {
 }
 
 async function getOwnerData() {
-  const [securityAudits, userCount, waitlistCount, contacts, wallEntries, corePreviewLedger] = await Promise.all([
+  const [securityAudits, userCount, waitlistCount, contacts, wallEntries, corePreviewLedger, coreHost] = await Promise.all([
     prisma.securityAudit.findMany({ 
       orderBy: { createdAt: 'desc' }, 
       take: 20,
@@ -321,6 +381,7 @@ async function getOwnerData() {
       select: { status: true },
     }),
     fetchCoreOwnerJson<CorePreviewLedger>('/v3/entry/website-previews?raw=true&limit=50'),
+    fetchCoreOwnerJson<CoreHostOverview>('/v3/system/owner/host?raw=true'),
   ]);
   return {
     securityAudits,
@@ -330,6 +391,7 @@ async function getOwnerData() {
     wallEntries,
     corePreviews: corePreviewLedger?.previews || [],
     corePreviewCount: corePreviewLedger?.count || corePreviewLedger?.previews?.length || 0,
+    coreHost,
   };
 }
 
@@ -345,25 +407,36 @@ export default async function OwnerDashboard() {
   const readyCount = readiness.filter((item) => item.ok && !item.warn).length;
   const pendingWall = data.wallEntries.filter((entry) => entry.status === 'pending_review').length;
   const liveWall = data.wallEntries.filter((entry) => !entry.status || entry.status === 'published').length;
+  const disk = primaryDisk(data.coreHost);
+  const healthyServiceCount = data.coreHost?.services ? Object.keys(data.coreHost.services).length : 0;
 
   return (
     <main className="min-h-screen bg-[#060a09] text-white p-8 md:p-16">
       <div className="mx-auto max-w-7xl space-y-12">
         
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10">
-          <div className="space-y-2">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-emerald-400 font-bold">Owner Control Plane</p>
-            <h1 className="text-5xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              External <span className="italic">Awareness</span> Dashboard
+        <header className="rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-white/[0.06] via-emerald-400/[0.035] to-transparent p-8 md:p-10">
+          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-300">
+              <LayoutDashboard size={13} />
+              Mora Operator Command
+            </div>
+            <h1 className="max-w-4xl text-5xl font-light md:text-6xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Saimor <span className="italic">Kommandozentrale</span>
             </h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-white/55">
+              Leads, HQ-Previews, Core-Bridge und Hetzner-Betrieb in einer Owner-Sicht. Keine zweite Dashboard-Welt mehr.
+            </p>
           </div>
-          <div className="flex gap-4">
-             <Link href="/systems/control" className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs hover:bg-white/10 transition-colors">System Health</Link>
+          <div className="flex flex-wrap gap-4">
+             <Link href="/de/einstieg/security-check" className="px-4 py-3 rounded-xl bg-white text-black text-xs font-bold hover:bg-emerald-200 transition-colors">Neuer Scan</Link>
+             <Link href="/systems/control" className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-xs hover:bg-white/10 transition-colors">System Health</Link>
              <Link href="/api/owner/leads/export" className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-xs text-emerald-300 flex items-center gap-2">
                <Download size={14} />
                Leads CSV
              </Link>
+          </div>
           </div>
         </header>
 
@@ -371,9 +444,47 @@ export default async function OwnerDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
            <StatCard label="Security Leads" value={data.securityAudits.length} icon={<Shield size={20}/>} />
            <StatCard label="HQ Previews" value={data.corePreviewCount} icon={<ExternalLink size={20}/>} />
-           <StatCard label="Kunden (Users)" value={data.userCount} icon={<Users size={20}/>} />
+           <StatCard label="Hetzner Disk" value={disk ? `${disk.used_percent ?? '-'}%` : '--'} icon={<HardDrive size={20}/>} />
            <StatCard label="Wall Review" value={pendingWall} icon={<Activity size={20}/>} />
         </div>
+
+        <section className="rounded-[2.5rem] border border-saimor-gold/30 bg-gradient-to-br from-saimor-gold/10 to-transparent p-8 md:p-10 space-y-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-saimor-gold/70">Operator Field Suite</p>
+              <h2 className="mt-2 text-3xl font-light text-saimor-gold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Live System Access
+              </h2>
+            </div>
+            <div className="rounded-full border border-saimor-gold/20 bg-saimor-gold/10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-saimor-gold">
+              {data.coreHost?.node?.provider || 'Hetzner'} · {data.coreHost?.node?.region || 'DE'}
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            <OperatorMetric label="Node" value={data.coreHost?.node?.hostname || 'api.saimor.world'} detail={`Uptime ${formatUptime(data.coreHost?.node?.uptime_seconds)}`} icon={<Server size={18} />} />
+            <OperatorMetric label="Kapazitaet" value={disk ? `${formatBytes(disk.free_bytes)} frei` : 'nicht verfuegbar'} detail={disk ? `${formatBytes(disk.used_bytes)} von ${formatBytes(disk.total_bytes)} genutzt` : 'Core Host Snapshot fehlt'} icon={<HardDrive size={18} />} />
+            <OperatorMetric label="Services" value={healthyServiceCount ? `${healthyServiceCount} verknuepft` : 'Bridge pruefen'} detail={`Load ${data.coreHost?.node?.load_average?.slice(0, 3).map((v) => v.toFixed(2)).join(' / ') || '-'}`} icon={<Zap size={18} />} />
+          </div>
+          <div className="grid gap-4 lg:grid-cols-3">
+            {Object.entries(data.coreHost?.storage?.inventory || {}).map(([scope, items]) => (
+              <div key={scope} className="rounded-2xl border border-white/8 bg-black/28 p-4">
+                <div className="mb-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/38">
+                  <FolderTree size={14} />
+                  {scope.replace(/_/g, ' ')}
+                </div>
+                <div className="space-y-2">
+                  {items.slice(0, 7).map((item) => (
+                    <div key={`${scope}-${item.path || item.name}`} className="flex items-center justify-between gap-3 rounded-lg bg-white/[0.025] px-3 py-2 text-xs">
+                      <span className="min-w-0 truncate text-white/68">{item.name}</span>
+                      <span className="shrink-0 font-mono text-white/32">{formatBytes(item.size_bytes)}</span>
+                    </div>
+                  ))}
+                  {!items.length ? <p className="text-xs text-white/28">Keine Inventardaten sichtbar.</p> : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 space-y-5">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -615,6 +726,19 @@ function StatCard({ label, value, icon }: { label: string, value: number | strin
           {icon}
        </div>
        <p className="text-4xl font-light tabular-nums">{value}</p>
+    </div>
+  );
+}
+
+function OperatorMetric({ label, value, detail, icon }: { label: string; value: string; detail: string; icon: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-white/8 bg-black/32 p-6 space-y-3">
+      <div className="flex items-center justify-between text-white/35">
+        <p className="text-[10px] uppercase tracking-[0.2em] font-bold">{label}</p>
+        {icon}
+      </div>
+      <p className="text-2xl font-mono text-emerald-300">{value}</p>
+      <p className="text-[11px] leading-relaxed text-white/38">{detail}</p>
     </div>
   );
 }
