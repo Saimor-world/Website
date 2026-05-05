@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -35,6 +36,19 @@ type CorePreviewLedger = {
   count?: number;
 };
 
+const LEAD_STATUSES = [
+  { value: 'new', label: 'Neu', tone: 'bg-white/5 text-white/45', next: 'Dossier qualifizieren' },
+  { value: 'qualified', label: 'Qualifiziert', tone: 'bg-cyan-500/10 text-cyan-200', next: 'HQ vorbereiten' },
+  { value: 'contacted', label: 'Kontaktiert', tone: 'bg-amber-500/10 text-amber-200', next: 'Follow-up pruefen' },
+  { value: 'demo_ready', label: 'HQ bereit', tone: 'bg-violet-500/10 text-violet-200', next: 'Kunde ins HQ holen' },
+  { value: 'customer', label: 'Kunde', tone: 'bg-emerald-500/10 text-emerald-200', next: 'Account betreuen' },
+  { value: 'archived', label: 'Archiv', tone: 'bg-white/5 text-white/30', next: 'Archiviert' },
+] as const;
+
+function leadStatusMeta(status?: string | null) {
+  return LEAD_STATUSES.find((item) => item.value === status) || LEAD_STATUSES[0];
+}
+
 function wallStatusLabel(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
   if (audit.userId) return 'Account verbunden';
   if (audit.wallEntry?.status === 'pending_review') return 'Wall Review';
@@ -62,6 +76,35 @@ async function updateWallStatus(formData: FormData) {
       approvedAt: status === 'published' ? new Date() : null,
     },
   });
+
+  revalidatePath('/owner');
+}
+
+async function updateLeadLifecycle(formData: FormData) {
+  'use server';
+
+  const session = await getServerSession(authOptions);
+  if (!session?.user || session.user.role !== 'owner') {
+    redirect('/owner/login');
+  }
+
+  const auditId = String(formData.get('auditId') || '');
+  const ownerStatus = String(formData.get('ownerStatus') || 'new');
+  const ownerNote = String(formData.get('ownerNote') || '').trim().slice(0, 1200);
+  const allowedStatuses = new Set(LEAD_STATUSES.map((item) => item.value));
+
+  if (!auditId || !allowedStatuses.has(ownerStatus as any)) return;
+
+  await prisma.securityAudit.update({
+    where: { id: auditId },
+    data: {
+      ownerStatus,
+      ownerNote: ownerNote || null,
+      ownerUpdatedAt: new Date(),
+    },
+  });
+
+  revalidatePath('/owner');
 }
 
 function fmtDate(value: Date | string | null | undefined) {
@@ -126,11 +169,13 @@ function hqStatusClass(preview?: CoreWebsitePreview | null) {
   return 'bg-cyan-500/10 text-cyan-200';
 }
 
-function ownerNextAction(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
+function ownerNextAction(audit: { userId?: string | null; ownerStatus?: string | null; wallEntry?: { status?: string | null } | null }) {
+  const manualNext = leadStatusMeta(audit.ownerStatus).next;
+  if (audit.ownerStatus && audit.ownerStatus !== 'new') return manualNext;
   if (audit.userId) return 'Account betreuen';
   if (audit.wallEntry?.status === 'pending_review') return 'Wall freigeben';
   if (audit.wallEntry?.status === 'published') return 'HQ Follow-up';
-  return 'Dossier qualifizieren';
+  return manualNext;
 }
 
 function followUpMailto(audit: { email: string; name: string; score: number; level: string; targetDomain?: string | null; domain?: string | null }) {
@@ -411,6 +456,7 @@ export default async function OwnerDashboard() {
             <div className="grid gap-4">
               {data.securityAudits.map((audit: any) => {
                 const hqPreview = matchCorePreview(audit, data.corePreviews);
+                const leadStatus = leadStatusMeta(audit.ownerStatus);
                 return (
                 <div key={audit.id} className="group bg-white/[0.02] border border-white/5 rounded-2xl p-6 transition-all hover:bg-white/[0.04]">
                   <div className="flex flex-col md:flex-row justify-between gap-6">
@@ -432,6 +478,9 @@ export default async function OwnerDashboard() {
                          </span>
                          <span className={`px-2 py-1 rounded text-[9px] uppercase tracking-widest ${hqStatusClass(hqPreview)}`}>
                            {hqStatusLabel(hqPreview)}
+                         </span>
+                         <span className={`px-2 py-1 rounded text-[9px] uppercase tracking-widest ${leadStatus.tone}`}>
+                           {leadStatus.label}
                          </span>
                          <span className="px-2 py-1 rounded bg-emerald-500/10 text-[9px] uppercase tracking-widest text-emerald-200">{ownerNextAction(audit)}</span>
                       </div>
@@ -471,6 +520,39 @@ export default async function OwnerDashboard() {
                        <p className="text-xs text-white/60 leading-relaxed italic line-clamp-2">"{audit.attackerPath}"</p>
                     </div>
                   )}
+                  <form action={updateLeadLifecycle} className="mt-4 grid gap-3 rounded-xl border border-white/5 bg-black/16 p-4 md:grid-cols-[180px_1fr_auto]">
+                    <input type="hidden" name="auditId" value={audit.id} />
+                    <label className="space-y-2">
+                      <span className="block text-[9px] uppercase tracking-[0.2em] text-white/35">Lead Status</span>
+                      <select
+                        name="ownerStatus"
+                        defaultValue={audit.ownerStatus || 'new'}
+                        className="w-full rounded-lg border border-white/10 bg-[#070b0a] px-3 py-2 text-xs text-white/75 outline-none focus:border-emerald-400/40"
+                      >
+                        {LEAD_STATUSES.map((status) => (
+                          <option key={status.value} value={status.value}>{status.label}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="space-y-2">
+                      <span className="block text-[9px] uppercase tracking-[0.2em] text-white/35">Owner Notiz</span>
+                      <textarea
+                        name="ownerNote"
+                        defaultValue={audit.ownerNote || ''}
+                        rows={2}
+                        placeholder="Naechster Schritt, Kontext, Risiko oder Zusage..."
+                        className="w-full resize-none rounded-lg border border-white/10 bg-[#070b0a] px-3 py-2 text-xs text-white/75 outline-none placeholder:text-white/20 focus:border-emerald-400/40"
+                      />
+                    </label>
+                    <div className="flex items-end">
+                      <button className="w-full rounded-lg border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-[10px] uppercase tracking-widest text-emerald-200 hover:bg-emerald-400/15 md:w-auto">
+                        Speichern
+                      </button>
+                    </div>
+                    {audit.ownerUpdatedAt ? (
+                      <p className="md:col-span-3 text-[10px] text-white/28">Zuletzt bearbeitet: {fmtDate(audit.ownerUpdatedAt)}</p>
+                    ) : null}
+                  </form>
                   {audit.wallEntry ? (
                     <form action={updateWallStatus} className="mt-4 flex flex-wrap gap-2 border-t border-white/5 pt-4">
                       <input type="hidden" name="entryId" value={audit.wallEntry.id} />

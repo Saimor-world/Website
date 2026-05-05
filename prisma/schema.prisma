@@ -52,9 +52,14 @@ model SecurityAudit {
   recommendations   Json
   followUpQuestions Json?      // [{id, question, options[]}] â€” KI-generiert      
   followUpAnswers   Json?      // [{id, answer}] â€” User-Antworten
+  ownerStatus       String     @default("new")
+  ownerNote         String?
+  ownerUpdatedAt    DateTime?
   createdAt         DateTime   @default(now())
 
   wallEntry         WallEntry?
+
+  @@index([ownerStatus, createdAt])
 }
 
 
