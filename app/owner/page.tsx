@@ -4,11 +4,36 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink } from 'lucide-react';
-import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreJson, fetchCoreOwnerJson } from '@/lib/core-owner';
+import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreOwnerJson } from '@/lib/core-owner';
 import { buildOsAuditUrl } from '@/lib/os-links';
 import { signWebsiteEntryToken } from '@/lib/entry-token';
 
 export const dynamic = 'force-dynamic';
+
+type CoreWebsitePreview = {
+  id?: string | null;
+  tenant_id?: string | null;
+  company_name?: string | null;
+  status?: string | null;
+  claimed?: boolean | null;
+  owner_email?: string | null;
+  preview_email?: string | null;
+  claim_email?: string | null;
+  contact_email?: string | null;
+  domain?: string | null;
+  score?: number | string | null;
+  website_entry_id?: string | null;
+  dossier_node_id?: string | null;
+  dossier_title?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  source?: string | null;
+};
+
+type CorePreviewLedger = {
+  previews?: CoreWebsitePreview[];
+  count?: number;
+};
 
 function wallStatusLabel(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
   if (audit.userId) return 'Account verbunden';
@@ -43,6 +68,62 @@ function fmtDate(value: Date | string | null | undefined) {
   if (!value) return '-';
   const date = typeof value === 'string' ? new Date(value) : value;
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('de-DE');
+}
+
+function normalizeDomain(value?: string | null) {
+  return (value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .split('/')[0]
+    .split('?')[0]
+    .replace(/\.$/, '');
+}
+
+function normalizeName(value?: string | null) {
+  return (value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\b(gmbh|ug|ag|ltd|llc|inc|co|company)\b/g, '')
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+function auditDomain(audit: { targetDomain?: string | null; domain?: string | null }) {
+  return normalizeDomain(audit.targetDomain || audit.domain);
+}
+
+function matchCorePreview(
+  audit: { id: string; name: string; targetDomain?: string | null; domain?: string | null; score?: number | null },
+  previews: CoreWebsitePreview[],
+) {
+  const byEntryId = previews.find((preview) => preview.website_entry_id === audit.id);
+  if (byEntryId) return byEntryId;
+
+  const domain = auditDomain(audit);
+  if (domain) {
+    const byDomain = previews.find((preview) => {
+      if (normalizeDomain(preview.domain) !== domain) return false;
+      if (preview.score == null || audit.score == null) return true;
+      return Number(preview.score) === Number(audit.score);
+    });
+    if (byDomain) return byDomain;
+  }
+
+  const name = normalizeName(audit.name);
+  return previews.find((preview) => name && normalizeName(preview.company_name) === name) || null;
+}
+
+function hqStatusLabel(preview?: CoreWebsitePreview | null) {
+  if (!preview) return 'HQ nicht geoeffnet';
+  if (preview.claimed || preview.status === 'claimed') return 'Kundenaccount';
+  return 'Preview aktiv';
+}
+
+function hqStatusClass(preview?: CoreWebsitePreview | null) {
+  if (!preview) return 'bg-white/5 text-white/40';
+  if (preview.claimed || preview.status === 'claimed') return 'bg-emerald-500/10 text-emerald-200';
+  return 'bg-cyan-500/10 text-cyan-200';
 }
 
 function ownerNextAction(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
@@ -180,7 +261,7 @@ function readinessItems() {
 }
 
 async function getOwnerData() {
-  const [securityAudits, userCount, waitlistCount, contacts, wallEntries] = await Promise.all([
+  const [securityAudits, userCount, waitlistCount, contacts, wallEntries, corePreviewLedger] = await Promise.all([
     prisma.securityAudit.findMany({ 
       orderBy: { createdAt: 'desc' }, 
       take: 20,
@@ -194,8 +275,17 @@ async function getOwnerData() {
       take: 100,
       select: { status: true },
     }),
+    fetchCoreOwnerJson<CorePreviewLedger>('/v3/entry/website-previews?raw=true&limit=50'),
   ]);
-  return { securityAudits, userCount, waitlistCount, contacts, wallEntries };
+  return {
+    securityAudits,
+    userCount,
+    waitlistCount,
+    contacts,
+    wallEntries,
+    corePreviews: corePreviewLedger?.previews || [],
+    corePreviewCount: corePreviewLedger?.count || corePreviewLedger?.previews?.length || 0,
+  };
 }
 
 export default async function OwnerDashboard() {
@@ -233,8 +323,9 @@ export default async function OwnerDashboard() {
         </header>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
            <StatCard label="Security Leads" value={data.securityAudits.length} icon={<Shield size={20}/>} />
+           <StatCard label="HQ Previews" value={data.corePreviewCount} icon={<ExternalLink size={20}/>} />
            <StatCard label="Kunden (Users)" value={data.userCount} icon={<Users size={20}/>} />
            <StatCard label="Wall Review" value={pendingWall} icon={<Activity size={20}/>} />
         </div>
@@ -256,11 +347,53 @@ export default async function OwnerDashboard() {
               <ReadinessCard key={item.label} {...item} />
             ))}
           </div>
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-4">
             <MiniMetric label="Wall live" value={liveWall} />
             <MiniMetric label="Wall Review" value={pendingWall} />
+            <MiniMetric label="HQ Previews" value={data.corePreviewCount} />
             <MiniMetric label="Warteliste" value={data.waitlistCount} />
           </div>
+        </section>
+
+        <section className="rounded-3xl border border-cyan-400/10 bg-cyan-400/[0.035] p-6 space-y-5">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-cyan-200/55">HQ Preview Ledger</p>
+              <h2 className="mt-2 text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Website-Leads im OS
+              </h2>
+            </div>
+            <div className="rounded-full border border-cyan-300/15 bg-black/20 px-4 py-2 text-sm text-cyan-100/70">
+              {data.corePreviewCount} Core-Tenants
+            </div>
+          </div>
+          {data.corePreviews.length ? (
+            <div className="grid gap-3 lg:grid-cols-2">
+              {data.corePreviews.slice(0, 6).map((preview) => (
+                <div key={preview.id || preview.tenant_id || preview.company_name || preview.created_at} className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold text-white/88">{preview.company_name || 'Unbenannter Preview-Tenant'}</p>
+                      <p className="mt-1 truncate text-xs text-white/42">{preview.domain || preview.contact_email || preview.preview_email || '-'}</p>
+                    </div>
+                    <span className={`shrink-0 rounded-full px-2 py-1 text-[9px] uppercase tracking-widest ${hqStatusClass(preview)}`}>
+                      {hqStatusLabel(preview)}
+                    </span>
+                  </div>
+                  <div className="mt-4 grid gap-2 text-[11px] text-white/45 sm:grid-cols-2">
+                    <p className="truncate">Tenant: <span className="font-mono text-white/65">{preview.tenant_id || '-'}</span></p>
+                    <p className="truncate">Dossier: <span className="text-white/65">{preview.dossier_title || '-'}</span></p>
+                    <p className="truncate">Kontakt: <span className="text-white/65">{preview.claim_email || preview.contact_email || '-'}</span></p>
+                    <p>Aktualisiert: <span className="text-white/65">{fmtDate(preview.updated_at || preview.created_at)}</span></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-5 text-sm text-white/50">
+              Noch keine HQ-Previews aus Core sichtbar. Wenn gerade lokale Tests laufen, wird diese Liste erst nach dem Website-Einstieg ins HQ gefuellt.
+            </div>
+          )}
         </section>
 
         <div className="grid lg:grid-cols-3 gap-12">
@@ -276,7 +409,9 @@ export default async function OwnerDashboard() {
             </div>
 
             <div className="grid gap-4">
-              {data.securityAudits.map((audit: any) => (
+              {data.securityAudits.map((audit: any) => {
+                const hqPreview = matchCorePreview(audit, data.corePreviews);
+                return (
                 <div key={audit.id} className="group bg-white/[0.02] border border-white/5 rounded-2xl p-6 transition-all hover:bg-white/[0.04]">
                   <div className="flex flex-col md:flex-row justify-between gap-6">
                     <div className="space-y-3 flex-1">
@@ -295,8 +430,20 @@ export default async function OwnerDashboard() {
                          <span className={`px-2 py-1 rounded text-[9px] uppercase tracking-widest ${audit.userId ? 'bg-cyan-500/10 text-cyan-200' : audit.wallEntry?.status === 'published' ? 'bg-emerald-500/10 text-emerald-200' : audit.wallEntry ? 'bg-amber-500/10 text-amber-200' : 'bg-white/5 text-white/40'}`}>
                            {wallStatusLabel(audit)}
                          </span>
+                         <span className={`px-2 py-1 rounded text-[9px] uppercase tracking-widest ${hqStatusClass(hqPreview)}`}>
+                           {hqStatusLabel(hqPreview)}
+                         </span>
                          <span className="px-2 py-1 rounded bg-emerald-500/10 text-[9px] uppercase tracking-widest text-emerald-200">{ownerNextAction(audit)}</span>
                       </div>
+                      {hqPreview ? (
+                        <div className="rounded-xl border border-cyan-300/10 bg-cyan-300/[0.035] px-3 py-2 text-[11px] text-cyan-50/62">
+                          <span className="font-mono text-cyan-100/72">{hqPreview.tenant_id}</span>
+                          {hqPreview.dossier_title ? <span> · {hqPreview.dossier_title}</span> : null}
+                          {hqPreview.claim_email || hqPreview.contact_email ? (
+                            <span> · {hqPreview.claim_email || hqPreview.contact_email}</span>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </div>
                     <div className="text-right space-y-2">
                        <p className="text-[10px] text-white/20">{fmtDate(audit.createdAt)}</p>
@@ -339,7 +486,8 @@ export default async function OwnerDashboard() {
                     </form>
                   ) : null}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
