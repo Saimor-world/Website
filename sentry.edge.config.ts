@@ -5,16 +5,20 @@
 
 import * as Sentry from "@sentry/nextjs";
 
-Sentry.init({
-  dsn: "https://0287484514575ed20ba4b22bf03512fa@o4510719412273152.ingest.de.sentry.io/4510719418433616",
+const dsn = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
+if (dsn) {
+  Sentry.init({
+    dsn,
 
-  // Enable logs to be sent to Sentry
-  enableLogs: true,
+    // Keep production telemetry useful without sending every request.
+    tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1,
 
-  // Enable sending user PII (Personally Identifiable Information)
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
-  sendDefaultPii: true,
-});
+    // Enable logs to be sent to Sentry
+    enableLogs: true,
+
+    // Enable sending user PII (Personally Identifiable Information)
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
+    sendDefaultPii: true,
+  });
+}

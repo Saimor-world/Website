@@ -9,11 +9,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'message';
 
-    const HARDCODED_DSN = "https://0287484514575ed20ba4b22bf03512fa@o4510719412273152.ingest.de.sentry.io/4510719418433616";
-
     const hasEnvDsn = !!process.env.SENTRY_DSN;
     const hasPublicEnvDsn = !!process.env.NEXT_PUBLIC_SENTRY_DSN;
-    const isConfigured = hasEnvDsn || hasPublicEnvDsn || !!HARDCODED_DSN;
+    const isConfigured = hasEnvDsn || hasPublicEnvDsn;
 
     try {
         if (type === 'error') {
@@ -36,7 +34,6 @@ export async function GET(request: Request) {
                     debug: {
                         hasSentryDsn: hasEnvDsn,
                         hasPublicDsn: hasPublicEnvDsn,
-                        usingFallback: !hasEnvDsn && !hasPublicEnvDsn,
                         environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV
                     }
                 },
@@ -58,7 +55,6 @@ export async function GET(request: Request) {
                 debug: {
                     hasSentryDsn: hasEnvDsn,
                     hasPublicDsn: hasPublicEnvDsn,
-                    usingFallback: !hasEnvDsn && !hasPublicEnvDsn,
                     environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV
                 }
             },

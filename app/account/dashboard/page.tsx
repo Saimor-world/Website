@@ -45,6 +45,10 @@ export default async function MoraDashboardPage() {
     redirect('/account/dashboard');
   }
 
+  if (user.role === 'owner' || session.user.role === 'owner') {
+    redirect('/owner');
+  }
+
   const audits = user.securityAudits || [];
   const blueprints = user.digitalBlueprints || [];
   const facts = user.facts || [];
