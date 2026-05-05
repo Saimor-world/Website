@@ -13,9 +13,13 @@ type OsContext = {
   entity?: string;
   id?: string;
   company?: string;
+  email?: string;
   domain?: string;
   score?: string;
   level?: string;
+  summary?: string;
+  entry_token?: string;
+  actions?: string;
 };
 
 function withQueryParams(baseUrl: string, params: Record<string, string | undefined>) {
@@ -41,7 +45,10 @@ export function buildOsSsoUrl(email: string, context?: OsContext): string {
   });
 }
 
-export function buildOsAuditUrl(auditId: string, context?: Pick<OsContext, 'company' | 'domain' | 'score' | 'level'>) {
+export function buildOsAuditUrl(
+  auditId: string,
+  context?: Pick<OsContext, 'company' | 'email' | 'domain' | 'score' | 'level' | 'summary' | 'entry_token' | 'actions'>
+) {
   return withQueryParams(getOsBaseUrl(), {
     surface: 'website',
     entity: 'security-audit',

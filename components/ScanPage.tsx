@@ -167,7 +167,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: contactName.trim() || companyName.trim() || 'Anonym',
+          name: companyName.trim() || contactName.trim() || domainToCompanyName(target.trim()),
+          companyName: companyName.trim() || domainToCompanyName(target.trim()),
+          contactName: contactName.trim() || undefined,
           email: email.trim(),
           targetDomain: target.trim(),
           industry: industry || 'Nicht angegeben',
@@ -185,7 +187,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       const r = data.result;
       const auditData = {
         id: r.id,
-        name: contactName.trim() || companyName.trim() || 'Anonym',
+        name: r.companyName || companyName.trim() || domainToCompanyName(target.trim()),
         email: email.trim(),
         targetDomain: target.trim(),
         score: r.score,
@@ -211,7 +213,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         persisted: data.persisted,
         target: target.trim(),
         companyName: companyName.trim() || domainToCompanyName(target.trim()),
-        contactName: contactName.trim(),
+        contactName: r.contactName || contactName.trim(),
         workIntent: workIntent.trim(),
         summary: r.summary,
         attacker_path: r.attacker_path,
@@ -227,7 +229,10 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           status: f.severity === 'risk' ? 'risk' : f.severity === 'warn' ? 'warn' : 'ok',
           desc: f.desc,
         })),
-        demoProfile: buildDemoCompanyProfile(auditData as any),
+        demoProfile: buildDemoCompanyProfile({
+          ...(auditData as any),
+          name: r.companyName || companyName.trim() || domainToCompanyName(target.trim()),
+        }),
         hqUrl: builtHqUrl,
       });
 

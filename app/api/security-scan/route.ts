@@ -10,6 +10,8 @@ import { signWebsiteEntryToken } from '@/lib/entry-token';
 
 const Body = z.object({
   name: z.string().trim().min(1).max(200),
+  companyName: z.string().trim().max(200).optional(),
+  contactName: z.string().trim().max(200).optional(),
   email: z.string().email(),
   locale: z.enum(['de', 'en']).default('de'),
   industry: z.string().trim().max(120).optional(),
@@ -83,6 +85,35 @@ function fallbackFindings(domain: string, warning?: string | null) {
   ];
 }
 
+function domainToCompanyName(value: string) {
+  const root = value
+    .trim()
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .split('/')[0]
+    .split('.')[0]
+    ?.replaceAll('-', ' ');
+  if (!root) return 'Deine Firma';
+  return root
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function resolveCompanyName(data: z.infer<typeof Body>, domain: string) {
+  const explicitCompany = data.companyName?.trim();
+  if (explicitCompany) return explicitCompany;
+
+  const name = data.name.trim();
+  const contact = data.contactName?.trim();
+  if (name && name.toLowerCase() !== 'anonym' && (!contact || name.toLowerCase() !== contact.toLowerCase())) {
+    return name;
+  }
+
+  return domainToCompanyName(domain);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIP(req);
@@ -98,6 +129,8 @@ export async function POST(req: NextRequest) {
     const domainCheck = validateScanDomain(data.targetDomain || fallbackDomain);
     if (!domainCheck.ok) return NextResponse.json({ error: domainCheck.reason }, { status: 400 });
     const domain = domainCheck.domain;
+    const companyName = resolveCompanyName(data, domain);
+    const contactName = data.contactName?.trim() || (data.name.trim() !== companyName ? data.name.trim() : null);
 
     // 1. ECHTER RECON SCAN (0 Mock), aber lokale Demo darf bei Netzwerkfehlern nicht 500en.
     let recon = null;
@@ -159,7 +192,7 @@ export async function POST(req: NextRequest) {
         return prisma.securityAudit.create({
           data: {
             userId,
-            name: data.name,
+            name: companyName,
             email: data.email,
             industry: data.industry,
             companySize: data.companySize,
@@ -200,7 +233,7 @@ export async function POST(req: NextRequest) {
     try {
       entryToken = signWebsiteEntryToken({
         id: createdAuditId || entryId,
-        company: data.name,
+        company: companyName,
         email: data.email,
         domain,
         score,
@@ -221,6 +254,8 @@ export async function POST(req: NextRequest) {
       persisted,
       result: {
         id: createdAuditId,
+        companyName,
+        contactName,
         score,
         level,
         levelLabel: riskLabel(level, data.locale),

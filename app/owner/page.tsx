@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Download, CheckCircle2, XCircle, ExternalLink } from 'lucide-react';
 import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreJson, fetchCoreOwnerJson } from '@/lib/core-owner';
 import { buildOsAuditUrl } from '@/lib/os-links';
+import { signWebsiteEntryToken } from '@/lib/entry-token';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,6 +66,56 @@ function followUpMailto(audit: { email: string; name: string; score: number; lev
     'Viele Gruesse',
   ].join('\n');
   return `mailto:${encodeURIComponent(audit.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function auditRecommendations(audit: { recommendations?: any }) {
+  return Array.isArray(audit.recommendations) ? audit.recommendations : [];
+}
+
+function auditHqUrl(audit: {
+  id: string;
+  name: string;
+  email: string;
+  targetDomain?: string | null;
+  domain?: string | null;
+  score: number;
+  level: string;
+  analysis?: string | null;
+  recommendations?: any;
+}) {
+  const domain = audit.targetDomain || audit.domain || '';
+  const actions = auditRecommendations(audit)
+    .slice(0, 3)
+    .map((recommendation: any) => recommendation?.title)
+    .filter(Boolean)
+    .join('|');
+
+  let entryToken: string | undefined;
+  try {
+    entryToken = signWebsiteEntryToken({
+      id: audit.id,
+      company: audit.name,
+      email: audit.email,
+      domain,
+      score: audit.score,
+      level: audit.level,
+      summary: audit.analysis,
+      actions: actions ? actions.split('|') : [],
+    });
+  } catch {
+    entryToken = undefined;
+  }
+
+  return buildOsAuditUrl(audit.id, {
+    company: audit.name,
+    email: audit.email,
+    domain,
+    score: String(audit.score),
+    level: audit.level,
+    summary: audit.analysis ? audit.analysis.slice(0, 420) : undefined,
+    entry_token: entryToken,
+    actions,
+  });
 }
 
 function hasEnv(key: string) {
@@ -253,12 +304,7 @@ export default async function OwnerDashboard() {
                           Details öffnen <ChevronRight size={12}/>
                        </Link>
                        <a
-                         href={buildOsAuditUrl(audit.id, {
-                           company: audit.name,
-                           domain: audit.targetDomain || audit.domain || undefined,
-                           score: String(audit.score),
-                           level: audit.level,
-                         })}
+                         href={auditHqUrl(audit)}
                          target="_blank"
                          rel="noreferrer noopener"
                          className="flex items-center gap-2 ml-auto text-[10px] uppercase tracking-widest text-cyan-300/80 hover:text-white transition-colors"

@@ -23,7 +23,7 @@ export async function GET() {
 
   const header = [
     'createdAt',
-    'companyOrName',
+    'companyName',
     'email',
     'domain',
     'industry',
