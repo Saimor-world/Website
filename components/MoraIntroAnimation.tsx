@@ -182,10 +182,11 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
       console.warn('Failed to read intro state from localStorage:', e);
     }
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768;
 
     setReady(true);
 
-    if (seen || prefersReducedMotion) {
+    if (seen || prefersReducedMotion || isMobile) {
       markSeen();
       return;
     }

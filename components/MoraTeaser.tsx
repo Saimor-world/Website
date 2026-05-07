@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Brain, Network, Lock, Zap } from 'lucide-react';
 
@@ -169,10 +170,12 @@ export default function MoraTeaser({ locale }: Props) {
                 style={{ background: 'linear-gradient(90deg, transparent, rgba(52,211,153,0.5), transparent)' }}
               />
 
-              <img
+              <Image
                 src="/images/mora_showcase.png"
                 alt="Mora Semantic Intelligence Showcase"
-                className="w-full h-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
               />
 
               {/* Bottom fade */}

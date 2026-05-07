@@ -19,6 +19,9 @@ export default function MyceliumNetwork() {
   const timeRef = useRef(0);
 
   useEffect(() => {
+    // Skip continuous canvas animation on mobile — too CPU-intensive
+    if (window.innerWidth < 768) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
