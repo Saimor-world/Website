@@ -19,10 +19,17 @@ export async function POST(req: NextRequest) {
       ? body.domain.trim()
       : 'saimor.world';
 
+    // Use a per-session random prefix so each demo visitor gets an isolated tenant.
+    // _preview_ids() in CORE hashes email+domain+company → same email = same tenant.
+    // A random suffix guarantees uniqueness without requiring auth.
+    const sessionSuffix = Math.random().toString(36).slice(2, 10);
+    const demoEmail = `demo-${sessionSuffix}@${domain}`;
+    const demoId = `public-demo-${Date.now()}-${sessionSuffix}`;
+
     const token = signWebsiteEntryToken({
-      id: `public-demo-${Date.now()}`,
+      id: demoId,
       company: companyName,
-      email: `demo@${domain}`,
+      email: demoEmail,
       domain,
       score: 68,
       level: 'mittel',
@@ -35,7 +42,7 @@ export async function POST(req: NextRequest) {
     url.searchParams.set('token', token);
     url.searchParams.set('surface', 'website');
     url.searchParams.set('entity', 'security-audit');
-    url.searchParams.set('id', `public-demo-${Date.now()}`);
+    url.searchParams.set('id', demoId);
     url.searchParams.set('companyName', companyName);
     url.searchParams.set('domain', domain);
     url.searchParams.set('score', '68');
