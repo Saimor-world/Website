@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Bot, Cpu } from 'lucide-react';
 import { entryContent, type EntryLocale, type EntryPillar } from '@/lib/entry-content';
+import { DemoLaunchButton } from './DemoLaunchButton';
 
 // Security first — it's the primary product and strongest entry point
 const pillarOrder: EntryPillar[] = ['security', 'digital-self', 'ai-business'];
@@ -176,6 +177,9 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
               {locale === 'de' ? 'Jetzt prüfen' : 'Check now'}
               <ArrowRight className="w-4 h-4" />
             </Link>
+            <DemoLaunchButton
+              label={locale === 'de' ? 'OS-Demo öffnen' : 'Open OS demo'}
+            />
             <Link
               href="/wall"
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-transparent px-5 py-3 text-sm text-white/50 hover:text-white/70 hover:bg-white/5 transition-all duration-200"
