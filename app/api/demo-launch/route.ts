@@ -40,14 +40,9 @@ export async function POST(req: NextRequest) {
     const osBase = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';
     const url = new URL('/entry', osBase);
     url.searchParams.set('token', token);
-    url.searchParams.set('surface', 'website');
-    url.searchParams.set('entity', 'security-audit');
-    url.searchParams.set('id', demoId);
-    url.searchParams.set('companyName', companyName);
-    url.searchParams.set('domain', domain);
-    url.searchParams.set('score', '68');
-    url.searchParams.set('level', 'mittel');
-    url.searchParams.set('title', 'Demo-Workspace');
+    // mode=demo: signals a pure product demo, NOT a security-audit dossier.
+    // No entity/score/companyName params → no dossier context stored in the OS.
+    url.searchParams.set('mode', 'demo');
 
     return NextResponse.json({ url: url.toString() });
   } catch (err) {
