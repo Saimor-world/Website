@@ -140,6 +140,49 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       );
   };
 
+  async function ingestAudit(scanData: {
+    email: string;
+    domain: string;
+    score: number;
+    grade?: string;
+    summary?: string;
+    level?: string;
+    industry?: string;
+    companySize?: string;
+    findings?: Array<{ title: string; severity: string; desc: string }>;
+    recommendations?: Array<{ title: string }>;
+    auditId?: string;
+  }): Promise<{ session_token: string; node_id: string; tenant_id: string; role: string } | null> {
+    try {
+      const res = await fetch('https://api.saimor.world/v3/playground/ingest-audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: scanData.email,
+          domain: scanData.domain,
+          score: scanData.score,
+          grade: scanData.grade,
+          summary: scanData.summary,
+          level: scanData.level,
+          industry: scanData.industry,
+          company_size: scanData.companySize,
+          findings: scanData.findings,
+          recommendations: scanData.recommendations,
+          audit_id: scanData.auditId,
+          visitor_id: typeof window !== 'undefined'
+            ? (localStorage.getItem('saimor_visitor_id') || undefined)
+            : undefined,
+          visitor_name: scanData.email.split('@')[0],
+        }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.success ? data : null;
+    } catch {
+      return null;
+    }
+  }
+
   const startScan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!target.trim()) {
@@ -208,6 +251,36 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         entryToken: r.entryToken,
       });
 
+      // Try ingest-audit first (creates a real OS session with dossier)
+      const ingestResult = await ingestAudit({
+        email: email.trim(),
+        domain: target.trim(),
+        score: r.score,
+        grade: r.grade,
+        summary: r.summary,
+        level: r.levelLabel,
+        industry,
+        companySize: companySize,
+        findings: (r.findings ?? []).map((f: any) => ({
+          title: f.title,
+          severity: f.severity,
+          desc: f.desc,
+        })),
+        recommendations: (r.recommendations ?? []).map((rec: any) => ({ title: rec.title })),
+        auditId: r.id ?? undefined,
+      });
+
+      if (ingestResult) {
+        // Redirect directly into the OS — session and dossier already created
+        const params = new URLSearchParams({
+          audit_session: ingestResult.session_token,
+          node: ingestResult.node_id,
+        });
+        window.location.href = `https://hq.saimor.world/playground?${params.toString()}`;
+        return;
+      }
+
+      // Fallback: show results on-page and send email link
       setResults({
         ...auditData,
         persisted: data.persisted,
@@ -336,7 +409,21 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   };
 
   return (
-    <main className="min-h-screen bg-[#060a09] text-white p-6 md:p-20 print:bg-white print:text-black">
+    <>
+      <style jsx global>{`
+        @media print {
+          @page { margin: 2cm; }
+          body { background: white !important; color: black !important; }
+          main { background: white !important; padding: 0 !important; }
+          .print-hide { display: none !important; }
+          .print-break-inside-avoid { page-break-inside: avoid; }
+          .print-border { border: 1px solid #ddd !important; }
+          h1, h2, h3 { color: black !important; }
+          p { color: #333 !important; }
+          .rounded-3xl, .rounded-2xl { border-radius: 8px !important; }
+        }
+      `}</style>
+      <main className="min-h-screen bg-[#060a09] text-white p-6 md:p-20 print:bg-white print:text-black">
       <div className="mx-auto max-w-4xl space-y-12 print:max-w-none">
         {wallVerifyState !== 'idle' ? (
           <div className={`rounded-3xl border p-6 ${
@@ -586,22 +673,31 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   </div>
                   <h2 className="text-2xl font-light">{results.companyName} als naechsten Schritt vorbereiten</h2>
                   <p className="max-w-2xl text-sm leading-relaxed text-white/55">
-                    Der Check ist jetzt ein Objekt: Notiz speichern, optional ins Supporter-Gaestebuch haengen oder den HQ-Einstieg per E-Mail freischalten.
+                    Der Check ist jetzt ein Objekt: Notiz speichern, optional ins Supporter-Gaestebuch haengen oder den HQ-Einstieg direkt freischalten.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={requestHqLink}
-                  disabled={hqState === 'sending' || hqState === 'sent'}
-                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-cyan-200/20 bg-cyan-300/10 px-5 py-3 text-sm text-cyan-50 hover:bg-cyan-300/15 disabled:opacity-50"
-                >
-                  {hqState === 'sending'
-                    ? 'Sende HQ-Link...'
-                    : hqState === 'sent'
-                      ? 'HQ-Link gesendet'
-                      : 'HQ-Link per E-Mail'}
-                  <ExternalLink size={15} />
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={results.hqUrl}
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]"
+                  >
+                    HQ-Demo oeffnen
+                    <ExternalLink size={15} />
+                  </a>
+                  <button
+                    type="button"
+                    onClick={requestHqLink}
+                    disabled={hqState === 'sending' || hqState === 'sent'}
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/70 hover:bg-white/10 disabled:opacity-50"
+                  >
+                    {hqState === 'sending'
+                      ? 'Sende Link...'
+                      : hqState === 'sent'
+                        ? 'Link gesendet'
+                        : 'Link per E-Mail'}
+                    <Mail size={15} />
+                  </button>
+                </div>
               </div>
 
               <label className="block space-y-2">
@@ -1071,5 +1167,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               )}
               </div>
               </main>
+              </>
               );
               }
+
