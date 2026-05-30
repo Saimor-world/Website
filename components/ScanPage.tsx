@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, Pin, Save, ExternalLink, ClipboardList, Download, Mail } from 'lucide-react';
 import DemoHqPreview from './DemoHqPreview';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
+import { buildContextToken } from '@/lib/entry-token';
 
 const LOADING_STEPS = [
   { id: 'dns',        label: 'Digitale Wegweiser prüfen (DNS)',    desc: 'Wir schauen, ob deine Adressen sicher geroutet werden.' },
@@ -67,26 +68,23 @@ function buildHqUrl(results: any) {
   const base = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';
   const url = new URL(base);
   if (!url.pathname || url.pathname === '/') url.pathname = '/entry';
-  url.searchParams.set('surface', 'website');
-  url.searchParams.set('entity', 'security-audit');
-  url.searchParams.set('id', results.id || `local-preview-${Date.now()}`);
-  url.searchParams.set('company', results.companyName);
-  if (results.email) url.searchParams.set('email', results.email);
-  url.searchParams.set('domain', results.recon?.domain || results.target);
-  url.searchParams.set('score', String(results.score));
-  url.searchParams.set('level', scoreLabel(results.score));
-  if (results.grade) url.searchParams.set('grade', results.grade);
-  if (results.summary) url.searchParams.set('summary', String(results.summary).slice(0, 420));
-  if (results.entryToken) {
-    url.searchParams.set('token', results.entryToken);
-    url.searchParams.set('entry_token', results.entryToken);
-  }
-  const topRecommendations = (results.recommendations ?? [])
-    .slice(0, 3)
-    .map((rec: any) => rec?.title)
-    .filter(Boolean)
-    .join('|');
-  if (topRecommendations) url.searchParams.set('actions', topRecommendations);
+
+  const ct = buildContextToken({
+    id: results.id || `local-preview-${Date.now()}`,
+    company: results.companyName,
+    email: results.email || '',
+    domain: results.recon?.domain || results.target || '',
+    score: results.score,
+    level: scoreLabel(results.score),
+    grade: results.grade ?? null,
+    summary: results.summary ? String(results.summary).slice(0, 420) : null,
+    actions: (results.recommendations ?? [])
+      .slice(0, 3)
+      .map((rec: any) => rec?.title)
+      .filter(Boolean),
+  });
+
+  url.searchParams.set('ct', ct);
   return url.toString();
 }
 
