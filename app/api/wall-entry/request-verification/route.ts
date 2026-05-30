@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
 import { isRealEmail } from '@/lib/wall-entry-service';
 import { createWallVerificationToken } from '@/lib/wall-verification';
+import { emitNightwatchSignal, nightwatchSignalId } from '@/lib/nightwatch-signal';
 
 const Body = z.object({
   auditId: z.string().cuid(),
@@ -22,25 +23,6 @@ const Body = z.object({
   locale: z.enum(['de', 'en']).default('de'),
 });
 
-function createTransporter() {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    return null;
-  }
-
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587', 10),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-    tls: {
-      rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false',
-    },
-  });
-}
-
 function appBaseUrl(req: NextRequest) {
   return (
     process.env.NEXTAUTH_URL ||
@@ -51,6 +33,15 @@ function appBaseUrl(req: NextRequest) {
 
 function isLocalRequest(req: NextRequest) {
   return ['localhost', '127.0.0.1', '::1'].includes(req.nextUrl.hostname);
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 export async function POST(req: NextRequest) {
@@ -100,28 +91,88 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, mode: 'local-link', debugUrl: verifyUrl });
     }
 
-    const transporter = createTransporter();
-    if (!transporter) {
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[Wall Verification] RESEND_API_KEY not configured');
       return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const subject = body.locale === 'de'
       ? 'Saimor Wall: E-Mail bestaetigen'
       : 'Saimor Wall: verify your email';
-    const text = body.locale === 'de'
-      ? `Bestaetige, dass dein Eintrag zur Saimor Wall in die Freigabe darf:\n\n${verifyUrl}\n\nSichtbarkeit: ${body.visibility}\nTyp: ${body.kind}\n\nDer Link ist 30 Minuten gueltig. Ohne Klick wird nichts veroeffentlicht.`
-      : `Confirm that your Saimor Wall entry may enter review:\n\n${verifyUrl}\n\nVisibility: ${body.visibility}\nType: ${body.kind}\n\nThis link is valid for 30 minutes. Nothing is published without clicking it.`;
 
-    try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: audit.email,
-        subject,
-        text,
-      });
-    } catch (mailError) {
-      console.error('[Wall Verification Mail Error]', mailError);
+    const htmlBody = body.locale === 'de'
+      ? `
+        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+          <p style="font-size: 16px; margin-bottom: 20px;">
+            Bestaetige, dass dein Nightwatch Security Signal in die Saimor Wall-Freigabe darf.
+          </p>
+          <a href="${escapeHtml(verifyUrl)}"
+             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 24px;
+                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
+            Wall-Eintrag bestaetigen
+          </a>
+          <p style="margin-top: 28px; font-size: 13px; color: #666; line-height: 1.6;">
+            Sichtbarkeit: ${escapeHtml(body.visibility)}<br>
+            Typ: ${escapeHtml(body.kind)}<br>
+            Der Link ist 30 Minuten gueltig. Ohne Klick wird nichts veroeffentlicht.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #aaa;">Saimor Nightwatch &middot; <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+        </div>
+      `
+      : `
+        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+          <p style="font-size: 16px; margin-bottom: 20px;">
+            Confirm that your Nightwatch security signal may enter Saimor Wall review.
+          </p>
+          <a href="${escapeHtml(verifyUrl)}"
+             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 24px;
+                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
+            Confirm Wall entry
+          </a>
+          <p style="margin-top: 28px; font-size: 13px; color: #666; line-height: 1.6;">
+            Visibility: ${escapeHtml(body.visibility)}<br>
+            Type: ${escapeHtml(body.kind)}<br>
+            This link is valid for 30 minutes. Nothing is published without clicking it.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #aaa;">Saimor Nightwatch &middot; <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+        </div>
+      `;
+
+    const { error: mailError } = await resend.emails.send({
+      from: 'Saimor <contact@saimor.world>',
+      to: audit.email,
+      subject,
+      html: htmlBody,
+    });
+
+    if (mailError) {
+      console.error('[Wall Verification Resend Error]', mailError);
       return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 });
+    }
+
+    const signalResult = await emitNightwatchSignal({
+      event: 'wall_verification_email_sent',
+      signalId: nightwatchSignalId(audit.id, audit.email, audit.targetDomain || audit.domain),
+      auditId: audit.id,
+      companyName: body.company || audit.name,
+      contactName: body.name,
+      email: audit.email,
+      domain: audit.targetDomain || audit.domain || null,
+      score: audit.score,
+      level: audit.level,
+      emailStatus: 'wall_verification_sent',
+      wallStatus: 'verification_sent',
+      metadata: {
+        provider: 'resend',
+        visibility: body.visibility,
+        kind: body.kind,
+      },
+    });
+    if (!signalResult.sent && signalResult.reason !== 'not_configured') {
+      console.warn('[Nightwatch Signal] wall_verification_email_sent failed:', signalResult);
     }
 
     return NextResponse.json({ success: true });

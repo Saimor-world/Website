@@ -33,6 +33,14 @@ function scoreLabel(score: number): string {
   return 'Kritisch';
 }
 
+function wallErrorMessage(value?: string) {
+  if (!value) return 'Der Bestaetigungslink konnte nicht gesendet werden. Bitte spaeter erneut versuchen.';
+  if (value === 'Email delivery failed') return 'Der Bestaetigungslink konnte nicht versendet werden. Nightwatch nutzt jetzt denselben Mailkanal wie der HQ-Link; bitte erneut versuchen.';
+  if (value === 'Email delivery not configured') return 'Der Wall-Mailkanal ist noch nicht konfiguriert.';
+  if (value === 'Consent is required before publishing to the wall') return 'Bitte bestaetige zuerst die Sichtbarkeit fuer die Wall. Ohne deine Bestaetigung wird nichts oeffentlich.';
+  return value;
+}
+
 const CATEGORY_LABELS: Record<string, string> = {
   encryption: 'Verschluesselung',
   headers: 'Browser-Schutz',
@@ -58,6 +66,7 @@ function domainToCompanyName(value: string) {
 function buildHqUrl(results: any) {
   const base = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';
   const url = new URL(base);
+  if (!url.pathname || url.pathname === '/') url.pathname = '/entry';
   url.searchParams.set('surface', 'website');
   url.searchParams.set('entity', 'security-audit');
   url.searchParams.set('id', results.id || `local-preview-${Date.now()}`);
@@ -68,7 +77,10 @@ function buildHqUrl(results: any) {
   url.searchParams.set('level', scoreLabel(results.score));
   if (results.grade) url.searchParams.set('grade', results.grade);
   if (results.summary) url.searchParams.set('summary', String(results.summary).slice(0, 420));
-  if (results.entryToken) url.searchParams.set('entry_token', results.entryToken);
+  if (results.entryToken) {
+    url.searchParams.set('token', results.entryToken);
+    url.searchParams.set('entry_token', results.entryToken);
+  }
   const topRecommendations = (results.recommendations ?? [])
     .slice(0, 3)
     .map((rec: any) => rec?.title)
@@ -93,6 +105,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const [error, setError]             = useState<string | null>(null);
   const [noteState, setNoteState]     = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [wallState, setWallState]     = useState<'idle' | 'saving' | 'verification-sent' | 'pinned' | 'error'>('idle');
+  const [wallError, setWallError]     = useState<string | null>(null);
   const [wallConsent, setWallConsent] = useState(false);
   const [wallKind, setWallKind]       = useState('supporter');
   const [wallVisibility, setWallVisibility] = useState('company-anonymous');
@@ -347,9 +360,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const pinToWall = async () => {
     if (!results?.id) return;
     if (!wallConsent) {
+      setWallError('Bitte bestaetige zuerst die Sichtbarkeit fuer die Wall. Ohne deine Bestaetigung wird nichts oeffentlich.');
       setWallState('error');
       return;
     }
+    setWallError(null);
     setWallState('saving');
     try {
       const res = await fetch('/api/wall-entry/request-verification', {
@@ -374,7 +389,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         return;
       }
       setWallState('verification-sent');
-    } catch {
+    } catch (err: any) {
+      setWallError(wallErrorMessage(err?.message));
       setWallState('error');
     }
   };
@@ -461,12 +477,12 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         {step === 1 && (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <header className="space-y-4">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Instant Audit</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Nightwatch Quickscan</p>
               <h1 className="text-6xl font-light leading-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 Was sieht das <span className="italic">Internet</span> über dein Unternehmen?
               </h1>
               <p className="text-white/40 max-w-lg text-sm">
-                Kein Login. Kein Deep-Scan. Nur das, was ein Angreifer in den ersten 60 Sekunden passiv herausfindet.
+                Nightwatch prueft nur oeffentliche Signale. Danach uebersetzt Mora OS die Befunde in einen isolierten HQ-Workspace.
               </p>
             </header>
 
@@ -577,7 +593,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
 
             {/* Trust badges */}
             <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.25em] text-white/20">
-              {['Kein Login', 'DSGVO-konform', 'Nur passiver Scan', 'Kostenlos'].map((badge) => (
+              {['Kein Login', 'Nightwatch passiv', 'HQ-Preview inklusive', 'Kostenlos'].map((badge) => (
                 <div key={badge} className="flex items-center gap-1.5">
                   <CheckCircle2 size={10} className="text-emerald-400/50" />
                   {badge}
@@ -671,9 +687,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     <ClipboardList size={14} />
                     Arbeitskarte
                   </div>
-                  <h2 className="text-2xl font-light">{results.companyName} als naechsten Schritt vorbereiten</h2>
+                  <h2 className="text-2xl font-light">{results.companyName} als Nightwatch-Signal vorbereiten</h2>
                   <p className="max-w-2xl text-sm leading-relaxed text-white/55">
-                    Der Check ist jetzt ein Objekt: Notiz speichern, optional ins Supporter-Gaestebuch haengen oder den HQ-Einstieg direkt freischalten.
+                    Dashboard merkt den Check, Mora OS macht daraus Arbeit: Dossier, erste Aufgaben, Finder-Kontext und optional ein Wall-Signal nach E-Mail-Bestaetigung.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -719,7 +735,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Typ</span>
                   <select
                     value={wallKind}
-                    onChange={(event) => setWallKind(event.target.value)}
+                    onChange={(event) => {
+                      setWallKind(event.target.value);
+                      setWallError(null);
+                      if (wallState === 'error') setWallState('idle');
+                    }}
                     className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
                   >
                     <option value="supporter">Supporter</option>
@@ -736,7 +756,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Sichtbarkeit</span>
                   <select
                     value={wallVisibility}
-                    onChange={(event) => setWallVisibility(event.target.value)}
+                    onChange={(event) => {
+                      setWallVisibility(event.target.value);
+                      setWallError(null);
+                      if (wallState === 'error') setWallState('idle');
+                    }}
                     className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
                   >
                     <option value="company-anonymous">Firma anonym</option>
@@ -748,7 +772,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Text</span>
                   <input
                     value={wallMessage}
-                    onChange={(event) => setWallMessage(event.target.value)}
+                    onChange={(event) => {
+                      setWallMessage(event.target.value);
+                      setWallError(null);
+                      if (wallState === 'error') setWallState('idle');
+                    }}
                     maxLength={240}
                     placeholder="Kurzes Signal, optional"
                     className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
@@ -762,12 +790,13 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   checked={wallConsent}
                   onChange={(event) => {
                     setWallConsent(event.target.checked);
+                    setWallError(null);
                     if (wallState === 'error') setWallState('idle');
                   }}
                   className="mt-1 h-4 w-4 accent-emerald-300"
                 />
                 <span>
-                  Ich stimme zu, dass dieser Eintrag nach E-Mail-Bestaetigung in die Wall-Freigabe darf. Oeffentlich sichtbar wird nur die ausgewaehlte Sichtbarkeit; E-Mail bleibt intern.
+                  Ich stimme zu, dass Nightwatch diesen Security-Check nach E-Mail-Bestaetigung als Wall-Signal in die Freigabe geben darf. Oeffentlich sichtbar wird nur die ausgewaehlte Sichtbarkeit; E-Mail und Rohdaten bleiben intern.
                 </span>
               </label>
 
@@ -804,11 +833,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 ) : null}
               </div>
               {noteState === 'error' || wallState === 'error' ? (
-                <p className="text-xs text-red-300">
-                  {wallState === 'error' && !wallConsent
-                    ? 'Bitte bestaetige zuerst die Sichtbarkeit fuer die Wall.'
-                    : 'Aktion konnte nicht gespeichert werden. Bitte erneut versuchen.'}
-                </p>
+                <div className="rounded-2xl border border-red-300/18 bg-red-500/[0.08] px-4 py-3 text-xs leading-relaxed text-red-100/86">
+                  {wallState === 'error'
+                    ? wallError || 'Aktion konnte nicht gespeichert werden. Bitte erneut versuchen.'
+                    : 'Notiz konnte nicht gespeichert werden. Bitte erneut versuchen.'}
+                </div>
               ) : null}
               {wallState === 'verification-sent' ? (
                 <p className="text-xs text-emerald-200/72">
@@ -871,11 +900,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               <div className="space-y-4">
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Dein Einstieg</p>
-                    <h3 className="mt-1 text-2xl font-light">So könnte Mora für <span className="italic">{results.companyName}</span> arbeiten</h3>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Mora OS Einstieg</p>
+                    <h3 className="mt-1 text-2xl font-light">So startet das OS fuer <span className="italic">{results.companyName}</span></h3>
                   </div>
                   <p className="text-xs text-white/30 max-w-xs md:text-right">
-                    Simulierter HQ-Workspace aus deinen Scan-Daten — ohne echte Cloud-Anbindung.
+                    Nightwatch-Befunde plus deine Angaben, noch ohne echte Cloud-Anbindung.
                   </p>
                 </div>
                 <DemoHqPreview

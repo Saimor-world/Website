@@ -444,7 +444,7 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
                   fontSize: 16,
                 }}
               >
-                „{entry.note}"
+                &bdquo;{entry.note}&ldquo;
               </p>
             ) : (
               <p

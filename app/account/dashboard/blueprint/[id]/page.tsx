@@ -107,7 +107,7 @@ export default async function BlueprintDetailPage({
              Strategischer Fokus
           </h2>
           <div className="p-8 rounded-[2rem] border-2 border-cyan-500/10 bg-white shadow-sm italic text-2xl text-slate-700 leading-relaxed font-serif">
-            "{blueprint.focus}"
+            &ldquo;{blueprint.focus}&rdquo;
           </div>
         </section>
 

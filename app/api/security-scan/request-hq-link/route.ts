@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
+import { emitNightwatchSignal, nightwatchSignalId, redactedHqUrl } from '@/lib/nightwatch-signal';
 
 const Body = z.object({
   auditId: z.string().cuid().optional(),
@@ -47,9 +48,21 @@ export async function POST(req: NextRequest) {
 
     // Resolve recipient email: prefer DB lookup (audit ID), fall back to direct email param
     let recipientEmail: string | null = null;
+    let auditContext: {
+      id: string;
+      name: string;
+      email: string;
+      targetDomain?: string | null;
+      domain?: string | null;
+      score: number;
+      level: string;
+    } | null = null;
     if (parsed.data.auditId) {
       const audit = await prisma.securityAudit.findUnique({ where: { id: parsed.data.auditId } });
-      if (audit) recipientEmail = audit.email;
+      if (audit) {
+        recipientEmail = audit.email;
+        auditContext = audit;
+      }
     }
     if (!recipientEmail && parsed.data.email) {
       recipientEmail = parsed.data.email;
@@ -122,6 +135,26 @@ export async function POST(req: NextRequest) {
     if (error) {
       console.error('[HQ Link Resend Error]', error);
       return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 });
+    }
+
+    const signalResult = await emitNightwatchSignal({
+      event: 'hq_link_sent',
+      signalId: nightwatchSignalId(parsed.data.auditId, recipientEmail, auditContext?.targetDomain || auditContext?.domain),
+      auditId: parsed.data.auditId || null,
+      companyName: auditContext?.name || null,
+      email: recipientEmail,
+      domain: auditContext?.targetDomain || auditContext?.domain || null,
+      score: auditContext?.score ?? null,
+      level: auditContext?.level || null,
+      hqUrl: redactedHqUrl(parsed.data.hqUrl),
+      emailStatus: 'hq_link_sent',
+      metadata: {
+        provider: 'resend',
+        target: 'hq_entry',
+      },
+    });
+    if (!signalResult.sent && signalResult.reason !== 'not_configured') {
+      console.warn('[Nightwatch Signal] hq_link_sent failed:', signalResult);
     }
 
     return NextResponse.json({ success: true });

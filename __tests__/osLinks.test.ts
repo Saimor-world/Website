@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { buildOsAuditUrl, buildOsBlueprintUrl, buildOsSsoUrl, getOsBaseUrl } from '@/lib/os-links';
+import { buildOsAuditUrl, buildOsBlueprintUrl, buildOsSsoUrl, getOsBaseUrl, getOsEntryBaseUrl } from '@/lib/os-links';
 
 const originalEnv = { ...process.env };
 
@@ -13,6 +13,13 @@ describe('OS links', () => {
     delete process.env.NEXT_PUBLIC_OS_HOME_URL;
 
     expect(getOsBaseUrl()).toBe('https://hq.saimor.world');
+  });
+
+  it('uses /entry for low-entry audit and blueprint links', () => {
+    delete process.env.OS_HOME_URL;
+    delete process.env.NEXT_PUBLIC_OS_HOME_URL;
+
+    expect(new URL(getOsEntryBaseUrl()).pathname).toBe('/entry');
   });
 
   it('adds website context to signed SSO URLs', () => {
@@ -41,8 +48,10 @@ describe('OS links', () => {
     const audit = new URL(buildOsAuditUrl('audit-1'));
     const blueprint = new URL(buildOsBlueprintUrl('blueprint-1'));
 
+    expect(audit.pathname).toBe('/entry');
     expect(audit.searchParams.get('entity')).toBe('security-audit');
     expect(audit.searchParams.get('id')).toBe('audit-1');
+    expect(blueprint.pathname).toBe('/entry');
     expect(blueprint.searchParams.get('entity')).toBe('digital-blueprint');
     expect(blueprint.searchParams.get('id')).toBe('blueprint-1');
   });
@@ -55,11 +64,15 @@ describe('OS links', () => {
       domain: 'coffee-test.de',
       score: '58',
       level: 'Mittel',
+      entry_token: 'signed-entry-token',
     }));
 
+    expect(audit.pathname).toBe('/entry');
     expect(audit.searchParams.get('company')).toBe('Coffee Test');
     expect(audit.searchParams.get('domain')).toBe('coffee-test.de');
     expect(audit.searchParams.get('score')).toBe('58');
     expect(audit.searchParams.get('level')).toBe('Mittel');
+    expect(audit.searchParams.get('token')).toBe('signed-entry-token');
+    expect(audit.searchParams.get('entry_token')).toBe('signed-entry-token');
   });
 });

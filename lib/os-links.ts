@@ -8,6 +8,12 @@ export function getOsBaseUrl() {
   );
 }
 
+export function getOsEntryBaseUrl() {
+  const url = new URL(getOsBaseUrl());
+  if (!url.pathname || url.pathname === '/') url.pathname = '/entry';
+  return url.toString();
+}
+
 type OsContext = {
   surface?: string;
   entity?: string;
@@ -49,16 +55,17 @@ export function buildOsAuditUrl(
   auditId: string,
   context?: Pick<OsContext, 'company' | 'email' | 'domain' | 'score' | 'level' | 'summary' | 'entry_token' | 'actions'>
 ) {
-  return withQueryParams(getOsBaseUrl(), {
+  return withQueryParams(getOsEntryBaseUrl(), {
     surface: 'website',
     entity: 'security-audit',
     id: auditId,
+    token: context?.entry_token,
     ...context,
   });
 }
 
 export function buildOsBlueprintUrl(blueprintId: string) {
-  return withQueryParams(getOsBaseUrl(), {
+  return withQueryParams(getOsEntryBaseUrl(), {
     surface: 'website',
     entity: 'digital-blueprint',
     id: blueprintId,

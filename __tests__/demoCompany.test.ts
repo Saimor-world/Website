@@ -23,9 +23,11 @@ describe('demo company profile', () => {
     expect(profile.companyName).toBe('Coffee Test');
     expect(profile.industry).toBe('Gastronomie');
     expect(profile.rooms.map((room) => room.name)).toContain('Security');
-    expect(profile.documents[0].title).toContain('Digital Risk Report');
+    expect(profile.documents[0].title).toContain('Nightwatch Dossier');
     expect(profile.tasks[0]).toMatchObject({ title: 'HSTS fehlt', priority: 'high' });
-    expect(profile.moraBriefing).toContain('simulierte HQ-Erstansicht');
+    expect(profile.nightwatchSignals[0]).toMatchObject({ label: 'Domain', value: 'coffee-test.de' });
+    expect(profile.dashboardMemory[0]).toMatchObject({ label: 'Firma', value: 'Coffee Test' });
+    expect(profile.moraBriefing).toContain('Nightwatch');
   });
 
   it('keeps the preview honest when no recommendations exist', () => {
@@ -42,5 +44,6 @@ describe('demo company profile', () => {
     expect(profile.companyName).toBe('Muster GmbH');
     expect(profile.tasks.length).toBeGreaterThan(0);
     expect(profile.moraBriefing).toContain('bis echte Tools verbunden werden');
+    expect(profile.dashboardMemory.length).toBeGreaterThan(0);
   });
 });

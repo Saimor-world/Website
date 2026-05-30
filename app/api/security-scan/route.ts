@@ -7,6 +7,7 @@ import { calculateSecurityScore } from '@/lib/scoring';
 import { runAisecurityAnalysis } from '@/lib/security-analysis';
 import { validateScanDomain } from '@/lib/domain-safety';
 import { signWebsiteEntryToken } from '@/lib/entry-token';
+import { emitNightwatchSignal, nightwatchSignalId } from '@/lib/nightwatch-signal';
 
 const Body = z.object({
   name: z.string().trim().min(1).max(200),
@@ -246,6 +247,28 @@ export async function POST(req: NextRequest) {
       responseWarning = scanWarning
         ? `${scanWarning} HQ-Preview-Token ist nicht konfiguriert.`
         : 'HQ-Preview-Token ist nicht konfiguriert.';
+    }
+
+    const signalResult = await emitNightwatchSignal({
+      event: 'security_scan_completed',
+      signalId: nightwatchSignalId(createdAuditId, data.email, recon?.domain || domain),
+      auditId: createdAuditId,
+      companyName,
+      contactName,
+      email: data.email,
+      domain: recon?.domain || domain,
+      score,
+      level: riskLabel(level, data.locale),
+      grade: technicalAudit?.grade ?? null,
+      metadata: {
+        persisted,
+        entryTokenPresent: Boolean(entryToken),
+        findingCount: allFindings.length,
+        topRecommendations: recommendations.slice(0, 3).map((recommendation: any) => recommendation.title).filter(Boolean),
+      },
+    });
+    if (!signalResult.sent && signalResult.reason !== 'not_configured') {
+      console.warn('[Nightwatch Signal] security_scan_completed failed:', signalResult);
     }
 
     return NextResponse.json({

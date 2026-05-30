@@ -28,6 +28,8 @@ export type DemoCompanyProfile = {
   rooms: Array<{ name: string; purpose: string; signal: 'risk' | 'setup' | 'growth' }>;
   documents: Array<{ title: string; type: string; summary: string }>;
   tasks: Array<{ title: string; priority: 'high' | 'medium' | 'low'; source: string }>;
+  nightwatchSignals: Array<{ label: string; value: string }>;
+  dashboardMemory: Array<{ label: string; value: string }>;
   moraBriefing: string;
 };
 
@@ -77,8 +79,8 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
     ],
     documents: [
       {
-        title: `${companyName} - Digital Risk Report`,
-        type: 'Audit',
+        title: `${companyName} - Nightwatch Dossier`,
+        type: 'Security Signal',
         summary: audit.analysis,
       },
       {
@@ -93,9 +95,19 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
       },
     ],
     tasks,
+    nightwatchSignals: [
+      { label: 'Domain', value: domain || 'Noch offen' },
+      { label: 'Risiko', value: `${audit.score}/100 - ${audit.level}` },
+      { label: 'Quelle', value: 'Oeffentliche Web-Signale' },
+    ],
+    dashboardMemory: [
+      { label: 'Firma', value: companyName },
+      { label: 'Kontakt', value: audit.email },
+      { label: 'Absicht', value: tasks[0]?.title || 'Ersten Check fortsetzen' },
+    ],
     moraBriefing:
-      `Ich habe aus deinem Check eine simulierte HQ-Erstansicht fuer ${companyName} vorbereitet. ` +
-      `Sie nutzt oeffentliche Signale und deine Angaben, bis echte Tools verbunden werden.`,
+      `Nightwatch hat aus oeffentlichen Signalen ein erstes Dossier fuer ${companyName} gebaut. ` +
+      `Das Dashboard merkt den Check; Mora OS macht daraus Raeume, Aufgaben und Finder-Kontext, bis echte Tools verbunden werden.`,
   };
 }
 

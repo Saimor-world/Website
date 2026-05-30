@@ -145,7 +145,7 @@ export default async function AuditReportPage({
           </div>
 
           <div className="p-8 rounded-[2rem] border border-slate-100 bg-slate-50/50 leading-relaxed text-slate-700 italic">
-            "{audit.analysis}"
+            &ldquo;{audit.analysis}&rdquo;
           </div>
         </section>
 

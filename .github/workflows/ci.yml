@@ -38,5 +38,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Unit tests (disabled)
-        run: echo "no tests configured"
+      - name: Unit tests
+        run: npm test -- --run

@@ -258,7 +258,7 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
           </div>
           <div className="rounded-2xl border border-white/10 bg-emerald-500/5 p-5">
             <p className="text-xs uppercase tracking-[0.2em] text-emerald-400/60 mb-3">{t.analysis}</p>
-            <p className="text-white/90 leading-relaxed italic">"{result.analysis}"</p>
+            <p className="text-white/90 leading-relaxed italic">&ldquo;{result.analysis}&rdquo;</p>
           </div>
           {result.recon ? (
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-2">

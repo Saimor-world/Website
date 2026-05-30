@@ -861,7 +861,7 @@ export default async function OwnerDashboard() {
                   {audit.attackerPath && (
                     <div className="mt-6 p-4 rounded-xl bg-rose-500/[0.03] border border-rose-500/10 space-y-2">
                        <p className="text-[9px] uppercase tracking-[0.2em] text-rose-400 font-bold">Hypothetischer Angriffsweg</p>
-                       <p className="text-xs text-white/60 leading-relaxed italic line-clamp-2">"{audit.attackerPath}"</p>
+                       <p className="text-xs text-white/60 leading-relaxed italic line-clamp-2">&ldquo;{audit.attackerPath}&rdquo;</p>
                     </div>
                   )}
                   <form action={updateLeadLifecycle} className="mt-4 grid gap-3 rounded-xl border border-white/5 bg-black/16 p-4 md:grid-cols-[180px_1fr_auto]">
