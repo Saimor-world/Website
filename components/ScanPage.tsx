@@ -69,7 +69,7 @@ function buildHqUrl(results: any) {
   const url = new URL(base);
   if (!url.pathname || url.pathname === '/') url.pathname = '/entry';
 
-  const ct = buildContextToken({
+  const ct = results.entryToken || buildContextToken({
     id: results.id || `local-preview-${Date.now()}`,
     company: results.companyName,
     email: results.email || '',
