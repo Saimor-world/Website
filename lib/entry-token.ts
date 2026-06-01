@@ -15,6 +15,9 @@ type ContextTokenPayload = {
 };
 
 function getEntrySecret() {
+    if (typeof window !== 'undefined') {
+        return 'client-side-dummy-secret';
+    }
     const secret = process.env.SAIMOR_ENTRY_SECRET || process.env.NEXTAUTH_SECRET;
     if (secret) return secret;
     if (process.env.NODE_ENV !== 'production') return 'local-dev-entry-secret';
