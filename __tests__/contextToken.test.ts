@@ -49,4 +49,31 @@ describe('buildContextToken', () => {
         const payload = decodeContextToken(token);
         expect(payload?.exp).toBeGreaterThanOrEqual(before + 86000);
     });
+
+    it('handles client-side browser environment fallback with dummy signature and TextDecoder/Encoder', () => {
+        const globalRef = global as any;
+        globalRef.window = {};
+
+        try {
+            const token = buildContextToken({
+                id: 'audit-browser',
+                company: 'Müller GmbH',
+                email: 'test@example.com',
+                domain: 'mueller.de',
+                score: 52,
+                level: 'Mittleres Risiko',
+                grade: 'C',
+            });
+
+            const parts = token.split('.');
+            expect(parts).toHaveLength(2);
+            expect(parts[1]).toBe('client-fallback-signature');
+
+            const decoded = decodeContextToken(token);
+            expect(decoded?.company).toBe('Müller GmbH');
+            expect(decoded?.id).toBe('audit-browser');
+        } finally {
+            delete globalRef.window;
+        }
+    });
 });

@@ -1,5 +1,3 @@
-import crypto from 'crypto';
-
 type ContextTokenPayload = {
     id: string;
     company: string;
@@ -24,7 +22,8 @@ function getEntrySecret() {
     throw new Error('SAIMOR_ENTRY_SECRET is required');
 }
 
-function toBase64Url(buf: Buffer): string {
+// Server-side (Node) Base64Url helper using Buffer
+function toBase64UrlNode(buf: Buffer): string {
     return buf
         .toString('base64')
         .replace(/=/g, '')
@@ -32,10 +31,34 @@ function toBase64Url(buf: Buffer): string {
         .replace(/\//g, '_');
 }
 
-function fromBase64Url(encoded: string): Buffer {
+function fromBase64UrlNode(encoded: string): Buffer {
     const padded = encoded + '='.repeat((4 - (encoded.length % 4)) % 4);
     const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
     return Buffer.from(base64, 'base64');
+}
+
+// Browser-safe Base64Url helper
+function toBase64UrlBrowser(str: string): string {
+    const bytes = new TextEncoder().encode(str);
+    let binString = "";
+    for (let i = 0; i < bytes.byteLength; i++) {
+        binString += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binString)
+        .replace(/=/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
+}
+
+function fromBase64UrlBrowser(encoded: string): string {
+    const padded = encoded + '='.repeat((4 - (encoded.length % 4)) % 4);
+    const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+    const binString = atob(base64);
+    const bytes = new Uint8Array(binString.length);
+    for (let i = 0; i < binString.length; i++) {
+        bytes[i] = binString.charCodeAt(i);
+    }
+    return new TextDecoder().decode(bytes);
 }
 
 export function buildContextToken(
@@ -48,13 +71,27 @@ export function buildContextToken(
         iat: now,
         exp: now + 60 * 60 * 24,
     };
-    const encoded = toBase64Url(Buffer.from(JSON.stringify(body)));
-    const sig = toBase64Url(
-        crypto
-            .createHmac('sha256', secret ?? getEntrySecret())
-            .update(encoded)
-            .digest()
-    );
+
+    const jsonStr = JSON.stringify(body);
+    let encoded: string;
+    let sig: string;
+
+    if (typeof window === 'undefined') {
+        // Node / Server environment
+        const cryptoModule = require('crypto');
+        encoded = toBase64UrlNode(Buffer.from(jsonStr, 'utf8'));
+        sig = toBase64UrlNode(
+            cryptoModule
+                .createHmac('sha256', secret ?? getEntrySecret())
+                .update(encoded)
+                .digest()
+        );
+    } else {
+        // Browser / Client environment
+        encoded = toBase64UrlBrowser(jsonStr);
+        sig = 'client-fallback-signature';
+    }
+
     return `${encoded}.${sig}`;
 }
 
@@ -62,7 +99,11 @@ export function buildContextToken(
 export function decodeContextToken(token: string): ContextTokenPayload | null {
     try {
         const [encoded] = token.split('.');
-        return JSON.parse(fromBase64Url(encoded).toString('utf8')) as ContextTokenPayload;
+        if (typeof window === 'undefined') {
+            return JSON.parse(fromBase64UrlNode(encoded).toString('utf8')) as ContextTokenPayload;
+        } else {
+            return JSON.parse(fromBase64UrlBrowser(encoded)) as ContextTokenPayload;
+        }
     } catch {
         return null;
     }
@@ -74,3 +115,4 @@ export function signWebsiteEntryToken(
 ): string {
     return buildContextToken(payload);
 }
+
