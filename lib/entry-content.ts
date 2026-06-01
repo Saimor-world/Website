@@ -106,9 +106,45 @@ const deArticles: EntryArticle[] = [
     ctaHref: '/demo?track=ai-business',
     actionKind: 'demo-track',
   },
+  {
+    slug: 'adaptive-os',
+    pillar: 'digital-self',
+    category: 'Erlebnis',
+    readTime: '2 min',
+    title: 'Adaptive Intelligence: Ein OS, das dich versteht',
+    excerpt: 'Saimôr OS passt sich deiner Firma an â€“ visuell, inhaltlich und funktional. Erlebe die Symbiose ab der ersten Sekunde.',
+    intro: 'Ein Betriebssystem sollte kein starres Gitter sein. Mora transformiert das HQ basierend auf deiner IdentitÃ¤t.',
+    tags: ['Personalisiert', 'Dynamisch', 'High-Fidelity'],
+    sections: [
+      { title: 'Deine IdentitÃ¤t zÃ¤hlt', body: 'Sobald du deinen Check startest, beginnt die Transformation. Farben, Fokusbereiche und PrioritÃ¤ten passen sich deinem Unternehmen an.' },
+      { title: 'Visuelle Symbiose', body: 'Keine Standard-Themes. Die AtmosphÃ¤re des HQ spiegelt die Energie deiner Marke wider â€“ von der Hintergrund-Aura bis zum Puls von Mora.' },
+      { title: 'Nahtloser Einstieg', body: 'Vom Web-Scan direkt ins personalisierte Cockpit. Deine Daten sind bereits da, dein Team ist vorbereitet.' },
+    ],
+    ctaLabel: 'Jetzt erleben',
+    ctaHref: '/de/einstieg/security-check',
+    actionKind: 'security-check-form',
+  },
 ];
 
 const enArticles: EntryArticle[] = [
+  {
+    slug: 'adaptive-os',
+    pillar: 'digital-self',
+    category: 'Experience',
+    readTime: '2 min',
+    title: 'Adaptive Intelligence: An OS that understands you',
+    excerpt: 'Saimôr OS adapts to your company â€“ visually, contextually, and functionally. Experience symbiosis from second one.',
+    intro: 'An operating system should not be a rigid grid. Mora transforms the HQ based on your identity.',
+    tags: ['Personalized', 'Dynamic', 'High-Fidelity'],
+    sections: [
+      { title: 'Your Identity Matters', body: 'As soon as you start your check, the transformation begins. Colors, focus areas, and priorities adapt to your business.' },
+      { title: 'Visual Symbiosis', body: 'No generic themes. The atmosphere of the HQ reflects the energy of your brand â€“ from the background aura to Mora\'s pulse.' },
+      { title: 'Seamless Entry', body: 'From web scan directly to your personalized cockpit. Your data is already there, your team is prepared.' },
+    ],
+    ctaLabel: 'Experience Now',
+    ctaHref: '/en/entry/security-check',
+    actionKind: 'security-check-form',
+  },
   {
     slug: 'security-check',
     pillar: 'security',

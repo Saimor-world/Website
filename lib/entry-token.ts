@@ -21,6 +21,20 @@ function getEntrySecret() {
     throw new Error('SAIMOR_ENTRY_SECRET is required');
 }
 
+function toBase64Url(buf: Buffer): string {
+    return buf
+        .toString('base64')
+        .replace(/=/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
+}
+
+function fromBase64Url(encoded: string): Buffer {
+    const padded = encoded + '='.repeat((4 - (encoded.length % 4)) % 4);
+    const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+    return Buffer.from(base64, 'base64');
+}
+
 export function buildContextToken(
     payload: Omit<ContextTokenPayload, 'iat' | 'exp'>,
     secret?: string,
@@ -31,11 +45,13 @@ export function buildContextToken(
         iat: now,
         exp: now + 60 * 60 * 24,
     };
-    const encoded = Buffer.from(JSON.stringify(body)).toString('base64url');
-    const sig = crypto
-        .createHmac('sha256', secret ?? getEntrySecret())
-        .update(encoded)
-        .digest('base64url');
+    const encoded = toBase64Url(Buffer.from(JSON.stringify(body)));
+    const sig = toBase64Url(
+        crypto
+            .createHmac('sha256', secret ?? getEntrySecret())
+            .update(encoded)
+            .digest()
+    );
     return `${encoded}.${sig}`;
 }
 
@@ -43,7 +59,7 @@ export function buildContextToken(
 export function decodeContextToken(token: string): ContextTokenPayload | null {
     try {
         const [encoded] = token.split('.');
-        return JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as ContextTokenPayload;
+        return JSON.parse(fromBase64Url(encoded).toString('utf8')) as ContextTokenPayload;
     } catch {
         return null;
     }
