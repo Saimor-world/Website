@@ -111,6 +111,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const [hqState, setHqState]         = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [wallVerifyState, setWallVerifyState] = useState<'idle' | 'verifying' | 'pinned' | 'error'>('idle');
   const [wallVerifyError, setWallVerifyError] = useState<string | null>(null);
+  const [redirectUrl, setRedirectUrl] = useState('');
+  const [countdown, setCountdown]     = useState(3);
 
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get('wall_token');
@@ -142,6 +144,23 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (step !== 4 || !redirectUrl) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          window.location.href = redirectUrl;
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [step, redirectUrl]);
 
   const validateEmail = (e: string) => {
     return String(e)
@@ -282,12 +301,15 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       });
 
       if (ingestResult) {
-        // Redirect directly into the OS — session and dossier already created
+        // Set up redirection bridge
         const params = new URLSearchParams({
           audit_session: ingestResult.session_token,
-          node: ingestResult.node_id,
+          open_node: ingestResult.node_id,
         });
-        window.location.href = `https://hq.saimor.world/playground?${params.toString()}`;
+        const targetUrl = `https://hq.saimor.world/playground?${params.toString()}`;
+        setRedirectUrl(targetUrl);
+        setCountdown(3);
+        setStep(4);
         return;
       }
 
@@ -1189,10 +1211,70 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   muss Mora in die Tiefe deines Unternehmens blicken dürfen.
                 </p>
               </div>
-              </footer>
+            </footer>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="min-h-[60vh] flex flex-col items-center justify-center text-center animate-in fade-in duration-700 relative overflow-hidden">
+            {/* Glowing Ambient Background Orbs */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[100px] animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-cyan-500/5 blur-[70px] animate-pulse delay-500" />
+
+            <div className="relative z-10 max-w-md w-full border border-white/[0.08] bg-black/40 p-10 rounded-[32px] shadow-[0_24px_80px_rgba(0,0,0,0.6)] backdrop-blur-2xl space-y-8 overflow-hidden">
+              {/* Top Glow bar */}
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-emerald-500/40 via-cyan-500/30 to-emerald-500/40" />
+
+              <div className="space-y-4">
+                <div className="flex justify-center">
+                  <div className="relative h-20 w-20">
+                    {/* Outer breathing ring */}
+                    <div className="absolute inset-0 animate-ping rounded-full bg-emerald-500/10 blur-md" />
+                    <div className="absolute inset-1.5 rounded-full border border-emerald-500/20 bg-black/40 flex items-center justify-center">
+                      <span className="text-2xl font-light text-emerald-400 tracking-tighter" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                        {countdown}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold">MORA OS — SECURED TRANSITION</p>
+                  <h1 className="text-3xl font-light tracking-wide text-white leading-snug" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    Dossier wird geladen
+                  </h1>
+                  <p className="text-xs text-white/55 max-w-xs mx-auto leading-relaxed">
+                    Deine sichere Verbindung zum Website-HQ wird hergestellt. Die Daten werden verschlüsselt übertragen.
+                  </p>
+                </div>
               </div>
-              )}
+
+              {/* Smooth Progress Bar */}
+              <div className="space-y-2">
+                <div className="h-[2px] w-full bg-white/5 rounded-full overflow-hidden relative">
+                  <div 
+                    className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-emerald-400 transition-all duration-1000 ease-linear"
+                    style={{ width: `${((3 - countdown) / 3) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[8px] uppercase tracking-[0.15em] text-white/30">
+                  <span>Authentifizierung</span>
+                  <span>Umleitung</span>
+                </div>
               </div>
+
+              <div className="pt-2">
+                <button 
+                  onClick={() => { window.location.href = redirectUrl; }}
+                  className="inline-flex items-center gap-1.5 text-xs text-emerald-400/80 hover:text-emerald-300 font-medium underline underline-offset-4 decoration-emerald-500/30 transition-colors"
+                >
+                  Klicke hier für eine direkte Weiterleitung
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
               </main>
               </>
               );
