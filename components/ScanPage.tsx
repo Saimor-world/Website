@@ -64,7 +64,7 @@ function domainToCompanyName(value: string) {
     .join(' ');
 }
 
-function buildHqUrl(results: any) {
+export function buildHqUrl(results: any) {
   const base = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';
   const url = new URL(base);
   if (!url.pathname || url.pathname === '/') url.pathname = '/entry';
@@ -170,49 +170,6 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       );
   };
 
-  async function ingestAudit(scanData: {
-    email: string;
-    domain: string;
-    score: number;
-    grade?: string;
-    summary?: string;
-    level?: string;
-    industry?: string;
-    companySize?: string;
-    findings?: Array<{ title: string; severity: string; desc: string }>;
-    recommendations?: Array<{ title: string }>;
-    auditId?: string;
-  }): Promise<{ session_token: string; node_id: string; tenant_id: string; role: string } | null> {
-    try {
-      const res = await fetch('https://api.saimor.world/v3/playground/ingest-audit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: scanData.email,
-          domain: scanData.domain,
-          score: scanData.score,
-          grade: scanData.grade,
-          summary: scanData.summary,
-          level: scanData.level,
-          industry: scanData.industry,
-          company_size: scanData.companySize,
-          findings: scanData.findings,
-          recommendations: scanData.recommendations,
-          audit_id: scanData.auditId,
-          visitor_id: typeof window !== 'undefined'
-            ? (localStorage.getItem('saimor_visitor_id') || undefined)
-            : undefined,
-          visitor_name: scanData.email.split('@')[0],
-        }),
-      });
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data.success ? data : null;
-    } catch {
-      return null;
-    }
-  }
-
   const startScan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!target.trim()) {
@@ -271,7 +228,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         companySize: companySize,
       };
 
-      let builtHqUrl = buildHqUrl({
+      const builtHqUrl = buildHqUrl({
         ...auditData,
         companyName: companyName.trim() || domainToCompanyName(target.trim()),
         target: target.trim(),
@@ -281,36 +238,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         entryToken: r.entryToken,
       });
 
-      // Try ingest-audit first (creates a real OS session with dossier)
-      const ingestResult = await ingestAudit({
-        email: email.trim(),
-        domain: target.trim(),
-        score: r.score,
-        grade: r.grade,
-        summary: r.summary,
-        level: r.levelLabel,
-        industry,
-        companySize: companySize,
-        findings: (r.findings ?? []).map((f: any) => ({
-          title: f.title,
-          severity: f.severity,
-          desc: f.desc,
-        })),
-        recommendations: (r.recommendations ?? []).map((rec: any) => ({ title: rec.title })),
-        auditId: r.id ?? undefined,
-      });
-
-      if (ingestResult) {
-        // Email-link flow (NO auto-redirect). ingest-audit created the playground
-        // session; point the e-mail verification link at it. The visitor enters
-        // via the link from their inbox — that starts the 20-day trial in the
-        // guided showcase — instead of being silently redirected into the OS.
-        const params = new URLSearchParams({
-          audit_session: ingestResult.session_token,
-          open_node: ingestResult.node_id,
-        });
-        builtHqUrl = `https://hq.saimor.world/playground?${params.toString()}`;
-      }
+      // The signed /entry link creates an isolated preview account when opened.
+      // Never create a shared public-playground session from the WORLD browser:
+      // an existing real HQ cookie would otherwise win and expose the wrong account.
 
       // Always: show results on-page and send the e-mail verification link
       setResults({
