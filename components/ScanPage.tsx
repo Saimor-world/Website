@@ -271,7 +271,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         companySize: companySize,
       };
 
-      const builtHqUrl = buildHqUrl({
+      let builtHqUrl = buildHqUrl({
         ...auditData,
         companyName: companyName.trim() || domainToCompanyName(target.trim()),
         target: target.trim(),
@@ -301,19 +301,18 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       });
 
       if (ingestResult) {
-        // Set up redirection bridge
+        // Email-link flow (NO auto-redirect). ingest-audit created the playground
+        // session; point the e-mail verification link at it. The visitor enters
+        // via the link from their inbox — that starts the 20-day trial in the
+        // guided showcase — instead of being silently redirected into the OS.
         const params = new URLSearchParams({
           audit_session: ingestResult.session_token,
           open_node: ingestResult.node_id,
         });
-        const targetUrl = `https://hq.saimor.world/playground?${params.toString()}`;
-        setRedirectUrl(targetUrl);
-        setCountdown(3);
-        setStep(4);
-        return;
+        builtHqUrl = `https://hq.saimor.world/playground?${params.toString()}`;
       }
 
-      // Fallback: show results on-page and send email link
+      // Always: show results on-page and send the e-mail verification link
       setResults({
         ...auditData,
         persisted: data.persisted,
