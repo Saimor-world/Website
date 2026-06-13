@@ -279,15 +279,29 @@ function scoreInfrastructure(recon: ReconResult): CategoryScore {
     score -= 10;
   }
 
-  const serverHeader = recon.rawHeaders['server'];
-  if (serverHeader && serverHeader.toLowerCase() !== 'server' && serverHeader.length > 3) {
-    score -= 10;
+  // Server-header disclosure — only meaningful when an actual VERSION leaks.
+  // Bare platform/CDN names (Vercel, Cloudflare…) intentionally abstract the
+  // origin and are not a version leak, so we must not flag them as one.
+  const serverHeader = (recon.rawHeaders['server'] || '').trim();
+  const PLATFORM_NAMES = ['vercel', 'cloudflare', 'netlify', 'cloudfront', 'fly.io', 'github.com', 'amazons3'];
+  const hasVersion = /\d/.test(serverHeader); // e.g. nginx/1.18.0, Apache/2.4.41
+  const isBarePlatform = PLATFORM_NAMES.includes(serverHeader.toLowerCase());
+  if (serverHeader && hasVersion) {
+    score -= 12;
     findings.push({
       title: 'Server verrät Software-Version',
       severity: 'warn',
-      desc: `Der Server gibt sich als "${serverHeader}" zu erkennen. Angreifer schlagen zu genau dieser Version direkt bekannte Sicherheitslücken (CVEs) nach.`,
+      desc: `Der Server gibt seine genaue Version preis: "${serverHeader}". Angreifer schlagen dazu direkt bekannte Sicherheitslücken (CVEs) nach.`,
+    });
+  } else if (serverHeader && !isBarePlatform && serverHeader.toLowerCase() !== 'server' && serverHeader.length > 2) {
+    score -= 4;
+    findings.push({
+      title: 'Server-Software erkennbar',
+      severity: 'warn',
+      desc: `Der Server nennt seine Software ("${serverHeader}") — zwar ohne Version, aber ein generischer Server-Header gäbe Angreifern noch weniger Anhaltspunkte.`,
     });
   }
+  // Bare platform name (Vercel/Cloudflare/…) → origin is abstracted, no finding.
 
   const poweredBy = recon.rawHeaders['x-powered-by'];
   if (poweredBy) {
