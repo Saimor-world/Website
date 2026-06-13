@@ -221,6 +221,8 @@ export async function POST(req: NextRequest) {
       ip: recon.ip,
       ssl: recon.sslInfo,
       headers: recon.securityHeaders,
+      emailAuth: recon.emailAuth,
+      mxRecords: recon.mxRecords,
       subdomains: recon.subdomains,
       publicFiles: recon.publicFiles,
       pageProbe: recon.pageProbe,

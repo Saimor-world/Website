@@ -7,6 +7,11 @@ export type ReconResult = {
   ip: string | null;
   subdomains: string[];
   mxRecords: string[];
+  emailAuth: {
+    spf: boolean;
+    dmarc: boolean;
+    dmarcPolicy: string | null;
+  };
   publicFiles: PublicFileProbe[];
   pageProbe: PageProbe | null;
   agentTrace: ReconTraceStep[];
@@ -69,6 +74,7 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
     ip: null,
     subdomains: [],
     mxRecords: [],
+    emailAuth: { spf: false, dmarc: false, dmarcPolicy: null },
     publicFiles: [],
     pageProbe: null,
     agentTrace: [],
@@ -97,6 +103,42 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
         detail: 'Scan stopped because the resolved address is private or reserved.',
       });
       return result;
+    }
+
+    // 1b. E-Mail authentication posture (MX, SPF, DMARC) — passive DNS only.
+    // Missing SPF/DMARC is one of the most consequential real-world risks for a
+    // business: without it anyone can send mail that looks like it comes from
+    // this domain (invoice fraud, CEO fraud). Empfänger sehen den echten Namen.
+    try {
+      const mx = await dns.resolveMx(domain).catch(() => []);
+      result.mxRecords = mx
+        .map((record) => record.exchange)
+        .filter(Boolean)
+        .slice(0, 10);
+
+      const rootTxt = await dns.resolveTxt(domain).catch(() => [] as string[][]);
+      result.emailAuth.spf = rootTxt
+        .map((chunks) => chunks.join(''))
+        .some((txt) => /^v=spf1/i.test(txt.trim()));
+
+      const dmarcTxt = await dns.resolveTxt(`_dmarc.${domain}`).catch(() => [] as string[][]);
+      const dmarcRecord = dmarcTxt
+        .map((chunks) => chunks.join(''))
+        .find((txt) => /^v=DMARC1/i.test(txt.trim()));
+      if (dmarcRecord) {
+        result.emailAuth.dmarc = true;
+        const policyMatch = dmarcRecord.match(/\bp=([a-zA-Z]+)/);
+        result.emailAuth.dmarcPolicy = policyMatch ? policyMatch[1].toLowerCase() : null;
+      }
+
+      result.agentTrace.push({
+        step: 'dns',
+        target: `_dmarc.${domain}`,
+        status: result.emailAuth.dmarc && result.emailAuth.spf ? 'ok' : 'warn',
+        detail: `MX=${result.mxRecords.length}, SPF=${String(result.emailAuth.spf)}, DMARC=${String(result.emailAuth.dmarc)}${result.emailAuth.dmarcPolicy ? ` (p=${result.emailAuth.dmarcPolicy})` : ''}.`,
+      });
+    } catch {
+      // DNS email-auth lookups are best-effort; absence is handled in scoring.
     }
 
     // 2. Active TLS Scan (Fixed race condition and added details)
