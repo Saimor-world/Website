@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, Pin, Save, ExternalLink, ClipboardList, Download, Mail } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, Pin, Save, ExternalLink, ClipboardList, Download, Mail, Sparkles } from 'lucide-react';
 import DemoHqPreview from './DemoHqPreview';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
 import { buildContextToken } from '@/lib/entry-token';
@@ -604,492 +604,122 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
 
         {/* ── Step 3 · Results ────────────────────────────────────── */}
         {step === 3 && results && !error && (
-          <div className="space-y-12 animate-in fade-in duration-1000">
+          <div className="space-y-8 animate-in fade-in duration-1000">
 
-            {/* Header */}
-            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/10 pb-10 print:text-black">
-              <div className="space-y-2">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-white/30">Ergebnis für {results.companyName} · {results.target}</p>
-                <h1 className="text-5xl font-light">Saimor Security <span className="italic">Dossier</span></h1>
+            {/* ── 1. HEADER ── */}
+            <header className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-white/28">Nightwatch Security Check · {results.target}</p>
+                <h1 className="mt-1 text-3xl font-light">
+                  {results.companyName}
+                  {results.grade && <span className="ml-3 text-lg text-white/35 font-extralight">· {results.grade}</span>}
+                </h1>
               </div>
-              <div className="flex items-center gap-3 print:hidden">
+              <div className="flex items-center gap-2 print:hidden shrink-0">
                 <button
                   onClick={() => { setStep(1); setResults(null); setNoteState('idle'); setWallState('idle'); setWallConsent(false); setWallKind('supporter'); setWallVisibility('company-anonymous'); setWallMessage(''); setHqState('idle'); }}
-                  className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors"
+                  className="flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1.5 rounded-xl text-[11px] text-white/55 hover:bg-white/[0.08] transition-colors"
                 >
                   Neuer Scan
                 </button>
-                <button
-                  onClick={() => window.print()}
-                  className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors"
-                >
-                  <Printer size={14} /> PDF
+                <button onClick={() => window.print()} className="flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1.5 rounded-xl text-[11px] text-white/55 hover:bg-white/[0.08] transition-colors">
+                  <Printer size={13} /> PDF
                 </button>
               </div>
             </header>
 
-            {/* Work actions */}
-            <div className="rounded-3xl border border-emerald-300/15 bg-emerald-400/[0.045] p-6 space-y-5">
-              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-emerald-200/60">
-                    <ClipboardList size={14} />
-                    Arbeitskarte
-                  </div>
-                  <h2 className="text-2xl font-light">{results.companyName} als Nightwatch-Signal vorbereiten</h2>
-                  <p className="max-w-2xl text-sm leading-relaxed text-white/55">
-                    Dashboard merkt den Check, Mora OS macht daraus Arbeit: Dossier, erste Aufgaben, Finder-Kontext und optional ein Wall-Signal nach E-Mail-Bestaetigung.
-                  </p>
+            {/* ── 2. SCORE + SUMMARY — the verdict ── */}
+            <div className={`grid md:grid-cols-[160px_1fr] gap-8 items-center rounded-3xl border p-8 ${
+              results.score < 50 ? 'bg-red-500/[0.04] border-red-500/15' : results.score < 80 ? 'bg-amber-400/[0.04] border-amber-400/15' : 'bg-emerald-400/[0.04] border-emerald-400/15'
+            }`}>
+              <div className="relative w-36 h-36 mx-auto md:mx-0 shrink-0 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 192 192">
+                  <circle cx="96" cy="96" r="84" fill="none" stroke="currentColor" strokeWidth="4" className="text-white/5" />
+                  <circle cx="96" cy="96" r="84" fill="none" stroke={scoreStroke(results.score)} strokeWidth="8" strokeLinecap="round"
+                    strokeDasharray={528} strokeDashoffset={528 - (528 * results.score) / 100}
+                    style={{ filter: `drop-shadow(0 0 8px ${scoreStroke(results.score)}80)`, transition: 'stroke-dashoffset 1s ease-out' }} />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className={`text-4xl font-light tabular-nums ${scoreColor(results.score)}`}>{results.score}</span>
+                  <span className={`text-[9px] uppercase tracking-widest mt-1 ${scoreColor(results.score)} opacity-60`}>{scoreLabel(results.score)}</span>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={results.hqUrl}
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]"
-                  >
-                    HQ-Demo oeffnen
+              </div>
+              <div className="space-y-3">
+                {/* Finding summary pills */}
+                {results.findings?.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {(() => {
+                      const risks = results.findings.filter((f: any) => f.status === 'risk').length;
+                      const warns = results.findings.filter((f: any) => f.status === 'warn').length;
+                      const oks = results.findings.filter((f: any) => f.status === 'ok').length;
+                      return <>
+                        {risks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 border border-red-400/20 px-3 py-1 text-[11px] text-red-300"><AlertTriangle size={11} />{risks} {risks === 1 ? 'Risiko' : 'Risiken'}</span>}
+                        {warns > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-400/20 px-3 py-1 text-[11px] text-amber-300"><AlertTriangle size={11} />{warns} {warns === 1 ? 'Warnung' : 'Warnungen'}</span>}
+                        {oks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/20 px-3 py-1 text-[11px] text-emerald-300"><CheckCircle2 size={11} />{oks} in Ordnung</span>}
+                      </>;
+                    })()}
+                  </div>
+                )}
+                {results.summary
+                  ? <p className="text-white/60 leading-relaxed text-sm">{results.summary}</p>
+                  : <p className="text-white/35 text-sm">Score basiert auf verfügbaren passiven Recon-Signalen.</p>}
+              </div>
+            </div>
+
+            {/* ── 3. MÔRA CTA — the key action ── */}
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-300/20 bg-emerald-400/[0.04] p-8">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_0%_50%,rgba(16,185,129,0.08),transparent)]" />
+              <div className="relative flex flex-col md:flex-row gap-6 items-start md:items-center">
+                {/* MÔRA orb */}
+                <div className="relative h-14 w-14 shrink-0 flex items-center justify-center">
+                  <span className="absolute inset-0 animate-pulse rounded-full" style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)' }} />
+                  <span className="relative flex h-10 w-10 items-center justify-center rounded-full" style={{ background: 'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.45), rgba(16,185,129,0.62) 46%, rgba(0,0,0,0.32))', boxShadow: '0 0 20px rgba(16,185,129,0.4)' }}>
+                    <Sparkles size={14} className="text-white/95" />
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl font-light text-white/90">Dein SAIMOR-Workspace ist bereit</h2>
+                  <p className="mt-1 text-sm text-white/50 leading-relaxed">
+                    MÔRA kennt deine Website — die Befunde sind bereits in deinem persönlichen Dossier. Öffne das HQ und sieh, was das OS daraus macht.
+                  </p>
+                  {hqState === 'sent' && (
+                    <p className="mt-2 text-[11px] text-emerald-300/80">
+                      ✓ Link automatisch an <strong>{results.email}</strong> gesendet — check dein Postfach.
+                    </p>
+                  )}
+                  {hqState === 'error' && (
+                    <p className="mt-2 text-[11px] text-amber-300/80">Link-Versand fehlgeschlagen — nutze den Button unten.</p>
+                  )}
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+                  <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">
+                    HQ öffnen
                     <ExternalLink size={15} />
                   </a>
-                  <button
-                    type="button"
-                    onClick={requestHqLink}
-                    disabled={hqState === 'sending' || hqState === 'sent'}
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/70 hover:bg-white/10 disabled:opacity-50"
-                  >
-                    {hqState === 'sending'
-                      ? 'Sende Link...'
-                      : hqState === 'sent'
-                        ? 'Link gesendet'
-                        : 'Link per E-Mail'}
-                    <Mail size={15} />
+                  <button type="button" onClick={requestHqLink} disabled={hqState === 'sending' || hqState === 'sent'}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.05] px-5 py-3.5 text-sm text-white/65 hover:bg-white/[0.1] disabled:opacity-50 transition-colors">
+                    <Mail size={14} />
+                    {hqState === 'sending' ? 'Sende...' : hqState === 'sent' ? 'Gesendet' : 'Per E-Mail'}
                   </button>
                 </div>
               </div>
-
-              <label className="block space-y-2">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Interne Notiz</span>
-                <textarea
-                  value={ownerNote}
-                  onChange={(e) => {
-                    setOwnerNote(e.target.value);
-                    setNoteState('idle');
-                  }}
-                  placeholder="Was ist wichtig? Wer muss draufschauen? Was soll Mora daraus machen?"
-                  rows={4}
-                  className="w-full resize-none rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-emerald-300/40"
-                />
-              </label>
-
-              <div className="grid gap-3 md:grid-cols-3">
-                <label className="block space-y-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Typ</span>
-                  <select
-                    value={wallKind}
-                    onChange={(event) => {
-                      setWallKind(event.target.value);
-                      setWallError(null);
-                      if (wallState === 'error') setWallState('idle');
-                    }}
-                    className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
-                  >
-                    <option value="supporter">Supporter</option>
-                    <option value="customer">Kunde</option>
-                    <option value="pilot">Pilotkunde</option>
-                    <option value="partner">Partner</option>
-                    <option value="investor">Investor</option>
-                    <option value="team">Team</option>
-                    <option value="community">Community</option>
-                    <option value="security-check">Security Signal</option>
-                  </select>
-                </label>
-                <label className="block space-y-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Sichtbarkeit</span>
-                  <select
-                    value={wallVisibility}
-                    onChange={(event) => {
-                      setWallVisibility(event.target.value);
-                      setWallError(null);
-                      if (wallState === 'error') setWallState('idle');
-                    }}
-                    className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
-                  >
-                    <option value="company-anonymous">Firma anonym</option>
-                    <option value="anonymous">Ganz anonym</option>
-                    <option value="named">Name sichtbar</option>
-                  </select>
-                </label>
-                <label className="block space-y-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Text</span>
-                  <input
-                    value={wallMessage}
-                    onChange={(event) => {
-                      setWallMessage(event.target.value);
-                      setWallError(null);
-                      if (wallState === 'error') setWallState('idle');
-                    }}
-                    maxLength={240}
-                    placeholder="Kurzes Signal, optional"
-                    className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
-                  />
-                </label>
-              </div>
-
-              <label className="flex items-start gap-3 rounded-2xl border border-white/8 bg-black/18 p-4 text-sm text-white/58">
-                <input
-                  type="checkbox"
-                  checked={wallConsent}
-                  onChange={(event) => {
-                    setWallConsent(event.target.checked);
-                    setWallError(null);
-                    if (wallState === 'error') setWallState('idle');
-                  }}
-                  className="mt-1 h-4 w-4 accent-emerald-300"
-                />
-                <span>
-                  Ich stimme zu, dass Nightwatch diesen Security-Check nach E-Mail-Bestaetigung als Wall-Signal in die Freigabe geben darf. Oeffentlich sichtbar wird nur die ausgewaehlte Sichtbarkeit; E-Mail und Rohdaten bleiben intern.
-                </span>
-              </label>
-
-              <div className="flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  onClick={saveAuditNote}
-                  disabled={!results.id || noteState === 'saving'}
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-medium text-white/75 hover:bg-white/[0.1] disabled:opacity-40"
-                >
-                  <Save size={14} />
-                  {noteState === 'saving' ? 'Speichert...' : noteState === 'saved' ? 'Notiz gespeichert' : 'Notiz speichern'}
-                </button>
-                <button
-                  type="button"
-                  onClick={pinToWall}
-                  disabled={!results.id || wallState === 'saving' || wallState === 'verification-sent' || wallState === 'pinned'}
-                  className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs font-medium text-emerald-50 hover:bg-emerald-300/15 disabled:opacity-45"
-                >
-                  <Pin size={14} />
-                  {wallState === 'saving'
-                    ? 'Sende Bestaetigungslink...'
-                    : wallState === 'verification-sent'
-                      ? 'Bestaetigungslink gesendet'
-                      : wallState === 'pinned'
-                        ? 'In Review'
-                        : 'Wall-Eintrag anfragen'}
-                </button>
-                {wallState === 'pinned' ? (
-                  <Link href="/wall" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-white/65 hover:bg-white/[0.1]">
-                    Supporter Universe ansehen
-                    <ExternalLink size={14} />
-                  </Link>
-                ) : null}
-              </div>
-              {noteState === 'error' || wallState === 'error' ? (
-                <div className="rounded-2xl border border-red-300/18 bg-red-500/[0.08] px-4 py-3 text-xs leading-relaxed text-red-100/86">
-                  {wallState === 'error'
-                    ? wallError || 'Aktion konnte nicht gespeichert werden. Bitte erneut versuchen.'
-                    : 'Notiz konnte nicht gespeichert werden. Bitte erneut versuchen.'}
-                </div>
-              ) : null}
-              {wallState === 'verification-sent' ? (
-                <p className="text-xs text-emerald-200/72">
-                  Check deine E-Mail. Erst der Link bestaetigt den Eintrag; danach kann er vom Owner freigegeben oder privat gehalten werden.
-                </p>
-              ) : null}
             </div>
 
-            {/* Score ring + technical summary */}
-            <div className={`flex flex-col md:flex-row gap-12 items-center border rounded-3xl p-10 print:bg-white print:border-black ${
-              results.score < 50
-                ? 'bg-red-500/[0.04] border-red-500/15'
-                : results.score < 80
-                  ? 'bg-amber-400/[0.04] border-amber-400/15'
-                  : 'bg-emerald-400/[0.04] border-emerald-400/15'
-            }`}>
-              <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 192 192">
-                  <circle cx="96" cy="96" r="84" fill="none" stroke="currentColor" strokeWidth="4" className="text-white/5" />
-                  <circle
-                    cx="96" cy="96" r="84" fill="none"
-                    stroke={scoreStroke(results.score)}
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray={528}
-                    strokeDashoffset={528 - (528 * results.score) / 100}
-                    style={{ filter: `drop-shadow(0 0 8px ${scoreStroke(results.score)}80)`, transition: 'stroke-dashoffset 1s ease-out' }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className={`text-5xl font-light tabular-nums ${scoreColor(results.score)}`}>{results.score}</span>
-                  <span className={`text-[10px] uppercase tracking-widest mt-1 ${scoreColor(results.score)} opacity-60`}>
-                    {scoreLabel(results.score)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex-1 space-y-3 text-center md:text-left">
-                <h3 className="text-2xl font-light">Technische Einordnung</h3>
-                {results.summary ? (
-                  <p className="text-white/60 leading-relaxed text-sm">
-                    {results.summary}
-                  </p>
-                ) : (
-                  <div className="space-y-2">
-                    <p className="text-white/40 leading-relaxed text-sm">
-                      Die Recon-Daten wurden erfasst. Der Score basiert auf den verfügbaren passiven Signalen der Domain.
-                    </p>
-                    <div className="inline-flex items-center gap-2 text-[10px] text-white/25">
-                      <Info size={12} />
-                      Für eine vollständige KI-Analyse kontaktiere uns direkt.
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* ── HQ Preview — the "wow" step right after the score ── */}
-            {results.demoProfile && (
-              <div className="space-y-4">
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Mora OS Einstieg</p>
-                    <h3 className="mt-1 text-2xl font-light">So startet das OS fuer <span className="italic">{results.companyName}</span></h3>
-                  </div>
-                  <p className="text-xs text-white/30 max-w-xs md:text-right">
-                    Nightwatch-Befunde plus deine Angaben, noch ohne echte Cloud-Anbindung.
-                  </p>
-                </div>
-                <DemoHqPreview
-                  profile={results.demoProfile}
-                  osHref={results.hqUrl}
-                  onRequestAccess={requestHqLink}
-                  accessState={hqState}
-                />
-                {hqState === 'sent' && (
-                  <p className="text-xs text-cyan-200/72 text-center">
-                    ✓ HQ-Link wurde automatisch an <strong>{results.email}</strong> gesendet.
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* ── Divider into technical details ── */}
-            <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-white/5" />
-              <p className="text-[9px] uppercase tracking-[0.35em] text-white/20 shrink-0">Technische Details</p>
-              <div className="flex-1 h-px bg-white/5" />
-            </div>
-
-            {/* Deterministic report card */}
-            {results.categories && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Technische Teilnoten</p>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {Object.entries(results.categories).map(([key, category]: [string, any]) => (
-                    <div key={key} className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 space-y-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-[9px] uppercase tracking-[0.25em] text-white/25">
-                            {CATEGORY_LABELS[key] ?? key}
-                          </p>
-                          <p className={`mt-2 text-4xl font-light ${scoreColor(category.score)}`}>
-                            {category.grade}
-                          </p>
-                        </div>
-                        <p className="font-mono text-xs text-white/35">{category.score}/100</p>
-                      </div>
-                      <div className="space-y-2">
-                        {(category.findings ?? []).slice(0, 2).map((finding: any, i: number) => (
-                          <div key={`${finding.title}-${i}`} className="flex items-start gap-2 text-xs text-white/50">
-                            <span
-                              className={`mt-1 h-1.5 w-1.5 rounded-full shrink-0 ${
-                                finding.severity === 'risk'
-                                  ? 'bg-red-400'
-                                  : finding.severity === 'warn'
-                                    ? 'bg-amber-400'
-                                    : 'bg-emerald-400'
-                              }`}
-                            />
-                            <span>{finding.title}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Live recon signals */}
-            {results.recon && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Live Recon — Was wir gefunden haben</p>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {results.recon.ip && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">IP-Adresse</p>
-                      <p className="font-mono text-xs text-emerald-400">{results.recon.ip}</p>
-                    </div>
-                  )}
-                  {results.recon.ssl?.protocol && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">TLS</p>
-                      <p className="font-mono text-xs text-emerald-400">{results.recon.ssl.protocol}</p>
-                    </div>
-                  )}
-                  {results.recon.ssl?.issuer && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Zertifikat</p>
-                      <p className="font-mono text-xs text-white/45 truncate">{results.recon.ssl.issuer}</p>
-                    </div>
-                  )}
-                  {(results.recon.subdomains?.length ?? 0) > 0 && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Subdomains</p>
-                      <p className="font-mono text-xs text-amber-400">{results.recon.subdomains.length} gefunden</p>
-                    </div>
-                  )}
-                  {(results.recon.publicFiles?.length ?? 0) > 0 && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Public Files</p>
-                      <p className="font-mono text-xs text-amber-400">
-                        {results.recon.publicFiles.filter((file: any) => file.found).length} gefunden
-                      </p>
-                    </div>
-                  )}
-                  {(results.recon.subdomains?.length ?? 0) === 0 && !results.recon.ip && !results.recon.ssl && (
-                    <div className="col-span-4 text-xs text-white/25 text-center py-2">
-                      Keine öffentlichen Recon-Daten gefunden — Domain könnte gut gesichert sein.
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {results.pageProbe && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Seiten-Fingerprint</p>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-6 grid gap-5 md:grid-cols-3">
-                  <div className="space-y-1 md:col-span-2">
-                    <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Titel</p>
-                    <p className="text-sm text-white/65">{results.pageProbe.title || 'Kein Titel gefunden'}</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Formulare</p>
-                    <p className="font-mono text-xs text-emerald-400">{results.pageProbe.forms}</p>
-                  </div>
-                  {(results.pageProbe.technologies?.length ?? 0) > 0 && (
-                    <div className="space-y-2 md:col-span-3">
-                      <p className="text-[9px] uppercase tracking-widest text-white/25 font-mono">Technologie-Hinweise</p>
-                      <div className="flex flex-wrap gap-2">
-                        {results.pageProbe.technologies.map((tech: string) => (
-                          <span key={tech} className="rounded-full border border-cyan-300/10 bg-cyan-400/[0.06] px-3 py-1 text-[10px] text-cyan-100/75">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {results.recon?.publicFiles?.some((file: any) => file.found) && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Audit-Agent Browse-Spuren</p>
-                <div className="grid gap-3 md:grid-cols-2">
-                  {results.recon.publicFiles
-                    .filter((file: any) => file.found)
-                    .map((file: any) => (
-                      <div key={file.path} className="rounded-2xl border border-white/5 bg-white/[0.015] p-4 flex items-center justify-between gap-4">
-                        <div>
-                          <p className="font-mono text-xs text-white/70">{file.path}</p>
-                          <p className="font-mono text-[10px] text-white/25">HTTP {file.status}</p>
-                        </div>
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-widest ${
-                            file.risk === 'risk'
-                              ? 'bg-red-500/10 text-red-300'
-                              : file.risk === 'info'
-                                ? 'bg-amber-500/10 text-amber-300'
-                                : 'bg-emerald-500/10 text-emerald-300'
-                          }`}
-                        >
-                          {file.risk === 'risk' ? 'Risiko' : file.risk === 'info' ? 'Info' : 'Gut'}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
-
-            {results.agentTrace?.length > 0 && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Agent-Protokoll</p>
-                <div className="grid gap-3">
-                  {results.agentTrace.map((entry: any, i: number) => (
-                    <div key={`${entry.step}-${i}`} className="rounded-2xl border border-white/5 bg-white/[0.012] p-4">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div>
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-white/38">{entry.step}</p>
-                          <p className="mt-1 font-mono text-xs text-white/50 break-all">{entry.target}</p>
-                        </div>
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-widest ${
-                            entry.status === 'ok'
-                              ? 'bg-emerald-500/10 text-emerald-300'
-                              : entry.status === 'warn'
-                                ? 'bg-amber-500/10 text-amber-300'
-                                : entry.status === 'blocked'
-                                  ? 'bg-cyan-500/10 text-cyan-300'
-                                  : 'bg-red-500/10 text-red-300'
-                          }`}
-                        >
-                          {entry.status}
-                        </span>
-                      </div>
-                      <p className="mt-3 text-xs leading-relaxed text-white/48">{entry.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Attacker path */}
-            {results.attacker_path && (
-              <div className="rounded-3xl border border-rose-500/20 bg-rose-500/[0.03] p-8 space-y-4">
-                <div className="flex items-center gap-3 text-rose-400">
-                  <AlertTriangle size={18} />
-                  <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold">Hypothetisches Angriffsszenario</h3>
-                </div>
-                <p className="text-white/70 text-sm leading-relaxed whitespace-pre-wrap">{results.attacker_path}</p>
-                <p className="text-[10px] text-white/20 italic">
-                  Generiert von Mora Intelligence auf Basis passiver Fingerabdrücke.
-                </p>
-              </div>
-            )}
-
-            {/* Findings */}
+            {/* ── 4. FINDINGS — the meat ── */}
             {results.findings?.length > 0 && (
-              <div className="space-y-3">
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Befunde</p>
-                <div className="grid gap-4">
+              <div className="space-y-4">
+                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">Was wir gefunden haben</h3>
+                <div className="grid gap-3">
                   {results.findings.map((f: any, i: number) => (
-                    <div
-                      key={i}
-                      className="rounded-2xl border border-white/5 bg-white/[0.01] p-6 flex gap-5 items-start hover:bg-white/[0.03] transition-all"
-                    >
-                      <div
-                        className={`mt-0.5 p-2 rounded-lg shrink-0 ${
-                          f.status === 'ok'
-                            ? 'bg-emerald-500/10 text-emerald-400'
-                            : f.status === 'warn'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : 'bg-red-500/10 text-red-400'
-                        }`}
-                      >
-                        {f.status === 'ok' ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
+                    <div key={i} className={`flex gap-4 items-start rounded-2xl border p-5 transition-colors hover:bg-white/[0.025] ${
+                      f.status === 'risk' ? 'border-red-400/15 bg-red-500/[0.03]' : f.status === 'warn' ? 'border-amber-400/15 bg-amber-500/[0.03]' : 'border-white/[0.06] bg-white/[0.01]'
+                    }`}>
+                      <div className={`mt-0.5 shrink-0 p-1.5 rounded-lg ${f.status === 'risk' ? 'bg-red-500/12 text-red-400' : f.status === 'warn' ? 'bg-amber-500/12 text-amber-400' : 'bg-emerald-500/12 text-emerald-400'}`}>
+                        {f.status === 'ok' ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}
                       </div>
-                      <div className="space-y-1.5">
-                        <h4 className="font-bold text-xs uppercase tracking-widest">{f.title}</h4>
-                        <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/80">{f.title}</p>
+                        {f.desc && <p className="mt-1 text-sm leading-relaxed text-white/46">{f.desc}</p>}
                       </div>
                     </div>
                   ))}
@@ -1097,17 +727,37 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </div>
             )}
 
-            {/* Follow-up questions */}
+            {/* ── 5. ATTACKER PATH ── */}
+            {results.attacker_path && (
+              <div className="rounded-3xl border border-rose-500/18 bg-rose-500/[0.025] p-7 space-y-3">
+                <div className="flex items-center gap-3 text-rose-400">
+                  <AlertTriangle size={16} />
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Hypothetisches Angriffsszenario</span>
+                </div>
+                <p className="text-white/65 text-sm leading-relaxed whitespace-pre-wrap">{results.attacker_path}</p>
+                <p className="text-[10px] text-white/20 italic">Generiert von MÔRA Intelligence auf Basis passiver Fingerabdrücke.</p>
+              </div>
+            )}
+
+            {/* ── 6. DEMO PREVIEW (OS teaser) ── */}
+            {results.demoProfile && (
+              <div className="space-y-3">
+                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">So sieht dein HQ aus</h3>
+                <DemoHqPreview profile={results.demoProfile} osHref={results.hqUrl} onRequestAccess={requestHqLink} accessState={hqState} />
+              </div>
+            )}
+
+            {/* ── 7. FOLLOW-UP QUESTIONS ── */}
             {results.followUpQuestions?.length > 0 && (
-              <div className="rounded-2xl border border-white/5 bg-white/[0.01] p-8 space-y-5">
-                <div className="flex items-center gap-3 text-white/40">
-                  <HelpCircle size={16} />
-                  <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold">Fragen, die du dir stellen solltest</h3>
+              <div className="rounded-2xl border border-white/6 bg-white/[0.01] p-7 space-y-4">
+                <div className="flex items-center gap-2 text-white/38">
+                  <HelpCircle size={15} />
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Fragen, die du dir stellen solltest</span>
                 </div>
                 <ul className="space-y-3">
                   {results.followUpQuestions.map((q: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-white/55 leading-relaxed">
-                      <span className="text-white/20 font-mono text-xs mt-0.5 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                    <li key={i} className="flex items-start gap-3 text-sm text-white/50 leading-relaxed">
+                      <span className="text-white/18 font-mono text-xs mt-0.5 shrink-0">{String(i + 1).padStart(2, '0')}</span>
                       {q}
                     </li>
                   ))}
@@ -1115,31 +765,144 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </div>
             )}
 
-            {/* Demo HQ Preview moved above technical details — see placement after score ring */}
-
-            <footer className="pt-16 pb-20 flex flex-col items-center gap-8 print:hidden border-t border-white/5">
-              <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
-                <Link
-                  href="/de/kontakt"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all"
-                >
-                  Experten-Gespräch vereinbaren
-                </Link>
-                <button
-                  onClick={() => window.print()}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-10 py-4 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]"
-                >
-                  <Download size={18} />
-                  Dossier als PDF sichern
-                </button>
+            {/* ── 8. TECHNICAL DETAILS (collapsible) ── */}
+            <details className="group">
+              <summary className="flex cursor-pointer items-center gap-3 select-none">
+                <div className="flex-1 h-px bg-white/6" />
+                <span className="text-[9px] uppercase tracking-[0.35em] text-white/22 group-open:text-white/40 transition-colors shrink-0">Technische Details</span>
+                <div className="flex-1 h-px bg-white/6" />
+              </summary>
+              <div className="mt-8 space-y-8">
+                {results.categories && (
+                  <div className="space-y-3">
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Teilnoten</p>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      {Object.entries(results.categories).map(([key, category]: [string, any]) => (
+                        <div key={key} className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 space-y-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-[9px] uppercase tracking-[0.25em] text-white/25">{CATEGORY_LABELS[key] ?? key}</p>
+                              <p className={`mt-2 text-4xl font-light ${scoreColor(category.score)}`}>{category.grade}</p>
+                            </div>
+                            <p className="font-mono text-xs text-white/35">{category.score}/100</p>
+                          </div>
+                          <div className="space-y-2">
+                            {(category.findings ?? []).slice(0, 2).map((finding: any, i: number) => (
+                              <div key={`${finding.title}-${i}`} className="flex items-start gap-2 text-xs text-white/50">
+                                <span className={`mt-1 h-1.5 w-1.5 rounded-full shrink-0 ${finding.severity === 'risk' ? 'bg-red-400' : finding.severity === 'warn' ? 'bg-amber-400' : 'bg-emerald-400'}`} />
+                                <span>{finding.title}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {results.recon && (
+                  <div className="space-y-3">
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Live Recon</p>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 grid grid-cols-2 md:grid-cols-4 gap-5">
+                      {results.recon.ip && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">IP</p><p className="font-mono text-xs text-emerald-400">{results.recon.ip}</p></div>}
+                      {results.recon.ssl?.protocol && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">TLS</p><p className="font-mono text-xs text-emerald-400">{results.recon.ssl.protocol}</p></div>}
+                      {results.recon.ssl?.issuer && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">Zertifikat</p><p className="font-mono text-xs text-white/45 truncate">{results.recon.ssl.issuer}</p></div>}
+                      {(results.recon.subdomains?.length ?? 0) > 0 && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">Subdomains</p><p className="font-mono text-xs text-amber-400">{results.recon.subdomains.length} gefunden</p></div>}
+                    </div>
+                  </div>
+                )}
+                {results.pageProbe && (
+                  <div className="space-y-3">
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Seiten-Fingerprint</p>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 space-y-3">
+                      <p className="text-sm text-white/60">{results.pageProbe.title || 'Kein Titel'}</p>
+                      {(results.pageProbe.technologies?.length ?? 0) > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {results.pageProbe.technologies.map((tech: string) => (
+                            <span key={tech} className="rounded-full border border-cyan-300/10 bg-cyan-400/[0.06] px-3 py-1 text-[10px] text-cyan-100/75">{tech}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {results.agentTrace?.length > 0 && (
+                  <div className="space-y-3">
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Agent-Protokoll</p>
+                    <div className="grid gap-2">
+                      {results.agentTrace.map((entry: any, i: number) => (
+                        <div key={`${entry.step}-${i}`} className="rounded-xl border border-white/5 bg-white/[0.01] p-4 flex items-start gap-4">
+                          <span className={`mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[9px] uppercase tracking-widest ${entry.status === 'ok' ? 'bg-emerald-500/10 text-emerald-300' : entry.status === 'warn' ? 'bg-amber-500/10 text-amber-300' : entry.status === 'blocked' ? 'bg-cyan-500/10 text-cyan-300' : 'bg-red-500/10 text-red-300'}`}>{entry.status}</span>
+                          <div>
+                            <p className="font-mono text-[10px] text-white/45">{entry.step} · {entry.target}</p>
+                            <p className="mt-1 text-xs text-white/35">{entry.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
+            </details>
 
-              <div className="max-w-md text-center space-y-2">
-                <p className="text-xs text-white/30 leading-relaxed">
-                  Dieses Dossier wurde auf Basis passiver Signale erstellt. Für einen vollständigen Audit 
-                  muss Mora in die Tiefe deines Unternehmens blicken dürfen.
-                </p>
+            {/* ── 9. OWNER SECTION — internal, collapsed ── */}
+            <details className="group">
+              <summary className="flex cursor-pointer items-center gap-3 select-none">
+                <div className="flex-1 h-px bg-white/4" />
+                <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.35em] text-white/18 group-open:text-white/32 transition-colors shrink-0">
+                  <ClipboardList size={10} /> Owner-Bereich
+                </span>
+                <div className="flex-1 h-px bg-white/4" />
+              </summary>
+              <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.02] p-6 space-y-5">
+                <label className="block space-y-2">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Interne Notiz</span>
+                  <textarea value={ownerNote} onChange={(e) => { setOwnerNote(e.target.value); setNoteState('idle'); }} placeholder="Was ist wichtig? Wer muss draufschauen?" rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-emerald-300/40" />
+                </label>
+                <div className="grid gap-3 md:grid-cols-3">
+                  <label className="block space-y-2">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Typ</span>
+                    <select value={wallKind} onChange={(e) => { setWallKind(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40">
+                      <option value="supporter">Supporter</option><option value="customer">Kunde</option><option value="pilot">Pilotkunde</option>
+                      <option value="partner">Partner</option><option value="investor">Investor</option><option value="team">Team</option>
+                      <option value="community">Community</option><option value="security-check">Security Signal</option>
+                    </select>
+                  </label>
+                  <label className="block space-y-2">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Sichtbarkeit</span>
+                    <select value={wallVisibility} onChange={(e) => { setWallVisibility(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40">
+                      <option value="company-anonymous">Firma anonym</option><option value="anonymous">Ganz anonym</option><option value="named">Name sichtbar</option>
+                    </select>
+                  </label>
+                  <label className="block space-y-2">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Text</span>
+                    <input value={wallMessage} onChange={(e) => { setWallMessage(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} maxLength={240} placeholder="Kurzes Signal, optional" className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40" />
+                  </label>
+                </div>
+                <label className="flex items-start gap-3 rounded-2xl border border-white/8 bg-black/18 p-4 text-sm text-white/55">
+                  <input type="checkbox" checked={wallConsent} onChange={(e) => { setWallConsent(e.target.checked); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="mt-1 h-4 w-4 accent-emerald-300" />
+                  <span>Ich stimme zu, dass Nightwatch diesen Security-Check nach E-Mail-Bestätigung als Wall-Signal in die Freigabe geben darf.</span>
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  <button type="button" onClick={saveAuditNote} disabled={!results.id || noteState === 'saving'} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/70 hover:bg-white/[0.1] disabled:opacity-40">
+                    <Save size={13} />{noteState === 'saving' ? 'Speichert...' : noteState === 'saved' ? 'Gespeichert' : 'Notiz speichern'}
+                  </button>
+                  <button type="button" onClick={pinToWall} disabled={!results.id || wallState === 'saving' || wallState === 'verification-sent' || wallState === 'pinned'} className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs text-emerald-50 hover:bg-emerald-300/15 disabled:opacity-45">
+                    <Pin size={13} />{wallState === 'saving' ? 'Sende Link...' : wallState === 'verification-sent' ? 'Link gesendet' : wallState === 'pinned' ? 'In Review' : 'Wall-Eintrag anfragen'}
+                  </button>
+                  {wallState === 'pinned' && <Link href="/wall" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-white/65 hover:bg-white/[0.1]">Universe ansehen <ExternalLink size={13} /></Link>}
+                </div>
+                {(noteState === 'error' || wallState === 'error') && <div className="rounded-2xl border border-red-300/18 bg-red-500/[0.08] px-4 py-3 text-xs text-red-100/86">{wallState === 'error' ? wallError || 'Aktion fehlgeschlagen.' : 'Notiz konnte nicht gespeichert werden.'}</div>}
+                {wallState === 'verification-sent' && <p className="text-xs text-emerald-200/72">Check deine E-Mail — der Link bestätigt den Eintrag erst nach Bestätigung.</p>}
               </div>
+            </details>
+
+            <footer className="pt-8 pb-16 flex flex-col sm:flex-row gap-4 justify-center print:hidden border-t border-white/5">
+              <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">
+                Experten-Gespräch vereinbaren
+              </Link>
+              <button onClick={() => window.print()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-8 py-4 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]">
+                <Download size={16} /> PDF sichern
+              </button>
             </footer>
           </div>
         )}
