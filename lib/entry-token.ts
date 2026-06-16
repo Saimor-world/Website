@@ -1,3 +1,9 @@
+export type ScanFinding = {
+    title: string;
+    severity: 'risk' | 'warn' | 'ok';
+    desc?: string | null;
+};
+
 type ContextTokenPayload = {
     id: string;
     company: string;
@@ -8,6 +14,8 @@ type ContextTokenPayload = {
     grade?: string | null;
     summary?: string | null;
     actions?: string[];
+    /** Top findings (risk/warn) from the passive recon scan — seeded into MÔRA on first login. */
+    findings?: ScanFinding[];
     iat: number;
     exp: number;
 };
