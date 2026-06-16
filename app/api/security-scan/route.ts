@@ -6,7 +6,7 @@ import { performPassiveRecon } from '@/lib/recon';
 import { calculateSecurityScore } from '@/lib/scoring';
 import { runAisecurityAnalysis } from '@/lib/security-analysis';
 import { validateScanDomain } from '@/lib/domain-safety';
-import { signWebsiteEntryToken } from '@/lib/entry-token';
+import { signWebsiteEntryToken, type ScanFinding } from '@/lib/entry-token';
 import { emitNightwatchSignal, nightwatchSignalId } from '@/lib/nightwatch-signal';
 
 const Body = z.object({
@@ -231,6 +231,13 @@ export async function POST(req: NextRequest) {
       redirectChain: recon.redirectChain,
     } : null;
 
+    // Top findings to seed into MÔRA attention on first login (risk first, then warn, max 8).
+    const topFindings: ScanFinding[] = allFindings
+      .filter((f: any) => f.severity === 'risk' || f.severity === 'warn')
+      .sort((a: any, b: any) => (a.severity === 'risk' ? -1 : 1) - (b.severity === 'risk' ? -1 : 1))
+      .slice(0, 8)
+      .map((f: any) => ({ title: f.title, severity: f.severity as ScanFinding['severity'], desc: f.desc ?? null }));
+
     let entryToken: string | null = null;
     let responseWarning = scanWarning;
     try {
@@ -243,6 +250,7 @@ export async function POST(req: NextRequest) {
         level: riskLabel(level, data.locale),
         summary: analysis,
         actions: recommendations.slice(0, 3).map((recommendation: any) => recommendation.title).filter(Boolean),
+        findings: topFindings,
       });
     } catch (tokenError: any) {
       console.warn('[Security Scan API] HQ entry token skipped:', tokenError?.message ?? tokenError);
