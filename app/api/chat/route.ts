@@ -9,6 +9,23 @@ import { prisma } from '@/lib/prisma';
 import { extractAndSaveFacts } from '@/lib/memory';
 
 
+import { createHash } from 'crypto';
+
+function sessionOwnerKey(email: string | null | undefined, clientIP: string): string {
+  if (email) return email;
+  return `anon:${createHash('sha256').update(clientIP || 'unknown').digest('hex').slice(0, 24)}`;
+}
+
+function canAccessChatSession(
+  dbSession: { userId: string | null },
+  authEmail: string | null | undefined,
+  clientIP: string,
+): boolean {
+  if (!dbSession.userId) return true;
+  const expected = sessionOwnerKey(authEmail, clientIP);
+  return dbSession.userId === expected;
+}
+
 interface ChatMessage {
   id: string;
   content: string;
@@ -115,16 +132,22 @@ export async function POST(request: NextRequest) {
       SessionStore.incrementMessageCount(sessionId);
     }
 
+    const ownerKey = sessionOwnerKey(session?.user?.email, clientIP);
+
     // Create or get session in DB
     const dbSession = await prisma.chatSession.upsert({
       where: { externalId: sessionId },
       update: { lastActivity: new Date(), updatedAt: new Date() },
       create: {
         externalId: sessionId,
-        userId: session?.user?.email || null,
+        userId: ownerKey,
         lastActivity: new Date()
       }
     });
+
+    if (dbSession.userId && dbSession.userId !== ownerKey) {
+      return NextResponse.json({ error: 'Session access denied' }, { status: 403 });
+    }
 
     // Add user message to DB
     const userMessage = await prisma.message.create({
@@ -255,6 +278,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const authSession = await getServerSession(authOptions);
+  const clientIP = getClientIP(request);
+
   const session = await prisma.chatSession.findUnique({
     where: { externalId: sessionId },
     include: { messages: { orderBy: { timestamp: 'asc' } } }
@@ -265,6 +291,10 @@ export async function GET(request: NextRequest) {
       { error: 'Session not found' },
       { status: 404 }
     );
+  }
+
+  if (!canAccessChatSession(session, authSession?.user?.email, clientIP)) {
+    return NextResponse.json({ error: 'Session access denied' }, { status: 403 });
   }
 
   return NextResponse.json({

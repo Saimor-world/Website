@@ -243,6 +243,8 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
         visited.add(currentUrl);
 
         const currentHost = new URL(currentUrl).hostname;
+        const hostCheck = validateScanDomain(currentHost);
+        if (!hostCheck.ok) break;
         const currentAddresses = currentHost === domain ? addresses : await dns.resolve4(currentHost).catch(() => []);
         if (currentAddresses.length > 0 && currentAddresses.every(isPrivateIp)) break;
 

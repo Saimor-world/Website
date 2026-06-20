@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export type ScanFinding = {
     title: string;
     severity: 'risk' | 'warn' | 'ok';
@@ -7,7 +9,9 @@ export type ScanFinding = {
 type ContextTokenPayload = {
     id: string;
     company: string;
-    email: string;
+    /** @deprecated Plain email in tokens leaks PII from URL — prefer email_digest. */
+    email?: string;
+    email_digest?: string;
     domain: string;
     score: number;
     level: string;
@@ -69,6 +73,31 @@ function fromBase64UrlBrowser(encoded: string): string {
     return new TextDecoder().decode(bytes);
 }
 
+export function digestEntryEmail(email: string, secret?: string): string {
+    const normalized = (email || '').trim().toLowerCase();
+    return crypto
+        .createHmac('sha256', secret ?? getEntrySecret())
+        .update(normalized)
+        .digest('hex')
+        .slice(0, 32);
+}
+
+/** Build token without plaintext email in the URL-decodable payload. */
+export function buildOpaqueEntryToken(
+    payload: Omit<ContextTokenPayload, 'iat' | 'exp' | 'email'> & { email: string },
+    secret?: string,
+): string {
+    const resolvedSecret = secret ?? getEntrySecret();
+    const { email, ...rest } = payload;
+    return buildContextToken(
+        {
+            ...rest,
+            email_digest: digestEntryEmail(email, resolvedSecret),
+        },
+        resolvedSecret,
+    );
+}
+
 export function buildContextToken(
     payload: Omit<ContextTokenPayload, 'iat' | 'exp'>,
     secret?: string,
@@ -117,10 +146,10 @@ export function decodeContextToken(token: string): ContextTokenPayload | null {
     }
 }
 
-/** @deprecated Use buildContextToken instead */
+/** @deprecated Use buildOpaqueEntryToken instead */
 export function signWebsiteEntryToken(
-    payload: Omit<ContextTokenPayload, 'iat' | 'exp'>,
+    payload: Omit<ContextTokenPayload, 'iat' | 'exp'> & { email: string },
 ): string {
-    return buildContextToken(payload);
+    return buildOpaqueEntryToken(payload);
 }
 
