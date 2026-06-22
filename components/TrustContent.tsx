@@ -6,10 +6,10 @@ import { SecurityChecklistLeadMagnet } from './LeadMagnet';
 import { ContactCTA } from './BusinessCTA';
 
 const techItems = [
-  { title: 'Datenerzeugung', desc: 'Vollständig lokal (Mock/Simulation)', icon: Server },
-  { title: 'Verarbeitung', desc: 'Saimôr Core → Môra UI → Lokal im Browser', icon: Shield },
-  { title: 'Tracking', desc: 'Keine Cookies, keine Profilbildung', icon: Lock },
-  { title: 'Datenschutz', desc: 'EU-basiert, 100% DSGVO-konform', icon: Globe }
+  { title: 'Demo-Daten', desc: 'In der Demo lokal generiert (Mock/Simulation)', icon: Server },
+  { title: 'Verarbeitung', desc: 'Saimôr Core in der EU; KI-Antworten über externe Modelle (Google/Anthropic)', icon: Shield },
+  { title: 'Analytics', desc: 'Nur anonymes Matomo auf EU-Servern – Opt-out jederzeit', icon: Lock },
+  { title: 'Hosting', desc: 'EU-Hosting (Hetzner, Deutschland), nach DSGVO-Grundsätzen', icon: Globe }
 ];
 
 export default function TrustContent() {
@@ -64,7 +64,7 @@ export default function TrustContent() {
             <h4 className="text-xl font-bold text-white uppercase tracking-widest">DSGVO Standard</h4>
             <p className="text-white/60 leading-relaxed italic">
               {
-                '"In der Demo werden ausschließlich lokal generierte Daten verwendet. Es findet keine Übertragung an externe Server statt. Für zukünftige Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."'
+                '"In der Demo nutzen wir lokal generierte Beispieldaten. KI-Antworten und der Security-Check greifen auf externe Dienste zu – das weisen wir transparent aus. Für Produktivsysteme gilt unser Versprechen: Datensparsamkeit und EU-Hosting sind unverhandelbar."'
               }
             </p>
           </div>
@@ -89,20 +89,20 @@ export default function TrustContent() {
           {[
             {
               title: 'EU-Hosting',
-              description: 'Alle Daten bleiben in der EU. Keine US-Clouds.',
+              description: 'Server und Daten in der EU (Hetzner, Deutschland).',
               icon: '🇪🇺',
               status: 'Aktiv'
             },
             {
-              title: 'Ende-zu-Ende Verschlüsselung',
-              description: 'Alle Datenverbindungen sind verschlüsselt.',
-              icon: '🔐',
-              status: 'Geplant'
+              title: 'KI-Verarbeitung',
+              description: 'Antworten laufen über externe Modelle (Google, Anthropic, OpenAI). EU-Alternativen in Prüfung.',
+              icon: '🤖',
+              status: 'Transparent'
             },
             {
-              title: 'Audit-Ready',
-              description: 'Vollständige Protokollierung für Compliance.',
-              icon: '📋',
+              title: 'Ende-zu-Ende Verschlüsselung',
+              description: 'Alle Datenverbindungen sind verschlüsselt (TLS).',
+              icon: '🔐',
               status: 'Geplant'
             }
           ].map((cert, i) => (

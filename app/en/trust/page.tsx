@@ -4,10 +4,10 @@ import type { Metadata } from 'next';
 const demoLink = '/docs/architecture/DATA_FLOW_EXPLAINED.md';
 
 const techItems = [
-  'Data: local mock/simulation',
-  'Flow: Saimôr Core (local) → Môra UI → Website',
-  'Tracking: none',
-  'Cookies: strictly necessary only (if any)'
+  'Demo data: locally generated mock/simulation',
+  'Flow: Saimôr Core (EU) → Môra UI; AI answers via external models (Google/Anthropic)',
+  'Analytics: anonymous Matomo on EU servers – opt-out anytime',
+  'Hosting: EU (Hetzner, Germany), built on GDPR principles'
 ];
 
 export const metadata: Metadata = {
@@ -37,8 +37,9 @@ export default function TrustPageEn() {
           <h1 className="font-serif text-4xl text-[#0E1A1B]">Calm, traceable, intentional.</h1>
           <div className="space-y-4 text-lg leading-relaxed">
             <p>
-              We are in a prototype/demo phase. All values are locally generated demo data – no external clouds,
-              no profiling.
+              We are in a prototype/demo phase. Demo values are locally generated. AI answers and the security
+              check use external services – we disclose this transparently. Analytics is anonymous Matomo on EU
+              servers.
             </p>
             <p>
               For real projects: data minimization, clear roles &amp; permissions, export anytime. EU law (GDPR)

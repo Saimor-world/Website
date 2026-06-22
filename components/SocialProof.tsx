@@ -19,10 +19,10 @@ const metrics = [
 const pillars = [
   {
     icon: Shield,
-    title: { de: '100% DSGVO-konform', en: '100% GDPR Compliant' },
+    title: { de: 'EU-Hosting & Datenschutz', en: 'EU Hosting & Privacy' },
     description: {
-      de: 'Alle Daten bleiben in der EU. Keine externen Tracker, kein Drittanbieter-Profiling. Datenschutz ist keine Checkbox – er ist unsere Architektur.',
-      en: 'All data stays in the EU. No external trackers, no third-party profiling. Privacy is not a checkbox – it is our architecture.',
+      de: 'Server und Daten liegen in der EU (Hetzner, DE). Analytics nur über anonymes Matomo, keine Werbe-Tracker. KI-Antworten laufen transparent über externe Modelle.',
+      en: 'Servers and data are in the EU (Hetzner, DE). Analytics is anonymous Matomo only, no ad trackers. AI answers run transparently via external models.',
     },
   },
   {
