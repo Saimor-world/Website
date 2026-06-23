@@ -43,25 +43,6 @@ const pillars = [
   },
 ];
 
-const testimonials = [
-  {
-    quote: {
-      de: 'Das ist genau die Art von Werkzeug, die wir für unsere Gemeinde brauchen – klar, sicher, und ehrlich.',
-      en: 'This is exactly the kind of tool our municipality needs – clear, secure, and honest.',
-    },
-    author: 'K. Berger',
-    role: { de: 'Stadtplanungsamt', en: 'Urban Planning Office' },
-  },
-  {
-    quote: {
-      de: 'Endlich eine KI-Lösung, bei der ich weiß, wo meine Daten bleiben. Das gibt Vertrauen.',
-      en: 'Finally an AI solution where I know exactly where my data stays. That builds real trust.',
-    },
-    author: 'S. Maier',
-    role: { de: 'Geschäftsführerin, Beratungsbüro', en: 'Managing Director, Consulting Firm' },
-  },
-];
-
 export default function SocialProof({ locale = 'de' }: SocialProofProps) {
   return (
     <section className="py-28 bg-gradient-to-b from-[#060a09] via-[#081410] to-[#060a09] relative overflow-hidden">
