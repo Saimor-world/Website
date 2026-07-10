@@ -53,14 +53,17 @@ export default function CookieBanner() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cookie-preferences-title"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-          className="fixed bottom-4 left-4 right-4 md:right-auto md:left-6 md:bottom-6 md:max-w-[420px] z-[10000]"
+          className="fixed bottom-4 left-4 right-4 z-[10000] md:right-auto md:left-6 md:bottom-6 md:max-w-[420px]"
         >
           <div
-            className="relative rounded-2xl overflow-hidden"
+            className="relative max-h-[calc(100vh-2rem)] overflow-y-auto rounded-2xl"
             style={{
               background: 'linear-gradient(135deg, rgba(8, 20, 16, 0.98) 0%, rgba(5, 18, 8, 0.95) 100%)',
               backdropFilter: 'blur(20px)',
@@ -72,14 +75,14 @@ export default function CookieBanner() {
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
 
             {/* Header */}
-            <div className="relative p-5 pb-4">
+            <div className="relative p-4 pb-3 sm:p-5 sm:pb-4">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20">
                     <Shield className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-sm">
+                    <h3 id="cookie-preferences-title" className="font-semibold text-white text-sm">
                       Datenschutz-Präferenzen
                     </h3>
                     <p className="text-[11px] text-white/50">DSGVO-konform · EU-Hosting</p>
@@ -90,19 +93,20 @@ export default function CookieBanner() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={rejectAll}
+                  aria-label="Nur essenzielle Cookies verwenden und schließen"
                   className="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white/70 transition-colors"
                 >
                   <X size={14} />
                 </motion.button>
               </div>
 
-              <p className="text-[13px] text-white/70 leading-relaxed mb-4">
+              <p className="mb-3 text-[12px] leading-relaxed text-white/70 sm:mb-4 sm:text-[13px]">
                 Wir nutzen <span className="text-emerald-400 font-medium">Matomo Analytics</span> auf 
                 EU-Servern für anonyme Nutzungsstatistiken. Keine Weitergabe an Dritte.
               </p>
 
               {/* Cookie Options */}
-              <div className="space-y-2 mb-4">
+              <div className={`${showDetails ? 'block' : 'hidden'} mb-4 space-y-2 sm:block`}>
                 {/* Essential - Always On */}
                 <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
                   <div className="flex items-center gap-3">
@@ -122,6 +126,8 @@ export default function CookieBanner() {
                 {/* Analytics - Toggle */}
                 <button
                   onClick={() => setAnalyticsEnabled(!analyticsEnabled)}
+                  aria-label="Anonyme Analytics erlauben"
+                  aria-pressed={analyticsEnabled}
                   className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/[0.07] transition-colors"
                 >
                   <div className="flex items-center gap-3">
@@ -165,7 +171,7 @@ export default function CookieBanner() {
                 >
                   <ChevronDown size={12} />
                 </motion.div>
-                {showDetails ? 'Weniger Details' : 'Mehr Details'}
+                {showDetails ? 'Weniger Details' : 'Auswahl anpassen'}
               </button>
 
               <AnimatePresence>
@@ -198,7 +204,7 @@ export default function CookieBanner() {
             </div>
 
             {/* Actions */}
-            <div className="relative p-5 pt-0 space-y-2">
+            <div className="relative space-y-2 p-4 pt-0 sm:p-5 sm:pt-0">
               <motion.button
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98 }}
@@ -217,7 +223,7 @@ export default function CookieBanner() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={acceptSelected}
-                  className="flex-1 px-4 py-2.5 rounded-xl text-[13px] font-medium text-white/80 border border-white/10 hover:bg-white/5 hover:border-white/20 transition-all"
+                  className={`${showDetails ? 'flex' : 'hidden'} flex-1 items-center justify-center rounded-xl border border-white/10 px-4 py-2.5 text-[13px] font-medium text-white/80 transition-all hover:border-white/20 hover:bg-white/5 sm:flex`}
                 >
                   Auswahl speichern
                 </motion.button>

@@ -12,6 +12,41 @@ type Props = {
   calUrl?: string;
 };
 
+export const heroContent = {
+  de: {
+    badge: 'Nightwatch Quickscan · ohne Systemzugriff',
+    headline: 'Saimôr',
+    subheadline: 'Klarheit, die mit einem echten Befund beginnt.',
+    description: 'Der kostenlose passive Lagecheck prüft nur öffentlich sichtbare Signale. Danach trägt Môra die Befunde als isolierten Arbeitskontext ins HQ – erst nach deiner Freigabe.',
+    ctaPrimary: 'Kostenlosen Lagecheck starten',
+    ctaSecondary: 'Strategiegespräch buchen',
+    stats: [
+      { value: 'PASSIV', label: 'Nur öffentliche Signale' },
+      { value: '~2 MIN', label: 'Erster Lagecheck' },
+      { value: 'ISOLIERT', label: 'Eigener Arbeitskontext' }
+    ],
+    scrollHint: 'So funktioniert es'
+  },
+  en: {
+    badge: 'Nightwatch Quickscan · no system access',
+    headline: 'Saimôr',
+    subheadline: 'Clarity that starts with real evidence.',
+    description: 'The free passive situation check inspects public signals only. Môra then carries the findings into HQ as an isolated work context – only after your approval.',
+    ctaPrimary: 'Start the free situation check',
+    ctaSecondary: 'Book a strategy call',
+    stats: [
+      { value: 'PASSIVE', label: 'Public signals only' },
+      { value: '~2 MIN', label: 'First situation check' },
+      { value: 'ISOLATED', label: 'Dedicated work context' }
+    ],
+    scrollHint: 'How it works'
+  }
+} as const;
+
+export function heroPrimaryHref(locale: Locale) {
+  return locale === 'en' ? '/en/entry/security-check' : '/de/einstieg/security-check';
+}
+
 // Floating particle component
 const FloatingParticle = ({ delay = 0, size = 4, duration = 20 }: { delay?: number; size?: number; duration?: number }) => (
   <motion.div
@@ -56,36 +91,7 @@ export default function Hero({ locale, calUrl }: Props) {
 
   const cal = calUrl ?? process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min';
 
-  const content = {
-    de: {
-      badge: 'Operational Excellence v1.0',
-      headline: 'Saimôr',
-      subheadline: 'Klarheit im Wandel.',
-      description: 'Das semantische Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung. Maximieren Sie Ihre Wirkung durch datengestützte Klarheit.',
-      ctaPrimary: 'Showcase ansehen',
-      ctaSecondary: 'Strategiegespräch buchen',
-      stats: [
-        { value: 'AI', label: 'Semantic Core' },
-        { value: 'EU', label: 'Data Sovereignty' },
-        { value: '∞', label: 'Connections' }
-      ],
-      scrollHint: 'Entdecken'
-    },
-    en: {
-      badge: 'Operational Excellence v1.0',
-      headline: 'Saimôr',
-      subheadline: 'Clarity in Change.',
-      description: 'The semantic operating system for resilient organizations. Structured overview meets deep networking. Maximize your impact through data-driven clarity.',
-      ctaPrimary: 'View Showcase',
-      ctaSecondary: 'Book Strategy Call',
-      stats: [
-        { value: 'AI', label: 'Semantic Core' },
-        { value: 'EU', label: 'Data Sovereignty' },
-        { value: '∞', label: 'Connections' }
-      ],
-      scrollHint: 'Explore'
-    }
-  }[locale];
+  const content = heroContent[locale];
 
   return (
     <section
@@ -204,7 +210,7 @@ export default function Hero({ locale, calUrl }: Props) {
             className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
             <AnimatedButton
-              href={locale === 'en' ? '/en/mora' : '/mora'}
+              href={heroPrimaryHref(locale)}
               variant="gradient"
               size="lg"
               className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"

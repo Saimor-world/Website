@@ -7,8 +7,10 @@ export default defineConfig({
     setupFiles: './vitest.setup.ts',
     css: true
   },
-  esbuild: {
-    jsx: 'automatic'
+  oxc: {
+    jsx: {
+      runtime: 'automatic'
+    }
   },
   resolve: {
     alias: {
