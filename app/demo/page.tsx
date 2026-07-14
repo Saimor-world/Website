@@ -2,9 +2,9 @@ import DemoContent from '@/components/DemoContent';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Mora Lab - Saimor',
+  title: 'Mora Lab – SAIMÔR ausprobieren',
   description:
-    'Lab-Seite fuer Standbein-Softwarepfade mit Live-KPI-Strecke, Use Cases und direkten Einstiegs-CTAs.',
+    'Sieh SAIMÔR wirklich arbeiten: Starte mit einer echten Analyse deiner Domain und sieh, wie aus Signalen ein Arbeitsbereich wird. Keine erfundenen Zahlen.',
 };
 
 export default function DemoPage() {

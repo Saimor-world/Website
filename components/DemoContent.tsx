@@ -3,77 +3,107 @@
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Activity, ArrowRight, Shield, Sparkles, TrendingUp, UserCog, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  Shield,
+  Fingerprint,
+  Boxes,
+  ScanLine,
+  FileSearch,
+  LayoutDashboard,
+  KeyRound,
+  Sparkles,
+  CalendarClock,
+} from 'lucide-react';
 
 type Track = 'security' | 'digital-self' | 'ai-business';
 
 const trackConfig: Record<
   Track,
   {
+    label: string;
     title: string;
-    subtitle: string;
-    bullets: string[];
-    primaryHref: string;
-    stats: { label: string; value: string; trend: string }[];
+    tagline: string;
+    icon: typeof Shield;
+    accent: string; // tailwind color stem, e.g. 'emerald'
+    does: string[];
+    article: string;
+    live: boolean;
   }
 > = {
   security: {
-    title: 'Security Intelligence',
-    subtitle: 'Automatisierte Risiko-Analyse und Resilienz-Monitoring fuer Ihr Business.',
-    bullets: ['Threat Detection', 'Identity Guard', 'Backup Confidence'],
-    primaryHref: '/de/einstieg/security-check',
-    stats: [
-      { label: 'Blocked Threats', value: '1,284', trend: '+12%' },
-      { label: 'Security Score', value: '94/100', trend: 'Stable' },
-      { label: 'MFA Coverage', value: '100%', trend: 'Verified' },
+    label: 'Security Intelligence',
+    title: 'Security-Check',
+    tagline: 'Ein passiver Blick auf deine Domain – echte Befunde statt Score-Theater.',
+    icon: Shield,
+    accent: 'emerald',
+    does: [
+      'Prüft DMARC / SPF / DNS, TLS-Zertifikat und Security-Header',
+      'Jeder Befund benennt den konkreten Angriffsweg, den er ermöglicht',
+      'Die Ergebnisse wandern direkt in deinen Preview-Arbeitsbereich',
     ],
+    article: '/de/einstieg/security-check',
+    live: true,
   },
   'digital-self': {
-    title: 'Digital Self Core',
-    subtitle: 'Ihr KI-Zwilling fuer skalierbare Prozesse und entlastete Entscheider.',
-    bullets: ['Context Memory', 'Decision Guard', 'Routine Automation'],
-    primaryHref: '/de/einstieg/digital-self',
-    stats: [
-      { label: 'Hours Saved', value: '24h/wk', trend: '+4h' },
-      { label: 'Mail Accuracy', value: '98.2%', trend: '+0.5%' },
-      { label: 'Meeting Load', value: '-30%', trend: 'Reduced' },
+    label: 'Digital Self',
+    title: 'Digital Self',
+    tagline: 'Ein KI-Profil, das deinen Kontext kennt – entlastet Entscheidungen und Routine.',
+    icon: Fingerprint,
+    accent: 'cyan',
+    does: [
+      'Baut aus deinen Informationen ein arbeitsfähiges Profil',
+      'Hält Kontext fest, statt ihn in Chats zu verlieren',
+      'Automationen bleiben nachvollziehbar und steuerbar',
     ],
+    article: '/de/einstieg/digital-self',
+    live: false,
   },
   'ai-business': {
+    label: 'AI Business OS',
     title: 'AI Business OS',
-    subtitle: 'Das Betriebssystem fuer lokale Unternehmen im digitalen Wandel.',
-    bullets: ['Lead Triage', 'Smart Quotes', 'Client Nurture'],
-    primaryHref: '/de/einstieg/ai-local-business',
-    stats: [
-      { label: 'Lead Response', value: '< 2min', trend: 'Instant' },
-      { label: 'Quote Volume', value: '+45%', trend: 'Growth' },
-      { label: 'Customer Sat', value: '4.9/5', trend: 'Excellent' },
+    tagline: 'Das Betriebssystem für lokale Unternehmen – provider-agnostisch, EU-gehostet.',
+    icon: Boxes,
+    accent: 'amber',
+    does: [
+      'Ein Ort für Leads, Angebote und Kundenpflege',
+      'Môra vernetzt Dokumente und Signale statt sie zu stapeln',
+      'Läuft in der EU, ohne Vendor-Lock-in',
     ],
+    article: '/de/einstieg/ai-local-business',
+    live: false,
   },
 };
 
-const cards = [
-  {
-    icon: Activity,
-    title: 'Realtime Signals',
-    text: 'Live-Layer fuer Aktivitaet, Trends und Engpaesse.',
+const accentMap: Record<string, { text: string; border: string; bg: string; glow: string; chipBg: string }> = {
+  emerald: {
+    text: 'text-emerald-300',
+    border: 'border-emerald-400/30',
+    bg: 'from-emerald-500/12',
+    glow: 'bg-emerald-500/15',
+    chipBg: 'bg-emerald-400/10 text-emerald-200 border-emerald-400/20',
   },
-  {
-    icon: TrendingUp,
-    title: 'Progress Lens',
-    text: 'Vom Einzelfall zur Entwicklung ueber mehrere Wochen.',
+  cyan: {
+    text: 'text-cyan-300',
+    border: 'border-cyan-400/30',
+    bg: 'from-cyan-500/12',
+    glow: 'bg-cyan-500/15',
+    chipBg: 'bg-cyan-400/10 text-cyan-200 border-cyan-400/20',
   },
-  {
-    icon: Shield,
-    title: 'Trust Frame',
-    text: 'Datenschutz und Security als Grundlinie fuer jeden Track.',
+  amber: {
+    text: 'text-amber-300',
+    border: 'border-amber-400/30',
+    bg: 'from-amber-500/12',
+    glow: 'bg-amber-500/15',
+    chipBg: 'bg-amber-400/10 text-amber-200 border-amber-400/20',
   },
-  {
-    icon: UserCog,
-    title: 'Human Control',
-    text: 'Automationen bleiben nachvollziehbar und steuerbar.',
-  },
+};
+
+const flow = [
+  { icon: ScanLine, title: 'Check läuft', body: 'Passiv und ohne Login – nur öffentlich sichtbare Signale deiner Domain.' },
+  { icon: FileSearch, title: 'Befunde', body: 'Konkrete Risiken und Stärken, jeweils mit dem Angriffsweg dahinter.' },
+  { icon: LayoutDashboard, title: 'Arbeitsbereich', body: 'Aus den Befunden entsteht automatisch ein Preview-Workspace im OS.' },
+  { icon: KeyRound, title: 'Übernehmen', body: 'Gefällt es dir, wird aus dem Preview mit einem Login dein echter Account.' },
 ];
 
 export default function DemoContent() {
@@ -84,160 +114,177 @@ export default function DemoContent() {
     if (trackParam === 'security' || trackParam === 'digital-self' || trackParam === 'ai-business') {
       return trackParam;
     }
-    return 'ai-business';
+    return 'security';
   }, [trackParam]);
 
   const track = trackConfig[activeTrack];
+  const a = accentMap[track.accent];
+  const TrackIcon = track.icon;
 
   return (
     <div className="relative mx-auto max-w-6xl px-6 py-24 space-y-16">
-      <header className="space-y-7 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20"
-        >
-          <Sparkles className="w-4 h-4 text-emerald-300" />
-          <span className="text-sm font-medium text-emerald-200">Mora Lab · Standbein Software</span>
-        </motion.div>
-
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Demo-Zentrale fuer
+      {/* Hero */}
+      <header className="space-y-6 text-center">
+        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.28em] text-emerald-200">
+          <Sparkles className="w-3.5 h-3.5" />
+          Mora Lab
+        </span>
+        <h1 className="text-5xl sm:text-6xl font-light leading-[1.05]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Sieh SAIMÔR
           <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-cyan-300">
-            dein Standbein
+            wirklich arbeiten
           </span>
         </h1>
-
-        <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-          Pulse wurde funktional im Lab integriert. Diese Seite zeigt je nach Wunsch den passenden Softwarepfad.
+        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/65">
+          Kein Marketing-Mockup und keine erfundenen Zahlen. Starte mit einer echten Analyse deiner
+          Domain und sieh, wie aus Signalen ein Arbeitsbereich wird.
         </p>
-      </header>
-
-      <section className="rounded-[2.5rem] border border-emerald-500/30 bg-black/40 p-8 sm:p-12 space-y-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] -z-10" />
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.32em] text-emerald-400 font-bold">Mora Insight Panel</p>
-            <h2 className="text-4xl sm:text-5xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              {track.title}
-            </h2>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {track.bullets.map((item) => (
-              <span
-                key={item}
-                className="text-[11px] uppercase tracking-[0.13em] rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-white/60"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <p className="text-xl text-white/80 max-w-3xl leading-relaxed">{track.subtitle}</p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {track.stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-1">
-              <p className="text-xs uppercase tracking-widest text-white/40">{stat.label}</p>
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-white">{stat.value}</span>
-                <span className="text-xs text-emerald-400 font-medium">{stat.trend}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="pt-4 flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link
-            href={track.primaryHref}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-emerald-300 transition-all shadow-xl shadow-white/5"
+            href="/de/einstieg/security-check"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40"
           >
-            <span>Konfiguration starten</span>
+            Echten Check starten
             <ArrowRight className="w-5 h-5" />
           </Link>
           <Link
-            href="/de/kontakt"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/20 bg-white/5 text-white font-semibold hover:bg-white/10 transition-all"
+            href="/portal"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-medium text-white/80 transition-colors hover:bg-white/10"
           >
-            <span>Live Demo buchen</span>
-            <Zap className="w-4 h-4" />
+            Zum Portal
           </Link>
         </div>
-      </section>
+      </header>
 
-      <section className="grid md:grid-cols-2 gap-6">
-        {cards.map((item, index) => (
-          <motion.article
-            key={item.title}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: index * 0.07 }}
-            className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7"
-          >
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
-              <item.icon className="w-6 h-6 text-emerald-300" />
+      {/* Track panel */}
+      <section className={`relative overflow-hidden rounded-[2.5rem] border ${a.border} bg-gradient-to-br ${a.bg} via-white/[0.02] to-transparent p-8 sm:p-12`}>
+        <div className={`absolute -top-24 -right-24 h-72 w-72 rounded-full blur-[110px] ${a.glow}`} />
+        <div className="relative space-y-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${a.border} bg-black/30 ${a.text}`}>
+                  <TrackIcon className="w-5 h-5" />
+                </div>
+                <p className={`text-xs uppercase tracking-[0.28em] font-bold ${a.text}`}>{track.label}</p>
+              </div>
+              <h2 className="text-4xl sm:text-5xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                {track.title}
+              </h2>
+              <p className="max-w-2xl text-lg leading-relaxed text-white/75">{track.tagline}</p>
             </div>
-            <h3 className="text-2xl text-white mb-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              {item.title}
-            </h3>
-            <p className="text-white/65 leading-relaxed">{item.text}</p>
-          </motion.article>
-        ))}
-      </section>
+            <span
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] ${
+                track.live ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-200' : 'border-white/10 bg-white/5 text-white/45'
+              }`}
+            >
+              {track.live ? 'Heute live' : 'Im Aufbau'}
+            </span>
+          </div>
 
-      <section className="rounded-[2rem] border border-white/10 bg-black/20 p-8">
-        <p className="text-xs uppercase tracking-[0.3em] text-saimor-gold mb-4">Track Switch</p>
-        <div className="grid md:grid-cols-3 gap-4">
-          <Link
-            href="/demo?track=security"
-            className="inline-flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-white hover:bg-white/[0.08] transition-colors"
-          >
-            <span>Security</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/demo?track=digital-self"
-            className="inline-flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-white hover:bg-white/[0.08] transition-colors"
-          >
-            <span>Digital Self</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/demo?track=ai-business"
-            className="inline-flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-white hover:bg-white/[0.08] transition-colors"
-          >
-            <span>AI Business</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {track.does.map((item) => (
+              <li key={item} className="rounded-2xl border border-white/10 bg-black/25 p-5 text-sm leading-relaxed text-white/70">
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-wrap gap-4 pt-1">
+            <Link
+              href={track.live ? '/de/einstieg/security-check' : track.article}
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 font-bold text-black transition-colors hover:bg-emerald-200"
+            >
+              {track.live ? 'Check starten' : 'Mehr erfahren'}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href={track.article}
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 font-medium text-white/80 transition-colors hover:bg-white/10"
+            >
+              Konzept lesen
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-center space-y-5">
-        <h2 className="text-4xl sm:text-5xl font-light text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Direkt weitermachen
+      {/* Track switch */}
+      <section className="space-y-5">
+        <p className="text-center text-xs uppercase tracking-[0.3em] text-white/40">Standbein wählen</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {(Object.keys(trackConfig) as Track[]).map((key) => {
+            const cfg = trackConfig[key];
+            const ca = accentMap[cfg.accent];
+            const Icon = cfg.icon;
+            const isActive = key === activeTrack;
+            return (
+              <Link
+                key={key}
+                href={`/demo?track=${key}`}
+                className={`group flex items-center gap-4 rounded-2xl border p-5 transition-all ${
+                  isActive ? `${ca.border} bg-white/[0.05]` : 'border-white/10 bg-white/[0.02] hover:bg-white/[0.04]'
+                }`}
+              >
+                <div className={`flex h-10 w-10 items-center justify-center rounded-xl border ${ca.border} bg-black/30 ${ca.text}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-semibold text-white/90">{cfg.title}</p>
+                  <p className="truncate text-xs text-white/45">{cfg.live ? 'Heute live' : 'Im Aufbau'}</p>
+                </div>
+                <ArrowRight className="ml-auto w-4 h-4 text-white/30 group-hover:text-white/60" />
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Flow: from check to workspace */}
+      <section className="rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 space-y-8">
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl sm:text-4xl font-light text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            Vom Check zum Arbeitsbereich
+          </h2>
+          <p className="mx-auto max-w-xl text-white/55">Ein durchgehender Weg – ohne Bruch, ohne zweites Konto.</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-4">
+          {flow.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.title} className="relative rounded-2xl border border-white/8 bg-black/25 p-6">
+                <span className="absolute right-5 top-5 font-mono text-xs text-white/25">0{i + 1}</span>
+                <div className="mb-4 text-emerald-300/80">
+                  <Icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-white/90">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/55">{step.body}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Close */}
+      <section className="rounded-[2rem] border border-emerald-400/15 bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-8 sm:p-10 text-center space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-light text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Bereit für den ersten echten Blick?
         </h2>
-        <p className="text-white/70 max-w-2xl mx-auto">
-          Vom Software-Track direkt in den passenden Beitrag und in die jeweilige In-Page-Aktion.
-        </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
-            href={track.primaryHref}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold hover:shadow-lg transition-all"
+            href="/de/einstieg/security-check"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white transition-all hover:shadow-lg hover:shadow-emerald-500/30"
           >
-            <span>Zum aktiven Track-Beitrag</span>
+            Security-Check starten
             <ArrowRight className="w-5 h-5" />
           </Link>
           <a
             href="https://cal.com/saimor/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-white/20 bg-white/5 text-white font-semibold hover:bg-white/10 transition-all"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10"
           >
-            <span>Strategiegespraech</span>
-            <Zap className="w-4 h-4" />
+            <CalendarClock className="w-4 h-4" />
+            Gespräch buchen
           </a>
         </div>
       </section>

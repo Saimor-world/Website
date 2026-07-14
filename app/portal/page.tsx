@@ -129,6 +129,12 @@ function InsideIcon({ name }: { name: string }) {
   return <Lock className={cls} />;
 }
 
+const doorAccents = [
+  { icon: 'text-emerald-300', hover: 'hover:border-emerald-400/40', ring: 'bg-emerald-500/10', cta: 'text-emerald-300' },
+  { icon: 'text-cyan-300', hover: 'hover:border-cyan-400/40', ring: 'bg-cyan-500/10', cta: 'text-cyan-300' },
+  { icon: 'text-violet-300', hover: 'hover:border-violet-400/40', ring: 'bg-violet-500/10', cta: 'text-violet-300' },
+];
+
 type PortalProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
@@ -148,8 +154,13 @@ export default async function PortalPage({ searchParams }: PortalProps) {
   const switchHref = `/portal?lang=${locale === 'de' ? 'en' : 'de'}`;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#060d0b] via-[#081410] to-[#060d0b] text-white">
-      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28 space-y-20">
+    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#060d0b] via-[#081410] to-[#060d0b] text-white">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[900px] max-w-full -translate-x-1/2 rounded-full opacity-60"
+        style={{ background: 'radial-gradient(closest-side, rgba(16,185,129,0.14), rgba(6,182,212,0.06) 55%, transparent 80%)' }}
+      />
+      <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-28 space-y-20">
         {/* Header */}
         <header className="space-y-6 text-center">
           <div className="flex justify-center">
@@ -204,26 +215,32 @@ export default async function PortalPage({ searchParams }: PortalProps) {
               <p className="mx-auto max-w-xl text-white/55">{t.doorsLead}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-              {t.doors.map((door) => (
-                <Link
-                  key={door.title}
-                  href={door.href}
-                  className="group flex flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition-all hover:border-emerald-400/30 hover:bg-white/[0.05]"
-                >
-                  <div className="flex items-center justify-between text-emerald-300">
-                    <DoorIcon name={door.icon} />
-                    <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/45">
-                      {door.tag}
+              {t.doors.map((door, i) => {
+                const da = doorAccents[i] ?? doorAccents[0];
+                return (
+                  <Link
+                    key={door.title}
+                    href={door.href}
+                    className={`group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition-all ${da.hover} hover:bg-white/[0.055]`}
+                  >
+                    <div className={`pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-[70px] ${da.ring} opacity-0 transition-opacity group-hover:opacity-100`} />
+                    <div className={`relative flex items-center justify-between ${da.icon}`}>
+                      <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/30`}>
+                        <DoorIcon name={door.icon} />
+                      </div>
+                      <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/45">
+                        {door.tag}
+                      </span>
+                    </div>
+                    <h3 className="relative mt-5 text-xl font-semibold text-white/90">{door.title}</h3>
+                    <p className="relative mt-3 flex-1 text-sm leading-relaxed text-white/55">{door.body}</p>
+                    <span className={`relative mt-6 inline-flex items-center gap-2 text-sm font-semibold ${da.cta} group-hover:gap-3 transition-all`}>
+                      {door.cta}
+                      <ArrowRight className="w-4 h-4" />
                     </span>
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-white/90">{door.title}</h3>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{door.body}</p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 group-hover:gap-3 transition-all">
-                    {door.cta}
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
