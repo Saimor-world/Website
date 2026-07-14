@@ -4,15 +4,15 @@ import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Saimôr – Clarity in Change',
-  description: 'A resonance space for clarity. A bridge between people, data, and change.',
+  description: 'A semantic operating system for organizations in change: consulting, dashboards, and workshops that turn complexity into clarity. GDPR-compliant, EU-hosted.',
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
     title: 'Saimôr – Clarity in Change',
-    description: 'A resonance space for clarity. A bridge between people, data, and change.',
+    description: 'A semantic operating system for organizations in change: consulting, dashboards, and workshops that turn complexity into clarity. GDPR-compliant, EU-hosted.',
     url: 'https://saimor.world',
     siteName: 'Saimôr',
-    images: ['/og.png'],
+    images: ['/og'],
     locale: 'en-US',
     type: 'website'
   }

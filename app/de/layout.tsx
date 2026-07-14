@@ -4,15 +4,15 @@ import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Saimôr – Klarheit im Wandel',
-  description: 'Ein Resonanzraum für Klarheit. Brücke zwischen Menschen, Daten und Wandel.',
+  description: 'Semantisches Betriebssystem für Organisationen im Wandel: Beratung, Dashboards und Workshops, die Komplexität in Klarheit verwandeln. DSGVO-konform, EU-gehostet.',
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
     title: 'Saimôr – Klarheit im Wandel',
-    description: 'Ein Resonanzraum für Klarheit. Brücke zwischen Menschen, Daten und Wandel.',
+    description: 'Semantisches Betriebssystem für Organisationen im Wandel: Beratung, Dashboards und Workshops, die Komplexität in Klarheit verwandeln. DSGVO-konform, EU-gehostet.',
     url: 'https://saimor.world',
     siteName: 'Saimôr',
-    images: ['/og.png'],
+    images: ['/og'],
     locale: 'de-DE',
     type: 'website'
   }
