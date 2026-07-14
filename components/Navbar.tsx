@@ -65,6 +65,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
     { href: locale === 'de' ? '/de/einstieg' : '/en/entry', label: nav.entry, isAnchor: false },
     { href: '/wall', label: 'Wall', isAnchor: false },
+    { href: locale === 'de' ? '/portal' : '/portal?lang=en', label: nav.portal, isAnchor: false },
     { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
   ];
 

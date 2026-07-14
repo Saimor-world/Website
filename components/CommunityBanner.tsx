@@ -39,7 +39,7 @@ const content = {
     cta: 'Platz sichern',
     ctaSub: 'Kostenlos · Kein Spam · Jederzeit abmeldbar',
     spotsLeft: 'Noch wenige Plätze frei',
-    transparency: 'Wir bauen offen — kein Pitch-Deck-Theater. Status, Roadmap und offene Fragen findest du im Portal.',
+    transparency: 'Wir bauen offen — kein Pitch-Deck-Theater. Status, Roadmap und offene Fragen halten wir transparent.',
   },
   en: {
     badge: 'Limited Early Access',
@@ -70,7 +70,7 @@ const content = {
     cta: 'Secure your spot',
     ctaSub: 'Free · No spam · Unsubscribe anytime',
     spotsLeft: 'Limited spots remaining',
-    transparency: 'We build in the open — no pitch-deck theatre. Status, roadmap, open questions live in the portal.',
+    transparency: 'We build in the open — no pitch-deck theatre. Status, roadmap and open questions stay transparent.',
   },
 };
 

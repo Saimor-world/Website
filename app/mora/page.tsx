@@ -317,10 +317,10 @@ export default function MoraPage() {
                 Gespräch vereinbaren
               </a>
               <Link
-                href="/de/portal"
+                href="/demo"
                 className="px-12 py-5 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all"
               >
-                Portal erkunden
+                Demo erkunden
               </Link>
             </div>
 

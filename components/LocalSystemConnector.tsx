@@ -12,7 +12,7 @@ export default function LocalSystemConnector({ locale = 'de' }: { locale?: 'de' 
     const text = {
         de: {
             title: 'Lokale Saimôr-Instanz',
-            subtitle: 'Verbinde dieses Portal mit deinem lokalen OS.',
+            subtitle: 'Verbinde diese Seite mit deinem lokalen OS.',
             connect: 'Verbindung herstellen',
             scanning: 'Suche lokale Ports...',
             waiting: 'Warte auf OS-Antwort...',
@@ -23,7 +23,7 @@ export default function LocalSystemConnector({ locale = 'de' }: { locale?: 'de' 
         },
         en: {
             title: 'Local Saimôr Instance',
-            subtitle: 'Connect this portal to your local OS.',
+            subtitle: 'Connect this site to your local OS.',
             connect: 'Establish Connection',
             scanning: 'Scanning local ports...',
             waiting: 'Waiting for OS response...',

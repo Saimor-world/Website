@@ -127,10 +127,10 @@ export default function MoraPage() {
                 Book a Call →
               </a>
               <Link
-                href="/en/portal"
+                href="/demo"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-white/20 font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-all active:scale-95"
               >
-                Explore Portal
+                Explore Demo
               </Link>
             </div>
 

@@ -19,10 +19,10 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       quickLinks: 'Navigation',
       services: 'Leistungen',
       entry: 'Einstieg',
+      portal: 'Portal',
       contact: 'Kontakt',
       legal: 'Rechtliches',
       trust: 'Sicherheit',
-      portal: 'Portal Demo',
       imprint: 'Impressum',
       privacy: 'Datenschutz',
       tagline: 'SAIMÔR — Souveränität durch Technologie.',
@@ -33,10 +33,10 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       quickLinks: 'Navigation',
       services: 'Services',
       entry: 'Entry',
+      portal: 'Portal',
       contact: 'Contact',
       legal: 'Legal',
       trust: 'Security',
-      portal: 'Portal Demo',
       imprint: 'Imprint',
       privacy: 'Privacy',
       tagline: 'SAIMÔR — Sovereignty through technology.',
@@ -88,6 +88,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <a href={locale === 'de' ? '/de/einstieg' : '/en/entry'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.entry}</a>
+              <a href={locale === 'de' ? '/portal' : '/portal?lang=en'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.portal}</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
           </div>

@@ -72,18 +72,6 @@ export default function CommandPalette() {
       keywords: ['mora', 'dashboard', 'os', 'semantic', 'ai'],
     },
     {
-      id: 'portal',
-      title: 'Portal Demo',
-      description: 'Live-Demo des Portals ansehen',
-      descriptionEN: 'View portal live demo',
-      icon: <Zap className="w-4 h-4" />,
-      action: () => {
-        window.location.href = locale === 'de' ? '/de/portal' : '/en/portal';
-      },
-      category: 'navigation',
-      keywords: ['portal', 'demo', 'live', 'preview'],
-    },
-    {
       id: 'mora-lab',
       title: 'Mora Lab',
       titleEN: 'Mora Lab',
@@ -121,19 +109,6 @@ export default function CommandPalette() {
       },
       category: 'navigation',
       keywords: ['trust', 'security', 'sicherheit', 'dsgvo', 'gdpr', 'privacy'],
-    },
-    {
-      id: 'docs',
-      title: 'Dokumentation',
-      titleEN: 'Documentation',
-      description: 'Technische Details und Anleitungen',
-      descriptionEN: 'Technical details and guides',
-      icon: <BookOpen className="w-4 h-4" />,
-      action: () => {
-        window.location.href = '/docs';
-      },
-      category: 'navigation',
-      keywords: ['docs', 'documentation', 'api', 'technical'],
     },
     {
       id: 'imprint',
