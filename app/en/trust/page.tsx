@@ -1,7 +1,7 @@
 ﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 
-const demoLink = '/docs/architecture/DATA_FLOW_EXPLAINED.md';
+const demoLink = '/en/entry';
 
 const techItems = [
   'Demo data: locally generated mock/simulation',

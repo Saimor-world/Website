@@ -572,7 +572,7 @@ export default function EasterEggs() {
       showTransientMessage(copy.demo);
     }
 
-    if (normalizedPath.startsWith('/docs') && !hasAchievementUnlocked('documentation-reader')) {
+    if (normalizedPath.startsWith('/de/einstieg') && !hasAchievementUnlocked('documentation-reader')) {
       unlockAchievement('documentation-reader');
       showTransientMessage(copy.docs);
     }
