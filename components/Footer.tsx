@@ -25,6 +25,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       trust: 'Sicherheit',
       imprint: 'Impressum',
       privacy: 'Datenschutz',
+      terms: 'AGB',
+      refund: 'Widerruf',
       tagline: 'SAIMÔR — Souveränität durch Technologie.',
       made: 'System Status: Aktiv',
       copyright: 'Copyright'
@@ -39,6 +41,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       trust: 'Security',
       imprint: 'Imprint',
       privacy: 'Privacy',
+      terms: 'Terms',
+      refund: 'Refund',
       tagline: 'SAIMÔR — Sovereignty through technology.',
       made: 'System Status: Active',
       copyright: 'Copyright'
@@ -103,6 +107,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               <a href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</a>
               <a href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</a>
               <a href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</a>
+              <a href={locale === 'de' ? '/de/rechtliches/agb' : '/en/legal/terms'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.terms}</a>
+              <a href={locale === 'de' ? '/de/rechtliches/widerruf' : '/en/legal/refund'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.refund}</a>
             </div>
           </div>
         </div>

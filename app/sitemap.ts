@@ -23,8 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/en/trust`, priority: 0.6 },
     { url: `${base}/de/rechtliches/impressum`, priority: 0.5 },
     { url: `${base}/de/rechtliches/datenschutz`, priority: 0.5 },
+    { url: `${base}/de/rechtliches/agb`, priority: 0.5 },
+    { url: `${base}/de/rechtliches/widerruf`, priority: 0.5 },
     { url: `${base}/en/legal/imprint`, priority: 0.5 },
     { url: `${base}/en/legal/privacy`, priority: 0.5 },
+    { url: `${base}/en/legal/terms`, priority: 0.5 },
+    { url: `${base}/en/legal/refund`, priority: 0.5 },
   ];
 }
 
