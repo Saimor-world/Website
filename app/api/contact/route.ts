@@ -38,48 +38,44 @@ export async function POST(req: NextRequest) {
 
     const { name, email, message, licht } = result.data;
 
-    // Save to database
+    const json = (payload: object, status = 200) =>
+      new Response(JSON.stringify(payload), {
+        status,
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    // Save to database — this is the reliable capture (owner sees it in the console).
+    let saved = false;
     try {
       await prisma.contactMessage.create({
-        data: {
-          name,
-          email,
-          message,
-          licht: !!licht
-        }
+        data: { name, email, message, licht: !!licht }
       });
+      saved = true;
     } catch (dbError) {
       console.error('[Contact DB Error]', dbError);
     }
 
-    // Check if SMTP is configured
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      return new Response(JSON.stringify({
-        success: true,
-        message: 'Form submitted successfully'
-      }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    // Email is a best-effort notification: a mail failure (e.g. misconfigured SMTP)
+    // must NOT break a request whose message was already stored.
+    const smtpConfigured =
+      process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: {
-        // Only reject if not explicitly disabled for compatibility with some providers
-        rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false'
-      }
-    });
+    if (smtpConfigured) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: parseInt(process.env.SMTP_PORT || '587'),
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+          tls: {
+            rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED !== 'false'
+          }
+        });
 
-    // Email content
-    const emailContent = `
+        const emailContent = `
 Neue Kontaktanfrage von der Saimôr Website
 
 Name: ${name}
@@ -91,24 +87,37 @@ ${message}
 
 ---
 Gesendet am: ${new Date().toLocaleString('de-DE')}
-    `.trim();
+        `.trim();
 
-    // Send email
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: 'contact@saimor.world',
-      subject: `Kontaktanfrage von ${name}${licht ? ' (Lichtgespräch)' : ''}`,
-      text: emailContent,
-      replyTo: email,
-    });
+        await transporter.sendMail({
+          from: process.env.SMTP_FROM || process.env.SMTP_USER,
+          to: 'contact@saimor.world',
+          subject: `Kontaktanfrage von ${name}${licht ? ' (Lichtgespräch)' : ''}`,
+          text: emailContent,
+          replyTo: email,
+        });
 
-    return new Response(JSON.stringify({
-      success: true,
-      message: 'Nachricht erfolgreich gesendet'
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+        return json({ success: true, message: 'Nachricht erfolgreich gesendet' });
+      } catch (mailError) {
+        // Notify the operator via monitoring, but do not fail the visitor if the
+        // message is already captured in the database.
+        captureApiError('/api/contact:mail', mailError, { method: 'POST' });
+        console.error('[Contact Mail Error]', mailError);
+        if (saved) {
+          return json({ success: true, message: 'Nachricht erhalten' });
+        }
+        throw mailError;
+      }
+    }
+
+    // No SMTP configured: only reliable if the message was stored.
+    if (saved) {
+      return json({ success: true, message: 'Nachricht erhalten' });
+    }
+    return json(
+      { error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.' },
+      500
+    );
 
   } catch (error) {
     captureApiError('/api/contact', error, {
