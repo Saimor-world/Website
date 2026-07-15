@@ -56,15 +56,15 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   };
 
   return (
-    <footer className="relative py-24 border-t border-white/10 bg-[#081410] overflow-hidden">
+    <footer className="relative py-14 border-t border-white/10 bg-[#081410] overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-          
-          <div className="md:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+          <div className="md:col-span-2 space-y-5">
             <a href={`/${locale}`} className="flex items-center gap-4 group">
               <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
                 <Image 
@@ -77,12 +77,12 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               </div>
               <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
             </a>
-            <p className="text-white/40 max-w-sm text-lg leading-relaxed italic">
+            <p className="text-white/40 max-w-sm text-base leading-relaxed italic">
               {footerText.tagline}
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
               <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
@@ -93,11 +93,11 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <NewsletterSignup variant="footer" />
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
             <div className="flex flex-col gap-4">
               <a href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</a>

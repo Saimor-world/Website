@@ -42,6 +42,21 @@ export default function Page() {
             (name, email address, message) is used exclusively to process your inquiry and is not shared with third parties.
           </p>
 
+          <h2 className="text-2xl font-semibold mb-4 text-slate-800">Security Check & Trial Workspace</h2>
+          <p className="mb-4 text-slate-700">
+            When you use our security check, we process the domain you enter as well as publicly available
+            technical signals for that domain (e.g. DNS and email authentication, TLS certificate, security
+            headers). This is a passive analysis of publicly accessible information, without any intrusion
+            into your systems. If you provide an email address, we use it to send you access to your result.
+          </p>
+          <p className="mb-6 text-slate-700">
+            The result creates a <strong>time-limited trial workspace</strong> in our EU system (Hetzner,
+            Germany) where the findings are stored. This workspace is limited to <strong>20 days</strong>.
+            If you do not convert it into a permanent account within that time, it becomes invalid and the
+            associated trial data is deleted. You can request access to, or immediate deletion of, your data
+            at any time at contact@saimor.world.
+          </p>
+
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">External Services</h2>
           <ul className="mb-6 text-slate-700 list-disc pl-6">
             <li><strong>Cal.com:</strong> For appointment bookings. <a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:underline">Cal.com Privacy Policy</a></li>
@@ -67,7 +82,7 @@ export default function Page() {
 
           <div className="mt-8 p-4 bg-slate-100 rounded-xl">
             <p className="text-sm text-slate-600">
-              Status: September 2024 | This privacy policy is regularly reviewed and updated as needed.
+              Status: July 2026 | This privacy policy is regularly reviewed and updated as needed.
             </p>
           </div>
         </div>

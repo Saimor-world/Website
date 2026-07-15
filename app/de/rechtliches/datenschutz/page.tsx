@@ -42,6 +42,22 @@ export default function Page() {
             (Name, E-Mail-Adresse, Nachricht) ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.
           </p>
 
+          <h2 className="text-2xl font-semibold mb-4 text-slate-800">Security-Check & Trial-Arbeitsbereich</h2>
+          <p className="mb-4 text-slate-700">
+            Wenn Sie unseren Security-Check nutzen, verarbeiten wir die von Ihnen angegebene Domain sowie
+            öffentlich abrufbare technische Signale dieser Domain (z. B. DNS- und E-Mail-Authentifizierung,
+            TLS-Zertifikat, Sicherheits-Header). Es handelt sich um eine passive Analyse öffentlich
+            zugänglicher Informationen, ohne Eingriff in Ihre Systeme. Geben Sie eine E-Mail-Adresse an,
+            verwenden wir diese, um Ihnen den Zugang zu Ihrem Ergebnis zu senden.
+          </p>
+          <p className="mb-6 text-slate-700">
+            Aus dem Ergebnis entsteht ein <strong>befristeter Trial-Arbeitsbereich</strong> in unserem
+            EU-System (Hetzner, Deutschland), in dem die Befunde gespeichert werden. Dieser Arbeitsbereich
+            ist auf <strong>20 Tage</strong> befristet. Übernehmen Sie ihn in dieser Zeit nicht in ein
+            dauerhaftes Konto, verliert er seine Gültigkeit und die zugehörigen Trial-Daten werden gelöscht.
+            Sie können jederzeit unter contact@saimor.world Auskunft oder die sofortige Löschung verlangen.
+          </p>
+
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Externe Dienste</h2>
           <ul className="mb-6 text-slate-700 list-disc pl-6">
             <li><strong>Cal.com:</strong> Für Terminbuchungen. <a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:underline">Datenschutzerklärung von Cal.com</a></li>
@@ -67,7 +83,7 @@ export default function Page() {
 
           <div className="mt-8 p-4 bg-slate-100 rounded-xl">
             <p className="text-sm text-slate-600">
-              Stand: September 2024 | Diese Datenschutzerklärung wird regelmäßig überprüft und bei Bedarf aktualisiert.
+              Stand: Juli 2026 | Diese Datenschutzerklärung wird regelmäßig überprüft und bei Bedarf aktualisiert.
             </p>
           </div>
         </div>
