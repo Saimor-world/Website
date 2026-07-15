@@ -90,7 +90,7 @@ export default function MoraTeaser({ locale }: Props) {
             {/* Body copy */}
             <p className="text-xl text-white/50 leading-relaxed max-w-lg">
               {t(
-                'Môra ist die semantische Intelligenz-Ebene Ihres Systems. Sie erkennt strategische Zusammenhänge in Echtzeit – vollständig lokal, ohne Cloud-Abhängigkeit, ohne Kompromisse bei der Privatsphäre.',
+                'Môra ist die semantische Intelligenz-Ebene deines Systems. Sie erkennt strategische Zusammenhänge in Echtzeit – vollständig lokal, ohne Cloud-Abhängigkeit, ohne Kompromisse bei der Privatsphäre.',
                 'Môra is the semantic intelligence layer of your system. It recognises strategic connections in real-time – fully local, without cloud dependency, without compromising on privacy.'
               )}
             </p>

@@ -61,7 +61,7 @@ export default function Hero({ locale, calUrl }: Props) {
       badge: 'Operational Excellence v1.0',
       headline: 'Saimôr',
       subheadline: 'Klarheit im Wandel.',
-      description: 'Das semantische Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung. Maximieren Sie Ihre Wirkung durch datengestützte Klarheit.',
+      description: 'Das semantische Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung. Maximiere deine Wirkung durch datengestützte Klarheit.',
       ctaPrimary: 'Showcase ansehen',
       ctaSecondary: 'Strategiegespräch buchen',
       stats: [

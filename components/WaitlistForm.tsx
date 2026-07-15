@@ -37,7 +37,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   const content = {
     de: {
       title: 'Strategischer Vorabzugang',
-      subtitle: 'Sichern Sie sich Ihren Platz im Ökosystem und gestalten Sie die Zukunft semantischer Organisationen mit.',
+      subtitle: 'Sichere dir deinen Platz im Ökosystem und gestalte die Zukunft semantischer Organisationen mit.',
       namePlaceholder: 'Ihr Name',
       emailPlaceholder: 'geschaeftlich@email.de',
       interestTitle: 'Interessensgebiete (optional)',
@@ -50,9 +50,9 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
       submit: 'Platz sichern',
       submitting: 'Übermittlung läuft …',
       successTitle: 'Registrierung erfolgreich 🌱',
-      successMessage: 'Wir haben Ihre Anfrage erhalten und melden uns mit weiteren Details zur Bereitstellung.',
-      errorMessage: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
-      privacy: 'Ihre Daten werden exklusiv für den Early Access verwendet. DSGVO-konform.'
+      successMessage: 'Wir haben deine Anfrage erhalten und melden uns mit weiteren Details zur Bereitstellung.',
+      errorMessage: 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.',
+      privacy: 'Deine Daten werden exklusiv für den Early Access verwendet. DSGVO-konform.'
     },
     en: {
       title: 'Strategic Early Access',
