@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     const { name, email, message, licht } = result.data;
 
-    const json = (payload: object, status = 200) =>
+    const respond = (payload: object, status = 200) =>
       new Response(JSON.stringify(payload), {
         status,
         headers: { 'Content-Type': 'application/json' }
@@ -97,14 +97,14 @@ Gesendet am: ${new Date().toLocaleString('de-DE')}
           replyTo: email,
         });
 
-        return json({ success: true, message: 'Nachricht erfolgreich gesendet' });
+        return respond({ success: true, message: 'Nachricht erfolgreich gesendet' });
       } catch (mailError) {
         // Notify the operator via monitoring, but do not fail the visitor if the
         // message is already captured in the database.
         captureApiError('/api/contact:mail', mailError, { method: 'POST' });
         console.error('[Contact Mail Error]', mailError);
         if (saved) {
-          return json({ success: true, message: 'Nachricht erhalten' });
+          return respond({ success: true, message: 'Nachricht erhalten' });
         }
         throw mailError;
       }
@@ -112,9 +112,9 @@ Gesendet am: ${new Date().toLocaleString('de-DE')}
 
     // No SMTP configured: only reliable if the message was stored.
     if (saved) {
-      return json({ success: true, message: 'Nachricht erhalten' });
+      return respond({ success: true, message: 'Nachricht erhalten' });
     }
-    return json(
+    return respond(
       { error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.' },
       500
     );
