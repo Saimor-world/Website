@@ -186,8 +186,10 @@ export default function Hero({ locale, calUrl }: Props) {
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute inset-0 opacity-[0.5]" style={{ backgroundImage: "radial-gradient(circle, rgba(231,196,106,.42) 1px, transparent 1px)", backgroundSize: "82px 82px", maskImage: "linear-gradient(to bottom, transparent, black 18%, black 72%, transparent)" }} />
           <div className="absolute left-1/2 top-[23%] h-[min(52vw,500px)] w-[min(52vw,500px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(214,168,72,.18)_0%,rgba(12,16,29,.16)_48%,transparent_72%)] blur-2xl" />
-          <motion.div className="absolute left-1/2 top-[23%] h-[min(19vw,180px)] w-[min(42vw,420px)] -translate-x-1/2 -translate-y-1/2 rotate-[-16deg] rounded-[50%] border" style={{ borderColor: "rgba(214,168,72,.26)" }} animate={{ rotate: 344 }} transition={{ duration: 75, repeat: Infinity, ease: "linear" }} />
-          <motion.div className="absolute left-1/2 top-[23%] h-[min(14vw,132px)] w-[min(34vw,340px)] -translate-x-1/2 -translate-y-1/2 rotate-[20deg] rounded-[50%] border" style={{ borderColor: "rgba(102,221,234,.14)" }} animate={{ rotate: -340 }} transition={{ duration: 52, repeat: Infinity, ease: "linear" }} />
+          <div className="absolute left-1/2 top-[23%] h-0 w-0 -translate-x-1/2 -translate-y-1/2">
+            <motion.div className="absolute left-1/2 top-1/2 h-[min(19vw,180px)] w-[min(42vw,420px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border" style={{ borderColor: "rgba(214,168,72,.26)", rotate: -16 }} animate={{ rotate: 344 }} transition={{ duration: 75, repeat: Infinity, ease: "linear" }} />
+            <motion.div className="absolute left-1/2 top-1/2 h-[min(14vw,132px)] w-[min(34vw,340px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border" style={{ borderColor: "rgba(102,221,234,.14)", rotate: 20 }} animate={{ rotate: -340 }} transition={{ duration: 52, repeat: Infinity, ease: "linear" }} />
+          </div>
           <div className="absolute left-1/2 top-[23%] h-px w-[min(50vw,500px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#D6A848]/30 to-transparent" />
           {mounted && Array.from({ length: 12 }, (_, index) => <FloatingParticle key={index} delay={index * 0.8} size={index % 4 === 0 ? 3 : 2} duration={20 + index % 6} />)}
         </div>
