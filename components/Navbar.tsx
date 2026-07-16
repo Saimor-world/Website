@@ -35,6 +35,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     de: {
       home: 'Start',
       mora: 'Môra',
+      frnt: 'FRNT',
       entry: 'Einstieg',
       portal: 'Portal',
       contact: 'Kontakt',
@@ -43,6 +44,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     en: {
       home: 'Home',
       mora: 'Môra',
+      frnt: 'FRNT',
       entry: 'Entry',
       portal: 'Portal',
       contact: 'Contact',
@@ -63,6 +65,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
     { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
+    { href: locale === 'de' ? '/frnt' : '/en/frnt', label: nav.frnt, isAnchor: false },
     { href: locale === 'de' ? '/de/einstieg' : '/en/entry', label: nav.entry, isAnchor: false },
     { href: '/wall', label: 'Wall', isAnchor: false },
     { href: locale === 'de' ? '/portal' : '/portal?lang=en', label: nav.portal, isAnchor: false },
@@ -127,9 +130,9 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-white flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-emerald-500/10 transition-all">
+                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-white flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-[var(--world-violet)]/10 transition-all">
                   <Image
-                    src="/saimor-logo-new.png"
+                    src="/saimor-seal-master.png"
                     alt="Saimôr"
                     width={28}
                     height={28}
@@ -177,7 +180,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               {/* Language Switcher */}
               <motion.a
                 href={switchHref}
-                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-emerald-500/30 transition-all hover:bg-white/5"
+                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-[var(--world-violet)]/30 transition-all hover:bg-white/5"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label={`Sprache wechseln zu ${switchLabel}`}
@@ -193,7 +196,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 href="https://cal.com/saimor/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-[var(--world-violet)] to-[var(--world-cyan)] hover:from-[var(--world-cyan)] hover:to-[var(--world-violet)] shadow-lg shadow-[var(--world-violet)]/20 hover:shadow-[var(--world-cyan)]/30"
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 aria-label="Termin buchen - Öffnet in neuem Tab"
@@ -248,7 +251,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               <motion.div
                 className="fixed inset-0 z-40"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(8, 20, 16, 0.98) 0%, rgba(5, 18, 8, 0.95) 100%)',
+                  background: 'linear-gradient(135deg, rgba(7, 11, 22, 0.98) 0%, rgba(14, 32, 39, 0.96) 100%)',
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -259,14 +262,14 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 {/* Decorative background elements */}
                 <motion.div
                   className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
-                  style={{ background: 'rgba(16, 185, 129, 0.1)' }}
+                  style={{ background: 'rgba(34, 184, 141, 0.14)' }}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
                 />
                 <motion.div
                   className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
-                  style={{ background: 'rgba(6, 182, 212, 0.08)' }}
+                  style={{ background: 'rgba(102, 221, 234, 0.1)' }}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
@@ -283,11 +286,11 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 {/* Close Button */}
                 <motion.button
                   onClick={() => setMenuOpen(false)}
-                  className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 hover:border-emerald-500/50 transition-colors"
+                  className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 hover:border-[var(--world-violet)]/50 transition-colors"
                   initial={{ opacity: 0, rotate: -90 }}
                   animate={{ opacity: 1, rotate: 0 }}
                   transition={{ delay: 0.2 }}
-                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(16, 185, 129, 0.1)' }}
+                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 184, 141, 0.14)' }}
                   whileTap={{ scale: 0.95 }}
                   aria-label="Menü schließen"
                 >
@@ -303,7 +306,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 >
                   <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
                     <Image
-                      src="/saimor-logo-new.png"
+                      src="/saimor-seal-master.png"
                       alt="Saimôr"
                       width={48}
                       height={48}

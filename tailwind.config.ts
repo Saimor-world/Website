@@ -4,6 +4,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Shared Saimôr World spectrum: forest origin, signal cyan, FRNT violet.
+        "world-ink": "#070B16",
+        "world-night": "#0B1020",
+        "world-forest": "#123A32",
+        "world-emerald": "#22B88D",
+        "world-cyan": "#66DDEA",
+        "world-blue": "#4F91FF",
+        "world-violet": "#8266FF",
+        "world-gold": "#D6A848",
         // ============================================
         // SAIMÔR MÔRA BIBEL COLOR SYSTEM
         // Based on: Saimor Mora Masterbibel

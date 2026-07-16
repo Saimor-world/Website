@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState, useId } from 'react';
@@ -18,9 +18,9 @@ const COPY: Record<Locale, {
   readyMessage: string;
 }> = {
   de: {
-    greeting: 'Hallo, ich bin Môra',
+    greeting: 'Hallo, ich bin MÔRA',
     subtitle: 'Dein semantisches Gedächtnis für Klarheit im Wandel.',
-    badge: 'System erwacht',
+    badge: 'MÔRA CORE ERWACHT',
     skip: 'Überspringen',
     systemInit: [
       'Initialisiere semantische Schichten...',
@@ -32,9 +32,9 @@ const COPY: Record<Locale, {
     readyMessage: 'Bereit für dich.',
   },
   en: {
-    greeting: "Hello, I'm Môra",
+    greeting: "Hello, I'm MÔRA",
     subtitle: 'Your semantic memory for clarity in transformation.',
-    badge: 'System awakening',
+    badge: 'MÔRA CORE AWAKENS',
     skip: 'Skip intro',
     systemInit: [
       'Initializing semantic layers...',
@@ -326,7 +326,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
               style={{
                 width: 350,
                 height: 350,
-                background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(214, 168, 72, 0.15) 0%, transparent 70%)',
               }}
               animate={{
                 scale: [1, 1.2, 1],
@@ -351,17 +351,17 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
             {/* Main orb */}
             <motion.div
-              className="relative flex h-[180px] w-[180px] items-center justify-center rounded-full shadow-[0_0_80px_rgba(16,185,129,0.5),0_0_120px_rgba(6,182,212,0.3)]"
+              className="relative flex h-[180px] w-[180px] items-center justify-center rounded-full shadow-[0_0_80px_rgba(214,168,72,0.5),0_0_120px_rgba(6,182,212,0.3)]"
               style={{
-                background: 'linear-gradient(135deg, #10B981 0%, #059669 50%, #06B6D4 100%)',
+                background: 'linear-gradient(135deg, #D6A848 0%, #8B6E2F 50%, #06B6D4 100%)',
                 border: '2px solid rgba(255,255,255,0.2)',
               }}
               animate={{
                 boxShadow: phase >= 2
                   ? [
-                    '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
+                    '0 0 80px rgba(214,168,72,0.5), 0 0 120px rgba(6,182,212,0.3)',
                     '0 0 100px rgba(16,185,129,0.7), 0 0 150px rgba(6,182,212,0.5)',
-                    '0 0 80px rgba(16,185,129,0.5), 0 0 120px rgba(6,182,212,0.3)',
+                    '0 0 80px rgba(214,168,72,0.5), 0 0 120px rgba(6,182,212,0.3)',
                   ]
                   : '0 0 60px rgba(16,185,129,0.4), 0 0 100px rgba(6,182,212,0.2)',
               }}
@@ -434,7 +434,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
 
               <defs>
                 <linearGradient id={gradientId} gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.8" />
+                  <stop offset="0%" stopColor="#D6A848" stopOpacity="0.8" />
                   <stop offset="100%" stopColor="#06B6D4" stopOpacity="0.3" />
                 </linearGradient>
               </defs>

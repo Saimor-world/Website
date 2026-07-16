@@ -106,8 +106,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/saimor-logo-new.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/saimor-logo-new.png" />
+        <link rel="icon" href="/saimor-seal-master.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/saimor-seal-master.png" />
         <meta name="theme-color" content="#10B981" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -121,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "Organization",
               "name": "Saimôr",
               "url": "https://saimor.world",
-              "logo": "https://saimor.world/saimor-logo-new.png",
+              "logo": "https://saimor.world/saimor-seal-master.png",
               "description": "Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.",
               "foundingDate": "2024",
               "sameAs": [],

@@ -13,13 +13,13 @@
   "categories": ["business", "productivity", "education"],
   "icons": [
     {
-      "src": "/saimor-logo-new.png",
+      "src": "/saimor-seal-master.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/saimor-logo-new.png",
+      "src": "/saimor-seal-master.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -33,7 +33,7 @@
       "url": "/mora",
       "icons": [
         {
-          "src": "/saimor-logo-new.png",
+          "src": "/saimor-seal-master.png",
           "sizes": "192x192"
         }
       ]
@@ -45,7 +45,7 @@
       "url": "/de#kontakt",
       "icons": [
         {
-          "src": "/saimor-logo-new.png",
+          "src": "/saimor-seal-master.png",
           "sizes": "192x192"
         }
       ]
