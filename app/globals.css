@@ -318,3 +318,25 @@ kbd {
   --world-border: rgba(164, 178, 222, .22);
 }
 html, body { background: var(--world-ink); }
+/* Saimor unified world surfaces */
+:root {
+  --world-ink: #070B16;
+  --world-night: #0B1020;
+  --world-surface: #10172A;
+  --world-surface-2: #16213A;
+  --world-forest: #123A32;
+  --world-emerald: #22B88D;
+  --world-cyan: #66DDEA;
+  --world-blue: #4F91FF;
+  --world-violet: #8266FF;
+  --world-lilac: #C8BCFF;
+  --world-gold: #D6A848;
+  --world-paper: #F5F2FF;
+  --world-border: rgba(164, 178, 222, .22);
+  --world-glass: rgba(255, 255, 255, .045);
+}
+
+html,
+body {
+  background: var(--world-ink);
+}

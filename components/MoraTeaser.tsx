@@ -13,16 +13,16 @@ type Props = {
 
 const capabilities = {
   de: [
-    { icon: Brain, label: 'Semantische Analyse', desc: 'Zusammenhänge verstehen, nicht nur Daten verarbeiten' },
-    { icon: Network, label: 'Mycelium-Netzwerk', desc: 'Vernetzt Ihr Wissen in Echtzeit' },
-    { icon: Lock, label: 'Vollständig lokal', desc: 'Keine Cloud, keine Drittanbieter' },
-    { icon: Zap, label: 'Echtzeit-Kontext', desc: 'Strategische Signale sofort erkannt' },
+    { icon: Brain, label: 'Semantische Analyse', desc: 'Zusammenhaenge verstehen, nicht nur Daten verarbeiten' },
+    { icon: Network, label: 'Mycelium-Netzwerk', desc: 'Wissen, Signale und Entscheidungen verbinden' },
+    { icon: Lock, label: 'Vollstaendig lokal', desc: 'Private Daten bleiben unter deiner Kontrolle' },
+    { icon: Zap, label: 'Echtzeit-Kontext', desc: 'Strategische Signale werden sofort sichtbar' },
   ],
   en: [
     { icon: Brain, label: 'Semantic Analysis', desc: 'Understand connections, not just process data' },
-    { icon: Network, label: 'Mycelium Network', desc: 'Connects your knowledge in real-time' },
-    { icon: Lock, label: 'Fully local', desc: 'No cloud, no third parties' },
-    { icon: Zap, label: 'Real-time context', desc: 'Strategic signals detected instantly' },
+    { icon: Network, label: 'Mycelium Network', desc: 'Connect knowledge, signals and decisions' },
+    { icon: Lock, label: 'Fully local', desc: 'Private data stays under your control' },
+    { icon: Zap, label: 'Real-time context', desc: 'Strategic signals become visible immediately' },
   ],
 };
 
@@ -31,26 +31,13 @@ export default function MoraTeaser({ locale }: Props) {
   const caps = capabilities[locale];
 
   return (
-    <section className="relative py-32 sm:py-48 overflow-hidden bg-[#070A12]">
-      {/* Background atmosphere */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-[#E7C46A]/12 blur-[180px] rounded-full" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#66DDEA]/10 blur-[140px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E7C46A]/6 blur-[120px] rounded-full" />
-        {/* Subtle grid lines */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(214,168,72,1) 1px, transparent 1px), linear-gradient(90deg, rgba(214,168,72,1) 1px, transparent 1px)',
-            backgroundSize: '80px 80px',
-          }}
-        />
-      </div>
+    <section className="relative overflow-hidden border-t border-[var(--world-border)] bg-[var(--world-ink)] py-28 text-[var(--world-paper)] sm:py-44">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_34%,rgba(214,168,72,.12),transparent_30%),radial-gradient(circle_at_78%_24%,rgba(102,221,234,.10),transparent_28%),linear-gradient(180deg,var(--world-night),var(--world-ink)_54%,#050812)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[.16] [background-image:linear-gradient(rgba(214,168,72,.10)_1px,transparent_1px),linear-gradient(90deg,rgba(102,221,234,.12)_1px,transparent_1px)] [background-size:96px_96px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--world-gold)]/10" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-
-          {/* Text Side */}
+        <div className="grid items-center gap-20 lg:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -58,171 +45,120 @@ export default function MoraTeaser({ locale }: Props) {
             transition={{ duration: 0.8 }}
             className="space-y-10"
           >
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D6A848]/8 border border-[#D6A848]/20 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-[#D6A848]" />
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#D6A848]/85">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-[var(--world-gold)]/8 px-4 py-1.5 backdrop-blur-md">
+              <Sparkles className="h-3.5 w-3.5 text-[var(--world-gold)]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--world-gold)]/90">
                 SEMANTIC INTELLIGENCE / MÔRA CORE
               </span>
             </div>
 
-            {/* Headline */}
-            <p className="font-mono text-[11px] font-bold tracking-[.38em] text-[#E7C46A]">MÔRA</p>
-            <div className="space-y-3">
-              <h2
-                className="text-5xl sm:text-7xl font-light tracking-tight leading-[0.95]"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
-                <span className="block text-white/90">
-                  {t('Sie hört zu.', 'She listens.')}
-                </span>
-                <span
-                  className="block italic text-white/30"
-                  aria-hidden
-                >
-                  …
-                </span>
+            <div className="space-y-4">
+              <p className="font-mono text-[12px] font-bold tracking-[.42em] text-[var(--world-gold)]">MÔRA</p>
+              <h2 className="text-5xl font-light leading-none sm:text-7xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                {t('Sie hoert zu.', 'She listens.')}
               </h2>
-              <p className="text-sm text-[#C8BCFF]/70 uppercase tracking-[0.2em] pl-0.5">
-                {t('Môra — die Geschichte geht weiter', 'Môra — the story continues')}
+              <p className="text-sm uppercase tracking-[0.2em] text-[var(--world-cyan)]/72">
+                {t('Die Intelligenz im Saimôr Betriebssystem', 'The intelligence inside the Saimôr operating system')}
               </p>
             </div>
 
-            {/* Body copy */}
-            <p className="text-xl text-white/50 leading-relaxed max-w-lg">
+            <p className="max-w-lg text-xl leading-relaxed text-white/58">
               {t(
-                'Môra ist die semantische Intelligenz-Ebene deines Systems. Sie erkennt strategische Zusammenhänge in Echtzeit – vollständig lokal, ohne Cloud-Abhängigkeit, ohne Kompromisse bei der Privatsphäre.',
-                'Môra is the semantic intelligence layer of your system. It recognises strategic connections in real-time – fully local, without cloud dependency, without compromising on privacy.'
+                'Môra ist die semantische Intelligenz-Ebene des Systems. Sie erkennt Zusammenhaenge, hoert auf Signale und bringt Ordnung in Entscheidungen, ohne deine privaten Daten aus der Hand zu geben.',
+                'Môra is the semantic intelligence layer of the system. It reads context, listens for signals and brings order to decisions without taking private data out of your hands.'
               )}
             </p>
 
-            {/* Capabilities grid */}
             <div className="grid grid-cols-2 gap-3">
               {caps.map((cap, i) => {
                 const Icon = cap.icon;
                 return (
                   <motion.div
-                    key={i}
+                    key={cap.label}
                     initial={{ opacity: 0, y: 12 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 + i * 0.08 }}
-                    className="group flex items-start gap-3 p-4 rounded-2xl border border-white/6 bg-white/[0.025] hover:border-[#D6A848]/30 hover:bg-[#D6A848]/5 transition-all duration-300"
+                    className="group flex items-start gap-3 rounded-2xl border border-[var(--world-border)] bg-white/[0.035] p-4 transition-all duration-300 hover:border-[var(--world-gold)]/35 hover:bg-[var(--world-gold)]/5"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[#D6A848]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D6A848]/15 transition-colors mt-0.5">
-                      <Icon className="w-4 h-4 text-[#D6A848]" strokeWidth={1.5} />
+                    <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--world-gold)]/10 transition-colors group-hover:bg-[var(--world-gold)]/16">
+                      <Icon className="h-4 w-4 text-[var(--world-gold)]" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <div className="text-white/80 text-sm font-medium leading-tight mb-0.5">{cap.label}</div>
-                      <div className="text-white/35 text-xs leading-snug">{cap.desc}</div>
+                      <div className="mb-0.5 text-sm font-medium leading-tight text-white/82">{cap.label}</div>
+                      <div className="text-xs leading-snug text-white/40">{cap.desc}</div>
                     </div>
                   </motion.div>
                 );
               })}
             </div>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col gap-4 pt-2 sm:flex-row">
               <a
                 href={locale === 'en' ? '/en/mora' : '/mora'}
-                className="group px-8 py-4 rounded-2xl font-bold text-black transition-all hover:scale-[1.02] flex items-center justify-center gap-3 shadow-[0_20px_60px_rgba(214,168,72,0.25)]"
+                className="group flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-black shadow-[0_20px_60px_rgba(214,168,72,0.22)] transition-all hover:scale-[1.02]"
                 style={{ background: 'linear-gradient(135deg, #E7C46A 0%, #B8892C 100%)' }}
               >
-                <span>{t('Showcase öffnen', 'Open Showcase')}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>{t('Môra oeffnen', 'Open Mora')}</span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
               <Link
                 href={locale === 'en' ? '/en/mora/analog-affect' : '/mora/analog-affect'}
-                className="group px-8 py-4 rounded-2xl border border-white/10 text-white font-semibold hover:bg-white/5 backdrop-blur-md transition-all flex items-center justify-center gap-2 hover:border-white/20"
+                className="group flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-8 py-4 font-semibold text-white backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/5"
               >
                 <span>{t('Technische Details', 'Technical Details')}</span>
-                <ArrowRight className="w-4 h-4 opacity-40 group-hover:opacity-70 group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="h-4 w-4 opacity-40 transition-all group-hover:translate-x-0.5 group-hover:opacity-70" />
               </Link>
             </div>
           </motion.div>
 
-          {/* Visual Side */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.1 }}
-            className="relative h-[480px] flex items-center justify-center"
+            className="relative flex h-[480px] items-center justify-center"
           >
-            {/* Outer glow ring */}
-            <div className="absolute w-96 h-96 rounded-full border border-emerald-500/8 animate-spin-slow" />
-            <div className="absolute w-72 h-72 rounded-full border border-emerald-500/12" style={{ animation: 'spin 20s linear infinite reverse' }} />
+            <div className="absolute h-[27rem] w-[27rem] rounded-full border border-[var(--world-gold)]/10" />
+            <div className="absolute h-[20rem] w-[20rem] rounded-full border border-[var(--world-cyan)]/12" />
+            <div className="absolute h-80 w-80 rounded-full bg-[var(--world-gold)]/12 blur-[100px]" />
 
-            {/* Pulsing core glow */}
-            <div className="absolute w-80 h-80 bg-[#D6A848]/15 blur-[100px] rounded-full animate-pulse" />
-
-            {/* Main showcase card */}
             <div
-              className="relative w-full max-w-md aspect-square rounded-[2rem] overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.6)] group hover:rotate-0 transition-all duration-700"
+              className="group relative aspect-square w-full max-w-md overflow-hidden rounded-[2rem] shadow-[0_40px_120px_rgba(0,0,0,0.6)] transition-all duration-700 hover:rotate-0"
               style={{
-                border: '1px solid rgba(214,168,72,0.15)',
-                background: 'rgba(13,18,32,0.86)',
-                transform: 'rotate(2deg)',
+                border: '1px solid rgba(214,168,72,0.18)',
+                background: 'rgba(13,18,32,0.88)',
+                transform: 'rotate(1.4deg)',
               }}
             >
-              {/* Inner top highlight */}
-              <div
-                className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(214,168,72,0.5), transparent)' }}
-              />
-
+              <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,168,72,.58),transparent)]" />
               <Image
                 src="/images/mora_showcase.png"
-                alt="Mora SEMANTIC INTELLIGENCE / MÔRA CORE Showcase"
+                alt="Môra semantic intelligence showcase"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700"
+                className="object-cover opacity-78 transition-all duration-700 group-hover:scale-105 group-hover:opacity-95"
               />
-
-              {/* Bottom fade */}
-              <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, #0C1020 0%, transparent 50%)' }}
-              />
-
-              {/* Floating label */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_top,#0C1020_0%,transparent_52%)]" />
               <div className="absolute bottom-6 left-6 right-6">
-                <div
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl"
-                  style={{
-                    background: 'rgba(8,20,16,0.85)',
-                    border: '1px solid rgba(214,168,72,0.15)',
-                    backdropFilter: 'blur(12px)',
-                  }}
-                >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[#E7C46A] text-xs font-medium tracking-wide">
-                    {t('Môra · Analyse läuft', 'Môra · Analysis running')}
+                <div className="inline-flex items-center gap-2 rounded-xl border border-[var(--world-gold)]/20 bg-[#081410]/85 px-3 py-2 backdrop-blur-xl">
+                  <span className="h-2 w-2 rounded-full bg-[var(--world-cyan)] shadow-[0_0_18px_rgba(102,221,234,.9)]" />
+                  <span className="text-xs font-medium tracking-wide text-[var(--world-gold)]">
+                    {t('Môra Analyse laeuft', 'Môra analysis running')}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Orbiting accent dots */}
             <motion.div
-              className="absolute w-full h-full pointer-events-none"
+              className="pointer-events-none absolute h-full w-full"
               animate={{ rotate: 360 }}
               transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
             >
-              <div className="absolute top-8 left-1/2 w-2.5 h-2.5 bg-emerald-400 rounded-full shadow-[0_0_20px_rgba(214,168,72,0.9)]" />
-              <div className="absolute bottom-14 right-16 w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-            </motion.div>
-
-            <motion.div
-              className="absolute w-[80%] h-[80%] pointer-events-none"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-            >
-              <div className="absolute top-0 right-8 w-1 h-1 bg-emerald-300/60 rounded-full" />
-              <div className="absolute bottom-0 left-12 w-1 h-1 bg-cyan-300/40 rounded-full" />
+              <div className="absolute left-1/2 top-8 h-2.5 w-2.5 rounded-full bg-[var(--world-gold)] shadow-[0_0_20px_rgba(214,168,72,0.9)]" />
+              <div className="absolute bottom-14 right-16 h-1.5 w-1.5 rounded-full bg-[var(--world-cyan)] shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
             </motion.div>
           </motion.div>
-
         </div>
       </div>
     </section>
