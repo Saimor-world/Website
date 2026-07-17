@@ -4,14 +4,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Shared Saimôr World spectrum: forest origin, signal cyan, FRNT violet.
-        "world-ink": "#070B16",
-        "world-night": "#0B1020",
+        // Shared family spectrum: SAIMÔR forest/gold, MÔRA gold, YORI jade/indigo.
+        "world-ink": "#070B0C",
+        "world-night": "#0C1415",
         "world-forest": "#123A32",
-        "world-emerald": "#22B88D",
-        "world-cyan": "#66DDEA",
-        "world-blue": "#4F91FF",
-        "world-violet": "#8266FF",
+        "world-emerald": "#2F8C88",
+        "world-cyan": "#62BFC0",
+        "world-blue": "#4F6F9E",
+        "world-violet": "#344E86",
         "world-gold": "#D6A848",
         // ============================================
         // SAIMÔR MÔRA BIBEL COLOR SYSTEM

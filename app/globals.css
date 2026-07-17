@@ -303,38 +303,56 @@ kbd {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
-/* Saimôr World system: forest origin + product night + FRNT signal */
+/* Saimôr World system: SAIMÔR architecture, MÔRA meaning, YORI flow */
 :root {
-  --world-ink: #070B16;
-  --world-night: #0B1020;
+  --world-ink: #070B0C;
+  --world-night: #0C1415;
   --world-forest: #123A32;
-  --world-emerald: #22B88D;
-  --world-cyan: #66DDEA;
-  --world-blue: #4F91FF;
-  --world-violet: #8266FF;
-  --world-lilac: #C8BCFF;
+  --world-emerald: #2F8C88;
+  --world-cyan: #62BFC0;
+  --world-blue: #4F6F9E;
+  --world-violet: #344E86;
+  --world-lilac: #B8C7D9;
   --world-gold: #D6A848;
-  --world-paper: #F5F2FF;
-  --world-border: rgba(164, 178, 222, .22);
+  --world-paper: #F4F0E7;
+  --world-mora-mist: #E8D7AA;
+  --yori-jade: #3E8F8B;
+  --yori-jade-deep: #0E4D64;
+  --yori-turquoise: #6FB5B0;
+  --yori-indigo: #3F5B8B;
+  --yori-sand: #E0D6C2;
+  --yori-paper: #EFE9DC;
+  --yori-ink: #1A1A1A;
+  --world-border: rgba(164, 190, 182, .22);
 }
 html, body { background: var(--world-ink); }
 /* Saimor unified world surfaces */
 :root {
-  --world-ink: #070B16;
-  --world-night: #0B1020;
-  --world-surface: #10172A;
-  --world-surface-2: #16213A;
+  --world-ink: #070B0C;
+  --world-night: #0C1415;
+  --world-surface: #121D1E;
+  --world-surface-2: #19292A;
   --world-forest: #123A32;
-  --world-emerald: #22B88D;
-  --world-cyan: #66DDEA;
-  --world-blue: #4F91FF;
-  --world-violet: #8266FF;
-  --world-lilac: #C8BCFF;
+  --world-emerald: #2F8C88;
+  --world-cyan: #62BFC0;
+  --world-blue: #4F6F9E;
+  --world-violet: #344E86;
+  --world-lilac: #B8C7D9;
   --world-gold: #D6A848;
-  --world-paper: #F5F2FF;
-  --world-border: rgba(164, 178, 222, .22);
+  --world-paper: #F4F0E7;
+  --world-mora-mist: #E8D7AA;
+  --yori-jade: #3E8F8B;
+  --yori-jade-deep: #0E4D64;
+  --yori-turquoise: #6FB5B0;
+  --yori-indigo: #3F5B8B;
+  --yori-sand: #E0D6C2;
+  --yori-paper: #EFE9DC;
+  --yori-ink: #1A1A1A;
+  --world-border: rgba(164, 190, 182, .22);
   --world-glass: rgba(255, 255, 255, .045);
 }
+
+.yori-paper-noise{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E")}
 
 html,
 body {

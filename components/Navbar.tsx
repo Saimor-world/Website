@@ -35,7 +35,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     de: {
       home: 'Start',
       mora: 'Môra',
-      frnt: 'FRNT',
+      frnt: 'YORI',
       entry: 'Einstieg',
       portal: 'Portal',
       contact: 'Kontakt',
@@ -44,7 +44,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     en: {
       home: 'Home',
       mora: 'Môra',
-      frnt: 'FRNT',
+      frnt: 'YORI',
       entry: 'Entry',
       portal: 'Portal',
       contact: 'Contact',
@@ -65,7 +65,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const navItems = [
     { href: `/${locale}`, label: nav.home, isAnchor: false },
     { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
-    { href: locale === 'de' ? '/frnt' : '/en/frnt', label: nav.frnt, isAnchor: false },
+    { href: locale === 'de' ? '/yori' : '/en/yori', label: nav.frnt, isAnchor: false },
     { href: locale === 'de' ? '/de/einstieg' : '/en/entry', label: nav.entry, isAnchor: false },
     { href: '/wall', label: 'Wall', isAnchor: false },
     { href: locale === 'de' ? '/portal' : '/portal?lang=en', label: nav.portal, isAnchor: false },

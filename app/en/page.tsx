@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import FrntSection from "@/components/FrntSection";
+import YoriSection from "@/components/YoriSection";
 import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
@@ -20,7 +20,7 @@ export default function Page() {
       <MyceliumNetwork />
       <div className="relative z-10">
         <Hero locale="en" />
-        <FrntSection locale="en" />
+        <YoriSection locale="en" />
         <MoraTeaser locale="en" />
         <EntryTeaser locale="en" />
         <CommunityBanner locale="en" />

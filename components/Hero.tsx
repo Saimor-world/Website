@@ -91,30 +91,30 @@ export default function Hero({ locale, calUrl }: Props) {
 
   const content = {
     de: {
-      badge: 'Operational Excellence v1.0',
+      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'Klarheit im Wandel.',
-      description: 'Das semantische Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung. Maximiere deine Wirkung durch datengestützte Klarheit.',
-      ctaPrimary: 'Showcase ansehen',
+      subheadline: 'Ein System. Drei Formen von Intelligenz.',
+      description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen und Creator.',
+      ctaPrimary: 'YORI entdecken',
       ctaSecondary: 'Strategiegespräch buchen',
       stats: [
-        { value: 'AI', label: 'Semantic Core' },
-        { value: 'EU', label: 'Data Sovereignty' },
-        { value: '∞', label: 'Connections' }
+        { value: 'SAIMÔR', label: 'Operating System' },
+        { value: 'MÔRA', label: 'Semantic Intelligence' },
+        { value: 'YORI', label: 'Creative OS' }
       ],
       scrollHint: 'Entdecken'
     },
     en: {
-      badge: 'Operational Excellence v1.0',
+      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'Clarity in Change.',
-      description: 'The semantic operating system for resilient organizations. Structured overview meets deep networking. Maximize your impact through data-driven clarity.',
-      ctaPrimary: 'View Showcase',
+      subheadline: 'One system. Three forms of intelligence.',
+      description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. Together they form a sovereign European ecosystem for organizations and creators.',
+      ctaPrimary: 'Discover YORI',
       ctaSecondary: 'Book Strategy Call',
       stats: [
-        { value: 'AI', label: 'Semantic Core' },
-        { value: 'EU', label: 'Data Sovereignty' },
-        { value: '∞', label: 'Connections' }
+        { value: 'SAIMÔR', label: 'Operating System' },
+        { value: 'MÔRA', label: 'Semantic Intelligence' },
+        { value: 'YORI', label: 'Creative OS' }
       ],
       scrollHint: 'Explore'
     }
@@ -264,7 +264,7 @@ export default function Hero({ locale, calUrl }: Props) {
             className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
             <AnimatedButton
-              href={locale === 'en' ? '/en/mora' : '/mora'}
+              href={locale === 'en' ? '/en/yori' : '/yori'}
               variant="gradient"
               size="lg"
               className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
@@ -291,7 +291,7 @@ export default function Hero({ locale, calUrl }: Props) {
           >
             {content.stats.map((stat, i) => (
               <div key={i} className="text-center group">
-                <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1 group-hover:text-[var(--world-cyan)] transition-colors">
+                <div className="text-sm sm:text-base font-mono font-bold tracking-[.08em] text-white mb-2 group-hover:text-[var(--world-cyan)] transition-colors">
                   {stat.value}
                 </div>
                 <div className="text-[9px] uppercase tracking-[0.3em] font-black text-white/20">

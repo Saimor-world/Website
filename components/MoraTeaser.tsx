@@ -32,8 +32,8 @@ export default function MoraTeaser({ locale }: Props) {
 
   return (
     <section className="relative overflow-hidden border-t border-[var(--world-border)] bg-[var(--world-ink)] py-28 text-[var(--world-paper)] sm:py-44">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_34%,rgba(214,168,72,.12),transparent_30%),radial-gradient(circle_at_78%_24%,rgba(102,221,234,.10),transparent_28%),linear-gradient(180deg,var(--world-night),var(--world-ink)_54%,#050812)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[.16] [background-image:linear-gradient(rgba(214,168,72,.10)_1px,transparent_1px),linear-gradient(90deg,rgba(102,221,234,.12)_1px,transparent_1px)] [background-size:96px_96px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_34%,rgba(214,168,72,.14),transparent_30%),radial-gradient(circle_at_78%_24%,rgba(232,215,170,.07),transparent_28%),linear-gradient(180deg,var(--world-night),var(--world-ink)_54%,#070b0c)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[.14] [background-image:linear-gradient(rgba(214,168,72,.10)_1px,transparent_1px),linear-gradient(90deg,rgba(232,215,170,.08)_1px,transparent_1px)] [background-size:96px_96px]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--world-gold)]/10" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
@@ -57,7 +57,7 @@ export default function MoraTeaser({ locale }: Props) {
               <h2 className="text-5xl font-light leading-none sm:text-7xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 {t('Sie hoert zu.', 'She listens.')}
               </h2>
-              <p className="text-sm uppercase tracking-[0.2em] text-[var(--world-cyan)]/72">
+              <p className="text-sm uppercase tracking-[0.2em] text-[var(--world-mora-mist)]/72">
                 {t('Die Intelligenz im Saimôr Betriebssystem', 'The intelligence inside the Saimôr operating system')}
               </p>
             </div>
@@ -120,7 +120,7 @@ export default function MoraTeaser({ locale }: Props) {
             className="relative flex h-[480px] items-center justify-center"
           >
             <div className="absolute h-[27rem] w-[27rem] rounded-full border border-[var(--world-gold)]/10" />
-            <div className="absolute h-[20rem] w-[20rem] rounded-full border border-[var(--world-cyan)]/12" />
+            <div className="absolute h-[20rem] w-[20rem] rounded-full border border-[var(--world-mora-mist)]/12" />
             <div className="absolute h-80 w-80 rounded-full bg-[var(--world-gold)]/12 blur-[100px]" />
 
             <div
@@ -142,7 +142,7 @@ export default function MoraTeaser({ locale }: Props) {
               <div className="absolute inset-0 bg-[linear-gradient(to_top,#0C1020_0%,transparent_52%)]" />
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="inline-flex items-center gap-2 rounded-xl border border-[var(--world-gold)]/20 bg-[#081410]/85 px-3 py-2 backdrop-blur-xl">
-                  <span className="h-2 w-2 rounded-full bg-[var(--world-cyan)] shadow-[0_0_18px_rgba(102,221,234,.9)]" />
+                  <span className="h-2 w-2 rounded-full bg-[var(--world-mora-mist)] shadow-[0_0_18px_rgba(214,168,72,.6)]" />
                   <span className="text-xs font-medium tracking-wide text-[var(--world-gold)]">
                     {t('Môra Analyse laeuft', 'Môra analysis running')}
                   </span>
@@ -156,7 +156,7 @@ export default function MoraTeaser({ locale }: Props) {
               transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
             >
               <div className="absolute left-1/2 top-8 h-2.5 w-2.5 rounded-full bg-[var(--world-gold)] shadow-[0_0_20px_rgba(214,168,72,0.9)]" />
-              <div className="absolute bottom-14 right-16 h-1.5 w-1.5 rounded-full bg-[var(--world-cyan)] shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+              <div className="absolute bottom-14 right-16 h-1.5 w-1.5 rounded-full bg-[var(--world-mora-mist)] shadow-[0_0_12px_rgba(214,168,72,0.6)]" />
             </motion.div>
           </motion.div>
         </div>
