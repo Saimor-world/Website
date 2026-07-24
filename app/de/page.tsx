@@ -1,11 +1,11 @@
-import Hero from '@/components/Hero';
+﻿import Hero from '@/components/Hero';
 import YoriSection from '@/components/YoriSection';
 import MoraTeaser from '@/components/MoraTeaser';
 import CommunityBanner from '@/components/CommunityBanner';
 import WaitlistForm from '@/components/WaitlistForm';
 import ContactSection from '@/components/ContactSection';
-import MoraIntroAnimation from '@/components/MoraIntroAnimation';
-import MyceliumNetwork from '@/components/MyceliumNetwork';
+import MoraIntroLazy from '@/components/MoraIntroLazy';
+import MyceliumNetworkLazy from '@/components/MyceliumNetworkLazy';
 import SocialProof from '@/components/SocialProof';
 import EntryTeaser from '@/components/EntryTeaser';
 
@@ -17,8 +17,8 @@ export const metadata = {
 export default function Page() {
   return (
     <main className="flex flex-col min-h-screen">
-      <MoraIntroAnimation locale="de" />
-      <MyceliumNetwork />
+      <MoraIntroLazy locale="de" />
+      <MyceliumNetworkLazy />
       <div className="relative z-10">
         <Hero locale="de" />
         <YoriSection locale="de" />
