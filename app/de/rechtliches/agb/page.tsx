@@ -10,7 +10,7 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">1. Geltungsbereich &amp; Anbieter</h2>
           <p className="mb-6 text-slate-700">
             Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der Software und Dienste von
-            Saimôr (nachfolgend „SAIMÔR"), erreichbar über saimor.world und zugehörige Subdomains. Anbieter ist
+            Saimôr (nachfolgend „SAIMÔR“), erreichbar über saimor.world und zugehörige Subdomains. Anbieter ist
             Saimôr, Kontakt: contact@saimor.world. Die vollständigen Anbieterangaben finden Sie im{' '}
             <a href="/de/rechtliches/impressum" className="text-yellow-600 hover:underline">Impressum</a>.
           </p>
