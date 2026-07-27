@@ -6,6 +6,7 @@ import { Menu, X, Globe, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatomoEvents } from '@/lib/matomo';
+import { localizedLegalHref } from '@/lib/legal-routes';
 import UserAccount from './UserAccount';
 
 export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
@@ -18,6 +19,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     if (!pathname) return `/${switchLocale}`;
     if (pathname.startsWith('/de/einstieg')) return pathname.replace('/de/einstieg', '/en/entry');
     if (pathname.startsWith('/en/entry')) return pathname.replace('/en/entry', '/de/einstieg');
+    const localizedLegalRoute = localizedLegalHref(pathname);
+    if (localizedLegalRoute) return localizedLegalRoute;
     const segments = pathname.split('/').filter(Boolean);
     if (segments[0] === 'de' || segments[0] === 'en') {
       segments[0] = switchLocale;

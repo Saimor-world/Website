@@ -11,9 +11,17 @@ const LOADING_STEPS = [
   { id: 'dns',        label: 'Digitale Wegweiser prüfen (DNS)',    desc: 'Wir schauen, ob deine Adressen sicher geroutet werden.' },
   { id: 'tls',        label: 'Verschlüsselungs-Check (TLS)',       desc: 'Ist die Verbindung zu deinen Servern zeitgemäß gesichert?' },
   { id: 'headers',    label: 'Schutzschilde analysieren (HTTP)',    desc: 'Prüfung der Sicherheits-Header deiner Webseite.' },
-  { id: 'publicFiles', label: 'Oeffentliche Spuren browsen',        desc: 'Der Audit-Agent prueft security.txt, robots.txt, sitemap und sensible Standardpfade.' },
+  {
+    id: 'publicFiles',
+    label: 'Öffentliche Spuren prüfen',
+    desc: 'Der Audit-Agent prüft security.txt, robots.txt, sitemap und sensible Standardpfade.',
+  },
   { id: 'subdomains', label: 'Nachbargebäude finden (Subdomains)', desc: 'Was ist im Umfeld deiner Domain noch alles sichtbar?' },
-  { id: 'report',     label: 'Report-Card bauen',                   desc: 'Die Befunde werden in technische Teilnoten und konkrete Massnahmen uebersetzt.' },
+  {
+    id: 'report',
+    label: 'Report-Card bauen',
+    desc: 'Die Befunde werden in technische Teilnoten und konkrete Maßnahmen übersetzt.',
+  },
 ];
 
 function scoreColor(score: number): string {
@@ -35,15 +43,22 @@ function scoreLabel(score: number): string {
 }
 
 function wallErrorMessage(value?: string) {
-  if (!value) return 'Der Bestaetigungslink konnte nicht gesendet werden. Bitte spaeter erneut versuchen.';
-  if (value === 'Email delivery failed') return 'Der Bestaetigungslink konnte nicht versendet werden. Nightwatch nutzt jetzt denselben Mailkanal wie der HQ-Link; bitte erneut versuchen.';
+  if (!value) {
+    return 'Der Bestätigungslink konnte nicht gesendet werden. Bitte später erneut versuchen.';
+  }
+  if (value === 'Email delivery failed') {
+    return 'Der Bestätigungslink konnte nicht versendet werden. Bitte erneut versuchen.';
+  }
   if (value === 'Email delivery not configured') return 'Der Wall-Mailkanal ist noch nicht konfiguriert.';
-  if (value === 'Consent is required before publishing to the wall') return 'Bitte bestaetige zuerst die Sichtbarkeit fuer die Wall. Ohne deine Bestaetigung wird nichts oeffentlich.';
+  if (value === 'Consent is required before publishing to the wall') {
+    return 'Bitte bestätige zuerst die Sichtbarkeit für die Wall. Ohne deine ' +
+      'Bestätigung wird nichts öffentlich.';
+  }
   return value;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  encryption: 'Verschluesselung',
+  encryption: 'Verschlüsselung',
   headers: 'Browser-Schutz',
   informationHygiene: 'Informationshygiene',
   infrastructure: 'Infrastruktur',
@@ -134,7 +149,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         window.history.replaceState({}, '', window.location.pathname);
       } catch (err: any) {
         if (cancelled) return;
-        setWallVerifyError(err?.message || 'Der Link ist abgelaufen oder ungueltig.');
+        setWallVerifyError(err?.message || 'Der Link ist abgelaufen oder ungültig.');
         setWallVerifyState('error');
       }
     };
@@ -309,7 +324,10 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const pinToWall = async () => {
     if (!results?.id) return;
     if (!wallConsent) {
-      setWallError('Bitte bestaetige zuerst die Sichtbarkeit fuer die Wall. Ohne deine Bestaetigung wird nichts oeffentlich.');
+      setWallError(
+        'Bitte bestätige zuerst die Sichtbarkeit für die Wall. Ohne deine ' +
+        'Bestätigung wird nichts öffentlich.'
+      );
       setWallState('error');
       return;
     }
@@ -401,17 +419,17 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             <p className="text-[10px] uppercase tracking-[0.25em] text-white/42">Wall Verification</p>
             <h2 className="mt-2 text-2xl font-light">
               {wallVerifyState === 'verifying'
-                ? 'E-Mail wird bestaetigt...'
+                ? 'E-Mail wird bestätigt...'
                 : wallVerifyState === 'pinned'
                   ? 'Check ist im Supporter Universe'
-                  : 'Verifizierung nicht moeglich'}
+                  : 'Verifizierung nicht möglich'}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/56">
               {wallVerifyState === 'verifying'
-                ? 'Wir pruefen den Link und veroeffentlichen erst danach.'
+                ? 'Wir prüfen den Link und veröffentlichen erst danach.'
                 : wallVerifyState === 'pinned'
-                  ? 'Die Wall wurde erst nach bestaetigter E-Mail und Zustimmung beschrieben.'
-                  : wallVerifyError || 'Der Link ist abgelaufen oder ungueltig.'}
+                  ? 'Die Wall wurde erst nach bestätigter E-Mail und Zustimmung beschrieben.'
+                  : wallVerifyError || 'Der Link ist abgelaufen oder ungültig.'}
             </p>
             {wallVerifyState === 'pinned' ? (
               <Link href="/wall" className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/75 hover:bg-white/[0.1]">
@@ -431,7 +449,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 Was sieht das <span className="italic">Internet</span> über dein Unternehmen?
               </h1>
               <p className="text-white/40 max-w-lg text-sm">
-                Nightwatch prueft nur oeffentliche Signale. Danach uebersetzt Mora OS die Befunde in einen isolierten HQ-Workspace.
+                Nightwatch prüft nur öffentliche Signale. Danach übersetzt Saimôr OS
+                die Befunde in einen isolierten HQ-Workspace.
               </p>
             </header>
 
@@ -496,7 +515,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     </select>
                   </label>
                   <div className="space-y-2 md:col-span-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Groesse</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">
+                      Größe
+                    </span>
                     <div className="grid grid-cols-3 gap-2">
                       {['1-10', '11-50', '51+'].map((size) => (
                         <button

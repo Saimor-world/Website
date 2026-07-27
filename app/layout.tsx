@@ -1,5 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import Script from 'next/script'
 import './globals.css'
 import ClientProviders from '../components/ClientProviders'
@@ -15,8 +16,12 @@ import PWARegistration from '@/components/PWARegistration';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 import * as Sentry from '@sentry/nextjs';
+import { canonicalUrlForRequest } from '@/lib/site-estate';
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  const pathname = (await headers()).get('x-saimor-pathname');
+  const canonicalUrl = canonicalUrlForRequest(pathname);
+
   return {
     metadataBase: new URL('https://saimor.world'),
     title: {
@@ -51,7 +56,7 @@ export function generateMetadata(): Metadata {
     openGraph: {
       title: 'Saimôr – Klarheit im Wandel',
       description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
-      url: 'https://saimor.world',
+      url: canonicalUrl,
       siteName: 'Saimôr',
       images: [
         {
@@ -83,11 +88,7 @@ export function generateMetadata(): Metadata {
       },
     },
     alternates: {
-      canonical: 'https://saimor.world',
-      languages: {
-        'de-DE': 'https://saimor.world/de',
-        'en-US': 'https://saimor.world/en',
-      },
+      canonical: canonicalUrl,
     },
     verification: {
       // Google Search Console (wenn vorhanden)

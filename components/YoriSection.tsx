@@ -51,7 +51,7 @@ export default function YoriSection({ locale }: Props) {
           <p className="mt-6 font-serif text-2xl italic text-[var(--yori-indigo)]">Create in Flow.</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={locale === "de" ? "/yori" : "/en/yori"} className="rounded-full bg-[var(--yori-jade)] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[var(--yori-jade-deep)]">{copy.primary}</a>
-            <a href="https://frnt.saimor.world" className="rounded-full border border-[var(--yori-indigo)]/28 px-6 py-3 text-sm font-bold text-[var(--yori-indigo)] transition hover:border-[var(--yori-indigo)]">{copy.secondary}</a>
+            <a href="https://yori.saimor.world" className="rounded-full border border-[var(--yori-indigo)]/28 px-6 py-3 text-sm font-bold text-[var(--yori-indigo)] transition hover:border-[var(--yori-indigo)]">{copy.secondary}</a>
           </div>
         </div>
         <div className="grid overflow-hidden rounded-[2rem_1rem_2.2rem_1.2rem] border border-[#d0dad4] bg-[#f9f7f1] shadow-[12px_14px_0_rgba(217,207,189,.42)] sm:grid-cols-2">

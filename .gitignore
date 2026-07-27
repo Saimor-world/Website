@@ -41,3 +41,7 @@ MORA_POLISH.md
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Local dev server logs/scratch
+.codex-logs/
+tmp/

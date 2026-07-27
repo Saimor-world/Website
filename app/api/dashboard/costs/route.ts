@@ -44,8 +44,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       today_usd: stats.costsToday,
-      yesterday_usd: stats.costsToday * 0.8, // Simulated yesterday
-      trend: '+25%',
+      yesterday_usd: null,
+      trend: null,
       breakdown: {
         anthropic_usd: stats.costsToday * 0.75,
         openai_usd: stats.costsToday * 0.25
@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
     console.error('Dashboard costs API error:', error);
     return NextResponse.json({
       today_usd: 2.34,
-      yesterday_usd: 1.87,
-      trend: '+25%',
+      yesterday_usd: null,
+      trend: null,
       breakdown: { anthropic_usd: 1.84, openai_usd: 0.50 },
       isDemo: true
     });

@@ -1,4 +1,4 @@
-export const metadata = { title: 'Datenschutz – Saimôr' };
+export const metadata = { title: { absolute: 'Datenschutz – Saimôr' } };
 
 export default function Page() {
   return (

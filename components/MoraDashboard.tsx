@@ -78,24 +78,24 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
     const q = (question || "").toLowerCase();
     const responses = {
       team: [
-        "Die Resonanzanalyse zeigt eine fluktuierende Dynamik. Der 'Clarity Index' im Team-Backend ist auf 87% gestiegen, was auf verbesserte interne Kommunikation hindeutet.",
+        "Die Resonanzanalyse zeigt eine fluktuierende Dynamik. Der 'Clarity Index' im Team-Backend ist im Demo-Modus qualitativ als verbessert markiert, was auf verbesserte interne Kommunikation hindeutet.",
         "Ich erkenne eine starke semantische Kopplung zwischen Team-Zufriedenheit und Output-Velocity. Ein leichter Drift in Abteilung 3 sollte beobachtet werden.",
         "Die sozialen Knotenpunkte im System sind hochaktiv. Die Resonanz im Bereich 'Collaboration' ist auf einem Allzeithoch."
       ],
       finanz: [
-        "Finanz-Knoten stabil. Ich erkenne jedoch eine semantische Reibung im Bereich 'Resource Allocation'. Eine Optimierung würde die Effizienz um ca. 12% steigern.",
+        "Finanz-Knoten stabil. Ich erkenne jedoch eine semantische Reibung im Bereich 'Resource Allocation'. Eine Optimierung würde die Effizienz qualitativ verbessern.",
         "Die Budget-Resonanz ist im grünen Bereich. Die semantische Schicht empfiehlt eine Re-Investigation der Fixkosten-Cluster in Q3.",
         "Positive Korrelation zwischen F&E-Investitionen und der zukünftigen Velocity-Prognose detektiert."
       ],
       vision: [
         "Ich bin MÔRA Intelligence, die semantische Schicht deines Unternehmens. Ich sehe keine isolierten Daten, sondern ganzheitliche Resonanzen.",
         "Meine Aufgabe ist es, die verborgenen Muster in deinem Organisations-Universum sichtbar zu machen. Aktueller Systemstatus: Harmonisch.",
-        "Resonanz v4.2 aktiv. Ich verarbeite aktuell über 150.000 semantische Knoten pro Sekunde für maximale Klarheit."
+        "Resonanz v4.2 aktiv. Ich verarbeite aktuell ausschließlich als qualitative Demo-Signale."
       ],
       default: [
         "Interessante Beobachtung. Die Korrelation zwischen 'Velocity' und 'Clarity' hat sich verdichtet. Ich empfehle tiefergehende Analysen in Cluster 7.",
         "Analyse abgeschlossen. Ich habe eine minimale Anomalie in den Kommunikations-Clustern gefunden, die auf Informationsverlust hindeuten könnte.",
-        "Die Datenströme fließen synchron. Fokus liegt aktuell auf der Erhaltung des hohen Resonanzniveaus von 91% in der Prozess-Effizienz.",
+        "Die Datenströme fließen synchron. Fokus liegt aktuell auf der Erhaltung des hohen Resonanzniveaus in der Prozess-Effizienz.",
         "System-Check: Alle semantischen Pfade sind offen. Die Resonanz-Matrix zeigt keine nennenswerten Interferenzen."
       ]
     };

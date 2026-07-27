@@ -37,8 +37,11 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   const content = {
     de: {
       title: 'Strategischer Vorabzugang',
-      subtitle: 'Sichere dir deinen Platz im Ökosystem und gestalte die Zukunft semantischer Organisationen mit.',
-      namePlaceholder: 'Ihr Name',
+      subtitle:
+        'Sichere dir deinen Platz im Ökosystem und gestalte die Zukunft ' +
+        'semantischer Organisationen mit.',
+      namePlaceholder: 'Dein Name',
+      accessStatus: 'Early Access · Anfragen offen',
       emailPlaceholder: 'geschaeftlich@email.de',
       interestTitle: 'Interessensgebiete (optional)',
       interests: [
@@ -56,8 +59,11 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
     },
     en: {
       title: 'Strategic Early Access',
-      subtitle: 'Secure your place in the ecosystem and help shape the future of semantic organizations.',
+      subtitle:
+        'Secure your place in the ecosystem and help shape the future of ' +
+        'semantic organizations.',
       namePlaceholder: 'Your name',
+      accessStatus: 'Early access · Requests open',
       emailPlaceholder: 'business@email.com',
       interestTitle: 'Areas of Interest (optional)',
       interests: [
@@ -149,13 +155,15 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                 </p>
               </div>
               <div className="relative z-10 pt-12">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-[#081410] bg-white/10" />
-                  ))}
-                  <div className="w-10 h-10 rounded-full border-2 border-[#081410] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-black">+120</div>
+                <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/10 px-4 py-2">
+                  <span
+                    aria-hidden="true"
+                    className="h-2 w-2 rounded-full bg-emerald-400"
+                  />
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
+                    {content.accessStatus}
+                  </p>
                 </div>
-                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20 mt-4">System Access Pending</p>
               </div>
             </div>
 
@@ -181,6 +189,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                         <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20 px-2">{content.namePlaceholder}</label>
                         <input
                           type="text"
+                          aria-label={content.namePlaceholder}
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
@@ -191,6 +200,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                         <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20 px-2">Email</label>
                         <input
                           type="email"
+                          aria-label="Email"
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
@@ -239,6 +249,14 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     <p className="text-[10px] text-white/20 text-center uppercase tracking-widest leading-relaxed">
                       {content.privacy}
                     </p>
+                    {status === 'error' && (
+                      <p
+                        role="alert"
+                        className="text-center text-sm text-rose-300"
+                      >
+                        {message || content.errorMessage}
+                      </p>
+                    )}
                   </form>
                 )}
               </AnimatePresence>

@@ -1,4 +1,4 @@
-export const metadata = { title: 'AGB – Saimôr' };
+export const metadata = { title: { absolute: 'AGB – Saimôr' } };
 
 export default function Page() {
   return (

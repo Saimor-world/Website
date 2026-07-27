@@ -1,4 +1,4 @@
-export const metadata = { title: 'Terms of Service – Saimôr' };
+export const metadata = { title: { absolute: 'Terms of Service – Saimôr' } };
 
 export default function Page() {
   return (

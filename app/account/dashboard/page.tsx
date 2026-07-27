@@ -8,6 +8,7 @@ import { Sparkles, LayoutDashboard, Shield, BarChart3, Zap, Calendar, ArrowRight
 import { buildOsAuditUrl } from '@/lib/os-links';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
 import DemoHqPreview from '@/components/DemoHqPreview';
+import { getCoreConnectionStatus } from '@/lib/core-connection';
 
 function pipelineStatus(audit: { userId?: string | null; wallEntry?: { status?: string | null } | null }) {
   if (audit.userId) return { label: 'Account verbunden', className: 'text-cyan-200 bg-cyan-400/10 border-cyan-300/20' };
@@ -80,11 +81,11 @@ export default async function MoraDashboardPage() {
     reconData: latestAudit.reconData,
   }) : null;
   const automationCount = latestBlueprint ? (((latestBlueprint.automations as string[]) || []).length) : 0;
-  const baselineFromAudit = audits[0]?.score ? Math.max(0, 100 - audits[0].score) : 30;
-  const efficiencyBoostValue = latestBlueprint
-    ? Math.min(45, Math.max(8, Math.round(automationCount * 6 + baselineFromAudit * 0.15)))
-    : 0;
-  const efficiencyPotential = `${efficiencyBoostValue}%`;
+  const automationSignals = latestBlueprint ? String(automationCount) : '--';
+  const coreStatus = await getCoreConnectionStatus();
+  const coreStatusTone = coreStatus.state === 'connected'
+    ? 'text-emerald-400'
+    : coreStatus.state === 'unavailable' ? 'text-red-300' : 'text-amber-300';
 
   return (
     <div className="min-h-screen bg-[#060d0b] text-white p-6 sm:p-10 lg:p-16">
@@ -150,20 +151,20 @@ export default async function MoraDashboardPage() {
              <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-100 transition-opacity">
                <Zap className="w-5 h-5 text-cyan-400" />
             </div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">Effizienz Boost</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">Automation Signale</p>
             <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-bold text-cyan-400">{efficiencyPotential}</span>
+              <span className="text-5xl font-bold text-cyan-400">{automationSignals}</span>
             </div>
-            <p className="text-[10px] text-white/30 font-mono italic">Durch KI-gestuetzte Prozesse</p>
+            <p className="text-[10px] text-white/30 font-mono italic">Aus dem zuletzt gespeicherten Blueprint</p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-7 space-y-2 relative overflow-hidden group">
             <p className="text-[10px] uppercase tracking-[0.2em] text-white/45 font-bold">System Status</p>
-            <div className="flex items-center gap-2 text-emerald-400 pt-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span className="text-lg font-medium">CORE Linked</span>
+            <div className={`flex items-center gap-2 pt-2 ${coreStatusTone}`} data-core-status={coreStatus.state}>
+              <div className="w-2 h-2 rounded-full bg-current" />
+              <span className="text-lg font-medium">{coreStatus.label}</span>
             </div>
-            <p className="text-[10px] text-white/30 font-mono italic">Node: DE-FRA-01</p>
+            <p className="text-[10px] text-white/30 font-mono italic">{coreStatus.detail}</p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-7 space-y-2 relative overflow-hidden group">
@@ -198,26 +199,26 @@ export default async function MoraDashboardPage() {
               <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-3">
                 <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Node Monitoring</p>
                 <div className="flex items-end justify-between">
-                  <span className="text-3xl font-mono text-emerald-400">99.8%</span>
+                  <span className="text-lg font-mono text-amber-300">Nicht verbunden</span>
                   <BarChart3 className="w-5 h-5 text-white/20" />
                 </div>
               </div>
               <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-3">
                 <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Active Threads</p>
                 <div className="flex items-end justify-between">
-                  <span className="text-3xl font-mono text-cyan-400">12</span>
+                  <span className="text-lg font-mono text-amber-300">Nicht verbunden</span>
                   <Zap className="w-5 h-5 text-white/20" />
                 </div>
               </div>
               <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-3">
                 <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">API Traffic</p>
                 <div className="flex items-end justify-between">
-                  <span className="text-3xl font-mono text-emerald-400">LOW</span>
+                  <span className="text-lg font-mono text-amber-300">Nicht verbunden</span>
                   <CheckCircle2 className="w-5 h-5 text-white/20" />
                 </div>
               </div>
             </div>
-            <p className="text-sm text-white/40 italic">Hinweis: Die Field Suite kommuniziert direkt mit dem parallelen OS-Backbone via API-V3.</p>
+            <p className="text-sm text-white/40 italic">Werte erscheinen erst nach einer bestaetigten Monitoring-Verbindung.</p>
           </section>
         )}
 
@@ -258,7 +259,9 @@ export default async function MoraDashboardPage() {
                   >
                     <span className="min-w-0">
                       <span className="block truncate text-white/86">{audit.name}</span>
-                      <span className="mt-0.5 block text-xs text-white/32">{audit.industry || 'ohne Branche'} · {audit.companySize || 'Groesse offen'}</span>
+                      <span className="mt-0.5 block text-xs text-white/32">
+                        {audit.industry || 'ohne Branche'} · {audit.companySize || 'Größe offen'}
+                      </span>
                     </span>
                     <span className="min-w-0 truncate text-white/58">{audit.email}</span>
                     <span className="min-w-0 truncate text-white/48">{audit.targetDomain || audit.domain || '-'}</span>

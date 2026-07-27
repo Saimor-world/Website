@@ -84,7 +84,7 @@ export default function DemoHqPreview({ profile, osHref, onRequestAccess, access
           <div className="pointer-events-none absolute inset-x-10 top-20 h-px bg-gradient-to-r from-transparent via-cyan-200/30 to-transparent" />
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-cyan-100">
             <Sparkles className="h-3 w-3" />
-            Nightwatch zu Mora OS
+            Nightwatch zu Saimôr OS
           </div>
 
           <div className="mt-7">

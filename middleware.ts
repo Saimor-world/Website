@@ -5,6 +5,8 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get('host')?.toLowerCase() || '';
   const pathname = request.nextUrl.pathname;
   const isOwnerHost = host === 'owner.saimor.world' || host.startsWith('owner.saimor.world:');
+  const forwardedHeaders = new Headers(request.headers);
+  forwardedHeaders.set('x-saimor-pathname', pathname);
 
   if (isOwnerHost) {
     const ownerUrl = request.nextUrl.clone();
@@ -26,7 +28,11 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  const response = NextResponse.next();
+  const response = NextResponse.next({
+    request: {
+      headers: forwardedHeaders,
+    },
+  });
 
   // Enhanced Content Security Policy
   const csp = [

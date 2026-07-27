@@ -58,7 +58,14 @@ const nextConfig = {
 
   // === ROUTING ===
   async redirects() {
-    return []
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'frnt.saimor.world' }],
+        destination: 'https://yori.saimor.world/:path*',
+        permanent: true,
+      },
+    ]
   },
 };
 

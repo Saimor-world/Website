@@ -23,6 +23,7 @@
     "auth:cleanup:magic": "node scripts/cleanup-magic-tokens.js",
     "preflight:auth": "node scripts/preflight-auth.js",
     "preflight:go-live": "node scripts/preflight-go-live.js",
+    "verify:estate": "node scripts/verify-site-estate.mjs",
     "smoke:auth": "node scripts/smoke-auth.js",
     "postinstall": "prisma generate"
   },

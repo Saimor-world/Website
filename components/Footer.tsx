@@ -1,17 +1,40 @@
 'use client';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import NewsletterSignup from './NewsletterSignup';
 import ShareButton from '@/components/ShareButton';
 
+type SystemStatus = 'checking' | 'available' | 'limited' | 'unknown';
+
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   const [year, setYear] = useState('2026');
+  const [systemStatus, setSystemStatus] = useState<SystemStatus>('checking');
   const router = useRouter();
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+
+    fetch('/api/health', { cache: 'no-store', signal: controller.signal })
+      .then(async (response) => {
+        const payload = await response.json().catch(() => null) as { ok?: boolean } | null;
+        if (!active) return;
+        setSystemStatus(response.ok && payload?.ok === true ? 'available' : 'limited');
+      })
+      .catch((error: unknown) => {
+        if (!active || (error instanceof DOMException && error.name === 'AbortError')) return;
+        setSystemStatus('unknown');
+      });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, []);
 
   const footerText = {
@@ -28,7 +51,6 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       terms: 'AGB',
       refund: 'Widerruf',
       tagline: 'SAIMÔR — Souveränität durch Technologie.',
-      made: 'System Status: Aktiv',
       copyright: 'Copyright'
     },
     en: {
@@ -44,10 +66,24 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
       terms: 'Terms',
       refund: 'Refund',
       tagline: 'SAIMÔR — Sovereignty through technology.',
-      made: 'System Status: Active',
       copyright: 'Copyright'
     }
   }[locale];
+
+  const systemStatusText = {
+    de: {
+      checking: 'Status wird gepr\u00fcft',
+      available: 'System verf\u00fcgbar',
+      limited: 'System eingeschr\u00e4nkt',
+      unknown: 'Status unbekannt',
+    },
+    en: {
+      checking: 'Checking system status',
+      available: 'System available',
+      limited: 'System limited',
+      unknown: 'Status unknown',
+    },
+  }[locale][systemStatus];
 
   const handleScrollToContact = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -122,9 +158,26 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           </div>
           <div className="flex items-center gap-4">
             <ShareButton />
-            <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] uppercase tracking-[0.2em] font-black text-emerald-500/60">{footerText.made}</span>
+            <div
+              role="status"
+              aria-live="polite"
+              data-system-status={systemStatus}
+              className={`flex items-center gap-3 px-4 py-1.5 rounded-full border ${
+                systemStatus === 'available'
+                  ? 'bg-emerald-500/5 border-emerald-500/10'
+                  : systemStatus === 'limited'
+                    ? 'bg-amber-500/5 border-amber-500/15'
+                    : 'bg-white/5 border-white/10'
+              }`}
+            >
+              <div className={`w-1.5 h-1.5 rounded-full ${
+                systemStatus === 'available' ? 'bg-emerald-500' : systemStatus === 'limited' ? 'bg-amber-400' : 'bg-white/30'
+              } ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
+              <span className={`text-[9px] uppercase tracking-[0.2em] font-black ${
+                systemStatus === 'available' ? 'text-emerald-500/60' : systemStatus === 'limited' ? 'text-amber-300/70' : 'text-white/35'
+              }`}>
+                {systemStatusText}
+              </span>
             </div>
           </div>
         </div>

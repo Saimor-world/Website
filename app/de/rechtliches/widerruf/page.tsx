@@ -1,4 +1,4 @@
-export const metadata = { title: 'Widerruf & Erstattung – Saimôr' };
+export const metadata = { title: { absolute: 'Widerruf & Erstattung – Saimôr' } };
 
 export default function Page() {
   return (

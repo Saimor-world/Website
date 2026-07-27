@@ -1,0 +1,34 @@
+{
+  "siteOrigin": "https://saimor.world",
+  "yoriWorkspaceOrigin": "https://yori.saimor.world",
+  "legacyYoriOrigin": "https://frnt.saimor.world",
+  "canonicalRoutes": [
+    "/de",
+    "/en",
+    "/de/einstieg",
+    "/en/entry",
+    "/de/kontakt",
+    "/en/contact",
+    "/de/trust",
+    "/en/trust",
+    "/de/rechtliches/agb",
+    "/de/rechtliches/datenschutz",
+    "/de/rechtliches/impressum",
+    "/de/rechtliches/widerruf",
+    "/en/legal/terms",
+    "/en/legal/privacy",
+    "/en/legal/imprint",
+    "/en/legal/refund",
+    "/mora",
+    "/en/mora",
+    "/mora/analog-affect",
+    "/en/mora/analog-affect",
+    "/yori",
+    "/en/yori",
+    "/wall"
+  ],
+  "legacyPathRedirects": {
+    "/frnt": "/yori",
+    "/en/frnt": "/en/yori"
+  }
+}
