@@ -78,11 +78,11 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
   const c = content[locale];
 
   return (
-    <section className="relative py-32 bg-[#060a09] overflow-hidden">
+    <section className="relative py-32 bg-world-ink overflow-hidden">
       {/* Background atmosphere */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-emerald-500/12 blur-[200px] rounded-full" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/8 blur-[180px] rounded-full" />
+        <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-world-gold/12 blur-[200px] rounded-full" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-world-gold/8 blur-[180px] rounded-full" />
         <div className="absolute inset-0 bg-noise opacity-[0.03]" />
       </div>
 
@@ -99,28 +99,28 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
             className="rounded-[3rem] overflow-hidden relative"
             style={{
               background: 'linear-gradient(135deg, rgba(10, 22, 18, 0.9) 0%, rgba(6, 18, 14, 0.95) 100%)',
-              border: '1px solid rgba(52, 211, 153, 0.15)',
-              boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(52,211,153,0.05), inset 0 1px 0 rgba(255,255,255,0.06)',
+              border: '1px solid rgba(214, 168, 72, 0.15)',
+              boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(214,168,72,0.05), inset 0 1px 0 rgba(255,255,255,0.06)',
             } as CSSProperties}
           >
             {/* Top gradient line */}
             <div
               className="absolute top-0 left-0 right-0 h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(52,211,153,0.4), transparent)' }}
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(214,168,72,0.4), transparent)' }}
             />
 
             <div className="px-10 py-16 sm:px-20 sm:py-24">
               {/* Badge + spots */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-world-gold/10 border border-world-gold/20">
+                  <Sparkles className="w-3.5 h-3.5 text-world-gold" />
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-world-gold">
                     {c.badge}
                   </span>
                 </div>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                  <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-amber-400/90">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-world-gold/10 border border-world-gold/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-world-gold animate-pulse" />
+                  <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-world-gold/90">
                     {c.spotsLeft}
                   </span>
                 </div>
@@ -135,7 +135,7 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
                   {c.title.split('\n').map((line, i) =>
                     i === 1 ? (
                       <span key={i} className="block italic text-transparent bg-clip-text"
-                        style={{ backgroundImage: 'linear-gradient(135deg, #34d399, #06b6d4)' }}>
+                        style={{ backgroundImage: 'linear-gradient(135deg, #D6A848, #E4BE6D)' }}>
                         {line}
                       </span>
                     ) : (
@@ -160,10 +160,10 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.1 + i * 0.08 }}
-                      className="group p-6 rounded-2xl border border-white/6 bg-white/[0.03] hover:bg-emerald-500/5 hover:border-emerald-500/15 transition-all duration-300 text-left space-y-3"
+                      className="group p-6 rounded-2xl border border-white/6 bg-white/[0.03] hover:bg-world-gold/5 hover:border-world-gold/15 transition-all duration-300 text-left space-y-3"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/15 transition-colors">
-                        <Icon className="w-5 h-5 text-emerald-400" strokeWidth={1.5} />
+                      <div className="w-10 h-10 rounded-xl bg-world-gold/10 flex items-center justify-center group-hover:bg-world-gold/15 transition-colors">
+                        <Icon className="w-5 h-5 text-world-gold" strokeWidth={1.5} />
                       </div>
                       <div className="font-semibold text-white/80 text-sm">{feature.title}</div>
                       <p className="text-white/40 text-xs leading-relaxed">{feature.text}</p>
@@ -178,8 +178,8 @@ export default function CommunityBanner({ locale }: CommunityBannerProps) {
                   href="#waitlist"
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group inline-flex items-center gap-3 px-12 py-5 rounded-2xl font-bold text-black transition-all shadow-[0_20px_60px_rgba(52,211,153,0.2)]"
-                  style={{ background: 'linear-gradient(135deg, #34d399, #10b981)' }}
+                  className="group inline-flex items-center gap-3 px-12 py-5 rounded-2xl font-bold text-black transition-all shadow-[0_20px_60px_rgba(214,168,72,0.2)]"
+                  style={{ background: 'linear-gradient(135deg, #D6A848, #C79E42)' }}
                 >
                   <span>{c.cta}</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

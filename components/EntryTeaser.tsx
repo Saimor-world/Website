@@ -95,9 +95,9 @@ export default function EntryTeaser({ locale }: { locale: Locale }) {
   const c = content[locale];
 
   return (
-    <section className="relative py-24 bg-[#081410] overflow-hidden">
+    <section className="relative py-24 bg-world-ink overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-world-gold/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <motion.div
@@ -111,7 +111,7 @@ export default function EntryTeaser({ locale }: { locale: Locale }) {
           {/* Top accent line */}
           <div
             className="h-px w-full"
-            style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(52,211,153,0.3) 50%, transparent 100%)' }}
+            style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(214,168,72,0.3) 50%, transparent 100%)' }}
           />
 
           <div className="p-10 sm:p-14">
@@ -129,7 +129,7 @@ export default function EntryTeaser({ locale }: { locale: Locale }) {
                   {c.title.split('\n').map((line, i) =>
                     i === 1 ? (
                       <span key={i} className="block italic text-transparent bg-clip-text"
-                        style={{ backgroundImage: 'linear-gradient(135deg, #34d399 0%, #06b6d4 100%)' }}>
+                        style={{ backgroundImage: 'linear-gradient(135deg, #D6A848 0%, #E4BE6D 100%)' }}>
                         {line}
                       </span>
                     ) : (
@@ -143,8 +143,8 @@ export default function EntryTeaser({ locale }: { locale: Locale }) {
 
                 <Link
                   href={c.href}
-                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-black transition-all hover:scale-[1.02] shadow-[0_12px_40px_rgba(52,211,153,0.2)] mt-2"
-                  style={{ background: 'linear-gradient(135deg, #34d399, #10b981)' }}
+                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-black transition-all hover:scale-[1.02] shadow-[0_12px_40px_rgba(214,168,72,0.2)] mt-2"
+                  style={{ background: 'linear-gradient(135deg, #D6A848, #C79E42)' }}
                 >
                   <span>{c.cta}</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

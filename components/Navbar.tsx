@@ -133,13 +133,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-white flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-[var(--world-violet)]/10 transition-all">
+                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-[var(--world-gold)]/20 transition-all">
                   <Image
                     src="/saimor-seal-master.png"
                     alt="Saimôr"
                     width={28}
                     height={28}
-                    className="object-contain scale-[1.3]"
+                    className="object-contain scale-[1.3] mix-blend-screen"
                     priority
                   />
                 </div>
@@ -307,13 +307,13 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 rounded-2xl bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center overflow-hidden">
                     <Image
                       src="/saimor-seal-master.png"
                       alt="Saimôr"
                       width={48}
                       height={48}
-                      className="object-contain"
+                      className="object-contain mix-blend-screen"
                     />
                   </div>
                 </motion.div>

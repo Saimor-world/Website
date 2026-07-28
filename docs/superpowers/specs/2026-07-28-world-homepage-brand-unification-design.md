@@ -44,14 +44,25 @@ Existing tokens in `app/globals.css` (`:root`) already cover most of this — no
 ## 4. Section-by-section scope
 
 1. **Trust section** ("Technologie, der man vertrauen kann.") — headline to Cormorant serif, background to `--world-ink`, the three feature cards' icon badges and borders to gold, the EU/DSGVO/0-cookies/Open-Source stat row to `--world-emerald` (these specifically are the "certified" badges the emerald accent is for).
-2. **Waitlist / pricing section** ("Strategischer Vorabzugang") — headline to serif, background to `--world-ink`, the interest-area buttons and the "PLATZ SICHERN" CTA to gold (gradient, matching Hero's existing gold CTA treatment already used elsewhere on the page), form inputs keep sans-serif but restyle borders/focus states to gold instead of green.
-3. **Contact form section** — headline to serif, background to `--world-ink`, input field borders/focus rings to gold, submit button to the same gold CTA treatment as the waitlist section (one CTA visual language, not two).
+2. **Waitlist / pricing section** ("Strategischer Vorabzugang") — headline to serif, background to `--world-ink`, the interest-area buttons and the "PLATZ SICHERN" CTA to solid `--world-gold` (correction: no gold CTA gradient actually exists elsewhere on the page to match — Hero's own primary CTA intentionally uses YORI's own jade/teal accent via the shared `AnimatedButton` `gradient` variant, since it's promoting YORI specifically, not SAIMÔR; that shared component is out of scope here and not to be changed, since it's used for YORI-branded CTAs sitewide), form inputs keep sans-serif but restyle borders/focus states to gold instead of green.
+3. **Contact form section** — headline to serif, background to `--world-ink`, input field borders/focus rings to gold, submit button to the same solid-gold treatment as the waitlist section (one CTA visual language, not two).
 
 ## 5. Testing
 
 Following this session's established TDD pattern for WORLD (see `__tests__/Hero.test.tsx`, `__tests__/Navbar.test.tsx` from this session): for each touched component, a test asserting the new `--world-gold`/`--world-emerald`/`--world-ink` token usage is present and the old neon-green hard-coded classes/values are gone — mirroring how the Navbar tests asserted `bg-white` was absent rather than asserting a specific pixel color. Full suite (`npx vitest run`) must stay green; no snapshot tests should be blindly updated without checking the visual diff makes sense.
 
 Visual verification: browser preview (`world-dev`, already configured in `.claude/launch.json`) after each section, screenshot compared against the current live site, checked with the user before commit/push — this touches live public copy and styling on a branch that auto-deploys on push to `main` (see `[[project_world_deploy_gotcha]]`), so push requires explicit go-ahead per section or at the end, not assumed.
+
+## 5a. Found during implementation — scope corrections
+
+The live-browser verification pass (after §4's three components were done) found this spec's original page audit had missed several sections, since the actual homepage composition (`app/de/page.tsx`) is longer than assumed:
+
+- **`CommunityBanner.tsx`** — a second waitlist-style CTA (also linking to `#waitlist`) sitting between the knowledge-base teaser and SocialProof. Used Tailwind emerald/cyan/amber classes AND raw hex/rgba green values in inline gradient `style` objects in two places — a plain class-name grep missed those. Fixed the same way (gold leads).
+- **`EntryTeaser.tsx`** ("Wissensbasis") — its four track tiles (Security-Check/Digital AI Self/Demo-Tracks/Konzepte) intentionally color-code four distinct categories; that's a legend, not a brand mismatch, and was left as-is. Its own section identity (background, top accent line, headline gradient, CTA button) had the same one-color-for-everything problem as the other sections and was fixed the same way.
+- **`WaitlistForm.tsx`'s own submit button** was initially left as a white resting state with only a gold hover, since no gold CTA existed elsewhere to match against. Once `CommunityBanner`'s identical-purpose "Platz sichern" button (same anchor target, similar copy) was fixed to solid gold, having one white and one gold button for the same action nearby was itself a mismatch — the WaitlistForm button was moved to the same solid gold treatment.
+- **`YoriSection.tsx`** — flagged directly by the user mid-implementation as the single most visible break on the page: a light cream (`--yori-paper`) section sandwiched between every other section's dark/gold treatment. This was originally treated as intentionally separate YORI sub-branding (matching Hero's own "Discover YORI" CTA, which deliberately borrows YORI's jade/teal identity) — the user corrected this read. Fixed: the section's base mode moves to `--world-ink` like everything else; YORI's jade/indigo tokens are kept, but only as accents (icon circle, eyebrow label, secondary link), the same role `--world-emerald` plays for SocialProof's trust badges.
+
+`MoraTeaser.tsx` was also checked and found already consistent (gold-accented, dark background) — no changes needed there.
 
 ## 6. Out of scope (explicitly deferred)
 

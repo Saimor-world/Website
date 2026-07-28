@@ -34,28 +34,27 @@ const COPY = {
 export default function YoriSection({ locale }: Props) {
   const copy = COPY[locale];
   return (
-    <section className="relative overflow-hidden border-t border-[#d5ddd7] bg-[var(--yori-paper)] px-6 py-24 text-[var(--yori-ink)] md:py-36">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_10%,rgba(98,191,192,.18),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(52,78,134,.09),transparent_34%)]" />
-      <div className="yori-paper-noise pointer-events-none absolute inset-0 opacity-[.12]" />
+    <section className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-24 text-white/85 md:py-36">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_10%,rgba(98,191,192,.10),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(214,168,72,.07),transparent_34%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.86fr_1.14fr] lg:items-center">
         <div>
           <div className="mb-9 flex items-center gap-4">
-            <div className="grid h-20 w-20 place-items-center rounded-full border border-[#bfd2cc] bg-[#e6efeb] text-[var(--yori-jade)]">
+            <div className="grid h-20 w-20 place-items-center rounded-full border border-world-gold/25 bg-world-ink text-[var(--yori-jade)]">
               <YoriMark className="h-12 w-12" />
             </div>
-            <div><p className="text-3xl font-semibold tracking-[.12em]">YORI</p><p className="text-[10px] font-bold tracking-[.22em] text-[var(--yori-indigo)]">A SAIMÔR CREATION</p></div>
+            <div><p className="text-3xl font-semibold tracking-[.12em] text-white">YORI</p><p className="text-[10px] font-bold tracking-[.22em] text-world-gold/80">A SAIMÔR CREATION</p></div>
           </div>
           <p className="mb-5 font-mono text-[10px] font-bold tracking-[.22em] text-[var(--yori-jade)]">{copy.eyebrow}</p>
-          <h2 className="max-w-2xl text-5xl font-medium leading-[.96] tracking-[-.04em] md:text-7xl">{copy.title}</h2>
-          <p className="mt-7 max-w-xl text-base leading-7 text-[#596664] md:text-lg">{copy.body}</p>
-          <p className="mt-6 font-serif text-2xl italic text-[var(--yori-indigo)]">Create in Flow.</p>
+          <h2 className="max-w-2xl text-5xl font-medium leading-[.96] tracking-[-.04em] md:text-7xl text-white">{copy.title}</h2>
+          <p className="mt-7 max-w-xl text-base leading-7 text-white/55 md:text-lg">{copy.body}</p>
+          <p className="mt-6 font-serif text-2xl italic text-world-gold">Create in Flow.</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={locale === "de" ? "/yori" : "/en/yori"} className="rounded-full bg-[var(--yori-jade)] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[var(--yori-jade-deep)]">{copy.primary}</a>
-            <a href="https://yori.saimor.world" className="rounded-full border border-[var(--yori-indigo)]/28 px-6 py-3 text-sm font-bold text-[var(--yori-indigo)] transition hover:border-[var(--yori-indigo)]">{copy.secondary}</a>
+            <a href="https://yori.saimor.world" className="rounded-full border border-world-gold/30 px-6 py-3 text-sm font-bold text-world-gold transition hover:border-world-gold">{copy.secondary}</a>
           </div>
         </div>
-        <div className="grid overflow-hidden rounded-[2rem_1rem_2.2rem_1.2rem] border border-[#d0dad4] bg-[#f9f7f1] shadow-[12px_14px_0_rgba(217,207,189,.42)] sm:grid-cols-2">
-          {copy.cards.map(([label, text], index) => <article key={label} className="min-h-52 border-b border-r border-[#d7ded8] p-7 transition hover:bg-[#e8f0ec]"><p className={index === 2 ? "font-mono text-[10px] font-bold tracking-[.16em] text-[var(--yori-indigo)]" : "font-mono text-[10px] font-bold tracking-[.16em] text-[var(--yori-jade)]"}>{label}</p><p className="mt-16 max-w-xs text-xl font-medium leading-tight text-[#243130]">{text}</p></article>)}
+        <div className="grid overflow-hidden rounded-[2rem_1rem_2.2rem_1.2rem] border border-white/10 bg-white/[0.03] shadow-[12px_14px_0_rgba(0,0,0,.35)] sm:grid-cols-2">
+          {copy.cards.map(([label, text], index) => <article key={label} className="min-h-52 border-b border-r border-white/8 p-7 transition hover:bg-world-gold/5"><p className={index === 2 ? "font-mono text-[10px] font-bold tracking-[.16em] text-[var(--yori-indigo)]" : "font-mono text-[10px] font-bold tracking-[.16em] text-[var(--yori-jade)]"}>{label}</p><p className="mt-16 max-w-xs text-xl font-medium leading-tight text-white/80">{text}</p></article>)}
         </div>
       </div>
     </section>

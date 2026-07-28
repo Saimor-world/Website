@@ -93,7 +93,7 @@ export default function Hero({ locale, calUrl }: Props) {
     de: {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'Ein System. Drei Formen von Intelligenz.',
+      subheadline: 'Ein wachsendes Ökosystem bewusster Intelligenz.',
       description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen und Creator.',
       ctaPrimary: 'YORI entdecken',
       ctaSecondary: 'Strategiegespräch buchen',
@@ -107,7 +107,7 @@ export default function Hero({ locale, calUrl }: Props) {
     en: {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'One system. Three forms of intelligence.',
+      subheadline: 'A growing ecosystem of conscious intelligence.',
       description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. Together they form a sovereign European ecosystem for organizations and creators.',
       ctaPrimary: 'Discover YORI',
       ctaSecondary: 'Book Strategy Call',

@@ -127,9 +127,9 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
   };
 
   return (
-    <section id="waitlist" className="relative py-32 bg-[#081410]">
+    <section id="waitlist" className="relative py-32 bg-world-ink">
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/10 blur-[200px] rounded-full opacity-40" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-world-gold/10 blur-[200px] rounded-full opacity-40" />
       </div>
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <motion.div
@@ -141,11 +141,11 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
           <div className="grid md:grid-cols-5 h-full">
 
             {/* Left Decor */}
-            <div className="md:col-span-2 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 p-12 flex flex-col justify-between border-r border-white/5 relative overflow-hidden">
+            <div className="md:col-span-2 bg-gradient-to-br from-world-gold/20 to-world-gold/5 p-12 flex flex-col justify-between border-r border-white/5 relative overflow-hidden">
               <div className="absolute inset-0 bg-noise opacity-20" />
               <div className="relative z-10 space-y-6">
                 <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
-                  <Sparkles className="w-8 h-8 text-emerald-400" />
+                  <Sparkles className="w-8 h-8 text-world-gold" />
                 </div>
                 <h3 className="text-4xl font-light leading-tight text-white tracking-tighter" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                   {content.title}
@@ -158,7 +158,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                 <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/10 px-4 py-2">
                   <span
                     aria-hidden="true"
-                    className="h-2 w-2 rounded-full bg-emerald-400"
+                    className="h-2 w-2 rounded-full bg-world-gold"
                   />
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
                     {content.accessStatus}
@@ -176,8 +176,8 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                   >
-                    <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-                      <Check className="w-10 h-10 text-emerald-400" />
+                    <div className="w-20 h-20 rounded-full bg-world-gold/20 border border-world-gold/40 flex items-center justify-center">
+                      <Check className="w-10 h-10 text-world-gold" />
                     </div>
                     <h4 className="text-2xl font-bold text-white uppercase tracking-wider">{content.successTitle}</h4>
                     <p className="text-white/40 leading-relaxed max-w-sm">{content.successMessage}</p>
@@ -193,7 +193,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-world-gold/50 transition-colors"
                         />
                       </div>
                       <div className="space-y-2">
@@ -204,7 +204,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-world-gold/50 transition-colors"
                         />
                       </div>
                     </div>
@@ -219,7 +219,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                               key={item.id}
                               type="button"
                               onClick={() => toggleInterest(item.id)}
-                              className={`p-4 rounded-2xl border transition-all text-left group ${isActive ? 'bg-emerald-500 border-emerald-400' : 'bg-white/5 border-white/10 hover:border-white/20'
+                              className={`p-4 rounded-2xl border transition-all text-left group ${isActive ? 'bg-world-gold border-world-gold' : 'bg-white/5 border-white/10 hover:border-white/20'
                                 }`}
                             >
                               <div className="flex items-center gap-3">
@@ -236,7 +236,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
                     <button
                       type="submit"
                       disabled={status === 'loading'}
-                      className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-emerald-400 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)] relative z-30 cursor-pointer pointer-events-auto"
+                      className="w-full py-5 rounded-2xl bg-world-gold text-black font-bold hover:brightness-110 transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(214,168,72,0.2)] relative z-30 cursor-pointer pointer-events-auto"
                     >
                       {status === 'loading' ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                         <>

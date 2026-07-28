@@ -45,10 +45,10 @@ const pillars = [
 
 export default function SocialProof({ locale = 'de' }: SocialProofProps) {
   return (
-    <section className="py-28 bg-gradient-to-b from-[#060a09] via-[#081410] to-[#060a09] relative overflow-hidden">
+    <section className="py-28 bg-world-ink relative overflow-hidden">
       {/* Subtle background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-emerald-500/5 blur-[140px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-world-gold/5 blur-[140px] rounded-full" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
@@ -60,9 +60,9 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/15 mb-8">
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-400/80">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-world-gold/5 border border-world-gold/15 mb-8">
+            <CheckCircle className="w-3.5 h-3.5 text-world-gold" />
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-world-gold/80">
               {locale === 'de' ? 'Unsere Grundsätze' : 'Our Principles'}
             </span>
           </div>
@@ -71,9 +71,9 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
             {locale === 'de' ? (
-              <>Technologie, der man<br /><span className="italic text-emerald-400">vertrauen kann.</span></>
+              <>Technologie, der man<br /><span className="italic text-world-gold">vertrauen kann.</span></>
             ) : (
-              <>Technology you can<br /><span className="italic text-emerald-400">actually trust.</span></>
+              <>Technology you can<br /><span className="italic text-world-gold">actually trust.</span></>
             )}
           </h2>
           <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
@@ -94,10 +94,10 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
           {metrics.map((m, i) => (
             <div
               key={i}
-              className="bg-[#081410] px-6 py-8 text-center hover:bg-emerald-500/5 transition-colors"
+              className="bg-world-ink px-6 py-8 text-center hover:bg-world-emerald/5 transition-colors"
             >
               <div
-                className="text-3xl md:text-4xl font-semibold text-emerald-400 mb-1"
+                className="text-3xl md:text-4xl font-semibold text-world-emerald mb-1"
                 style={{ fontFamily: 'Cormorant Garamond, serif' }}
               >
                 {m.value}
@@ -120,16 +120,16 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 }}
-                className="group relative rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-emerald-500/25 hover:bg-white/[0.06] transition-all duration-500 overflow-hidden"
+                className="group relative rounded-3xl border border-white/8 bg-white/[0.03] p-8 hover:border-world-gold/25 hover:bg-white/[0.06] transition-all duration-500 overflow-hidden"
               >
                 {/* Hover glow */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-48 h-48 bg-emerald-500/8 blur-[60px] rounded-full -translate-x-1/4 -translate-y-1/4" />
+                  <div className="absolute top-0 left-0 w-48 h-48 bg-world-gold/8 blur-[60px] rounded-full -translate-x-1/4 -translate-y-1/4" />
                 </div>
 
                 <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center mb-6 group-hover:bg-emerald-500/15 transition-colors">
-                    <Icon className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                  <div className="w-14 h-14 rounded-2xl bg-world-gold/10 border border-world-gold/15 flex items-center justify-center mb-6 group-hover:bg-world-gold/15 transition-colors">
+                    <Icon className="w-7 h-7 text-world-gold" strokeWidth={1.5} />
                   </div>
                   <h3
                     className="text-xl font-semibold mb-4 text-white"
@@ -152,10 +152,10 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="max-w-3xl mx-auto bg-emerald-500/5 border border-emerald-500/10 rounded-3xl p-10 text-center mb-16"
+          className="max-w-3xl mx-auto bg-world-gold/5 border border-world-gold/10 rounded-3xl p-10 text-center mb-16"
         >
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/10 mb-6">
-            <Lock className="w-6 h-6 text-emerald-400" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-world-gold/10 mb-6">
+            <Lock className="w-6 h-6 text-world-gold" />
           </div>
           <h3
             className="text-2xl font-semibold mb-4 text-white"
@@ -178,15 +178,15 @@ export default function SocialProof({ locale = 'de' }: SocialProofProps) {
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-emerald-500/8 border border-emerald-500/15">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-300 text-sm font-medium">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-world-gold/8 border border-world-gold/15">
+            <span className="w-2 h-2 rounded-full bg-world-gold animate-pulse" />
+            <span className="text-world-gold text-sm font-medium">
               {locale === 'de' ? 'In aktiver Entwicklung · Early Access möglich' : 'In active development · Early access available'}
             </span>
           </div>
           <a
             href="#waitlist"
-            className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-emerald-400 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-world-gold transition-colors"
           >
             <span>{locale === 'de' ? 'Jetzt vormerken' : 'Join the waitlist'}</span>
             <ArrowRight className="w-4 h-4" />
