@@ -12,7 +12,7 @@ const featureCards = [
   },
   {
     title: 'Local & secure',
-    body: 'Fully local, EU-hosted, GDPR-compliant. Your data stays your data.'
+    body: 'EU-hosted core services with explicit privacy controls. External AI providers are disclosed where used.'
   }
 ];
 
@@ -49,7 +49,7 @@ export default function MoraPage() {
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">🔒 GDPR-compliant</span>
-            <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">💾 100% local</span>
+            <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">💾 EU-hosted core</span>
             <span className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm text-white/60">🧠 AI-powered</span>
           </div>
         </header>

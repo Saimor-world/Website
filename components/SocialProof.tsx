@@ -10,7 +10,7 @@ interface SocialProofProps {
 }
 
 const metrics = [
-  { value: '100%', label: { de: 'EU-Datenhoheit', en: 'EU Data Sovereignty' } },
+  { value: 'EU', label: { de: 'Kernhosting in Deutschland', en: 'Core hosting in Germany' } },
   { value: 'DSGVO', label: { de: 'Konform by Design', en: 'Compliant by Design' } },
   { value: '0', label: { de: 'Third-Party Cookies', en: 'Third-Party Cookies' } },
   { value: 'Open', label: { de: 'Source Philosophy', en: 'Source Philosophy' } },
