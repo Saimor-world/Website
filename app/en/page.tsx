@@ -1,5 +1,6 @@
 ﻿import Hero from "@/components/Hero";
 import YoriSection from "@/components/YoriSection";
+import ViciniSection from "@/components/ViciniSection";
 import MoraTeaser from "@/components/MoraTeaser";
 import CommunityBanner from "@/components/CommunityBanner";
 import WaitlistForm from "@/components/WaitlistForm";
@@ -21,6 +22,7 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="en" />
         <YoriSection locale="en" />
+        <ViciniSection locale="en" />
         <MoraTeaser locale="en" />
         <EntryTeaser locale="en" />
         <CommunityBanner locale="en" />

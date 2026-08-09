@@ -16,6 +16,7 @@ describe('Hero subheadline', () => {
     // the moment a fourth product exists (see Vicini, [[project_vicini_pivot]]).
     expect(screen.queryByText(/Drei Formen/i)).not.toBeInTheDocument();
     expect(screen.getByText('Ein wachsendes Ökosystem bewusster Intelligenz.')).toBeInTheDocument();
+    expect(screen.getByText(/VICINI verbindet Freundschaften/)).toBeInTheDocument();
   });
 
   it('does not hard-code a fixed product count in English', () => {
@@ -23,5 +24,6 @@ describe('Hero subheadline', () => {
 
     expect(screen.queryByText(/Three forms/i)).not.toBeInTheDocument();
     expect(screen.getByText(/growing ecosystem/i)).toBeInTheDocument();
+    expect(screen.getByText(/VICINI connects friendships/)).toBeInTheDocument();
   });
 });

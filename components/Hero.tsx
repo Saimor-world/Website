@@ -94,13 +94,14 @@ export default function Hero({ locale, calUrl }: Props) {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
       subheadline: 'Ein wachsendes Ökosystem bewusster Intelligenz.',
-      description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen und Creator.',
+      description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. VICINI verbindet Freundschaften mit echten Orten. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen, Creator und Beziehungen.',
       ctaPrimary: 'YORI entdecken',
       ctaSecondary: 'Strategiegespräch buchen',
       stats: [
         { value: 'SAIMÔR', label: 'Operating System' },
         { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' }
+        { value: 'YORI', label: 'Creative OS' },
+        { value: 'VICINI', label: 'Relationship World' }
       ],
       scrollHint: 'Entdecken'
     },
@@ -108,13 +109,14 @@ export default function Hero({ locale, calUrl }: Props) {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
       subheadline: 'A growing ecosystem of conscious intelligence.',
-      description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. Together they form a sovereign European ecosystem for organizations and creators.',
+      description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. VICINI connects friendships with real places. Together they form a sovereign European ecosystem for organizations, creators and relationships.',
       ctaPrimary: 'Discover YORI',
       ctaSecondary: 'Book Strategy Call',
       stats: [
         { value: 'SAIMÔR', label: 'Operating System' },
         { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' }
+        { value: 'YORI', label: 'Creative OS' },
+        { value: 'VICINI', label: 'Relationship World' }
       ],
       scrollHint: 'Explore'
     }
@@ -287,7 +289,7 @@ export default function Hero({ locale, calUrl }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="grid grid-cols-3 gap-12 sm:gap-24 pt-12"
+            className="grid grid-cols-2 gap-10 pt-12 sm:grid-cols-4 sm:gap-16"
           >
             {content.stats.map((stat, i) => (
               <div key={i} className="text-center group">
