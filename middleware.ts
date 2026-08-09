@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   // Enhanced Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://saimorworld.matomo.cloud https://js.hcaptcha.com https://vercel.live blob:",
+    "script-src 'self' 'unsafe-inline' https://cdn.matomo.cloud https://saimorworld.matomo.cloud https://js.hcaptcha.com https://vercel.live blob:",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
