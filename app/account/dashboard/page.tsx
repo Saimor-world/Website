@@ -249,7 +249,18 @@ export default async function MoraDashboardPage() {
                 <span>Aktion</span>
               </div>
               <div className="divide-y divide-white/[0.06]">
-                {pipelineAudits.map((audit) => {
+                {pipelineAudits.map((audit: {
+                  id: string;
+                  name: string;
+                  email: string;
+                  industry?: string | null;
+                  companySize?: string | null;
+                  targetDomain?: string | null;
+                  domain?: string | null;
+                  score: number;
+                  userId?: string | null;
+                  wallEntry?: { status?: string | null } | null;
+                }) => {
                   const status = pipelineStatus(audit);
                   return (
                   <Link
@@ -299,7 +310,7 @@ export default async function MoraDashboardPage() {
               <div className="p-6 rounded-[2rem] border border-white/10 bg-white/5 space-y-4">
                 <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Zuletzt gelernt</h3>
                 <div className="space-y-3">
-                  {facts.slice(0, 5).map((fact) => (
+                  {facts.slice(0, 5).map((fact: { id: string; key: string; value: string }) => (
                     <div key={fact.id} className="flex justify-between items-center border-b border-white/5 pb-2">
                       <span className="text-xs text-white/60">{fact.key}</span>
                       <span className="text-xs text-cyan-400 font-mono">{fact.value}</span>

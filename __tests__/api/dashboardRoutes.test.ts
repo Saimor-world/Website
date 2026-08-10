@@ -1,107 +1,110 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { NextRequest } from "next/server";
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { NextRequest } from 'next/server';
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    dashboardStats: {
-      findFirst: vi.fn(async () => ({
-        id: "stats-1",
-        facts: 247,
-        callsToday: 12,
-        costsToday: 2.34,
-        updatedAt: new Date("2026-01-01T00:00:00.000Z")
-      })),
-      create: vi.fn(async () => ({
-        id: "stats-1",
-        facts: 247,
-        callsToday: 12,
-        costsToday: 2.34,
-        updatedAt: new Date("2026-01-01T00:00:00.000Z")
-      }))
-    },
-    waitlist: {
-      findMany: vi.fn(async () => [
-        {
-          id: "w1",
-          name: "Ada",
-          email: "ada@example.com",
-          createdAt: new Date("2026-01-01T00:00:00.000Z")
-        }
-      ])
-    },
-    contactMessage: {
-      findMany: vi.fn(async () => [
-        {
-          id: "c1",
-          name: "Bob",
-          message: "Hello from contact",
-          createdAt: new Date("2026-01-02T00:00:00.000Z")
-        }
-      ])
-    },
-    message: {
-      findMany: vi.fn(async () => [
-        {
-          id: "m1",
-          role: "user",
-          content: "Hello from chat",
-          timestamp: new Date("2026-01-03T00:00:00.000Z"),
-          session: { id: "s1", externalId: "ext-1" }
-        }
-      ])
-    }
-  }
+const mocks = vi.hoisted(() => ({
+  getServerSession: vi.fn(),
 }));
 
-import { GET as getActivity } from "@/app/api/dashboard/activity/route";
-import { GET as getOverview } from "@/app/api/dashboard/overview/route";
-import { POST as logEventPost } from "@/app/api/log-event/route";
+vi.mock('next-auth', () => ({
+  getServerSession: mocks.getServerSession,
+}));
+vi.mock('@/lib/auth', () => ({
+  authOptions: {},
+}));
 
-const mockRequest = (url: string, headers?: Record<string, string>) =>
-  new NextRequest(url, { headers });
+import { GET as getActivity } from '@/app/api/dashboard/activity/route';
+import { GET as getCosts } from '@/app/api/dashboard/costs/route';
+import { GET as getOverview } from '@/app/api/dashboard/overview/route';
+import { GET as getStatus } from '@/app/api/dashboard/status/route';
 
-describe("dashboard api fallbacks", () => {
+const request = (path: string, token?: string) =>
+  new NextRequest(`http://localhost${path}`, {
+    headers: token ? { authorization: `Bearer ${token}` } : undefined,
+  });
+
+const routes = [
+  ['/api/dashboard/activity', getActivity],
+  ['/api/dashboard/costs', getCosts],
+  ['/api/dashboard/overview', getOverview],
+  ['/api/dashboard/status', getStatus],
+] as const;
+
+describe('owner dashboard routes', () => {
+  beforeEach(() => {
+    mocks.getServerSession.mockReset();
+    vi.stubEnv('BACKEND_BASE_URL', 'https://dashboard.internal/api/dashboard');
+    vi.stubEnv('DASHBOARD_API_TOKEN', 'server-token');
+  });
+
   afterEach(() => {
+    vi.unstubAllEnvs();
     vi.unstubAllGlobals();
   });
 
-  it("returns demo activity data when unauthorized", async () => {
-    const response = await getActivity(mockRequest("http://localhost/api/dashboard/activity"));
-    const json = await response.json();
+  it.each(routes)('rejects unauthenticated access to %s', async (path, get) => {
+    mocks.getServerSession.mockResolvedValue(null);
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
 
-    expect(json.activities).toHaveLength(3);
-    expect(json.isDemo).toBe(true);
+    const response = await get(request(path));
+    const body = await response.json();
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({ error: 'Unauthorized' });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("returns overview data when upstream succeeds", async () => {
-    const overview = {
-      memory: { facts: 100 },
-      voice: { calls_today: 5 },
-      costs: { today_usd: 1.23 }
-    };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+  it('fails closed when the dashboard backend is not configured', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { role: 'owner' } });
+    vi.stubEnv('BACKEND_BASE_URL', '');
+    vi.stubEnv('DASHBOARD_API_TOKEN', '');
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = await getOverview(request('/api/dashboard/overview'));
+    const body = await response.json();
+
+    expect(response.status).toBe(503);
+    expect(body).toEqual({ error: 'Dashboard backend is not configured' });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('proxies owner requests with a bearer token and no demo wrapper', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { role: 'owner' } });
+    const upstream = { memory: { facts: 11 }, costs: { today_usd: 1.2 } };
+    const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      status: 200,
-      json: async () => overview
-    }));
+      json: async () => upstream,
+    });
+    vi.stubGlobal('fetch', fetchMock);
 
     const response = await getOverview(
-      mockRequest("http://localhost/api/dashboard/overview", { authorization: "Bearer token" })
+      request('/api/dashboard/overview', 'request-token')
     );
-    const json = await response.json();
+    const body = await response.json();
 
-    expect(json).toMatchObject(overview);
-    expect(json.isDemo).toBe(false);
+    expect(response.status).toBe(200);
+    expect(body).toEqual(upstream);
+    expect(body).not.toHaveProperty('isDemo');
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://dashboard.internal/api/dashboard/stats/overview',
+      expect.objectContaining({
+        headers: { Authorization: 'Bearer request-token' },
+        cache: 'no-store',
+      })
+    );
   });
-});
 
-describe("log event route", () => {
-  it("accepts payloads", async () => {
-    const req = {
-      json: async () => ({ event: "test-event" })
-    } as unknown as NextRequest;
+  it('returns an error instead of fake data when upstream fails', async () => {
+    mocks.getServerSession.mockResolvedValue({ user: { role: 'owner' } });
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
 
-    const result = await logEventPost(req);
-    expect(result.status).toBe(200);
+    const response = await getActivity(request('/api/dashboard/activity'));
+    const body = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(body).toEqual({ error: 'Dashboard backend unavailable' });
+    expect(body).not.toHaveProperty('activities');
+    expect(body).not.toHaveProperty('isDemo');
   });
 });
