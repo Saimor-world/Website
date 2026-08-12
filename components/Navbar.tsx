@@ -29,6 +29,15 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       '/en/mora/analog-affect': '/mora/analog-affect',
       '/yori': '/en/yori',
       '/en/yori': '/yori',
+      // Shared product routes stay unprefixed; collapse mistaken locale prefixes
+      '/en/portal': '/portal',
+      '/de/portal': '/portal',
+      '/en/demo': '/demo',
+      '/de/demo': '/demo',
+      '/en/wall': '/wall',
+      '/de/wall': '/wall',
+      '/de/mora': '/mora',
+      '/de/yori': '/yori',
     };
     if (paired[pathname]) return paired[pathname];
 
