@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/en/yori`, priority: 0.75 },
     { url: `${base}/portal`, priority: 0.8 },
     { url: `${base}/demo`, priority: 0.75 },
+    { url: `${base}/wall`, priority: 0.7 },
     { url: `${base}/de/einstieg`, priority: 0.8 },
     { url: `${base}/en/entry`, priority: 0.8 },
     ...entryPages,

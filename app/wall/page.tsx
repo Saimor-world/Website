@@ -511,8 +511,7 @@ function EmptyWall() {
         className="mx-auto max-w-md text-base italic leading-relaxed"
         style={{ color: 'rgba(247, 239, 223, 0.55)' }}
       >
-        Niemand hat sich noch eingeheftet. Das könntest du sein — das erste
-        Polaroid an der Wand. Wir freuen uns auf dich.
+        Niemand hat sich noch eingeheftet. Das könntest du sein – das erste Polaroid an der Wand. Hier hängen nur echte, owner-moderierte Einträge – keine Beispiel-Polaroids. Wir freuen uns auf dich.
       </p>
       <Link
         href="/de/einstieg/security-check"

@@ -13,9 +13,9 @@ type Props = {
 
 const capabilities = {
   de: [
-    { icon: Brain, label: 'Semantische Analyse', desc: 'Zusammenhaenge verstehen, nicht nur Daten verarbeiten' },
+    { icon: Brain, label: 'Semantische Analyse', desc: 'Zusammenhänge verstehen, nicht nur Daten verarbeiten' },
     { icon: Network, label: 'Mycelium-Netzwerk', desc: 'Wissen, Signale und Entscheidungen verbinden' },
-    { icon: Lock, label: 'Vollstaendig lokal', desc: 'Private Daten bleiben unter deiner Kontrolle' },
+    { icon: Lock, label: 'Vollständig lokal', desc: 'Private Daten bleiben unter deiner Kontrolle' },
     { icon: Zap, label: 'Echtzeit-Kontext', desc: 'Strategische Signale werden sofort sichtbar' },
   ],
   en: [
@@ -55,7 +55,7 @@ export default function MoraTeaser({ locale }: Props) {
             <div className="space-y-4">
               <p className="font-mono text-[12px] font-bold tracking-[.42em] text-[var(--world-gold)]">MÔRA</p>
               <h2 className="text-5xl font-light leading-none sm:text-7xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                {t('Sie hoert zu.', 'She listens.')}
+                {t('Sie hört zu.', 'She listens.')}
               </h2>
               <p className="text-sm uppercase tracking-[0.2em] text-[var(--world-mora-mist)]/72">
                 {t('Die Intelligenz im Saimôr Betriebssystem', 'The intelligence inside the Saimôr operating system')}
@@ -64,7 +64,7 @@ export default function MoraTeaser({ locale }: Props) {
 
             <p className="max-w-lg text-xl leading-relaxed text-white/58">
               {t(
-                'Môra ist die semantische Intelligenz-Ebene des Systems. Sie erkennt Zusammenhaenge, hoert auf Signale und bringt Ordnung in Entscheidungen, ohne deine privaten Daten aus der Hand zu geben.',
+                'Môra ist die semantische Intelligenz-Ebene des Systems. Sie erkennt Zusammenhänge, hört auf Signale und bringt Ordnung in Entscheidungen, ohne deine privaten Daten aus der Hand zu geben.',
                 'Môra is the semantic intelligence layer of the system. It reads context, listens for signals and brings order to decisions without taking private data out of your hands.'
               )}
             </p>
@@ -99,7 +99,7 @@ export default function MoraTeaser({ locale }: Props) {
                 className="group flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-black shadow-[0_20px_60px_rgba(214,168,72,0.22)] transition-all hover:scale-[1.02]"
                 style={{ background: 'linear-gradient(135deg, #E7C46A 0%, #B8892C 100%)' }}
               >
-                <span>{t('Môra oeffnen', 'Open Mora')}</span>
+                <span>{t('Môra öffnen', 'Open Mora')}</span>
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
               <Link
@@ -144,7 +144,7 @@ export default function MoraTeaser({ locale }: Props) {
                 <div className="inline-flex items-center gap-2 rounded-xl border border-[var(--world-gold)]/20 bg-[#081410]/85 px-3 py-2 backdrop-blur-xl">
                   <span className="h-2 w-2 rounded-full bg-[var(--world-mora-mist)] shadow-[0_0_18px_rgba(214,168,72,.6)]" />
                   <span className="text-xs font-medium tracking-wide text-[var(--world-gold)]">
-                    {t('Môra Analyse laeuft', 'Môra analysis running')}
+                    {t('Môra Analyse läuft', 'Môra analysis running')}
                   </span>
                 </div>
               </div>
