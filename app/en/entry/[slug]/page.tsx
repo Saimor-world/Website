@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import EntryArticle from '@/components/EntryArticle';
 import { entryContent } from '@/lib/entry-content';
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props) {
   const article = entryContent.en.find((item) => item.slug === slug);
 
   return {
-    title: article ? `${article.title} | Saimor Entry` : 'Article not found | Saimor',
+    title: article ? `${article.title} | Saimôr Entry` : 'Article not found | Saimôr',
     description: article?.excerpt ?? 'Article from Saimor entry layer',
   };
 }
@@ -23,11 +23,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function EntryArticlePageEn({ params }: Props) {
   const { slug } = await params;
 
-  if (slug === 'security-check') {
-    redirect('/de/einstieg/security-check');
-  }
-
-  const article = entryContent.en.find((item) => item.slug === slug);
+const article = entryContent.en.find((item) => item.slug === slug);
 
   if (!article) {
     notFound();

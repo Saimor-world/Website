@@ -18,21 +18,19 @@ describe('public health route', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('cache-control')).toBe('no-store');
-    expect(body).toMatchObject({ ok: true, checks: { database: 'available' } });
-    expect(body).not.toHaveProperty('runtime');
-    expect(body).not.toHaveProperty('auth');
-    expect(body).not.toHaveProperty('smtp');
-    expect(body).not.toHaveProperty('db');
+    expect(body).toEqual({ ok: true });
   });
 
-  it('does not expose raw infrastructure errors when unavailable', async () => {
+  it('does not expose infrastructure errors when unavailable', async () => {
     const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    mocks.$queryRaw.mockRejectedValueOnce(new Error('postgres://secret-host/internal'));
+    mocks.$queryRaw.mockRejectedValueOnce(
+      new Error('postgres://secret-host/internal')
+    );
     const response = await GET();
     const body = await response.json();
 
     expect(response.status).toBe(503);
-    expect(body).toMatchObject({ ok: false, checks: { database: 'unavailable' } });
+    expect(body).toEqual({ ok: false });
     expect(JSON.stringify(body)).not.toContain('secret-host');
     expect(warning).toHaveBeenCalledWith('[health] database check failed');
     warning.mockRestore();

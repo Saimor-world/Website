@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { waitlistLimiter, getClientIP } from '@/lib/rate-limit';
 
-const waitlistRequestSchema = z.object({
+const newsletterRequestSchema = z.object({
   email: z.string().trim().email().max(254),
-  name: z.string().trim().min(1).max(120),
-  interests: z.array(z.string().trim().min(1).max(64)).max(10).optional(),
   locale: z.enum(['de', 'en']).default('de'),
 });
 
@@ -28,47 +26,44 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const parsed = waitlistRequestSchema.safeParse(body);
+  const parsed = newsletterRequestSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid waitlist data' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
   }
 
-  const { email, name, interests = [], locale } = parsed.data;
+  const email = parsed.data.email.toLowerCase();
+  const { locale } = parsed.data;
   let entry;
 
   try {
     entry = await prisma.waitlist.upsert({
-      where: { email: email.toLowerCase() },
-      update: { name, interests, locale },
+      where: { email },
+      update: { locale },
       create: {
-        email: email.toLowerCase(),
-        name,
-        interests,
+        email,
+        name: 'Newsletter subscriber',
+        interests: ['newsletter'],
         locale,
       },
     });
   } catch (error) {
-    console.error('[waitlist] persistence failed', error);
+    console.error('[newsletter] persistence failed', error);
     return NextResponse.json(
-      { error: 'Registration could not be stored' },
+      { error: 'Subscription could not be stored' },
       { status: 503 }
     );
   }
 
-  const webhookUrl =
-    process.env.N8N_WAITLIST_WEBHOOK_URL || process.env.N8N_WEBHOOK_URL;
-
+  const webhookUrl = process.env.N8N_NEWSLETTER_WEBHOOK_URL;
   if (webhookUrl) {
     try {
       const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          type: 'waitlist_signup',
+          type: 'newsletter_signup',
           data: {
             email: entry.email,
-            name: entry.name,
-            interests: entry.interests,
             locale: entry.locale,
             timestamp: entry.createdAt.toISOString(),
             source: 'saimor-website',
@@ -81,34 +76,16 @@ export async function POST(request: NextRequest) {
         throw new Error(`Webhook responded with ${response.status}`);
       }
     } catch (error) {
-      console.error('[waitlist] webhook delivery failed', error);
+      console.error('[newsletter] webhook delivery failed', error);
       return NextResponse.json(
-        { error: 'Registration stored but confirmation delivery failed' },
+        { error: 'Subscription stored but confirmation delivery failed' },
         { status: 502 }
       );
     }
   }
 
-  let position: number;
-  try {
-    position = await prisma.waitlist.count({
-      where: { createdAt: { lte: entry.createdAt } },
-    });
-  } catch (error) {
-    console.error('[waitlist] position lookup failed', error);
-    return NextResponse.json(
-      { error: 'Registration stored but position is unavailable' },
-      { status: 503 }
-    );
-  }
-
   return NextResponse.json({
     success: true,
-    message: locale === 'de' ? 'Anmeldung gespeichert.' : 'Registration stored.',
-    position,
+    message: locale === 'de' ? 'Anmeldung gespeichert.' : 'Subscription stored.',
   });
-}
-
-export async function GET() {
-  return NextResponse.json({ ok: true });
 }

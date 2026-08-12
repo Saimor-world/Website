@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Gästebuch | Saimôr',
+  title: { absolute: 'Gästebuch | Saimôr' },
   description:
     'Eine Wand für die Saimôr Community: Supporter, Kund:innen, Partner, Pilotkunden, Investor:innen, Team und anonyme Security-Signale. Verifiziert, owner-moderiert, einladend.',
 };

@@ -22,20 +22,28 @@ export default function NewsletterSignup({ variant = 'inline', trigger, onClose 
 
     setStatus('loading');
 
-    // Simulate API call
-    setTimeout(() => {
-      setStatus('success');
-      setMessage('Erfolgreich angemeldet! Prüfe dein Email-Postfach.');
-      setEmail('');
+    try {
+      const locale = document.documentElement.lang === 'en' ? 'en' : 'de';
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), locale }),
+      });
+      const data = await response.json();
 
-      // Close modal after success
-      if (variant === 'modal') {
-        setTimeout(() => {
-          setIsOpen(false);
-          onClose?.();
-        }, 2000);
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Anmeldung fehlgeschlagen.');
       }
-    }, 1500);
+
+      setStatus('success');
+      setMessage(data.message);
+      setEmail('');
+    } catch (error) {
+      setStatus('error');
+      setMessage(
+        error instanceof Error ? error.message : 'Anmeldung fehlgeschlagen.'
+      );
+    }
   };
 
   const handleTriggerClick = () => {

@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
-export async function GET(request: Request) {
-  // Redirect favicon.ico requests to the new logo
-  const url = new URL(request.url);
-  return NextResponse.redirect(new URL('/saimor-seal-master.png', url.origin), {
-    status: 301, // Permanent redirect
+export const runtime = 'nodejs';
+
+export async function GET() {
+  const file = await readFile(path.join(process.cwd(), 'public', 'favicon-32.png'));
+  return new NextResponse(file, {
+    headers: {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, max-age=86400, immutable',
+    },
   });
 }

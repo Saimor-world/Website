@@ -4,12 +4,6 @@ const { withSentryConfig } = require("@sentry/nextjs");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // === PERFORMANCE & STABILITY OPTIMIZATIONS ===
-  typescript: {
-    ignoreBuildErrors: true, // Speeds up build significantly
-  },
-  eslint: {
-    ignoreDuringBuilds: true, // Speeds up build significantly
-  },
   productionBrowserSourceMaps: false, // Save memory/CPU during build
 
   // Compression

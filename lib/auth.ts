@@ -185,6 +185,6 @@ export const authOptions: AuthOptions = {
     verifyRequest: '/auth/verify-request',
     error: '/auth/error',
   },
-  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-dev-and-build-safety',
+  secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
 };

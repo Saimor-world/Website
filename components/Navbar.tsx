@@ -21,13 +21,27 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     if (pathname.startsWith('/en/entry')) return pathname.replace('/en/entry', '/de/einstieg');
     const localizedLegalRoute = localizedLegalHref(pathname);
     if (localizedLegalRoute) return localizedLegalRoute;
+
+    const paired: Record<string, string> = {
+      '/mora': '/en/mora',
+      '/en/mora': '/mora',
+      '/mora/analog-affect': '/en/mora/analog-affect',
+      '/en/mora/analog-affect': '/mora/analog-affect',
+      '/yori': '/en/yori',
+      '/en/yori': '/yori',
+    };
+    if (paired[pathname]) return paired[pathname];
+
+    const shared = new Set(['/portal', '/demo', '/wall', '/login']);
+    if (shared.has(pathname)) return pathname;
+
     const segments = pathname.split('/').filter(Boolean);
     if (segments[0] === 'de' || segments[0] === 'en') {
       segments[0] = switchLocale;
       return '/' + segments.join('/');
     }
-    // Handle root /mora specially if needed, or just prefix
-    if (pathname === '/mora') return '/en/mora';
+    if (pathname === '/' || pathname === '/de') return switchLocale === 'en' ? '/en' : '/de';
+    if (pathname === '/en') return '/de';
     return `/${switchLocale}${pathname === '/' ? '' : pathname}`;
   };
 

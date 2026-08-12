@@ -4,7 +4,6 @@ type Props = { className?: string; title?: string };
 export default function YoriMark({ className, title = "YORI" }: Props) {
   return (
     <svg className={className} viewBox="0 0 64 64" role="img" aria-label={title}>
-      <title>{title}</title>
       <path
         d="M 57.84 22.59 A 27.5 26.6 0 1 1 46.8 10.87 L 45.77 12.34 A 23.2 23 0 1 0 52.67 24.48 Z"
         fill="currentColor"
