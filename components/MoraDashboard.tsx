@@ -340,7 +340,7 @@ export default function MoraDashboard({ locale }: MoraDashboardProps) {
         y: 50 + Math.sin(angle) * radius
       };
     });
-  }, [metrics.length, isMobile]);
+  }, [metrics, isMobile]);
 
   // Trend Chart Component - unique IDs
   const TrendChart = useCallback(({ data, color }: { data: number[], color: string }) => {

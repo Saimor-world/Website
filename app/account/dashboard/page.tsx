@@ -322,7 +322,7 @@ export default async function MoraDashboardPage() {
               <div className="p-6 rounded-[2rem] border border-emerald-500/20 bg-emerald-500/5">
                 <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Efficiency Boost</p>
                 <p className="text-sm text-white/70 leading-relaxed">
-                  Basierend auf deinem Tech-Stack ({facts.find(f => f.key === 'tech_stack')?.value || 'unbekannt'}) kann Môra Automations-Skripte für dich optimieren.
+                  Basierend auf deinem Tech-Stack ({facts.find((fact: { key: string; value: string }) => fact.key === 'tech_stack')?.value || 'unbekannt'}) kann Môra Automations-Skripte für dich optimieren.
                 </p>
               </div>
             </div>
