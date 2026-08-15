@@ -98,7 +98,7 @@ export default function EntryArticle({ locale, slug }: Props) {
         {related.length > 0 ? (
           <section className="pt-6 space-y-4">
             <p className="text-xs uppercase tracking-[0.25em] text-white/40">
-              {locale === 'de' ? 'Weiter im Tree' : 'Continue in tree'}
+              {locale === 'de' ? 'Passt dazu' : 'Related'}
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {related.map((item) => (

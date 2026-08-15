@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Bot, Cpu, ExternalLink } from 'lucide-react';
+import { ArrowRight, Shield, Bot, Cpu } from 'lucide-react';
 import { entryContent, type EntryLocale, type EntryPillar } from '@/lib/entry-content';
 
 // Security first — it's the primary product and strongest entry point
@@ -46,43 +46,43 @@ const pillarTopAccent: Record<EntryPillar, string> = {
 export default function EntryHub({ locale }: { locale: EntryLocale }) {
   const content = {
     de: {
-      badge: 'FÜR LOKALE UNTERNEHMEN',
-      title: 'Was steckt hinter deiner digitalen Präsenz?',
+      badge: 'FÜR KLEINE UND MITTLERE BETRIEBE',
+      title: 'Was sieht das Internet über deinen Betrieb?',
       subtitle:
-        'Ein kostenloser Security-Check zeigt dir in 60 Sekunden, was Angreifer über dein Unternehmen sehen — und was du dagegen tun kannst.',
-      treeLabel: 'Was dich erwartet',
+        'Der Sicherheitscheck beantwortet das in etwa einer Minute — kostenlos, ohne Konto. Danach entscheidest du selbst, ob du weitermachst.',
+      treeLabel: 'Worum es hier geht',
       cta: 'Mehr erfahren',
       readTime: 'Lesezeit',
-      featuredLabel: 'Empfohlen',
+      featuredLabel: 'Fang hier an',
       pillarTitles: {
-        'digital-self': 'Smarter arbeiten mit AI',
-        security: 'Sicherheit für dein Business',
-        'ai-business': 'AI-Automationen',
+        'digital-self': 'Weniger Kleinkram im Alltag',
+        security: 'Sicherheit deiner Website',
+        'ai-business': 'Kleine Automationen',
       },
       pillarDescriptions: {
-        'digital-self': 'Dein persönlicher AI-Assistent — der nie schläft und immer auf dich hört',
-        security: 'In 60 Sekunden sehen, was Angreifer über dich wissen. Kostenlos, ohne Anmeldung.',
-        'ai-business': 'Drei kleine Automationen, die sofort Zeit sparen',
+        'digital-self': 'Eine Hilfe, die deine Arbeitsweise kennt und Routine übernimmt — du gibst die Grenzen vor.',
+        security: 'Der Sicherheitscheck zeigt dir, was von außen über deine Website sichtbar ist. Kostenlos, ohne Konto.',
+        'ai-business': 'Drei überschaubare Schritte, die ab dem ersten Tag Zeit sparen.',
       },
     },
     en: {
-      badge: 'FOR LOCAL BUSINESSES',
-      title: 'What does your digital footprint reveal?',
+      badge: 'FOR SMALL AND MID-SIZED BUSINESSES',
+      title: 'What does the internet see about your business?',
       subtitle:
-        'A free security check shows you in 60 seconds what attackers can see about your business — and what you can do about it.',
-      treeLabel: 'What to expect',
+        'The security check answers that in about a minute — free, no account. What you do afterwards is up to you.',
+      treeLabel: 'What this is about',
       cta: 'Read more',
       readTime: 'read',
-      featuredLabel: 'Recommended',
+      featuredLabel: 'Start here',
       pillarTitles: {
-        'digital-self': 'Work smarter with AI',
-        security: 'Security for your business',
-        'ai-business': 'AI automations',
+        'digital-self': 'Less busywork in your day',
+        security: 'The security of your website',
+        'ai-business': 'Small automations',
       },
       pillarDescriptions: {
-        'digital-self': 'Your personal AI assistant — never sleeps, always listens',
-        security: 'See in 60 seconds what attackers know about you. Free, no signup.',
-        'ai-business': 'Three small automations that save time immediately',
+        'digital-self': 'Help that knows how you work and takes over the routine — you set the limits.',
+        security: 'The security check shows what is visible about your website from outside. Free, no account.',
+        'ai-business': 'Three manageable steps that save time from day one.',
       },
     },
   }[locale];
@@ -160,12 +160,12 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
           <div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-amber-400/8 blur-2xl" />
           <div className="relative">
             <p className="text-[10px] uppercase tracking-[0.32em] text-amber-300/60 mb-2">
-              {locale === 'de' ? 'Kostenlos · Kein Login · 60 Sekunden' : 'Free · No Login · 60 Seconds'}
+              {locale === 'de' ? 'Kostenlos · Ohne Konto · Etwa eine Minute' : 'Free · No account · About a minute'}
             </p>
             <p className="text-lg font-light text-white/90 leading-snug max-w-md" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {locale === 'de'
-                ? 'Dein kostenloser Security-Check — sieh sofort, wo dein Unternehmen angreifbar ist.'
-                : 'Your free security check — see immediately where your business is exposed.'}
+                ? 'Der Sicherheitscheck: ein verständlicher Bericht über das, was von außen über deine Website sichtbar ist.'
+                : 'The security check: a report you can actually read about what is visible from outside your website.'}
             </p>
           </div>
           <div className="relative shrink-0 flex flex-col sm:flex-row gap-2">
@@ -173,21 +173,14 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
               href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
               className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-black hover:bg-amber-400 transition-all duration-200"
             >
-              {locale === 'de' ? 'Jetzt prüfen' : 'Check now'}
+              {locale === 'de' ? 'Sicherheitscheck starten' : 'Start the security check'}
               <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
-              className="inline-flex items-center gap-2 rounded-xl border border-violet-400/30 bg-violet-600/20 px-6 py-3 text-sm font-semibold text-violet-100 transition-all hover:bg-violet-600/35"
-            >
-              <ExternalLink size={16} />
-              {locale === 'de' ? 'OS-Demo starten' : 'Start OS demo'}
             </Link>
             <Link
               href="/wall"
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-transparent px-5 py-3 text-sm text-white/50 hover:text-white/70 hover:bg-white/5 transition-all duration-200"
             >
-              {locale === 'de' ? 'Ergebnisse anderer sehen' : 'See others\' results'}
+              {locale === 'de' ? 'Wer schon dabei ist' : 'Who is already here'}
             </Link>
           </div>
         </div>

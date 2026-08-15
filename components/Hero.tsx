@@ -91,32 +91,32 @@ export default function Hero({ locale, calUrl }: Props) {
 
   const content = {
     de: {
-      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
+      badge: 'AUS EUROPA · DEINE DATEN BLEIBEN BEI DIR',
       headline: 'Saimôr',
-      subheadline: 'Ein wachsendes Ökosystem bewusster Intelligenz.',
-      description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. VICINI verbindet Freundschaften mit echten Orten. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen, Creator und Beziehungen.',
-      ctaPrimary: 'YORI entdecken',
-      ctaSecondary: 'Strategiegespräch buchen',
+      subheadline: 'Werkzeuge für Menschen, die den Überblick behalten wollen.',
+      description: 'Wir bauen wenige, sorgfältige Programme: einen Arbeitsraum für Organisationen, eine ruhige Umgebung für kreative Arbeit, eine App für die eigene Nachbarschaft. Sie laufen auf Servern in Europa, und du entscheidest, was gespeichert wird. Schau dich in Ruhe um — nichts davon verlangt vorher ein Konto.',
+      ctaPrimary: 'YORI ansehen',
+      ctaSecondary: 'Gespräch vereinbaren',
       stats: [
-        { value: 'SAIMÔR', label: 'Operating System' },
-        { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' },
-        { value: 'VICINI', label: 'Relationship World' }
+        { value: 'SAIMÔR', label: 'Arbeitsraum für Organisationen' },
+        { value: 'MÔRA', label: 'Findet Zusammenhänge' },
+        { value: 'YORI', label: 'Für kreative Arbeit' },
+        { value: 'VICINI', label: 'Für die Nachbarschaft' }
       ],
       scrollHint: 'Entdecken'
     },
     en: {
-      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
+      badge: 'BUILT IN EUROPE · YOUR DATA STAYS YOURS',
       headline: 'Saimôr',
-      subheadline: 'A growing ecosystem of conscious intelligence.',
-      description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. VICINI connects friendships with real places. Together they form a sovereign European ecosystem for organizations, creators and relationships.',
-      ctaPrimary: 'Discover YORI',
-      ctaSecondary: 'Book Strategy Call',
+      subheadline: 'Tools for people who want to keep the overview.',
+      description: 'We build a small number of careful programs: a workspace for organizations, a quiet place for creative work, an app for your own neighbourhood. They run on servers in Europe, and you decide what gets stored. Have a look around — none of it asks for an account first.',
+      ctaPrimary: 'Take a look at YORI',
+      ctaSecondary: 'Arrange a call',
       stats: [
-        { value: 'SAIMÔR', label: 'Operating System' },
-        { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' },
-        { value: 'VICINI', label: 'Relationship World' }
+        { value: 'SAIMÔR', label: 'Workspace for organizations' },
+        { value: 'MÔRA', label: 'Finds the connections' },
+        { value: 'YORI', label: 'For creative work' },
+        { value: 'VICINI', label: 'For your neighbourhood' }
       ],
       scrollHint: 'Explore'
     }

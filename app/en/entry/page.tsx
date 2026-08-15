@@ -1,9 +1,9 @@
 import EntryHub from '@/components/EntryHub';
 
 export const metadata = {
-  title: 'Entry - AI & Security | Saimôr',
+  title: 'Getting started | Saimôr',
   description:
-    'Structured entry layer for Digital Self, free Security Check and AI quick wins for local businesses.',
+    'A calm way in: the security check for your website, a digital twin for everyday work, and small automations — explained rather than sold.',
 };
 
 export default function EntryPageEn() {

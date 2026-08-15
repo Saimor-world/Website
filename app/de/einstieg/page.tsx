@@ -1,9 +1,9 @@
 import EntryHub from '@/components/EntryHub';
 
 export const metadata = {
-  title: 'Einstieg - AI & Security | Saimôr',
+  title: 'Einstieg | Saimôr',
   description:
-    'Strukturierte Einstiegsebene fuer Digital Self, Security-Check und AI Quick Wins fuer lokale Businesses.',
+    'Der ruhige Einstieg: Sicherheitscheck deiner Website, ein digitaler Zwilling für den Alltag und kleine Automationen — erklärt statt verkauft.',
 };
 
 export default function EntryPageDe() {
