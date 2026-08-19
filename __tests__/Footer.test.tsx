@@ -55,3 +55,13 @@ describe('Footer system status', () => {
     expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'unknown');
   });
 });
+
+describe('Footer services link', () => {
+  it('does not send Leistungen back to the homepage', async () => {
+    mocks.fetch.mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+    render(<Footer locale="de" />);
+    const link = await screen.findByRole('link', { name: 'Leistungen' });
+    expect(link).toHaveAttribute('href', '/de/einstieg');
+  });
+});
+

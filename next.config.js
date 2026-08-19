@@ -56,13 +56,14 @@ const nextConfig = {
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'frnt.saimor.world' }],
-        destination: 'https://yori.saimor.world/:path*',
+        destination: 'https://saimor.world/yori/:path*',
         permanent: true,
       },
       // Locale switcher / bookmark gaps → working unprefixed (or DE) routes
       { source: '/en/portal', destination: '/portal', permanent: false },
       { source: '/en/demo', destination: '/demo', permanent: false },
       { source: '/en/wall', destination: '/wall', permanent: false },
+      { source: '/de/wall', destination: '/wall', permanent: false },
       { source: '/de/mora', destination: '/mora', permanent: false },
       { source: '/de/yori', destination: '/yori', permanent: false },
     ]

@@ -220,7 +220,7 @@ export default function DemoContent() {
             return (
               <Link
                 key={key}
-                href={`/demo?track=${key}`}
+                href={cfg.live ? `/demo?track=${key}` : cfg.article}
                 className={`group flex items-center gap-4 rounded-2xl border p-5 transition-all ${
                   isActive ? `${ca.border} bg-white/[0.05]` : 'border-white/10 bg-white/[0.02] hover:bg-white/[0.04]'
                 }`}

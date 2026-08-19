@@ -95,8 +95,9 @@ export default function Hero({ locale, calUrl }: Props) {
       headline: 'Saimôr',
       subheadline: 'Werkzeuge für Menschen, die den Überblick behalten wollen.',
       description: 'Wir bauen wenige, sorgfältige Programme: einen Arbeitsraum für Organisationen, eine ruhige Umgebung für kreative Arbeit, eine App für die eigene Nachbarschaft. Sie laufen auf Servern in Europa, und du entscheidest, was gespeichert wird. Schau dich in Ruhe um — nichts davon verlangt vorher ein Konto.',
-      ctaPrimary: 'YORI ansehen',
-      ctaSecondary: 'Gespräch vereinbaren',
+      ctaPrimary: 'Einstieg öffnen',
+      ctaSecondary: 'YORI-Arbeitsraum',
+      ctaCall: 'Gespräch vereinbaren',
       stats: [
         { value: 'SAIMÔR', label: 'Arbeitsraum für Organisationen' },
         { value: 'MÔRA', label: 'Findet Zusammenhänge' },
@@ -110,8 +111,9 @@ export default function Hero({ locale, calUrl }: Props) {
       headline: 'Saimôr',
       subheadline: 'Tools for people who want to keep the overview.',
       description: 'We build a small number of careful programs: a workspace for organizations, a quiet place for creative work, an app for your own neighbourhood. They run on servers in Europe, and you decide what gets stored. Have a look around — none of it asks for an account first.',
-      ctaPrimary: 'Take a look at YORI',
-      ctaSecondary: 'Arrange a call',
+      ctaPrimary: 'Open the entry point',
+      ctaSecondary: 'YORI workspace',
+      ctaCall: 'Arrange a call',
       stats: [
         { value: 'SAIMÔR', label: 'Workspace for organizations' },
         { value: 'MÔRA', label: 'Finds the connections' },
@@ -266,12 +268,20 @@ export default function Hero({ locale, calUrl }: Props) {
             className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
             <AnimatedButton
-              href={locale === 'en' ? '/en/yori' : '/yori'}
+              href={locale === 'en' ? '/en/entry' : '/de/einstieg'}
               variant="gradient"
               size="lg"
               className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
             >
               {content.ctaPrimary}
+            </AnimatedButton>
+            <AnimatedButton
+              href={locale === 'en' ? '/en/yori#workspace' : '/yori#workspace'}
+              variant="secondary"
+              size="lg"
+              className="backdrop-blur-xl"
+            >
+              {content.ctaSecondary}
             </AnimatedButton>
             <AnimatedButton
               href={cal}
@@ -280,7 +290,7 @@ export default function Hero({ locale, calUrl }: Props) {
               size="lg"
               className="backdrop-blur-xl"
             >
-              {content.ctaSecondary}
+              {content.ctaCall}
             </AnimatedButton>
           </motion.div>
 

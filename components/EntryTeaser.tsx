@@ -18,6 +18,7 @@ const content = {
         icon: ShieldCheck,
         label: 'Sicherheitscheck',
         desc: 'Was von außen sichtbar ist',
+        href: '/de/einstieg/security-check',
         color: 'text-emerald-400',
         bg: 'bg-emerald-500/10',
         border: 'border-emerald-500/15',
@@ -26,6 +27,7 @@ const content = {
         icon: Cpu,
         label: 'Dein digitaler Zwilling',
         desc: 'Nimmt dir Routine ab',
+        href: '/de/einstieg/digital-self',
         color: 'text-cyan-400',
         bg: 'bg-cyan-500/10',
         border: 'border-cyan-500/15',
@@ -34,6 +36,7 @@ const content = {
         icon: Search,
         label: 'Zum Ausprobieren',
         desc: 'Ohne Konto, ohne Risiko',
+        href: '/de/einstieg/ai-local-business',
         color: 'text-purple-400',
         bg: 'bg-purple-500/10',
         border: 'border-purple-500/15',
@@ -42,6 +45,7 @@ const content = {
         icon: BookOpen,
         label: 'Zum Nachlesen',
         desc: 'Wie das Ganze funktioniert',
+        href: '/de/einstieg/adaptive-os',
         color: 'text-amber-400',
         bg: 'bg-amber-500/10',
         border: 'border-amber-500/15',
@@ -59,6 +63,7 @@ const content = {
         icon: ShieldCheck,
         label: 'Security check',
         desc: 'What is visible from outside',
+        href: '/en/entry/security-check',
         color: 'text-emerald-400',
         bg: 'bg-emerald-500/10',
         border: 'border-emerald-500/15',
@@ -67,6 +72,7 @@ const content = {
         icon: Cpu,
         label: 'Your digital twin',
         desc: 'Takes routine off your desk',
+        href: '/en/entry/digital-self',
         color: 'text-cyan-400',
         bg: 'bg-cyan-500/10',
         border: 'border-cyan-500/15',
@@ -75,6 +81,7 @@ const content = {
         icon: Search,
         label: 'Try it out',
         desc: 'No account, no risk',
+        href: '/en/entry/ai-local-business',
         color: 'text-purple-400',
         bg: 'bg-purple-500/10',
         border: 'border-purple-500/15',
@@ -83,6 +90,7 @@ const content = {
         icon: BookOpen,
         label: 'Read up',
         desc: 'How the whole thing works',
+        href: '/en/entry/adaptive-os',
         color: 'text-amber-400',
         bg: 'bg-amber-500/10',
         border: 'border-amber-500/15',
@@ -157,18 +165,22 @@ export default function EntryTeaser({ locale }: { locale: Locale }) {
                   const Icon = track.icon;
                   return (
                     <motion.div
-                      key={i}
+                      key={track.href}
                       initial={{ opacity: 0, scale: 0.95 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.1 + i * 0.07 }}
-                      className={`group p-5 rounded-2xl border ${track.border} ${track.bg} hover:scale-[1.03] transition-all duration-300 cursor-default`}
                     >
-                      <div className={`w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center mb-3 ${track.color}`}>
-                        <Icon className="w-5 h-5" strokeWidth={1.5} />
-                      </div>
-                      <div className="font-semibold text-white/85 text-sm mb-0.5">{track.label}</div>
-                      <div className="text-white/35 text-xs">{track.desc}</div>
+                      <Link
+                        href={track.href}
+                        className={`group block p-5 rounded-2xl border ${track.border} ${track.bg} hover:scale-[1.03] transition-all duration-300`}
+                      >
+                        <div className={`w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center mb-3 ${track.color}`}>
+                          <Icon className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div className="font-semibold text-white/85 text-sm mb-0.5">{track.label}</div>
+                        <div className="text-white/35 text-xs">{track.desc}</div>
+                      </Link>
                     </motion.div>
                   );
                 })}

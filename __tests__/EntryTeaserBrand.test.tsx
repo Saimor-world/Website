@@ -27,3 +27,19 @@ describe('EntryTeaser brand alignment (section identity, not the category tiles)
     expect(container.innerHTML).not.toMatch(/rgba\(52,\s*211,\s*153/i);
   });
 });
+
+describe('EntryTeaser track tiles', () => {
+  it('wires German tiles to real einstieg slugs', () => {
+    const { container } = render(<EntryTeaser locale="de" />);
+    const hrefs = Array.from(container.querySelectorAll('a')).map((el) => el.getAttribute('href') || '');
+    expect(hrefs).toEqual(expect.arrayContaining([
+      '/de/einstieg',
+      '/de/einstieg/security-check',
+      '/de/einstieg/digital-self',
+      '/de/einstieg/ai-local-business',
+      '/de/einstieg/adaptive-os',
+    ]));
+    expect(container.innerHTML).not.toMatch(/cursor-default/);
+  });
+});
+

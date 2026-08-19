@@ -125,7 +125,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
           <div className="space-y-4">
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
             <div className="flex flex-col gap-4">
-              <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
+              <a href={locale === 'de' ? '/de/einstieg' : '/en/entry'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <a href={locale === 'de' ? '/yori' : '/en/yori'} className="text-white/50 hover:text-[var(--yori-turquoise)] transition-colors cursor-pointer">YORI</a>
               <a href={locale === 'de' ? '/de/einstieg' : '/en/entry'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.entry}</a>

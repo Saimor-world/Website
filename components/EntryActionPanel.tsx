@@ -653,23 +653,43 @@ function DigitalSelfInline({ locale }: { locale: EntryLocale }) {
 
 function DemoTrackInline({ locale }: { locale: EntryLocale }) {
   const links = [
-    { label: locale === 'de' ? 'Security Softwarepfad' : 'Security software track', href: '/demo?track=security' },
-    { label: locale === 'de' ? 'Digital Self Softwarepfad' : 'Digital Self software track', href: '/demo?track=digital-self' },
-    { label: locale === 'de' ? 'AI Business Softwarepfad' : 'AI Business software track', href: '/demo?track=ai-business' },
+    {
+      label: locale === 'de' ? 'Sicherheitscheck' : 'Security check',
+      note: locale === 'de' ? 'Heute live' : 'Live today',
+      href: locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check',
+      live: true,
+    },
+    {
+      label: locale === 'de' ? 'Digitaler Zwilling' : 'Digital Self',
+      note: locale === 'de' ? 'Im Aufbau — zum Nachlesen' : 'In progress — read the piece',
+      href: locale === 'de' ? '/de/einstieg/digital-self' : '/en/entry/digital-self',
+      live: false,
+    },
+    {
+      label: locale === 'de' ? 'Kleine Automationen' : 'Small automations',
+      note: locale === 'de' ? 'Im Aufbau — zum Nachlesen' : 'In progress — read the piece',
+      href: locale === 'de' ? '/de/einstieg/ai-local-business' : '/en/entry/ai-local-business',
+      live: false,
+    },
   ];
 
   return (
     <section className="rounded-[1.8rem] border border-amber-500/35 bg-gradient-to-r from-amber-500/10 to-emerald-500/10 p-7 sm:p-8 space-y-4">
       <h3 className="text-3xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-        {locale === 'de' ? 'Direkt in die Softwareansicht' : 'Jump directly into software view'}
+        {locale === 'de' ? 'Was du heute tun kannst' : 'What you can do today'}
       </h3>
       <p className="text-white/70">
-        {locale === 'de' ? 'Waehle den passenden Track. Die Demo zeigt den entsprechenden Einstiegspfad.' : 'Pick a track. The demo opens the matching entry path.'}
+        {locale === 'de'
+          ? 'Nur der Sicherheitscheck läuft wirklich. Alles andere erklärt sich erst — ohne eine Attrappe dahinter.'
+          : 'Only the security check is live. The rest is there to read — not a fake demo behind it.'}
       </p>
       <div className="grid md:grid-cols-3 gap-3">
         {links.map((item) => (
           <Link key={item.href} href={item.href} className="inline-flex items-center justify-between rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white hover:bg-white/10 transition-colors">
-            <span>{item.label}</span>
+            <span>
+              <span className="block">{item.label}</span>
+              <span className="block text-[10px] uppercase tracking-[0.16em] text-white/40 mt-1">{item.note}</span>
+            </span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         ))}

@@ -444,13 +444,13 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         {step === 1 && (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <header className="space-y-4">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Nightwatch Quickscan</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Sicherheitscheck</p>
               <h1 className="text-6xl font-light leading-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 Was sieht das <span className="italic">Internet</span> über dein Unternehmen?
               </h1>
               <p className="text-white/40 max-w-lg text-sm">
-                Nightwatch prüft nur öffentliche Signale. Danach übersetzt Saimôr OS
-                die Befunde in einen isolierten HQ-Workspace.
+                Saimôr schaut nur, was von außen sichtbar ist — kostenlos, ohne Konto.
+                Danach bekommst du einen verständlichen Bericht. Ob du weitermachst, entscheidest du.
               </p>
             </header>
 
@@ -563,7 +563,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
 
             {/* Trust badges */}
             <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.25em] text-white/20">
-              {['Kein Login', 'Nightwatch passiv', 'HQ-Preview inklusive', 'Kostenlos'].map((badge) => (
+              {['Kein Login', 'Nur öffentliche Daten', 'Kostenlos', 'Etwa eine Minute'].map((badge) => (
                 <div key={badge} className="flex items-center gap-1.5">
                   <CheckCircle2 size={10} className="text-emerald-400/50" />
                   {badge}
@@ -630,7 +630,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             {/* ── 1. HEADER ── */}
             <header className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.3em] text-white/28">Nightwatch Security Check · {results.target}</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-white/28">Sicherheitscheck · {results.target}</p>
                 <h1 className="mt-1 text-3xl font-light">
                   {results.companyName}
                   {results.grade && <span className="ml-3 text-lg text-white/35 font-extralight">· {results.grade}</span>}
@@ -901,7 +901,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 </div>
                 <label className="flex items-start gap-3 rounded-2xl border border-white/8 bg-black/18 p-4 text-sm text-white/55">
                   <input type="checkbox" checked={wallConsent} onChange={(e) => { setWallConsent(e.target.checked); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="mt-1 h-4 w-4 accent-emerald-300" />
-                  <span>Ich stimme zu, dass Nightwatch diesen Security-Check nach E-Mail-Bestätigung als Wall-Signal in die Freigabe geben darf.</span>
+                  <span>Ich stimme zu, dass dieser Sicherheitscheck nach E-Mail-Bestätigung als Eintrag an die Wand darf.</span>
                 </label>
                 <div className="flex flex-wrap gap-3">
                   <button type="button" onClick={saveAuditNote} disabled={!results.id || noteState === 'saving'} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/70 hover:bg-white/[0.1] disabled:opacity-40">

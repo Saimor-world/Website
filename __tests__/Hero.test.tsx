@@ -36,3 +36,22 @@ describe('Hero subheadline', () => {
     expect(screen.getByText(/an app for your own neighbourhood/)).toBeInTheDocument();
   });
 });
+
+describe('Hero CTAs', () => {
+  it('uses Einstieg as the doorbell, not YORI', () => {
+    const { container } = render(<Hero locale="de" />);
+    const links = Array.from(container.querySelectorAll('a')).map((el) => el.getAttribute('href') || '');
+    expect(links).toContain('/de/einstieg');
+    expect(links).toContain('/yori#workspace');
+    expect(links.some((href) => href.includes('yori.saimor.world'))).toBe(false);
+    expect(screen.getByText('Einstieg öffnen')).toBeInTheDocument();
+  });
+
+  it('points English doorbell at /en/entry', () => {
+    const { container } = render(<Hero locale="en" />);
+    const links = Array.from(container.querySelectorAll('a')).map((el) => el.getAttribute('href') || '');
+    expect(links).toContain('/en/entry');
+    expect(links).toContain('/en/yori#workspace');
+  });
+});
+

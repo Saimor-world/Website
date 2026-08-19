@@ -34,7 +34,7 @@ const COPY = {
 export default function YoriSection({ locale }: Props) {
   const copy = COPY[locale];
   return (
-    <section className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-24 text-white/85 md:py-36">
+    <section id="workspace" className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-24 text-white/85 md:py-36">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_10%,rgba(98,191,192,.10),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(214,168,72,.07),transparent_34%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.86fr_1.14fr] lg:items-center">
         <div>
@@ -50,7 +50,7 @@ export default function YoriSection({ locale }: Props) {
           <p className="mt-6 font-serif text-2xl italic text-world-gold">Create in Flow.</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={locale === "de" ? "/yori" : "/en/yori"} className="rounded-full bg-[var(--yori-jade)] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[var(--yori-jade-deep)]">{copy.primary}</a>
-            <a href="https://yori.saimor.world" className="rounded-full border border-world-gold/30 px-6 py-3 text-sm font-bold text-world-gold transition hover:border-world-gold">{copy.secondary}</a>
+            <a href={locale === "de" ? "/yori#workspace" : "/en/yori#workspace"} className="rounded-full border border-world-gold/30 px-6 py-3 text-sm font-bold text-world-gold transition hover:border-world-gold">{copy.secondary}</a>
           </div>
         </div>
         <div className="grid overflow-hidden rounded-[2rem_1rem_2.2rem_1.2rem] border border-white/10 bg-white/[0.03] shadow-[12px_14px_0_rgba(0,0,0,.35)] sm:grid-cols-2">

@@ -179,7 +179,7 @@ export default async function WallPage() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed italic md:text-lg" style={{ color: 'rgba(247, 239, 223, 0.65)' }}>
               Eine Wand mit Polaroids. Hier hängen Menschen, die Saimôr mitgestalten —
-              Supporter, Kund:innen, Partner, Team. Heft dich dazu, wenn du magst.
+              Supporter, Kund:innen, Partner, Team. An die Wand kommst du über den Sicherheitscheck — mit deiner Zustimmung, keine Beispiel-Polaroids.
             </p>
           </div>
 
@@ -194,7 +194,7 @@ export default async function WallPage() {
               boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18), 0 1px 0 rgba(255,255,255,0.4) inset',
             }}
           >
-            Heft dich an die Wand
+            Sicherheitscheck starten
             <ArrowRight size={15} />
           </Link>
         </div>
@@ -203,7 +203,7 @@ export default async function WallPage() {
         <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-3">
           <Stat label="Polaroids" value={String(sorted.length)} />
           <Stat label="Anonym erlaubt" value={String(anonymousCount)} />
-          <Stat label="HQ verbunden" value={String(claimedCount)} />
+          <Stat label="Mit Arbeitsraum" value={String(claimedCount)} />
         </div>
       </header>
 
@@ -223,7 +223,7 @@ export default async function WallPage() {
                 fontFamily: 'system-ui, sans-serif',
               }}
             >
-              Owner moderated
+              Von uns gelesen
             </span>
           </div>
 
@@ -523,7 +523,7 @@ function EmptyWall() {
           boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18)',
         }}
       >
-        Mit Security-Check beginnen
+        Sicherheitscheck starten
         <ArrowRight size={15} />
       </Link>
     </div>

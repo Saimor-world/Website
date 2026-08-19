@@ -47,7 +47,7 @@ const deArticles: EntryArticle[] = [
       {
         title: 'Was danach passiert',
         body:
-          'Du bekommst deinen persönlichen HQ-Link — ein Workspace mit deinen Befunden. Kein Passwort nötig. Einfach öffnen und mit Môra arbeiten.',
+          'Du bekommst einen Link zu deinem Bericht — ohne Passwort. Ob du danach weitermachst, entscheidest du. Deine Daten bleiben in Europa.',
       },
     ],
     ctaLabel: 'Kostenlos prüfen',
@@ -102,8 +102,8 @@ const deArticles: EntryArticle[] = [
       { title: 'Wissen sofort griffbereit', body: 'Nie wieder Dokumente suchen. Dein System weiß, wo alles liegt und gibt dir die Antwort in Sekunden.' },  
       { title: 'Live erleben', body: 'In unseren Demo-Tracks kannst du direkt sehen, wie sich das in der Praxis anfühlt – ohne Risiko.' },
     ],
-    ctaLabel: 'Demo starten',
-    ctaHref: '/demo?track=ai-business',
+    ctaLabel: 'Sicherheitscheck — das geht heute',
+    ctaHref: '/de/einstieg/security-check',
     actionKind: 'demo-track',
   },
   {
@@ -213,8 +213,8 @@ const enArticles: EntryArticle[] = [
       { title: 'Knowledge at Hand', body: 'Never search for documents again. Your system knows where everything is.' },
       { title: 'Experience Live', body: 'Watch our demo tracks to see how it works in practice – no risk involved.' },
     ],
-    ctaLabel: 'Start Demo',
-    ctaHref: '/demo?track=ai-business',
+    ctaLabel: 'Start with the security check',
+    ctaHref: '/en/entry/security-check',
     actionKind: 'demo-track',
   },
 ];
