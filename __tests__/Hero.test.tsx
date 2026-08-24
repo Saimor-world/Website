@@ -8,22 +8,40 @@ vi.mock('next/image', () => ({
 
 afterEach(cleanup);
 
-describe('Hero subheadline', () => {
-  it('does not hard-code a fixed product count in German', () => {
-    render(<Hero locale="de" />);
+/*
+ * Der Einstieg darf nicht veralten, sobald sich das Portfolio aendert.
+ *
+ * Die erste Fassung dieses Tests hatte den richtigen Gedanken - "Ein System.
+ * Drei Formen von Intelligenz." wurde falsch, als ein viertes Produkt dazukam -
+ * und dann trotzdem den genauen Wortlaut der neuen Fassung festgenagelt. Damit
+ * veraltete er auf die andere Art: jede Textaenderung war ein roter Test, auch
+ * eine richtige.
+ *
+ * Deshalb prueft er jetzt die REGEL, nicht den Satz.
+ */
+describe('Einstieg', () => {
+  const zahlwoerter = /\b(zwei|drei|vier|fünf|two|three|four|five)\b/i;
 
-    // The old copy ("Ein System. Drei Formen von Intelligenz.") goes stale
-    // the moment a fourth product exists (see Vicini, [[project_vicini_pivot]]).
-    expect(screen.queryByText(/Drei Formen/i)).not.toBeInTheDocument();
-    expect(screen.getByText('Ein wachsendes Ökosystem bewusster Intelligenz.')).toBeInTheDocument();
-    expect(screen.getByText(/VICINI verbindet Freundschaften/)).toBeInTheDocument();
+  it.each(['de', 'en'] as const)('nennt in %s keine feste Produktzahl', (locale) => {
+    const { container } = render(<Hero locale={locale} />);
+    const kopf = container.querySelector('h1')?.closest('section') ?? container;
+    expect(kopf.textContent ?? '').not.toMatch(zahlwoerter);
   });
 
-  it('does not hard-code a fixed product count in English', () => {
-    render(<Hero locale="en" />);
+  it.each(['de', 'en'] as const)('sagt in %s, was es ist - nicht nur, wie es sich anfuehlt', (locale) => {
+    const { container } = render(<Hero locale={locale} />);
+    const text = container.textContent ?? '';
+    // Der Einstieg muss das Versprechen tragen: eigener Server, eigene Daten.
+    // Eine Stimmung allein ("wachsendes Oekosystem bewusster Intelligenz")
+    // sagt einem Besucher nicht, was er bekommt.
+    expect(text).toMatch(/eigenen Server|own server/i);
+  });
 
-    expect(screen.queryByText(/Three forms/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/growing ecosystem/i)).toBeInTheDocument();
-    expect(screen.getByText(/VICINI connects friendships/)).toBeInTheDocument();
+  it.each(['de', 'en'] as const)('zeigt in %s nur Produkte aus dem Portfolio', (locale) => {
+    render(<Hero locale={locale} />);
+    // Vicini laeuft, ist aber bewusst noch nicht im Portfolio (Werkregister
+    // 24.08.2026). Was hier steht, muss mit dem uebereinstimmen, was die Seite
+    // darunter auch wirklich zeigt.
+    expect(screen.queryByText(/VICINI/i)).not.toBeInTheDocument();
   });
 });

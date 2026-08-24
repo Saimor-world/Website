@@ -9,7 +9,7 @@ class MockIntersectionObserver {
   }
 }
 
-if (!('IntersectionObserver' in window)) {
+if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
   // @ts-expect-error test-only polyfill
   window.IntersectionObserver = MockIntersectionObserver;
 }

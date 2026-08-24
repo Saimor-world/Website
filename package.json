@@ -14,7 +14,7 @@
     "clean:next": "node -e \"try{require('fs').rmSync('.next',{recursive:true,force:true})}catch(e){}\"",
     "kill:3001": "node scripts/kill-port.js 3001",
     "lint": "next lint",
-    "test": "vitest run --environment jsdom",
+    "test": "vitest run --config ./vitest.config.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",

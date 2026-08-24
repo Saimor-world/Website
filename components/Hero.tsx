@@ -93,30 +93,36 @@ export default function Hero({ locale, calUrl }: Props) {
     de: {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'Ein wachsendes Ökosystem bewusster Intelligenz.',
-      description: 'SAIMÔR orchestriert. MÔRA versteht Bedeutung. YORI lässt kreative Arbeit fließen. VICINI verbindet Freundschaften mit echten Orten. Gemeinsam bilden sie ein europäisches, souveränes Ökosystem für Organisationen, Creator und Beziehungen.',
-      ctaPrimary: 'YORI entdecken',
-      ctaSecondary: 'Strategiegespräch buchen',
+      // Der Einstieg sagt jetzt, was es IST. Die vorherige Fassung
+      // ("Ein wachsendes Ökosystem bewusster Intelligenz") war eine Stimmung,
+      // kein Angebot - und der Absatz darunter nannte vier Produkte in einem
+      // Atemzug. Niemand haelt vier.
+      subheadline: 'Ein Betriebssystem für deine Firma, auf deinem eigenen Server.',
+      description: 'Môra arbeitet dort, wo deine Daten liegen — und sie verlassen dein Haus nicht. Kein geteilter Speicher, keine fremde Wolke: eine Installation, ein Server, eine Firma.',
+      ctaPrimary: 'Môra kennenlernen',
+      ctaSecondary: 'Gespräch buchen',
+      // Nach dem Portfolio vom 24.08.2026: Desk und Earth laufen oeffentlich und
+      // fehlten hier, Vicini stand hier und ist bewusst noch nicht im Portfolio.
       stats: [
-        { value: 'SAIMÔR', label: 'Operating System' },
-        { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' },
-        { value: 'VICINI', label: 'Relationship World' }
+        { value: 'MÔRA', label: 'Sieht alles auf deinem Server' },
+        { value: 'DAS OS', label: 'Die Firma als Ort' },
+        { value: 'YORI', label: 'Creator OS' },
+        { value: 'DESK', label: 'Môra für Selbständige' }
       ],
       scrollHint: 'Entdecken'
     },
     en: {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'A growing ecosystem of conscious intelligence.',
-      description: 'SAIMÔR orchestrates. MÔRA understands meaning. YORI lets creative work flow. VICINI connects friendships with real places. Together they form a sovereign European ecosystem for organizations, creators and relationships.',
-      ctaPrimary: 'Discover YORI',
-      ctaSecondary: 'Book Strategy Call',
+      subheadline: 'An operating system for your company, on your own server.',
+      description: 'Môra works where your data lives — and it never leaves your house. No shared storage, no foreign cloud: one installation, one server, one company.',
+      ctaPrimary: 'Meet Môra',
+      ctaSecondary: 'Book a call',
       stats: [
-        { value: 'SAIMÔR', label: 'Operating System' },
-        { value: 'MÔRA', label: 'Semantic Intelligence' },
-        { value: 'YORI', label: 'Creative OS' },
-        { value: 'VICINI', label: 'Relationship World' }
+        { value: 'MÔRA', label: 'Sees everything on your server' },
+        { value: 'THE OS', label: 'Your company as a place' },
+        { value: 'YORI', label: 'Creator OS' },
+        { value: 'DESK', label: 'Môra for freelancers' }
       ],
       scrollHint: 'Explore'
     }
