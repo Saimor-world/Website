@@ -1,6 +1,7 @@
 ﻿import Hero from '@/components/Hero';
 import YoriSection from '@/components/YoriSection';
-import ViciniSection from '@/components/ViciniSection';
+import DeskSection from '@/components/DeskSection';
+import OsSection from '@/components/OsSection';
 import MoraTeaser from '@/components/MoraTeaser';
 import CommunityBanner from '@/components/CommunityBanner';
 import WaitlistForm from '@/components/WaitlistForm';
@@ -22,8 +23,9 @@ export default function Page() {
       <MyceliumNetworkLazy />
       <div className="relative z-10">
         <Hero locale="de" />
+        <OsSection locale="de" />
         <YoriSection locale="de" />
-        <ViciniSection locale="de" />
+        <DeskSection locale="de" />
         <MoraTeaser locale="de" />
         <EntryTeaser locale="de" />
         <CommunityBanner locale="de" />
