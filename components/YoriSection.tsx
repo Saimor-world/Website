@@ -4,11 +4,11 @@ type Props = { locale: "de" | "en" };
 
 const COPY = {
   de: {
-    eyebrow: "NEU IM SAIMÔR ÖKOSYSTEM",
+    eyebrow: "IM AKTIVEN AUFBAU",
     title: "YORI ist der ruhige Raum, in dem Ideen Form annehmen.",
     body: "Research, Signale, Ideen, Assets, Agenten, Schnitt, Publishing und Lernen fließen in einem Creative Operating System zusammen. Nicht schneller um jeden Preis — klarer, bewusster und mit dir in der Mitte.",
     primary: "YORI entdecken",
-    secondary: "Workspace öffnen",
+    secondary: "Demo & Status",
     cards: [
       ["01 / FLOW", "Nur das Wesentliche sehen und den nächsten ruhigen Schritt finden."],
       ["02 / STUDIO", "Ideen, Hooks, Skripte, Assets und Schnitte an einem Ort formen."],
@@ -17,11 +17,11 @@ const COPY = {
     ],
   },
   en: {
-    eyebrow: "NEW IN THE SAIMÔR ECOSYSTEM",
+    eyebrow: "IN ACTIVE DEVELOPMENT",
     title: "YORI is the quiet space where ideas take shape.",
     body: "Research, signals, ideas, assets, agents, editing, publishing and learning flow through one Creative Operating System. Not speed at any cost — more clarity, intention and you at the center.",
     primary: "Discover YORI",
-    secondary: "Open workspace",
+    secondary: "Demo & status",
     cards: [
       ["01 / FLOW", "See what matters and find the next calm step."],
       ["02 / STUDIO", "Shape ideas, hooks, scripts, assets and edits in one place."],
@@ -34,7 +34,7 @@ const COPY = {
 export default function YoriSection({ locale }: Props) {
   const copy = COPY[locale];
   return (
-    <section className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-24 text-white/85 md:py-36">
+    <section className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-20 text-white/85 md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_10%,rgba(98,191,192,.10),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(214,168,72,.07),transparent_34%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-16 lg:grid-cols-[.86fr_1.14fr] lg:items-center">
         <div>
@@ -50,7 +50,7 @@ export default function YoriSection({ locale }: Props) {
           <p className="mt-6 font-serif text-2xl italic text-world-gold">Create in Flow.</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={locale === "de" ? "/yori" : "/en/yori"} className="rounded-full bg-[var(--yori-jade)] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[var(--yori-jade-deep)]">{copy.primary}</a>
-            <a href="https://yori.saimor.world" className="rounded-full border border-world-gold/30 px-6 py-3 text-sm font-bold text-world-gold transition hover:border-world-gold">{copy.secondary}</a>
+            <a href="/demo" className="rounded-full border border-world-gold/30 px-6 py-3 text-sm font-bold text-world-gold transition hover:border-world-gold">{copy.secondary}</a>
           </div>
         </div>
         <div className="grid overflow-hidden rounded-[2rem_1rem_2.2rem_1.2rem] border border-white/10 bg-white/[0.03] shadow-[12px_14px_0_rgba(0,0,0,.35)] sm:grid-cols-2">

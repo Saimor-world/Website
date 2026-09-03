@@ -41,8 +41,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     de: {
       quickLinks: 'Navigation',
       services: 'Leistungen',
-      entry: 'Einstieg',
-      portal: 'Portal',
+      demo: 'Demo',
+      wall: 'The Wall',
+      earth: 'Earth',
       contact: 'Kontakt',
       legal: 'Rechtliches',
       trust: 'Sicherheit',
@@ -56,8 +57,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     en: {
       quickLinks: 'Navigation',
       services: 'Services',
-      entry: 'Entry',
-      portal: 'Portal',
+      demo: 'Demo',
+      wall: 'The Wall',
+      earth: 'Earth',
       contact: 'Contact',
       legal: 'Legal',
       trust: 'Security',
@@ -128,8 +130,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <a href={locale === 'de' ? '/yori' : '/en/yori'} className="text-white/50 hover:text-[var(--yori-turquoise)] transition-colors cursor-pointer">YORI</a>
-              <a href={locale === 'de' ? '/de/einstieg' : '/en/entry'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.entry}</a>
-              <a href={locale === 'de' ? '/portal' : '/portal?lang=en'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.portal}</a>
+              <a href="/demo" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.demo}</a>
+              <a href="/earth" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.earth}</a>
+              <a href="/wall" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.wall}</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
           </div>

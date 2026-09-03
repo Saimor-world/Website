@@ -62,6 +62,16 @@ export async function POST(req: NextRequest) {
     const email = data.email.toLowerCase().trim();
     const callbackUrl = safeInternalPath(data.callbackUrl, '/account/bridge');
 
+    // Login is invitation-only for now. Return the same neutral response for
+    // unknown addresses so this endpoint cannot be used to enumerate users.
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+    if (!existingUser) {
+      return NextResponse.json({ success: true, accepted: true });
+    }
+
     const token = crypto.randomBytes(32).toString('hex');
     const tokenHash = hashMagicToken(token);
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
@@ -71,16 +81,6 @@ export async function POST(req: NextRequest) {
         email,
         tokenHash,
         expiresAt,
-      },
-    });
-
-    await prisma.user.upsert({
-      where: { email },
-      update: {},
-      create: {
-        email,
-        name: email.split('@')[0],
-        role: 'free',
       },
     });
 

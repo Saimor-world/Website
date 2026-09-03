@@ -97,14 +97,14 @@ export default function Hero({ locale, calUrl }: Props) {
       // ("Ein wachsendes Ökosystem bewusster Intelligenz") war eine Stimmung,
       // kein Angebot - und der Absatz darunter nannte vier Produkte in einem
       // Atemzug. Niemand haelt vier.
-      subheadline: 'Ein Betriebssystem für deine Firma, auf deinem eigenen Server.',
-      description: 'Môra arbeitet dort, wo deine Daten liegen — und sie verlassen dein Haus nicht. Kein geteilter Speicher, keine fremde Wolke: eine Installation, ein Server, eine Firma.',
+      subheadline: 'Souveräne KI-Systeme für Arbeit, Wissen und Ideen.',
+      description: 'Saimôr verbindet eigene Arbeitsräume mit Môra, einer Kontext- und Agentenschicht. Datenhaltung und Verknüpfung bleiben auf deinem eigenen Server oder in deiner Instanz; verwendete KI-Modelle werden transparent angebunden.',
       ctaPrimary: 'Môra kennenlernen',
       ctaSecondary: 'Gespräch buchen',
       // Nach dem Portfolio vom 24.08.2026: Desk und Earth laufen oeffentlich und
       // fehlten hier, Vicini stand hier und ist bewusst noch nicht im Portfolio.
       stats: [
-        { value: 'MÔRA', label: 'Sieht alles auf deinem Server' },
+        { value: 'MÔRA', label: 'Kontext & Handlung' },
         { value: 'DAS OS', label: 'Die Firma als Ort' },
         { value: 'YORI', label: 'Creator OS' },
         { value: 'DESK', label: 'Môra für Selbständige' }
@@ -114,12 +114,12 @@ export default function Hero({ locale, calUrl }: Props) {
     en: {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
-      subheadline: 'An operating system for your company, on your own server.',
-      description: 'Môra works where your data lives — and it never leaves your house. No shared storage, no foreign cloud: one installation, one server, one company.',
+      subheadline: 'Sovereign AI systems for work, knowledge and ideas.',
+      description: 'Saimôr combines dedicated workspaces with Môra, a context and agent layer. Data storage and connections stay on your own server or dedicated instance; any AI models used are connected transparently.',
       ctaPrimary: 'Meet Môra',
       ctaSecondary: 'Book a call',
       stats: [
-        { value: 'MÔRA', label: 'Sees everything on your server' },
+        { value: 'MÔRA', label: 'Context & action' },
         { value: 'THE OS', label: 'Your company as a place' },
         { value: 'YORI', label: 'Creator OS' },
         { value: 'DESK', label: 'Môra for freelancers' }
@@ -131,7 +131,7 @@ export default function Hero({ locale, calUrl }: Props) {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--world-ink)]"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[var(--world-ink)]"
       role="banner"
     >
       {/* === HIGH-END BACKGROUND LAYERS === */}
@@ -150,6 +150,7 @@ export default function Hero({ locale, calUrl }: Props) {
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover brightness-[0.52] contrast-[1.12] saturate-[0.42]"
             priority
           />
@@ -207,17 +208,17 @@ export default function Hero({ locale, calUrl }: Props) {
 
       {/* === MAIN CONTENT === */}
       <motion.div
-        className="relative z-30 w-full max-w-7xl mx-auto px-6 py-32"
+        className="relative z-30 w-full max-w-7xl mx-auto px-5 py-24 sm:px-6 sm:py-32"
         style={{ y: parallaxY, opacity }}
       >
-        <div className="flex flex-col items-center text-center space-y-12">
-          <div className="relative z-10 -mb-5 flex h-28 w-28 items-center justify-center sm:h-32 sm:w-32" aria-label="Saimôr World">
+        <div className="flex flex-col items-center text-center space-y-8 sm:space-y-12">
+          <div className="relative z-10 -mb-3 flex h-20 w-20 items-center justify-center sm:-mb-5 sm:h-32 sm:w-32" aria-label="Saimôr World">
             <div className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(214,168,72,.42)_0%,rgba(214,168,72,.16)_34%,rgba(3,5,10,.94)_68%,transparent_73%)] blur-xl" />
             <div className="absolute -inset-3 rounded-full border border-[#D6A848]/35 bg-[#03050A]/80 shadow-[0_0_80px_rgba(214,168,72,.28)]" />
             <motion.span className="absolute -top-10 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-[#D6A848] shadow-[0_0_18px_rgba(214,168,72,.8)]" animate={{ y: [0, -4, 0], opacity: [0.55, 1, 0.55] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
             <motion.span className="absolute -right-10 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#66DDEA] shadow-[0_0_16px_rgba(102,221,234,.75)]" animate={{ x: [0, 4, 0], opacity: [0.45, 0.85, 0.45] }} transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: 0.7 }} />
             <div className="absolute inset-0 overflow-hidden rounded-full">
-            <Image src="/saimor-seal-master.png" alt="Saimôr World Siegel" fill className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
+            <Image src="/saimor-seal-master.png" alt="Saimôr World Siegel" fill sizes="128px" className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
             </div>
             <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#D6A848]/55 bg-[#03050A]/90 px-2 py-1 font-mono text-[7px] font-bold tracking-[.32em] text-[#D6A848] backdrop-blur">WORLD</span>
           </div>
@@ -238,7 +239,7 @@ export default function Hero({ locale, calUrl }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-7xl sm:text-8xl lg:text-9xl font-light tracking-tighter leading-tight"
+              className="text-6xl sm:text-8xl lg:text-9xl font-light tracking-tighter leading-tight"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               <span className="opacity-90">Saimôr</span>
@@ -247,7 +248,7 @@ export default function Hero({ locale, calUrl }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-2xl sm:text-3xl text-[#D6A848] italic font-light"
+              className="text-xl sm:text-3xl text-[#D6A848] italic font-light"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               {content.subheadline}
@@ -259,7 +260,7 @@ export default function Hero({ locale, calUrl }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-lg sm:text-xl text-white/40 max-w-2xl mx-auto leading-relaxed"
+            className="text-base sm:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed"
           >
             {content.description}
           </motion.p>
@@ -272,7 +273,7 @@ export default function Hero({ locale, calUrl }: Props) {
             className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
           >
             <AnimatedButton
-              href={locale === 'en' ? '/en/yori' : '/yori'}
+              href={locale === 'en' ? '/en/mora' : '/mora'}
               variant="gradient"
               size="lg"
               className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
@@ -295,7 +296,7 @@ export default function Hero({ locale, calUrl }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="grid grid-cols-2 gap-10 pt-12 sm:grid-cols-4 sm:gap-16"
+            className="hidden grid-cols-2 gap-10 pt-8 sm:grid sm:grid-cols-4 sm:gap-16 sm:pt-12"
           >
             {content.stats.map((stat, i) => (
               <div key={i} className="text-center group">
@@ -316,7 +317,7 @@ export default function Hero({ locale, calUrl }: Props) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-4 sm:flex"
       >
         <span className="text-[10px] uppercase tracking-[0.5em] font-black text-white/20 whitespace-nowrap">{content.scrollHint}</span>
         <motion.div
@@ -328,7 +329,7 @@ export default function Hero({ locale, calUrl }: Props) {
         </motion.div>
       </motion.div>
 
-      <button type="button" onClick={() => void toggleSound()} className="absolute bottom-10 right-6 z-40 inline-flex items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-[var(--world-ink)]/55 px-3 py-2 font-mono text-[8px] font-bold tracking-[.16em] text-[var(--world-gold)] backdrop-blur-xl transition hover:border-[var(--world-gold)]/60" aria-label={soundOn ? 'Ambient Sound ausschalten' : 'Ambient Sound einschalten'}>
+      <button type="button" onClick={() => void toggleSound()} className="absolute bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-[var(--world-ink)]/55 px-3 py-2 font-mono text-[8px] font-bold tracking-[.16em] text-[var(--world-gold)] backdrop-blur-xl transition hover:border-[var(--world-gold)]/60 sm:inline-flex" aria-label={soundOn ? 'Ambient Sound ausschalten' : 'Ambient Sound einschalten'}>
         {soundOn ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5 opacity-70" />}
         {soundOn ? 'AMBIENT ON' : 'AMBIENT'}
       </button>

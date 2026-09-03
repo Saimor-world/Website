@@ -1,11 +1,11 @@
-import MoraPageClient from "./MoraPageClient";
+import MoraProductPage from '@/components/MoraProductPage';
 
 export const metadata = {
-  title: "Môra – Semantisches Gedächtnis | Saimôr",
+  title: 'Môra – Kontext, Gedächtnis und Handlung',
   description:
-    "Erlebe Môra: Das semantische Gedächtnis von Saimôr. Live-Demo-Dashboard, intelligente Musteranalyse und local-first KI.",
+    'Môra ist die nachvollziehbare Kontext- und Agentenschicht in Saimôr: eigenes Gedächtnis, transparente Modellanbindung und vorbereitete Handlungen.',
 };
 
 export default function MoraPage() {
-  return <MoraPageClient />;
+  return <MoraProductPage locale="de" />;
 }

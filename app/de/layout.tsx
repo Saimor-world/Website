@@ -3,13 +3,13 @@ import type { ReactNode } from 'react';
 import '../globals.css';
 
 export const metadata: Metadata = {
-  title: 'Saimôr – Klarheit im Wandel',
-  description: 'Semantisches Betriebssystem für Organisationen im Wandel: Beratung, Dashboards und Workshops, die Komplexität in Klarheit verwandeln. DSGVO-konform, EU-gehostet.',
+  title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
+  description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI, Vorträge, Schulungen und ausgewählte Webprojekte.',
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
-    title: 'Saimôr – Klarheit im Wandel',
-    description: 'Semantisches Betriebssystem für Organisationen im Wandel: Beratung, Dashboards und Workshops, die Komplexität in Klarheit verwandeln. DSGVO-konform, EU-gehostet.',
+    title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
+    description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI, Vorträge, Schulungen und ausgewählte Webprojekte.',
     url: 'https://saimor.world',
     siteName: 'Saimôr',
     images: ['/og'],

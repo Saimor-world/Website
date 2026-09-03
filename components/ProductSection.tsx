@@ -45,7 +45,7 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
   return (
     <section
       id={id}
-      className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-24 text-white/85 md:py-36"
+      className="relative overflow-hidden border-t border-white/8 bg-world-ink px-6 py-20 text-white/85 md:py-32"
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -112,7 +112,7 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
 
         <div
           id={`${id}-features`}
-          className="mt-16 grid overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.025] md:grid-cols-3"
+          className="mt-12 grid overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.025] md:mt-16 md:grid-cols-3"
         >
           {copy.cards.map(([label, text]) => (
             <article

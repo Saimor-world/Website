@@ -25,19 +25,9 @@ function hashMagicToken(token: string) {
   return crypto.createHash('sha256').update(token).digest('hex');
 }
 
-async function findOrCreateUserByEmail(emailInput: string) {
+async function findExistingUserByEmail(emailInput: string) {
   const email = emailInput.trim().toLowerCase();
-  let user = await prismaClient.user.findUnique({ where: { email } });
-  if (user) return user;
-
-  user = await prismaClient.user.create({
-    data: {
-      email,
-      name: email.split('@')[0],
-      role: 'free',
-    },
-  });
-  return user;
+  return prismaClient.user.findUnique({ where: { email } });
 }
 
 const providers: any[] = [
@@ -70,7 +60,8 @@ const providers: any[] = [
         data: { usedAt: now },
       });
 
-      const user = await findOrCreateUserByEmail(email);
+      const user = await findExistingUserByEmail(email);
+      if (!user) return null;
 
       return {
         id: user.id,
