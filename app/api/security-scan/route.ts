@@ -241,10 +241,13 @@ export async function POST(req: NextRequest) {
     let entryToken: string | null = null;
     let responseWarning = scanWarning;
     try {
+      // The visitor's address is only used to deliver the capability link. It
+      // must never become part of the URL-bound preview token or HQ identity.
+      const previewEmail = `preview-${crypto.randomUUID()}@demo.saimor.world`;
       entryToken = signWebsiteEntryToken({
         id: createdAuditId || entryId,
         company: companyName,
-        email: data.email,
+        email: previewEmail,
         domain,
         score,
         level: riskLabel(level, data.locale),
