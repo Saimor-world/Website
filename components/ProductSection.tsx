@@ -45,7 +45,7 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
   return (
     <section
       id={id}
-      className="relative overflow-hidden border-t border-white/8 bg-world-ink px-5 py-14 text-white/85 md:px-6 md:py-32"
+      className="relative overflow-hidden border-t border-white/8 bg-world-ink px-5 py-14 text-white/85 md:px-6 md:py-24"
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -56,11 +56,11 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
         }}
       />
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-14 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div>
-            <div className="mb-8 flex items-center gap-4">
+            <div className="mb-6 flex items-center gap-4">
               <div
-                className="grid h-16 w-16 place-items-center rounded-[1.25rem] border font-serif text-3xl"
+                className="grid h-14 w-14 place-items-center rounded-2xl border font-serif text-2xl"
                 style={{ borderColor: `${accent}40`, background: `${accent}1a`, color: accent }}
               >
                 {copy.mark}
@@ -74,7 +74,7 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
             <p className="mb-5 font-mono text-[10px] font-bold tracking-[.22em]" style={{ color: accent }}>
               {copy.eyebrow}
             </p>
-            <h2 className="max-w-2xl font-serif text-5xl font-medium leading-[.96] tracking-[-.04em] text-white md:text-7xl">
+            <h2 className="max-w-2xl font-serif text-4xl font-medium leading-[1] tracking-[-.035em] text-white sm:text-5xl md:text-6xl">
               {copy.title}
             </h2>
             <p className="mt-7 max-w-xl text-base leading-7 text-white/58 md:text-lg">{copy.body}</p>
@@ -99,7 +99,7 @@ export default function ProductSection({ id, copy, scene, accent, accentInk }: P
             </div>
           </div>
 
-          <div className="relative rounded-[2.2rem_1.1rem_2.5rem_1.3rem] border border-white/10 bg-white/[0.035] p-4 shadow-[14px_16px_0_rgba(0,0,0,.32)] sm:p-7">
+          <div className="relative hidden rounded-[2.2rem_1.1rem_2.5rem_1.3rem] border border-white/10 bg-white/[0.035] p-7 shadow-[14px_16px_0_rgba(0,0,0,.32)] lg:block">
             <div
               className="absolute left-6 top-6 z-10 rounded-full border border-white/10 bg-world-ink/75 px-3 py-1.5 font-mono text-[9px] tracking-[.16em] backdrop-blur"
               style={{ color: accent }}

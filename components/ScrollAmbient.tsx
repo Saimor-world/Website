@@ -1,66 +1,55 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { AudioLines, VolumeX } from 'lucide-react';
 
-type Locale = 'de' | 'en';
+type Engine = { context: AudioContext; master: GainNode };
+const NOTES = [261.63, 329.63, 392, 493.88, 440, 349.23, 293.66, 392];
 
-const CHORDS = [
-  [130.81, 164.81, 196.00, 246.94], // Cmaj7
-  [174.61, 220.00, 261.63, 329.63], // Fmaj7
-  [146.83, 174.61, 220.00, 261.63], // Dm7
-  [146.83, 196.00, 246.94, 293.66], // G6
-] as const;
-
-type AmbientEngine = {
-  context: AudioContext;
-  master: GainNode;
-  oscillators: OscillatorNode[];
-};
-
-export default function ScrollAmbient({ locale }: { locale: Locale }) {
+export default function ScrollAmbient({ locale }: { locale: 'de' | 'en' }) {
   const [enabled, setEnabled] = useState(false);
-  const engineRef = useRef<AmbientEngine | null>(null);
-  const fadeTimerRef = useRef<number | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const lastChordRef = useRef(-1);
+  const engineRef = useRef<Engine | null>(null);
+  const lastStepRef = useRef(-1);
+  const lastPlayedRef = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
       const engine = engineRef.current;
-      if (!engine || frameRef.current !== null) return;
+      if (!engine) return;
+      const nowMs = performance.now();
+      if (nowMs - lastPlayedRef.current < 420) return;
+      const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const step = Math.min(NOTES.length - 1, Math.floor((window.scrollY / scrollable) * NOTES.length));
+      if (step === lastStepRef.current) return;
+      lastStepRef.current = step;
+      lastPlayedRef.current = nowMs;
 
-      frameRef.current = window.requestAnimationFrame(() => {
-        frameRef.current = null;
-        const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
-        const chordIndex = Math.min(CHORDS.length - 1, Math.floor(progress * CHORDS.length));
-        const now = engine.context.currentTime;
-
-        if (chordIndex !== lastChordRef.current) {
-          CHORDS[chordIndex].forEach((frequency, index) => {
-            engine.oscillators[index].frequency.cancelScheduledValues(now);
-            engine.oscillators[index].frequency.setTargetAtTime(frequency, now, 0.55);
-          });
-          lastChordRef.current = chordIndex;
-        }
-
-        engine.master.gain.cancelScheduledValues(now);
-        engine.master.gain.setTargetAtTime(0.013, now, 0.12);
-        if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current);
-        fadeTimerRef.current = window.setTimeout(() => {
-          const activeEngine = engineRef.current;
-          if (!activeEngine) return;
-          activeEngine.master.gain.setTargetAtTime(0.0045, activeEngine.context.currentTime, 0.7);
-        }, 420);
-      });
+      const now = engine.context.currentTime;
+      const base = engine.context.createOscillator();
+      const overtone = engine.context.createOscillator();
+      const envelope = engine.context.createGain();
+      const filter = engine.context.createBiquadFilter();
+      base.type = 'sine';
+      overtone.type = 'triangle';
+      base.frequency.value = NOTES[step];
+      overtone.frequency.value = NOTES[step] * 2;
+      filter.type = 'lowpass';
+      filter.frequency.value = 1100;
+      envelope.gain.setValueAtTime(0.0001, now);
+      envelope.gain.exponentialRampToValueAtTime(0.12, now + 0.035);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, now + 1.45);
+      base.connect(filter);
+      overtone.connect(filter);
+      filter.connect(envelope);
+      envelope.connect(engine.master);
+      base.start(now);
+      overtone.start(now);
+      base.stop(now + 1.5);
+      overtone.stop(now + 1.5);
     };
-
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
-      if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current);
       const engine = engineRef.current;
       engineRef.current = null;
       void engine?.context.close();
@@ -68,59 +57,29 @@ export default function ScrollAmbient({ locale }: { locale: Locale }) {
   }, []);
 
   const toggle = async () => {
-    const activeEngine = engineRef.current;
-    if (activeEngine) {
+    if (engineRef.current) {
+      const engine = engineRef.current;
       engineRef.current = null;
-      await activeEngine.context.close();
+      await engine.context.close();
       setEnabled(false);
       return;
     }
-
-    const AudioContextClass = window.AudioContext
-      ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const AudioContextClass = window.AudioContext ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextClass) return;
-
     const context = new AudioContextClass();
     const master = context.createGain();
-    const filter = context.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 920;
-    filter.Q.value = 0.35;
-    master.gain.value = 0.0045;
-    filter.connect(master);
+    master.gain.value = 0.055;
     master.connect(context.destination);
-
-    const oscillators = CHORDS[0].map((frequency, index) => {
-      const oscillator = context.createOscillator();
-      oscillator.type = index === 0 ? 'sine' : 'triangle';
-      oscillator.frequency.value = frequency;
-      oscillator.detune.value = [-5, 2, -2, 5][index];
-      oscillator.connect(filter);
-      oscillator.start();
-      return oscillator;
-    });
-
     await context.resume();
-    engineRef.current = { context, master, oscillators };
-    lastChordRef.current = 0;
+    engineRef.current = { context, master };
+    lastStepRef.current = -1;
     setEnabled(true);
   };
 
-  const copy = locale === 'de'
-    ? { on: 'FAHRSTUHLMODUS AN', off: 'FAHRSTUHLMODUS', label: 'Leise Musik beim Scrollen' }
-    : { on: 'ELEVATOR MODE ON', off: 'ELEVATOR MODE', label: 'Soft music while scrolling' };
-
+  const copy = locale === 'de' ? { on: 'Klangspur an', off: 'Klangspur', label: 'Leise Klangspur beim Scrollen' } : { on: 'Sound trail on', off: 'Sound trail', label: 'Soft sound trail while scrolling' };
   return (
-    <button
-      type="button"
-      onClick={() => void toggle()}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-black/25 px-4 py-2 font-mono text-[9px] font-bold tracking-[.15em] text-[var(--world-gold)] backdrop-blur-md transition hover:border-[var(--world-gold)]/60"
-      aria-label={copy.label}
-      aria-pressed={enabled}
-      title={copy.label}
-    >
-      {enabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5 opacity-70" />}
-      {enabled ? copy.on : copy.off}
+    <button type="button" onClick={() => void toggle()} aria-pressed={enabled} aria-label={copy.label} title={copy.label} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 px-3.5 py-2 text-xs text-white/46 transition hover:border-white/22 hover:text-white/72">
+      {enabled ? <AudioLines className="h-4 w-4 text-[#d6a848]" /> : <VolumeX className="h-4 w-4" />}{enabled ? copy.on : copy.off}
     </button>
   );
 }

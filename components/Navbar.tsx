@@ -1,427 +1,64 @@
 'use client';
-// Link removed - using native <a> tags for full page reloads
+
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Globe, Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MatomoEvents } from '@/lib/matomo';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { localizedLegalHref } from '@/lib/legal-routes';
 
 export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const switchLocale = locale === 'de' ? 'en' : 'de';
-
-  const getSwitchHref = () => {
-    if (!pathname) return `/${switchLocale}`;
-    if (pathname.startsWith('/de/einstieg')) return pathname.replace('/de/einstieg', '/en/entry');
-    if (pathname.startsWith('/en/entry')) return pathname.replace('/en/entry', '/de/einstieg');
-    const localizedLegalRoute = localizedLegalHref(pathname);
-    if (localizedLegalRoute) return localizedLegalRoute;
-
-    const paired: Record<string, string> = {
-      '/mora': '/en/mora',
-      '/en/mora': '/mora',
-      '/mora/analog-affect': '/en/mora/analog-affect',
-      '/en/mora/analog-affect': '/mora/analog-affect',
-      '/yori': '/en/yori',
-      '/en/yori': '/yori',
-      // Shared product routes stay unprefixed; collapse mistaken locale prefixes
-      '/en/portal': '/portal',
-      '/de/portal': '/portal',
-      '/en/demo': '/demo',
-      '/de/demo': '/demo',
-      '/en/wall': '/wall',
-      '/de/wall': '/wall',
-      '/de/mora': '/mora',
-      '/de/yori': '/yori',
-    };
-    if (paired[pathname]) return paired[pathname];
-
-    const shared = new Set(['/portal', '/demo', '/wall', '/login']);
-    if (shared.has(pathname)) return pathname;
-
-    const segments = pathname.split('/').filter(Boolean);
-    if (segments[0] === 'de' || segments[0] === 'en') {
-      segments[0] = switchLocale;
-      return '/' + segments.join('/');
-    }
-    if (pathname === '/' || pathname === '/de') return switchLocale === 'en' ? '/en' : '/de';
-    if (pathname === '/en') return '/de';
-    return `/${switchLocale}${pathname === '/' ? '' : pathname}`;
-  };
-
-  const switchHref = getSwitchHref();
-  const switchLabel = locale === 'de' ? 'EN' : 'DE';
-
-  const nav = {
-    de: {
-      home: 'Start',
-      mora: 'Môra',
-      frnt: 'YORI',
-      demo: 'Demo',
-      contact: 'Kontakt',
-      book: 'Gespräch buchen'
-    },
-    en: {
-      home: 'Home',
-      mora: 'Môra',
-      frnt: 'YORI',
-      demo: 'Demo',
-      contact: 'Contact',
-      book: 'Book a Call'
-    }
-  }[locale];
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const home = `/${locale}`;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  useEffect(() => setOpen(false), [pathname]);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+  const switchHref = (() => {
+    const legal = pathname ? localizedLegalHref(pathname) : null;
+    if (legal) return legal;
+    if (pathname === '/mora') return '/en/mora';
+    if (pathname === '/en/mora') return '/mora';
+    if (pathname === '/yori') return '/en/yori';
+    if (pathname === '/en/yori') return '/yori';
+    if (pathname?.startsWith('/de/einstieg')) return pathname.replace('/de/einstieg', '/en/entry');
+    if (pathname?.startsWith('/en/entry')) return pathname.replace('/en/entry', '/de/einstieg');
+    return locale === 'de' ? '/en' : '/de';
+  })();
 
-  const navItems = [
-    { href: `/${locale}`, label: nav.home, isAnchor: false },
-    { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
-    { href: locale === 'de' ? '/yori' : '/en/yori', label: nav.frnt, isAnchor: false },
-    { href: '/demo', label: nav.demo, isAnchor: false },
-    { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
+  const copy = locale === 'de'
+    ? { mora: 'Môra', products: 'Produkte', demo: 'Demo', contact: 'Kontakt', cta: 'Projekt anfragen', menu: 'Menü' }
+    : { mora: 'Môra', products: 'Products', demo: 'Demo', contact: 'Contact', cta: 'Discuss a project', menu: 'Menu' };
+  const items = [
+    { href: locale === 'de' ? '/mora' : '/en/mora', label: copy.mora },
+    { href: `${home}#produkte`, label: copy.products },
+    { href: locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check', label: copy.demo },
+    { href: `${home}#kontakt`, label: copy.contact },
   ];
 
-  const handleNavClick = (href: string, isAnchor: boolean, label: string, e: React.MouseEvent) => {
-    setMenuOpen(false);
-
-    // Track navigation
-    MatomoEvents.navClick(label);
-
-    if (isAnchor) {
-      const [path, hash] = href.split('#');
-      const isOnTargetPage = pathname === path || (path === '/de' && pathname === '/') || (path === '/en' && pathname === '/en');
-
-      if (isOnTargetPage) {
-        e.preventDefault();
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      } else {
-        // Let standard navigation happen
-      }
-    }
-  };
-
   return (
-    <>
-      {/* Sleek Premium Header */}
-      <motion.header
-        className="fixed top-0 left-0 right-0 z-50"
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
-          <div
-            className={`relative flex items-center justify-between transition-all duration-500 ${scrolled
-              ? 'px-5 py-2.5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-              : 'px-5 py-3'
-              }`}
-          >
-            {/* Logo */}
-            <a
-              href={`/${locale}`}
-              onClick={(event) => {
-                setMenuOpen(false);
-                window.dispatchEvent(new CustomEvent('saimor-logo-click', {
-                  detail: {
-                    x: event.clientX,
-                    y: event.clientY,
-                  },
-                }));
-              }}
-              className="relative z-10 group"
-              aria-label="Saimôr - Zur Startseite"
-            >
-              <motion.div
-                className="flex items-center gap-2.5"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-[var(--world-gold)]/20 transition-all">
-                  <Image
-                    src="/saimor-seal-256.webp"
-                    alt="Saimôr"
-                    width={28}
-                    height={28}
-                    className="object-contain scale-[1.3] mix-blend-screen"
-                    priority
-                  />
-                </div>
-                <span
-                  className="text-lg font-medium text-white/90 hidden sm:block tracking-wide"
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                >
-                  Saimôr
-                </span>
-              </motion.div>
-            </a>
-
-            {/* Desktop Navigation - Centered */}
-            <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2" role="navigation" aria-label="Hauptnavigation">
-              {navItems.map((item) => (
-                item.isAnchor ? (
-                  <button
-                    key={item.href}
-                    onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
-                    className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
-                    aria-label={`Zu ${item.label} navigieren`}
-                  >
-                    {item.label}
-                  </button>
-                ) : (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => MatomoEvents.navClick(item.label)}
-                    className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors"
-                    aria-label={`Zu ${item.label} navigieren`}
-                  >
-                    {item.label}
-                  </a>
-                )
-              ))}
-            </nav>
-
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-3">
-              {/* Language Switcher */}
-              <motion.a
-                href={switchHref}
-                className="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-[11px] font-bold text-white/50 hover:text-white border border-white/10 hover:border-[var(--world-violet)]/30 transition-all hover:bg-white/5"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={`Sprache wechseln zu ${switchLabel}`}
-              >
-                {switchLabel}
-              </motion.a>
-
-              {/* CTA Button - Desktop */}
-              <motion.a
-                href="https://cal.com/saimor/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-[var(--world-violet)] to-[var(--world-cyan)] hover:from-[var(--world-cyan)] hover:to-[var(--world-violet)] shadow-lg shadow-[var(--world-violet)]/20 hover:shadow-[var(--world-cyan)]/30"
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                aria-label="Termin buchen - Öffnet in neuem Tab"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="tracking-wide">{nav.book}</span>
-              </motion.a>
-
-              {/* Mobile Menu Toggle */}
-              <motion.button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
-                aria-expanded={menuOpen}
-                aria-controls="mobile-menu"
-              >
-                <AnimatePresence mode="wait">
-                  {menuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                    >
-                      <X className="w-5 h-5" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                    >
-                      <Menu className="w-5 h-5" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            </div>
-          </div>
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
+      <div className={`mx-auto flex max-w-7xl items-center justify-between rounded-2xl border px-4 py-3 transition ${scrolled ? 'border-white/10 bg-[#05090a]/88 shadow-[0_12px_36px_rgba(0,0,0,.3)] backdrop-blur-xl' : 'border-transparent bg-transparent'}`}>
+        <a href={home} className="flex items-center gap-3" aria-label="Saimôr – Startseite">
+          <Image src="/saimor-seal-256.webp" alt="" width={30} height={30} className="rounded-lg" priority />
+          <span className="font-serif text-xl text-white/90">Saimôr</span>
+        </a>
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Hauptnavigation">
+          {items.map((item) => <a key={item.href} href={item.href} className="rounded-full px-4 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">{item.label}</a>)}
+        </nav>
+        <div className="flex items-center gap-2">
+          <a href={switchHref} className="grid h-10 min-w-10 place-items-center rounded-full border border-white/10 px-3 text-xs font-semibold text-white/45 transition hover:text-white">{locale === 'de' ? 'EN' : 'DE'}</a>
+          <a href={`${home}#kontakt`} className="hidden min-h-10 items-center gap-2 rounded-full bg-[#d6a848] px-4 py-2 text-sm font-bold text-[#151006] sm:inline-flex">{copy.cta}<ArrowRight className="h-4 w-4" /></a>
+          <button type="button" onClick={() => setOpen((value) => !value)} className="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-white/70 md:hidden" aria-label={copy.menu} aria-expanded={open}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
         </div>
-      </motion.header >
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {
-          menuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                className="fixed inset-0 z-40"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(7, 11, 22, 0.98) 0%, rgba(14, 32, 39, 0.96) 100%)',
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => setMenuOpen(false)}
-              >
-                {/* Decorative background elements */}
-                <motion.div
-                  className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
-                  style={{ background: 'rgba(34, 184, 141, 0.14)' }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
-                <motion.div
-                  className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
-                  style={{ background: 'rgba(102, 221, 234, 0.1)' }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-                />
-              </motion.div>
-
-              {/* Menu Content */}
-              <motion.div
-                className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {/* Close Button */}
-                <motion.button
-                  onClick={() => setMenuOpen(false)}
-                  className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 hover:border-[var(--world-violet)]/50 transition-colors"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  transition={{ delay: 0.2 }}
-                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 184, 141, 0.14)' }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="Menü schließen"
-                >
-                  <X className="w-6 h-6" />
-                </motion.button>
-
-                {/* Logo */}
-                <motion.div
-                  className="mb-12"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/saimor-seal-256.webp"
-                      alt="Saimôr"
-                      width={48}
-                      height={48}
-                      className="object-contain mix-blend-screen"
-                    />
-                  </div>
-                </motion.div>
-
-                {/* Navigation Items */}
-                <nav id="mobile-menu" className="flex flex-col items-center gap-2" role="navigation" aria-label="Mobile Navigation">
-                  {navItems.map((item, index) => (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 30 }}
-                      transition={{ delay: 0.15 + index * 0.08, type: 'spring', stiffness: 100 }}
-                    >
-                      {item.isAnchor ? (
-                        <motion.button
-                          onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
-                          className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors"
-                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                          whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                          whileTap={{ scale: 0.98 }}
-                          aria-label={`Zu ${item.label} navigieren`}
-                        >
-                          {item.label}
-                        </motion.button>
-                      ) : (
-                        <motion.a
-                          href={item.href}
-                          onClick={() => {
-                            setMenuOpen(false);
-                            MatomoEvents.navClick(item.label);
-                          }}
-                          className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors block"
-                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                          whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                          whileTap={{ scale: 0.98 }}
-                          aria-label={`Zu ${item.label} navigieren`}
-                        >
-                          {item.label}
-                        </motion.a>
-                      )}
-                    </motion.div>
-                  ))}
-                </nav>
-
-                {/* CTA Button */}
-                <motion.a
-                  href="https://cal.com/saimor/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-12 px-8 py-4 text-lg font-bold text-[#0F1F17] rounded-2xl relative overflow-hidden"
-                  style={{
-                    background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
-                    boxShadow: '0 8px 32px rgba(212, 168, 87, 0.4)'
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, type: 'spring' }}
-                  whileHover={{ scale: 1.05, boxShadow: '0 12px 40px rgba(212, 168, 87, 0.5)' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '200%' }}
-                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                  />
-                  <span className="relative z-10">{nav.book}</span>
-                </motion.a>
-
-                {/* Language Switch */}
-                <motion.div
-                  className="mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <a
-                    href={switchHref}
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
-                  >
-                    <Globe className="w-4 h-4" />
-                    {locale === 'de' ? 'Switch to English' : 'Zur deutschen Seite'}
-                  </a>
-                </motion.div>
-
-              </motion.div>
-            </>
-          )
-        }
-      </AnimatePresence >
-    </>
+      </div>
+      {open ? <nav className="mx-auto mt-2 max-w-7xl rounded-2xl border border-white/10 bg-[#071011]/96 p-3 shadow-2xl backdrop-blur-xl md:hidden" aria-label="Mobile Navigation">{items.map((item) => <a key={item.href} href={item.href} className="flex min-h-12 items-center justify-between rounded-xl px-4 text-base text-white/72 hover:bg-white/5"><span>{item.label}</span><ArrowRight className="h-4 w-4 text-white/25" /></a>)}<a href={`${home}#kontakt`} className="mt-2 flex min-h-12 items-center justify-center rounded-xl bg-[#d6a848] px-4 text-sm font-bold text-[#151006]">{copy.cta}</a></nav> : null}
+    </header>
   );
 }

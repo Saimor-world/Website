@@ -60,6 +60,7 @@ describe('Saimor World site estate', () => {
   it('contains no active WORLD CTA to the legacy FRNT host', async () => {
     const files = [
       resolve(process.cwd(), 'components/YoriSection.tsx'),
+      resolve(process.cwd(), 'components/YoriProductPage.tsx'),
       resolve(process.cwd(), 'app/yori/page.tsx'),
       resolve(process.cwd(), 'app/en/yori/page.tsx'),
     ];

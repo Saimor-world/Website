@@ -86,7 +86,8 @@ function wallStatusLabel(audit: { userId?: string | null; wallEntry?: { status?:
   if (audit.userId) return 'Account verbunden';
   if (audit.wallEntry?.status === 'pending_review') return 'Wall Review';
   if (audit.wallEntry?.status === 'private') return 'Wall privat';
-  if (audit.wallEntry) return 'Wall live';
+  if (audit.wallEntry?.status === 'archived') return 'Wall archiviert';
+  if (audit.wallEntry?.status === 'published') return 'Wall live';
   return 'Privates Dossier';
 }
 
@@ -100,7 +101,7 @@ async function updateWallStatus(formData: FormData) {
 
   const entryId = String(formData.get('entryId') || '');
   const status = String(formData.get('status') || '');
-  if (!entryId || !['published', 'private', 'pending_review'].includes(status)) return;
+  if (!entryId || !['published', 'private', 'pending_review', 'archived'].includes(status)) return;
 
   await prisma.wallEntry.update({
     where: { id: entryId },
@@ -908,6 +909,9 @@ export default async function OwnerDashboard() {
                       </button>
                       <button name="status" value="pending_review" className="rounded-lg border border-amber-400/20 bg-amber-400/10 px-3 py-2 text-[10px] uppercase tracking-widest text-amber-200 hover:bg-amber-400/15">
                         Review
+                      </button>
+                      <button name="status" value="archived" className="rounded-lg border border-white/8 bg-black/20 px-3 py-2 text-[10px] uppercase tracking-widest text-white/35 hover:text-white/65">
+                        Archivieren
                       </button>
                     </form>
                   ) : null}
