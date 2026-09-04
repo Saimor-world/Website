@@ -154,7 +154,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               >
                 <div className="relative w-8 h-8 overflow-hidden rounded-lg bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-[var(--world-gold)]/20 transition-all">
                   <Image
-                    src="/saimor-seal-master.png"
+                    src="/saimor-seal-256.webp"
                     alt="Saimôr"
                     width={28}
                     height={28}
@@ -328,7 +328,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 >
                   <div className="w-16 h-16 rounded-2xl bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center overflow-hidden">
                     <Image
-                      src="/saimor-seal-master.png"
+                      src="/saimor-seal-256.webp"
                       alt="Saimôr"
                       width={48}
                       height={48}
@@ -439,4 +439,3 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     </>
   );
 }
-

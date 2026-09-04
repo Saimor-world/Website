@@ -1,28 +1,18 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
-import { headers } from 'next/headers'
-import Script from 'next/script'
 import './globals.css'
 import ClientProviders from '../components/ClientProviders'
 import AuthProvider from '../components/AuthProvider'
 import LayoutWrapper from '../components/LayoutWrapper'
 import CookieBanner from '@/components/CookieBanner';
-import EasterEggs from '@/components/EasterEggs';
 import ScrollProgress from '@/components/ScrollProgress';
-import BackToTop from '@/components/BackToTop';
 import CommandPalette from '@/components/CommandPalette';
 import KeyboardHint from '@/components/KeyboardHint';
 import PWARegistration from '@/components/PWARegistration';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
-import * as Sentry from '@sentry/nextjs';
-import { canonicalUrlForRequest } from '@/lib/site-estate';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const pathname = (await headers()).get('x-saimor-pathname');
-  const canonicalUrl = canonicalUrlForRequest(pathname);
-
-  return {
+export const metadata: Metadata = {
     metadataBase: new URL('https://saimor.world'),
     title: {
       default: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
@@ -56,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
       description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
-      url: canonicalUrl,
+      url: '/de',
       siteName: 'Saimôr',
       images: [
         {
@@ -88,16 +78,12 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     alternates: {
-      canonical: canonicalUrl,
+      canonical: '/de',
     },
     verification: {
       // Google Search Console (wenn vorhanden)
       // google: 'verification-code',
     },
-    other: {
-      ...Sentry.getTraceData()
-    },
-  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -107,8 +93,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/saimor-seal-master.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/saimor-seal-master.png" />
         <meta name="theme-color" content="#10B981" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -122,7 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "Organization",
               "name": "Saimôr",
               "url": "https://saimor.world",
-              "logo": "https://saimor.world/saimor-seal-master.png",
+              "logo": "https://saimor.world/icon.png",
               "description": "Unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume, Vorträge und Schulungen.",
               "foundingDate": "2024",
               "sameAs": [],
@@ -184,7 +168,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ClientProviders />
             <PWARegistration />
             <ScrollProgress />
-            <EasterEggs />
             <CookieBanner />
             <CommandPalette />
             <KeyboardHint />

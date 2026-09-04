@@ -1,9 +1,10 @@
 'use client';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
+import ScrollAmbient from '@/components/ScrollAmbient';
 
 type Locale = 'de' | 'en';
 
@@ -41,8 +42,8 @@ const FloatingParticle = ({ delay = 0, size = 4, duration = 20 }: { delay?: numb
 
 export default function Hero({ locale, calUrl }: Props) {
   const [mounted, setMounted] = useState(false);
-  const [soundOn, setSoundOn] = useState(false);
-  const audioRef = useRef<AudioContext | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -54,40 +55,10 @@ export default function Hero({ locale, calUrl }: Props) {
 
   useEffect(() => {
     setMounted(true);
-    return () => {
-      void audioRef.current?.close();
-      audioRef.current = null;
-    };
+    setIsDesktop(typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 640px)').matches);
   }, []);
 
   const cal = calUrl ?? process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min';
-
-  const toggleSound = async () => {
-    if (soundOn) {
-      await audioRef.current?.close();
-      audioRef.current = null;
-      setSoundOn(false);
-      return;
-    }
-    const Context = window.AudioContext ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Context) return;
-    const context = new Context();
-    const filter = context.createBiquadFilter();
-    const gain = context.createGain();
-    filter.type = 'lowpass'; filter.frequency.value = 680;
-    gain.gain.value = 0.012;
-    filter.connect(gain); gain.connect(context.destination);
-    [72, 108, 144].forEach((frequency, index) => {
-      const oscillator = context.createOscillator();
-      oscillator.type = index === 0 ? 'sine' : 'triangle';
-      oscillator.frequency.value = frequency;
-      oscillator.detune.value = index * 4;
-      oscillator.connect(filter); oscillator.start();
-    });
-    await context.resume();
-    audioRef.current = context;
-    setSoundOn(true);
-  };
 
   const content = {
     de: {
@@ -144,18 +115,6 @@ export default function Hero({ locale, calUrl }: Props) {
         {/* Milky Way / Mycelium atmosphere */}
         <div className="pointer-events-none absolute -inset-[30%] rotate-[-16deg] bg-[radial-gradient(ellipse_at_center,rgba(231,196,106,.16)_0%,rgba(200,188,255,.10)_28%,transparent_64%)] blur-[60px]" />
         <div className="pointer-events-none absolute -left-[15%] top-[14%] h-[28%] w-[130%] rotate-[-18deg] bg-[linear-gradient(90deg,transparent_0%,rgba(231,196,106,.06)_25%,rgba(200,188,255,.16)_50%,rgba(102,221,234,.07)_66%,transparent_100%)] blur-[32px]" />
-        {/* Subtle Forest Layer - High End & Professional */}
-        <div className="absolute inset-0 opacity-[0.24] mix-blend-screen" aria-hidden="true">
-          <Image
-            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover brightness-[0.52] contrast-[1.12] saturate-[0.42]"
-            priority
-          />
-        </div>
-
         <div className="absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,.06)_0%,transparent_24%,transparent_68%,rgba(214,168,72,.11)_100%)] mix-blend-screen opacity-70" />
 
         {/* Mycelium Pattern Overlay */}
@@ -167,7 +126,7 @@ export default function Hero({ locale, calUrl }: Props) {
         {/* Animated Atmospheric Nebula - More intense & vibrant */}
         <motion.div 
           className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] bg-[var(--world-violet)]/20 blur-[150px] rounded-full"
-          animate={{ 
+          animate={reduceMotion ? undefined : {
             opacity: [0.6, 0.9, 0.6],
             scale: [1, 1.2, 1] 
           }}
@@ -175,7 +134,7 @@ export default function Hero({ locale, calUrl }: Props) {
         />
         <motion.div 
           className="absolute -bottom-[15%] -right-[10%] w-[70%] h-[70%] bg-[var(--world-cyan)]/10 blur-[150px] rounded-full"
-          animate={{ 
+          animate={reduceMotion ? undefined : {
             opacity: [0.5, 0.8, 0.5],
             scale: [1.2, 1, 1.2] 
           }}
@@ -200,7 +159,7 @@ export default function Hero({ locale, calUrl }: Props) {
             <motion.div className="absolute left-1/2 top-1/2 h-[min(14vw,132px)] w-[min(34vw,340px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border" style={{ borderColor: "rgba(102,221,234,.14)", rotate: 20 }} animate={{ rotate: -340 }} transition={{ duration: 52, repeat: Infinity, ease: "linear" }} />
           </div>
           <div className="absolute left-1/2 top-[23%] h-px w-[min(50vw,500px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#D6A848]/30 to-transparent" />
-          {mounted && Array.from({ length: 12 }, (_, index) => <FloatingParticle key={index} delay={index * 0.8} size={index % 4 === 0 ? 3 : 2} duration={20 + index % 6} />)}
+          {mounted && isDesktop && !reduceMotion && Array.from({ length: 8 }, (_, index) => <FloatingParticle key={index} delay={index * 0.8} size={index % 4 === 0 ? 3 : 2} duration={20 + index % 6} />)}
         </div>
                 {/* Grain/Noise */}
         <div className="absolute inset-0 bg-noise opacity-[0.15] mix-blend-overlay" />
@@ -208,7 +167,7 @@ export default function Hero({ locale, calUrl }: Props) {
 
       {/* === MAIN CONTENT === */}
       <motion.div
-        className="relative z-30 w-full max-w-7xl mx-auto px-5 py-24 sm:px-6 sm:py-32"
+        className="relative z-30 w-full max-w-7xl mx-auto px-5 py-20 sm:px-6 sm:py-32"
         style={{ y: parallaxY, opacity }}
       >
         <div className="flex flex-col items-center text-center space-y-8 sm:space-y-12">
@@ -218,7 +177,7 @@ export default function Hero({ locale, calUrl }: Props) {
             <motion.span className="absolute -top-10 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-[#D6A848] shadow-[0_0_18px_rgba(214,168,72,.8)]" animate={{ y: [0, -4, 0], opacity: [0.55, 1, 0.55] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
             <motion.span className="absolute -right-10 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#66DDEA] shadow-[0_0_16px_rgba(102,221,234,.75)]" animate={{ x: [0, 4, 0], opacity: [0.45, 0.85, 0.45] }} transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: 0.7 }} />
             <div className="absolute inset-0 overflow-hidden rounded-full">
-            <Image src="/saimor-seal-master.png" alt="Saimôr World Siegel" fill sizes="128px" className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
+            <Image src="/saimor-seal-256.webp" alt="Saimôr World Siegel" fill sizes="128px" className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
             </div>
             <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#D6A848]/55 bg-[#03050A]/90 px-2 py-1 font-mono text-[7px] font-bold tracking-[.32em] text-[#D6A848] backdrop-blur">WORLD</span>
           </div>
@@ -291,6 +250,14 @@ export default function Hero({ locale, calUrl }: Props) {
             </AnimatedButton>
           </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55 }}
+          >
+            <ScrollAmbient locale={locale} />
+          </motion.div>
+
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -329,11 +296,7 @@ export default function Hero({ locale, calUrl }: Props) {
         </motion.div>
       </motion.div>
 
-      <button type="button" onClick={() => void toggleSound()} className="absolute bottom-5 right-5 z-40 hidden items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-[var(--world-ink)]/55 px-3 py-2 font-mono text-[8px] font-bold tracking-[.16em] text-[var(--world-gold)] backdrop-blur-xl transition hover:border-[var(--world-gold)]/60 sm:inline-flex" aria-label={soundOn ? 'Ambient Sound ausschalten' : 'Ambient Sound einschalten'}>
-        {soundOn ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5 opacity-70" />}
-        {soundOn ? 'AMBIENT ON' : 'AMBIENT'}
-      </button>
-            {/* Styles */}
+      {/* Styles */}
       <style jsx global>{`
         .bg-noise {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");

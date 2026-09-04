@@ -69,6 +69,12 @@ const nextConfig = {
   },
 };
 
+const isExplicitVercelProduction = Boolean(
+  process.env.VERCEL === '1' &&
+  process.env.VERCEL_ENV === 'production' &&
+  process.env.SENTRY_AUTH_TOKEN
+);
+
 // Sentry Configuration
 const sentryWebpackPluginOptions = {
   // For all available options, see:
@@ -81,11 +87,7 @@ const sentryWebpackPluginOptions = {
 
   // Upload source maps only for an explicit Vercel production deployment.
   // Preview branches and local builds must never publish build artifacts.
-  dryRun: !(
-    process.env.VERCEL === '1' &&
-    process.env.VERCEL_ENV === 'production' &&
-    process.env.SENTRY_AUTH_TOKEN
-  ),
+  dryRun: !isExplicitVercelProduction,
 
   // Hide source maps from Sentry
   hideSourceMaps: true,
@@ -107,5 +109,8 @@ const sentryWebpackPluginOptions = {
   },
 };
 
-// Export with Sentry configuration
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+// Keep the upload plugin completely out of local and preview builds. Apart from
+// being faster, this makes it impossible for those builds to publish artifacts.
+module.exports = isExplicitVercelProduction
+  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+  : nextConfig;

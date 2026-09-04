@@ -110,7 +110,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
             <a href={`/${locale}`} className="flex items-center gap-4 group">
               <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
                 <Image 
-                  src="/saimor-logo-new.png"
+                  src="/saimor-logo-256.webp"
                   alt="Saimôr"
                   width={40}
                   height={40}

@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
     description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI, Vorträge, Schulungen und ausgewählte Webprojekte.',
-    url: 'https://saimor.world',
+    url: 'https://saimor.world/de',
     siteName: 'Saimôr',
     images: ['/og'],
     locale: 'de-DE',
     type: 'website'
-  }
+  },
+  alternates: { canonical: '/de' },
 };
 
 export const viewport: Viewport = {
