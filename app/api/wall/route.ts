@@ -20,7 +20,8 @@ function isLegacyDemoEntry(entry: {
     haystack.includes('example.com') ||
     haystack.includes('acme') ||
     haystack.includes('beispiel') ||
-    entry.name.trim().toLowerCase() === 'nicht-unternehmen'
+    entry.name.trim().toLowerCase() === 'nicht-unternehmen' ||
+    entry.tag?.trim().toLowerCase() === 'nicht'
   );
 }
 
