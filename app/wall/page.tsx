@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -87,12 +88,6 @@ function roleFor(entry: WallEntry) {
   return KIND_LABELS[entry.kind || 'supporter'] || 'Supporter';
 }
 
-function visibilityLabel(entry: WallEntry) {
-  if (entry.visibility === 'anonymous') return 'anonym';
-  if (entry.visibility === 'company-anonymous') return 'Firma anonym';
-  return 'sichtbar';
-}
-
 function initials(entry: WallEntry) {
   return (
     entry.name
@@ -118,69 +113,62 @@ export default async function WallPage() {
 
   return (
     <main
-      className="relative min-h-screen overflow-x-hidden"
+      className="relative min-h-screen overflow-x-hidden bg-[#160f0b]"
       style={{
-        // Warm dark wall — walnut + dusty peach radial highlights so the
-        // polaroids pop against the surface without the previous cold
-        // green-black tone.
-        background:
-          'radial-gradient(circle at 24% 10%, rgba(255, 222, 168, 0.25) 0%, transparent 34%),' +
-          'radial-gradient(circle at 82% 78%, rgba(128, 164, 134, 0.12) 0%, transparent 42%),' +
-          'linear-gradient(165deg, #35281F 0%, #241C18 48%, #171412 100%)',
         color: '#F7EFDF',
         fontFamily: '"Cormorant Garamond", Georgia, serif',
       }}
     >
-      {/* Subtle wood-grain stripe overlay (very faint) */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.07] z-0"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(96deg, rgba(252, 222, 188, 0.42) 0px, transparent 1px, transparent 18px, rgba(74, 51, 36, 0.55) 19px, transparent 20px, transparent 54px)',
-        }}
-      />
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        <Image
+          src="/images/wall-backroom.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={78}
+          className="object-cover object-[42%_top] opacity-90"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,8,6,.16)_0%,rgba(18,12,9,.34)_38%,rgba(12,9,7,.70)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_80%,rgba(18,92,69,.14),transparent_28%)]" />
+      </div>
 
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="relative z-10 border-b border-white/8 px-5 pt-24 pb-8 md:px-8 md:pt-28">
-        <div className="mx-auto flex max-w-6xl flex-col gap-7 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
+      <header className="relative z-10 flex min-h-[58svh] items-end px-5 pb-12 pt-28 md:px-8 md:pb-16 md:pt-36">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-9 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
             <div
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5"
               style={{
-                background: 'rgba(252, 222, 188, 0.10)',
-                border: '1px solid rgba(252, 222, 188, 0.22)',
+                background: 'rgba(26, 15, 10, 0.28)',
+                border: '1px solid rgba(252, 224, 188, 0.26)',
+                backdropFilter: 'blur(12px)',
               }}
             >
               <Sparkles size={12} style={{ color: '#FCE0BC' }} />
-              <span className="text-[10px] uppercase tracking-[0.32em]" style={{ color: '#FCE0BC', fontFamily: 'system-ui, sans-serif' }}>
-                BACKROOM · THE WALL
+              <span className="text-xs uppercase tracking-[0.25em]" style={{ color: '#FCE0BC', fontFamily: 'system-ui, sans-serif' }}>
+                THE WALL · BACKROOM
               </span>
             </div>
             <h1
-              className="mt-5 text-5xl font-light leading-[1.05] md:text-7xl"
+              className="mt-6 max-w-3xl text-5xl font-light leading-[0.98] text-[#fff7e9] drop-shadow-[0_3px_30px_rgba(0,0,0,.42)] sm:text-6xl md:text-8xl"
               style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
             >
-              Komm rein. An der Wand ist{' '}
+              Komm rein. Was bleibt, bekommt{' '}
               <em className="italic" style={{ color: '#FCE0BC' }}>
-                noch Platz
-              </em>{' '}
-              .
+                einen Platz.
+              </em>
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed italic md:text-lg" style={{ color: 'rgba(247, 239, 223, 0.65)' }}>
-              Ein warmer Nebenraum für Menschen, Projekte und Begegnungen rund um Saimôr.
-              Kein Feed, keine Rangliste — einfach Erinnerungen, die bleiben dürfen.
+            <p className="mt-6 max-w-xl text-lg leading-relaxed md:text-xl" style={{ color: 'rgba(255, 244, 226, 0.72)' }}>
+              Menschen, Projekte und Begegnungen rund um Saimôr. Keine Rangliste. Kein Feed.
+              Nur Dinge, an die wir uns erinnern wollen.
             </p>
           </div>
 
           <Link
             href="/de#kontakt"
-            className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform hover:-translate-y-[1px]"
+            className="inline-flex min-h-12 items-center justify-center gap-2 self-start rounded-full border border-[#fce0bc]/35 bg-[#1b110b]/35 px-6 py-3 text-base font-medium text-[#fff3df] backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-[#fce0bc] hover:text-[#2c2018] md:self-auto"
             style={{
-              background: '#FCE0BC',
-              color: '#2C2018',
               fontFamily: 'system-ui, sans-serif',
-              letterSpacing: '0.02em',
-              boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18), 0 1px 0 rgba(255,255,255,0.4) inset',
             }}
           >
             Einen Platz anfragen
@@ -190,28 +178,31 @@ export default async function WallPage() {
 
       </header>
 
-      {/* ── Wall section ────────────────────────────────────────────────── */}
-      <section className="relative z-10 px-5 py-10 md:px-8 md:py-14">
+      <section className="relative z-10 px-5 pb-14 pt-3 md:px-8 md:pb-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-6 flex items-center justify-between">
-            <p className="text-[11px] uppercase tracking-[0.28em]" style={{ color: 'rgba(247, 239, 223, 0.40)', fontFamily: 'system-ui, sans-serif' }}>
-              {sorted.length === 0 ? 'noch leer' : `${sorted.length} ${sorted.length === 1 ? 'Polaroid' : 'Polaroids'}`}
+          <div className="mb-10 flex items-center gap-5 border-t border-[#fce0bc]/15 pt-5 md:mb-14">
+            <p className="text-xs uppercase tracking-[0.22em]" style={{ color: 'rgba(255, 240, 218, 0.56)', fontFamily: 'system-ui, sans-serif' }}>
+              {sorted.length === 0
+                ? 'Noch keine freigegebenen Polaroids'
+                : `${sorted.length} ${sorted.length === 1 ? 'freigegebenes Polaroid' : 'freigegebene Polaroids'}`}
             </p>
-            <span className="text-[11px] italic" style={{ color: 'rgba(247, 239, 223, 0.42)' }}>Mach es dir gemütlich.</span>
+            <span className="h-px flex-1 bg-[#fce0bc]/10" aria-hidden />
+            <span className="hidden text-sm italic text-[#fce0bc]/55 sm:inline">Mach es dir gemütlich.</span>
           </div>
 
           {sorted.length === 0 ? <EmptyWall /> : <WallGrid entries={sorted} />}
         </div>
       </section>
 
-      {/* ── Closing CTA ─────────────────────────────────────────────────── */}
-      <section className="relative z-10 px-5 pb-24 pt-6 md:px-8">
-        <div className="mx-auto max-w-2xl text-center space-y-4">
-          <p className="text-base italic" style={{ color: 'rgba(247, 239, 223, 0.55)' }}>
-            Ein Polaroid erscheint nur nach persönlicher Absprache und Freigabe.
-          </p>
-        </div>
-      </section>
+      {sorted.length > 0 ? (
+        <section className="relative z-10 px-5 pb-24 pt-4 md:px-8">
+          <div className="mx-auto flex max-w-6xl justify-end">
+            <p className="max-w-sm text-right text-base italic text-[#fce0bc]/60">
+              Nichts erscheint hier automatisch. Jedes Polaroid braucht eine persönliche Freigabe.
+            </p>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
@@ -220,7 +211,7 @@ export default async function WallPage() {
 
 function WallGrid({ entries }: { entries: WallEntry[] }) {
   return (
-    <div className="grid auto-rows-fr gap-7 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-y-20">
       {entries.map((entry, index) => (
         <Polaroid key={entry.id} entry={entry} index={index} />
       ))}
@@ -233,15 +224,21 @@ function WallGrid({ entries }: { entries: WallEntry[] }) {
 function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
   const style = styleFor(entry);
   const Icon = style.icon;
-  // Slight, deterministic rotation per polaroid so the wall feels real.
-  const rotation = ((index * 11) % 7) - 3; // -3..+3 deg
+  const rotation = ((index * 11) % 5) - 2;
   const tackOffset = ((index * 5) % 11) - 5; // -5..+5 px horizontal nudge of the tack
   const isAnonymous = entry.visibility === 'anonymous';
   const isCompanyAnonymous = entry.visibility === 'company-anonymous';
+  const placements = [
+    'lg:col-span-4 lg:col-start-2',
+    'lg:col-span-4 lg:col-start-7 lg:mt-14',
+    'lg:col-span-4 lg:col-start-1',
+    'lg:col-span-4 lg:col-start-6 lg:mt-16',
+    'lg:col-span-3 lg:col-start-10',
+  ];
 
   return (
     <article
-      className="relative pt-5 transition-transform hover:rotate-0 hover:scale-[1.015]"
+      className={`relative mx-auto w-full max-w-[390px] pt-5 transition-transform duration-500 hover:rotate-0 hover:scale-[1.018] ${placements[index % placements.length]}`}
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       {/* Thumbtack — tinted to the kind */}
@@ -262,18 +259,18 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
 
       {/* Polaroid frame */}
       <div
-        className="relative rounded-[6px] pt-3 px-3 pb-1"
+        className="relative rounded-[5px] px-3 pb-2 pt-3 sm:px-4 sm:pt-4"
         style={{
           background: '#FAF6EE',
           boxShadow:
             '0 2px 0 rgba(255,255,255,0.6) inset, ' +
-            '0 14px 32px rgba(0, 0, 0, 0.55), ' +
-            '0 4px 10px rgba(0, 0, 0, 0.30)',
+            '0 22px 48px rgba(0, 0, 0, 0.52), ' +
+            '0 5px 14px rgba(0, 0, 0, 0.34)',
         }}
       >
         {/* Photo area */}
         <div
-          className="relative aspect-[4/3] rounded-[3px] overflow-hidden p-4 flex flex-col justify-between"
+          className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-[2px] p-5"
           style={{ background: style.photo }}
         >
           {/* Vignette for photographic feel */}
@@ -302,6 +299,14 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
               )}
             </div>
 
+          </div>
+
+          <div
+            className="pointer-events-none absolute inset-0 flex items-center justify-center text-[clamp(4rem,12vw,7rem)] font-light opacity-[0.10]"
+            style={{ color: style.ink, fontFamily: '"Cormorant Garamond", serif' }}
+            aria-hidden
+          >
+            {initials(entry)}
           </div>
 
           {/* Bottom row: name (or initials when fully anonymous) */}
@@ -361,7 +366,7 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
         </div>
 
         {/* Caption strip — handwritten warmth band + small chips */}
-        <div className="pt-3 pb-3 px-1 flex items-end justify-between gap-3">
+        <div className="flex min-h-24 items-start justify-between gap-3 px-1 pb-3 pt-4">
           <div className="min-w-0">
             <p
               className="text-[10px] uppercase tracking-[0.22em] mb-1"
@@ -400,50 +405,26 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
 
 function EmptyWall() {
   return (
-    <div
-      className="relative mx-auto max-w-2xl rounded-[16px] px-8 py-16 text-center"
-      style={{
-        background: 'rgba(252, 222, 188, 0.04)',
-        border: '1px dashed rgba(252, 222, 188, 0.20)',
-      }}
-    >
-      <div
-        className="mx-auto mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full"
-        style={{
-          background: 'rgba(252, 222, 188, 0.10)',
-          border: '1px solid rgba(252, 222, 188, 0.22)',
-        }}
-      >
-        <ShieldCheck size={28} style={{ color: '#FCE0BC', opacity: 0.85 }} />
-      </div>
-      <h2
-        className="text-3xl font-light mb-3"
-        style={{ fontFamily: '"Cormorant Garamond", serif', color: '#F7EFDF' }}
-      >
-        Die Wand ist noch{' '}
-        <em className="italic" style={{ color: '#FCE0BC' }}>
-          ganz frisch
-        </em>
-      </h2>
-      <p
-        className="mx-auto max-w-md text-base italic leading-relaxed"
-        style={{ color: 'rgba(247, 239, 223, 0.55)' }}
-      >
-        Noch hängt hier kein Polaroid. Wenn eine Begegnung, ein Projekt oder eine Zusammenarbeit hierher gehört, sprechen wir zuerst persönlich darüber.
-      </p>
+    <div className="flex min-h-[42svh] items-center py-12 md:py-20">
+      <div className="max-w-xl border-l border-[#fce0bc]/25 pl-6 md:pl-9">
+        <p className="text-xs uppercase tracking-[0.24em] text-[#fce0bc]/55" style={{ fontFamily: 'system-ui, sans-serif' }}>
+          Die Wand ist still
+        </p>
+        <h2 className="mt-4 text-4xl font-light text-[#fff5e5] md:text-5xl">
+          Die ersten Plätze bleiben bewusst leer.
+        </h2>
+        <p className="mt-5 max-w-lg text-lg leading-relaxed text-[#f7efdf]/65">
+          Hier hängt erst etwas, wenn eine echte Begegnung, ein Projekt oder eine Zusammenarbeit dazugehört — und die Person zugestimmt hat.
+        </p>
       <Link
         href="/de#kontakt"
-        className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform hover:-translate-y-[1px]"
-        style={{
-          background: '#FCE0BC',
-          color: '#2C2018',
-          fontFamily: 'system-ui, sans-serif',
-          boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18)',
-        }}
+        className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#fce0bc] px-6 py-3 text-base font-medium text-[#2c2018] transition hover:-translate-y-0.5 hover:bg-[#fff0d4]"
+        style={{ fontFamily: 'system-ui, sans-serif' }}
       >
-        Einen Platz anfragen
+        Eine Begegnung vorschlagen
         <ArrowRight size={15} />
       </Link>
+      </div>
     </div>
   );
 }
