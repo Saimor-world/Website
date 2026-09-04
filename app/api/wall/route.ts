@@ -7,13 +7,20 @@ function isLegacyDemoEntry(entry: {
   name: string;
   company: string | null;
   domain: string | null;
+  tag: string | null;
+  message: string | null;
 }) {
-  const haystack = [entry.name, entry.company, entry.domain].filter(Boolean).join(' ').toLowerCase();
+  const haystack = [entry.name, entry.company, entry.domain, entry.tag, entry.message]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
   return (
     haystack.includes('demo firma') ||
     haystack.includes('codex') ||
     haystack.includes('example.com') ||
-    haystack.includes('acme')
+    haystack.includes('acme') ||
+    haystack.includes('beispiel') ||
+    entry.name.trim().toLowerCase() === 'nicht-unternehmen'
   );
 }
 
