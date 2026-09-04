@@ -24,8 +24,8 @@ export default function AchievementToast({
   if (!achievement) return null;
 
   const copy = locale === 'de'
-    ? { label: 'Im Log' }
-    : { label: 'Logged' };
+    ? { label: 'Neu entdeckt' }
+    : { label: 'New discovery' };
 
   return (
     <AnimatePresence>

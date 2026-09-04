@@ -19,12 +19,12 @@ export default function AchievementButton() {
   const locale = pathname?.startsWith('/en') ? 'en' : 'de';
   const copy = locale === 'de'
     ? {
-        title: 'Log',
+        title: 'Entdeckungen',
         newLabel: 'Neu',
-        open: 'Log oeffnen',
+        open: 'Entdeckungen öffnen',
       }
     : {
-        title: 'Log',
+        title: 'Discoveries',
         newLabel: 'New',
         open: 'Open log',
       };
@@ -89,7 +89,7 @@ export default function AchievementButton() {
       {progress.unlocked > 0 && (
         <motion.button
           onClick={openMenu}
-          className="group fixed bottom-6 right-6 z-[9998] hidden sm:block"
+          className="group fixed bottom-6 right-6 z-[9998] hidden lg:block"
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.35, ease: 'easeOut' }}
@@ -141,7 +141,7 @@ export default function AchievementButton() {
               </div>
 
               <div className="mt-1 text-sm font-medium text-white/88">
-                {progress.unlocked} / {progress.total}
+                {progress.unlocked} {locale === 'de' ? 'entdeckt' : 'found'}
               </div>
             </div>
           </div>

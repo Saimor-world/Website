@@ -55,29 +55,29 @@ export default function AchievementMenu({
       return (orderIndex.get(left.id) ?? 0) - (orderIndex.get(right.id) ?? 0);
     });
 
-  const hiddenRemaining = locked.filter((achievement) => achievement.secret).length;
+  const openCount = locked.length;
 
   const copy = locale === 'de'
     ? {
-        title: 'Log',
-        subtitle: 'Signale, Pfade und Tiefen, die bereits sichtbar geworden sind.',
-        recorded: 'Im Log',
-        hidden: 'Verdeckt',
-        coverage: 'Stand',
-        unlockedSection: 'Freigelegt',
-        lockedSection: 'Noch verdeckt',
-        hiddenTitle: 'Verdeckter Eintrag',
-        hiddenDescription: 'Wird erst sichtbar, wenn du die passende Interaktion ausloest.',
-        close: 'Log schliessen',
+        title: 'Entdeckungen',
+        subtitle: 'Eine kleine persönliche Spur durch Saimôr – kein Punktesystem und kein Wettbewerb.',
+        recorded: 'Entdeckt',
+        hidden: 'Offen',
+        coverage: 'Gesehen',
+        unlockedSection: 'Schon angesehen',
+        lockedSection: 'Noch offen',
+        hiddenTitle: 'Eine versteckte Kleinigkeit',
+        hiddenDescription: 'Ein freiwilliges Detail für Menschen, die genauer hinsehen.',
+        close: 'Entdeckungen schließen',
       }
     : {
-        title: 'Log',
-        subtitle: 'Signals, paths, and depths that have already become visible.',
-        recorded: 'Logged',
-        hidden: 'Hidden',
-        coverage: 'Coverage',
-        unlockedSection: 'Visible',
-        lockedSection: 'Still hidden',
+        title: 'Discoveries',
+        subtitle: 'A small personal trail through Saimôr — not a score or competition.',
+        recorded: 'Found',
+        hidden: 'Open',
+        coverage: 'Seen',
+        unlockedSection: 'Already explored',
+        lockedSection: 'Still open',
         hiddenTitle: 'Hidden Entry',
         hiddenDescription: 'Becomes visible once you trigger the matching interaction.',
         close: 'Close log',
@@ -220,7 +220,7 @@ export default function AchievementMenu({
                   {copy.recorded}: {unlockedCount}
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                  {copy.hidden}: {hiddenRemaining}
+                  {copy.hidden}: {openCount}
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
                   {copy.coverage}: {progress}%
