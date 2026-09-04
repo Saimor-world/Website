@@ -79,8 +79,13 @@ const sentryWebpackPluginOptions = {
   org: "saimor",
   project: "javascript-nextjs",
 
-  // Only upload source maps in production
-  dryRun: process.env.NODE_ENV !== 'production' || !process.env.SENTRY_AUTH_TOKEN,
+  // Upload source maps only for an explicit Vercel production deployment.
+  // Preview branches and local builds must never publish build artifacts.
+  dryRun: !(
+    process.env.VERCEL === '1' &&
+    process.env.VERCEL_ENV === 'production' &&
+    process.env.SENTRY_AUTH_TOKEN
+  ),
 
   // Hide source maps from Sentry
   hideSourceMaps: true,

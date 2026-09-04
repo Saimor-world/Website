@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, Pin, Save, ExternalLink, ClipboardList, Download, Mail, Sparkles } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, ExternalLink, Download, Mail, Sparkles } from 'lucide-react';
 import DemoHqPreview from './DemoHqPreview';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
 import { buildContextToken } from '@/lib/entry-token';
@@ -40,21 +40,6 @@ function scoreLabel(score: number): string {
   if (score >= 80) return 'Sicher';
   if (score >= 50) return 'Mittel';
   return 'Kritisch';
-}
-
-function wallErrorMessage(value?: string) {
-  if (!value) {
-    return 'Der Bestätigungslink konnte nicht gesendet werden. Bitte später erneut versuchen.';
-  }
-  if (value === 'Email delivery failed') {
-    return 'Der Bestätigungslink konnte nicht versendet werden. Bitte erneut versuchen.';
-  }
-  if (value === 'Email delivery not configured') return 'Der Wall-Mailkanal ist noch nicht konfiguriert.';
-  if (value === 'Consent is required before publishing to the wall') {
-    return 'Bitte bestätige zuerst die Sichtbarkeit für die Wall. Ohne deine ' +
-      'Bestätigung wird nichts öffentlich.';
-  }
-  return value;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -100,6 +85,9 @@ export function buildHqUrl(results: any) {
   });
 
   url.searchParams.set('ct', ct);
+  // Keep the handoff in the isolated demo experience. The HQ uses this marker
+  // to suppress account creation and other production-only actions.
+  url.searchParams.set('mode', 'demo');
   return url.toString();
 }
 
@@ -112,17 +100,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const [industry, setIndustry]       = useState('');
   const [companySize, setCompanySize] = useState('');
   const [workIntent, setWorkIntent]   = useState('');
-  const [ownerNote, setOwnerNote]     = useState('');
   const [loadingStep, setLoadingStep] = useState(0);
   const [results, setResults]         = useState<any>(null);
   const [error, setError]             = useState<string | null>(null);
-  const [noteState, setNoteState]     = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [wallState, setWallState]     = useState<'idle' | 'saving' | 'verification-sent' | 'pinned' | 'error'>('idle');
-  const [wallError, setWallError]     = useState<string | null>(null);
-  const [wallConsent, setWallConsent] = useState(false);
-  const [wallKind, setWallKind]       = useState('supporter');
-  const [wallVisibility, setWallVisibility] = useState('company-anonymous');
-  const [wallMessage, setWallMessage] = useState('');
   const [hqState, setHqState]         = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [wallVerifyState, setWallVerifyState] = useState<'idle' | 'verifying' | 'pinned' | 'error'>('idle');
   const [wallVerifyError, setWallVerifyError] = useState<string | null>(null);
@@ -253,7 +233,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         entryToken: r.entryToken,
       });
 
-      // The signed /entry link creates an isolated preview account when opened.
+      // The signed /entry link creates an isolated, temporary demo workspace.
       // Never create a shared public-playground session from the WORLD browser:
       // an existing real HQ cookie would otherwise win and expose the wrong account.
 
@@ -294,71 +274,6 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       clearInterval(timer);
       setError(err.message || 'Scan fehlgeschlagen. Bitte versuche es erneut.');
       setStep(3);
-    }
-  };
-
-  const notePayload = () => [
-    ...(ownerNote.trim() ? [{ id: 'owner-note', answer: ownerNote.trim() }] : []),
-    ...(workIntent.trim() ? [{ id: 'work-intent', answer: workIntent.trim() }] : []),
-  ];
-
-  const saveAuditNote = async () => {
-    if (!results?.id) return;
-    setNoteState('saving');
-    try {
-      const res = await fetch('/api/security-audit-note', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          auditId: results.id,
-          notes: notePayload(),
-        }),
-      });
-      if (!res.ok) throw new Error('note failed');
-      setNoteState('saved');
-    } catch {
-      setNoteState('error');
-    }
-  };
-
-  const pinToWall = async () => {
-    if (!results?.id) return;
-    if (!wallConsent) {
-      setWallError(
-        'Bitte bestätige zuerst die Sichtbarkeit für die Wall. Ohne deine ' +
-        'Bestätigung wird nichts öffentlich.'
-      );
-      setWallState('error');
-      return;
-    }
-    setWallError(null);
-    setWallState('saving');
-    try {
-      const res = await fetch('/api/wall-entry/request-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          auditId: results.id,
-          name: contactName.trim() || results.companyName,
-          company: results.companyName,
-          kind: wallKind,
-          visibility: wallVisibility,
-          message: wallMessage.trim() || ownerNote.trim() || undefined,
-          followUpAnswers: notePayload(),
-          consent: true,
-          locale,
-        }),
-      });
-      const payload = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(payload?.error || 'wall verification failed');
-      if (payload?.debugUrl) {
-        window.location.href = payload.debugUrl;
-        return;
-      }
-      setWallState('verification-sent');
-    } catch (err: any) {
-      setWallError(wallErrorMessage(err?.message));
-      setWallState('error');
     }
   };
 
@@ -638,7 +553,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </div>
               <div className="flex items-center gap-2 print:hidden shrink-0">
                 <button
-                  onClick={() => { setStep(1); setResults(null); setNoteState('idle'); setWallState('idle'); setWallConsent(false); setWallKind('supporter'); setWallVisibility('company-anonymous'); setWallMessage(''); setHqState('idle'); }}
+                  onClick={() => { setStep(1); setResults(null); setHqState('idle'); }}
                   className="flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1.5 rounded-xl text-[11px] text-white/55 hover:bg-white/[0.08] transition-colors"
                 >
                   Neuer Scan
@@ -699,9 +614,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-light text-white/90">Dein SAIMOR-Workspace ist bereit</h2>
+                  <h2 className="text-xl font-light text-white/90">Deine Môra-Demo ist bereit</h2>
                   <p className="mt-1 text-sm text-white/50 leading-relaxed">
-                    MÔRA kennt deine Website — die Befunde sind bereits in deinem persönlichen Dossier. Öffne das HQ und sieh, was das OS daraus macht.
+                    Môra kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.
                   </p>
                   {hqState === 'sent' && (
                     <p className="mt-2 text-[11px] text-emerald-300/80">
@@ -714,7 +629,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                   <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">
-                    HQ öffnen
+                    Môra-Demo öffnen
                     <ExternalLink size={15} />
                   </a>
                   <button type="button" onClick={requestHqLink} disabled={hqState === 'sending' || hqState === 'sent'}
@@ -865,58 +780,6 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </div>
             </details>
 
-            {/* ── 9. OWNER SECTION — internal, collapsed ── */}
-            <details className="group">
-              <summary className="flex cursor-pointer items-center gap-3 select-none">
-                <div className="flex-1 h-px bg-white/4" />
-                <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.35em] text-white/18 group-open:text-white/32 transition-colors shrink-0">
-                  <ClipboardList size={10} /> Owner-Bereich
-                </span>
-                <div className="flex-1 h-px bg-white/4" />
-              </summary>
-              <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.02] p-6 space-y-5">
-                <label className="block space-y-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Interne Notiz</span>
-                  <textarea value={ownerNote} onChange={(e) => { setOwnerNote(e.target.value); setNoteState('idle'); }} placeholder="Was ist wichtig? Wer muss draufschauen?" rows={3} className="w-full resize-none rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-emerald-300/40" />
-                </label>
-                <div className="grid gap-3 md:grid-cols-3">
-                  <label className="block space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Typ</span>
-                    <select value={wallKind} onChange={(e) => { setWallKind(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40">
-                      <option value="supporter">Supporter</option><option value="customer">Kunde</option><option value="pilot">Pilotkunde</option>
-                      <option value="partner">Partner</option><option value="investor">Investor</option><option value="team">Team</option>
-                      <option value="community">Community</option><option value="security-check">Security Signal</option>
-                    </select>
-                  </label>
-                  <label className="block space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Sichtbarkeit</span>
-                    <select value={wallVisibility} onChange={(e) => { setWallVisibility(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40">
-                      <option value="company-anonymous">Firma anonym</option><option value="anonymous">Ganz anonym</option><option value="named">Name sichtbar</option>
-                    </select>
-                  </label>
-                  <label className="block space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35">Wall-Text</span>
-                    <input value={wallMessage} onChange={(e) => { setWallMessage(e.target.value); setWallError(null); if (wallState === 'error') setWallState('idle'); }} maxLength={240} placeholder="Kurzes Signal, optional" className="w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40" />
-                  </label>
-                </div>
-                <label className="flex items-start gap-3 rounded-2xl border border-white/8 bg-black/18 p-4 text-sm text-white/55">
-                  <input type="checkbox" checked={wallConsent} onChange={(e) => { setWallConsent(e.target.checked); setWallError(null); if (wallState === 'error') setWallState('idle'); }} className="mt-1 h-4 w-4 accent-emerald-300" />
-                  <span>Ich stimme zu, dass Nightwatch diesen Security-Check nach E-Mail-Bestätigung als Wall-Signal in die Freigabe geben darf.</span>
-                </label>
-                <div className="flex flex-wrap gap-3">
-                  <button type="button" onClick={saveAuditNote} disabled={!results.id || noteState === 'saving'} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/70 hover:bg-white/[0.1] disabled:opacity-40">
-                    <Save size={13} />{noteState === 'saving' ? 'Speichert...' : noteState === 'saved' ? 'Gespeichert' : 'Notiz speichern'}
-                  </button>
-                  <button type="button" onClick={pinToWall} disabled={!results.id || wallState === 'saving' || wallState === 'verification-sent' || wallState === 'pinned'} className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-xs text-emerald-50 hover:bg-emerald-300/15 disabled:opacity-45">
-                    <Pin size={13} />{wallState === 'saving' ? 'Sende Link...' : wallState === 'verification-sent' ? 'Link gesendet' : wallState === 'pinned' ? 'In Review' : 'Wall-Eintrag anfragen'}
-                  </button>
-                  {wallState === 'pinned' && <Link href="/wall" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-white/65 hover:bg-white/[0.1]">Universe ansehen <ExternalLink size={13} /></Link>}
-                </div>
-                {(noteState === 'error' || wallState === 'error') && <div className="rounded-2xl border border-red-300/18 bg-red-500/[0.08] px-4 py-3 text-xs text-red-100/86">{wallState === 'error' ? wallError || 'Aktion fehlgeschlagen.' : 'Notiz konnte nicht gespeichert werden.'}</div>}
-                {wallState === 'verification-sent' && <p className="text-xs text-emerald-200/72">Check deine E-Mail — der Link bestätigt den Eintrag erst nach Bestätigung.</p>}
-              </div>
-            </details>
-
             <footer className="pt-8 pb-16 flex flex-col sm:flex-row gap-4 justify-center print:hidden border-t border-white/5">
               <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">
                 Experten-Gespräch vereinbaren
@@ -992,4 +855,3 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               </>
               );
               }
-

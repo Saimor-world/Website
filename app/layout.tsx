@@ -25,11 +25,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://saimor.world'),
     title: {
-      default: 'Saimôr – Klarheit im Wandel',
+      default: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
       template: '%s | Saimôr'
     },
     description:
-      'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+      'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte. Souverän, nachvollziehbar und im Aufbau.',
     keywords: [
       'Saimôr',
       'Môra OS',
@@ -54,8 +54,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     // Icons are now handled by app/icon.png and app/apple-icon.png (Next.js convention)
     openGraph: {
-      title: 'Saimôr – Klarheit im Wandel',
-      description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+      title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
+      description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
       url: canonicalUrl,
       siteName: 'Saimôr',
       images: [
@@ -63,7 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: '/og',
           width: 1200,
           height: 630,
-          alt: 'Saimôr – Klarheit im Wandel',
+          alt: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
         },
       ],
       locale: 'de_DE',
@@ -71,8 +71,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Saimôr – Klarheit im Wandel',
-      description: 'Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.',
+      title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
+      description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
       images: ['/og'],
       creator: '@saimorworld',
     },
@@ -123,7 +123,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "name": "Saimôr",
               "url": "https://saimor.world",
               "logo": "https://saimor.world/saimor-seal-master.png",
-              "description": "Saimôr begleitet Kommunen, Unternehmen und Menschen im Wandel – mit Beratung, Dashboards & Workshops. Klar statt komplex. DSGVO-konform, EU-basiert.",
+              "description": "Unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume, Vorträge und Schulungen.",
               "foundingDate": "2024",
               "sameAs": [],
               "contactPoint": {
@@ -155,7 +155,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "name": "Môra",
               "applicationCategory": "BusinessApplication",
               "operatingSystem": "Web",
-              "description": "Semantisches Betriebssystem für zukunftsfähige Organisationen. Strukturierte Übersicht trifft auf tiefe Vernetzung.",
+              "description": "Nachvollziehbare Kontext- und Agentenschicht für die Saimôr-Produkte.",
               "offers": {
                 "@type": "Offer",
                 "price": "0",

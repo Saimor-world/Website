@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 const Body = z.object({
@@ -14,6 +16,14 @@ const Body = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions).catch((error) => {
+      console.error('[Security Audit Note Auth Error]', error);
+      return null;
+    });
+    if (!session?.user || session.user.role !== 'owner') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const parsed = Body.safeParse(await req.json().catch(() => ({})));
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });

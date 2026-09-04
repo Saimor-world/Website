@@ -10,6 +10,7 @@ export const metadata = {
   title: 'Portal – Dein Arbeitsbereich',
   description:
     'Eine Tür in deinen SAIMÔR-Arbeitsbereich: Môra, Analysen und Dashboards im echten OS. Ehrlich, EU-gehostet, ohne zweiten Login.',
+  robots: { index: false, follow: false },
 };
 
 type Locale = 'de' | 'en';

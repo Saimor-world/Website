@@ -57,7 +57,7 @@ export default function LoginPage() {
             window.location.href = payload.debugUrl;
             return;
           }
-          setMessage('Ein Anmeldelink wurde an Ihre E-Mail-Adresse gesendet. Bitte pruefen Sie Ihr Postfach.');
+          setMessage('Falls der Zugang freigeschaltet ist, wurde ein Anmeldelink versendet.');
         }
       } else {
         const result = await signIn('credentials', {
@@ -95,9 +95,9 @@ export default function LoginPage() {
             <Mail className="w-8 h-8 text-emerald-400" />
           </div>
           <h1 className="text-4xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Mora CORE Login
+            Môra CORE Login
           </h1>
-          <p className="text-white/50 mt-2">Waehlen Sie Ihre bevorzugte Login-Methode.</p>
+          <p className="text-white/50 mt-2">Zugang nur für bereits freigeschaltete Konten.</p>
         </div>
 
         {/* Tab Switcher */}

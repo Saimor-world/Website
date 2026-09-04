@@ -89,7 +89,7 @@ export default function AchievementButton() {
       {progress.unlocked > 0 && (
         <motion.button
           onClick={openMenu}
-          className="group fixed bottom-6 right-6 z-[9998]"
+          className="group fixed bottom-6 right-6 z-[9998] hidden sm:block"
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.35, ease: 'easeOut' }}

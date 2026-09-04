@@ -14,7 +14,9 @@ import {
   KeyRound,
   Sparkles,
   CalendarClock,
+  LockKeyhole,
 } from 'lucide-react';
+import { DemoLaunchButton } from '@/components/DemoLaunchButton';
 
 type Track = 'security' | 'digital-self' | 'ai-business';
 
@@ -127,34 +129,33 @@ export default function DemoContent() {
       <header className="space-y-6 text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.28em] text-emerald-200">
           <Sparkles className="w-3.5 h-3.5" />
-          Mora Lab
+          Saimôr OS · Öffentliche Demo
         </span>
         <h1 className="text-5xl sm:text-6xl font-light leading-[1.05]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Sieh SAIMÔR
+          Ein eigener Raum
           <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-cyan-300">
-            wirklich arbeiten
+            nur für diesen Besuch
           </span>
         </h1>
         <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/65">
-          Kein Marketing-Mockup und keine erfundenen Zahlen. Starte mit einer echten Analyse deiner
-          Domain und sieh, wie aus Signalen ein Arbeitsbereich wird.
+          Die Demo erzeugt einen zufälligen, kurzlebigen Beispiel-Arbeitsbereich. Sie öffnet weder
+          Marius&apos; persönliches Desk noch Daten anderer Nutzer:innen.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <DemoLaunchButton label="Isolierte OS-Demo starten" className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 disabled:opacity-60" />
           <Link
             href="/de/einstieg/security-check"
-            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40"
-          >
-            Echten Check starten
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/portal"
             className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-medium text-white/80 transition-colors hover:bg-white/10"
           >
-            Zum Portal
+            Eigene Domain prüfen
           </Link>
         </div>
       </header>
+
+      <section className="grid gap-4 rounded-[2rem] border border-cyan-300/15 bg-cyan-400/[0.045] p-6 sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-black/25 text-cyan-200"><LockKeyhole className="h-5 w-5" /></div>
+        <div><h2 className="font-semibold text-white/90">Was „isoliert“ hier bedeutet</h2><p className="mt-1 text-sm leading-6 text-white/55">Jeder Start erhält eine neue Demo-ID und einen eigenen Beispiel-Tenant. Es werden keine privaten Website-Sessions übernommen und keine persönlichen Desk-Daten geladen.</p></div>
+      </section>
 
       {/* Track panel */}
       <section className={`relative overflow-hidden rounded-[2.5rem] border ${a.border} bg-gradient-to-br ${a.bg} via-white/[0.02] to-transparent p-8 sm:p-12`}>

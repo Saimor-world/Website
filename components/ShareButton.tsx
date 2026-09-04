@@ -11,8 +11,8 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton({ 
-  title = 'Saimôr – Klarheit im Wandel',
-  description = 'Das semantische Betriebssystem für zukunftsfähige Organisationen.',
+  title = 'Saimôr – Souveräne KI-Systeme und digitale Räume',
+  description = 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
   url 
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -187,4 +187,3 @@ export function FloatingShareButton(props: ShareButtonProps) {
     </AnimatePresence>
   );
 }
-

@@ -22,6 +22,7 @@ describe('Security Check HQ handoff', () => {
 
     expect(url.pathname).toBe('/entry');
     expect(url.searchParams.get('ct')).toBe('signed-context.token');
+    expect(url.searchParams.get('mode')).toBe('demo');
     expect(url.pathname).not.toBe('/playground');
     expect(url.searchParams.has('audit_session')).toBe(false);
   });

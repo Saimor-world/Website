@@ -4,7 +4,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: ['/']
+      allow: ['/'],
+      disallow: ['/owner', '/account', '/login', '/portal', '/systems', '/auth', '/api'],
     },
     sitemap: 'https://saimor.world/sitemap.xml'
   };

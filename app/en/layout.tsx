@@ -3,13 +3,13 @@ import type { ReactNode } from 'react';
 import '../globals.css';
 
 export const metadata: Metadata = {
-  title: 'Saimôr – Clarity in Change',
-  description: 'A semantic operating system for organizations in change: consulting, dashboards, and workshops that turn complexity into clarity. GDPR-compliant, EU-hosted.',
+  title: 'Saimôr – Sovereign AI systems and digital spaces',
+  description: 'Marius Fahrländer’s independent product studio: Saimôr OS, Môra, YORI, talks, training and selected web projects.',
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
-    title: 'Saimôr – Clarity in Change',
-    description: 'A semantic operating system for organizations in change: consulting, dashboards, and workshops that turn complexity into clarity. GDPR-compliant, EU-hosted.',
+    title: 'Saimôr – Sovereign AI systems and digital spaces',
+    description: 'Marius Fahrländer’s independent product studio: Saimôr OS, Môra, YORI, talks, training and selected web projects.',
     url: 'https://saimor.world',
     siteName: 'Saimôr',
     images: ['/og'],

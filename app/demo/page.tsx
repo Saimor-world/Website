@@ -2,9 +2,9 @@ import DemoContent from '@/components/DemoContent';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Mora Lab – SAIMÔR ausprobieren',
+  title: 'Saimôr OS – Isolierte Demo',
   description:
-    'Sieh SAIMÔR wirklich arbeiten: Starte mit einer echten Analyse deiner Domain und sieh, wie aus Signalen ein Arbeitsbereich wird. Keine erfundenen Zahlen.',
+    'Öffne einen getrennten Saimôr-Beispielarbeitsbereich ohne Anmeldung. Die Demo hat keinen Zugriff auf persönliche oder fremde Kundendaten.',
 };
 
 export default function DemoPage() {

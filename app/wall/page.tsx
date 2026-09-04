@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {
   ArrowRight,
-  BadgeCheck,
   Building2,
   EyeOff,
   HeartHandshake,
@@ -11,9 +10,9 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: { absolute: 'Gästebuch | Saimôr' },
+  title: { absolute: 'The Wall | Saimôr' },
   description:
-    'Eine Wand für die Saimôr Community: Supporter, Kund:innen, Partner, Pilotkunden, Investor:innen, Team und anonyme Security-Signale. Verifiziert, owner-moderiert, einladend.',
+    'Der ruhige Backroom von Saimôr: Polaroids von Menschen, Projekten und Begegnungen, die einen Platz an der Wand bekommen haben.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -74,7 +73,7 @@ const KIND_STYLES: Record<string, KindStyle> = {
   customer:         { photo: 'linear-gradient(135deg, #E0EEF0 0%, #A8CACE 100%)', tack: '#4F8488', ink: '#2F5658', caption: '#4F8488', icon: Building2 },
   pilot:            { photo: 'linear-gradient(135deg, #FAF1D9 0%, #E5C988 100%)', tack: '#A88A4A', ink: '#6B5424', caption: '#8E6F2D', icon: Sparkles },
   partner:          { photo: 'linear-gradient(135deg, #E8EBF5 0%, #B5BFD9 100%)', tack: '#6E7A9F', ink: '#3F4870', caption: '#5E6A8E', icon: Users },
-  investor:         { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', ink: '#7C3D4A', caption: '#9E5366', icon: BadgeCheck },
+  investor:         { photo: 'linear-gradient(135deg, #F8E0E5 0%, #E8B0BC 100%)', tack: '#B4677D', ink: '#7C3D4A', caption: '#9E5366', icon: Sparkles },
   team:             { photo: 'linear-gradient(135deg, #E8F0E0 0%, #BFD7B5 100%)', tack: '#6B8B68', ink: '#3F5D3D', caption: '#5A7B58', icon: Users },
   community:        { photo: 'linear-gradient(135deg, #EFE4F1 0%, #C9A8D6 100%)', tack: '#85608C', ink: '#4E3855', caption: '#6F5079', icon: HeartHandshake },
   'security-check': { photo: 'linear-gradient(135deg, #DDEAF0 0%, #97B8C9 100%)', tack: '#406B83', ink: '#264257', caption: '#3B5C72', icon: ShieldCheck },
@@ -105,14 +104,6 @@ function initials(entry: WallEntry) {
   );
 }
 
-function scoreBand(score: number) {
-  if (score >= 90) return 'sehr sicher unterwegs';
-  if (score >= 75) return 'gut aufgestellt';
-  if (score >= 60) return 'auf dem Weg';
-  if (score >= 40) return 'ehrlicher Start';
-  return 'früher Check';
-}
-
 function formatDate(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
@@ -124,8 +115,6 @@ function formatDate(value: string) {
 export default async function WallPage() {
   const entries = await getEntries();
   const sorted = [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  const anonymousCount = sorted.filter((entry) => entry.visibility && entry.visibility !== 'named').length;
-  const claimedCount = sorted.filter((entry) => entry.claimed).length;
 
   return (
     <main
@@ -135,19 +124,19 @@ export default async function WallPage() {
         // polaroids pop against the surface without the previous cold
         // green-black tone.
         background:
-          'radial-gradient(circle at 18% 8%, rgba(252, 219, 192, 0.18) 0%, transparent 45%),' +
-          'radial-gradient(circle at 86% 92%, rgba(232, 176, 188, 0.12) 0%, transparent 50%),' +
-          'linear-gradient(165deg, #2C2018 0%, #1F1611 50%, #181210 100%)',
+          'radial-gradient(circle at 24% 10%, rgba(255, 222, 168, 0.25) 0%, transparent 34%),' +
+          'radial-gradient(circle at 82% 78%, rgba(128, 164, 134, 0.12) 0%, transparent 42%),' +
+          'linear-gradient(165deg, #35281F 0%, #241C18 48%, #171412 100%)',
         color: '#F7EFDF',
         fontFamily: '"Cormorant Garamond", Georgia, serif',
       }}
     >
       {/* Subtle wood-grain stripe overlay (very faint) */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-[0.04] z-0"
+        className="fixed inset-0 pointer-events-none opacity-[0.07] z-0"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(110deg, rgba(252, 222, 188, 0.6) 0px, transparent 1px, transparent 6px, rgba(252, 222, 188, 0.5) 7px, transparent 8px, transparent 22px)',
+            'repeating-linear-gradient(96deg, rgba(252, 222, 188, 0.42) 0px, transparent 1px, transparent 18px, rgba(74, 51, 36, 0.55) 19px, transparent 20px, transparent 54px)',
         }}
       />
 
@@ -164,27 +153,27 @@ export default async function WallPage() {
             >
               <Sparkles size={12} style={{ color: '#FCE0BC' }} />
               <span className="text-[10px] uppercase tracking-[0.32em]" style={{ color: '#FCE0BC', fontFamily: 'system-ui, sans-serif' }}>
-                Gästebuch
+                BACKROOM · THE WALL
               </span>
             </div>
             <h1
               className="mt-5 text-5xl font-light leading-[1.05] md:text-7xl"
               style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
             >
-              Schön, dass du{' '}
+              Komm rein. An der Wand ist{' '}
               <em className="italic" style={{ color: '#FCE0BC' }}>
-                hier
+                noch Platz
               </em>{' '}
-              bist
+              .
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed italic md:text-lg" style={{ color: 'rgba(247, 239, 223, 0.65)' }}>
-              Eine Wand mit Polaroids. Hier hängen Menschen, die Saimôr mitgestalten —
-              Supporter, Kund:innen, Partner, Team. Heft dich dazu, wenn du magst.
+              Ein warmer Nebenraum für Menschen, Projekte und Begegnungen rund um Saimôr.
+              Kein Feed, keine Rangliste — einfach Erinnerungen, die bleiben dürfen.
             </p>
           </div>
 
           <Link
-            href="/de/einstieg/security-check"
+            href="/de#kontakt"
             className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform hover:-translate-y-[1px]"
             style={{
               background: '#FCE0BC',
@@ -194,17 +183,11 @@ export default async function WallPage() {
               boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18), 0 1px 0 rgba(255,255,255,0.4) inset',
             }}
           >
-            Heft dich an die Wand
+            Einen Platz anfragen
             <ArrowRight size={15} />
           </Link>
         </div>
 
-        {/* Stats strip */}
-        <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-3">
-          <Stat label="Polaroids" value={String(sorted.length)} />
-          <Stat label="Anonym erlaubt" value={String(anonymousCount)} />
-          <Stat label="HQ verbunden" value={String(claimedCount)} />
-        </div>
       </header>
 
       {/* ── Wall section ────────────────────────────────────────────────── */}
@@ -214,17 +197,7 @@ export default async function WallPage() {
             <p className="text-[11px] uppercase tracking-[0.28em]" style={{ color: 'rgba(247, 239, 223, 0.40)', fontFamily: 'system-ui, sans-serif' }}>
               {sorted.length === 0 ? 'noch leer' : `${sorted.length} ${sorted.length === 1 ? 'Polaroid' : 'Polaroids'}`}
             </p>
-            <span
-              className="hidden rounded-full px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] sm:inline-block"
-              style={{
-                background: 'rgba(252, 222, 188, 0.06)',
-                border: '1px solid rgba(252, 222, 188, 0.16)',
-                color: 'rgba(247, 239, 223, 0.55)',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
-              Owner moderated
-            </span>
+            <span className="text-[11px] italic" style={{ color: 'rgba(247, 239, 223, 0.42)' }}>Mach es dir gemütlich.</span>
           </div>
 
           {sorted.length === 0 ? <EmptyWall /> : <WallGrid entries={sorted} />}
@@ -235,36 +208,11 @@ export default async function WallPage() {
       <section className="relative z-10 px-5 pb-24 pt-6 md:px-8">
         <div className="mx-auto max-w-2xl text-center space-y-4">
           <p className="text-base italic" style={{ color: 'rgba(247, 239, 223, 0.55)' }}>
-            Kostenlos. Kein Login. Du entscheidest, ob dein Polaroid öffentlich wird.
+            Ein Polaroid erscheint nur nach persönlicher Absprache und Freigabe.
           </p>
         </div>
       </section>
     </main>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div
-      className="rounded-[12px] px-4 py-3"
-      style={{
-        background: 'rgba(252, 222, 188, 0.04)',
-        border: '1px solid rgba(252, 222, 188, 0.12)',
-      }}
-    >
-      <p
-        className="text-[10px] uppercase tracking-[0.22em]"
-        style={{ color: 'rgba(247, 239, 223, 0.42)', fontFamily: 'system-ui, sans-serif' }}
-      >
-        {label}
-      </p>
-      <p
-        className="mt-1 text-2xl font-light tabular-nums"
-        style={{ color: '#F7EFDF', fontFamily: '"Cormorant Garamond", serif' }}
-      >
-        {value}
-      </p>
-    </div>
   );
 }
 
@@ -354,20 +302,6 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
               )}
             </div>
 
-            {entry.claimed && (
-              <span
-                className="rounded-full px-2 py-1 text-[9px] uppercase tracking-[0.14em]"
-                style={{
-                  background: 'rgba(255, 250, 242, 0.70)',
-                  color: style.ink,
-                  fontFamily: 'system-ui, sans-serif',
-                  letterSpacing: '0.12em',
-                }}
-                title="Mit HQ verknüpfter Eintrag"
-              >
-                ✓ HQ
-              </span>
-            )}
           </div>
 
           {/* Bottom row: name (or initials when fully anonymous) */}
@@ -451,27 +385,11 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
                 className="text-[12px] italic"
                 style={{ color: '#8B6E55', fontFamily: '"Cormorant Garamond", serif' }}
               >
-                {scoreBand(entry.score)} · {formatDate(entry.createdAt)}
+                Seit {formatDate(entry.createdAt)} an dieser Wand
               </p>
             )}
           </div>
 
-          {/* Score */}
-          <div className="text-right shrink-0">
-            <div
-              className="text-[9px] uppercase tracking-[0.18em] mb-0.5"
-              style={{ color: style.caption, fontFamily: 'system-ui, sans-serif' }}
-            >
-              Score
-            </div>
-            <div
-              className="text-2xl font-light tabular-nums leading-none"
-              style={{ color: style.ink, fontFamily: '"Cormorant Garamond", serif' }}
-            >
-              {entry.score}
-              <span className="text-base opacity-50">/100</span>
-            </div>
-          </div>
         </div>
       </div>
     </article>
@@ -511,10 +429,10 @@ function EmptyWall() {
         className="mx-auto max-w-md text-base italic leading-relaxed"
         style={{ color: 'rgba(247, 239, 223, 0.55)' }}
       >
-        Niemand hat sich noch eingeheftet. Das könntest du sein – das erste Polaroid an der Wand. Hier hängen nur echte, owner-moderierte Einträge – keine Beispiel-Polaroids. Wir freuen uns auf dich.
+        Noch hängt hier kein Polaroid. Wenn eine Begegnung, ein Projekt oder eine Zusammenarbeit hierher gehört, sprechen wir zuerst persönlich darüber.
       </p>
       <Link
-        href="/de/einstieg/security-check"
+        href="/de#kontakt"
         className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-transform hover:-translate-y-[1px]"
         style={{
           background: '#FCE0BC',
@@ -523,7 +441,7 @@ function EmptyWall() {
           boxShadow: '0 6px 20px rgba(252, 222, 188, 0.18)',
         }}
       >
-        Mit Security-Check beginnen
+        Einen Platz anfragen
         <ArrowRight size={15} />
       </Link>
     </div>
