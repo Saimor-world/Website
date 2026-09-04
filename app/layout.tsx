@@ -6,8 +6,6 @@ import AuthProvider from '../components/AuthProvider'
 import LayoutWrapper from '../components/LayoutWrapper'
 import CookieBanner from '@/components/CookieBanner';
 import ScrollProgress from '@/components/ScrollProgress';
-import CommandPalette from '@/components/CommandPalette';
-import KeyboardHint from '@/components/KeyboardHint';
 import PWARegistration from '@/components/PWARegistration';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
@@ -169,8 +167,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PWARegistration />
             <ScrollProgress />
             <CookieBanner />
-            <CommandPalette />
-            <KeyboardHint />
             <LayoutWrapper>
               <main id="main-content" role="main">
                 {children}

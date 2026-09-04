@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatomoEvents } from '@/lib/matomo';
 import { localizedLegalHref } from '@/lib/legal-routes';
-import UserAccount from './UserAccount';
 
 export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -209,9 +208,6 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
               >
                 {switchLabel}
               </motion.a>
-
-              {/* User Account / Login */}
-              <UserAccount locale={locale} />
 
               {/* CTA Button - Desktop */}
               <motion.a
@@ -421,16 +417,6 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                   </a>
                 </motion.div>
 
-                {/* Keyboard Hint */}
-                <motion.div
-                  className="absolute bottom-8 text-[10px] text-white/20"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  <kbd className="px-2 py-1 rounded bg-white/5 border border-white/10 font-mono mr-2">⌘K</kbd>
-                  {locale === 'de' ? 'Schnellnavigation' : 'Quick navigation'}
-                </motion.div>
               </motion.div>
             </>
           )
