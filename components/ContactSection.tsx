@@ -1,7 +1,7 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Sparkles, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Mail, MapPin, Sparkles, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 import { MatomoEvents } from '@/lib/matomo';
 
 type Props = { locale: 'de' | 'en' };
@@ -10,11 +10,6 @@ export default function ContactSection({ locale }: Props) {
   const t = (de: string, en: string) => (locale === 'de' ? de : en);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-
-  useEffect(() => {
-    // Track form view
-    MatomoEvents.formStart('Contact Form');
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +47,7 @@ export default function ContactSection({ locale }: Props) {
   };
 
   return (
-    <section id="kontakt" className="relative py-32 sm:py-48 bg-world-ink overflow-hidden">
+    <section id="kontakt" className="relative overflow-hidden bg-world-ink py-20 sm:py-48">
       {/* Background Atmosphere - Brighter */}
       <div className="absolute inset-0 z-0">
         <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-world-gold/15 blur-[180px] rounded-full opacity-70" />
@@ -60,10 +55,10 @@ export default function ContactSection({ locale }: Props) {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <div className="grid lg:grid-cols-2 gap-24 items-start">
+        <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-24">
           
           {/* Info Side */}
-          <div className="space-y-12">
+          <div className="space-y-9 sm:space-y-12">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-world-gold/5 border border-world-gold/10 backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5 text-world-gold" />
@@ -114,7 +109,7 @@ export default function ContactSection({ locale }: Props) {
             viewport={{ once: true }}
             className="relative z-20"
           >
-            <form onSubmit={handleSubmit} className="p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-3xl space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 sm:space-y-8 sm:rounded-[2.5rem] sm:p-10 sm:backdrop-blur-3xl">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20 px-2">{t('Name', 'Name')}</label>
                 <input
