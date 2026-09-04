@@ -5,6 +5,7 @@ import OsSection from '@/components/OsSection';
 import ContactSection from '@/components/ContactSection';
 import MyceliumNetworkLazy from '@/components/MyceliumNetworkLazy';
 import StudioSection from '@/components/StudioSection';
+import MobileProductShelf from '@/components/MobileProductShelf';
 
 export const metadata = {
   title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
@@ -18,8 +19,11 @@ export default function Page() {
       <div className="relative z-10">
         <Hero locale="de" />
         <OsSection locale="de" />
-        <YoriSection locale="de" />
-        <DeskSection locale="de" />
+        <MobileProductShelf locale="de" />
+        <div className="hidden md:block">
+          <YoriSection locale="de" />
+          <DeskSection locale="de" />
+        </div>
         <StudioSection locale="de" />
         <ContactSection locale="de" />
       </div>

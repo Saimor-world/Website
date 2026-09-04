@@ -9,21 +9,32 @@ export function middleware(request: NextRequest) {
   if (isOwnerHost) {
     const ownerUrl = request.nextUrl.clone();
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = '/owner/login';
+    loginUrl.pathname = '/login';
+    loginUrl.searchParams.set('callbackUrl', '/owner');
 
     if (pathname === '/' || pathname === '/de' || pathname === '/en') {
       return NextResponse.redirect(loginUrl);
-    }
-
-    if (pathname === '/login') {
-      ownerUrl.pathname = '/owner/login';
-      return NextResponse.rewrite(ownerUrl);
     }
 
     if (pathname.startsWith('/chat/')) {
       ownerUrl.pathname = `/owner${pathname}`;
       return NextResponse.rewrite(ownerUrl);
     }
+  }
+
+  // Public self-service accounts are not available yet. The owner host keeps
+  // its private login; old public account URLs return to the supported flow.
+  const isPublicAccountDoor =
+    pathname === '/login' ||
+    pathname === '/portal' ||
+    pathname === '/account' ||
+    pathname.startsWith('/account/');
+
+  if (!isOwnerHost && isPublicAccountDoor) {
+    const entryUrl = request.nextUrl.clone();
+    entryUrl.pathname = '/de/einstieg/security-check';
+    entryUrl.search = '';
+    return NextResponse.redirect(entryUrl, 307);
   }
 
   const response = NextResponse.next();
