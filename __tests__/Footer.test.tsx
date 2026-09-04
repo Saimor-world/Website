@@ -1,57 +1,21 @@
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Footer from '@/components/Footer';
 
-const mocks = vi.hoisted(() => ({ fetch: vi.fn(), push: vi.fn() }));
+vi.mock('next/image', () => ({ default: () => <span data-testid="saimor-logo" /> }));
+afterEach(cleanup);
 
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mocks.push }),
-}));
-
-vi.mock('next/image', () => ({
-  default: () => <span data-testid="saimor-logo" />,
-}));
-
-vi.mock('@/components/NewsletterSignup', () => ({
-  default: () => <span data-testid="newsletter" />,
-}));
-
-vi.mock('@/components/ShareButton', () => ({
-  default: () => <span data-testid="share" />,
-}));
-
-beforeEach(() => {
-  mocks.fetch.mockReset();
-  mocks.push.mockReset();
-  vi.stubGlobal('fetch', mocks.fetch);
-});
-
-afterEach(() => {
-  cleanup();
-  vi.unstubAllGlobals();
-});
-
-describe('Footer system status', () => {
-  it('shows available only after a successful health response', async () => {
-    mocks.fetch.mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+describe('Footer', () => {
+  it('keeps the public footer concise and links to the demo overview', () => {
     render(<Footer locale="de" />);
-
-    expect(await screen.findByText('System verf\u00fcgbar')).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'available');
+    expect(screen.getByText('KI-Arbeitsräume und begrenzte Pilotprojekte.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Demo' })).toHaveAttribute('href', '/demo');
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
-  it('shows a limited state for a reachable unhealthy service', async () => {
-    mocks.fetch.mockResolvedValue({ ok: false, json: async () => ({ ok: false }) });
+  it('contains the required legal links', () => {
     render(<Footer locale="de" />);
-
-    expect(await screen.findByText('System eingeschr\u00e4nkt')).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'limited');
-  });
-  it('uses an honest unknown state when health cannot be reached', async () => {
-    mocks.fetch.mockRejectedValue(new Error('offline'));
-    render(<Footer locale="en" />);
-
-    expect(await screen.findByText('Status unknown')).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'unknown');
+    expect(screen.getByRole('link', { name: 'Impressum' })).toHaveAttribute('href', '/de/rechtliches/impressum');
+    expect(screen.getByRole('link', { name: 'Datenschutz' })).toHaveAttribute('href', '/de/rechtliches/datenschutz');
   });
 });

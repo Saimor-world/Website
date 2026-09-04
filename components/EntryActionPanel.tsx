@@ -78,7 +78,6 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
   const [emailed, setEmailed] = useState(false);
   const [auditId, setAuditId] = useState<string | null>(null);
   const [previewAuditId, setPreviewAuditId] = useState<string | null>(null);
-  const [magicState, setMagicState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
 
   const t = {
     de: {
@@ -150,35 +149,6 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
     }
   };
 
-  const sendMagicLink = async () => {
-    if (!form.email || !auditId) return;
-    setMagicState('loading');
-    try {
-      const callbackUrl = `/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}`;
-      const response = await fetch('/api/auth/magic-link', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: form.email,
-          callbackUrl,
-          locale,
-        }),
-      });
-      if (!response.ok) {
-        setMagicState('error');
-        return;
-      }
-      const payload = await response.json().catch(() => ({} as any));
-      if (payload?.debugUrl) {
-        window.location.href = payload.debugUrl;
-        return;
-      }
-      setMagicState('sent');
-    } catch {
-      setMagicState('error');
-    }
-  };
-
   return (
     <section className="rounded-[1.8rem] border border-emerald-500/35 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 p-7 sm:p-8 space-y-5">
       <header className="space-y-2">
@@ -234,7 +204,7 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
         {session ? (
           <p className="text-white/60">{locale === 'de' ? `Eingeloggt als ${session.user?.email}. Ergebnis wird gespeichert.` : `Logged in as ${session.user?.email}. Result will be saved.`}</p>
         ) : (
-          <p className="text-white/40">{locale === 'de' ? 'Nicht eingeloggt. Ergebnis wird nur angezeigt. ' : 'Not logged in. Result is shown only. '}<Link href="/login" className="text-emerald-400 hover:underline">{locale === 'de' ? 'Jetzt anmelden' : 'Login now'}</Link></p>
+          <p className="text-white/40">{locale === 'de' ? 'Getrennter Demo-Modus. Es wird kein Konto angelegt.' : 'Isolated demo mode. No account will be created.'}</p>
         )}
       </div>
 
@@ -317,40 +287,6 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
               </div>
             ) : (
               <div className="flex flex-wrap items-center gap-4">
-                {auditId ? (
-                  <>
-                    <Link
-                      href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}`)}`}
-                      className="text-cyan-400 font-bold hover:underline inline-flex items-center gap-2"
-                    >
-                      <span>{locale === 'de' ? 'Einloggen und Report speichern' : 'Login to save report'}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <Link
-                      href={`/login?callbackUrl=${encodeURIComponent(`/account/bridge?claimType=audit&claimId=${auditId}&next=/account/dashboard/audit/${auditId}?print=true`)}`}
-                      className="text-cyan-300 font-bold hover:underline inline-flex items-center gap-2"
-                    >
-                      <span>{locale === 'de' ? 'Einloggen und direkt PDF' : 'Login and open PDF'}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={sendMagicLink}
-                      disabled={magicState === 'loading' || magicState === 'sent'}
-                      className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/50 bg-emerald-300/10 px-4 py-2 text-emerald-200 font-bold hover:bg-emerald-300/20 transition-colors disabled:opacity-60"
-                    >
-                      <span>
-                        {magicState === 'loading'
-                          ? locale === 'de'
-                            ? 'Sende Link...'
-                            : 'Sending link...'
-                          : locale === 'de'
-                            ? '1-Click Magic Link senden'
-                            : 'Send 1-click magic link'}
-                      </span>
-                    </button>
-                  </>
-                ) : null}
                 {previewAuditId ? (
                   <a
                     href={buildPublicHqAuditUrl(previewAuditId, result, form.companyName || form.name)}
@@ -370,20 +306,6 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
               </div>
             )}
           </div>
-          {!session && auditId && magicState === 'sent' ? (
-            <p className="text-sm text-emerald-300">
-              {locale === 'de'
-                ? 'Magic Link wurde gesendet. Nach Klick wird dein Report automatisch geclaimed.'
-                : 'Magic link sent. After clicking it, your report will be claimed automatically.'}
-            </p>
-          ) : null}
-          {!session && auditId && magicState === 'error' ? (
-            <p className="text-sm text-red-300">
-              {locale === 'de'
-                ? 'Magic Link konnte nicht gesendet werden (SMTP oder Limit).'
-                : 'Could not send magic link (SMTP or rate limit).'}
-            </p>
-          ) : null}
         </div>
       ) : null}
     </section>

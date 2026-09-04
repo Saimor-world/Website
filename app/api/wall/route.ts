@@ -3,26 +3,27 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-function isLegacyDemoEntry(entry: {
+function isLegacyFixture(entry: {
   name: string;
   company: string | null;
   domain: string | null;
   tag: string | null;
   message: string | null;
 }) {
-  const haystack = [entry.name, entry.company, entry.domain, entry.tag, entry.message]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-  return (
-    haystack.includes('demo firma') ||
-    haystack.includes('codex') ||
-    haystack.includes('example.com') ||
-    haystack.includes('acme') ||
-    haystack.includes('beispiel') ||
-    entry.name.trim().toLowerCase() === 'nicht-unternehmen' ||
-    entry.tag?.trim().toLowerCase() === 'nicht'
-  );
+  const normalized = (value?: string | null) => value?.trim().toLowerCase() || '';
+
+  // Two records predate moderation statuses. Keep them in the database as
+  // history, but never treat them as public proof. New records are controlled
+  // exclusively through `status` in the owner dashboard.
+  const firstFixture =
+    normalized(entry.domain) === 'dash.saimor.world' &&
+    normalized(entry.message) === 'beispiel 1';
+  const secondFixture =
+    normalized(entry.tag) === 'nicht' &&
+    !normalized(entry.company) &&
+    !normalized(entry.domain);
+
+  return firstFixture || secondFixture;
 }
 
 function publicName(entry: { name: string; company: string | null; tag: string | null; visibility?: string | null }) {
@@ -90,7 +91,7 @@ export async function GET() {
 
     const entries = rawEntries
       .filter((entry) => !entry.status || entry.status === 'published')
-      .filter((entry) => !isLegacyDemoEntry(entry))
+      .filter((entry) => !isLegacyFixture(entry))
       .map(({ audit, ...entry }) => ({
         ...entry,
         name: publicName(entry),

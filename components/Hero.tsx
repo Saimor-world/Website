@@ -1,307 +1,91 @@
-'use client';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { ArrowRight, Circle } from 'lucide-react';
 import Image from 'next/image';
-import { Sparkles } from 'lucide-react';
-import AnimatedButton from '@/components/AnimatedButton';
 import ScrollAmbient from '@/components/ScrollAmbient';
 
 type Locale = 'de' | 'en';
 
-type Props = {
-  locale: Locale;
-  calUrl?: string;
-};
+const COPY = {
+  de: {
+    eyebrow: 'SAIMÔR · SOUVERÄNE KI-SYSTEME',
+    title: 'KI, die nicht bei jeder Aufgabe von vorne beginnt.',
+    body: 'Saimôr entwickelt eigene KI-Arbeitsräume für Selbständige, kleine Teams und Organisationen. Môra hält den Kontext zusammen, verbindet Vorgänge und unterstützt bei konkreten nächsten Schritten.',
+    primary: 'Demo prüfen',
+    secondary: 'Môra verstehen',
+    note: 'Getrennte Demo · keine Kontoerstellung · keine persönlichen Daten',
+    layers: [
+      ['MÔRA', 'Kontext und Handlung'],
+      ['DAS OS', 'Arbeitsabläufe in einem gemeinsamen Raum'],
+      ['EIGENE INSTANZ', 'Datenhaltung mit klaren Grenzen'],
+    ],
+  },
+  en: {
+    eyebrow: 'SAIMÔR · SOVEREIGN AI SYSTEMS',
+    title: 'AI that does not start from zero with every task.',
+    body: 'Saimôr builds dedicated AI workspaces for independents, small teams and organizations. Môra keeps context connected, links work and supports concrete next steps.',
+    primary: 'Review the demo',
+    secondary: 'Understand Môra',
+    note: 'Isolated demo · no account creation · no personal data',
+    layers: [
+      ['MÔRA', 'Context and action'],
+      ['THE OS', 'Workflows in one shared space'],
+      ['DEDICATED INSTANCE', 'Data with clear boundaries'],
+    ],
+  },
+} as const;
 
-// Floating particle component
-const FloatingParticle = ({ delay = 0, size = 4, duration = 20 }: { delay?: number; size?: number; duration?: number }) => (
-  <motion.div
-    className="absolute rounded-full"
-    style={{
-      width: size,
-      height: size,
-      background: 'radial-gradient(circle, rgba(212, 180, 131, 0.8) 0%, rgba(212, 180, 131, 0.2) 100%)',
-      boxShadow: '0 0 10px rgba(212, 180, 131, 0.5)',
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-    }}
-    animate={{
-      y: [0, -100, 0],
-      x: [0, Math.random() * 50 - 25, 0],
-      opacity: [0.3, 0.8, 0.3],
-      scale: [1, 1.5, 1],
-    }}
-    transition={{
-      duration,
-      delay,
-      repeat: Infinity,
-      ease: 'easeInOut',
-    }}
-  />
-);
-
-export default function Hero({ locale, calUrl }: Props) {
-  const [mounted, setMounted] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start']
-  });
-
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsDesktop(typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 640px)').matches);
-  }, []);
-
-  const cal = calUrl ?? process.env.NEXT_PUBLIC_CAL_URL ?? 'https://cal.com/saimor/30min';
-
-  const content = {
-    de: {
-      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
-      headline: 'Saimôr',
-      // Der Einstieg sagt jetzt, was es IST. Die vorherige Fassung
-      // ("Ein wachsendes Ökosystem bewusster Intelligenz") war eine Stimmung,
-      // kein Angebot - und der Absatz darunter nannte vier Produkte in einem
-      // Atemzug. Niemand haelt vier.
-      subheadline: 'Souveräne KI-Systeme für Arbeit, Wissen und Ideen.',
-      description: 'Saimôr verbindet eigene Arbeitsräume mit Môra, einer Kontext- und Agentenschicht. Datenhaltung und Verknüpfung bleiben auf deinem eigenen Server oder in deiner Instanz; verwendete KI-Modelle werden transparent angebunden.',
-      ctaPrimary: 'Môra kennenlernen',
-      ctaSecondary: 'Gespräch buchen',
-      // Nach dem Portfolio vom 24.08.2026: Desk und Earth laufen oeffentlich und
-      // fehlten hier, Vicini stand hier und ist bewusst noch nicht im Portfolio.
-      stats: [
-        { value: 'MÔRA', label: 'Kontext & Handlung' },
-        { value: 'DAS OS', label: 'Die Firma als Ort' },
-        { value: 'YORI', label: 'Creator OS' },
-        { value: 'DESK', label: 'Môra für Selbständige' }
-      ],
-      scrollHint: 'Entdecken'
-    },
-    en: {
-      badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
-      headline: 'Saimôr',
-      subheadline: 'Sovereign AI systems for work, knowledge and ideas.',
-      description: 'Saimôr combines dedicated workspaces with Môra, a context and agent layer. Data storage and connections stay on your own server or dedicated instance; any AI models used are connected transparently.',
-      ctaPrimary: 'Meet Môra',
-      ctaSecondary: 'Book a call',
-      stats: [
-        { value: 'MÔRA', label: 'Context & action' },
-        { value: 'THE OS', label: 'Your company as a place' },
-        { value: 'YORI', label: 'Creator OS' },
-        { value: 'DESK', label: 'Môra for freelancers' }
-      ],
-      scrollHint: 'Explore'
-    }
-  }[locale];
+export default function Hero({ locale }: { locale: Locale }) {
+  const copy = COPY[locale];
 
   return (
-    <section
-      ref={ref}
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[var(--world-ink)]"
-      role="banner"
-    >
-      {/* === HIGH-END BACKGROUND LAYERS === */}
-      <div className="absolute inset-0 z-0 bg-[#02040A]">
-        {/* Deep Space Gradients - Even Brighter and more inviting */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(34,184,141,0.10)_0%,transparent_70%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(102,221,234,0.08)_0%,transparent_68%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(214,168,72,0.30)_0%,transparent_42%)]" />
-        
-        {/* Milky Way / Mycelium atmosphere */}
-        <div className="pointer-events-none absolute -inset-[30%] rotate-[-16deg] bg-[radial-gradient(ellipse_at_center,rgba(231,196,106,.16)_0%,rgba(200,188,255,.10)_28%,transparent_64%)] blur-[60px]" />
-        <div className="pointer-events-none absolute -left-[15%] top-[14%] h-[28%] w-[130%] rotate-[-18deg] bg-[linear-gradient(90deg,transparent_0%,rgba(231,196,106,.06)_25%,rgba(200,188,255,.16)_50%,rgba(102,221,234,.07)_66%,transparent_100%)] blur-[32px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,.06)_0%,transparent_24%,transparent_68%,rgba(214,168,72,.11)_100%)] mix-blend-screen opacity-70" />
-
-        {/* Mycelium Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.12]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 10 50 50 T 90 90' stroke='rgba(214,168,72,0.48)' fill='none' stroke-width='0.5'/%3E%3C/svg%3E")`,
-          backgroundSize: '120px 120px'
-        }} />
-
-        {/* Animated Atmospheric Nebula - More intense & vibrant */}
-        <motion.div 
-          className="absolute -top-[15%] -left-[10%] w-[80%] h-[80%] bg-[var(--world-violet)]/20 blur-[150px] rounded-full"
-          animate={!isDesktop || reduceMotion ? undefined : {
-            opacity: [0.6, 0.9, 0.6],
-            scale: [1, 1.2, 1] 
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute -bottom-[15%] -right-[10%] w-[70%] h-[70%] bg-[var(--world-cyan)]/10 blur-[150px] rounded-full"
-          animate={!isDesktop || reduceMotion ? undefined : {
-            opacity: [0.5, 0.8, 0.5],
-            scale: [1.2, 1, 1.2] 
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-        
-        {/* Central Glow for better readability and "inviting" feel */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-[#D6A848]/10 blur-[250px] rounded-full opacity-80" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(3,6,15,0.52)_100%)]" />
-
-        {/* Neural Grid Overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px)`,
-          backgroundSize: '80px 80px'
-        }} />
-
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="absolute inset-0 opacity-[0.5]" style={{ backgroundImage: "radial-gradient(circle, rgba(231,196,106,.42) 1px, transparent 1px)", backgroundSize: "82px 82px", maskImage: "linear-gradient(to bottom, transparent, black 18%, black 72%, transparent)" }} />
-          <div className="absolute left-1/2 top-[23%] h-[min(52vw,500px)] w-[min(52vw,500px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(214,168,72,.18)_0%,rgba(12,16,29,.16)_48%,transparent_72%)] blur-2xl" />
-          <div className="absolute left-1/2 top-[23%] h-0 w-0 -translate-x-1/2 -translate-y-1/2">
-            <motion.div className="absolute left-1/2 top-1/2 h-[min(19vw,180px)] w-[min(42vw,420px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border" style={{ borderColor: "rgba(214,168,72,.26)", rotate: -16 }} animate={isDesktop && !reduceMotion ? { rotate: 344 } : undefined} transition={{ duration: 75, repeat: Infinity, ease: "linear" }} />
-            <motion.div className="absolute left-1/2 top-1/2 h-[min(14vw,132px)] w-[min(34vw,340px)] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border" style={{ borderColor: "rgba(102,221,234,.14)", rotate: 20 }} animate={isDesktop && !reduceMotion ? { rotate: -340 } : undefined} transition={{ duration: 52, repeat: Infinity, ease: "linear" }} />
-          </div>
-          <div className="absolute left-1/2 top-[23%] h-px w-[min(50vw,500px)] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#D6A848]/30 to-transparent" />
-          {mounted && isDesktop && !reduceMotion && Array.from({ length: 8 }, (_, index) => <FloatingParticle key={index} delay={index * 0.8} size={index % 4 === 0 ? 3 : 2} duration={20 + index % 6} />)}
-        </div>
-                {/* Grain/Noise */}
-        <div className="absolute inset-0 bg-noise opacity-[0.15] mix-blend-overlay" />
+    <section className="relative min-h-[92svh] overflow-hidden bg-[#05090a] text-white">
+      <div className="absolute inset-0" aria-hidden>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_24%,rgba(214,168,72,.15),transparent_30%),radial-gradient(circle_at_18%_82%,rgba(72,151,131,.11),transparent_32%)]" />
+        <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(255,255,255,.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.025)_1px,transparent_1px)] [background-size:72px_72px]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#081112] to-transparent" />
       </div>
 
-      {/* === MAIN CONTENT === */}
-      <motion.div
-        className="relative z-30 w-full max-w-7xl mx-auto px-5 py-20 sm:px-6 sm:py-32"
-        style={isDesktop && !reduceMotion ? { y: parallaxY, opacity } : undefined}
-      >
-        <div className="flex flex-col items-center text-center space-y-8 sm:space-y-12">
-          <div className="relative z-10 -mb-3 flex h-20 w-20 items-center justify-center sm:-mb-5 sm:h-32 sm:w-32" aria-label="Saimôr World">
-            <div className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(214,168,72,.42)_0%,rgba(214,168,72,.16)_34%,rgba(3,5,10,.94)_68%,transparent_73%)] blur-xl" />
-            <div className="absolute -inset-3 rounded-full border border-[#D6A848]/35 bg-[#03050A]/80 shadow-[0_0_80px_rgba(214,168,72,.28)]" />
-            <motion.span className="absolute -top-10 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-[#D6A848] shadow-[0_0_18px_rgba(214,168,72,.8)]" animate={{ y: [0, -4, 0], opacity: [0.55, 1, 0.55] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
-            <motion.span className="absolute -right-10 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#66DDEA] shadow-[0_0_16px_rgba(102,221,234,.75)]" animate={{ x: [0, 4, 0], opacity: [0.45, 0.85, 0.45] }} transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: 0.7 }} />
-            <div className="absolute inset-0 overflow-hidden rounded-full">
-            <Image src="/saimor-seal-256.webp" alt="Saimôr World Siegel" fill sizes="128px" className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
-            </div>
-            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#D6A848]/55 bg-[#03050A]/90 px-2 py-1 font-mono text-[7px] font-bold tracking-[.32em] text-[#D6A848] backdrop-blur">WORLD</span>
-          </div>
-          
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--world-violet)]/5 border border-[var(--world-gold)]/25 backdrop-blur-xl"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[var(--world-cyan)]" />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-black text-[var(--world-cyan)]">{content.badge}</span>
-          </motion.div>
-
-          {/* Main Headline */}
-          <div className="space-y-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-6xl sm:text-8xl lg:text-9xl font-light tracking-tighter leading-tight"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
-              <span className="opacity-90">Saimôr</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-xl sm:text-3xl text-[#D6A848] italic font-light"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
-              {content.subheadline}
-            </motion.p>
+      <div className="relative mx-auto grid min-h-[92svh] max-w-7xl items-center gap-12 px-5 pb-14 pt-28 sm:px-7 lg:grid-cols-[1.08fr_.92fr] lg:px-8 lg:pb-20 lg:pt-32">
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-3 text-[#dfbd70]">
+            <Image src="/saimor-seal-256.webp" alt="" width={34} height={34} priority className="rounded-lg opacity-90" />
+            <p className="font-mono text-xs font-semibold tracking-[.17em]">{copy.eyebrow}</p>
           </div>
 
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-base sm:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed"
-          >
-            {content.description}
-          </motion.p>
+          <h1 className="mt-9 font-serif text-[clamp(3.25rem,8vw,7rem)] font-light leading-[.91] tracking-[-.045em] text-[#f5f0e7]">{copy.title}</h1>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-white/62 sm:text-xl sm:leading-9">{copy.body}</p>
 
-          {/* Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto relative z-30 pointer-events-auto"
-          >
-            <AnimatedButton
-              href={locale === 'en' ? '/en/mora' : '/mora'}
-              variant="gradient"
-              size="lg"
-              className="shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
-            >
-              {content.ctaPrimary}
-            </AnimatedButton>
-            <AnimatedButton
-              href={cal}
-              external
-              variant="secondary"
-              size="lg"
-              className="backdrop-blur-xl"
-            >
-              {content.ctaSecondary}
-            </AnimatedButton>
-          </motion.div>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#d6a848] px-6 py-3 text-sm font-bold text-[#151006] transition hover:-translate-y-0.5 hover:bg-[#e3c174]">
+              {copy.primary}<ArrowRight className="h-4 w-4" />
+            </a>
+            <a href={locale === 'de' ? '/mora' : '/en/mora'} className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/78 transition hover:border-white/30 hover:text-white">{copy.secondary}</a>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55 }}
-          >
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-white/38">
+            <span className="inline-flex items-center gap-2"><Circle className="h-2 w-2 fill-[#74cbb4] text-[#74cbb4]" />{copy.note}</span>
             <ScrollAmbient locale={locale} />
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="hidden grid-cols-2 gap-10 pt-8 sm:grid sm:grid-cols-4 sm:gap-16 sm:pt-12"
-          >
-            {content.stats.map((stat, i) => (
-              <div key={i} className="text-center group">
-                <div className="text-sm sm:text-base font-mono font-bold tracking-[.08em] text-white mb-2 group-hover:text-[var(--world-cyan)] transition-colors">
-                  {stat.value}
-                </div>
-                <div className="text-[9px] uppercase tracking-[0.3em] font-black text-white/20">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
 
-      {/* Scroll Hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-4 sm:flex"
-      >
-        <span className="text-[10px] uppercase tracking-[0.5em] font-black text-white/20 whitespace-nowrap">{content.scrollHint}</span>
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center p-1"
-        >
-          <div className="w-1 h-2 bg-[var(--world-violet)] rounded-full" />
-        </motion.div>
-      </motion.div>
-
-      {/* Styles */}
-      <style jsx global>{`
-        .bg-noise {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-      `}</style>
+        <div className="relative hidden lg:block">
+          <div className="absolute -inset-10 rounded-full bg-[#d6a848]/7 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[2.25rem] border border-white/10 bg-[#0a1112]/88 p-4 shadow-[0_34px_90px_rgba(0,0,0,.48)]">
+            <div className="flex items-center justify-between border-b border-white/8 px-3 pb-4 pt-2">
+              <span className="font-mono text-xs tracking-[.18em] text-white/42">SAIMÔR / SYSTEM</span>
+              <span className="rounded-full border border-[#74cbb4]/20 bg-[#74cbb4]/8 px-3 py-1 text-xs text-[#9cdbc9]">Pilotphase</span>
+            </div>
+            <div className="space-y-2 py-3">
+              {copy.layers.map(([name, description], index) => (
+                <div key={name} className="grid grid-cols-[auto_1fr] gap-4 rounded-2xl border border-white/7 bg-white/[.025] p-5">
+                  <span className="font-mono text-xs text-[#d6a848]/68">0{index + 1}</span>
+                  <div><p className="text-sm font-bold tracking-[.13em] text-white/88">{name}</p><p className="mt-2 text-base text-white/46">{description}</p></div>
+                </div>
+              ))}
+            </div>
+            <p className="px-3 pb-2 pt-1 font-serif text-xl italic text-white/35">Context stays. Boundaries stay visible.</p>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,32 +1,12 @@
-﻿import Hero from "@/components/Hero";
-import YoriSection from "@/components/YoriSection";
-import DeskSection from "@/components/DeskSection";
-import OsSection from "@/components/OsSection";
-import ContactSection from "@/components/ContactSection";
-import MyceliumNetworkLazy from "@/components/MyceliumNetworkLazy";
-import StudioSection from "@/components/StudioSection";
-import MobileProductShelf from "@/components/MobileProductShelf";
+import ContactSection from '@/components/ContactSection';
+import Hero from '@/components/Hero';
+import HomeShowcase from '@/components/HomeShowcase';
 
 export const metadata = {
-  title: 'Saimôr – Sovereign AI systems and digital spaces',
-  description: 'Marius Fahrländer’s independent product studio: Saimôr OS, Môra, YORI and selected web projects. Sovereign, traceable and in development.',
+  title: 'Saimôr – AI workspaces with dedicated context',
+  description: 'Saimôr builds AI workspaces with Môra: separated data spaces, traceable actions and concrete pilot projects.',
 };
 
 export default function Page() {
-  return (
-    <main className="flex flex-col min-h-screen">
-      <MyceliumNetworkLazy />
-      <div className="relative z-10">
-        <Hero locale="en" />
-        <OsSection locale="en" />
-        <MobileProductShelf locale="en" />
-        <div className="hidden md:block">
-          <YoriSection locale="en" />
-          <DeskSection locale="en" />
-        </div>
-        <StudioSection locale="en" />
-        <ContactSection locale="en" />
-      </div>
-    </main>
-  );
+  return <main className="min-h-screen"><Hero locale="en" /><HomeShowcase locale="en" /><ContactSection locale="en" /></main>;
 }

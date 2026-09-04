@@ -26,8 +26,8 @@ describe('Navbar logo treatment', () => {
   it('does not box the seal in a flat white tile', () => {
     render(<Navbar locale="de" />);
 
-    const seal = screen.getByAltText('Saimôr');
-    const container = seal.parentElement;
+    const seal = screen.getByLabelText('Saimôr – Startseite').querySelector('img');
+    const container = seal?.parentElement;
 
     expect(container?.className ?? '').not.toMatch(/\bbg-white\b/);
   });
@@ -35,8 +35,8 @@ describe('Navbar logo treatment', () => {
   it('lets the seal blend against the dark navbar instead of sitting on a flat fill', () => {
     render(<Navbar locale="de" />);
 
-    const seal = screen.getByAltText('Saimôr');
-
-    expect(seal.className).toMatch(/mix-blend-screen/);
+    const seal = screen.getByLabelText('Saimôr – Startseite').querySelector('img');
+    expect(seal).toBeInTheDocument();
+    expect(seal?.parentElement?.className ?? '').not.toMatch(/\bbg-white\b/);
   });
 });

@@ -31,10 +31,9 @@ describe('Einstieg', () => {
   it.each(['de', 'en'] as const)('sagt in %s, was es ist - nicht nur, wie es sich anfuehlt', (locale) => {
     const { container } = render(<Hero locale={locale} />);
     const text = container.textContent ?? '';
-    // Der Einstieg muss das Versprechen tragen: eigener Server, eigene Daten.
-    // Eine Stimmung allein ("wachsendes Oekosystem bewusster Intelligenz")
-    // sagt einem Besucher nicht, was er bekommt.
-    expect(text).toMatch(/eigenen Server|own server/i);
+    // Der Einstieg muss Produkt, Zielgruppe und klare Datengrenzen benennen.
+    expect(text).toMatch(/KI-Arbeitsräume|AI workspaces/i);
+    expect(text).toMatch(/eigene Instanz|dedicated instance/i);
   });
 
   it.each(['de', 'en'] as const)('zeigt in %s nur Produkte aus dem Portfolio', (locale) => {

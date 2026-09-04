@@ -1,190 +1,20 @@
-'use client';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import NewsletterSignup from './NewsletterSignup';
-import ShareButton from '@/components/ShareButton';
+import Link from 'next/link';
 
-type SystemStatus = 'checking' | 'available' | 'limited' | 'unknown';
+const COPY = {
+  de: { line: 'KI-Arbeitsräume und begrenzte Pilotprojekte.', contact: 'Kontakt', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', trust: 'Sicherheit' },
+  en: { line: 'AI workspaces and limited pilot projects.', contact: 'Contact', legal: 'Legal', imprint: 'Imprint', privacy: 'Privacy', trust: 'Security' },
+} as const;
 
 export default function Footer({ locale }: { locale: 'de' | 'en' }) {
-  const [year, setYear] = useState('2026');
-  const [systemStatus, setSystemStatus] = useState<SystemStatus>('checking');
-  const router = useRouter();
-
-  useEffect(() => {
-    setYear(new Date().getFullYear().toString());
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    let active = true;
-
-    fetch('/api/health', { cache: 'no-store', signal: controller.signal })
-      .then(async (response) => {
-        const payload = await response.json().catch(() => null) as { ok?: boolean } | null;
-        if (!active) return;
-        setSystemStatus(response.ok && payload?.ok === true ? 'available' : 'limited');
-      })
-      .catch((error: unknown) => {
-        if (!active || (error instanceof DOMException && error.name === 'AbortError')) return;
-        setSystemStatus('unknown');
-      });
-
-    return () => {
-      active = false;
-      controller.abort();
-    };
-  }, []);
-
-  const footerText = {
-    de: {
-      quickLinks: 'Navigation',
-      services: 'Leistungen',
-      demo: 'Demo',
-      wall: 'The Wall',
-      earth: 'Earth',
-      contact: 'Kontakt',
-      legal: 'Rechtliches',
-      trust: 'Sicherheit',
-      imprint: 'Impressum',
-      privacy: 'Datenschutz',
-      terms: 'AGB',
-      refund: 'Widerruf',
-      tagline: 'SAIMÔR — Souveränität durch Technologie.',
-      copyright: 'Copyright'
-    },
-    en: {
-      quickLinks: 'Navigation',
-      services: 'Services',
-      demo: 'Demo',
-      wall: 'The Wall',
-      earth: 'Earth',
-      contact: 'Contact',
-      legal: 'Legal',
-      trust: 'Security',
-      imprint: 'Imprint',
-      privacy: 'Privacy',
-      terms: 'Terms',
-      refund: 'Refund',
-      tagline: 'SAIMÔR — Sovereignty through technology.',
-      copyright: 'Copyright'
-    }
-  }[locale];
-
-  const systemStatusText = {
-    de: {
-      checking: 'Status wird gepr\u00fcft',
-      available: 'System verf\u00fcgbar',
-      limited: 'System eingeschr\u00e4nkt',
-      unknown: 'Status unbekannt',
-    },
-    en: {
-      checking: 'Checking system status',
-      available: 'System available',
-      limited: 'System limited',
-      unknown: 'Status unknown',
-    },
-  }[locale][systemStatus];
-
-  const handleScrollToContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const kontaktSection = document.getElementById('kontakt');
-    if (kontaktSection) {
-      kontaktSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      router.push(`/${locale}#kontakt`);
-    }
-  };
-
-  return (
-    <footer className="relative py-14 border-t border-white/10 bg-[#081410] overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
+  const copy = COPY[locale];
+  return <footer className="border-t border-white/8 bg-[#060a0b] px-5 py-10 text-white sm:px-7">
+    <div className="mx-auto max-w-7xl">
+      <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <Link href={`/${locale}`} className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center overflow-hidden rounded-lg bg-white"><Image src="/saimor-logo-256.webp" alt="Saimôr" width={34} height={34} /></span><span><strong className="block font-serif text-xl font-medium tracking-wide">Saimôr</strong><span className="block text-xs text-white/34">{copy.line}</span></span></Link>
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/48"><Link href={locale === 'de' ? '/mora' : '/en/mora'}>Môra</Link><Link href={locale === 'de' ? '/yori' : '/en/yori'}>YORI</Link><Link href="/demo">Demo</Link><Link href={`/${locale}#kontakt`}>{copy.contact}</Link><Link href={locale === 'de' ? '/de/trust' : '/en/trust'}>{copy.trust}</Link></nav>
       </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-
-          <div className="md:col-span-2 space-y-5">
-            <a href={`/${locale}`} className="flex items-center gap-4 group">
-              <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
-                <Image 
-                  src="/saimor-logo-256.webp"
-                  alt="Saimôr"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
-            </a>
-            <p className="text-white/40 max-w-sm text-base leading-relaxed italic">
-              {footerText.tagline}
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
-            <div className="flex flex-col gap-4">
-              <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
-              <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
-              <a href={locale === 'de' ? '/yori' : '/en/yori'} className="text-white/50 hover:text-[var(--yori-turquoise)] transition-colors cursor-pointer">YORI</a>
-              <a href="/demo" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.demo}</a>
-              <a href="/earth" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.earth}</a>
-              <a href="/wall" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.wall}</a>
-              <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <NewsletterSignup variant="footer" />
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
-            <div className="flex flex-col gap-4">
-              <a href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/agb' : '/en/legal/terms'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.terms}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/widerruf' : '/en/legal/refund'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.refund}</a>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">© {year} Saimôr</span>
-            <span className="w-1 h-1 rounded-full bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">{footerText.copyright}</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <ShareButton />
-            <div
-              role="status"
-              aria-live="polite"
-              data-system-status={systemStatus}
-              className={`flex items-center gap-3 px-4 py-1.5 rounded-full border ${
-                systemStatus === 'available'
-                  ? 'bg-emerald-500/5 border-emerald-500/10'
-                  : systemStatus === 'limited'
-                    ? 'bg-amber-500/5 border-amber-500/15'
-                    : 'bg-white/5 border-white/10'
-              }`}
-            >
-              <div className={`w-1.5 h-1.5 rounded-full ${
-                systemStatus === 'available' ? 'bg-emerald-500' : systemStatus === 'limited' ? 'bg-amber-400' : 'bg-white/30'
-              } ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
-              <span className={`text-[9px] uppercase tracking-[0.2em] font-black ${
-                systemStatus === 'available' ? 'text-emerald-500/60' : systemStatus === 'limited' ? 'text-amber-300/70' : 'text-white/35'
-              }`}>
-                {systemStatusText}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
+      <div className="mt-8 flex flex-col gap-4 border-t border-white/7 pt-6 text-xs text-white/28 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Saimôr</span><div className="flex flex-wrap gap-5"><span>{copy.legal}</span><Link href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'}>{copy.imprint}</Link><Link href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'}>{copy.privacy}</Link></div></div>
+    </div>
+  </footer>;
 }
