@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { z } from 'zod';
+import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
 import { emitNightwatchSignal, nightwatchSignalId, redactedHqUrl } from '@/lib/nightwatch-signal';
+import { createTrialWindow } from '@/lib/trial';
 
 const Body = z.object({
   auditId: z.string().cuid().optional(),
@@ -13,6 +15,8 @@ const Body = z.object({
 }).refine((d) => d.auditId || d.email, {
   message: 'Either auditId or email must be provided',
 });
+
+const RECENT_AUDIT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 function isAllowedHqUrl(value: string, req: NextRequest) {
   try {
@@ -28,6 +32,32 @@ function isAllowedHqUrl(value: string, req: NextRequest) {
 
 function isLocalRequest(req: NextRequest) {
   return ['localhost', '127.0.0.1', '::1'].includes(req.nextUrl.hostname);
+}
+
+function hashMagicToken(token: string) {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+function appBaseUrl(req: NextRequest) {
+  if (process.env.VERCEL_ENV === 'preview') {
+    return `${req.nextUrl.protocol}//${req.nextUrl.host}`;
+  }
+  return (
+    process.env.NEXTAUTH_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    `${req.nextUrl.protocol}//${req.nextUrl.host}`
+  );
+}
+
+function buildMagicLoginUrl(req: NextRequest, email: string, token: string, auditId: string) {
+  const callbackUrl = `/account/bridge?claimType=audit&claimId=${encodeURIComponent(auditId)}&next=${encodeURIComponent(`/account/dashboard/audit/${auditId}`)}`;
+  const base = appBaseUrl(req);
+  return (
+    `${base}/auth/magic` +
+    `?token=${encodeURIComponent(token)}` +
+    `&email=${encodeURIComponent(email)}` +
+    `&callbackUrl=${encodeURIComponent(callbackUrl)}`
+  );
 }
 
 export async function POST(req: NextRequest) {
@@ -46,120 +76,175 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid HQ target' }, { status: 400 });
     }
 
-    // Resolve recipient email: prefer DB lookup (audit ID), fall back to direct email param
-    let recipientEmail: string | null = null;
-    let auditContext: {
-      id: string;
-      name: string;
-      email: string;
-      targetDomain?: string | null;
-      domain?: string | null;
-      score: number;
-      level: string;
-    } | null = null;
-    if (parsed.data.auditId) {
-      const audit = await prisma.securityAudit.findUnique({ where: { id: parsed.data.auditId } });
-      if (audit) {
-        recipientEmail = audit.email;
-        auditContext = audit;
-      }
-    }
-    if (!recipientEmail && parsed.data.email) {
-      recipientEmail = parsed.data.email;
-    }
-    if (!recipientEmail) {
-      return NextResponse.json({ error: 'Recipient email could not be resolved' }, { status: 404 });
+    const requestedEmail = parsed.data.email?.trim().toLowerCase() || null;
+    let audit = parsed.data.auditId
+      ? await prisma.securityAudit.findUnique({ where: { id: parsed.data.auditId } })
+      : null;
+
+    if (!audit && requestedEmail) {
+      audit = await prisma.securityAudit.findFirst({
+        where: {
+          email: requestedEmail,
+          createdAt: { gte: new Date(Date.now() - RECENT_AUDIT_MAX_AGE_MS) },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
     }
 
+    if (!audit) {
+      return NextResponse.json({ error: 'A completed Security Check is required' }, { status: 404 });
+    }
+
+    const recipientEmail = audit.email.trim().toLowerCase();
+    if (requestedEmail && requestedEmail !== recipientEmail) {
+      return NextResponse.json({ error: 'Email does not match audit' }, { status: 400 });
+    }
+
+    const { trialStartedAt, trialEndsAt } = createTrialWindow();
+    const user = await prisma.user.upsert({
+      where: { email: recipientEmail },
+      update: {},
+      create: {
+        email: recipientEmail,
+        name: audit.name || recipientEmail.split('@')[0],
+        role: 'trial',
+        trialStartedAt,
+        trialEndsAt,
+        trialSource: 'security-check',
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        trialEndsAt: true,
+      },
+    });
+
+    await prisma.securityAudit.updateMany({
+      where: { email: recipientEmail, userId: null },
+      data: { userId: user.id },
+    });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenHash = hashMagicToken(token);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    await prisma.magicLoginToken.create({
+      data: {
+        email: recipientEmail,
+        tokenHash,
+        expiresAt,
+      },
+    });
+
+    const verifyUrl = buildMagicLoginUrl(req, recipientEmail, token, audit.id);
+    const activeTrialEndsAt = user.role === 'trial' ? user.trialEndsAt : null;
+
     if (isLocalRequest(req)) {
-      return NextResponse.json({ success: true, mode: 'local-link', debugUrl: parsed.data.hqUrl });
+      return NextResponse.json({
+        success: true,
+        mode: 'local-link',
+        debugUrl: verifyUrl,
+        trial: user.role === 'trial',
+        trialEndsAt: activeTrialEndsAt?.toISOString() || null,
+      });
     }
 
     if (!process.env.RESEND_API_KEY) {
-      console.error('[HQ Link] RESEND_API_KEY not configured');
+      console.error('[Demo Access] RESEND_API_KEY not configured');
       return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-
     const isDE = parsed.data.locale === 'de';
+    const formattedTrialEnd = activeTrialEndsAt
+      ? new Intl.DateTimeFormat(isDE ? 'de-DE' : 'en-GB', { dateStyle: 'long' }).format(activeTrialEndsAt)
+      : null;
+
     const subject = isDE
-      ? 'Dein Saimor HQ Einstieg ist bereit'
-      : 'Your Saimor HQ entry is ready';
+      ? 'Dein Saimôr Demo-Zugang ist bereit'
+      : 'Your Saimôr demo access is ready';
 
     const htmlBody = isDE
       ? `
-        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-          <p style="font-size: 16px; margin-bottom: 24px;">
-            Dein Security Check ist fertig — hier ist dein persönlicher HQ-Einstieg:
+        <div style="font-family: Inter, Arial, sans-serif; max-width: 580px; margin: 0 auto; color: #102019; line-height: 1.55;">
+          <p style="font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #708078; margin-bottom: 18px;">Saimôr · Security Check abgeschlossen</p>
+          <h1 style="font-family: Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1; margin: 0 0 20px;">Dein Raum ist vorbereitet.</h1>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #34463e;">
+            Dein Security Check für <strong>${audit.targetDomain || audit.domain || audit.name}</strong> ist fertig.
+            Wir haben den Report mit deinem persönlichen Saimôr-Zugang verbunden${formattedTrialEnd ? ` und deine Demo bis <strong>${formattedTrialEnd}</strong> freigeschaltet` : ''}.
           </p>
-          <a href="${parsed.data.hqUrl}"
-             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 28px;
-                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
-            HQ öffnen →
+          <a href="${verifyUrl}"
+             style="display: inline-block; background: #102019; color: #fff; padding: 14px 26px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 15px;">
+            Einloggen &amp; Report öffnen →
           </a>
-          <p style="margin-top: 32px; font-size: 13px; color: #666;">
-            Du siehst dort deinen Workspace mit den Befunden aus dem Check.<br>
-            Ein richtiger Account entsteht erst, wenn du dich im HQ aktiv anmeldest.
+          <p style="margin-top: 24px; font-size: 13px; color: #6f7e76;">
+            Der Login-Link ist 15 Minuten gültig. Du brauchst kein Passwort. Nach dem Klick landet dein Security Report direkt in deinem eigenen Workspace.
           </p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
-          <p style="font-size: 12px; color: #aaa;">Saimor · <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+          <hr style="border: none; border-top: 1px solid #e5ebe8; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #95a19b;">Saimôr · saimor.world</p>
         </div>
       `
       : `
-        <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-          <p style="font-size: 16px; margin-bottom: 24px;">
-            Your security check is done — here is your personal HQ entry:
+        <div style="font-family: Inter, Arial, sans-serif; max-width: 580px; margin: 0 auto; color: #102019; line-height: 1.55;">
+          <p style="font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #708078; margin-bottom: 18px;">Saimôr · Security Check complete</p>
+          <h1 style="font-family: Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1; margin: 0 0 20px;">Your space is ready.</h1>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #34463e;">
+            Your Security Check for <strong>${audit.targetDomain || audit.domain || audit.name}</strong> is complete.
+            We connected the report to your personal Saimôr access${formattedTrialEnd ? ` and activated your demo until <strong>${formattedTrialEnd}</strong>` : ''}.
           </p>
-          <a href="${parsed.data.hqUrl}"
-             style="display: inline-block; background: #0f172a; color: #fff; padding: 14px 28px;
-                    border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px;">
-            Open HQ →
+          <a href="${verifyUrl}"
+             style="display: inline-block; background: #102019; color: #fff; padding: 14px 26px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 15px;">
+            Sign in &amp; open report →
           </a>
-          <p style="margin-top: 32px; font-size: 13px; color: #666;">
-            You will see your workspace with the findings from the check.<br>
-            A real account is only created after you actively sign up inside HQ.
+          <p style="margin-top: 24px; font-size: 13px; color: #6f7e76;">
+            The sign-in link is valid for 15 minutes. No password is required. After the click, your Security Report opens inside your own workspace.
           </p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
-          <p style="font-size: 12px; color: #aaa;">Saimor · <a href="https://saimor.world" style="color:#aaa;">saimor.world</a></p>
+          <hr style="border: none; border-top: 1px solid #e5ebe8; margin: 32px 0;" />
+          <p style="font-size: 12px; color: #95a19b;">Saimôr · saimor.world</p>
         </div>
       `;
 
     const { error } = await resend.emails.send({
-      from: 'Saimor <contact@saimor.world>',
+      from: 'Saimôr <contact@saimor.world>',
       to: recipientEmail,
       subject,
       html: htmlBody,
     });
 
     if (error) {
-      console.error('[HQ Link Resend Error]', error);
+      console.error('[Demo Access Resend Error]', error);
       return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 });
     }
 
     const signalResult = await emitNightwatchSignal({
       event: 'hq_link_sent',
-      signalId: nightwatchSignalId(parsed.data.auditId, recipientEmail, auditContext?.targetDomain || auditContext?.domain),
-      auditId: parsed.data.auditId || null,
-      companyName: auditContext?.name || null,
+      signalId: nightwatchSignalId(audit.id, recipientEmail, audit.targetDomain || audit.domain),
+      auditId: audit.id,
+      companyName: audit.name || null,
       email: recipientEmail,
-      domain: auditContext?.targetDomain || auditContext?.domain || null,
-      score: auditContext?.score ?? null,
-      level: auditContext?.level || null,
+      domain: audit.targetDomain || audit.domain || null,
+      score: audit.score,
+      level: audit.level,
       hqUrl: redactedHqUrl(parsed.data.hqUrl),
-      emailStatus: 'hq_link_sent',
+      emailStatus: 'demo_access_sent',
       metadata: {
         provider: 'resend',
-        target: 'hq_entry',
+        target: 'demo_magic_login',
+        role: user.role,
       },
     });
     if (!signalResult.sent && signalResult.reason !== 'not_configured') {
-      console.warn('[Nightwatch Signal] hq_link_sent failed:', signalResult);
+      console.warn('[Nightwatch Signal] demo_access_sent failed:', signalResult);
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      trial: user.role === 'trial',
+      trialEndsAt: activeTrialEndsAt?.toISOString() || null,
+    });
   } catch (error) {
-    console.error('[HQ Link Request Error]', error);
+    console.error('[Demo Access Request Error]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

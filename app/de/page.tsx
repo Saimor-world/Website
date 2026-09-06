@@ -1,4 +1,4 @@
-﻿import Hero from '@/components/Hero';
+﻿import HeroDemo from '@/components/HeroDemo';
 import OsSection from '@/components/OsSection';
 import ContactSection from '@/components/ContactSection';
 import MyceliumNetworkLazy from '@/components/MyceliumNetworkLazy';
@@ -15,7 +15,7 @@ export default function Page() {
     <main className="flex flex-col min-h-screen">
       <MyceliumNetworkLazy />
       <div className="relative z-10">
-        <Hero locale="de" />
+        <HeroDemo locale="de" />
         <OsSection locale="de" />
         <MobileProductShelf locale="de" />
         <StudioSection locale="de" />
