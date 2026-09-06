@@ -5,7 +5,7 @@ type Props = { locale: 'de' | 'en' };
 
 const COPY = {
   de: {
-    badge: 'MÔRA · PROAKTIVE ASSISTENZ IM SAIMÔR OS',
+    badge: 'MÔRA · PROAKTIVE ASSISTENZ',
     title: 'Sie wartet nicht nur auf Fragen.',
     lead:
       'Môra ist die Assistenz im Saimôr OS. Sie hält offene Fäden und Zusammenhänge verfügbar, erkennt relevante Signale und bereitet nächste Schritte vor. Gespräch ist eine ihrer Fähigkeiten – nicht das Produktprinzip.',
@@ -24,7 +24,7 @@ const COPY = {
       'Môra ist keine separate Chat-App. Sie ist die Assistenz-Persönlichkeit des Saimôr OS und kann sich über unterschiedliche Oberflächen und Kanäle bemerkbar machen.',
   },
   en: {
-    badge: 'MÔRA · PROACTIVE ASSISTANCE INSIDE SAIMÔR OS',
+    badge: 'MÔRA · PROACTIVE ASSISTANCE',
     title: 'She does not just wait for questions.',
     lead:
       'Môra is the assistant inside Saimôr OS. She keeps open threads and relationships available, notices relevant signals and prepares next steps. Conversation is one of her capabilities – not the product model.',
@@ -55,7 +55,7 @@ export default function MoraProductPage({ locale }: Props) {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(214,168,72,.18),transparent_34%),radial-gradient(circle_at_15%_70%,rgba(127,212,193,.10),transparent_35%)]" />
       <div className="relative mx-auto max-w-6xl">
         <header className="mx-auto max-w-4xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#D6A848]/25 bg-[#D6A848]/8 px-4 py-2 font-mono text-[10px] font-bold tracking-[.24em] text-[#E9C981]"><Plug className="h-3.5 w-3.5" />{copy.badge}</span>
+          <span className="inline-flex max-w-full items-center justify-center gap-2 rounded-full border border-[#D6A848]/25 bg-[#D6A848]/8 px-4 py-2 font-mono text-[9px] font-bold tracking-[.2em] text-[#E9C981] sm:text-[10px] sm:tracking-[.24em]"><Plug className="h-3.5 w-3.5 shrink-0" />{copy.badge}</span>
           <h1 className="mt-8 font-serif text-5xl font-light leading-[.98] tracking-[-.04em] sm:text-7xl lg:text-8xl">{copy.title}</h1>
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-white/62 sm:text-xl">{copy.lead}</p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
