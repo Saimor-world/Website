@@ -1,282 +1,123 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
 import {
   ArrowRight,
-  Shield,
-  Fingerprint,
-  Boxes,
-  ScanLine,
-  FileSearch,
-  LayoutDashboard,
-  KeyRound,
-  Sparkles,
   CalendarClock,
+  FileSearch,
+  KeyRound,
+  LayoutDashboard,
   LockKeyhole,
+  ScanLine,
+  ShieldCheck,
+  Sparkles,
 } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
 
-type Track = 'security' | 'digital-self' | 'ai-business';
-
-const trackConfig: Record<
-  Track,
-  {
-    label: string;
-    title: string;
-    tagline: string;
-    icon: typeof Shield;
-    accent: string; // tailwind color stem, e.g. 'emerald'
-    does: string[];
-    article: string;
-    live: boolean;
-  }
-> = {
-  security: {
-    label: 'Security Intelligence',
-    title: 'Security-Check',
-    tagline: 'Ein passiver Blick auf deine Domain – echte Befunde statt Score-Theater.',
-    icon: Shield,
-    accent: 'emerald',
-    does: [
-      'Prüft DMARC / SPF / DNS, TLS-Zertifikat und Security-Header',
-      'Jeder Befund benennt den konkreten Angriffsweg, den er ermöglicht',
-      'Die Ergebnisse wandern direkt in deinen Preview-Arbeitsbereich',
-    ],
-    article: '/de/einstieg/security-check',
-    live: true,
-  },
-  'digital-self': {
-    label: 'Digital Self',
-    title: 'Digital Self',
-    tagline: 'Ein KI-Profil, das deinen Kontext kennt – entlastet Entscheidungen und Routine.',
-    icon: Fingerprint,
-    accent: 'cyan',
-    does: [
-      'Baut aus deinen Informationen ein arbeitsfähiges Profil',
-      'Hält Kontext fest, statt ihn in Chats zu verlieren',
-      'Automationen bleiben nachvollziehbar und steuerbar',
-    ],
-    article: '/de/einstieg/digital-self',
-    live: false,
-  },
-  'ai-business': {
-    label: 'AI Business OS',
-    title: 'AI Business OS',
-    tagline: 'Das Betriebssystem für lokale Unternehmen – provider-agnostisch, EU-gehostet.',
-    icon: Boxes,
-    accent: 'amber',
-    does: [
-      'Ein Ort für Leads, Angebote und Kundenpflege',
-      'Môra vernetzt Dokumente und Signale statt sie zu stapeln',
-      'Läuft in der EU, ohne Vendor-Lock-in',
-    ],
-    article: '/de/einstieg/ai-local-business',
-    live: false,
-  },
-};
-
-const accentMap: Record<string, { text: string; border: string; bg: string; glow: string; chipBg: string }> = {
-  emerald: {
-    text: 'text-emerald-300',
-    border: 'border-emerald-400/30',
-    bg: 'from-emerald-500/12',
-    glow: 'bg-emerald-500/15',
-    chipBg: 'bg-emerald-400/10 text-emerald-200 border-emerald-400/20',
-  },
-  cyan: {
-    text: 'text-cyan-300',
-    border: 'border-cyan-400/30',
-    bg: 'from-cyan-500/12',
-    glow: 'bg-cyan-500/15',
-    chipBg: 'bg-cyan-400/10 text-cyan-200 border-cyan-400/20',
-  },
-  amber: {
-    text: 'text-amber-300',
-    border: 'border-amber-400/30',
-    bg: 'from-amber-500/12',
-    glow: 'bg-amber-500/15',
-    chipBg: 'bg-amber-400/10 text-amber-200 border-amber-400/20',
-  },
-};
-
 const flow = [
-  { icon: ScanLine, title: 'Check läuft', body: 'Passiv und ohne Login – nur öffentlich sichtbare Signale deiner Domain.' },
-  { icon: FileSearch, title: 'Befunde', body: 'Konkrete Risiken und Stärken, jeweils mit dem Angriffsweg dahinter.' },
-  { icon: LayoutDashboard, title: 'Arbeitsbereich', body: 'Aus den Befunden entsteht automatisch ein Preview-Workspace im OS.' },
-  { icon: KeyRound, title: 'Übernehmen', body: 'Gefällt es dir, wird aus dem Preview mit einem Login dein echter Account.' },
+  {
+    icon: ScanLine,
+    title: 'Security Check',
+    body: 'Passiv und ohne Login – nur öffentlich sichtbare Signale deiner Domain.',
+  },
+  {
+    icon: FileSearch,
+    title: 'Echte Befunde',
+    body: 'Konkrete Risiken und Stärken werden zu nachvollziehbaren Objekten statt zu einem bloßen Score.',
+  },
+  {
+    icon: LayoutDashboard,
+    title: 'Saimôr OS',
+    body: 'Der Report wird zum ersten Objekt in deinem Arbeitsraum und bleibt mit dem weiteren Kontext verbunden.',
+  },
+  {
+    icon: KeyRound,
+    title: 'Eigener Zugang',
+    body: 'Mit dem Magic Link übernimmst du deinen 30-Tage-Raum, ohne ein zweites Konto oder einen Produktwechsel.',
+  },
 ];
 
 export default function DemoContent() {
-  const params = useSearchParams();
-  const trackParam = params?.get('track');
-
-  const activeTrack = useMemo<Track>(() => {
-    if (trackParam === 'security' || trackParam === 'digital-self' || trackParam === 'ai-business') {
-      return trackParam;
-    }
-    return 'security';
-  }, [trackParam]);
-
-  const track = trackConfig[activeTrack];
-  const a = accentMap[track.accent];
-  const TrackIcon = track.icon;
-
   return (
-    <div className="relative mx-auto max-w-6xl px-6 py-24 space-y-16">
-      {/* Hero */}
+    <div className="relative mx-auto max-w-6xl space-y-16 px-6 py-24">
       <header className="space-y-6 text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.28em] text-emerald-200">
-          <Sparkles className="w-3.5 h-3.5" />
-          Saimôr OS · Öffentliche Demo
+          <Sparkles className="h-3.5 w-3.5" />
+          Saimôr OS · Demo
         </span>
-        <h1 className="text-5xl sm:text-6xl font-light leading-[1.05]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Ein eigener Raum
-          <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-cyan-300">
-            nur für diesen Besuch
-          </span>
+        <h1 className="text-5xl font-light leading-[1.05] sm:text-6xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Nicht mit einer leeren Promptbox anfangen.
         </h1>
         <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/65">
-          Die Demo erzeugt einen zufälligen, kurzlebigen Beispiel-Arbeitsbereich. Sie öffnet weder
-          Marius&apos; persönliches Desk noch Daten anderer Nutzer:innen.
+          Du kannst Saimôr auf zwei Arten ansehen: mit einem isolierten Beispielraum oder mit deinem eigenen Security Check. In beiden Fällen bleiben andere Nutzer- und private Betreiberdaten getrennt.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <DemoLaunchButton label="Isolierte OS-Demo starten" className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 disabled:opacity-60" />
+        <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
           <Link
             href="/de/einstieg/security-check"
-            className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-medium text-white/80 transition-colors hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40"
           >
+            <ShieldCheck className="h-4 w-4" />
             Eigene Domain prüfen
+            <ArrowRight className="h-4 w-4" />
           </Link>
+          <DemoLaunchButton
+            label="Isolierten Beispielraum öffnen"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-semibold text-white/80 transition-colors hover:bg-white/10 disabled:opacity-60"
+          />
         </div>
       </header>
 
       <section className="grid gap-4 rounded-[2rem] border border-cyan-300/15 bg-cyan-400/[0.045] p-6 sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-black/25 text-cyan-200"><LockKeyhole className="h-5 w-5" /></div>
-        <div><h2 className="font-semibold text-white/90">Was „isoliert“ hier bedeutet</h2><p className="mt-1 text-sm leading-6 text-white/55">Jeder Start erhält eine neue Demo-ID und einen eigenen Beispiel-Tenant. Es werden keine privaten Website-Sessions übernommen und keine persönlichen Desk-Daten geladen.</p></div>
-      </section>
-
-      {/* Track panel */}
-      <section className={`relative overflow-hidden rounded-[2.5rem] border ${a.border} bg-gradient-to-br ${a.bg} via-white/[0.02] to-transparent p-8 sm:p-12`}>
-        <div className={`absolute -top-24 -right-24 h-72 w-72 rounded-full blur-[110px] ${a.glow}`} />
-        <div className="relative space-y-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${a.border} bg-black/30 ${a.text}`}>
-                  <TrackIcon className="w-5 h-5" />
-                </div>
-                <p className={`text-xs uppercase tracking-[0.28em] font-bold ${a.text}`}>{track.label}</p>
-              </div>
-              <h2 className="text-4xl sm:text-5xl text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                {track.title}
-              </h2>
-              <p className="max-w-2xl text-lg leading-relaxed text-white/75">{track.tagline}</p>
-            </div>
-            <span
-              className={`shrink-0 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] ${
-                track.live ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-200' : 'border-white/10 bg-white/5 text-white/45'
-              }`}
-            >
-              {track.live ? 'Heute live' : 'Im Aufbau'}
-            </span>
-          </div>
-
-          <ul className="grid gap-4 sm:grid-cols-3">
-            {track.does.map((item) => (
-              <li key={item} className="rounded-2xl border border-white/10 bg-black/25 p-5 text-sm leading-relaxed text-white/70">
-                {item}
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex flex-wrap gap-4 pt-1">
-            <Link
-              href={track.live ? '/de/einstieg/security-check' : track.article}
-              className="inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3.5 font-bold text-black transition-colors hover:bg-emerald-200"
-            >
-              {track.live ? 'Check starten' : 'Mehr erfahren'}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href={track.article}
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 font-medium text-white/80 transition-colors hover:bg-white/10"
-            >
-              Konzept lesen
-            </Link>
-          </div>
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-black/25 text-cyan-200">
+          <LockKeyhole className="h-5 w-5" />
+        </div>
+        <div>
+          <h2 className="font-semibold text-white/90">Was „isoliert“ hier bedeutet</h2>
+          <p className="mt-1 text-sm leading-6 text-white/55">
+            Jeder Beispielstart erhält eine eigene Demo-ID und einen getrennten Beispiel-Tenant. Es werden keine privaten Betreiber-Sessions oder Daten anderer Nutzer geladen.
+          </p>
         </div>
       </section>
 
-      {/* Track switch */}
-      <section className="space-y-5">
-        <p className="text-center text-xs uppercase tracking-[0.3em] text-white/40">Standbein wählen</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {(Object.keys(trackConfig) as Track[]).map((key) => {
-            const cfg = trackConfig[key];
-            const ca = accentMap[cfg.accent];
-            const Icon = cfg.icon;
-            const isActive = key === activeTrack;
-            return (
-              <Link
-                key={key}
-                href={`/demo?track=${key}`}
-                className={`group flex items-center gap-4 rounded-2xl border p-5 transition-all ${
-                  isActive ? `${ca.border} bg-white/[0.05]` : 'border-white/10 bg-white/[0.02] hover:bg-white/[0.04]'
-                }`}
-              >
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl border ${ca.border} bg-black/30 ${ca.text}`}>
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="font-semibold text-white/90">{cfg.title}</p>
-                  <p className="truncate text-xs text-white/45">{cfg.live ? 'Heute live' : 'Im Aufbau'}</p>
-                </div>
-                <ArrowRight className="ml-auto w-4 h-4 text-white/30 group-hover:text-white/60" />
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Flow: from check to workspace */}
-      <section className="rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 space-y-8">
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl sm:text-4xl font-light text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Vom Check zum Arbeitsbereich
+      <section className="rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10">
+        <div className="space-y-2 text-center">
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-300/70">ENTRY / REAL CONTEXT</p>
+          <h2 className="text-3xl font-light text-white sm:text-4xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            Vom ersten Signal in denselben Arbeitsraum.
           </h2>
-          <p className="mx-auto max-w-xl text-white/55">Ein durchgehender Weg – ohne Bruch, ohne zweites Konto.</p>
+          <p className="mx-auto max-w-xl text-white/55">
+            Der Einstieg ist bereits Teil des Produkts. Kein Showcase davor und keine zweite App danach.
+          </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-4">
-          {flow.map((step, i) => {
+        <div className="mt-8 grid gap-4 md:grid-cols-4">
+          {flow.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div key={step.title} className="relative rounded-2xl border border-white/8 bg-black/25 p-6">
-                <span className="absolute right-5 top-5 font-mono text-xs text-white/25">0{i + 1}</span>
-                <div className="mb-4 text-emerald-300/80">
-                  <Icon className="w-6 h-6" />
-                </div>
+              <article key={step.title} className="relative rounded-2xl border border-white/8 bg-black/25 p-6">
+                <span className="absolute right-5 top-5 font-mono text-xs text-white/25">0{index + 1}</span>
+                <Icon className="mb-4 h-6 w-6 text-emerald-300/80" />
                 <h3 className="text-lg font-semibold text-white/90">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-white/55">{step.body}</p>
-              </div>
+              </article>
             );
           })}
         </div>
       </section>
 
-      {/* Close */}
-      <section className="rounded-[2rem] border border-emerald-400/15 bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-8 sm:p-10 text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-light text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Bereit für den ersten echten Blick?
+      <section className="rounded-[2rem] border border-emerald-400/15 bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-8 text-center sm:p-10">
+        <h2 className="text-3xl font-light text-white sm:text-4xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Lieber erst verstehen, ob es zu dir passt?
         </h2>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/50">
+          Neben der Produktarbeit bietet Saimôr auch Vorträge, Workshops und praktische KI-Schulungen an.
+        </p>
+        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Link
             href="/de/einstieg/security-check"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 font-bold text-white transition-all hover:shadow-lg hover:shadow-emerald-500/30"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-8 py-4 font-bold text-black transition-colors hover:bg-emerald-100"
           >
-            Security-Check starten
-            <ArrowRight className="w-5 h-5" />
+            Security Check starten
+            <ArrowRight className="h-4 w-4" />
           </Link>
           <a
             href="https://cal.com/saimor/30min"
@@ -284,7 +125,7 @@ export default function DemoContent() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10"
           >
-            <CalendarClock className="w-4 h-4" />
+            <CalendarClock className="h-4 w-4" />
             Gespräch buchen
           </a>
         </div>
