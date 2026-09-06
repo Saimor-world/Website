@@ -8,7 +8,7 @@ const COPY = {
     badge: 'MÔRA · PROAKTIVE ASSISTENZ',
     title: 'Sie wartet nicht nur auf Fragen.',
     lead:
-      'Môra ist die Assistenz im Saimôr OS. Sie hält offene Fäden und Zusammenhänge verfügbar, erkennt relevante Signale und bereitet nächste Schritte vor. Gespräch ist eine ihrer Fähigkeiten – nicht das Produktprinzip.',
+      'Môra ist die Assistenz im Saimôr OS. Sie hält offene Fäden und Zusammenhänge verfügbar, erkennt relevante Signale und bereitet nächste Schritte vor. Du kannst jederzeit mit ihr sprechen – ihre eigentliche Stärke ist, auch zwischen diesen Gesprächen den Überblick zu behalten.',
     statusTitle: 'Was heute schon stimmt',
     statusBody:
       'Kontext, Dokumente und Beziehungen werden in der jeweiligen Saimôr-Instanz gehalten. Für Sprach- und Denkaufgaben können aktuell externe Modellanbieter genutzt werden. Welche Verbindung aktiv ist, soll sichtbar und austauschbar bleiben. Vollständig lokale Inferenz ist Zielbild, keine gegenwärtige Pauschalbehauptung.',
@@ -18,16 +18,16 @@ const COPY = {
       ['Gedächtnis', 'Hält fest, was zusammengehört, damit Kontext nicht bei jedem Tool- oder Gesprächswechsel verschwindet.'],
       ['Aufmerksamkeit', 'Erkennt relevante Signale und entscheidet, was warten kann und was deine Aufmerksamkeit verdient.'],
       ['Vorbereitung', 'Verdichtet offene Arbeit und bereitet nachvollziehbare nächste Schritte vor, bevor du danach fragen musst.'],
-      ['Handlung', 'Kann Aktionen über Systemfähigkeiten und Agents anstoßen – mit sichtbaren Grenzen und Freigaben.'],
+      ['Handlung', 'Kann über Systemfunktionen und Automationen Arbeit anstoßen – mit sichtbaren Grenzen und Freigaben.'],
     ],
     note:
-      'Môra ist keine separate Chat-App. Sie ist die Assistenz-Persönlichkeit des Saimôr OS und kann sich über unterschiedliche Oberflächen und Kanäle bemerkbar machen.',
+      'Du begegnest Môra dort, wo sie gebraucht wird: im OS, in Hinweisen und Abläufen sowie über verbundene Kanäle.',
   },
   en: {
     badge: 'MÔRA · PROACTIVE ASSISTANCE',
     title: 'She does not just wait for questions.',
     lead:
-      'Môra is the assistant inside Saimôr OS. She keeps open threads and relationships available, notices relevant signals and prepares next steps. Conversation is one of her capabilities – not the product model.',
+      'Môra is the assistant inside Saimôr OS. She keeps open threads and relationships available, notices relevant signals and prepares next steps. You can talk to her at any time – her real strength is keeping track of what matters between those conversations too.',
     statusTitle: 'What is true today',
     statusBody:
       'Context, documents and relationships are held inside the relevant Saimôr instance. External model providers may currently be used for language and reasoning tasks. The active connection is intended to stay visible and replaceable. Fully local inference is a target, not a blanket claim about the current product.',
@@ -37,10 +37,10 @@ const COPY = {
       ['Memory', 'Keeps related information together so context does not disappear with every tool or conversation switch.'],
       ['Attention', 'Notices relevant signals and distinguishes what can wait from what deserves your attention.'],
       ['Preparation', 'Condenses open work and prepares traceable next steps before you have to ask for them.'],
-      ['Action', 'Can trigger work through system capabilities and agents within visible boundaries and approval rules.'],
+      ['Action', 'Can trigger work through system capabilities and automations within visible boundaries and approval rules.'],
     ],
     note:
-      'Môra is not a separate chat app. She is the assistant personality of Saimôr OS and can appear across different surfaces and channels.',
+      'Môra appears where she is useful: inside the OS, through notices and workflows, and across connected channels.',
   },
 } as const;
 
