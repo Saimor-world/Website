@@ -30,13 +30,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright for QA
-        run: |
-          npm install --no-save --package-lock=false playwright@1.55.0
-          npx playwright install --with-deps chromium
-
       - name: Build
         run: npm run build
+
+      - name: Install isolated Playwright for QA
+        run: |
+          mkdir -p /tmp/saimor-playwright
+          cd /tmp/saimor-playwright
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0
+          npx playwright install --with-deps chromium
 
       - name: Start app
         run: |
@@ -57,9 +60,11 @@ jobs:
       - name: Capture mobile surfaces
         run: |
           mkdir -p visual-qa
+          cd /tmp/saimor-playwright
           node <<'EOF'
           const { chromium } = require('playwright');
           const fs = require('fs');
+          const out = process.env.GITHUB_WORKSPACE + '/visual-qa';
 
           (async () => {
             const browser = await chromium.launch({ headless: true });
@@ -71,18 +76,17 @@ jobs:
               userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1'
             });
 
-            for (const route of [
+            for (const [name, path] of [
               ['de-home', '/de'],
               ['demo', '/demo'],
               ['mora', '/mora'],
             ]) {
               const page = await context.newPage();
-              const response = await page.goto(`http://127.0.0.1:3000${route[1]}`, { waitUntil: 'networkidle' });
-              if (!response || !response.ok()) throw new Error(`${route[1]} returned ${response && response.status()}`);
-              await page.screenshot({ path: `visual-qa/${route[0]}-viewport.png`, fullPage: false });
-              await page.screenshot({ path: `visual-qa/${route[0]}-full.png`, fullPage: true });
-              const text = await page.locator('body').innerText();
-              fs.writeFileSync(`visual-qa/${route[0]}.txt`, text);
+              const response = await page.goto(`http://127.0.0.1:3000${path}`, { waitUntil: 'networkidle' });
+              if (!response || !response.ok()) throw new Error(`${path} returned ${response && response.status()}`);
+              await page.screenshot({ path: `${out}/${name}-viewport.png`, fullPage: false });
+              await page.screenshot({ path: `${out}/${name}-full.png`, fullPage: true });
+              fs.writeFileSync(`${out}/${name}.txt`, await page.locator('body').innerText());
               await page.close();
             }
 
