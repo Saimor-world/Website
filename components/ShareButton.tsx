@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Share2, Link2, Check, Twitter, Linkedin, Mail, Copy } from 'lucide-react';
+import { Share2, Link2, Check, Twitter, Linkedin, Mail } from 'lucide-react';
 
 interface ShareButtonProps {
   title?: string;
@@ -10,10 +10,10 @@ interface ShareButtonProps {
   url?: string;
 }
 
-export default function ShareButton({ 
-  title = 'Saimôr – Souveräne KI-Systeme und digitale Räume',
-  description = 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
-  url 
+export default function ShareButton({
+  title = 'Saimôr – OS, Môra und souveräne KI-Systeme',
+  description = 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält.',
+  url,
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -56,8 +56,8 @@ export default function ShareButton({
           text: description,
           url: currentUrl,
         });
-      } catch (err) {
-        // User cancelled or error
+      } catch {
+        // Native share was cancelled or unavailable for this attempt.
       }
     } else {
       setIsOpen(true);
@@ -78,7 +78,7 @@ export default function ShareButton({
         window.open(
           `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
           '_blank',
-          'width=600,height=400'
+          'width=600,height=400',
         );
       },
     },
@@ -89,7 +89,7 @@ export default function ShareButton({
         window.open(
           `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(currentUrl)}`,
           '_blank',
-          'width=600,height=400'
+          'width=600,height=400',
         );
       },
     },
@@ -141,8 +141,8 @@ export default function ShareButton({
                     }
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    link.highlight 
-                      ? 'bg-emerald-500/20 text-emerald-300' 
+                    link.highlight
+                      ? 'bg-emerald-500/20 text-emerald-300'
                       : 'hover:bg-white/5 text-white/70 hover:text-white'
                   } ${i !== shareLinks.length - 1 ? 'border-b border-white/5' : ''}`}
                   whileHover={{ x: 2 }}
@@ -159,7 +159,6 @@ export default function ShareButton({
   );
 }
 
-// Floating share button for pages
 export function FloatingShareButton(props: ShareButtonProps) {
   const [scrolled, setScrolled] = useState(false);
 

@@ -1,9 +1,9 @@
 // app/layout.tsx
-import type { Metadata } from 'next'
-import './globals.css'
-import ClientProviders from '../components/ClientProviders'
-import AuthProvider from '../components/AuthProvider'
-import LayoutWrapper from '../components/LayoutWrapper'
+import type { Metadata } from 'next';
+import './globals.css';
+import ClientProviders from '../components/ClientProviders';
+import AuthProvider from '../components/AuthProvider';
+import LayoutWrapper from '../components/LayoutWrapper';
 import CookieBanner from '@/components/CookieBanner';
 import ScrollProgress from '@/components/ScrollProgress';
 import PWARegistration from '@/components/PWARegistration';
@@ -11,79 +11,74 @@ import DesktopDiscoveries from '@/components/DesktopDiscoveries';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
+const SYSTEM_TITLE = 'Saimôr – OS, Môra und souveräne KI-Systeme';
+const SYSTEM_DESCRIPTION = 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält. Mit Saimôr OS, Môra, Desk sowie Vorträgen und Schulungen.';
+
 export const metadata: Metadata = {
-    metadataBase: new URL('https://saimor.world'),
-    title: {
-      default: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
-      template: '%s | Saimôr'
-    },
-    description:
-      'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte. Souverän, nachvollziehbar und im Aufbau.',
-    keywords: [
-      'Saimôr',
-      'Môra OS',
-      'Semantisches Betriebssystem',
-      'Organisationsentwicklung',
-      'DSGVO-konform',
-      'EU-basiert',
-      'Digitale Transformation',
-      'Beratung',
-      'Dashboard',
-      'Workshop',
-      'Klarheit',
-      'Wandel'
+  metadataBase: new URL('https://saimor.world'),
+  title: {
+    default: SYSTEM_TITLE,
+    template: '%s | Saimôr',
+  },
+  description: SYSTEM_DESCRIPTION,
+  keywords: [
+    'Saimôr',
+    'Saimôr OS',
+    'Môra',
+    'KI Arbeitsraum',
+    'Kontextsystem',
+    'Souveräne KI',
+    'AI Workspace',
+    'KI Schulung',
+    'KI Workshop',
+    'Security Check',
+  ],
+  authors: [{ name: 'Saimôr' }],
+  creator: 'Saimôr',
+  publisher: 'Saimôr',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: SYSTEM_TITLE,
+    description: SYSTEM_DESCRIPTION,
+    url: '/de',
+    siteName: 'Saimôr',
+    images: [
+      {
+        url: '/og',
+        width: 1200,
+        height: 630,
+        alt: SYSTEM_TITLE,
+      },
     ],
-    authors: [{ name: 'Saimôr' }],
-    creator: 'Saimôr',
-    publisher: 'Saimôr',
-    formatDetection: {
-      email: false,
-      address: false,
-      telephone: false,
-    },
-    // Icons are now handled by app/icon.png and app/apple-icon.png (Next.js convention)
-    openGraph: {
-      title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
-      description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
-      url: '/de',
-      siteName: 'Saimôr',
-      images: [
-        {
-          url: '/og',
-          width: 1200,
-          height: 630,
-          alt: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
-        },
-      ],
-      locale: 'de_DE',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Saimôr – Souveräne KI-Systeme und digitale Räume',
-      description: 'Das unabhängige Produktstudio von Marius Fahrländer: Saimôr OS, Môra, YORI und ausgewählte Webprojekte.',
-      images: ['/og'],
-      creator: '@saimorworld',
-    },
-    robots: {
+    locale: 'de_DE',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SYSTEM_TITLE,
+    description: SYSTEM_DESCRIPTION,
+    images: ['/og'],
+    creator: '@saimorworld',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
       index: true,
       follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
-    alternates: {
-      canonical: '/de',
-    },
-    verification: {
-      // Google Search Console (wenn vorhanden)
-      // google: 'verification-code',
-    },
-}
+  },
+  alternates: {
+    canonical: '/de',
+  },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -92,75 +87,61 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta charSet="utf-8" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#10B981" />
+        <meta name="theme-color" content="#050706" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Structured Data - Organization */}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Saimôr",
-              "url": "https://saimor.world",
-              "logo": "https://saimor.world/icon.png",
-              "description": "Unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume, Vorträge und Schulungen.",
-              "foundingDate": "2024",
-              "sameAs": [],
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "email": "contact@saimor.world",
-                "contactType": "customer service",
-                "availableLanguage": ["German", "English"]
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Saimôr',
+              url: 'https://saimor.world',
+              logo: 'https://saimor.world/icon.png',
+              description: 'Unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume, Vorträge und Schulungen.',
+              foundingDate: '2024',
+              contactPoint: {
+                '@type': 'ContactPoint',
+                email: 'contact@saimor.world',
+                contactType: 'customer service',
+                availableLanguage: ['German', 'English'],
               },
-              "areaServed": {
-                "@type": "GeoCircle",
-                "geoMidpoint": {
-                  "@type": "GeoCoordinates",
-                  "latitude": "48.137154",
-                  "longitude": "11.576124"
-                },
-                "geoRadius": "2000 km"
-              }
-            })
+            }),
           }}
         />
-        
-        {/* Structured Data - Software Application (Môra) */}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              "name": "Môra",
-              "applicationCategory": "BusinessApplication",
-              "operatingSystem": "Web",
-              "description": "Nachvollziehbare Kontext- und Agentenschicht für die Saimôr-Produkte.",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "EUR",
-                "availability": "https://schema.org/ComingSoon"
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Môra',
+              applicationCategory: 'BusinessApplication',
+              operatingSystem: 'Web',
+              description: 'Kontext- und Agentenschicht innerhalb der Saimôr-Systeme.',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'EUR',
+                availability: 'https://schema.org/ComingSoon',
               },
-              "featureList": [
-                "Semantic Analysis",
-                "Real-time Pattern Recognition",
-                "DSGVO-compliant",
-                "EU-hosted",
-                "Local-first Architecture"
+              featureList: [
+                'Context-aware workspace',
+                'Traceable integrations',
+                'Security Check onboarding',
               ],
-              "author": {
-                "@type": "Organization",
-                "name": "Saimôr"
-              }
-            })
+              author: {
+                '@type': 'Organization',
+                name: 'Saimôr',
+              },
+            }),
           }}
         />
       </head>
-      <body className="bg-[#081410] text-white antialiased" suppressHydrationWarning>
+      <body className="bg-[#050706] text-white antialiased" suppressHydrationWarning>
         <ErrorBoundary>
           <SkipLink />
           <AuthProvider>
@@ -178,5 +159,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </ErrorBoundary>
       </body>
     </html>
-  )
+  );
 }
