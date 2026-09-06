@@ -140,5 +140,5 @@ export async function xrplRpc<T>(method: string, params: Record<string, unknown>
 export function xrpToDrops(amountXrp: string) {
   const [whole = '0', fraction = ''] = amountXrp.split('.');
   const normalizedFraction = `${fraction}000000`.slice(0, 6);
-  return BigInt(whole || '0') * 1_000_000n + BigInt(normalizedFraction || '0');
+  return BigInt(whole || '0') * BigInt(1_000_000) + BigInt(normalizedFraction || '0');
 }
