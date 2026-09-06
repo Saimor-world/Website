@@ -1,15 +1,15 @@
 'use client';
+
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import ShareButton from '@/components/ShareButton';
 
+type Locale = 'de' | 'en';
 type SystemStatus = 'checking' | 'available' | 'limited' | 'unknown';
 
-export default function Footer({ locale }: { locale: 'de' | 'en' }) {
+export default function Footer({ locale }: { locale: Locale }) {
   const [year, setYear] = useState('2026');
   const [systemStatus, setSystemStatus] = useState<SystemStatus>('checking');
-  const router = useRouter();
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());
@@ -21,7 +21,7 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
 
     fetch('/api/health', { cache: 'no-store', signal: controller.signal })
       .then(async (response) => {
-        const payload = await response.json().catch(() => null) as { ok?: boolean } | null;
+        const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
         if (!active) return;
         setSystemStatus(response.ok && payload?.ok === true ? 'available' : 'limited');
       })
@@ -36,139 +36,111 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     };
   }, []);
 
-  const footerText = {
-    de: {
-      quickLinks: 'Navigation',
-      services: 'Start',
-      demo: 'Demo',
-      contact: 'Kontakt',
-      legal: 'Rechtliches',
-      trust: 'Sicherheit',
-      imprint: 'Impressum',
-      privacy: 'Datenschutz',
-      terms: 'AGB',
-      refund: 'Widerruf',
-      tagline: 'SAIMÔR — Souveränität durch Technologie.',
-      copyright: 'Copyright'
-    },
-    en: {
-      quickLinks: 'Navigation',
-      services: 'Home',
-      demo: 'Demo',
-      contact: 'Contact',
-      legal: 'Legal',
-      trust: 'Security',
-      imprint: 'Imprint',
-      privacy: 'Privacy',
-      terms: 'Terms',
-      refund: 'Refund',
-      tagline: 'SAIMÔR — Sovereignty through technology.',
-      copyright: 'Copyright'
-    }
-  }[locale];
+  const c = locale === 'de'
+    ? {
+        system: 'System', studio: 'Studio', entry: 'Entry', access: 'Zugang', legal: 'Rechtliches',
+        trust: 'Sicherheit', imprint: 'Impressum', privacy: 'Datenschutz', terms: 'AGB', refund: 'Widerruf',
+        tagline: 'Arbeitsraum, Kontext und KI in einem System.',
+        status: {
+          checking: 'Status wird geprüft',
+          available: 'System verfügbar',
+          limited: 'System eingeschränkt',
+          unknown: 'Status unbekannt',
+        },
+      }
+    : {
+        system: 'System', studio: 'Studio', entry: 'Entry', access: 'Access', legal: 'Legal',
+        trust: 'Security', imprint: 'Imprint', privacy: 'Privacy', terms: 'Terms', refund: 'Refund',
+        tagline: 'Workspace, context and AI in one system.',
+        status: {
+          checking: 'Checking system status',
+          available: 'System available',
+          limited: 'System limited',
+          unknown: 'Status unknown',
+        },
+      };
 
-  const systemStatusText = {
-    de: {
-      checking: 'Status wird geprüft',
-      available: 'System verfügbar',
-      limited: 'System eingeschränkt',
-      unknown: 'Status unbekannt',
-    },
-    en: {
-      checking: 'Checking system status',
-      available: 'System available',
-      limited: 'System limited',
-      unknown: 'Status unknown',
-    },
-  }[locale][systemStatus];
-
-  const handleScrollToContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const kontaktSection = document.getElementById('kontakt');
-    if (kontaktSection) {
-      kontaktSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      router.push(`/${locale}#kontakt`);
-    }
+  const homeHref = `/${locale}`;
+  const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
+  const moraHref = locale === 'de' ? '/mora' : '/en/mora';
+  const legal = {
+    trust: locale === 'de' ? '/de/trust' : '/en/trust',
+    imprint: locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint',
+    privacy: locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy',
+    terms: locale === 'de' ? '/de/rechtliches/agb' : '/en/legal/terms',
+    refund: locale === 'de' ? '/de/rechtliches/widerruf' : '/en/legal/refund',
   };
 
-  return (
-    <footer className="relative py-14 border-t border-white/10 bg-[#081410] overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full opacity-40" />
-      </div>
+  const dotClass = systemStatus === 'available'
+    ? 'bg-[#7fd4c1] shadow-[0_0_12px_rgba(127,212,193,.7)]'
+    : systemStatus === 'limited'
+      ? 'bg-amber-300'
+      : 'bg-white/30';
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-          <div className="md:col-span-2 space-y-5">
-            <a href={`/${locale}`} className="flex items-center gap-4 group">
-              <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
+  return (
+    <footer className="relative border-t border-white/[0.08] bg-[#050706] px-5 py-10 text-white sm:px-8 lg:px-10">
+      <div className="pointer-events-none absolute inset-0 opacity-[.16] [background-image:linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] [background-size:44px_44px]" />
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
+          <div>
+            <a href={homeHref} className="inline-flex items-center gap-3">
+              <span className="relative grid h-11 w-11 place-items-center rounded-full border border-[#d6a848]/22 bg-black/25">
                 <Image
-                  src="/saimor-logo-256.webp"
+                  src="/saimor-seal-256.webp"
                   alt="Saimôr"
-                  width={40}
-                  height={40}
-                  className="object-contain"
+                  width={36}
+                  height={36}
+                  className="object-contain mix-blend-screen opacity-95"
                 />
-              </div>
-              <span className="text-2xl font-light tracking-tight text-white uppercase group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Saimôr</span>
+              </span>
+              <span>
+                <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
+                <span className="mt-1.5 block font-mono text-[8px] tracking-[.24em] text-white/24">SYSTEM / WORLD</span>
+              </span>
             </a>
-            <p className="text-white/40 max-w-sm text-base leading-relaxed italic">
-              {footerText.tagline}
-            </p>
+            <p className="mt-5 max-w-sm text-sm leading-6 text-white/34">{c.tagline}</p>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.quickLinks}</h3>
-            <div className="flex flex-col gap-4">
-              <a href={`/${locale}`} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.services}</a>
-              <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
-              <a href={locale === 'de' ? '/yori' : '/en/yori'} className="text-white/50 hover:text-[var(--yori-turquoise)] transition-colors cursor-pointer">YORI</a>
-              <a href="/demo" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.demo}</a>
-              <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-[#d6a848]/52">System</div>
+            <div className="mt-4 grid gap-3 text-sm text-white/42">
+              <a className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</a>
+              <a className="transition hover:text-white/82" href={moraHref}>Môra</a>
+              <a className="transition hover:text-white/82" href={`${homeHref}#studio`}>{c.studio}</a>
+              <a className="transition hover:text-white/82" href={securityHref}>{c.entry}</a>
+              <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">{footerText.legal}</h3>
-            <div className="flex flex-col gap-4">
-              <a href={locale === 'de' ? '/de/trust' : '/en/trust'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.trust}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/impressum' : '/en/legal/imprint'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.imprint}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/datenschutz' : '/en/legal/privacy'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.privacy}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/agb' : '/en/legal/terms'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.terms}</a>
-              <a href={locale === 'de' ? '/de/rechtliches/widerruf' : '/en/legal/refund'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.refund}</a>
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-white/22">{c.legal}</div>
+            <div className="mt-4 grid gap-3 text-sm text-white/34">
+              <a className="transition hover:text-white/72" href={legal.trust}>{c.trust}</a>
+              <a className="transition hover:text-white/72" href={legal.imprint}>{c.imprint}</a>
+              <a className="transition hover:text-white/72" href={legal.privacy}>{c.privacy}</a>
+              <a className="transition hover:text-white/72" href={legal.terms}>{c.terms}</a>
+              <a className="transition hover:text-white/72" href={legal.refund}>{c.refund}</a>
             </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">© {year} Saimôr</span>
-            <span className="w-1 h-1 rounded-full bg-white/10" />
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/10">{footerText.copyright}</span>
+        <div className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.2em] text-white/18">
+            <span>© {year} SAIMÔR</span>
+            <span>EU / REMOTE</span>
           </div>
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-3">
             <ShareButton />
             <div
               role="status"
               aria-live="polite"
               data-system-status={systemStatus}
-              className={`flex items-center gap-3 px-4 py-1.5 rounded-full border ${
-                systemStatus === 'available'
-                  ? 'bg-emerald-500/5 border-emerald-500/10'
-                  : systemStatus === 'limited'
-                    ? 'bg-amber-500/5 border-amber-500/15'
-                    : 'bg-white/5 border-white/10'
-              }`}
+              className="flex items-center gap-2 border border-white/[0.08] px-3 py-2"
             >
-              <div className={`w-1.5 h-1.5 rounded-full ${
-                systemStatus === 'available' ? 'bg-emerald-500' : systemStatus === 'limited' ? 'bg-amber-400' : 'bg-white/30'
-              } ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
-              <span className={`text-[9px] uppercase tracking-[0.2em] font-black ${
-                systemStatus === 'available' ? 'text-emerald-500/60' : systemStatus === 'limited' ? 'text-amber-300/70' : 'text-white/35'
-              }`}>
-                {systemStatusText}
-              </span>
+              <span className={`h-1.5 w-1.5 rounded-full ${dotClass} ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
+              <span className="font-mono text-[8px] uppercase tracking-[.16em] text-white/28">{c.status[systemStatus]}</span>
             </div>
           </div>
         </div>
