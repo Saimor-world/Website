@@ -13,6 +13,9 @@ const Body = z.object({
   locale: z.enum(['de', 'en']).default('de'),
 });
 
+const DEMO_DAYS = 30;
+const DEMO_AUDIT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
 function createTransporter() {
   if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
     return null;
@@ -44,6 +47,44 @@ function appBaseUrl(req: NextRequest) {
   );
 }
 
+async function ensureDemoUserFromRecentSecurityCheck(email: string) {
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (existingUser) return existingUser;
+
+  const recentAudit = await prisma.securityAudit.findFirst({
+    where: {
+      email,
+      createdAt: { gte: new Date(Date.now() - DEMO_AUDIT_MAX_AGE_MS) },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  // Keep the endpoint enumeration-safe: unknown emails without a fresh
+  // Security Check still receive the same neutral accepted response.
+  if (!recentAudit) return null;
+
+  const trialStartedAt = new Date();
+  const trialEndsAt = new Date(trialStartedAt.getTime() + DEMO_DAYS * 24 * 60 * 60 * 1000);
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      name: recentAudit.name || email.split('@')[0],
+      role: 'trial',
+      trialStartedAt,
+      trialEndsAt,
+      trialSource: 'security-check',
+    },
+  });
+
+  await prisma.securityAudit.updateMany({
+    where: { email, userId: null },
+    data: { userId: user.id },
+  });
+
+  return user;
+}
+
 export async function POST(req: NextRequest) {
   try {
     magicLinkPreflight();
@@ -62,13 +103,8 @@ export async function POST(req: NextRequest) {
     const email = data.email.toLowerCase().trim();
     const callbackUrl = safeInternalPath(data.callbackUrl, '/account/bridge');
 
-    // Login is invitation-only for now. Return the same neutral response for
-    // unknown addresses so this endpoint cannot be used to enumerate users.
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
-    });
-    if (!existingUser) {
+    const user = await ensureDemoUserFromRecentSecurityCheck(email);
+    if (!user) {
       return NextResponse.json({ success: true, accepted: true });
     }
 
@@ -95,19 +131,27 @@ export async function POST(req: NextRequest) {
     const transporter = createTransporter();
     if (!transporter) {
       if (isDev) {
-        return NextResponse.json({ success: true, debugUrl: verifyUrl, mode: 'dev-link' });
+        return NextResponse.json({
+          success: true,
+          debugUrl: verifyUrl,
+          mode: 'dev-link',
+          trialEndsAt: user.trialEndsAt?.toISOString() || null,
+        });
       }
       return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
     }
 
-    const subject =
-      data.locale === 'de'
-        ? 'Dein Saimor Magic Link'
-        : 'Your Saimor Magic Link';
-    const body =
-      data.locale === 'de'
-        ? `Ein Klick zum Login (gueltig fuer 15 Minuten):\n\n${verifyUrl}`
-        : `One-click login (valid for 15 minutes):\n\n${verifyUrl}`;
+    const trialDate = user.trialEndsAt
+      ? new Intl.DateTimeFormat(data.locale === 'de' ? 'de-DE' : 'en-GB', { dateStyle: 'long' }).format(user.trialEndsAt)
+      : null;
+
+    const subject = data.locale === 'de'
+      ? 'Dein Saimôr Demo-Zugang ist bereit'
+      : 'Your Saimôr demo access is ready';
+
+    const body = data.locale === 'de'
+      ? `Dein Security Check ist abgeschlossen.\n\nWir haben deinen persönlichen Saimôr Demo-Account vorbereitet${trialDate ? ` — freigeschaltet bis ${trialDate}` : ''}.\n\nMit einem Klick meldest du dich an und übernimmst deinen Report in den Workspace:\n\n${verifyUrl}\n\nDer Login-Link ist 15 Minuten gültig. Dein Demo-Zeitraum beträgt 30 Tage.\n\nSaimôr`
+      : `Your Security Check is complete.\n\nWe prepared your personal Saimôr demo account${trialDate ? ` — active until ${trialDate}` : ''}.\n\nUse this one-click link to sign in and claim your report inside the workspace:\n\n${verifyUrl}\n\nThe sign-in link is valid for 15 minutes. Your demo period lasts 30 days.\n\nSaimôr`;
 
     try {
       await transporter.sendMail({
@@ -124,7 +168,11 @@ export async function POST(req: NextRequest) {
       throw mailError;
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      trial: user.role === 'trial',
+      trialEndsAt: user.trialEndsAt?.toISOString() || null,
+    });
   } catch (error) {
     console.error('[Magic Link API Error]', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
