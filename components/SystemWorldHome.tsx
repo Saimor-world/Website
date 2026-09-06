@@ -71,7 +71,7 @@ const COPY = {
     studioEyebrow: 'SAIMÔR · STUDIO',
     studioTitle: 'Produkte bauen. KI verständlich machen.',
     studioText:
-      'Saimôr ist mein unabhängiges Produktstudio. Ich komme aus IT-Systemmanagement und technischem Vertrieb, entwickle die Systeme selbst und biete daneben Vorträge, Workshops und Schulungen zu praktischer KI an.',
+      'Saimôr ist unser unabhängiges Produktstudio. Wir verbinden Erfahrung aus IT-Systemmanagement und technischem Vertrieb mit eigener Produktentwicklung und bieten daneben Vorträge, Workshops und Schulungen zu praktischer KI an.',
     offers: [
       ['Vorträge', 'KI verständlich einordnen – ohne Show und Buzzword-Nebel.'],
       ['Schulungen & Workshops', 'Praxisnah für Teams, die KI sinnvoll in ihre Arbeit bringen wollen.'],
@@ -139,7 +139,7 @@ const COPY = {
     studioEyebrow: 'SAIMÔR · STUDIO',
     studioTitle: 'Build products. Make AI understandable.',
     studioText:
-      'Saimôr is my independent product studio. My background is in IT systems management and technical sales; I build the systems myself and also offer talks, workshops and practical AI training.',
+      'Saimôr is our independent product studio. We combine experience in IT systems management and technical sales with hands-on product development, and we also offer talks, workshops and practical AI training.',
     offers: [
       ['Talks', 'Putting AI into context without hype or buzzword fog.'],
       ['Training & workshops', 'Practical sessions for teams that want to use AI meaningfully.'],
