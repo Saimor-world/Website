@@ -11,8 +11,8 @@ import DesktopDiscoveries from '@/components/DesktopDiscoveries';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
-const SYSTEM_TITLE = 'Saimôr – OS, Môra und souveräne KI-Systeme';
-const SYSTEM_DESCRIPTION = 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält. Mit Saimôr OS, Môra, Desk sowie Vorträgen und Schulungen.';
+const SYSTEM_TITLE = 'Saimôr – OS mit proaktiver KI-Assistenz';
+const SYSTEM_DESCRIPTION = 'Saimôr OS verbindet Arbeit, Dateien, Integrationen und KI in einem gemeinsamen Kontext. Môra ist die proaktive Assistenz im System.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     'Saimôr OS',
     'Môra',
     'KI Arbeitsraum',
+    'proaktive KI Assistenz',
     'Kontextsystem',
     'Souveräne KI',
     'AI Workspace',
@@ -118,10 +119,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
-              name: 'Môra',
+              name: 'Saimôr OS',
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'Web',
-              description: 'Kontext- und Agentenschicht innerhalb der Saimôr-Systeme.',
+              description: 'Digitaler Arbeitsraum mit gemeinsamem Kontext, proaktiver Môra-Assistenz, Integrationen und nachvollziehbarer Ausführung.',
               offers: {
                 '@type': 'Offer',
                 price: '0',
@@ -129,8 +130,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 availability: 'https://schema.org/ComingSoon',
               },
               featureList: [
-                'Context-aware workspace',
-                'Traceable integrations',
+                'Shared work context',
+                'Proactive Môra assistance',
+                'Traceable integrations and agents',
                 'Security Check onboarding',
               ],
               author: {
