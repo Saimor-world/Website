@@ -2,19 +2,28 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 
+const title = 'Saimôr – OS with proactive AI assistance';
+const description = 'Saimôr OS connects work, files, integrations and AI in one shared context, with Môra as a proactive assistant plus talks and training.';
+
 export const metadata: Metadata = {
-  title: 'Saimôr – OS, Môra and sovereign AI systems',
-  description: 'Saimôr connects digital workspace, data and AI into a system that keeps context. With Saimôr OS, Môra, Desk, talks and training.',
+  title,
+  description,
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
-    title: 'Saimôr – OS, Môra and sovereign AI systems',
-    description: 'Workspace, data and AI in one system that keeps context. Saimôr OS, Môra, Desk, talks and training.',
+    title,
+    description,
     url: 'https://saimor.world/en',
     siteName: 'Saimôr',
     images: ['/og'],
     locale: 'en-US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/og'],
   },
   alternates: { canonical: '/en' },
 };
@@ -25,5 +34,5 @@ export const viewport: Viewport = {
 };
 
 export default function RouteLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return <div className="min-h-screen font-sans">{children}</div>;
+  return <div lang="en" className="min-h-screen font-sans">{children}</div>;
 }
