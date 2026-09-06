@@ -132,7 +132,7 @@ export default function Footer({ locale }: { locale: Locale }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <ShareButton />
+            <ShareButton locale={locale} />
             <div
               role="status"
               aria-live="polite"
