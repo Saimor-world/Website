@@ -30,6 +30,10 @@ async function findExistingUserByEmail(emailInput: string) {
   return prismaClient.user.findUnique({ where: { email } });
 }
 
+function trialExpired(user: { role?: string | null; trialEndsAt?: Date | null }, now = new Date()) {
+  return user.role === 'trial' && !!user.trialEndsAt && user.trialEndsAt <= now;
+}
+
 const providers: any[] = [
   CredentialsProvider({
     id: 'magic-token',
@@ -55,19 +59,20 @@ const providers: any[] = [
       if (magicToken.email.toLowerCase() !== email) return null;
       if (magicToken.expiresAt <= now) return null;
 
+      const user = await findExistingUserByEmail(email);
+      if (!user || trialExpired(user, now)) return null;
+
       await prismaClient.magicLoginToken.update({
         where: { id: magicToken.id },
         data: { usedAt: now },
       });
-
-      const user = await findExistingUserByEmail(email);
-      if (!user) return null;
 
       return {
         id: user.id,
         email: user.email,
         name: user.name,
         role: user.role,
+        trialEndsAt: user.trialEndsAt?.toISOString() || null,
       };
     },
   }),
@@ -82,13 +87,12 @@ const providers: any[] = [
       if (!credentials?.email || !credentials?.password) return null;
 
       const email = credentials.email.toLowerCase();
-      
+
       try {
         const ownerEmails = parseEmailList(process.env.OWNER_EMAILS);
         const ownerPassword = process.env.OWNER_PASSWORD;
         const ownerAllowed = ownerEmails.length === 0 || ownerEmails.includes(email);
 
-        // Allow explicit owner fallback regardless of stored DB password state.
         if (ownerPassword && credentials.password === ownerPassword && ownerAllowed) {
           const ownerUser = await prismaClient.user.upsert({
             where: { email },
@@ -107,21 +111,15 @@ const providers: any[] = [
           };
         }
 
-        // Import prisma dynamically inside the function to ensure it's loaded
         const { prisma } = await import('./prisma');
-        
+
         if (!prisma || !prisma.user) {
           console.error('Prisma user model is not available');
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
-
-        if (!user || !user.password) {
-          return null;
-        }
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user || !user.password || trialExpired(user)) return null;
 
         const isValid = verifyPassword(credentials.password, user.password);
         if (!isValid) return null;
@@ -131,6 +129,7 @@ const providers: any[] = [
           email: user.email,
           name: user.name,
           role: user.role,
+          trialEndsAt: user.trialEndsAt?.toISOString() || null,
         };
       } catch (err) {
         console.error('Authorize error:', err);
@@ -144,11 +143,10 @@ export const authOptions: AuthOptions = {
   providers,
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user, account }: { token: JWT; user?: any; account?: any }) {
-      // Assign role on sign-in (and keep it stable afterwards).
       if (user && account) {
         const email = (user.email ?? '').toString().trim().toLowerCase();
         const ownerEmails = parseEmailList(process.env.OWNER_EMAILS);
@@ -159,14 +157,19 @@ export const authOptions: AuthOptions = {
           (email && ownerEmails.includes(email) ? 'owner' : undefined) ||
           (email && proEmails.includes(email) ? 'pro' : undefined) ||
           'free';
+
+        (token as any).trialEndsAt = user.trialEndsAt || null;
       }
       return token;
     },
     async session({ session, token }: { session: any; token: JWT }) {
-      // Add role to session
       if (token?.role) {
         session.user = session.user || {};
         session.user.role = token.role;
+        session.user.trialEndsAt = (token as any).trialEndsAt || null;
+        session.user.trialActive = token.role === 'trial'
+          ? !!(token as any).trialEndsAt && new Date((token as any).trialEndsAt) > new Date()
+          : false;
       }
       return session;
     },
