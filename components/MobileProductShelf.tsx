@@ -50,18 +50,18 @@ export default function MobileProductShelf({ locale }: Props) {
   const copy = COPY[locale];
 
   return (
-    <section className="border-t border-white/8 bg-[#080f10] px-5 py-14 text-white md:hidden">
-      <div className="mx-auto max-w-xl">
+    <section className="border-t border-white/8 bg-[#080f10] px-5 py-14 text-white md:px-6 md:py-20">
+      <div className="mx-auto max-w-5xl">
         <p className="font-mono text-[9px] font-bold tracking-[.24em] text-[#D6A848]">{copy.eyebrow}</p>
-        <h2 className="mt-4 font-serif text-3xl leading-tight text-white/90">{copy.title}</h2>
-        <div className="mt-7 grid gap-3">
+        <h2 className="mt-4 max-w-3xl font-serif text-3xl leading-tight text-white/90 md:text-4xl">{copy.title}</h2>
+        <div className="mt-7 grid gap-3 md:grid-cols-2">
           {copy.products.map((product) => {
             const Icon = product.icon;
             return (
               <Link
                 key={product.name}
                 href={product.href}
-                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-5 active:bg-white/[0.07]"
+                className="group rounded-2xl border border-white/10 bg-white/[0.035] p-5 transition hover:border-white/15 hover:bg-white/[0.055] active:bg-white/[0.07] md:p-6"
               >
                 <div className="flex items-start gap-4">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#D6A848]/10 text-[#E7C77E]">
@@ -74,7 +74,7 @@ export default function MobileProductShelf({ locale }: Props) {
                     </span>
                     <span className="mt-2 block text-sm leading-6 text-white/55">{product.line}</span>
                   </span>
-                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-white/30 transition-transform group-active:translate-x-1" />
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-white/30 transition-transform group-hover:translate-x-1 group-active:translate-x-1" />
                 </div>
               </Link>
             );

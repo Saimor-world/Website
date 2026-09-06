@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import NewsletterSignup from './NewsletterSignup';
 import ShareButton from '@/components/ShareButton';
 
 type SystemStatus = 'checking' | 'available' | 'limited' | 'unknown';
@@ -40,10 +39,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
   const footerText = {
     de: {
       quickLinks: 'Navigation',
-      services: 'Leistungen',
+      services: 'Start',
       demo: 'Demo',
-      wall: 'The Wall',
-      earth: 'Earth',
       contact: 'Kontakt',
       legal: 'Rechtliches',
       trust: 'Sicherheit',
@@ -56,10 +53,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
     },
     en: {
       quickLinks: 'Navigation',
-      services: 'Services',
+      services: 'Home',
       demo: 'Demo',
-      wall: 'The Wall',
-      earth: 'Earth',
       contact: 'Contact',
       legal: 'Legal',
       trust: 'Security',
@@ -74,9 +69,9 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
 
   const systemStatusText = {
     de: {
-      checking: 'Status wird gepr\u00fcft',
-      available: 'System verf\u00fcgbar',
-      limited: 'System eingeschr\u00e4nkt',
+      checking: 'Status wird geprüft',
+      available: 'System verfügbar',
+      limited: 'System eingeschränkt',
       unknown: 'Status unbekannt',
     },
     en: {
@@ -105,11 +100,10 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-
           <div className="md:col-span-2 space-y-5">
             <a href={`/${locale}`} className="flex items-center gap-4 group">
               <div className="w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center overflow-hidden group-hover:shadow-emerald-500/20 transition-shadow">
-                <Image 
+                <Image
                   src="/saimor-logo-256.webp"
                   alt="Saimôr"
                   width={40}
@@ -131,14 +125,8 @@ export default function Footer({ locale }: { locale: 'de' | 'en' }) {
               <a href={locale === 'de' ? '/mora' : '/en/mora'} className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">Môra</a>
               <a href={locale === 'de' ? '/yori' : '/en/yori'} className="text-white/50 hover:text-[var(--yori-turquoise)] transition-colors cursor-pointer">YORI</a>
               <a href="/demo" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.demo}</a>
-              <a href="/earth" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.earth}</a>
-              <a href="/wall" className="text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.wall}</a>
               <button onClick={handleScrollToContact} className="text-left text-white/50 hover:text-emerald-400 transition-colors cursor-pointer">{footerText.contact}</button>
             </div>
-          </div>
-
-          <div className="space-y-4">
-            <NewsletterSignup variant="footer" />
           </div>
 
           <div className="space-y-4">

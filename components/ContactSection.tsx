@@ -14,9 +14,8 @@ export default function ContactSection({ locale }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    
+
     try {
-      // Simulate API call
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -25,19 +24,16 @@ export default function ContactSection({ locale }: Props) {
 
       const success = response.ok;
       setStatus(success ? 'sent' : 'error');
-      
-      // Track form submission
       MatomoEvents.formSubmit('Contact Form', success);
-      
+
       if (success) {
         setFormState({ name: '', email: '', message: '' });
-        
-        // Trigger achievement for first contact
+
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new CustomEvent('saimor-contact-submitted'));
         }
       }
-      
+
       setTimeout(() => setStatus('idle'), 3000);
     } catch (error) {
       setStatus('error');
@@ -47,8 +43,7 @@ export default function ContactSection({ locale }: Props) {
   };
 
   return (
-    <section id="kontakt" className="relative overflow-hidden bg-world-ink py-20 sm:py-48">
-      {/* Background Atmosphere - Brighter */}
+    <section id="kontakt" className="relative overflow-hidden bg-world-ink py-20 sm:py-32">
       <div className="absolute inset-0 z-0">
         <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-world-gold/15 blur-[180px] rounded-full opacity-70" />
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-world-gold/10 blur-[150px] rounded-full opacity-40" />
@@ -56,27 +51,22 @@ export default function ContactSection({ locale }: Props) {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-24">
-          
-          {/* Info Side */}
           <div className="space-y-9 sm:space-y-12">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-world-gold/5 border border-world-gold/10 backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5 text-world-gold" />
-                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-world-gold/80">Direct Line</span>
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-world-gold/80">{t('Direkter Kontakt', 'Direct contact')}</span>
               </div>
-              <h2 className="text-5xl sm:text-7xl font-light tracking-tighter leading-[0.9]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                <span className="block opacity-90">{t('Bereit für', 'Ready for')}</span>
-                <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-world-gold via-world-gold to-world-gold/70">
-                  {t('Resonanz?', 'Resonance?')}
-                </span>
+              <h2 className="max-w-xl text-5xl sm:text-6xl font-light tracking-tighter leading-[0.95]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                {t('Woran arbeitest du?', 'What are you working on?')}
               </h2>
-              <p className="text-xl text-white/40 leading-relaxed max-w-md">
-                {t('Lass uns über deine Vision sprechen. Kurz, fokussiert, wirkungsvoll.', 'Let\'s talk about your vision. Short, focused, impactful.')}
+              <p className="text-lg text-white/48 leading-relaxed max-w-md">
+                {t('Beschreib kurz, was du bauen willst oder wo es gerade hängt. Du bekommst eine direkte Antwort.', 'Tell me what you want to build or where things are stuck. You will get a direct reply.')}
               </p>
             </div>
 
             <div className="space-y-8">
-              <motion.a 
+              <motion.a
                 href="mailto:contact@saimor.world"
                 className="flex items-center gap-6 group"
                 whileHover={{ x: 10 }}
@@ -102,7 +92,6 @@ export default function ContactSection({ locale }: Props) {
             </div>
           </div>
 
-          {/* Form Side */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -148,9 +137,9 @@ export default function ContactSection({ locale }: Props) {
                 disabled={status === 'sending'}
                 className="w-full py-5 rounded-2xl bg-white text-black font-bold hover:bg-world-gold transition-all hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(255,255,255,0.1)]"
               >
-                {status === 'sending' ? t('Analyse läuft...', 'Analyzing...') : status === 'sent' ? t('✓ Übermittelt', '✓ Transmitted') : (
+                {status === 'sending' ? t('Wird gesendet…', 'Sending…') : status === 'sent' ? t('✓ Gesendet', '✓ Sent') : status === 'error' ? t('Erneut versuchen', 'Try again') : (
                   <>
-                    <span className="uppercase tracking-[0.2em]">{t('Strategie-Anfrage senden', 'Request Strategy Call')}</span>
+                    <span className="uppercase tracking-[0.2em]">{t('Nachricht senden', 'Send message')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

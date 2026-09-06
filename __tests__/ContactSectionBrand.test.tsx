@@ -8,10 +8,6 @@ vi.mock('@/lib/matomo', () => ({
 
 afterEach(cleanup);
 
-/**
- * Per docs/superpowers/specs/2026-07-28-world-homepage-brand-unification-design.md:
- * same emerald/cyan-to-gold move as SocialProof and WaitlistForm.
- */
 describe('ContactSection brand alignment', () => {
   it('does not use Tailwind generic emerald or cyan utility classes anywhere', () => {
     const { container } = render(<ContactSection locale="de" />);
@@ -27,10 +23,11 @@ describe('ContactSection brand alignment', () => {
     expect(section?.className ?? '').toMatch(/world-ink/);
   });
 
-  it('accents the "Resonanz?" headline in gold', () => {
+  it('keeps the direct-contact marker in the Saimôr gold treatment', () => {
     render(<ContactSection locale="de" />);
 
-    const accent = screen.getByText('Resonanz?');
-    expect(accent.className).toMatch(/world-gold/);
+    expect(screen.getByText('Woran arbeitest du?')).toBeTruthy();
+    const marker = screen.getByText('Direkter Kontakt');
+    expect(marker.className).toMatch(/world-gold/);
   });
 });
