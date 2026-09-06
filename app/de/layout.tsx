@@ -2,19 +2,28 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 
+const title = 'Saimôr – OS mit proaktiver KI-Assistenz';
+const description = 'Saimôr OS verbindet Arbeit, Dateien, Integrationen und KI in einem gemeinsamen Kontext. Mit Môra als proaktiver Assistenz sowie Vorträgen und Schulungen.';
+
 export const metadata: Metadata = {
-  title: 'Saimôr – OS, Môra und souveräne KI-Systeme',
-  description: 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält. Mit Saimôr OS, Môra, Desk sowie Vorträgen und Schulungen.',
+  title,
+  description,
   metadataBase: new URL('https://saimor.world'),
   robots: 'index, follow',
   openGraph: {
-    title: 'Saimôr – OS, Môra und souveräne KI-Systeme',
-    description: 'Arbeitsraum, Daten und KI in einem System, das Kontext behält. Saimôr OS, Môra, Desk sowie Vorträge und Schulungen.',
+    title,
+    description,
     url: 'https://saimor.world/de',
     siteName: 'Saimôr',
     images: ['/og'],
     locale: 'de-DE',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/og'],
   },
   alternates: { canonical: '/de' },
 };
@@ -25,5 +34,5 @@ export const viewport: Viewport = {
 };
 
 export default function RouteLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return <div className="min-h-screen font-sans">{children}</div>;
+  return <div lang="de" className="min-h-screen font-sans">{children}</div>;
 }
