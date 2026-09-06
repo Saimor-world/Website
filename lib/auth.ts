@@ -4,6 +4,7 @@ import { JWT } from 'next-auth/jwt';
 import { prisma as prismaClient } from './prisma';
 import crypto from 'crypto';
 import { authPreflight } from './env-preflight';
+import { isTrialActive, isTrialExpired } from './trial';
 
 authPreflight();
 
@@ -28,10 +29,6 @@ function hashMagicToken(token: string) {
 async function findExistingUserByEmail(emailInput: string) {
   const email = emailInput.trim().toLowerCase();
   return prismaClient.user.findUnique({ where: { email } });
-}
-
-function trialExpired(user: { role?: string | null; trialEndsAt?: Date | null }, now = new Date()) {
-  return user.role === 'trial' && !!user.trialEndsAt && user.trialEndsAt <= now;
 }
 
 const providers: any[] = [
@@ -60,7 +57,7 @@ const providers: any[] = [
       if (magicToken.expiresAt <= now) return null;
 
       const user = await findExistingUserByEmail(email);
-      if (!user || trialExpired(user, now)) return null;
+      if (!user || isTrialExpired(user, now)) return null;
 
       await prismaClient.magicLoginToken.update({
         where: { id: magicToken.id },
@@ -119,7 +116,7 @@ const providers: any[] = [
         }
 
         const user = await prisma.user.findUnique({ where: { email } });
-        if (!user || !user.password || trialExpired(user)) return null;
+        if (!user || !user.password || isTrialExpired(user)) return null;
 
         const isValid = verifyPassword(credentials.password, user.password);
         if (!isValid) return null;
@@ -167,9 +164,10 @@ export const authOptions: AuthOptions = {
         session.user = session.user || {};
         session.user.role = token.role;
         session.user.trialEndsAt = (token as any).trialEndsAt || null;
-        session.user.trialActive = token.role === 'trial'
-          ? !!(token as any).trialEndsAt && new Date((token as any).trialEndsAt) > new Date()
-          : false;
+        session.user.trialActive = isTrialActive({
+          role: token.role as string,
+          trialEndsAt: (token as any).trialEndsAt || null,
+        });
       }
       return session;
     },
