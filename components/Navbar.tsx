@@ -2,7 +2,7 @@
 // Link removed - using native <a> tags for full page reloads
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Globe, Sparkles } from 'lucide-react';
+import { Menu, X, Globe, LogIn } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatomoEvents } from '@/lib/matomo';
@@ -55,6 +55,8 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
 
   const switchHref = getSwitchHref();
   const switchLabel = locale === 'de' ? 'EN' : 'DE';
+  const demoHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
+  const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
 
   const nav = {
     de: {
@@ -63,7 +65,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       frnt: 'YORI',
       demo: 'Demo',
       contact: 'Kontakt',
-      book: 'Gespräch buchen'
+      account: 'Einloggen'
     },
     en: {
       home: 'Home',
@@ -71,7 +73,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
       frnt: 'YORI',
       demo: 'Demo',
       contact: 'Contact',
-      book: 'Book a Call'
+      account: 'Sign in'
     }
   }[locale];
 
@@ -89,7 +91,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
     { href: `/${locale}`, label: nav.home, isAnchor: false },
     { href: locale === 'de' ? '/mora' : '/en/mora', label: nav.mora, isAnchor: false },
     { href: locale === 'de' ? '/yori' : '/en/yori', label: nav.frnt, isAnchor: false },
-    { href: '/demo', label: nav.demo, isAnchor: false },
+    { href: demoHref, label: nav.demo, isAnchor: false },
     { href: `/${locale}#kontakt`, label: nav.contact, isAnchor: true },
   ];
 
@@ -209,18 +211,16 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 {switchLabel}
               </motion.a>
 
-              {/* CTA Button - Desktop */}
+              {/* Account CTA - Desktop */}
               <motion.a
-                href="https://cal.com/saimor/30min"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={loginHref}
                 className="hidden md:flex items-center gap-2 px-5 py-2 text-[12px] font-bold text-white rounded-xl transition-all bg-gradient-to-r from-[var(--world-violet)] to-[var(--world-cyan)] hover:from-[var(--world-cyan)] hover:to-[var(--world-violet)] shadow-lg shadow-[var(--world-violet)]/20 hover:shadow-[var(--world-cyan)]/30"
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                aria-label="Termin buchen - Öffnet in neuem Tab"
+                aria-label={locale === 'de' ? 'Saimôr Zugang öffnen' : 'Open Saimôr access'}
               >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="tracking-wide">{nav.book}</span>
+                <LogIn className="w-3.5 h-3.5" />
+                <span className="tracking-wide">{nav.account}</span>
               </motion.a>
 
               {/* Mobile Menu Toggle */}
@@ -229,7 +229,7 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
                 className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/10 hover:border-white/30 transition-all hover:bg-white/5"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
+                aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
               >
@@ -258,170 +258,170 @@ export default function Navbar({ locale }: { locale: 'de' | 'en' }) {
             </div>
           </div>
         </div>
-      </motion.header >
+      </motion.header>
 
       {/* Mobile Menu */}
       <AnimatePresence>
-        {
-          menuOpen && (
-            <>
-              {/* Backdrop */}
+        {menuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-40"
+              style={{
+                background: 'linear-gradient(135deg, rgba(7, 11, 22, 0.98) 0%, rgba(14, 32, 39, 0.96) 100%)',
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {/* Decorative background elements */}
               <motion.div
-                className="fixed inset-0 z-40"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(7, 11, 22, 0.98) 0%, rgba(14, 32, 39, 0.96) 100%)',
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
+                style={{ background: 'rgba(34, 184, 141, 0.14)' }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+              />
+              <motion.div
+                className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
+                style={{ background: 'rgba(102, 221, 234, 0.1)' }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
+              />
+            </motion.div>
+
+            {/* Menu Content */}
+            <motion.div
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {/* Close Button */}
+              <motion.button
                 onClick={() => setMenuOpen(false)}
+                className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 hover:border-[var(--world-violet)]/50 transition-colors"
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 184, 141, 0.14)' }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Menü schließen"
               >
-                {/* Decorative background elements */}
-                <motion.div
-                  className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
-                  style={{ background: 'rgba(34, 184, 141, 0.14)' }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
-                <motion.div
-                  className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
-                  style={{ background: 'rgba(102, 221, 234, 0.1)' }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-                />
+                <X className="w-6 h-6" />
+              </motion.button>
+
+              {/* Logo */}
+              <motion.div
+                className="mb-12"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="w-16 h-16 rounded-2xl bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src="/saimor-seal-256.webp"
+                    alt="Saimôr"
+                    width={48}
+                    height={48}
+                    className="object-contain mix-blend-screen"
+                  />
+                </div>
               </motion.div>
 
-              {/* Menu Content */}
+              {/* Navigation Items */}
+              <nav id="mobile-menu" className="flex flex-col items-center gap-2" role="navigation" aria-label="Mobile Navigation">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                    transition={{ delay: 0.15 + index * 0.08, type: 'spring', stiffness: 100 }}
+                  >
+                    {item.isAnchor ? (
+                      <motion.button
+                        onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
+                        className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                        whileTap={{ scale: 0.98 }}
+                        aria-label={`Zu ${item.label} navigieren`}
+                      >
+                        {item.label}
+                      </motion.button>
+                    ) : (
+                      <motion.a
+                        href={item.href}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          MatomoEvents.navClick(item.label);
+                        }}
+                        className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors block"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                        whileTap={{ scale: 0.98 }}
+                        aria-label={`Zu ${item.label} navigieren`}
+                      >
+                        {item.label}
+                      </motion.a>
+                    )}
+                  </motion.div>
+                ))}
+              </nav>
+
+              {/* Account CTA */}
+              <motion.a
+                href={loginHref}
+                onClick={() => setMenuOpen(false)}
+                className="mt-12 px-8 py-4 text-lg font-bold text-[#0F1F17] rounded-2xl relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
+                  boxShadow: '0 8px 32px rgba(212, 168, 87, 0.4)'
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, type: 'spring' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 12px 40px rgba(212, 168, 87, 0.5)' }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {/* Shimmer effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '200%' }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                />
+                <span className="relative z-10 inline-flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {nav.account}
+                </span>
+              </motion.a>
+
+              {/* Language Switch */}
               <motion.div
-                className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8"
+                className="mt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                transition={{ delay: 0.5 }}
               >
-                {/* Close Button */}
-                <motion.button
+                <a
+                  href={switchHref}
                   onClick={() => setMenuOpen(false)}
-                  className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 hover:border-[var(--world-violet)]/50 transition-colors"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  transition={{ delay: 0.2 }}
-                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 184, 141, 0.14)' }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="Menü schließen"
+                  className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
                 >
-                  <X className="w-6 h-6" />
-                </motion.button>
-
-                {/* Logo */}
-                <motion.div
-                  className="mb-12"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-[var(--world-ink)] border border-[var(--world-gold)]/25 flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/saimor-seal-256.webp"
-                      alt="Saimôr"
-                      width={48}
-                      height={48}
-                      className="object-contain mix-blend-screen"
-                    />
-                  </div>
-                </motion.div>
-
-                {/* Navigation Items */}
-                <nav id="mobile-menu" className="flex flex-col items-center gap-2" role="navigation" aria-label="Mobile Navigation">
-                  {navItems.map((item, index) => (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 30 }}
-                      transition={{ delay: 0.15 + index * 0.08, type: 'spring', stiffness: 100 }}
-                    >
-                      {item.isAnchor ? (
-                        <motion.button
-                          onClick={(e) => handleNavClick(item.href, item.isAnchor, item.label, e)}
-                          className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors"
-                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                          whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                          whileTap={{ scale: 0.98 }}
-                          aria-label={`Zu ${item.label} navigieren`}
-                        >
-                          {item.label}
-                        </motion.button>
-                      ) : (
-                        <motion.a
-                          href={item.href}
-                          onClick={() => {
-                            setMenuOpen(false);
-                            MatomoEvents.navClick(item.label);
-                          }}
-                          className="text-3xl font-semibold text-white/70 hover:text-white py-2 px-6 rounded-xl transition-colors block"
-                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                          whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                          whileTap={{ scale: 0.98 }}
-                          aria-label={`Zu ${item.label} navigieren`}
-                        >
-                          {item.label}
-                        </motion.a>
-                      )}
-                    </motion.div>
-                  ))}
-                </nav>
-
-                {/* CTA Button */}
-                <motion.a
-                  href="https://cal.com/saimor/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-12 px-8 py-4 text-lg font-bold text-[#0F1F17] rounded-2xl relative overflow-hidden"
-                  style={{
-                    background: 'linear-gradient(135deg, #D4A857 0%, #C49745 100%)',
-                    boxShadow: '0 8px 32px rgba(212, 168, 87, 0.4)'
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, type: 'spring' }}
-                  whileHover={{ scale: 1.05, boxShadow: '0 12px 40px rgba(212, 168, 87, 0.5)' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '200%' }}
-                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                  />
-                  <span className="relative z-10">{nav.book}</span>
-                </motion.a>
-
-                {/* Language Switch */}
-                <motion.div
-                  className="mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <a
-                    href={switchHref}
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
-                  >
-                    <Globe className="w-4 h-4" />
-                    {locale === 'de' ? 'Switch to English' : 'Zur deutschen Seite'}
-                  </a>
-                </motion.div>
-
+                  <Globe className="w-4 h-4" />
+                  {locale === 'de' ? 'Switch to English' : 'Zur deutschen Seite'}
+                </a>
               </motion.div>
-            </>
-          )
-        }
-      </AnimatePresence >
+
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
