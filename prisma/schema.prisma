@@ -50,18 +50,41 @@ model SecurityAudit {
   attackerPath      String?    @map("attacker_path") // The LLM generated attack path
   reconData         Json?      @map("recon_data")    // Technical findings (headers, dns, etc.)
   recommendations   Json
-  followUpQuestions Json?      // [{id, question, options[]}] â€” KI-generiert      
-  followUpAnswers   Json?      // [{id, answer}] â€” User-Antworten
+  followUpQuestions Json?      // [{id, question, options[]}] — KI-generiert
+  followUpAnswers   Json?      // [{id, answer}] — User-Antworten
   ownerStatus       String     @default("new")
   ownerNote         String?
   ownerUpdatedAt    DateTime?
+  previewStatus     String     @default("active")
+  previewStartedAt  DateTime   @default(now())
+  previewExpiresAt  DateTime?
+  claimedAt         DateTime?
+  lifecycleLocale   String     @default("de")
   createdAt         DateTime   @default(now())
 
   wallEntry         WallEntry?
+  lifecycleEmails   TrialLifecycleEmail[]
 
   @@index([ownerStatus, createdAt])
+  @@index([previewStatus, previewExpiresAt])
 }
 
+model TrialLifecycleEmail {
+  id                String        @id @default(cuid())
+  auditId           String
+  audit             SecurityAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  step              String
+  scheduledFor      DateTime
+  status            String        @default("pending")
+  sentAt            DateTime?
+  providerMessageId String?
+  error             String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@unique([auditId, step])
+  @@index([status, scheduledFor])
+}
 
 model WallEntry {
   id        String        @id @default(cuid())
