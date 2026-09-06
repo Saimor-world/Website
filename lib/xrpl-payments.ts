@@ -4,12 +4,14 @@ import crypto from 'node:crypto';
 
 export const XRPL_RPC_URL = process.env.XRPL_RPC_URL || 'https://xrplcluster.com';
 const XRPL_ADDRESS_RE = /^r[1-9A-HJ-NP-Za-km-z]{24,34}$/;
+const SAIMOR_COMMERCE_TAG_BASE = 0x53000000;
 
 export type XrplProduct = {
   id: string;
   name: string;
   description: string;
   amountXrp: string;
+  tagCode: number;
 };
 
 export const XRPL_PRODUCTS: Record<string, XrplProduct> = {
@@ -18,6 +20,7 @@ export const XRPL_PRODUCTS: Record<string, XrplProduct> = {
     name: 'Saimôr Canary Purchase',
     description: 'Erster echter End-to-End Produktkauf über XRPL. Beta / Canary.',
     amountXrp: '1',
+    tagCode: 1,
   },
 };
 
@@ -57,14 +60,22 @@ function sign(encoded: string) {
   return crypto.createHmac('sha256', signingSecret()).update(encoded).digest('base64url');
 }
 
+function createCommerceDestinationTag(product: XrplProduct) {
+  if (!Number.isInteger(product.tagCode) || product.tagCode < 0 || product.tagCode > 255) {
+    throw new Error('Invalid product tag code');
+  }
+  const randomPart = crypto.randomBytes(2).readUInt16BE(0);
+  return SAIMOR_COMMERCE_TAG_BASE + product.tagCode * 0x10000 + randomPart;
+}
+
 export function createPaymentIntent(productId: string) {
   const product = XRPL_PRODUCTS[productId];
   if (!product) throw new Error('Unknown product');
 
   const destination = revenueAddress();
   const orderId = crypto.randomUUID();
-  const destinationTag = crypto.randomBytes(4).readUInt32BE(0);
-  const invoiceId = crypto.createHash('sha256').update(`saimor:${orderId}`).digest('hex').toUpperCase();
+  const destinationTag = createCommerceDestinationTag(product);
+  const invoiceId = crypto.createHash('sha256').update(`saimor:${product.id}:${orderId}`).digest('hex').toUpperCase();
   const createdAt = new Date();
   const expiresAt = new Date(createdAt.getTime() + 30 * 60 * 1000);
 
