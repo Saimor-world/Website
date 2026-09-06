@@ -87,6 +87,15 @@ jobs:
               await page.screenshot({ path: `${out}/${name}-viewport.png`, fullPage: false });
               await page.screenshot({ path: `${out}/${name}-full.png`, fullPage: true });
               fs.writeFileSync(`${out}/${name}.txt`, await page.locator('body').innerText());
+
+              if (path === '/de') {
+                for (const id of ['system', 'studio', 'contact']) {
+                  await page.locator(`#${id}`).scrollIntoViewIfNeeded();
+                  await page.waitForTimeout(250);
+                  await page.screenshot({ path: `${out}/de-${id}-viewport.png`, fullPage: false });
+                }
+              }
+
               await page.close();
             }
 
