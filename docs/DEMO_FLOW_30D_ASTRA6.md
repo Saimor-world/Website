@@ -57,6 +57,18 @@ Suggested capability boundary:
 
 The model/provider mapping belongs in server configuration, not in Hero or account components.
 
+## Preview infrastructure guardrail
+
+The Vercel project uses a Neon integration that creates a database branch for Preview deployments. Neon Free has a finite branch limit, so stale `preview/...` branches can block a deployment before the application build even starts.
+
+When Vercel reports `Resource provisioning failed` and the provisioning step says `Branch limit reached`:
+
+- keep `main` / the default production branch;
+- remove stale `preview/...` database branches from completed feature or fix work;
+- keep several free branch slots instead of deleting only one;
+- re-trigger the Preview deployment after cleanup;
+- treat this as infrastructure provisioning, not an application compile failure, when GitHub CI remains green.
+
 ## Before merge
 
 - Preview deployment must be READY.
