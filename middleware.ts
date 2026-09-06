@@ -22,15 +22,9 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Public self-service accounts are not available yet. The owner host keeps
-  // its private login; old public account URLs return to the supported flow.
-  const isPublicAccountDoor =
-    pathname === '/login' ||
-    pathname === '/portal' ||
-    pathname === '/account' ||
-    pathname.startsWith('/account/');
-
-  if (!isOwnerHost && isPublicAccountDoor) {
+  // The legacy public portal stays closed. Trial users enter through the
+  // Security Check, then use /login and the session-protected /account routes.
+  if (!isOwnerHost && pathname === '/portal') {
     const entryUrl = request.nextUrl.clone();
     entryUrl.pathname = '/de/einstieg/security-check';
     entryUrl.search = '';
