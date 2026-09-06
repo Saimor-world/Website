@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
 import { magicLinkPreflight } from '@/lib/env-preflight';
@@ -40,6 +41,9 @@ function hashMagicToken(token: string) {
 }
 
 function appBaseUrl(req: NextRequest) {
+  if (process.env.VERCEL_ENV === 'preview') {
+    return `${req.nextUrl.protocol}//${req.nextUrl.host}`;
+  }
   return (
     process.env.NEXTAUTH_URL ||
     process.env.NEXT_PUBLIC_APP_URL ||
@@ -80,6 +84,35 @@ async function ensureDemoUserFromRecentSecurityCheck(email: string) {
   });
 
   return user;
+}
+
+async function sendMagicLinkEmail(options: {
+  to: string;
+  subject: string;
+  text: string;
+}) {
+  if (process.env.RESEND_API_KEY) {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: process.env.RESEND_FROM || 'Saimôr <contact@saimor.world>',
+      to: options.to,
+      subject: options.subject,
+      text: options.text,
+    });
+    if (error) throw new Error(`Resend delivery failed: ${error.message}`);
+    return 'resend' as const;
+  }
+
+  const transporter = createTransporter();
+  if (!transporter) return null;
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to: options.to,
+    subject: options.subject,
+    text: options.text,
+  });
+  return 'smtp' as const;
 }
 
 export async function POST(req: NextRequest) {
@@ -125,44 +158,38 @@ export async function POST(req: NextRequest) {
       `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
     const isDev = process.env.NODE_ENV !== 'production';
-    const transporter = createTransporter();
-    if (!transporter) {
-      if (isDev) {
-        return NextResponse.json({
-          success: true,
-          debugUrl: verifyUrl,
-          mode: 'dev-link',
-          trialEndsAt: user.trialEndsAt?.toISOString() || null,
-        });
-      }
-      return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
-    }
-
     const trialDate = user.trialEndsAt
       ? new Intl.DateTimeFormat(data.locale === 'de' ? 'de-DE' : 'en-GB', { dateStyle: 'long' }).format(user.trialEndsAt)
       : null;
 
     const subject = data.locale === 'de'
-      ? 'Dein Saimôr Demo-Zugang ist bereit'
-      : 'Your Saimôr demo access is ready';
+      ? 'Dein Saimôr Anmeldelink'
+      : 'Your Saimôr sign-in link';
 
     const body = data.locale === 'de'
-      ? `Dein Security Check ist abgeschlossen.\n\nWir haben deinen persönlichen Saimôr Demo-Account vorbereitet${trialDate ? ` — freigeschaltet bis ${trialDate}` : ''}.\n\nMit einem Klick meldest du dich an und übernimmst deinen Report in den Workspace:\n\n${verifyUrl}\n\nDer Login-Link ist 15 Minuten gültig. Dein Demo-Zeitraum beträgt ${DEMO_DAYS} Tage.\n\nSaimôr`
-      : `Your Security Check is complete.\n\nWe prepared your personal Saimôr demo account${trialDate ? ` — active until ${trialDate}` : ''}.\n\nUse this one-click link to sign in and claim your report inside the workspace:\n\n${verifyUrl}\n\nThe sign-in link is valid for 15 minutes. Your demo period lasts ${DEMO_DAYS} days.\n\nSaimôr`;
+      ? `Dein Saimôr Zugang ist bereit${trialDate && user.role === 'trial' ? ` — deine Demo läuft bis ${trialDate}` : ''}.\n\nMit diesem einmaligen Link meldest du dich an:\n\n${verifyUrl}\n\nDer Link ist 15 Minuten gültig und kann nur einmal verwendet werden.${user.role === 'trial' ? ` Dein Demo-Zeitraum beträgt ${DEMO_DAYS} Tage.` : ''}\n\nSaimôr`
+      : `Your Saimôr access is ready${trialDate && user.role === 'trial' ? ` — your demo is active until ${trialDate}` : ''}.\n\nUse this one-time link to sign in:\n\n${verifyUrl}\n\nThe link is valid for 15 minutes and can only be used once.${user.role === 'trial' ? ` Your demo period lasts ${DEMO_DAYS} days.` : ''}\n\nSaimôr`;
 
     try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: email,
-        subject,
-        text: body,
-      });
+      const provider = await sendMagicLinkEmail({ to: email, subject, text: body });
+      if (!provider) {
+        if (isDev) {
+          return NextResponse.json({
+            success: true,
+            debugUrl: verifyUrl,
+            mode: 'dev-link',
+            trialEndsAt: user.trialEndsAt?.toISOString() || null,
+          });
+        }
+        return NextResponse.json({ error: 'Email delivery not configured' }, { status: 503 });
+      }
     } catch (mailError) {
       if (isDev) {
         console.warn('[Magic Link Dev Fallback]', mailError);
         return NextResponse.json({ success: true, debugUrl: verifyUrl, mode: 'dev-link' });
       }
-      throw mailError;
+      console.error('[Magic Link Delivery Error]', mailError);
+      return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 });
     }
 
     return NextResponse.json({
