@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { getClientIP, magicLinkLimiter } from '@/lib/rate-limit';
 import { magicLinkPreflight } from '@/lib/env-preflight';
 import { safeInternalPath } from '@/lib/safe-redirect';
+import { createTrialWindow, DEMO_DAYS } from '@/lib/trial';
 
 const Body = z.object({
   email: z.string().email(),
@@ -13,7 +14,6 @@ const Body = z.object({
   locale: z.enum(['de', 'en']).default('de'),
 });
 
-const DEMO_DAYS = 30;
 const DEMO_AUDIT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 function createTransporter() {
@@ -59,12 +59,9 @@ async function ensureDemoUserFromRecentSecurityCheck(email: string) {
     orderBy: { createdAt: 'desc' },
   });
 
-  // Keep the endpoint enumeration-safe: unknown emails without a fresh
-  // Security Check still receive the same neutral accepted response.
   if (!recentAudit) return null;
 
-  const trialStartedAt = new Date();
-  const trialEndsAt = new Date(trialStartedAt.getTime() + DEMO_DAYS * 24 * 60 * 60 * 1000);
+  const { trialStartedAt, trialEndsAt } = createTrialWindow();
 
   const user = await prisma.user.create({
     data: {
@@ -150,8 +147,8 @@ export async function POST(req: NextRequest) {
       : 'Your Saimôr demo access is ready';
 
     const body = data.locale === 'de'
-      ? `Dein Security Check ist abgeschlossen.\n\nWir haben deinen persönlichen Saimôr Demo-Account vorbereitet${trialDate ? ` — freigeschaltet bis ${trialDate}` : ''}.\n\nMit einem Klick meldest du dich an und übernimmst deinen Report in den Workspace:\n\n${verifyUrl}\n\nDer Login-Link ist 15 Minuten gültig. Dein Demo-Zeitraum beträgt 30 Tage.\n\nSaimôr`
-      : `Your Security Check is complete.\n\nWe prepared your personal Saimôr demo account${trialDate ? ` — active until ${trialDate}` : ''}.\n\nUse this one-click link to sign in and claim your report inside the workspace:\n\n${verifyUrl}\n\nThe sign-in link is valid for 15 minutes. Your demo period lasts 30 days.\n\nSaimôr`;
+      ? `Dein Security Check ist abgeschlossen.\n\nWir haben deinen persönlichen Saimôr Demo-Account vorbereitet${trialDate ? ` — freigeschaltet bis ${trialDate}` : ''}.\n\nMit einem Klick meldest du dich an und übernimmst deinen Report in den Workspace:\n\n${verifyUrl}\n\nDer Login-Link ist 15 Minuten gültig. Dein Demo-Zeitraum beträgt ${DEMO_DAYS} Tage.\n\nSaimôr`
+      : `Your Security Check is complete.\n\nWe prepared your personal Saimôr demo account${trialDate ? ` — active until ${trialDate}` : ''}.\n\nUse this one-click link to sign in and claim your report inside the workspace:\n\n${verifyUrl}\n\nThe sign-in link is valid for 15 minutes. Your demo period lasts ${DEMO_DAYS} days.\n\nSaimôr`;
 
     try {
       await transporter.sendMail({
