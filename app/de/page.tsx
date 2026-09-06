@@ -1,4 +1,4 @@
-import SystemWorldHome from '@/components/SystemWorldHome';
+import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
   title: 'Saimôr – OS, Môra und souveräne KI-Systeme',
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <SystemWorldHome locale="de" />;
+  return <LivingForestWorld locale="de" />;
 }
