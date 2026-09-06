@@ -18,6 +18,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Was heute über viele Tools verteilt ist, lebt hier zusammen.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Nicht vier Produkte/i)).not.toBeInTheDocument();
     expect(screen.getByText('Vorträge')).toBeInTheDocument();
     expect(screen.getByText('Schulungen & Workshops')).toBeInTheDocument();
