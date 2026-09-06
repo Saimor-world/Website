@@ -1,6 +1,4 @@
 ﻿import Hero from '@/components/Hero';
-import YoriSection from '@/components/YoriSection';
-import DeskSection from '@/components/DeskSection';
 import OsSection from '@/components/OsSection';
 import ContactSection from '@/components/ContactSection';
 import MyceliumNetworkLazy from '@/components/MyceliumNetworkLazy';
@@ -20,10 +18,6 @@ export default function Page() {
         <Hero locale="de" />
         <OsSection locale="de" />
         <MobileProductShelf locale="de" />
-        <div className="hidden md:block">
-          <YoriSection locale="de" />
-          <DeskSection locale="de" />
-        </div>
         <StudioSection locale="de" />
         <ContactSection locale="de" />
       </div>
