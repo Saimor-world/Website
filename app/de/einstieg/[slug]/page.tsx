@@ -9,24 +9,34 @@ type Props = {
 
 export async function generateStaticParams() {
   const staticSlugs = entryContent.de.map((article) => ({ slug: article.slug }));
-  // security-check is dynamic (client-side), include it so the route is known
   const hasScan = staticSlugs.some((s) => s.slug === 'security-check');
   return hasScan ? staticSlugs : [...staticSlugs, { slug: 'security-check' }];
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+  const canonical = `/de/einstieg/${slug}`;
+
   if (slug === 'security-check') {
+    const title = 'Security Check | Saimôr';
+    const description = 'Prüfe deine Domain auf öffentlich sichtbare Sicherheits-Signale und starte damit deinen Saimôr-Demoraum.';
     return {
-      title: 'Gratis Sicherheits-Audit | Saimôr',
-      description:
-        'Was sieht man über dein Unternehmen von außen? Kostenloser Domain-Audit in Sekunden.',
+      title,
+      description,
+      alternates: { canonical },
+      openGraph: { title, description, url: canonical },
+      twitter: { card: 'summary_large_image' as const, title, description, images: ['/og'] },
     };
   }
+
   const article = entryContent.de.find((item) => item.slug === slug);
+  const title = article ? `${article.title} | Saimôr Einstieg` : 'Artikel nicht gefunden | Saimôr';
+  const description = article?.excerpt ?? 'Artikel aus dem Saimôr Einstieg';
   return {
-    title: article ? `${article.title} | Saimôr Einstieg` : 'Artikel nicht gefunden | Saimôr',
-    description: article?.excerpt ?? 'Artikel aus dem Saimor Einstieg',
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical },
   };
 }
 
@@ -38,10 +48,7 @@ export default async function EntryArticlePageDe({ params }: Props) {
   }
 
   const article = entryContent.de.find((item) => item.slug === slug);
-  if (!article) {
-    notFound();
-  }
+  if (!article) notFound();
 
   return <EntryArticle locale="de" slug={slug} />;
 }
-
