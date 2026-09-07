@@ -34,4 +34,16 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByText('Vom ersten Check in deinen eigenen Raum')).not.toBeInTheDocument();
     expect(screen.queryByText(/Vier Ebenen derselben Idee/i)).not.toBeInTheDocument();
   });
+
+  it('keeps the public studio voice organizational rather than solo-founder led', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const publicCopy = container.textContent ?? '';
+
+    expect(publicCopy).toContain('Saimôr ist unser unabhängiges Produktstudio.');
+    expect(publicCopy).toContain('Wir verbinden Erfahrung aus IT-Systemmanagement');
+    expect(publicCopy).not.toMatch(/Marius Fahrländer/i);
+    expect(publicCopy).not.toMatch(/Solo[- ]?Founder/i);
+    expect(publicCopy).not.toMatch(/Gründer(?:in)?/i);
+    expect(publicCopy).not.toMatch(/Founder/i);
+  });
 });
