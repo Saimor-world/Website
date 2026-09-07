@@ -13,7 +13,7 @@ describe('SystemWorldHome', () => {
     render(<SystemWorldHome locale="de" />);
 
     expect(
-      screen.getByText('Deine Arbeit, Dateien und KI – in einem System, das den Zusammenhang behält.'),
+      screen.getByText('Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.'),
     ).toBeInTheDocument();
     expect(screen.getByText('Was heute über viele Tools verteilt ist, lebt hier zusammen.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);

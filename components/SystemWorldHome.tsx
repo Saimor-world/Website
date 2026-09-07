@@ -20,7 +20,7 @@ type Props = { locale: Locale };
 const COPY = {
   de: {
     eyebrow: 'SAIMÔR · SOVEREIGN AI SYSTEMS',
-    thesis: 'Deine Arbeit, Dateien und KI – in einem System, das den Zusammenhang behält.',
+    thesis: 'Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.',
     intro:
       'Saimôr OS ist ein digitaler Arbeitsraum für tägliche Arbeit und intelligente Assistenz. Kalender, Dateien, Vorgänge, Integrationen und KI leben im selben Kontext – statt über einzelne Apps und Chats verteilt zu sein.',
     enter: 'Saimôr OS ausprobieren',
@@ -68,7 +68,7 @@ const COPY = {
   },
   en: {
     eyebrow: 'SAIMÔR · SOVEREIGN AI SYSTEMS',
-    thesis: 'Your work, files and AI – in one system that keeps the context.',
+    thesis: 'Files, tasks and AI. One shared workspace.',
     intro:
       'Saimôr OS is a digital workspace for everyday work and intelligent assistance. Calendar, files, tasks, integrations and AI live in the same context instead of being scattered across separate apps and chats.',
     enter: 'Try Saimôr OS',
@@ -141,11 +141,11 @@ export default function SystemWorldHome({ locale }: Props) {
             </div>
           </div>
 
-          <div className="grid flex-1 items-center gap-3 py-4 sm:gap-8 sm:py-8 lg:grid-cols-[.92fr_1.08fr] lg:gap-8 lg:py-0">
+          <div className="grid flex-1 items-center gap-3 py-4 sm:gap-8 sm:py-8 lg:grid-cols-[1.08fr_.92fr] lg:gap-8 lg:py-0">
             <div className="order-2 lg:order-1 lg:pr-8">
               <div className="max-w-2xl">
                 <h1 className="font-serif text-[clamp(4rem,16vw,8.6rem)] font-light leading-[.8] tracking-[-.065em] text-[#fbfbf5]">Saimôr</h1>
-                <p className="mt-5 max-w-2xl text-[clamp(1.6rem,5vw,3.5rem)] font-light leading-[1.03] tracking-[-.04em] text-white/96 sm:mt-6">{c.thesis}</p>
+                <p className="mt-5 max-w-2xl text-[clamp(1.65rem,3.2vw,2.8rem)] font-light leading-[1.12] tracking-[-.025em] [text-wrap:balance] text-white/96 sm:mt-6">{c.thesis}</p>
                 <p className="mt-5 max-w-xl text-sm leading-6 text-[#e4eee6]/78 sm:mt-6 sm:text-lg sm:leading-8">{c.intro}</p>
 
                 <div className="mt-7 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:flex-wrap sm:gap-3">
@@ -187,7 +187,7 @@ export default function SystemWorldHome({ locale }: Props) {
 
                 <div className="absolute inset-[29%] flex items-center justify-center rounded-full border border-[#e0bb62]/38 bg-[#183b2d]/92 shadow-[0_0_44px_rgba(214,168,72,.12)]">
                   <div className="absolute inset-[-12%] rounded-full border border-white/[0.10]" />
-                  <Image src="/saimor-seal-256.webp" alt="Saimôr" fill sizes="(max-width: 639px) 120px, 220px" priority className="object-contain p-[14%] opacity-[0.99] mix-blend-screen" />
+                  <Image src="/saimor-seal-256.webp" alt="Saimôr" fill sizes="(max-width: 639px) 120px, 220px" priority className="rounded-full object-contain p-[14%] opacity-[0.99] mix-blend-screen" />
                 </div>
 
                 {c.orbit.map(([name, role], i) => {

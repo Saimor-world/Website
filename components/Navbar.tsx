@@ -68,8 +68,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
 
   const copy = locale === 'de'
-    ? { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Entry', login: 'Zugang', menu: 'Menü' }
-    : { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Entry', login: 'Access', menu: 'Menu' };
+    ? { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Demo', login: 'Zugang', menu: 'Menü' }
+    : { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Demo', login: 'Access', menu: 'Menu' };
 
   const navItems = [
     { href: anchorHref('system'), label: copy.system },
