@@ -84,6 +84,100 @@ export default function LivingForestWorld({ locale }: Props) {
         .forest-canopy-right,
         .forest-spore { animation: none; }
 
+        :global(#system > div > h2 + div) {
+          display: grid !important;
+          grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+          gap: 14px !important;
+          margin-top: 4.5rem !important;
+          border-top: 0 !important;
+        }
+
+        :global(#system > div > h2 + div > article) {
+          position: relative;
+          display: flex !important;
+          min-height: 270px;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 1.75rem !important;
+          overflow: hidden;
+          border: 1px solid rgba(224, 238, 229, .11) !important;
+          border-radius: 30px;
+          padding: 1.8rem !important;
+          background:
+            radial-gradient(circle at 90% 8%, rgba(145, 222, 199, .075), transparent 34%),
+            linear-gradient(145deg, rgba(30, 72, 55, .74), rgba(19, 52, 40, .86));
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 18px 55px rgba(3, 19, 13, .08);
+          transition: transform .35s ease, border-color .35s ease, background .35s ease;
+        }
+
+        :global(#system > div > h2 + div > article:hover) {
+          transform: translateY(-3px);
+          border-color: rgba(224, 238, 229, .18) !important;
+        }
+
+        :global(#system > div > h2 + div > article:nth-child(1)) {
+          grid-column: span 7 / span 7;
+        }
+
+        :global(#system > div > h2 + div > article:nth-child(2)) {
+          grid-column: span 5 / span 5;
+          background:
+            radial-gradient(circle at 15% 0%, rgba(214, 168, 72, .08), transparent 36%),
+            linear-gradient(150deg, rgba(29, 68, 52, .72), rgba(18, 48, 37, .9));
+        }
+
+        :global(#system > div > h2 + div > article:nth-child(3)) {
+          grid-column: span 7 / span 7;
+          background:
+            radial-gradient(circle at 82% 18%, rgba(214, 168, 72, .14), transparent 30%),
+            radial-gradient(circle at 18% 84%, rgba(139, 224, 197, .11), transparent 36%),
+            linear-gradient(145deg, rgba(38, 79, 61, .86), rgba(18, 49, 38, .94));
+          border-color: rgba(214, 190, 123, .18) !important;
+        }
+
+        :global(#system > div > h2 + div > article:nth-child(4)) {
+          grid-column: span 5 / span 5;
+        }
+
+        :global(#system > div > h2 + div > article > div:first-child) {
+          width: fit-content;
+          border: 1px solid rgba(255,255,255,.09);
+          border-radius: 999px;
+          padding: .5rem .7rem;
+          background: rgba(255,255,255,.025);
+        }
+
+        :global(#system > div > h2 + div > article > div:nth-child(2)) {
+          margin-top: auto;
+        }
+
+        :global(#system > div > h2 + div > article > div:nth-child(2) > div:first-child) {
+          font-size: clamp(2.65rem, 5vw, 5.2rem) !important;
+          line-height: .88 !important;
+          letter-spacing: -.045em !important;
+        }
+
+        :global(#system > div > h2 + div > article:nth-child(3) > div:nth-child(2) > div:first-child) {
+          color: #fbf3d9 !important;
+        }
+
+        :global(#system > div > h2 + div > article > p) {
+          max-width: 36rem !important;
+          color: rgba(220, 233, 224, .68) !important;
+        }
+
+        @media (max-width: 900px) {
+          :global(#system > div > h2 + div) {
+            grid-template-columns: 1fr !important;
+            margin-top: 3.5rem !important;
+          }
+
+          :global(#system > div > h2 + div > article) {
+            grid-column: 1 / -1 !important;
+            min-height: 235px;
+          }
+        }
+
         @media (min-width: 640px) {
           .forest-canopy-left { animation: forestSwayLeft 26s ease-in-out infinite; transform-origin: 16% 10%; }
           .forest-canopy-right { animation: forestSwayRight 30s ease-in-out infinite; transform-origin: 84% 10%; }
@@ -96,6 +190,7 @@ export default function LivingForestWorld({ locale }: Props) {
           .forest-canopy-left,
           .forest-canopy-right,
           .forest-spore { animation: none !important; }
+          :global(#system > div > h2 + div > article) { transition: none !important; }
         }
       `}</style>
     </div>
