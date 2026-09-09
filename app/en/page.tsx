@@ -1,3 +1,4 @@
+import CreatorSignalEgg from '@/components/CreatorSignalEgg';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
@@ -6,5 +7,10 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <LivingForestWorld locale="en" />;
+  return (
+    <>
+      <LivingForestWorld locale="en" />
+      <CreatorSignalEgg locale="en" />
+    </>
+  );
 }
