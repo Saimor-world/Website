@@ -1,242 +1,87 @@
-import { ArrowRight, CircleDot, Hammer, House, Users, WalletCards } from "lucide-react";
-import YoriMark from "@/components/YoriMark";
+import { ArrowRight } from 'lucide-react';
+import YoriMark from '@/components/YoriMark';
 
-type Props = { locale: "de" | "en" };
-
-const ROOM_BASE = "https://raw.githubusercontent.com/Saimor-world/yori/tomo-rebrand/public/scene/rooms";
-const GARDEN = "https://raw.githubusercontent.com/Saimor-world/yori/tomo-rebrand/public/scene/outside-day.png";
-
-const COPY = {
-  de: {
-    houseEyebrow: "DEIN HAUS",
-    houseTitle: "Alles, was du aufbaust, bekommt seinen Platz.",
-    houseText:
-      "Nicht noch eine App, die dir mehr zu beobachten gibt. YORI ordnet kreative Arbeit räumlich: Was dich braucht, liegt auf dem Schreibtisch. Was entsteht, lebt in der Werkstatt. Hilfe bekommt einen Platz in der Crew. Und das Geschäft verschwindet nicht in einer Tabelle irgendwo anders.",
-    rooms: [
-      {
-        name: "Schreibtisch",
-        line: "Nur das, was heute wirklich dich braucht.",
-        text: "Eine Freigabe. Eine wichtige Nachricht. Ein Termin. Eine Entscheidung. Wenn nichts ansteht, darf der Tisch leer sein.",
-        image: `${ROOM_BASE}/room-desk.png`,
-        icon: House,
-      },
-      {
-        name: "Werkstatt",
-        line: "Hier wird aus einer Idee etwas Fertiges.",
-        text: "Briefings, Entwürfe, Rohmaterial und nächste Schritte bleiben als ein zusammenhängender Vorgang sichtbar — vom ersten Signal bis zur Veröffentlichung.",
-        image: `${ROOM_BASE}/room-workshop.png`,
-        icon: Hammer,
-      },
-      {
-        name: "Crew",
-        line: "Hilfe ist sichtbar, wenn sie wirklich etwas trägt.",
-        text: "Recherche, Text, Schnitt oder Organisation können unterstützt werden. Im Raum steht aber nur, wer tatsächlich an etwas arbeitet — kein künstliches Agenten-Theater.",
-        image: `${ROOM_BASE}/room-crew.png`,
-        icon: Users,
-      },
-      {
-        name: "Cash",
-        line: "Dein Business gehört dazu. Aber es übernimmt nicht das Haus.",
-        text: "Kooperationen, Rechnungen, offene Beträge und Ausgaben haben einen ruhigen eigenen Ort, ohne deine kreative Arbeit in Finanzsoftware zu verwandeln.",
-        image: `${ROOM_BASE}/room-cash.png`,
-        icon: WalletCards,
-      },
-    ],
-    storyEyebrow: "EIN TAG MIT YORI",
-    storyTitle: "Draußen passiert etwas. Drinnen wird daraus Arbeit.",
-    storyText:
-      "Stell dir vor, eine Frage taucht wiederholt unter deinen Videos auf. YORI zeigt dir nicht einfach noch eine Zahl — es hält den Faden fest und bringt ihn dorthin, wo du etwas daraus machen kannst.",
-    story: [
-      ["01", "TikTok + Instagram", "Eine Frage aus der Community taucht mehrfach auf."],
-      ["02", "Schreibtisch", "YORI legt nur den relevanten Zusammenhang zu dir: Frage, Resonanz und warum sie gerade wichtig sein könnte."],
-      ["03", "Werkstatt", "Aus deiner Entscheidung entsteht ein Briefing, dann ein Entwurf mit Material und nächsten Schritten."],
-      ["04", "Freigabe", "Nichts geht nach draußen, bevor du es gesehen und freigegeben hast."],
-      ["05", "Ergebnis", "Nach der Veröffentlichung kommt zurück, was passiert ist — damit YORI beim nächsten Mal mehr Kontext hat."],
-    ],
-    sourcesEyebrow: "WAS INS HAUS DARF",
-    sourcesTitle: "Du verbindest Quellen. YORI verbindet den Zusammenhang.",
-    sourcesText:
-      "In der aktuellen Vorschau sind diese Quellen bewusst simuliert. Sie zeigen, wie sich mehrere echte Verbindungen später gemeinsam anfühlen sollen — ohne so zu tun, als wären sie heute schon live.",
-    sources: ["TikTok", "Instagram", "Mail", "Kalender", "Drive", "Cash"],
-    demo: "DEMO SOURCE",
-    gardenEyebrow: "DRAUSSEN / DRINNEN",
-    gardenTitle: "Die Welt bleibt draußen in Bewegung. Im Haus bleibt es ruhig.",
-    gardenText:
-      "YORI soll nicht verlangen, dass du ständig alles beobachtest. Signale kommen von draußen. Du gehst nur dorthin, wo deine Aufmerksamkeit wirklich gebraucht wird.",
-    finalEyebrow: "YORI · PRIVATE PREVIEW",
-    finalTitle: "Vielleicht soll sich Arbeit nicht wie Software anfühlen.",
-    finalText:
-      "YORI ist noch im Aufbau. Die Vorschau ist eine klar markierte Demo — aber das Haus, die Räume und die Art, wie Arbeit darin fließen soll, sind die Richtung.",
-    open: "Demo-Haus betreten",
-  },
-  en: {
-    houseEyebrow: "YOUR HOUSE",
-    houseTitle: "Everything you are building gets a place of its own.",
-    houseText:
-      "Not another app that gives you more things to watch. YORI organizes creative work spatially: what needs you sits on the desk. What is becoming something lives in the workshop. Help has a place in Crew. And the business side no longer disappears into a separate dashboard.",
-    rooms: [
-      {
-        name: "Desk",
-        line: "Only what genuinely needs you today.",
-        text: "An approval. An important message. A meeting. A decision. If nothing needs you, the desk is allowed to stay empty.",
-        image: `${ROOM_BASE}/room-desk.png`,
-        icon: House,
-      },
-      {
-        name: "Workshop",
-        line: "This is where an idea becomes something finished.",
-        text: "Briefs, drafts, raw material and next steps stay visible as one continuous piece of work — from the first signal to publication.",
-        image: `${ROOM_BASE}/room-workshop.png`,
-        icon: Hammer,
-      },
-      {
-        name: "Crew",
-        line: "Help becomes visible when it is actually carrying work.",
-        text: "Research, writing, editing or organization can be supported. But only whoever is genuinely working on something appears in the room — no fictional agent theatre.",
-        image: `${ROOM_BASE}/room-crew.png`,
-        icon: Users,
-      },
-      {
-        name: "Cash",
-        line: "Your business belongs here. It does not take over the house.",
-        text: "Collaborations, invoices, open amounts and expenses get a calm place of their own without turning your creative work into finance software.",
-        image: `${ROOM_BASE}/room-cash.png`,
-        icon: WalletCards,
-      },
-    ],
-    storyEyebrow: "A DAY WITH YORI",
-    storyTitle: "Something happens outside. Inside, it becomes work.",
-    storyText:
-      "Imagine the same question starts appearing under your videos. YORI does not just give you another metric — it keeps the thread and brings it to the place where you can turn it into something.",
-    story: [
-      ["01", "TikTok + Instagram", "A community question starts appearing repeatedly."],
-      ["02", "Desk", "YORI brings you only the relevant context: the question, the response and why it may matter now."],
-      ["03", "Workshop", "Your decision becomes a brief, then a draft with material and next steps."],
-      ["04", "Approval", "Nothing leaves the house before you have seen and approved it."],
-      ["05", "Outcome", "After publishing, the result comes back in — so YORI has more context next time."],
-    ],
-    sourcesEyebrow: "WHAT ENTERS THE HOUSE",
-    sourcesTitle: "You connect sources. YORI connects the context.",
-    sourcesText:
-      "In the current preview these sources are deliberately simulated. They show how several real connections should eventually feel together without pretending they are already live today.",
-    sources: ["TikTok", "Instagram", "Mail", "Calendar", "Drive", "Cash"],
-    demo: "DEMO SOURCE",
-    gardenEyebrow: "OUTSIDE / INSIDE",
-    gardenTitle: "The world can keep moving outside. The house stays calm.",
-    gardenText:
-      "YORI should not require you to watch everything all the time. Signals arrive from outside. You only go where your attention is genuinely needed.",
-    finalEyebrow: "YORI · PRIVATE PREVIEW",
-    finalTitle: "Maybe work does not have to feel like software.",
-    finalText:
-      "YORI is still being built. The preview is a clearly marked demo — but the house, the rooms and the way work should flow through them are the direction.",
-    open: "Enter the demo house",
-  },
-} as const;
+type Props = { locale: 'de' | 'en' };
+const RAW = 'https://raw.githubusercontent.com/Saimor-world/yori/tomo-rebrand/public/scene';
+const ROOMS = [
+  ['desk','Schreibtisch','Desk','Was heute wirklich dich braucht.','Only what genuinely needs you today.'],
+  ['workshop','Werkstatt','Workshop','Wo Signale, Ideen und Material zu etwas Fertigem werden.','Where signals, ideas and material become something finished.'],
+  ['crew','Crew','Crew','Unterstützung erscheint erst, wenn sie wirklich Arbeit trägt.','Support appears only when it is genuinely carrying work.'],
+  ['cash','Cash','Cash','Das Geschäft hat seinen Platz, ohne das Haus zu übernehmen.','The business has its place without taking over the house.'],
+] as const;
 
 export default function YoriLanding({ locale }: Props) {
-  const c = COPY[locale];
+  const de = locale === 'de';
+  const sources = de ? ['TikTok','Instagram','Mail','Kalender','Drive','Cash'] : ['TikTok','Instagram','Mail','Calendar','Drive','Cash'];
+  const flow = de
+    ? [['01','Draußen','Eine Frage taucht wiederholt unter Minas Videos auf.'],['02','Schreibtisch','YORI bringt nur den relevanten Faden ins Haus.'],['03','Werkstatt','Aus der Entscheidung werden Briefing, Material und Entwurf.'],['04','Freigabe','Mina sieht, ändert und entscheidet. Nichts geht ungefragt raus.'],['05','Zurück ins Haus','Ergebnis und Kontext bleiben für den nächsten Schritt erhalten.']]
+    : [['01','Outside','A question keeps appearing under Mina’s videos.'],['02','Desk','YORI brings only the relevant thread into the house.'],['03','Workshop','The decision becomes a brief, material and a draft.'],['04','Approval','Mina sees, changes and decides. Nothing leaves unapproved.'],['05','Back home','Outcome and context remain for the next step.']];
 
   return (
-    <main className="overflow-hidden bg-[#f0e8d8] text-[#17211d] selection:bg-[#244f44] selection:text-white">
-      <section id="house" className="relative border-b border-[#183229]/10 bg-[#f3ecdf] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
-        <div className="pointer-events-none absolute inset-0 opacity-[.12] [background-image:linear-gradient(rgba(53,73,62,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(53,73,62,.08)_1px,transparent_1px)] [background-size:72px_72px]" />
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-end">
-            <div>
-              <p className="font-mono text-[10px] font-bold tracking-[.24em] text-[#376452]">{c.houseEyebrow}</p>
-              <h2 className="mt-5 max-w-2xl font-serif text-5xl font-light leading-[.94] tracking-[-.045em] sm:text-7xl">{c.houseTitle}</h2>
+    <main id="house" className="overflow-hidden bg-[#101812] text-[#f4eddd]">
+      <section className="relative min-h-[92svh] border-t border-white/8">
+        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage:`url(${RAW}/outside-day.png)`}} />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,15,11,.18),rgba(9,15,11,.72)_78%,#101812)]" />
+        <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col justify-between px-6 py-16 sm:px-10 lg:px-14">
+          <div className="max-w-2xl">
+            <p className="font-mono text-[9px] font-bold tracking-[.28em] text-[#e4ca8b]/72">{de?'DRAUSSEN':'OUTSIDE'}</p>
+            <h2 className="mt-5 font-serif text-[clamp(3.5rem,7vw,7rem)] font-light leading-[.86] tracking-[-.05em]">{de?<>Hier passiert<br/><em className="font-light text-[#e5cb8c]">das Leben.</em></>:<>This is where<br/><em className="font-light text-[#e5cb8c]">life happens.</em></>}</h2>
+          </div>
+          <div className="ml-auto max-w-xl rounded-[2px] border-l border-[#e6cf94]/30 bg-[#0c1510]/45 p-6 backdrop-blur-md sm:p-8">
+            <p className="text-base leading-7 text-white/68">{de?'TikTok läuft. Eine Mail kommt rein. Im Kalender rückt etwas näher. Jemand fragt zum dritten Mal dasselbe unter einem Video. YORI versucht nicht, daraus noch einen Feed zu machen.':'TikTok moves. An email arrives. Something gets closer on the calendar. Someone asks the same thing under a video for the third time. YORI does not turn that into another feed.'}</p>
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3">
+              {sources.map(s=><span key={s} className="font-mono text-[8px] font-bold tracking-[.16em] text-white/45">○ {s.toUpperCase()} <i className="not-italic text-[#e4ca8b]/50">DEMO</i></span>)}
             </div>
-            <p className="max-w-2xl text-base leading-7 text-[#31413b]/72 sm:text-lg sm:leading-8 lg:justify-self-end">{c.houseText}</p>
-          </div>
-
-          <div className="mt-16 grid gap-5 lg:grid-cols-2">
-            {c.rooms.map((room, index) => {
-              const Icon = room.icon;
-              return (
-                <article key={room.name} className="group overflow-hidden rounded-[2rem] border border-[#183229]/10 bg-[#e7dcc8] shadow-[0_22px_65px_rgba(54,42,25,.07)]">
-                  <div className="relative overflow-hidden bg-[#17211d]">
-                    <img src={room.image} alt={room.name} className="aspect-[16/9] w-full object-cover opacity-[.94] transition duration-700 group-hover:scale-[1.018] group-hover:opacity-100" />
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/15 bg-black/25 px-3 py-1.5 text-white backdrop-blur-md">
-                      <Icon className="h-3.5 w-3.5" />
-                      <span className="font-mono text-[9px] font-bold tracking-[.16em]">0{index + 1} / {room.name.toUpperCase()}</span>
-                    </div>
-                  </div>
-                  <div className="p-7 sm:p-9">
-                    <h3 className="font-serif text-3xl font-light leading-tight tracking-[-.03em] sm:text-4xl">{room.line}</h3>
-                    <p className="mt-4 max-w-xl text-sm leading-6 text-[#31413b]/70 sm:text-base sm:leading-7">{room.text}</p>
-                  </div>
-                </article>
-              );
-            })}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-b border-white/10 bg-[#09130f] px-5 py-24 text-white sm:px-8 sm:py-32 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_28%,rgba(91,160,126,.13),transparent_27%),radial-gradient(circle_at_15%_80%,rgba(208,170,99,.09),transparent_32%)]" />
+      <section className="relative bg-[#d8ccb5] px-6 py-24 text-[#1c2923] sm:px-10 sm:py-32 lg:px-14">
+        <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:linear-gradient(90deg,rgba(76,54,32,.12)_1px,transparent_1px)] [background-size:12.5%_100%]" />
         <div className="relative mx-auto max-w-7xl">
-          <p className="font-mono text-[10px] font-bold tracking-[.24em] text-[#84bda7]">{c.storyEyebrow}</p>
-          <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_.72fr] lg:items-end">
-            <h2 className="max-w-4xl font-serif text-5xl font-light leading-[.94] tracking-[-.045em] sm:text-7xl">{c.storyTitle}</h2>
-            <p className="max-w-xl text-base leading-7 text-white/58 sm:text-lg sm:leading-8">{c.storyText}</p>
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+            <div><p className="font-mono text-[9px] font-bold tracking-[.28em] text-[#456455]">{de?'DIE SCHWELLE':'THE THRESHOLD'}</p><h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{de?'Nur was Bedeutung bekommt, kommt hinein.':'Only what gains meaning comes inside.'}</h2></div>
+            <p className="max-w-xl text-base leading-7 text-[#2b3b34]/68 lg:justify-self-end">{de?'Die Außenwelt bleibt draußen. Im Haus landen keine sechs Dashboards, sondern Zusammenhänge: Was ist passiert? Warum könnte es wichtig sein? Braucht es dich — oder kann es warten?':'The outside world stays outside. Six dashboards do not enter the house. Context does: what happened, why might it matter, does it need you — or can it wait?'}</p>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-16 border-t border-white/12">
-            {c.story.map(([number, place, text]) => (
-              <div key={number} className="grid gap-3 border-b border-white/10 py-7 sm:grid-cols-[70px_.55fr_1.45fr] sm:items-start sm:gap-6">
-                <span className="font-mono text-[9px] font-bold tracking-[.18em] text-[#d8bb78]/55">{number}</span>
-                <div className="flex items-center gap-3 text-lg font-medium text-white/92 sm:text-xl"><CircleDot className="h-4 w-4 text-[#74b39c]" />{place}</div>
-                <p className="max-w-2xl text-sm leading-6 text-white/55 sm:text-base sm:leading-7">{text}</p>
+      <section className="bg-[#0d1511] py-8 sm:py-14">
+        <div className="mx-auto max-w-[1500px] space-y-5 px-3 sm:px-6">
+          {ROOMS.map(([slug,deName,enName,deText,enText],i)=>(
+            <article key={slug} className="group relative min-h-[68svh] overflow-hidden border border-white/8 bg-black">
+              <img src={`${RAW}/rooms/room-${slug}.png`} alt={de?deName:enName} className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-[1400ms] group-hover:scale-[1.015] group-hover:opacity-95" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,10,7,.82),rgba(5,10,7,.30)_52%,rgba(5,10,7,.05)),linear-gradient(180deg,transparent_45%,rgba(5,10,7,.58))]" />
+              <div className="relative flex min-h-[68svh] max-w-2xl flex-col justify-end p-7 sm:p-12 lg:p-16">
+                <span className="font-mono text-[9px] font-bold tracking-[.25em] text-[#e3c985]/70">0{i+1} / {de?deName.toUpperCase():enName.toUpperCase()}</span>
+                <h3 className="mt-4 font-serif text-[clamp(3rem,6vw,6.5rem)] font-light leading-[.86] tracking-[-.05em] text-[#fff7e6]">{de?deName:enName}</h3>
+                <p className="mt-5 max-w-lg text-base leading-7 text-white/62 sm:text-lg">{de?deText:enText}</p>
               </div>
-            ))}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative bg-[#17231c] px-6 py-28 sm:px-10 sm:py-36 lg:px-14">
+        <div className="absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[#dfc583]/18 to-transparent" />
+        <div className="relative mx-auto max-w-6xl">
+          <p className="font-mono text-[9px] font-bold tracking-[.28em] text-[#e0c580]/65">{de?'MINA · EIN DEMO-TAG':'MINA · A DEMO DAY'}</p>
+          <h2 className="mt-5 max-w-4xl font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{de?'Nicht klicken, klicken, klicken. Ein Faden durchs Haus.':'Not click, click, click. One thread through the house.'}</h2>
+          <div className="mt-16 space-y-0 border-t border-white/10">
+            {flow.map(([n,place,text])=><div key={n} className="grid gap-3 border-b border-white/10 py-7 sm:grid-cols-[70px_.6fr_1.4fr] sm:gap-8"><span className="font-mono text-[8px] tracking-[.2em] text-[#e0c580]/45">{n}</span><strong className="font-serif text-2xl font-light text-white/88">{place}</strong><p className="max-w-xl text-sm leading-6 text-white/48 sm:text-base">{text}</p></div>)}
           </div>
         </div>
       </section>
 
-      <section className="relative border-b border-[#183229]/10 bg-[#e8decb] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
-        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-          <div>
-            <p className="font-mono text-[10px] font-bold tracking-[.24em] text-[#376452]">{c.sourcesEyebrow}</p>
-            <h2 className="mt-5 max-w-2xl font-serif text-5xl font-light leading-[.94] tracking-[-.045em] sm:text-7xl">{c.sourcesTitle}</h2>
-            <p className="mt-7 max-w-xl text-base leading-7 text-[#31413b]/70 sm:text-lg sm:leading-8">{c.sourcesText}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {c.sources.map((source, index) => (
-              <div key={source} className="min-h-36 rounded-[1.5rem] border border-[#183229]/10 bg-[#f5efe3]/75 p-5 shadow-[7px_8px_0_rgba(95,70,40,.05)]">
-                <span className="font-mono text-[8px] font-bold tracking-[.16em] text-[#89663e]/55">0{index + 1}</span>
-                <p className="mt-8 text-lg font-semibold text-[#263b33]">{source}</p>
-                <span className="mt-2 inline-block font-mono text-[7px] font-bold tracking-[.16em] text-[#3d715f]/65">{c.demo}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="relative min-h-[72svh] overflow-hidden bg-[#15251d] px-5 py-24 text-white sm:px-8 sm:py-32 lg:px-10">
-        <div className="absolute inset-0 bg-cover bg-center opacity-75" style={{ backgroundImage: `url(${GARDEN})` }} />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,19,14,.84),rgba(8,19,14,.52)_48%,rgba(8,19,14,.25)),linear-gradient(180deg,rgba(8,19,14,.18),rgba(8,19,14,.58))]" />
-        <div className="absolute inset-0 opacity-[.15] [background-image:linear-gradient(rgba(244,235,216,.16)_1px,transparent_1px),linear-gradient(90deg,rgba(244,235,216,.16)_1px,transparent_1px)] [background-size:92px_92px] [mask-image:linear-gradient(90deg,black,transparent_65%)]" />
-        <div className="relative mx-auto flex min-h-[52svh] max-w-7xl items-end">
-          <div className="max-w-3xl">
-            <p className="font-mono text-[10px] font-bold tracking-[.24em] text-[#e4cc8b]">{c.gardenEyebrow}</p>
-            <h2 className="mt-5 font-serif text-5xl font-light leading-[.94] tracking-[-.045em] sm:text-7xl">{c.gardenTitle}</h2>
-            <p className="mt-7 max-w-xl text-base leading-7 text-white/66 sm:text-lg sm:leading-8">{c.gardenText}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#f3ecdf] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
-        <div className="mx-auto max-w-5xl text-center">
-          <YoriMark className="mx-auto h-16 w-16 text-[#376452]" />
-          <p className="mt-7 font-mono text-[10px] font-bold tracking-[.24em] text-[#376452]">{c.finalEyebrow}</p>
-          <h2 className="mx-auto mt-5 max-w-4xl font-serif text-5xl font-light leading-[.94] tracking-[-.045em] sm:text-7xl">{c.finalTitle}</h2>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-[#31413b]/70 sm:text-lg sm:leading-8">{c.finalText}</p>
-          <a href="https://yori.saimor.world" className="group mt-10 inline-flex items-center gap-3 rounded-full bg-[#234f43] px-8 py-4 text-sm font-bold text-[#f7f2e8] shadow-[0_14px_40px_rgba(35,79,67,.14)] transition hover:-translate-y-0.5 hover:bg-[#193d34]">
-            {c.open}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </a>
-          <p className="mt-10 font-serif text-sm italic text-[#765735]/55">Create in Flow.</p>
+      <section className="relative min-h-[88svh] overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage:`url(${RAW}/outside-golden-hour.png)`}} />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#17231c,rgba(8,14,10,.25)_32%,rgba(8,14,10,.72))]" />
+        <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col items-center justify-center px-6 py-20 text-center">
+          <YoriMark className="h-14 w-14 text-[#e8d194]" />
+          <p className="mt-6 font-mono text-[9px] font-bold tracking-[.28em] text-[#e8d194]/68">YORI · PRIVATE PREVIEW</p>
+          <h2 className="mt-5 max-w-4xl font-serif text-[clamp(3.4rem,7vw,7rem)] font-light leading-[.88] tracking-[-.05em] text-[#fff7e5]">{de?'Deine Arbeit. Als Ort.':'Your work. As a place.'}</h2>
+          <p className="mt-6 max-w-xl text-base leading-7 text-white/58">{de?'Die Daten in der Vorschau gehören Mina und sind Demo. Das Haus ist die Produktidee — und genau dort geht es jetzt weiter.':'The preview data belongs to Mina and is demo data. The house is the product idea — and that is where the journey continues.'}</p>
+          <a href="https://yori.saimor.world" className="group mt-9 inline-flex items-center gap-3 border border-[#f0dfb4]/32 bg-[#ead9ad]/90 px-7 py-3.5 text-sm font-bold text-[#183128] transition hover:bg-[#fff1cc]">{de?'Schiebetür öffnen':'Open the sliding door'}<ArrowRight className="h-4 w-4 transition group-hover:translate-x-1"/></a>
         </div>
       </section>
     </main>
