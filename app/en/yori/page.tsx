@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import YoriGardenArrival from "@/components/YoriGardenArrival";
 import YoriLanding from "@/components/YoriLanding";
 
 export const metadata: Metadata = {
@@ -8,5 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function YoriPage() {
-  return <YoriLanding locale="en" />;
+  return (
+    <>
+      <YoriGardenArrival locale="en" />
+      <div className="[&>main>section:first-child]:hidden">
+        <YoriLanding locale="en" />
+      </div>
+    </>
+  );
 }
