@@ -1,5 +1,3 @@
-'use client';
-
 import SystemWorldHome from '@/components/SystemWorldHome';
 
 type Props = { locale: 'de' | 'en' };
