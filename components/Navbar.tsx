@@ -65,15 +65,17 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const anchorHref = (id: string) => (isHome ? `#${id}` : `${homeHref}#${id}`);
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const moraHref = locale === 'de' ? '/mora' : '/en/mora';
+  const yoriHref = locale === 'de' ? '/yori' : '/en/yori';
   const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
 
   const copy = locale === 'de'
-    ? { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
-    : { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
+    ? { system: 'System', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
+    : { system: 'System', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
 
   const navItems = [
     { href: anchorHref('system'), label: copy.system },
     { href: moraHref, label: copy.mora },
+    { href: yoriHref, label: copy.yori },
     { href: anchorHref('studio'), label: copy.studio },
   ];
 
