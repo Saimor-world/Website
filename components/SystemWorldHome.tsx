@@ -28,7 +28,7 @@ const COPY = {
     login: 'Einloggen',
     training: 'Vorträge & Schulungen',
     entryNote:
-      'Der Einstieg beginnt mit einem echten Security Check. Sein Ergebnis wird zum ersten Objekt in deinem 30-Tage-Raum.',
+      'Der Security Check prüft öffentliche Signale deiner Domain. Die Ergebnisse bilden den Ausgangspunkt deines persönlichen Vorschau-Raums.',
     orbit: [
       ['DATEIEN', 'im Zusammenhang'],
       ['MÔRA', 'proaktive Assistenz'],
@@ -76,7 +76,7 @@ const COPY = {
     login: 'Log in',
     training: 'Talks & training',
     entryNote:
-      'Entry starts with a real Security Check. Its result becomes the first object inside your 30-day space.',
+      'The Security Check examines public signals from your domain. Its results become the starting point of your personal preview workspace.',
     orbit: [
       ['FILES', 'kept in context'],
       ['MÔRA', 'proactive assistant'],
