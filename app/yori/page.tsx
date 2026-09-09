@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import YoriGardenArrival from "@/components/YoriGardenArrival";
 import YoriLanding from "@/components/YoriLanding";
 
-const description = "Ein ruhiger, japanisch inspirierter Arbeitsraum für Creator: Content, Ideen, Community, Kooperationen und Business in einem zusammenhängenden Haus.";
+const description = "YORI bündelt Content, Ideen, Community, Kooperationen und Business für Creator an einem Ort.";
 
 export const metadata: Metadata = {
   title: "YORI — Creative House",
@@ -26,10 +25,5 @@ export const metadata: Metadata = {
 };
 
 export default function YoriPage() {
-  return (
-    <>
-      <YoriGardenArrival locale="de" />
-      <YoriLanding locale="de" />
-    </>
-  );
+  return <YoriLanding locale="de" />;
 }
