@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import YoriLanding from "@/components/YoriLanding";
 
 export const metadata: Metadata = {
-  title: "YORI — Creative House by Saimôr",
-  description: "Ein ruhiges digitales Haus für kreative Arbeit: Signale, Ideen, Werkstatt, Crew und Geschäft in einem zusammenhängenden Raum.",
+  title: "YORI — Creative House",
+  description: "Ein ruhiger, japanisch inspirierter Arbeitsraum für Creator: Content, Ideen, Community, Kooperationen und Business in einem zusammenhängenden Haus.",
+  robots: { index: false, follow: false },
 };
 
 export default function YoriPage() {
