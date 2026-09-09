@@ -29,9 +29,7 @@ export default function YoriPage() {
   return (
     <>
       <YoriGardenArrival locale="en" />
-      <div className="[&>main>section:first-child]:hidden">
-        <YoriLanding locale="en" />
-      </div>
+      <YoriLanding locale="en" />
     </>
   );
 }
