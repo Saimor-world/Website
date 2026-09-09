@@ -6,19 +6,19 @@ type Props = { locale: 'de' | 'en' };
 const COPY = {
   de: {
     eyebrow: 'SAIMÔR · PRODUKTSTUDIO',
-    title: 'Technik, die wieder verständlich wird.',
-    body: 'Saimôr ist das unabhängige Produktstudio von Marius Fahrländer. Hier entstehen souveräne KI-Systeme, digitale Arbeitsräume und ausgewählte Webprojekte — ruhig, nachvollziehbar und nah an den Menschen, die damit arbeiten.',
-    founder: 'Marius bringt Erfahrung aus IT-Systemmanagement, technischem Vertrieb sowie aus Präsentationen und Schulungen mit. Neben der Produktarbeit entwickelt er Vorträge und Workshops, die KI praktisch statt abstrakt machen.',
+    title: 'Produkte bauen. KI verständlich machen.',
+    body: 'Saimôr ist ein unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume und ausgewählte Webprojekte. Wir verbinden Produktentwicklung mit praktischer Vermittlung und arbeiten an Systemen, die nachvollziehbar und im Alltag tatsächlich nutzbar sind.',
+    studio: 'Neben der Produktarbeit bieten wir Vorträge, Workshops und Schulungen zu praktischer KI an – verständlich, konkret und ohne Buzzword-Show.',
     cta: 'Unverbindlich sprechen',
-    labels: ['Produkte im Aufbau', 'Vorträge & Schulungen', 'Ausgewählte Webprojekte'],
+    labels: ['Saimôr OS & Môra', 'Vorträge & Schulungen', 'Webprojekte & Prototypen'],
   },
   en: {
     eyebrow: 'SAIMÔR · PRODUCT STUDIO',
-    title: 'Technology that makes sense again.',
-    body: 'Saimôr is Marius Fahrländer’s independent product studio. It creates sovereign AI systems, digital workspaces and selected web projects — calm, traceable and close to the people who use them.',
-    founder: 'Marius brings experience in IT systems management, technical sales, presentations and training. Alongside product work, he develops talks and workshops that make AI practical rather than abstract.',
+    title: 'Build products. Make AI understandable.',
+    body: 'Saimôr is an independent product studio for sovereign AI systems, digital workspaces and selected web projects. We combine hands-on product development with practical communication and build systems that are traceable and genuinely useful in everyday work.',
+    studio: 'Alongside product work, we offer talks, workshops and practical AI training – clear, concrete and without buzzword theatre.',
     cta: 'Start a conversation',
-    labels: ['Products in development', 'Talks & training', 'Selected web projects'],
+    labels: ['Saimôr OS & Môra', 'Talks & training', 'Web projects & prototypes'],
   },
 } as const;
 
@@ -39,7 +39,7 @@ export default function StudioSection({ locale }: Props) {
           </Link>
         </div>
         <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-7 shadow-[12px_14px_0_rgba(0,0,0,.24)] md:p-9">
-          <p className="font-serif text-2xl italic leading-relaxed text-white/78 md:text-3xl">{copy.founder}</p>
+          <p className="font-serif text-2xl italic leading-relaxed text-white/78 md:text-3xl">{copy.studio}</p>
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {copy.labels.map((label, index) => {
               const Icon = ICONS[index];
