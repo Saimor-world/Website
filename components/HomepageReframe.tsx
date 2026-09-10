@@ -35,6 +35,25 @@ export default function HomepageReframe() {
         box-shadow: none !important;
       }
 
+      /* Tablet/iPad: the forest crown should visibly frame the hero again. */
+      @media (min-width: 640px) and (max-width: 1180px) {
+        .forest-canopy-left {
+          left: -4% !important;
+          top: -3% !important;
+          width: 58% !important;
+          height: 62% !important;
+          opacity: .72 !important;
+        }
+
+        .forest-canopy-right {
+          right: -5% !important;
+          top: -4% !important;
+          width: 59% !important;
+          height: 64% !important;
+          opacity: .68 !important;
+        }
+      }
+
       @media (max-width: 900px) {
         #system {
           padding-top: 4.25rem !important;
