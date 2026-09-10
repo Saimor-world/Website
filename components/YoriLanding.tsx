@@ -1,193 +1,214 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import YoriMark from '@/components/YoriMark';
 
 type Props = { locale: 'de' | 'en' };
 
-const sourceColors = ['#ff8a6b', '#a58ad2', '#f0b66d', '#79b7a6', '#718ed3', '#d86f8e'];
-
 export default function YoriLanding({ locale }: Props) {
   const de = locale === 'de';
-  const sources = de
-    ? ['TikTok', 'Instagram', 'Mail', 'Kalender', 'Drive', 'Deals']
-    : ['TikTok', 'Instagram', 'Mail', 'Calendar', 'Drive', 'Deals'];
 
-  const rooms = de
+  const benefits = de
     ? [
-        ['Heute', 'Nur das, was wirklich Aufmerksamkeit braucht.', '#f0b66d'],
-        ['Werkstatt', 'Aus Signalen werden Entwürfe, Inhalte und nächste Schritte.', '#79b7a6'],
-        ['Crew', 'Unterstützung wird sichtbar, wenn sie tatsächlich Arbeit trägt.', '#a58ad2'],
-        ['Cash', 'Kooperationen, offene Vorgänge und Geld ohne KPI-Wand.', '#ff8a6b'],
+        ['SIGNALS', 'Wichtige Nachrichten, Kommentare, Termine und offene Fäden an einem Ort.'],
+        ['CONTENT', 'Ideen, Entwürfe und nächste Schritte bleiben mit dem Kontext verbunden.'],
+        ['DEALS', 'Kooperationen, Zusagen und Follow-ups verschwinden nicht zwischen DMs und Mail.'],
+        ['TODAY', 'YORI verdichtet alles auf das, was heute wirklich Aufmerksamkeit braucht.'],
       ]
     : [
-        ['Today', 'Only what genuinely needs attention.', '#f0b66d'],
-        ['Workshop', 'Signals become drafts, content and next steps.', '#79b7a6'],
-        ['Crew', 'Support appears when it is actually carrying work.', '#a58ad2'],
-        ['Cash', 'Collaborations, open items and money without a KPI wall.', '#ff8a6b'],
+        ['SIGNALS', 'Important messages, comments, dates and open threads in one place.'],
+        ['CONTENT', 'Ideas, drafts and next steps stay attached to their context.'],
+        ['DEALS', 'Collaborations, promises and follow-ups do not disappear between DMs and email.'],
+        ['TODAY', 'YORI compresses everything down to what genuinely needs attention today.'],
+      ];
+
+  const steps = de
+    ? [
+        ['01', 'Profil zeigen', 'Starte mit deinem Instagram- oder TikTok-Namen. Keine Installation, kein neues System zum Lernen.'],
+        ['02', 'Kontext verbinden', 'YORI sammelt nur die Quellen, die du freigibst, und hält Zusammenhänge über Zeit fest.'],
+        ['03', 'Heute sehen', 'Statt sechs Apps zu prüfen, bekommst du eine klare Tageslage mit nächsten Schritten.'],
+      ]
+    : [
+        ['01', 'Show your profile', 'Start with your Instagram or TikTok name. No install, no new system to learn.'],
+        ['02', 'Connect context', 'YORI only uses sources you approve and keeps relationships over time.'],
+        ['03', 'See today', 'Instead of checking six apps, you get one clear daily view with next steps.'],
       ];
 
   return (
-    <main className="overflow-hidden bg-[#0c0b10] text-[#f7f1ea]">
-      <section className="relative isolate min-h-[100svh] px-5 pb-10 pt-7 sm:px-8 lg:px-12">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(255,119,92,.24),transparent_26%),radial-gradient(circle_at_84%_18%,rgba(126,108,208,.22),transparent_29%),radial-gradient(circle_at_74%_82%,rgba(75,153,126,.18),transparent_28%),linear-gradient(145deg,#0d0b11_0%,#151119_52%,#0c1112_100%)]" />
-        <div className="absolute inset-0 opacity-[.18] [background-image:linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] [background-size:80px_80px]" />
+    <main className="overflow-hidden bg-[#11130f] text-[#f3efe5]">
+      <section className="relative min-h-[100svh] border-b border-white/[.08] px-5 pb-12 pt-8 sm:px-8 lg:px-12">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_30%,rgba(112,145,99,.16),transparent_30%),radial-gradient(circle_at_16%_4%,rgba(210,180,111,.08),transparent_22%),linear-gradient(180deg,#121610_0%,#0f120e_100%)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[.08] [background-image:linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] [background-size:64px_64px]" />
 
         <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl flex-col">
-          <header className="flex items-center justify-between">
-            <div className="flex items-center gap-3 text-[#f0cf90]">
+          <header className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-[#d9c487]">
               <YoriMark className="h-7 w-7" />
-              <span className="font-mono text-[8px] font-bold tracking-[.30em]">YORI · 縁</span>
+              <div>
+                <div className="font-mono text-[9px] font-bold tracking-[.28em]">YORI</div>
+                <div className="mt-1 font-mono text-[7px] tracking-[.18em] text-white/30">CREATOR OS · SAIMÔR</div>
+              </div>
             </div>
-            <span className="font-mono text-[7px] tracking-[.24em] text-white/30">CREATIVE HOUSE · SAIMÔR</span>
+            <a href={de ? '/de' : '/en'} className="font-mono text-[8px] tracking-[.18em] text-white/34 transition hover:text-white/70">
+              {de ? 'ZURÜCK ZU SAIMÔR' : 'BACK TO SAIMÔR'}
+            </a>
           </header>
 
-          <div className="grid flex-1 items-center gap-10 py-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
-            <div className="max-w-3xl">
-              <p className="font-mono text-[8px] font-bold tracking-[.25em] text-[#eab26d]/72">
-                {de ? 'FÜR CREATOR, DIE NICHT NOCH EIN TOOL BRAUCHEN' : 'FOR CREATORS WHO DO NOT NEED ANOTHER TOOL'}
+          <div className="grid flex-1 items-center gap-12 py-14 lg:grid-cols-[.92fr_1.08fr] lg:gap-16">
+            <div className="max-w-2xl">
+              <p className="font-mono text-[9px] font-semibold tracking-[.24em] text-[#9fbd93]/76">
+                {de ? 'FÜR CREATOR, DIE NICHT NOCH EIN DASHBOARD BRAUCHEN' : 'FOR CREATORS WHO DO NOT NEED ANOTHER DASHBOARD'}
               </p>
-              <h1 className="mt-5 max-w-4xl font-serif text-[clamp(4rem,10vw,8.6rem)] font-light leading-[.80] tracking-[-.062em]">
-                {de ? <><span>Eine Sache.</span><br/><em className="font-light text-[#f1c47d]">Statt sechs Apps.</em></> : <><span>One thing.</span><br/><em className="font-light text-[#f1c47d]">Instead of six apps.</em></>}
+              <h1 className="mt-6 font-serif text-[clamp(3.9rem,8.6vw,8rem)] font-light leading-[.84] tracking-[-.058em] text-[#f7f2e8]">
+                {de ? <>Dein Creator-Alltag.<br/><em className="font-light text-[#d9c487]">An einem Ort.</em></> : <>Your creator work.<br/><em className="font-light text-[#d9c487]">In one place.</em></>}
               </h1>
               <p className="mt-7 max-w-xl text-base leading-7 text-white/58 sm:text-lg sm:leading-8">
                 {de
-                  ? 'YORI verbindet die Teile deiner Creator-Arbeit, hält den Zusammenhang und zeigt dir nur, was gerade wirklich wichtig ist.'
-                  : 'YORI connects the parts of your creator work, keeps the context and shows only what genuinely matters right now.'}
+                  ? 'YORI verbindet Content, Nachrichten, Kooperationen, Termine und Ideen zu einer einzigen Arbeitslage – damit du nicht jeden Morgen erst deine eigenen Apps zusammensuchen musst.'
+                  : 'YORI connects content, messages, collaborations, dates and ideas into one working view, so you do not have to rebuild your day from separate apps every morning.'}
               </p>
 
-              <form action="https://yori.saimor.world/demo" method="get" className="mt-8 max-w-xl rounded-[1.55rem] border border-white/10 bg-white/[.045] p-3 shadow-[0_20px_70px_rgba(0,0,0,.25)] backdrop-blur-xl">
-                <p className="px-2 pb-2 font-mono text-[8px] font-bold tracking-[.18em] text-[#f0cf90]/70">
-                  {de ? 'SIEH YORI MIT DEINEM PROFIL' : 'SEE YORI WITH YOUR PROFILE'}
+              <form action="https://yori.saimor.world/demo" method="get" className="mt-9 max-w-xl border border-white/[.09] bg-[#171a15]/90 p-3 shadow-[0_24px_80px_rgba(0,0,0,.28)]">
+                <p className="px-2 pb-2 font-mono text-[8px] font-semibold tracking-[.18em] text-[#cdbb85]/68">
+                  {de ? 'DEIN PROFIL. DEINE PREVIEW.' : 'YOUR PROFILE. YOUR PREVIEW.'}
                 </p>
-                <div className="grid gap-2 sm:grid-cols-[132px_1fr_auto]">
-                  <select name="platform" aria-label={de ? 'Plattform' : 'Platform'} defaultValue="instagram" className="min-h-12 rounded-xl border border-white/10 bg-[#17141c] px-3 text-sm text-white/72 outline-none">
+                <div className="grid gap-2 sm:grid-cols-[122px_1fr_auto]">
+                  <select name="platform" aria-label={de ? 'Plattform' : 'Platform'} defaultValue="instagram" className="min-h-12 border border-white/10 bg-[#10130f] px-3 text-sm text-white/72 outline-none">
                     <option value="instagram">Instagram</option>
                     <option value="tiktok">TikTok</option>
                   </select>
-                  <label className="flex min-h-12 items-center rounded-xl border border-white/10 bg-[#17141c] px-3 focus-within:border-[#f0cf90]/45">
-                    <span className="mr-1 text-white/34">@</span>
-                    <input name="creator" required maxLength={64} autoComplete="off" placeholder={de ? 'deinusername' : 'yourusername'} className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/24" />
+                  <label className="flex min-h-12 items-center border border-white/10 bg-[#10130f] px-3 focus-within:border-[#d9c487]/40">
+                    <span className="mr-1 text-white/30">@</span>
+                    <input name="creator" required maxLength={64} autoComplete="off" placeholder={de ? 'deinusername' : 'yourusername'} className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/22" />
                   </label>
-                  <button type="submit" className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#f2d39a] px-5 text-sm font-bold text-[#171519] transition hover:bg-[#ffe7b7]">
-                    {de ? 'Mein YORI' : 'My YORI'}
-                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  <button type="submit" className="group inline-flex min-h-12 items-center justify-center gap-2 bg-[#e9dfc4] px-5 text-sm font-bold text-[#182016] transition hover:bg-white">
+                    {de ? 'YORI ansehen' : 'See YORI'}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
-                <p className="px-2 pt-2 text-[11px] leading-5 text-white/35">
-                  {de
-                    ? 'YORI baut eine persönliche, klar markierte Preview. Wo noch keine verifizierten Signale verbunden sind, bleiben Beispiele ausdrücklich Beispiele.'
-                    : 'YORI builds a personal, clearly marked preview. Where no verified signals are connected yet, examples stay explicitly marked as examples.'}
+                <p className="px-2 pt-2 text-[11px] leading-5 text-white/30">
+                  {de ? 'Die Preview ist klar als Preview markiert. Nicht verbundene Daten werden nicht erfunden.' : 'The preview is clearly marked. Unconnected data is never invented.'}
                 </p>
               </form>
-
-              <div className="mt-4 flex flex-wrap gap-3">
-                <a href="https://yori.saimor.world/demo" className="group inline-flex items-center gap-3 rounded-full border border-white/12 px-5 py-3.5 text-sm text-white/64 transition hover:bg-white/[.05]">
-                  {de ? 'Ohne Profil ansehen' : 'Explore without a profile'}
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                </a>
-                <a href="#inside" className="inline-flex items-center rounded-full border border-white/12 px-5 py-3.5 text-sm text-white/64 transition hover:bg-white/[.05]">
-                  {de ? 'Was ist drin?' : 'What is inside?'}
-                </a>
-              </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-[560px]">
-              <div className="absolute inset-[14%] rounded-full bg-[conic-gradient(from_20deg,rgba(255,126,101,.22),rgba(162,132,210,.20),rgba(84,162,135,.20),rgba(241,182,109,.20),rgba(255,126,101,.22))] blur-3xl" />
-              <div className="relative aspect-square rounded-[2.4rem] border border-white/10 bg-white/[.025] p-6 shadow-[0_32px_100px_rgba(0,0,0,.38)] backdrop-blur-2xl sm:p-8">
-                <div className="absolute left-1/2 top-1/2 grid h-36 w-36 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f0d39a]/20 bg-[#121015]/80 shadow-[0_0_70px_rgba(240,190,110,.12)]">
-                  <div className="text-center">
-                    <YoriMark className="mx-auto h-10 w-10 text-[#ebc77f]" />
-                    <span className="mt-2 block font-mono text-[7px] tracking-[.24em] text-white/44">YORI</span>
+            <div className="relative mx-auto w-full max-w-[650px]">
+              <div className="absolute -inset-10 bg-[radial-gradient(circle,rgba(116,151,102,.13),transparent_62%)] blur-3xl" />
+              <div className="relative overflow-hidden border border-white/[.09] bg-[#0c100d] shadow-[0_40px_120px_rgba(0,0,0,.42)]">
+                <div className="flex items-center justify-between border-b border-white/[.07] px-5 py-4">
+                  <div>
+                    <div className="font-mono text-[8px] tracking-[.2em] text-[#d1c18d]/62">YORI / TODAY</div>
+                    <div className="mt-1 text-xs text-white/28">{de ? 'BEISPIELANSICHT' : 'EXAMPLE VIEW'}</div>
+                  </div>
+                  <span className="h-2 w-2 rounded-full bg-[#8eb985] shadow-[0_0_18px_rgba(142,185,133,.5)]" />
+                </div>
+
+                <div className="grid min-h-[520px] sm:grid-cols-[.34fr_.66fr]">
+                  <aside className="border-b border-white/[.06] p-4 sm:border-b-0 sm:border-r">
+                    <div className="font-mono text-[7px] tracking-[.18em] text-white/22">BEREICHE</div>
+                    {['Heute', 'Content', 'Kooperationen', 'Nachrichten', 'Kalender'].map((item, i) => (
+                      <div key={item} className={`mt-3 flex items-center justify-between px-3 py-2.5 text-xs ${i === 0 ? 'bg-[#1b251c] text-white/82' : 'text-white/34'}`}>
+                        <span>{de ? item : ['Today','Content','Collaborations','Messages','Calendar'][i]}</span>
+                        {i < 3 ? <span className="font-mono text-[8px] text-[#b9cdad]/44">0{i + 2}</span> : null}
+                      </div>
+                    ))}
+                  </aside>
+
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-end justify-between gap-4 border-b border-white/[.07] pb-5">
+                      <div>
+                        <div className="font-mono text-[8px] tracking-[.18em] text-white/28">{de ? 'HEUTE' : 'TODAY'}</div>
+                        <h2 className="mt-2 font-serif text-3xl font-light text-white/90">{de ? '3 Dinge zählen.' : '3 things matter.'}</h2>
+                      </div>
+                      <Sparkles className="h-5 w-5 text-[#d4bd7c]/52" strokeWidth={1.4} />
+                    </div>
+
+                    <div className="divide-y divide-white/[.06]">
+                      <div className="py-5">
+                        <div className="flex items-center gap-2 font-mono text-[7px] tracking-[.16em] text-[#d5bc79]/56"><span className="h-1.5 w-1.5 rounded-full bg-[#d5bc79]" /> {de ? 'KOOPERATION' : 'COLLABORATION'}</div>
+                        <p className="mt-2 text-sm leading-6 text-white/70">{de ? 'Antwort auf Briefing offen. Deadline morgen, 12:00.' : 'Briefing reply still open. Deadline tomorrow, 12:00.'}</p>
+                        <p className="mt-2 text-xs text-white/28">{de ? 'YORI hält Mail, Termin und Deal zusammen.' : 'YORI keeps email, date and deal together.'}</p>
+                      </div>
+                      <div className="py-5">
+                        <div className="flex items-center gap-2 font-mono text-[7px] tracking-[.16em] text-[#93b98a]/62"><span className="h-1.5 w-1.5 rounded-full bg-[#93b98a]" /> CONTENT</div>
+                        <p className="mt-2 text-sm leading-6 text-white/70">{de ? 'Eine Idee taucht in mehreren Kommentaren wieder auf.' : 'One idea keeps resurfacing across comments.'}</p>
+                        <p className="mt-2 text-xs text-white/28">{de ? 'Als Entwurf vormerken, ohne sie aus dem Kontext zu reißen.' : 'Keep it as a draft without losing the context.'}</p>
+                      </div>
+                      <div className="py-5">
+                        <div className="flex items-center gap-2 font-mono text-[7px] tracking-[.16em] text-[#a9b9ad]/52"><span className="h-1.5 w-1.5 rounded-full bg-[#a9b9ad]" /> {de ? 'NÄCHSTER SCHRITT' : 'NEXT STEP'}</div>
+                        <p className="mt-2 text-sm leading-6 text-white/70">{de ? 'Freitag 16:00: Veröffentlichung vorbereiten.' : 'Friday 16:00: prepare publishing.'}</p>
+                        <p className="mt-2 text-xs text-white/28">{de ? 'Vorbereiten kann YORI. Veröffentlichen entscheidest du.' : 'YORI can prepare. You decide when to publish.'}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                {sources.map((source, index) => {
-                  const positions = [
-                    'left-[4%] top-[15%]', 'right-[3%] top-[12%]', 'left-[0%] bottom-[26%]',
-                    'right-[1%] bottom-[23%]', 'left-[32%] top-[1%]', 'right-[29%] bottom-[1%]'
-                  ];
-                  return (
-                    <div key={source} className={`absolute ${positions[index]} rounded-full border border-white/10 bg-[#17141c]/76 px-3 py-2 font-mono text-[7px] tracking-[.16em] text-white/58 backdrop-blur-xl`}>
-                      <i className="mr-2 inline-block h-1.5 w-1.5 rounded-full" style={{ background: sourceColors[index] }} />
-                      {source.toUpperCase()}
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>
 
-          <p className="pb-2 font-mono text-[7px] tracking-[.16em] text-white/28">
-            {de ? 'PRIVATE PREVIEW · DEMO-DATEN SIND ALS DEMO GEKENNZEICHNET · EXTERNE AKTIONEN NUR NACH FREIGABE' : 'PRIVATE PREVIEW · DEMO DATA IS MARKED AS DEMO · EXTERNAL ACTIONS REQUIRE APPROVAL'}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/[.06] pt-5 font-mono text-[7px] tracking-[.16em] text-white/22">
+            <span>PRIVATE PREVIEW</span>
+            <span>{de ? 'ECHTE DATEN BLEIBEN ECHT' : 'REAL DATA STAYS REAL'}</span>
+            <span>{de ? 'AKTIONEN NUR MIT FREIGABE' : 'ACTIONS REQUIRE APPROVAL'}</span>
+          </div>
         </div>
       </section>
 
-      <section id="inside" className="border-y border-black/5 bg-[#eee1cf] px-5 py-20 text-[#1f1a20] sm:px-8 lg:px-12">
+      <section className="bg-[#ebe5d8] px-5 py-20 text-[#1d211b] sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-[.78fr_1.22fr] lg:items-end">
+          <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
             <div>
-              <p className="font-mono text-[8px] font-bold tracking-[.24em] text-[#7d5f50]">{de ? 'DAS PRINZIP' : 'THE PRINCIPLE'}</p>
-              <h2 className="mt-4 font-serif text-[clamp(3.2rem,6vw,6rem)] font-light leading-[.88] tracking-[-.05em]">
-                {de ? <>Draußen passiert alles.<br/><em className="font-light text-[#785d4d]">Drinnen wird es Arbeit.</em></> : <>Everything happens outside.<br/><em className="font-light text-[#785d4d]">Inside, it becomes work.</em></>}
+              <p className="font-mono text-[8px] font-semibold tracking-[.22em] text-[#60715a]">{de ? 'WAS YORI ZUSAMMENZIEHT' : 'WHAT YORI BRINGS TOGETHER'}</p>
+              <h2 className="mt-4 max-w-xl font-serif text-[clamp(3rem,6vw,5.8rem)] font-light leading-[.9] tracking-[-.045em]">
+                {de ? 'Weniger Suchen. Mehr entscheiden.' : 'Less searching. More deciding.'}
               </h2>
             </div>
-            <p className="max-w-xl text-base leading-7 text-[#2e272d]/62 lg:justify-self-end">
-              {de
-                ? 'YORI ersetzt TikTok, Instagram oder deine Mailbox nicht. Es verbindet, was dort passiert, und hält daraus nur das fest, was zu einer Entscheidung, Aufgabe oder Gelegenheit wird.'
-                : 'YORI does not replace TikTok, Instagram or your inbox. It connects what happens there and keeps only what turns into a decision, task or opportunity.'}
+            <p className="max-w-xl text-base leading-7 text-[#30372c]/62 lg:justify-self-end">
+              {de ? 'YORI ersetzt deine Plattformen nicht. Es baut darüber eine ruhige Arbeitsebene, in der aus verstreuten Signalen konkrete nächste Schritte werden.' : 'YORI does not replace your platforms. It adds a calm work layer where scattered signals become concrete next steps.'}
             </p>
           </div>
 
-          <div className="mt-14 border-t border-[#2b2227]/12">
-            {rooms.map(([name, text, color], index) => (
-              <div key={name} className="grid gap-3 border-b border-[#2b2227]/12 py-6 sm:grid-cols-[52px_.55fr_1.45fr] sm:items-center sm:gap-6">
-                <span className="font-mono text-[8px] tracking-[.18em] text-[#5f4f48]/45">0{index + 1}</span>
-                <div className="flex items-center gap-3">
-                  <span className="h-2 w-2 rounded-full" style={{ background: color }} />
-                  <h3 className="font-serif text-2xl font-light">{name}</h3>
-                </div>
-                <p className="text-sm leading-6 text-[#302930]/58 sm:text-base">{text}</p>
+          <div className="mt-14 grid border-t border-[#2b3028]/14 md:grid-cols-2">
+            {benefits.map(([name, text], index) => (
+              <div key={name} className={`border-b border-[#2b3028]/14 py-7 md:px-6 ${index % 2 === 0 ? 'md:border-r md:pl-0' : 'md:pr-0'}`}>
+                <div className="font-mono text-[8px] tracking-[.2em] text-[#6e7c67]">0{index + 1} / {name}</div>
+                <p className="mt-3 max-w-lg text-lg leading-7 text-[#22271f]/76">{text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#111015] px-5 py-24 sm:px-8 lg:px-12">
-        <div className="absolute -left-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#ff775e]/10 blur-3xl" />
-        <div className="absolute -right-16 top-[20%] h-80 w-80 rounded-full bg-[#766bd1]/12 blur-3xl" />
-        <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
-          <div>
-            <p className="font-mono text-[8px] tracking-[.22em] text-[#79b7a6]">{de ? 'ECHT BLEIBT ECHT' : 'REAL STAYS REAL'}</p>
-            <h3 className="mt-4 font-serif text-4xl font-light sm:text-5xl">{de ? 'Keine erfundene Aktivität.' : 'No invented activity.'}</h3>
-            <p className="mt-4 max-w-md text-sm leading-6 text-white/46">
-              {de
-                ? 'Im Live-Modus zeigt YORI nur verbundene Quellen und echte Daten. Wenn nichts verbunden ist, bleibt es leer.'
-                : 'In live mode, YORI shows only connected sources and real data. If nothing is connected, it stays empty.'}
-            </p>
+      <section className="border-y border-white/[.07] bg-[#12150f] px-5 py-20 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <p className="font-mono text-[8px] tracking-[.22em] text-[#a8bb9e]/52">{de ? 'SO STARTET ES' : 'HOW IT STARTS'}</p>
+            <h2 className="mt-4 font-serif text-4xl font-light leading-tight text-white/92 sm:text-6xl">{de ? 'Kein Setup-Projekt.' : 'Not a setup project.'}</h2>
           </div>
-          <div>
-            <p className="font-mono text-[8px] tracking-[.22em] text-[#f0b66d]">{de ? 'DU BLEIBST AM STEUER' : 'YOU STAY IN CONTROL'}</p>
-            <h3 className="mt-4 font-serif text-4xl font-light sm:text-5xl">{de ? 'Vorbereiten ja. Handeln nur mit dir.' : 'Prepare, yes. Act only with you.'}</h3>
-            <p className="mt-4 max-w-md text-sm leading-6 text-white/46">
-              {de
-                ? 'Antworten, Veröffentlichen oder andere externe Aktionen passieren nicht still im Hintergrund.'
-                : 'Replies, publishing and other external actions do not happen silently in the background.'}
-            </p>
+          <div className="mt-12 grid border-t border-white/[.08] md:grid-cols-3">
+            {steps.map(([no, title, text], index) => (
+              <div key={no} className={`py-7 md:px-7 ${index < 2 ? 'border-b border-white/[.07] md:border-b-0 md:border-r' : ''} ${index === 0 ? 'md:pl-0' : ''}`}>
+                <div className="font-mono text-[8px] tracking-[.2em] text-[#d0b977]/52">{no}</div>
+                <h3 className="mt-4 font-serif text-3xl font-light text-white/90">{title}</h3>
+                <p className="mt-4 text-sm leading-6 text-white/42">{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="relative border-t border-white/7 bg-[#17131a] px-5 py-24 text-center sm:px-8 lg:px-12">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_110%,rgba(238,178,99,.15),transparent_38%)]" />
-        <div className="relative mx-auto max-w-4xl">
-          <YoriMark className="mx-auto h-9 w-9 text-[#efc47c]" />
-          <h2 className="mt-6 font-serif text-[clamp(3.4rem,7vw,6.5rem)] font-light leading-[.87] tracking-[-.055em]">
-            {de ? <>Weniger Oberfläche.<br/><em className="font-light text-[#efbd77]">Mehr Zusammenhang.</em></> : <>Less interface.<br/><em className="font-light text-[#efbd77]">More context.</em></>}
+      <section className="bg-[#171a14] px-5 py-20 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-5xl text-center">
+          <YoriMark className="mx-auto h-9 w-9 text-[#d9c487]" />
+          <p className="mt-5 font-mono text-[8px] tracking-[.22em] text-white/28">YORI · CREATOR OS</p>
+          <h2 className="mx-auto mt-5 max-w-4xl font-serif text-[clamp(3rem,6vw,5.7rem)] font-light leading-[.92] tracking-[-.045em] text-white/94">
+            {de ? 'Du sollst nicht mehr organisieren als erschaffen.' : 'You should not spend more time organizing than creating.'}
           </h2>
-          <a href="https://yori.saimor.world/demo" className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#f1d39e] px-6 py-3.5 text-sm font-bold text-[#1a181c] transition hover:bg-[#ffe7b6]">
-            {de ? 'Private Preview öffnen' : 'Open private preview'}
-            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-          </a>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href="https://yori.saimor.world/demo" className="group inline-flex min-h-12 items-center gap-2 bg-[#e9dfc4] px-6 text-sm font-bold text-[#182016] transition hover:bg-white">
+              {de ? 'YORI ausprobieren' : 'Try YORI'}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+            <span className="inline-flex items-center gap-2 text-xs text-white/34"><Check className="h-3.5 w-3.5 text-[#95b88c]" /> {de ? 'Keine erfundene Aktivität' : 'No invented activity'}</span>
+          </div>
         </div>
       </section>
     </main>
