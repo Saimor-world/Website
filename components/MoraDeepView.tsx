@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 type PulseItem = {
   title: string;
@@ -26,50 +26,26 @@ type PulseData = {
   error?: string;
 };
 
-type Phase = 'dark' | 'drift' | 'forest';
+type Phase = 'void' | 'signal' | 'forest';
 
-function formatSeen(value: string | null, locale: 'de' | 'en') {
-  if (!value) return locale === 'de' ? 'Zeit unbekannt' : 'Time unknown';
-  const compact = value.replace('T', '').replace('Z', '');
-  const match = compact.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})/);
-  if (!match) return value;
-  const [, y, m, d, hh, mm] = match;
-  const date = new Date(`${y}-${m}-${d}T${hh}:${mm}:00Z`);
-  return new Intl.DateTimeFormat(locale === 'de' ? 'de-DE' : 'en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZoneName: 'short',
-  }).format(date);
-}
-
-function clampTitle(value: string, max = 118) {
+function short(value: string, max = 92) {
   return value.length > max ? `${value.slice(0, max - 1)}…` : value;
 }
 
-const fragmentPositions = [
-  'left-[4%] top-[14%] max-w-[42%]',
-  'right-[4%] top-[21%] max-w-[38%]',
-  'left-[9%] top-[43%] max-w-[36%]',
-  'right-[7%] top-[49%] max-w-[41%]',
-  'left-[18%] bottom-[16%] max-w-[34%]',
-  'right-[16%] bottom-[11%] max-w-[34%]',
-] as const;
-
 export default function MoraDeepView({ locale }: { locale: 'de' | 'en' }) {
+  const de = locale === 'de';
   const [data, setData] = useState<PulseData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [phase, setPhase] = useState<Phase>('void');
   const [selected, setSelected] = useState(0);
-  const [phase, setPhase] = useState<Phase>('dark');
-  const [stabilized, setStabilized] = useState(false);
+  const [stable, setStable] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [now, setNow] = useState(() => new Date());
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch('/api/mora/pulse', { cache: 'no-store' });
-      const payload = await response.json() as PulseData;
+      const payload = (await response.json()) as PulseData;
       setData(payload);
       setSelected(0);
     } catch {
@@ -82,383 +58,239 @@ export default function MoraDeepView({ locale }: { locale: 'de' | 'en' }) {
   useEffect(() => { void load(); }, [load]);
 
   useEffect(() => {
-    const clock = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(clock);
+    const a = window.setTimeout(() => setPhase('signal'), 2400);
+    const b = window.setTimeout(() => setPhase('forest'), 9000);
+    return () => { window.clearTimeout(a); window.clearTimeout(b); };
   }, []);
 
   useEffect(() => {
-    const drift = window.setTimeout(() => setPhase('drift'), 3300);
-    const forest = window.setTimeout(() => setPhase('forest'), 8600);
-    return () => {
-      window.clearTimeout(drift);
-      window.clearTimeout(forest);
-    };
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  const strongestTopic = useMemo(() => {
-    if (!data) return null;
-    const entries = Object.entries(data.stats.topics) as Array<[keyof PulseData['stats']['topics'], number]>;
-    return entries.sort((a, b) => b[1] - a[1])[0] ?? null;
+  const fragments = data?.items?.slice(0, 7) ?? [];
+
+  useEffect(() => {
+    if (fragments.length < 2) return;
+    const timer = window.setInterval(() => {
+      setSelected((value) => (value + 1) % fragments.length);
+    }, 3900);
+    return () => window.clearInterval(timer);
+  }, [fragments.length]);
+
+  const strongest = useMemo(() => {
+    if (!data) return '—';
+    const entries = Object.entries(data.stats.topics) as Array<[string, number]>;
+    return (entries.sort((a, b) => b[1] - a[1])[0]?.[0] ?? '—').toUpperCase();
   }, [data]);
 
-  const selectedItem = data?.items?.[selected] ?? data?.items?.[0] ?? null;
-  const fragments = data?.items?.slice(0, 6) ?? [];
+  const chosen = fragments[selected] ?? null;
 
-  const copy = locale === 'de'
-    ? {
-        back: 'Zurück zu Môra',
-        label: 'MÔRA // ANALOG AFFECT / DEEP VIEW',
-        darkTitle: 'Etwas antwortet, bevor du eine Frage gestellt hast.',
-        darkBody: 'Öffentliche Signale laufen ein. Môra ordnet nichts als Wahrheit ein — aber sie lässt Gleichzeitigkeit sichtbar werden.',
-        driftTitle: 'Das Muster beginnt von allein.',
-        driftBody: 'Nicht AGI. Kein Beweis für Autonomie. Nur ein absichtlich unruhiger Blick auf Systeme, Märkte, Sicherheit und Forschung, während echte Meldungen eintreffen.',
-        forestTitle: 'Dann wird es grün.',
-        forestBody: 'Die Störung wird zu Struktur. Aus einzelnen Signalen wächst ein Myzel. Darüber stehen Eichen: langsam, alt, nicht beeindruckt vom Tempo der Maschinen.',
-        publicOnly: 'PUBLIC SIGNALS / REAL SOURCES',
-        sourceLayer: 'QUELLENSCHICHT',
-        stabilize: 'Signal stabilisieren',
-        release: 'Störung freigeben',
-        rescan: 'Neu abtasten',
-        empty: 'Kein öffentliches Signal. Môra füllt die Lücke nicht.',
-        privacy: 'Keine Kamera. Kein Mikrofon. Keine lokalen Gerätedaten. Die Stimmung ist inszeniert — die Quellen nicht.',
-        oak: 'DEUTSCHE EICHE / QUERCUS ROBUR',
-      }
-    : {
-        back: 'Back to Môra',
-        label: 'MÔRA // ANALOG AFFECT / DEEP VIEW',
-        darkTitle: 'Something answers before you asked a question.',
-        darkBody: 'Public signals are arriving. Môra does not treat proximity as truth — she makes simultaneity visible.',
-        driftTitle: 'The pattern starts on its own.',
-        driftBody: 'Not AGI. Not proof of autonomy. An intentionally uneasy view of systems, markets, security and research while real headlines arrive.',
-        forestTitle: 'Then it turns green.',
-        forestBody: 'Disturbance becomes structure. Separate signals grow into mycelium. Oaks stand above it: slow, old, unimpressed by the speed of machines.',
-        publicOnly: 'PUBLIC SIGNALS / REAL SOURCES',
-        sourceLayer: 'SOURCE LAYER',
-        stabilize: 'Stabilize signal',
-        release: 'Release disturbance',
-        rescan: 'Rescan',
-        empty: 'No public signal. Môra does not fill in the gap.',
-        privacy: 'No camera. No microphone. No local device data. The mood is staged — the sources are not.',
-        oak: 'PEDUNCULATE OAK / QUERCUS ROBUR',
-      };
-
-  const phaseTitle = phase === 'dark' ? copy.darkTitle : phase === 'drift' ? copy.driftTitle : copy.forestTitle;
-  const phaseBody = phase === 'dark' ? copy.darkBody : phase === 'drift' ? copy.driftBody : copy.forestBody;
-  const strongest = strongestTopic?.[0]?.toUpperCase() ?? '—';
-
-  const moraWhisper = useMemo(() => {
-    if (!data?.items?.length) return copy.empty;
-    if (strongestTopic?.[0] === 'ai' && strongestTopic[1] > 0) {
-      return locale === 'de'
-        ? 'Mehrere Quellen sprechen gleichzeitig über lernende Systeme. Nähe ist noch kein Zusammenhang.'
-        : 'Several sources are talking about learning systems at once. Proximity is not causality.';
+  const whisper = useMemo(() => {
+    if (!data?.items?.length) return de ? 'Kein Signal. Ich erfinde keines.' : 'No signal. I will not invent one.';
+    if (strongest === 'AI') {
+      return de ? 'Mehrere Systeme verändern gleichzeitig ihre Sprache.' : 'Several systems are changing their language at once.';
     }
-    if (strongestTopic?.[0] === 'security' && strongestTopic[1] > 0) {
-      return locale === 'de'
-        ? 'Sicherheitssignale verdichten sich. Ich markiere das Muster, nicht die Absicht dahinter.'
-        : 'Security signals are clustering. I am marking the pattern, not an intention behind it.';
+    if (strongest === 'SECURITY') {
+      return de ? 'Die Sicherheitssignale liegen ungewöhnlich dicht beieinander.' : 'Security signals are unusually close together.';
     }
-    return locale === 'de'
-      ? 'Ich sehe Nähe zwischen Signalen. Noch keinen Beweis für einen Zusammenhang.'
-      : 'I see proximity between signals. Not proof of a connection.';
-  }, [copy.empty, data, locale, strongestTopic]);
+    return de ? 'Nähe ist noch kein Zusammenhang.' : 'Proximity is not causality.';
+  }, [data, de, strongest]);
 
   return (
-    <div className={`deep-root phase-${phase} ${stabilized ? 'is-stable' : ''} min-h-screen overflow-hidden bg-[#010504] text-[#edf1e8]`}>
-      <div className="deep-black pointer-events-none fixed inset-0 z-0" />
-      <div className="deep-grid pointer-events-none fixed inset-0 z-[1]" />
-      <div className="deep-scanlines pointer-events-none fixed inset-0 z-[6]" />
-      <div className="deep-vignette pointer-events-none fixed inset-0 z-[7]" />
-      <div className="deep-flash pointer-events-none fixed inset-0 z-[8]" />
+    <div className={`mora-deep phase-${phase} ${stable ? 'stable' : ''} min-h-[100svh] overflow-hidden bg-[#010403] text-[#edf0e8]`}>
+      <div className="noise fixed inset-0 z-0" aria-hidden="true" />
+      <div className="scan fixed inset-0 z-[2]" aria-hidden="true" />
+      <div className="vignette fixed inset-0 z-[3]" aria-hidden="true" />
 
-      <main className="relative z-10 mx-auto max-w-[1500px] px-4 pb-16 pt-5 sm:px-7 lg:px-10">
-        <header className="flex items-center justify-between gap-4 font-mono text-[8px] uppercase tracking-[.18em] text-white/38 sm:text-[9px]">
-          <Link href={locale === 'de' ? '/mora' : '/en/mora'} className="transition hover:text-white/75">
-            ← {copy.back}
-          </Link>
+      <main className="relative z-10 min-h-[100svh]">
+        <header className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-5 font-mono text-[8px] uppercase tracking-[.2em] text-white/34 sm:px-8">
+          <Link href={de ? '/mora' : '/en/mora'} className="transition hover:text-white/70">← MÔRA</Link>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline">{copy.publicOnly}</span>
-            <span className={`h-1.5 w-1.5 rounded-full ${data?.live ? 'bg-[#8bd7a1]' : 'bg-white/20'} shadow-[0_0_14px_rgba(120,206,143,.42)]`} />
-            <span>{now.toLocaleTimeString(locale === 'de' ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+            <span className="hidden sm:inline">ANALOG AFFECT // DEEP VIEW</span>
+            <span className={`h-1.5 w-1.5 rounded-full ${data?.live ? 'bg-[#87c79a]' : 'bg-white/20'} shadow-[0_0_14px_rgba(135,199,154,.45)]`} />
+            <span>{now.toLocaleTimeString(de ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
           </div>
         </header>
 
-        <section className="mt-7 grid gap-5 lg:grid-cols-[.32fr_.68fr] lg:items-end">
-          <div className="pb-2">
-            <p className="font-mono text-[9px] tracking-[.28em] text-[#a8ba9b]/48">{copy.label}</p>
-            <h1 className="glitch-title mt-5 max-w-xl font-serif text-[clamp(2.5rem,5.2vw,5.6rem)] font-light leading-[.92] tracking-[-.045em] text-[#f0efe8]">
-              {phaseTitle}
+        <section className="relative min-h-[100svh] overflow-hidden">
+          <div className="danger absolute inset-0" />
+          <div className="pixel-map absolute inset-0" />
+          <div className="glitch-band g1 absolute inset-x-0 top-[17%] h-px" />
+          <div className="glitch-band g2 absolute inset-x-0 top-[49%] h-px" />
+          <div className="glitch-band g3 absolute inset-x-0 top-[72%] h-px" />
+
+          <div className="absolute left-5 top-20 z-30 max-w-[72vw] sm:left-8 sm:top-24">
+            <p className="font-mono text-[8px] uppercase tracking-[.28em] text-[#b1bdac]/34">PUBLIC SIGNALS / REAL SOURCES</p>
+            <h1 className="mora-title mt-4 max-w-3xl font-serif text-[clamp(2.4rem,6vw,6.8rem)] font-light leading-[.89] tracking-[-.05em] text-[#eef0e8]/88">
+              {phase === 'void'
+                ? (de ? 'Da ist etwas.' : 'There is something there.')
+                : phase === 'signal'
+                  ? (de ? 'Es ordnet sich ohne dich.' : 'It is arranging itself without you.')
+                  : (de ? 'Und dann wird es lebendig.' : 'And then it becomes alive.')}
             </h1>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-white/43 sm:text-[15px]">{phaseBody}</p>
-            <p className="mora-whisper mt-6 max-w-lg font-mono text-[9px] leading-5 tracking-[.08em] text-[#a8c79f]/44">MÔRA › {moraWhisper}</p>
           </div>
 
-          <div className="experience-shell relative min-h-[620px] overflow-hidden border border-white/[.07] bg-[#020806] shadow-[0_34px_120px_rgba(0,0,0,.48)] sm:min-h-[690px] lg:min-h-[74vh]">
-            <div className="danger-field absolute inset-0" />
-            <div className="pixel-field absolute inset-0" />
-            <div className="signal-tear signal-tear-a absolute left-0 right-0 top-[18%] h-px" />
-            <div className="signal-tear signal-tear-b absolute left-0 right-0 top-[56%] h-px" />
-            <div className="signal-tear signal-tear-c absolute left-0 right-0 bottom-[17%] h-px" />
+          <div className="warning absolute left-1/2 top-[44%] z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[clamp(.55rem,1vw,.86rem)] uppercase tracking-[.34em] text-[#c9937d]/0">
+            MODEL BOUNDARY // UNKNOWN
+          </div>
 
-            <div className="absolute left-4 top-4 z-30 flex flex-wrap items-center gap-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/30 sm:left-5 sm:top-5 sm:text-[8px]">
-              <span className="border border-white/[.07] bg-black/25 px-2 py-1.5">ANALOG AFFECT // 02</span>
-              <span className="risk-chip border border-[#b0856d]/15 bg-[#23130f]/30 px-2 py-1.5 text-[#c39982]/45">AGI / SPECULATION</span>
-              <span className="autonomous-chip border border-white/[.06] bg-black/25 px-2 py-1.5">AUTONOMOUS PASS</span>
-            </div>
+          <div className="operator absolute right-5 top-[24%] z-30 text-right font-mono text-[7px] uppercase tracking-[.18em] text-white/0 sm:right-8 sm:text-[8px]">
+            <div>AGI // UNVERIFIED</div>
+            <div className="mt-2">OPERATOR // ABSENT</div>
+            <div className="mt-2">PATTERN // {strongest}</div>
+          </div>
 
-            <div className="absolute right-4 top-4 z-30 text-right font-mono text-[7px] uppercase tracking-[.15em] text-white/22 sm:right-5 sm:top-5 sm:text-[8px]">
-              <div>INPUT // PUBLIC</div>
-              <div className="mt-1">PATTERN // {strongest}</div>
-              <div className="mt-1">OPERATOR // NONE REQUIRED</div>
-            </div>
-
-            <div className="fragments absolute inset-0 z-20">
-              {fragments.map((item, index) => (
+          <div className="fragments absolute inset-0 z-20">
+            {fragments.map((item, index) => {
+              const positions = [
+                'left-[6%] top-[36%] max-w-[36%]',
+                'right-[7%] top-[34%] max-w-[34%]',
+                'left-[12%] top-[57%] max-w-[31%]',
+                'right-[12%] top-[59%] max-w-[36%]',
+                'left-[25%] bottom-[12%] max-w-[30%]',
+                'right-[25%] bottom-[9%] max-w-[28%]',
+                'left-[44%] top-[30%] max-w-[28%]',
+              ];
+              return (
                 <button
                   key={`${item.url}-${index}`}
                   type="button"
                   onClick={() => setSelected(index)}
-                  className={`signal-fragment f-${index + 1} absolute ${fragmentPositions[index]} text-left ${selected === index ? 'is-selected' : ''}`}
+                  className={`fragment absolute ${positions[index]} text-left ${selected === index ? 'active' : ''}`}
                 >
-                  <span className="block font-mono text-[7px] uppercase tracking-[.18em] text-[#a9bf9e]/32">
-                    {String(index + 1).padStart(2, '0')} · {item.domain ?? 'source'}
-                  </span>
-                  <span className="mt-1.5 block text-[11px] leading-5 text-white/32 sm:text-xs">
-                    {clampTitle(item.title)}
-                  </span>
+                  <span className="block font-mono text-[7px] uppercase tracking-[.16em] text-[#a9bda8]/28">{item.domain ?? 'source'}</span>
+                  <span className="mt-1 block text-[10px] leading-4 text-white/26 sm:text-[11px] sm:leading-5">{short(item.title)}</span>
                 </button>
-              ))}
-            </div>
+              );
+            })}
+          </div>
 
-            <div className="warning-copy pointer-events-none absolute left-1/2 top-[44%] z-10 w-[84%] -translate-x-1/2 -translate-y-1/2 text-center font-mono text-[clamp(.7rem,1.1vw,.95rem)] uppercase tracking-[.28em] text-[#c8a18a]/0">
-              MODEL BOUNDARY / UNKNOWN
-            </div>
+          <div className="forest-glow absolute inset-0 z-[4]" aria-hidden="true" />
 
-            <div className="forest-light absolute inset-0 z-[4]" />
+          <svg className="mycelium absolute bottom-[-2%] left-1/2 z-[12] h-[54%] w-[96%] -translate-x-1/2" viewBox="0 0 1200 520" fill="none" aria-hidden="true">
+            <g className="threads" stroke="#8bc79d" strokeLinecap="round">
+              <path d="M40 480C160 436 213 370 326 372C438 374 446 448 555 396C656 348 670 279 794 300C925 323 1014 429 1160 452" />
+              <path d="M112 510C192 432 260 446 322 356C380 272 386 194 475 208C566 223 552 354 643 350C738 346 735 207 835 203C944 199 965 332 1089 334" />
+              <path d="M246 492C288 408 350 427 395 331C439 238 390 168 474 111C556 56 622 166 653 224C691 295 780 286 823 201C864 121 836 73 904 31" />
+              <path d="M488 506C512 430 492 368 563 327C637 284 690 340 743 292C807 234 779 159 847 128C930 91 1001 158 1080 111" />
+              <path d="M631 519C658 456 728 458 782 390C839 319 820 265 882 242C952 216 1016 273 1081 243C1126 222 1147 181 1177 153" />
+            </g>
+            <g className="nodes" fill="#d6e9c8">
+              <circle cx="112" cy="510" r="4"/><circle cx="322" cy="356" r="3"/><circle cx="475" cy="208" r="4"/>
+              <circle cx="643" cy="350" r="3"/><circle cx="835" cy="203" r="4"/><circle cx="1089" cy="334" r="3"/>
+              <circle cx="474" cy="111" r="3"/><circle cx="653" cy="224" r="4"/><circle cx="823" cy="201" r="3"/>
+            </g>
+          </svg>
 
-            <svg className="mycelium absolute inset-x-[2%] bottom-[3%] z-[12] h-[55%] w-[96%]" viewBox="0 0 1000 520" fill="none" aria-hidden="true">
-              <g className="mycelium-lines" stroke="#83c99c" strokeLinecap="round">
-                <path d="M60 460C180 438 194 356 300 350C398 344 398 430 492 395C586 360 624 268 746 296C846 320 850 412 948 434" />
-                <path d="M118 489C176 420 218 433 272 375C332 311 349 233 421 245C507 260 485 353 561 353C651 353 663 215 748 214C825 213 840 301 905 318" />
-                <path d="M215 465C251 391 315 413 344 341C374 267 333 194 398 151C468 104 515 190 548 242C585 298 653 293 688 227C723 161 706 102 768 73" />
-                <path d="M404 488C432 417 408 355 470 322C533 289 577 334 623 298C683 252 649 173 708 143C767 113 835 156 887 119" />
-                <path d="M525 501C542 445 606 440 643 391C688 332 667 272 721 250C780 227 824 276 876 252C916 234 929 198 956 173" />
-                <path d="M79 402C132 365 161 381 198 329C231 283 203 229 248 198C290 169 328 193 357 157" />
-              </g>
-              <g className="mycelium-nodes" fill="#c6e7ba">
-                <circle cx="118" cy="489" r="4" /><circle cx="272" cy="375" r="3" /><circle cx="421" cy="245" r="4" />
-                <circle cx="561" cy="353" r="3" /><circle cx="748" cy="214" r="4" /><circle cx="905" cy="318" r="3" />
-                <circle cx="398" cy="151" r="3" /><circle cx="548" cy="242" r="4" /><circle cx="688" cy="227" r="3" />
-                <circle cx="708" cy="143" r="4" /><circle cx="887" cy="119" r="3" /><circle cx="956" cy="173" r="3" />
-              </g>
-            </svg>
+          <svg className="oak oak-left absolute -left-[9%] bottom-[17%] z-[13] h-[62%] w-[52%]" viewBox="0 0 520 660" aria-hidden="true">
+            <g fill="none" stroke="#4f6a4a" strokeLinecap="round">
+              <path d="M269 648C260 564 281 490 260 411C245 354 206 301 213 219" strokeWidth="28"/>
+              <path d="M257 426C194 374 139 367 84 306" strokeWidth="13"/>
+              <path d="M268 370C328 316 376 299 424 238" strokeWidth="14"/>
+              <path d="M217 276C164 246 130 206 102 162" strokeWidth="10"/>
+              <path d="M251 265C305 215 340 174 359 122" strokeWidth="11"/>
+            </g>
+            <g fill="#153a28">
+              <circle cx="112" cy="176" r="82"/><circle cx="192" cy="126" r="102"/><circle cx="302" cy="121" r="99"/>
+              <circle cx="393" cy="189" r="90"/><circle cx="157" cy="254" r="100"/><circle cx="278" cy="239" r="116"/><circle cx="393" cy="282" r="76"/>
+            </g>
+          </svg>
 
-            <svg className="oak oak-left absolute -left-[4%] bottom-[24%] z-[13] h-[68%] w-[46%]" viewBox="0 0 440 620" aria-hidden="true">
-              <g fill="none" strokeLinecap="round">
-                <path d="M224 608C219 525 231 454 218 390C204 318 177 266 185 192" stroke="#526b4c" strokeWidth="25" />
-                <path d="M211 409C166 362 116 346 78 300" stroke="#526b4c" strokeWidth="12" />
-                <path d="M220 350C269 298 321 285 358 231" stroke="#526b4c" strokeWidth="13" />
-                <path d="M187 254C143 230 119 200 91 158" stroke="#526b4c" strokeWidth="9" />
-                <path d="M211 240C257 198 289 161 305 116" stroke="#526b4c" strokeWidth="10" />
-              </g>
-              <g fill="#173f2b" opacity=".98">
-                <circle cx="93" cy="169" r="76" /><circle cx="166" cy="125" r="92" /><circle cx="258" cy="117" r="89" />
-                <circle cx="330" cy="181" r="82" /><circle cx="139" cy="234" r="91" /><circle cx="242" cy="218" r="104" />
-                <circle cx="324" cy="263" r="69" />
-              </g>
-              <g fill="#2d5a3c" opacity=".58">
-                <circle cx="123" cy="127" r="32" /><circle cx="234" cy="86" r="36" /><circle cx="292" cy="183" r="39" />
-                <circle cx="182" cy="220" r="43" /><circle cx="327" cy="245" r="30" />
-              </g>
-            </svg>
+          <svg className="oak oak-right absolute -right-[11%] bottom-[19%] z-[13] h-[59%] w-[49%]" viewBox="0 0 520 660" aria-hidden="true">
+            <g fill="none" stroke="#4b6547" strokeLinecap="round">
+              <path d="M257 648C269 560 246 499 268 412C285 347 325 300 313 219" strokeWidth="27"/>
+              <path d="M270 425C326 378 384 357 433 307" strokeWidth="13"/>
+              <path d="M264 368C210 320 155 300 99 240" strokeWidth="14"/>
+              <path d="M312 278C361 242 388 205 417 158" strokeWidth="10"/>
+              <path d="M282 263C233 214 201 172 184 122" strokeWidth="11"/>
+            </g>
+            <g fill="#143725">
+              <circle cx="410" cy="177" r="80"/><circle cx="330" cy="127" r="100"/><circle cx="222" cy="122" r="96"/>
+              <circle cx="132" cy="190" r="89"/><circle cx="365" cy="252" r="99"/><circle cx="247" cy="240" r="114"/><circle cx="132" cy="283" r="74"/>
+            </g>
+          </svg>
 
-            <svg className="oak oak-right absolute -right-[5%] bottom-[25%] z-[13] h-[65%] w-[43%]" viewBox="0 0 440 620" aria-hidden="true">
-              <g fill="none" strokeLinecap="round">
-                <path d="M220 608C226 520 211 461 226 390C239 324 274 276 264 196" stroke="#4d6849" strokeWidth="24" />
-                <path d="M232 411C274 366 329 342 365 301" stroke="#4d6849" strokeWidth="12" />
-                <path d="M225 349C178 301 132 286 92 236" stroke="#4d6849" strokeWidth="13" />
-                <path d="M262 258C303 228 326 198 351 152" stroke="#4d6849" strokeWidth="9" />
-                <path d="M238 238C197 195 168 162 155 116" stroke="#4d6849" strokeWidth="10" />
-              </g>
-              <g fill="#153a28" opacity=".98">
-                <circle cx="342" cy="167" r="72" /><circle cx="274" cy="122" r="91" /><circle cx="184" cy="116" r="86" />
-                <circle cx="111" cy="179" r="81" /><circle cx="300" cy="235" r="89" /><circle cx="201" cy="218" r="102" />
-                <circle cx="114" cy="262" r="67" />
-              </g>
-              <g fill="#2b573a" opacity=".54">
-                <circle cx="314" cy="129" r="31" /><circle cx="207" cy="88" r="35" /><circle cx="145" cy="183" r="38" />
-                <circle cx="260" cy="221" r="42" /><circle cx="111" cy="244" r="29" />
-              </g>
-            </svg>
+          <div className="forest-word absolute bottom-[24%] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap font-mono text-[7px] uppercase tracking-[.28em] text-[#c6dda9]/0 sm:text-[8px]">
+            QUERCUS ROBUR / MYCELIUM / SIGNAL BECOMES STRUCTURE
+          </div>
 
-            <div className="oak-label absolute bottom-[31%] left-1/2 z-[18] -translate-x-1/2 whitespace-nowrap font-mono text-[7px] uppercase tracking-[.25em] text-[#b4d29e]/0 sm:text-[8px]">
-              {copy.oak}
-            </div>
+          <div className="mora-core absolute left-1/2 top-[47%] z-[18] h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#c5dbae]/0 sm:h-32 sm:w-32" aria-hidden="true">
+            <span className="absolute inset-[22%] rounded-full border border-[#c5dbae]/0" />
+            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e6efcf]/0" />
+          </div>
 
-            <div className="mora-core absolute left-1/2 top-[46%] z-[17] h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#b9d5a7]/0 sm:h-32 sm:w-32">
-              <span className="absolute inset-[20%] rounded-full border border-[#b3d39f]/0" />
-              <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d8e9bd]/0 shadow-[0_0_45px_rgba(199,227,178,.0)]" />
-            </div>
-
-            <div className="absolute inset-x-4 bottom-4 z-40 sm:inset-x-5 sm:bottom-5">
-              <div className="source-strip border border-white/[.07] bg-[#030907]/82 p-3 backdrop-blur-md sm:p-4">
-                <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/25 sm:text-[8px]">
-                      <span>{copy.sourceLayer}</span>
-                      <span>·</span>
-                      <span>{data?.source ?? '—'}</span>
-                      {selectedItem?.domain ? <><span>·</span><span>{selectedItem.domain}</span></> : null}
-                      {selectedItem?.seenAt ? <><span>·</span><span>{formatSeen(selectedItem.seenAt, locale)}</span></> : null}
-                    </div>
-                    <div className="mt-2 max-w-3xl text-xs leading-5 text-white/48 sm:text-sm sm:leading-6">
-                      {selectedItem ? selectedItem.title : (loading ? 'Scanning public signals…' : copy.empty)}
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2 sm:justify-end">
-                    <button
-                      type="button"
-                      onClick={() => setStabilized((value) => !value)}
-                      className="border border-[#9fbe98]/14 bg-[#173124]/55 px-3 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-[#c9ddbf]/52 transition hover:border-[#b5d0ad]/28 hover:text-[#e3f0dc]/80 sm:text-[8px]"
-                    >
-                      {stabilized ? copy.release : copy.stabilize}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void load()}
-                      disabled={loading}
-                      className="border border-white/[.07] bg-black/30 px-3 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/36 transition hover:text-white/68 disabled:opacity-30 sm:text-[8px]"
-                    >
-                      {loading ? 'SCAN…' : copy.rescan}
-                    </button>
-                    {selectedItem ? (
-                      <a
-                        href={selectedItem.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="border border-white/[.07] bg-black/30 px-3 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/36 transition hover:text-white/68 sm:text-[8px]"
-                      >
-                        SOURCE ↗
-                      </a>
-                    ) : null}
-                  </div>
-                </div>
+          <div className="absolute inset-x-5 bottom-5 z-50 sm:inset-x-8 sm:bottom-7">
+            <div className="flex items-end justify-between gap-4 border-t border-white/[.06] pt-4">
+              <div className="min-w-0 max-w-3xl">
+                <div className="font-mono text-[7px] uppercase tracking-[.16em] text-white/24">MÔRA › {whisper}</div>
+                {chosen ? <div className="mt-2 truncate text-xs text-white/34">{chosen.title}</div> : null}
+              </div>
+              <div className="flex shrink-0 gap-2">
+                <button type="button" onClick={() => setStable((value) => !value)} className="border border-white/[.08] bg-black/20 px-3 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/38 transition hover:text-white/70">
+                  {stable ? (de ? 'Störung lösen' : 'Release') : (de ? 'Signal stabilisieren' : 'Stabilize')}
+                </button>
+                {chosen ? <a href={chosen.url} target="_blank" rel="noreferrer" className="border border-white/[.08] bg-black/20 px-3 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-white/38 transition hover:text-white/70">SOURCE ↗</a> : null}
               </div>
             </div>
           </div>
         </section>
-
-        <div className="mt-5 flex flex-col gap-2 border-t border-white/[.05] pt-4 font-mono text-[7px] uppercase tracking-[.14em] text-white/20 sm:flex-row sm:items-center sm:justify-between sm:text-[8px]">
-          <span>{copy.privacy}</span>
-          <span>{data?.stats.signals ?? 0} SIGNALS · {data?.stats.sources ?? 0} SOURCES · {strongest}</span>
-        </div>
       </main>
 
       <style jsx>{`
-        .deep-black {
-          background:
-            radial-gradient(circle at 48% 42%, rgba(54,79,57,.055), transparent 19%),
-            radial-gradient(circle at 16% 24%, rgba(111,67,55,.04), transparent 27%),
-            #010504;
-          transition: background 2.2s ease;
-        }
-        .deep-grid {
-          opacity:.075;
-          background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-          background-size:31px 31px;
-          transform:perspective(900px) rotateX(64deg) scale(1.25) translateY(14%);
-          transform-origin:center bottom;
-          transition:opacity 1.8s ease,filter 1.8s ease;
-        }
-        .deep-scanlines { opacity:.22; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(180,215,188,.025) 4px); mix-blend-mode:screen; }
-        .deep-vignette { box-shadow:inset 0 0 180px 45px rgba(0,0,0,.82); }
-        .deep-flash { background:rgba(217,225,208,.05); opacity:0; }
-        .experience-shell { isolation:isolate; }
-        .experience-shell::before { content:'';position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(90deg,rgba(255,0,0,.018),transparent 18%,transparent 82%,rgba(0,170,255,.018));mix-blend-mode:screen; }
-        .danger-field { z-index:2;background:radial-gradient(circle at 50% 43%,rgba(122,64,50,.085),transparent 18%),linear-gradient(180deg,#020504 0%,#030806 100%);transition:opacity 2s ease,background 2.6s ease; }
-        .pixel-field { z-index:3;opacity:.52;background-image:linear-gradient(90deg,transparent 0 9%,rgba(180,196,180,.03) 9% 10%,transparent 10% 38%,rgba(184,118,101,.045) 38% 41%,transparent 41% 75%,rgba(141,185,154,.03) 75% 77%,transparent 77%),linear-gradient(0deg,transparent 0 13%,rgba(255,255,255,.025) 13% 14%,transparent 14% 63%,rgba(168,92,77,.035) 63% 66%,transparent 66%);background-size:137px 91px,173px 127px;mix-blend-mode:screen; }
-        .signal-tear { z-index:24;background:linear-gradient(90deg,transparent,rgba(203,164,143,.22) 18%,rgba(255,255,255,.32) 49%,rgba(122,206,164,.18) 74%,transparent);opacity:.18;box-shadow:0 0 13px rgba(255,255,255,.08); }
-        .signal-fragment { border-left:1px solid rgba(190,211,193,.07);padding-left:.65rem;filter:blur(.15px);opacity:.66;transition:opacity .4s ease,color .4s ease,transform .4s ease,filter .4s ease; }
-        .signal-fragment:hover,.signal-fragment.is-selected { opacity:1;filter:none;transform:translateX(3px); }
-        .signal-fragment.is-selected span:last-child { color:rgba(235,241,229,.62); }
-        .forest-light { opacity:0;background:radial-gradient(circle at 50% 51%,rgba(164,208,120,.24),transparent 17%),radial-gradient(circle at 50% 64%,rgba(47,113,70,.35),transparent 45%),linear-gradient(180deg,rgba(9,30,18,.1),rgba(18,66,38,.72));transition:opacity 3.2s ease; }
-        .mycelium,.oak,.oak-label,.mora-core { opacity:0; }
-        .mycelium-lines path { stroke-width:2;stroke-opacity:.46;stroke-dasharray:1200;stroke-dashoffset:1200; }
-        .mycelium-nodes circle { opacity:0; }
+        .noise{pointer-events:none;background:radial-gradient(circle at 50% 44%,rgba(50,77,54,.07),transparent 21%),#010403;transition:background 2.5s ease}
+        .scan{pointer-events:none;opacity:.28;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(200,225,205,.026) 4px);mix-blend-mode:screen}
+        .vignette{pointer-events:none;box-shadow:inset 0 0 210px 65px rgba(0,0,0,.9)}
+        .danger{z-index:1;background:radial-gradient(circle at 49% 46%,rgba(120,50,41,.11),transparent 13%),linear-gradient(180deg,#010403,#030806);transition:opacity 2.7s ease,background 3s ease}
+        .pixel-map{z-index:2;opacity:.62;background-image:linear-gradient(90deg,transparent 0 12%,rgba(255,255,255,.025) 12% 13%,transparent 13% 42%,rgba(174,94,83,.04) 42% 45%,transparent 45% 77%,rgba(127,185,147,.035) 77% 80%,transparent 80%),linear-gradient(0deg,transparent 0 21%,rgba(255,255,255,.026) 21% 22%,transparent 22% 62%,rgba(178,99,84,.035) 62% 65%,transparent 65%);background-size:149px 103px,191px 137px;mix-blend-mode:screen;animation:pixelDrift 8s steps(2,end) infinite}
+        .glitch-band{z-index:15;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(202,153,132,.25) 22%,rgba(255,255,255,.31) 50%,rgba(125,200,154,.18) 74%,transparent);opacity:.12;box-shadow:0 0 12px rgba(255,255,255,.07)}
+        .g1{animation:tear 5.1s steps(1,end) infinite}.g2{animation:tear 7.2s steps(1,end) -2.8s infinite}.g3{animation:tear 4.3s steps(1,end) -1.2s infinite}
+        .mora-title{text-shadow:0 0 34px rgba(225,236,218,.04);transition:all 1.4s ease}
+        .warning,.operator{transition:color 1.2s ease,opacity 1.2s ease}
+        .fragment{border-left:1px solid rgba(185,207,188,.06);padding-left:.6rem;opacity:.42;filter:blur(.35px);transition:opacity .45s ease,filter .45s ease,transform .45s ease}
+        .fragment.active{opacity:1;filter:none;transform:translateX(5px)}
+        .forest-glow{opacity:0;background:radial-gradient(circle at 50% 58%,rgba(168,205,118,.27),transparent 18%),radial-gradient(circle at 50% 67%,rgba(36,108,62,.42),transparent 45%),linear-gradient(180deg,rgba(5,23,13,.04),rgba(11,58,30,.78));transition:opacity 3.8s ease}
+        .mycelium,.oak,.forest-word,.mora-core{opacity:0}
+        .threads path{stroke-width:2;stroke-opacity:.45;stroke-dasharray:1200;stroke-dashoffset:1200}
+        .nodes{opacity:0}
 
-        .phase-dark .glitch-title { animation:titleGlitch 4.1s steps(1,end) infinite; }
-        .phase-dark .pixel-field { animation:pixelDrift .28s steps(2,end) infinite; }
-        .phase-dark .signal-tear-a { animation:tearA 2.2s steps(1,end) infinite; }
-        .phase-dark .signal-tear-b { animation:tearB 3.15s steps(1,end) infinite; }
-        .phase-dark .signal-tear-c { animation:tearC 2.7s steps(1,end) infinite; }
-        .phase-dark .signal-fragment:nth-child(odd) { animation:fragmentJitter 2.6s steps(1,end) infinite; }
-        .phase-dark .deep-flash { animation:flash 5.6s steps(1,end) infinite; }
+        .phase-signal .warning{color:rgba(201,147,125,.5);animation:warningBlink 3.4s steps(1,end) infinite}
+        .phase-signal .operator{color:rgba(220,220,210,.3)}
+        .phase-signal .pixel-map{opacity:.82;animation:pixelDrift 2.5s steps(2,end) infinite}
+        .phase-signal .g1,.phase-signal .g2,.phase-signal .g3{opacity:.35}
+        .phase-signal .mora-title{transform:translateX(1px);text-shadow:-1px 0 rgba(182,91,76,.25),1px 0 rgba(91,170,137,.22)}
+        .phase-signal .fragment:nth-child(2n){animation:fragmentJitter 4.2s steps(1,end) infinite}
 
-        .phase-drift .danger-field { background:radial-gradient(circle at 50% 43%,rgba(142,66,47,.14),transparent 21%),radial-gradient(circle at 70% 70%,rgba(55,108,70,.07),transparent 30%),#020605; }
-        .phase-drift .pixel-field { opacity:.72;animation:pixelDrift .2s steps(2,end) infinite; }
-        .phase-drift .warning-copy { animation:warningReveal 4.8s steps(1,end) infinite; }
-        .phase-drift .autonomous-chip { color:rgba(222,200,172,.7);border-color:rgba(195,150,117,.16); }
-        .phase-drift .signal-fragment { animation:fragmentJitter 1.9s steps(1,end) infinite; }
-        .phase-drift .glitch-title { animation:titleGlitch 2.8s steps(1,end) infinite; }
-        .phase-drift .deep-flash { animation:flash 3.7s steps(1,end) infinite; }
-        .phase-drift .signal-tear { opacity:.36;animation:tearB 2.1s steps(1,end) infinite; }
+        .phase-forest .danger{background:linear-gradient(180deg,#041009 0%,#082416 48%,#0b3320 100%)}
+        .phase-forest .pixel-map{opacity:.14;filter:blur(1px)}
+        .phase-forest .glitch-band,.phase-forest .warning,.phase-forest .operator{opacity:0!important}
+        .phase-forest .forest-glow{opacity:1}
+        .phase-forest .fragments{opacity:.15;transition:opacity 2.8s ease}
+        .phase-forest .mycelium{opacity:1;transition:opacity 1.2s ease 1s}
+        .phase-forest .threads path{animation:growThread 4.7s cubic-bezier(.3,.7,.2,1) forwards}
+        .phase-forest .nodes{animation:nodesIn 2.2s ease 3.4s forwards}
+        .phase-forest .oak{animation:oakRise 4.4s cubic-bezier(.2,.75,.2,1) 2.4s forwards;transform-origin:center bottom}
+        .phase-forest .forest-word{animation:wordIn 2s ease 5.5s forwards}
+        .phase-forest .mora-core{animation:coreIn 3s ease 4.6s forwards}
+        .phase-forest .mora-core span:first-child{animation:corePulse 5s ease-in-out 5.5s infinite}
 
-        .phase-forest .deep-black { background:radial-gradient(circle at 50% 52%,rgba(50,110,66,.16),transparent 29%),radial-gradient(circle at 50% 100%,rgba(26,82,48,.28),transparent 52%),#020907; }
-        .phase-forest .deep-grid { opacity:.04;filter:hue-rotate(12deg); }
-        .phase-forest .danger-field { opacity:.22;background:#07120c; }
-        .phase-forest .pixel-field { opacity:.11;animation:none; }
-        .phase-forest .signal-tear { opacity:.07; }
-        .phase-forest .forest-light { opacity:1; }
-        .phase-forest .mycelium { opacity:1;transition:opacity 1.2s ease .4s; }
-        .phase-forest .mycelium-lines path { animation:growLine 3.6s cubic-bezier(.2,.78,.2,1) forwards; }
-        .phase-forest .mycelium-lines path:nth-child(2){animation-delay:.35s}.phase-forest .mycelium-lines path:nth-child(3){animation-delay:.7s}.phase-forest .mycelium-lines path:nth-child(4){animation-delay:1.05s}.phase-forest .mycelium-lines path:nth-child(5){animation-delay:1.35s}.phase-forest .mycelium-lines path:nth-child(6){animation-delay:1.65s}
-        .phase-forest .mycelium-nodes circle { animation:nodeBloom .8s ease forwards 2.3s; }
-        .phase-forest .oak-left { animation:oakRise 3.2s cubic-bezier(.16,.84,.22,1) forwards 1.25s;transform-origin:50% 100%; }
-        .phase-forest .oak-right { animation:oakRise 3.5s cubic-bezier(.16,.84,.22,1) forwards 1.55s;transform-origin:50% 100%; }
-        .phase-forest .oak-label { animation:oakLabel 1.4s ease forwards 3.3s; }
-        .phase-forest .mora-core { animation:coreAppear 2.5s ease forwards 2.7s; }
-        .phase-forest .mora-core span:first-child { animation:coreRing 8s ease-in-out infinite 3s; }
-        .phase-forest .mora-core span:last-child { animation:coreDot 5.4s ease-in-out infinite 3s; }
-        .phase-forest .signal-fragment { animation:none;opacity:.28;filter:none; }
-        .phase-forest .signal-fragment.is-selected,.phase-forest .signal-fragment:hover { opacity:.78; }
-        .phase-forest .risk-chip { opacity:.35; }
+        .stable .scan,.stable .pixel-map,.stable .glitch-band,.stable .warning{opacity:.03!important;animation:none!important}
+        .stable .fragment{opacity:.7;filter:none;animation:none!important}
+        .stable .vignette{box-shadow:inset 0 0 140px 35px rgba(0,0,0,.64)}
 
-        .is-stable .pixel-field,.is-stable .signal-tear,.is-stable .deep-scanlines { opacity:.015!important;animation:none!important; }
-        .is-stable .glitch-title,.is-stable .signal-fragment,.is-stable .deep-flash { animation:none!important;filter:none!important; }
-        .is-stable .signal-fragment { opacity:.48!important; }
-        .is-stable .signal-fragment.is-selected { opacity:1!important; }
-        .is-stable .warning-copy { display:none; }
+        @keyframes pixelDrift{0%,100%{transform:translate(0)}24%{transform:translate(2px,-1px)}25%{transform:translate(-3px,1px)}61%{transform:translate(0)}62%{transform:translate(4px,0)}63%{transform:translate(-1px,0)}}
+        @keyframes tear{0%,92%,100%{transform:translateX(0);opacity:.1}93%{transform:translateX(9%);opacity:.52}94%{transform:translateX(-5%);opacity:.28}95%{transform:translateX(0);opacity:.1}}
+        @keyframes warningBlink{0%,100%{opacity:.12}31%{opacity:.46}32%{opacity:.08}66%{opacity:.26}67%{opacity:.03}}
+        @keyframes fragmentJitter{0%,87%,100%{transform:translate(0)}88%{transform:translate(7px,-1px)}89%{transform:translate(-3px,1px)}90%{transform:translate(0)}}
+        @keyframes growThread{to{stroke-dashoffset:0}}
+        @keyframes nodesIn{from{opacity:0}to{opacity:.82}}
+        @keyframes oakRise{0%{opacity:0;transform:translateY(22%) scaleY(.55);filter:blur(5px)}100%{opacity:.82;transform:none;filter:none}}
+        @keyframes wordIn{from{opacity:0;letter-spacing:.42em}to{opacity:.36;letter-spacing:.28em}}
+        @keyframes coreIn{0%{opacity:0;border-color:rgba(197,219,174,0)}100%{opacity:1;border-color:rgba(197,219,174,.18)}}
+        @keyframes corePulse{0%,100%{transform:scale(1);border-color:rgba(197,219,174,.08)}50%{transform:scale(1.08);border-color:rgba(197,219,174,.24)}}
 
-        @keyframes titleGlitch {
-          0%,84%,100%{transform:translate(0);text-shadow:none;clip-path:inset(0)}
-          86%{transform:translate(-2px,1px);text-shadow:3px 0 rgba(116,205,160,.18),-3px 0 rgba(188,98,82,.16);clip-path:inset(11% 0 61% 0)}
-          87%{transform:translate(3px,-1px);clip-path:inset(62% 0 9% 0)}
-          88%{transform:translate(0);clip-path:inset(0)}
-          94%{transform:translate(1px,0);text-shadow:-2px 0 rgba(188,98,82,.12)}
-          95%{transform:translate(0);text-shadow:none}
-        }
-        @keyframes pixelDrift { 0%{transform:translate(0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,2px)}100%{transform:translate(0)} }
-        @keyframes fragmentJitter { 0%,88%,100%{transform:translate(0)}89%{transform:translate(3px,-1px)}90%{transform:translate(-2px,1px)}91%{transform:translate(0)} }
-        @keyframes tearA { 0%,86%,100%{transform:translateY(0) scaleX(1);opacity:.12}87%{transform:translateY(12px) scaleX(.72);opacity:.62}88%{transform:translateY(-6px) scaleX(1.13);opacity:.18} }
-        @keyframes tearB { 0%,72%,100%{transform:translateY(0);opacity:.13}73%{transform:translateY(-19px);opacity:.48}74%{transform:translateY(7px);opacity:.23}75%{transform:translateY(0);opacity:.13} }
-        @keyframes tearC { 0%,91%,100%{transform:translateY(0);opacity:.11}92%{transform:translateY(22px);opacity:.41}93%{transform:translateY(0);opacity:.11} }
-        @keyframes flash { 0%,94%,100%{opacity:0}95%{opacity:.09}96%{opacity:0}97%{opacity:.035}98%{opacity:0} }
-        @keyframes warningReveal { 0%,58%,100%{color:rgba(200,161,138,0);filter:blur(4px)}59%,62%{color:rgba(200,161,138,.38);filter:blur(.2px)}63%{color:rgba(200,161,138,0)} }
-        @keyframes growLine { to{stroke-dashoffset:0} }
-        @keyframes nodeBloom { from{opacity:0;transform:scale(.2)} to{opacity:.72;transform:scale(1)} }
-        @keyframes oakRise { 0%{opacity:0;transform:translateY(8%) scaleY(.88);filter:blur(4px)}100%{opacity:.92;transform:translateY(0) scaleY(1);filter:blur(0)} }
-        @keyframes oakLabel { to{color:rgba(180,210,158,.52)} }
-        @keyframes coreAppear { 0%{opacity:0;border-color:rgba(185,213,167,0)}100%{opacity:1;border-color:rgba(185,213,167,.12)} }
-        @keyframes coreRing { 0%,100%{border-color:rgba(179,211,159,.09);transform:scale(.86)}50%{border-color:rgba(179,211,159,.31);transform:scale(1.08)} }
-        @keyframes coreDot { 0%,100%{background:rgba(216,233,189,.28);box-shadow:0 0 22px rgba(199,227,178,.16)}50%{background:rgba(226,240,205,.9);box-shadow:0 0 58px rgba(199,227,178,.58)} }
-
-        @media(max-width:700px){
-          .signal-fragment{max-width:62%!important}.f-2,.f-4,.f-6{right:4%!important}.f-3,.f-5{left:5%!important}.oak-left{left:-18%!important;width:64%!important}.oak-right{right:-20%!important;width:62%!important}.oak-label{bottom:34%!important}.mora-core{top:48%!important}
-        }
-        @media(prefers-reduced-motion:reduce){
-          .glitch-title,.pixel-field,.signal-tear,.signal-fragment,.deep-flash,.warning-copy,.mycelium-lines path,.mycelium-nodes circle,.oak,.oak-label,.mora-core,.mora-core span{animation:none!important}
-          .forest-light,.mycelium,.oak,.mora-core{opacity:1!important}.mycelium-lines path{stroke-dashoffset:0!important}.mycelium-nodes circle{opacity:.6!important}.oak-label{color:rgba(180,210,158,.52)!important}
-        }
+        @media(max-width:640px){.fragment{max-width:44%!important}.fragment:nth-child(n+5){display:none}.oak{width:65%!important}.forest-word{bottom:29%}}
+        @media(prefers-reduced-motion:reduce){.pixel-map,.glitch-band,.fragment,.threads path,.nodes,.oak,.forest-word,.mora-core,.mora-core span{animation:none!important}.phase-forest .threads path{stroke-dashoffset:0}.phase-forest .nodes,.phase-forest .oak,.phase-forest .forest-word,.phase-forest .mora-core{opacity:.75}}
       `}</style>
     </div>
   );
