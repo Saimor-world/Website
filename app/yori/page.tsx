@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import YoriGardenArrival from "@/components/YoriGardenArrival";
 import YoriLanding from "@/components/YoriLanding";
 
-const description = "YORI bündelt Content, Ideen, Community, Kooperationen und Business für Creator an einem Ort.";
+const description = "YORI verbindet Content, Nachrichten, Kooperationen, Termine und Ideen zu einer klaren Arbeitslage für Creator.";
 
 export const metadata: Metadata = {
-  title: "YORI — Creative House",
+  title: "YORI — Creator OS",
   description,
-  keywords: ["YORI", "Creative House", "Creator Workspace", "Saimôr"],
+  keywords: ["YORI", "Creator OS", "Creator Workspace", "Saimôr"],
   robots: { index: false, follow: false },
   alternates: { canonical: "/yori" },
   openGraph: {
-    title: "YORI — Creative House",
+    title: "YORI — Creator OS",
     description,
     url: "/yori",
     siteName: "YORI",
@@ -20,18 +19,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "YORI — Creative House",
+    title: "YORI — Creator OS",
     description,
   },
 };
 
 export default function YoriPage() {
-  return (
-    <>
-      <YoriGardenArrival locale="de" />
-      <div id="house">
-        <YoriLanding locale="de" />
-      </div>
-    </>
-  );
+  return <YoriLanding locale="de" />;
 }
