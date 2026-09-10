@@ -57,15 +57,19 @@ describe('Saimor World site estate', () => {
       .toBe('https://saimor.world/de');
   });
 
-  it('contains no active WORLD CTA to the legacy FRNT host', async () => {
+  it('keeps the public YORI landing on WORLD and links intentionally to the private workspace', async () => {
     const files = [
-      resolve(process.cwd(), 'components/YoriSection.tsx'),
+      resolve(process.cwd(), 'components/YoriLanding.tsx'),
+      resolve(process.cwd(), 'components/CreatorSignalEgg.tsx'),
       resolve(process.cwd(), 'app/yori/page.tsx'),
       resolve(process.cwd(), 'app/en/yori/page.tsx'),
     ];
     const sources = await Promise.all(files.map((file) => readFile(file, 'utf8')));
+    const joined = sources.join('\n');
 
-    expect(sources.join('\n')).not.toContain('https://frnt.saimor.world');
-    expect(sources.join('\n')).toContain(YORI_WORKSPACE_ORIGIN);
+    expect(joined).not.toContain('https://frnt.saimor.world');
+    expect(joined).toContain(YORI_WORKSPACE_ORIGIN);
+    expect(joined).toContain("'/yori'");
+    expect(joined).toContain("'/en/yori'");
   });
 });
