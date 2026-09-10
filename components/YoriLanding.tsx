@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react';
 import YoriAmbientGarden from '@/components/YoriAmbientGarden';
 import YoriMark from '@/components/YoriMark';
 
@@ -7,120 +6,127 @@ type Props = { locale: 'de' | 'en' };
 export default function YoriLanding({ locale }: Props) {
   const de = locale === 'de';
 
-  const words = de
-    ? { title: 'Ein ruhiger Ort für Creator.', enter: 'Eintreten', profile: 'Mit deinem Profil', place: 'Alles an seinem Platz.', sub: 'Ideen. Content. Kooperationen. Heute.', entry: 'Mit deinem Profil eintreten.', note: 'Private Preview · keine erfundene Aktivität', back: 'Saimôr' }
-    : { title: 'A quiet place for creators.', enter: 'Enter', profile: 'With your profile', place: 'Everything in its place.', sub: 'Ideas. Content. Collaborations. Today.', entry: 'Enter with your profile.', note: 'Private preview · no invented activity', back: 'Saimôr' };
+  const copy = de
+    ? {
+        back: 'SAIMÔR',
+        title: 'Ein ruhiger Ort\nfür Creator.',
+        enter: 'Eintreten',
+        profile: 'Mit deinem Profil',
+        placeholder: 'deinusername',
+        still: 'Alles an seinem Platz.',
+        idea: 'Ideen',
+        content: 'Content',
+        deals: 'Kooperationen',
+        today: 'Heute',
+        quiet: 'Weniger Lärm. Mehr Raum für das, was du aufbaust.',
+      }
+    : {
+        back: 'SAIMÔR',
+        title: 'A quiet place\nfor creators.',
+        enter: 'Enter',
+        profile: 'With your profile',
+        placeholder: 'yourusername',
+        still: 'Everything in its place.',
+        idea: 'Ideas',
+        content: 'Content',
+        deals: 'Collaborations',
+        today: 'Today',
+        quiet: 'Less noise. More room for what you are building.',
+      };
 
   return (
     <main className="overflow-hidden bg-[#07100b] text-[#f2eee3]">
-      <section className="relative isolate min-h-[100svh] overflow-hidden">
+      <section className="relative min-h-[100svh] overflow-hidden">
         <YoriAmbientGarden />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,10,7,.88)_0%,rgba(4,10,7,.62)_34%,rgba(4,10,7,.18)_62%,rgba(4,10,7,.08)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(4,11,7,.82)_0%,rgba(4,11,7,.48)_38%,rgba(4,11,7,.08)_69%,rgba(4,11,7,.22)_100%),linear-gradient(180deg,rgba(2,6,4,.2),rgba(2,6,4,.05)_58%,rgba(2,6,4,.42))]" />
 
         <div className="relative mx-auto flex min-h-[100svh] max-w-[1500px] flex-col px-6 pb-8 pt-6 sm:px-10 lg:px-14">
           <header className="flex items-center justify-between">
-            <div className="flex items-center gap-3 text-[#d7c68d]">
-              <YoriMark className="h-8 w-8" />
+            <a href={de ? '/de' : '/en'} className="group flex items-center gap-3 text-[#d8c58b]">
+              <YoriMark className="h-7 w-7" />
               <div>
-                <div className="font-serif text-lg tracking-[.18em] text-[#f4efe3]">YORI</div>
+                <div className="font-serif text-[15px] tracking-[.22em] text-[#efe9dc]">YORI</div>
                 <div className="mt-1 font-mono text-[7px] tracking-[.22em] text-white/28">SAIMÔR</div>
               </div>
-            </div>
-            <a href={de ? '/de' : '/en'} className="font-mono text-[8px] uppercase tracking-[.2em] text-white/30 transition hover:text-white/65">
-              {words.back}
+            </a>
+            <a href={de ? '/de' : '/en'} className="font-mono text-[8px] tracking-[.18em] text-white/30 transition hover:text-white/64">
+              {copy.back}
             </a>
           </header>
 
-          <div className="flex flex-1 items-center py-16">
-            <div className="max-w-3xl pb-[6vh]">
-              <div className="mb-5 flex items-center gap-3 text-[#d7c68d]/72">
-                <span className="h-px w-8 bg-[#d7c68d]/48" />
-                <span className="font-mono text-[8px] tracking-[.28em]">縁</span>
+          <div className="flex flex-1 items-end pb-[10vh] pt-24 sm:pb-[12vh] lg:pb-[14vh]">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-3 font-mono text-[8px] tracking-[.28em] text-[#d9c487]/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#d9c487] shadow-[0_0_18px_rgba(217,196,135,.46)]" />
+                YORI · 縁
               </div>
-              <h1 className="font-serif text-[clamp(5rem,11vw,10rem)] font-light leading-[.76] tracking-[-.06em] text-[#f5f0e5]">YORI</h1>
-              <p className="mt-7 max-w-2xl font-serif text-[clamp(1.8rem,3.4vw,3.8rem)] font-light leading-[1.02] tracking-[-.035em] text-[#eee7d7]/92">
-                {words.title}
-              </p>
 
-              <a href="#entry" className="group mt-10 inline-flex min-h-12 items-center gap-8 rounded-full border border-[#d3bd77]/46 bg-[#0b1710]/36 px-6 font-mono text-[9px] uppercase tracking-[.18em] text-[#e8ddb8]/78 backdrop-blur-sm transition hover:border-[#e2cc86]/72 hover:bg-[#112017]/56 hover:text-[#fff3cf]">
-                {words.enter}
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </a>
-              <p className="mt-4 font-mono text-[8px] tracking-[.18em] text-white/25">{words.profile}</p>
+              <h1 className="mt-6 whitespace-pre-line font-serif text-[clamp(3.8rem,8vw,7.8rem)] font-light leading-[.87] tracking-[-.055em] text-[#f4f0e6]">
+                {copy.title}
+              </h1>
+
+              <form action="https://yori.saimor.world/demo" method="get" className="mt-8 max-w-[520px]">
+                <input type="hidden" name="platform" value="instagram" />
+                <div className="flex items-stretch border-b border-[#d7c791]/24 bg-black/5 backdrop-blur-[2px]">
+                  <span className="flex items-center px-1 pr-2 text-sm text-white/26">@</span>
+                  <input
+                    name="creator"
+                    required
+                    maxLength={64}
+                    autoComplete="off"
+                    placeholder={copy.placeholder}
+                    className="min-w-0 flex-1 bg-transparent py-4 text-sm text-[#f4efe3] outline-none placeholder:text-white/20"
+                  />
+                  <button type="submit" className="px-4 font-mono text-[8px] tracking-[.18em] text-[#d8c58b]/78 transition hover:text-[#f2e3b6]">
+                    {copy.enter} →
+                  </button>
+                </div>
+                <div className="mt-3 font-mono text-[7px] tracking-[.18em] text-white/24">{copy.profile}</div>
+              </form>
             </div>
-          </div>
-
-          <div className="flex items-end justify-between gap-8 border-t border-white/[.06] pt-5 font-mono text-[7px] uppercase tracking-[.2em] text-white/22">
-            <span>{de ? 'KLARER DENKEN · GRÖSSER SCHAFFEN' : 'THINK CLEARER · CREATE BIGGER'}</span>
-            <span className="hidden sm:block">IDEEN · MENSCHEN · PROJEKTE</span>
           </div>
         </div>
       </section>
 
-      <section className="relative min-h-[88svh] overflow-hidden border-y border-white/[.06] bg-[#0a130e] px-6 py-20 sm:px-10 lg:px-14">
-        <div className="absolute inset-0 opacity-70"><YoriAmbientGarden compact /></div>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,11,8,.94)_0%,rgba(5,11,8,.78)_37%,rgba(5,11,8,.22)_68%,rgba(5,11,8,.12)_100%)]" />
+      <section className="relative min-h-[88svh] overflow-hidden border-t border-white/[.055] bg-[#0a130d]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(126,151,105,.12),transparent_28%),linear-gradient(180deg,#0b140e_0%,#09110c_100%)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[.12] [background-image:repeating-radial-gradient(ellipse_at_68%_52%,rgba(221,210,174,.28)_0_1px,transparent_1px_14px)]" />
 
-        <div className="relative mx-auto grid min-h-[72svh] max-w-[1500px] items-center gap-12 lg:grid-cols-[.7fr_1.3fr]">
-          <div className="max-w-xl">
-            <p className="font-mono text-[8px] tracking-[.22em] text-[#b5c3a2]/48">YORI / GARDEN</p>
-            <h2 className="mt-5 font-serif text-[clamp(3.4rem,6.4vw,6.4rem)] font-light leading-[.9] tracking-[-.05em] text-[#f0eadc]">{words.place}</h2>
-            <p className="mt-6 font-mono text-[8px] uppercase tracking-[.22em] text-white/28">{words.sub}</p>
+        <div className="relative mx-auto grid min-h-[88svh] max-w-[1500px] items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-[.36fr_.64fr] lg:px-14">
+          <div className="max-w-md">
+            <h2 className="font-serif text-[clamp(3.1rem,5.7vw,5.7rem)] font-light leading-[.91] tracking-[-.048em] text-[#eee9dc]">
+              {copy.still}
+            </h2>
+            <p className="mt-6 max-w-xs text-sm leading-6 text-white/35">{copy.quiet}</p>
           </div>
 
-          <div className="relative mx-auto aspect-[1.25/1] w-full max-w-[780px]">
-            <svg viewBox="0 0 900 700" className="absolute inset-0 h-full w-full" aria-hidden="true">
-              <g fill="none" stroke="#7f8e74" strokeLinecap="round" opacity=".42">
-                <path d="M62 528C179 418 269 457 358 514C449 573 560 567 648 500C727 440 803 436 858 471" strokeWidth="3"/>
-                <path d="M55 548C176 438 270 477 359 535C451 594 562 588 651 520C730 460 808 456 866 490" strokeWidth="2.5"/>
-                <path d="M49 568C174 458 271 497 360 555C453 615 565 609 654 541C734 481 812 477 873 510" strokeWidth="2"/>
-                <ellipse cx="282" cy="392" rx="112" ry="68" strokeWidth="2.6"/>
-                <ellipse cx="282" cy="392" rx="130" ry="83" strokeWidth="2.2"/>
-                <ellipse cx="646" cy="424" rx="116" ry="70" strokeWidth="2.6"/>
-                <ellipse cx="646" cy="424" rx="137" ry="87" strokeWidth="2.2"/>
+          <div className="relative mx-auto h-[560px] w-full max-w-[820px] sm:h-[620px]">
+            <svg viewBox="0 0 820 620" className="absolute inset-0 h-full w-full" aria-hidden="true">
+              <g fill="none" stroke="#d8c892" strokeOpacity=".16" strokeWidth="1.2">
+                <path d="M105 432 C218 326 300 394 405 306 C493 231 560 262 695 142" />
+                <path d="M114 448 C226 345 310 410 417 324 C506 253 579 283 714 159" />
+                <path d="M144 468 C258 392 347 435 458 368 C546 315 621 313 736 240" />
+                <ellipse cx="235" cy="390" rx="116" ry="60" />
+                <ellipse cx="235" cy="390" rx="86" ry="42" />
+                <ellipse cx="500" cy="312" rx="108" ry="56" />
+                <ellipse cx="500" cy="312" rx="78" ry="39" />
+                <ellipse cx="663" cy="182" rx="94" ry="48" />
+                <ellipse cx="663" cy="182" rx="66" ry="32" />
+                <ellipse cx="616" cy="448" rx="110" ry="56" />
+                <ellipse cx="616" cy="448" rx="80" ry="40" />
               </g>
             </svg>
 
-            {[
-              ['Ideen', 'left-[22%] top-[28%]', 'h-20 w-28'],
-              ['Content', 'right-[13%] top-[32%]', 'h-24 w-32'],
-              [de ? 'Kooperationen' : 'Collaborations', 'left-[10%] bottom-[16%]', 'h-20 w-28'],
-              [de ? 'Heute' : 'Today', 'right-[20%] bottom-[14%]', 'h-24 w-32'],
-            ].map(([label, pos, size], index) => (
-              <div key={label} className={`absolute ${pos}`}>
-                <div className={`${size} rounded-[48%_52%_45%_55%] border border-white/[.07] bg-[radial-gradient(circle_at_32%_24%,#596052_0%,#2b332c_48%,#131a15_100%)] shadow-[0_22px_40px_rgba(0,0,0,.36),inset_0_1px_0_rgba(255,255,255,.06)] ${index === 2 || index === 3 ? 'after:absolute after:inset-x-[18%] after:top-[10%] after:h-[16%] after:rounded-full after:bg-[#5a7248]/28' : ''}`} />
-                <div className="absolute -right-3 -top-7 whitespace-nowrap font-serif text-sm text-[#eee5ce]/76">
-                  <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[#d5b968]/80" />{label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <div className="absolute left-[18%] top-[55%] h-20 w-28 -rotate-6 rounded-[48%_52%_45%_55%/60%_58%_42%_40%] bg-[radial-gradient(circle_at_38%_28%,#5b5f4e_0%,#31372e_36%,#161d18_100%)] shadow-[0_22px_45px_rgba(0,0,0,.42)]" />
+            <div className="absolute left-[52%] top-[40%] h-16 w-24 rotate-3 rounded-[52%_48%_50%_50%/62%_58%_42%_38%] bg-[radial-gradient(circle_at_38%_28%,#5a604f_0%,#32392f_38%,#171d19_100%)] shadow-[0_20px_42px_rgba(0,0,0,.38)]" />
+            <div className="absolute right-[10%] top-[18%] h-24 w-32 -rotate-3 rounded-[54%_46%_48%_52%/58%_62%_38%_42%] bg-[radial-gradient(circle_at_38%_26%,#626655_0%,#343a31_38%,#171d19_100%)] shadow-[0_25px_50px_rgba(0,0,0,.42)]" />
+            <div className="absolute right-[15%] bottom-[16%] h-20 w-28 rotate-2 rounded-[50%_50%_48%_52%/62%_55%_45%_38%] bg-[radial-gradient(circle_at_40%_24%,#59604e_0%,#31372d_38%,#161c18_100%)] shadow-[0_24px_48px_rgba(0,0,0,.4)]" />
 
-      <section id="entry" className="relative bg-[#e8e0cf] px-6 py-24 text-[#1a211a] sm:px-10 lg:px-14">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-          <div>
-            <YoriMark className="h-8 w-8 text-[#415640]" />
-            <h2 className="mt-6 max-w-xl font-serif text-[clamp(3rem,5.6vw,5.6rem)] font-light leading-[.92] tracking-[-.045em]">{words.entry}</h2>
+            <div className="absolute left-[20%] top-[49%] font-mono text-[8px] tracking-[.16em] text-[#d9c487]/62">{copy.deals}</div>
+            <div className="absolute left-[54%] top-[34%] font-mono text-[8px] tracking-[.16em] text-[#d9c487]/62">{copy.idea}</div>
+            <div className="absolute right-[9%] top-[11%] font-mono text-[8px] tracking-[.16em] text-[#d9c487]/62">{copy.content}</div>
+            <div className="absolute right-[14%] bottom-[10%] font-mono text-[8px] tracking-[.16em] text-[#d9c487]/62">{copy.today}</div>
           </div>
-
-          <form action="https://yori.saimor.world/demo" method="get" className="border-t border-[#253126]/18 pt-6">
-            <div className="grid gap-3 sm:grid-cols-[120px_1fr_auto]">
-              <select name="platform" aria-label={de ? 'Plattform' : 'Platform'} defaultValue="instagram" className="min-h-12 border-b border-[#29362c]/22 bg-transparent px-1 text-sm outline-none">
-                <option value="instagram">Instagram</option>
-                <option value="tiktok">TikTok</option>
-              </select>
-              <label className="flex min-h-12 items-center border-b border-[#29362c]/22 px-1 focus-within:border-[#415640]/60">
-                <span className="mr-1 text-[#2d382f]/42">@</span>
-                <input name="creator" required maxLength={64} autoComplete="off" placeholder={de ? 'deinname' : 'yourname'} className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#2d382f]/34" />
-              </label>
-              <button type="submit" className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-[#354635]/28 px-5 text-sm transition hover:bg-[#273729] hover:text-[#f3ecdd]">
-                {words.enter}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </div>
-            <p className="mt-4 font-mono text-[7px] uppercase tracking-[.18em] text-[#2b382d]/36">{words.note}</p>
-          </form>
         </div>
       </section>
     </main>
