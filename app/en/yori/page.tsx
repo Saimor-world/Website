@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import YoriGardenArrival from "@/components/YoriGardenArrival";
 import YoriLanding from "@/components/YoriLanding";
 
 const description = "YORI brings content, ideas, community, collaborations and business together for creators in one place.";
@@ -25,5 +26,12 @@ export const metadata: Metadata = {
 };
 
 export default function YoriPage() {
-  return <YoriLanding locale="en" />;
+  return (
+    <>
+      <YoriGardenArrival locale="en" />
+      <div id="house">
+        <YoriLanding locale="en" />
+      </div>
+    </>
+  );
 }
