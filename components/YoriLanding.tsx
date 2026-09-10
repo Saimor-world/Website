@@ -53,9 +53,35 @@ export default function YoriLanding({ locale }: Props) {
                   ? 'YORI verbindet die Teile deiner Creator-Arbeit, hält den Zusammenhang und zeigt dir nur, was gerade wirklich wichtig ist.'
                   : 'YORI connects the parts of your creator work, keeps the context and shows only what genuinely matters right now.'}
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="https://yori.saimor.world" className="group inline-flex items-center gap-3 rounded-full bg-[#f2d39a] px-6 py-3.5 text-sm font-bold text-[#171519] transition hover:bg-[#ffe7b7]">
-                  {de ? 'YORI öffnen' : 'Open YORI'}
+
+              <form action="https://yori.saimor.world/demo" method="get" className="mt-8 max-w-xl rounded-[1.55rem] border border-white/10 bg-white/[.045] p-3 shadow-[0_20px_70px_rgba(0,0,0,.25)] backdrop-blur-xl">
+                <p className="px-2 pb-2 font-mono text-[8px] font-bold tracking-[.18em] text-[#f0cf90]/70">
+                  {de ? 'SIEH YORI MIT DEINEM PROFIL' : 'SEE YORI WITH YOUR PROFILE'}
+                </p>
+                <div className="grid gap-2 sm:grid-cols-[132px_1fr_auto]">
+                  <select name="platform" aria-label={de ? 'Plattform' : 'Platform'} defaultValue="instagram" className="min-h-12 rounded-xl border border-white/10 bg-[#17141c] px-3 text-sm text-white/72 outline-none">
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                  </select>
+                  <label className="flex min-h-12 items-center rounded-xl border border-white/10 bg-[#17141c] px-3 focus-within:border-[#f0cf90]/45">
+                    <span className="mr-1 text-white/34">@</span>
+                    <input name="creator" required maxLength={64} autoComplete="off" placeholder={de ? 'deinusername' : 'yourusername'} className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/24" />
+                  </label>
+                  <button type="submit" className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#f2d39a] px-5 text-sm font-bold text-[#171519] transition hover:bg-[#ffe7b7]">
+                    {de ? 'Mein YORI' : 'My YORI'}
+                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </button>
+                </div>
+                <p className="px-2 pt-2 text-[11px] leading-5 text-white/35">
+                  {de
+                    ? 'YORI baut eine persönliche, klar markierte Preview. Wo noch keine verifizierten Signale verbunden sind, bleiben Beispiele ausdrücklich Beispiele.'
+                    : 'YORI builds a personal, clearly marked preview. Where no verified signals are connected yet, examples stay explicitly marked as examples.'}
+                </p>
+              </form>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <a href="https://yori.saimor.world/demo" className="group inline-flex items-center gap-3 rounded-full border border-white/12 px-5 py-3.5 text-sm text-white/64 transition hover:bg-white/[.05]">
+                  {de ? 'Ohne Profil ansehen' : 'Explore without a profile'}
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                 </a>
                 <a href="#inside" className="inline-flex items-center rounded-full border border-white/12 px-5 py-3.5 text-sm text-white/64 transition hover:bg-white/[.05]">
@@ -158,7 +184,7 @@ export default function YoriLanding({ locale }: Props) {
           <h2 className="mt-6 font-serif text-[clamp(3.4rem,7vw,6.5rem)] font-light leading-[.87] tracking-[-.055em]">
             {de ? <>Weniger Oberfläche.<br/><em className="font-light text-[#efbd77]">Mehr Zusammenhang.</em></> : <>Less interface.<br/><em className="font-light text-[#efbd77]">More context.</em></>}
           </h2>
-          <a href="https://yori.saimor.world" className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#f1d39e] px-6 py-3.5 text-sm font-bold text-[#1a181c] transition hover:bg-[#ffe7b6]">
+          <a href="https://yori.saimor.world/demo" className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#f1d39e] px-6 py-3.5 text-sm font-bold text-[#1a181c] transition hover:bg-[#ffe7b6]">
             {de ? 'Private Preview öffnen' : 'Open private preview'}
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
           </a>
