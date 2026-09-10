@@ -9,9 +9,7 @@ export default function DesktopDiscoveries() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (typeof window.matchMedia !== 'function') return;
-    if (!window.matchMedia('(min-width: 1024px)').matches) return;
-    const timer = window.setTimeout(() => setEnabled(true), 1400);
+    const timer = window.setTimeout(() => setEnabled(true), 650);
     return () => window.clearTimeout(timer);
   }, []);
 
