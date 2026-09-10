@@ -8,6 +8,7 @@ import AchievementToast from './AchievementToast';
 
 const LAST_VISIT_KEY = 'saimor-last-visit';
 const RETURN_CHECK_KEY = 'saimor-return-checked';
+const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 
 function normalizePath(pathname: string) {
   const normalized = pathname.replace(/^\/(de|en)(?=\/|$)/, '');
@@ -20,12 +21,39 @@ export default function EasterEggs() {
   const managerRef = useRef(getAchievementManager());
   const logoClicksRef = useRef(0);
   const logoTimerRef = useRef<number | null>(null);
+  const konamiIndexRef = useRef(0);
   const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
+  const [resonance, setResonance] = useState(false);
 
   const unlock = useCallback((id: string) => {
     const item = managerRef.current.unlock(id);
     if (item) setNewAchievement(item);
+    return item;
   }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const expected = KONAMI[konamiIndexRef.current];
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+
+      if (key === expected) {
+        konamiIndexRef.current += 1;
+        if (konamiIndexRef.current < KONAMI.length) return;
+
+        konamiIndexRef.current = 0;
+        setResonance(true);
+        unlock('konami');
+        window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
+        window.setTimeout(() => setResonance(false), 3200);
+        return;
+      }
+
+      konamiIndexRef.current = key === KONAMI[0] ? 1 : 0;
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [unlock]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => unlock('silent-observer'), 12000);
@@ -85,6 +113,15 @@ export default function EasterEggs() {
 
   return (
     <>
+      {resonance ? (
+        <div className="pointer-events-none fixed inset-0 z-[9997] overflow-hidden" aria-hidden="true">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(209,183,111,.12),transparent_28%),radial-gradient(circle_at_20%_75%,rgba(74,125,86,.12),transparent_32%)] animate-pulse" />
+          <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-[#d9c17d]/50 to-transparent shadow-[0_0_28px_rgba(217,193,125,.35)]" />
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[.28em] text-[#eadba9]/60">
+            RESONANCE LAYER // 1986
+          </div>
+        </div>
+      ) : null}
       <AchievementToast achievement={newAchievement} onClose={() => setNewAchievement(null)} locale={locale} />
       <AchievementButton />
     </>
