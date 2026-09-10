@@ -1,4 +1,4 @@
-import CreatorSignalEgg from '@/components/CreatorSignalEgg';
+import YoriGate from '@/components/YoriGate';
 import HomepageReframe from '@/components/HomepageReframe';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
@@ -12,7 +12,7 @@ export default function Page() {
     <>
       <HomepageReframe />
       <LivingForestWorld locale="de" />
-      <CreatorSignalEgg locale="de" />
+      <YoriGate locale="de" />
     </>
   );
 }
