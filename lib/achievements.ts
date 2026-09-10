@@ -51,6 +51,7 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement('demo-explorer', 'depth', 'Demo ausprobiert', 'Tried the demo', 'Du hast die Produktbeschreibung verlassen und die Demo selbst geöffnet.', 'You moved beyond the product copy and opened the demo yourself.', '□'),
   achievement('clarity-navigator', 'path', 'Vertrauen geprüft', 'Checked the foundations', 'Du hast dir Sicherheit, Datenschutz oder die rechtlichen Grundlagen angesehen.', 'You checked the security, privacy, or legal foundations.', '△'),
   achievement('first-contact', 'path', 'Kontakt aufgenommen', 'Got in touch', 'Du hast aus dem Anschauen ein echtes Gespräch gemacht.', 'You turned browsing into a real conversation.', '↗'),
+  achievement('konami', 'hidden', 'Überlagerung', 'Overlay', 'Du hast eine alte Resonanzschicht des Systems wieder geöffnet.', 'You reopened an old resonance layer of the system.', '◈', true),
   achievement('quad_logo', 'hidden', 'Das Zeichen lebt', 'The mark is alive', 'Du hast das Saimôr-Zeichen nicht nur gesehen, sondern genauer untersucht.', 'You did not just see the Saimôr mark — you looked a little closer.', '◌', true),
 ];
 
