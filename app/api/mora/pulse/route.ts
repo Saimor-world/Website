@@ -83,24 +83,26 @@ async function fetchGdelt(): Promise<SignalItem[]> {
 
   const payload = await response.json() as { articles?: GdeltArticle[] };
   const seen = new Set<string>();
-  return (payload.articles ?? [])
-    .map((article) => {
-      const url = safeUrl(article.url);
-      const title = article.title?.trim();
-      if (!url || !title || seen.has(url)) return null;
-      seen.add(url);
-      return {
-        title,
-        url,
-        seenAt: article.seendate ?? null,
-        domain: article.domain ?? new URL(url).hostname,
-        language: article.language ?? null,
-        country: article.sourcecountry ?? null,
-        image: safeUrl(article.socialimage) ?? null,
-      } satisfies SignalItem;
-    })
-    .filter((item): item is SignalItem => Boolean(item))
-    .slice(0, 12);
+  const items: SignalItem[] = [];
+
+  for (const article of payload.articles ?? []) {
+    const url = safeUrl(article.url);
+    const title = article.title?.trim();
+    if (!url || !title || seen.has(url)) continue;
+    seen.add(url);
+    items.push({
+      title,
+      url,
+      seenAt: article.seendate ?? null,
+      domain: article.domain ?? new URL(url).hostname,
+      language: article.language ?? null,
+      country: article.sourcecountry ?? null,
+      image: safeUrl(article.socialimage) ?? null,
+    });
+    if (items.length >= 12) break;
+  }
+
+  return items;
 }
 
 async function fetchHackerNews(): Promise<SignalItem[]> {
@@ -116,24 +118,26 @@ async function fetchHackerNews(): Promise<SignalItem[]> {
 
   const payload = await response.json() as { hits?: HnHit[] };
   const seen = new Set<string>();
-  return (payload.hits ?? [])
-    .map((hit) => {
-      const url = safeUrl(hit.url);
-      const title = hit.title?.trim();
-      if (!url || !title || seen.has(url)) return null;
-      seen.add(url);
-      return {
-        title,
-        url,
-        seenAt: hit.created_at ?? null,
-        domain: new URL(url).hostname.replace(/^www\./, ''),
-        language: 'English',
-        country: null,
-        image: null,
-      } satisfies SignalItem;
-    })
-    .filter((item): item is SignalItem => Boolean(item))
-    .slice(0, 12);
+  const items: SignalItem[] = [];
+
+  for (const hit of payload.hits ?? []) {
+    const url = safeUrl(hit.url);
+    const title = hit.title?.trim();
+    if (!url || !title || seen.has(url)) continue;
+    seen.add(url);
+    items.push({
+      title,
+      url,
+      seenAt: hit.created_at ?? null,
+      domain: new URL(url).hostname.replace(/^www\./, ''),
+      language: 'English',
+      country: null,
+      image: null,
+    });
+    if (items.length >= 12) break;
+  }
+
+  return items;
 }
 
 export async function GET() {
