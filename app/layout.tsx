@@ -8,6 +8,7 @@ import CookieBanner from '@/components/CookieBanner';
 import ScrollProgress from '@/components/ScrollProgress';
 import PWARegistration from '@/components/PWARegistration';
 import DesktopDiscoveries from '@/components/DesktopDiscoveries';
+import CommandPalette from '@/components/CommandPalette';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
@@ -150,6 +151,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ClientProviders />
             <PWARegistration />
             <DesktopDiscoveries />
+            <CommandPalette />
             <ScrollProgress />
             <CookieBanner />
             <LayoutWrapper>
