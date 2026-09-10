@@ -44,7 +44,7 @@ export function middleware(request: NextRequest) {
     "frame-src https://cal.com https://embed.cal.com https://newassets.hcaptcha.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
-    "form-action 'self'",
+    "form-action 'self' https://yori.saimor.world",
     "upgrade-insecure-requests",
     "block-all-mixed-content"
   ].join('; ');
