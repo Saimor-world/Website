@@ -1,13 +1,11 @@
-import type { Metadata } from "next";
-import MoraAnalogAffect from "@/components/MoraAnalogAffect";
+import type { Metadata } from 'next';
+import MoraDeepView from '@/components/MoraDeepView';
 
 export const metadata: Metadata = {
-  title: "Môra – Analog Affect",
-  description:
-    "Die Môra-Analog-Affect-Seite erklärt, wie das semantische Gedächtnis von Saimôr OS arbeitet – mit strukturiertem und tiefem View.",
+  title: 'Môra – Deep View',
+  description: 'Môra Deep View verbindet öffentliche Live-Signale zu einer ruhigen, transparenten Echtzeitansicht.',
 };
 
-export default function MoraAnalogAffectPage() {
-  return <MoraAnalogAffect locale="de" />;
+export default function MoraDeepViewPage() {
+  return <MoraDeepView locale="de" />;
 }
-
