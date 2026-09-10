@@ -211,39 +211,37 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section id="system" className="relative border-b border-[#d9eadf]/10 bg-[radial-gradient(circle_at_80%_10%,rgba(127,212,193,.10),transparent_34%),#143126] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      <section id="system" className="relative border-b border-[#d9eadf]/10 bg-[radial-gradient(circle_at_80%_10%,rgba(127,212,193,.10),transparent_34%),#143126] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/88 sm:text-[10px]">{c.systemEyebrow}</p>
           <h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-white/96 sm:text-6xl md:text-7xl">{c.systemTitle}</h2>
 
-          <div className="mt-14 border-t border-white/[0.15] md:mt-20">
-            {c.layers.map(([no, name, role, text], index) => {
+          <div className="mt-10 grid gap-px overflow-hidden border-y border-white/[0.10] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-4">
+            {c.layers.map(([no, name, role], index) => {
               const Icon = layerIcons[index];
               return (
-                <article key={no} className="group grid gap-4 border-b border-white/[0.12] py-7 md:grid-cols-[90px_1fr_1fr] md:items-center md:gap-8 md:py-9">
-                  <div className="flex items-center gap-3 font-mono text-[10px] tracking-[.18em] text-white/48">
-                    <span>{no}</span><Icon className="h-4 w-4 text-[#91dec7]/78" strokeWidth={1.4} />
+                <div key={no} className="flex min-h-24 items-center gap-4 bg-[#143126] px-4 py-4 sm:px-5">
+                  <Icon className="h-4 w-4 shrink-0 text-[#91dec7]/72" strokeWidth={1.35} />
+                  <div className="min-w-0">
+                    <div className="font-mono text-[8px] tracking-[.17em] text-white/38">{no}</div>
+                    <div className="mt-1 text-sm font-semibold tracking-[.03em] text-white/90">{name}</div>
+                    <div className="mt-1 text-[11px] leading-4 text-[#dce9e0]/48">{role}</div>
                   </div>
-                  <div>
-                    <div className="font-serif text-4xl font-light tracking-[-.035em] text-white/94 transition group-hover:text-white sm:text-5xl">{name}</div>
-                    <div className="mt-1 font-mono text-[9px] uppercase tracking-[.18em] text-[#e0bd67]/78">{role}</div>
-                  </div>
-                  <p className="max-w-xl text-sm leading-6 text-[#dce9e0]/66 sm:text-base sm:leading-7">{text}</p>
-                </article>
+                </div>
               );
             })}
           </div>
 
-          <div className="mt-14 grid gap-8 border border-white/[0.14] bg-[#1a3b2e]/82 p-6 sm:p-8 md:mt-16 md:grid-cols-[.85fr_1.15fr] md:items-end md:p-10">
+          <div className="mt-10 grid gap-8 border-l border-[#e0bd67]/28 pl-5 sm:pl-7 md:grid-cols-[.85fr_1.15fr] md:items-end">
             <div>
               <div className="flex items-center gap-2 font-mono text-[9px] font-semibold tracking-[.22em] text-[#91dec7]/88">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#91dec7]" />{c.entryLabel}
               </div>
-              <h3 className="mt-5 max-w-md font-serif text-3xl font-light leading-tight text-white/96 sm:text-4xl">{c.entryTitle}</h3>
+              <h3 className="mt-4 max-w-md font-serif text-3xl font-light leading-tight text-white/96 sm:text-4xl">{c.entryTitle}</h3>
             </div>
             <div>
               <p className="max-w-2xl text-sm leading-6 text-[#dce9e0]/68 sm:text-base sm:leading-7">{c.entryText}</p>
-              <Link href={securityHref} className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#e5f1e9] transition hover:text-white">
+              <Link href={securityHref} className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#e5f1e9] transition hover:text-white">
                 {c.entryCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
