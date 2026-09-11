@@ -1,9 +1,9 @@
 import MoraProductPage from '@/components/MoraProductPage';
 
 export const metadata = {
-  title: 'Môra – proaktive Assistenz im Saimôr OS',
+  title: 'MÔRA – proaktive Assistenz im Saimôr OS',
   description:
-    'Môra ist die proaktive Assistenz im Saimôr OS: Sie hält Kontext, erkennt relevante Signale, bereitet nächste Schritte vor und kann über Systemfähigkeiten handeln.',
+    'MÔRA arbeitet im Saimôr OS mit Dateien, Terminen, Aufgaben und Kontext. Sie behält den Stand im Blick, erkennt Veränderungen und kann nächste Schritte vorbereiten.',
 };
 
 export default function MoraPage() {
