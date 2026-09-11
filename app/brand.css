@@ -1,0 +1,22 @@
+/* Saimôr 2026 mark: replace the legacy raster seal without touching navigation behavior. */
+header a[aria-label*="Saimôr"] > span:first-child {
+  overflow: visible;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+header a[aria-label*="Saimôr"] > span:first-child > img {
+  opacity: 0 !important;
+}
+
+header a[aria-label*="Saimôr"] > span:first-child::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  background: url('/saimor-mark.svg') center / contain no-repeat;
+  filter: drop-shadow(0 2px 8px rgba(218, 184, 92, .16));
+}
+
+header a[aria-label*="Saimôr"] > span:first-child > span {
+  display: none;
+}
