@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [{ url: '/saimor-mark.svg', type: 'image/svg+xml' }],
     shortcut: '/saimor-mark.svg',
+    apple: '/saimor-mark.svg',
   },
   keywords: [
     'Saimôr',
