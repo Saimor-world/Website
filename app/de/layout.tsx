@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 
-const title = 'Saimôr – OS mit proaktiver KI-Assistenz';
-const description = 'Saimôr OS verbindet Arbeit, Dateien, Integrationen und KI in einem gemeinsamen Kontext. Mit Môra als proaktiver Assistenz sowie Vorträgen und Schulungen.';
+const title = 'Saimôr OS – Arbeit, Dateien und KI an einem Ort';
+const description = 'Saimôr OS bringt Dateien, Termine, Aufgaben und KI in einen gemeinsamen Arbeitsraum. MÔRA behält den Stand im Blick und kann dort weitermachen, wo du aufgehört hast.';
 
 export const metadata: Metadata = {
   title,
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: 'https://saimor.world/de',
     siteName: 'Saimôr',
     images: ['/og'],
-    locale: 'de-DE',
+    locale: 'de_DE',
     type: 'website',
   },
   twitter: {
@@ -25,7 +25,10 @@ export const metadata: Metadata = {
     description,
     images: ['/og'],
   },
-  alternates: { canonical: '/de' },
+  alternates: {
+    canonical: '/de',
+    languages: { de: '/de', en: '/en', 'x-default': '/de' },
+  },
 };
 
 export const viewport: Viewport = {
