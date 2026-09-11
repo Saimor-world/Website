@@ -247,187 +247,33 @@ html, body { background: var(--world-ink); }
 html,
 body { background: var(--world-ink); }
 
-/* =========================================================
-   HOMEPAGE / INSIDE SAIMÔR
-   Hero remains untouched. This scene deliberately changes
-   visual language: orbit outside -> material threshold inside.
-   ========================================================= */
-#system {
-  isolation: isolate;
-  background:
-    radial-gradient(ellipse at 78% 28%, rgba(70, 126, 102, .09), transparent 28%),
-    radial-gradient(ellipse at 58% 72%, rgba(201, 174, 105, .055), transparent 25%),
-    linear-gradient(180deg, #070907 0%, #090d0a 46%, #070a08 100%) !important;
-}
-
-#system::before {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(180deg, rgba(30, 70, 53, .22) 0, rgba(10, 15, 12, 0) 12%),
-    radial-gradient(circle at 18% 20%, rgba(255,255,255,.032) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 64% 42%, rgba(255,255,255,.025) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 82% 72%, rgba(214,168,72,.035) 0 1px, transparent 1.7px);
-  background-size: auto, 97px 97px, 131px 131px, 167px 167px;
-  opacity: .72;
-}
-
-#system::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  z-index: 2;
-  top: 10%;
-  bottom: 16%;
-  left: 63%;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(239,215,158,.10) 18%, rgba(239,215,158,.72) 49%, rgba(145,222,199,.22) 72%, transparent);
-  box-shadow: 0 0 28px rgba(224, 190, 112, .11), 0 0 80px rgba(145, 222, 199, .05);
-  animation: insideThresholdBreath 9s ease-in-out infinite;
-}
-
-#system > div { position: relative; z-index: 4; }
-
-#system .inside-beam {
-  left: 61% !important;
-  width: 14% !important;
-  opacity: .7;
-  filter: blur(34px);
-  background: linear-gradient(90deg, transparent, rgba(238,222,176,.095), transparent) !important;
-}
-
-#system .inside-haze {
-  right: -8% !important;
-  top: 12% !important;
-  width: 48% !important;
-  height: 66% !important;
-  background: radial-gradient(ellipse, rgba(69, 135, 105, .13), rgba(33, 76, 59, .035) 42%, transparent 70%) !important;
-  filter: blur(52px);
-}
-
-#system .inside-plane {
-  animation: none !important;
-  backdrop-filter: blur(10px) saturate(.8) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(.8) !important;
-}
-
-#system .plane-back {
-  left: 8% !important;
-  top: 2% !important;
-  width: 46% !important;
-  height: 90% !important;
-  transform: perspective(1100px) rotateY(9deg) translateZ(-24px) !important;
-  clip-path: polygon(8% 0, 100% 5%, 94% 100%, 0 91%);
-  border-color: rgba(255,255,255,.055) !important;
-  background:
-    linear-gradient(100deg, rgba(255,255,255,.018), transparent 34%),
-    linear-gradient(180deg, rgba(26,45,35,.52), rgba(5,8,6,.73)) !important;
-  box-shadow: inset -1px 0 rgba(255,255,255,.04), 0 65px 150px rgba(0,0,0,.5) !important;
-}
-
-#system .plane-mid {
-  right: 7% !important;
-  top: 12% !important;
-  width: 43% !important;
-  height: 72% !important;
-  transform: perspective(1100px) rotateY(-7deg) translateZ(26px) !important;
-  clip-path: polygon(0 7%, 94% 0, 100% 89%, 7% 100%);
-  border-color: rgba(148,196,174,.075) !important;
-  background:
-    linear-gradient(125deg, rgba(128,185,158,.065), transparent 32%),
-    linear-gradient(180deg, rgba(16,33,25,.46), rgba(4,8,6,.58)) !important;
-  box-shadow: inset 1px 0 rgba(145,222,199,.055), 0 55px 130px rgba(0,0,0,.46) !important;
-}
-
-#system .plane-front {
-  left: 20% !important;
-  bottom: 3% !important;
-  width: 65% !important;
-  height: 34% !important;
-  transform: perspective(900px) rotateX(61deg) rotateZ(-1.2deg) translateZ(32px) !important;
-  transform-origin: 50% 100%;
-  clip-path: polygon(7% 8%, 96% 0, 100% 84%, 0 100%);
-  border-color: rgba(214,184,106,.08) !important;
-  background: linear-gradient(150deg, rgba(226,203,141,.06), rgba(14,22,17,.17) 42%, rgba(3,6,4,.55)) !important;
-  box-shadow: 0 38px 100px rgba(0,0,0,.52) !important;
-}
-
-#system .mora-trace {
-  top: 46% !important;
-  right: 5% !important;
-  width: 54% !important;
-  height: 1px !important;
-  background: linear-gradient(90deg, transparent, rgba(145,222,199,.08), rgba(145,222,199,.82), rgba(145,222,199,.12), transparent) !important;
-  box-shadow: 0 0 22px rgba(145,222,199,.24) !important;
-  animation: insideSignalPass 7.5s ease-in-out infinite !important;
-}
-
-#system .context-pulse {
-  left: 59% !important;
-  top: 45.6% !important;
-  width: 30px !important;
-  height: 1px !important;
-  border-radius: 999px !important;
-  transform: rotate(-8deg);
-  background: linear-gradient(90deg, transparent, #dfca8d, transparent) !important;
-  box-shadow: 0 0 26px rgba(223,202,141,.55) !important;
-  animation: insideShardPulse 5.2s ease-in-out infinite !important;
-}
-
-#system .mora-presence {
-  right: 3% !important;
-  bottom: 16% !important;
-  opacity: .72;
-  animation: insideMoraPresence 10s ease-in-out infinite !important;
-}
-
-#system .mora-presence::before {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: -18px;
-  width: 42px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(145,222,199,.65));
-}
-
-@keyframes insideThresholdBreath {
-  0%,100% { opacity: .38; transform: scaleY(.94); }
-  48% { opacity: .9; transform: scaleY(1.02); }
-}
-
-@keyframes insideSignalPass {
-  0%,100% { opacity: .18; transform: translateX(-7%); }
-  42% { opacity: .82; }
-  60% { opacity: .58; transform: translateX(9%); }
-}
-
-@keyframes insideShardPulse {
-  0%,100% { opacity: .24; filter: blur(.2px); }
-  50% { opacity: .95; filter: blur(0); }
-}
-
-@keyframes insideMoraPresence {
-  0%,100% { opacity: .38; transform: translateY(3px); }
-  46% { opacity: .78; transform: translateY(0); }
-  70% { opacity: .58; }
-}
-
+/* Homepage second scene: a single architectural space, scoped to this section. */
+#system.inside-system { isolation: isolate; background: #080f0d; scroll-margin-top: 72px; }
+.inside-scene { position: relative; max-width: 1440px; margin: auto; min-height: 740px; overflow: hidden; }
+.inside-copy { position: relative; z-index: 2; padding: 100px 6% 0; max-width: 650px; }
+.inside-eyebrow { color: #cfbc8c; font: 600 10px/1.5 monospace; letter-spacing: .28em; }
+.inside-copy h2 { margin-top: 25px; max-width: 540px; font-family: Georgia, serif; font-size: clamp(42px, 5.5vw, 76px); font-weight: 400; line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
+.inside-description { margin-top: 26px; color: #bdc9c1; font-size: 15px; line-height: 1.7; }
+.threshold-room { position: absolute; inset: 0 0 0 35%; overflow: hidden; background: radial-gradient(ellipse at 58% 46%, #46675b 0, #203f32 20%, #0c1914 48%, #080f0d 74%); mask-image: linear-gradient(90deg, transparent, #000 25%); }
+.threshold-vault { position: absolute; inset: 0; background: linear-gradient(155deg, #080f0d 12%, #24392e 45%, #344d3c 49%, #101f19 50%); clip-path: polygon(0 0,100% 0,70% 23%,43% 23%); }
+.threshold-opening { position: absolute; left: 43%; top: 23%; width: 27%; height: 45%; background: linear-gradient(90deg,#627e69,#b8cbb0 45%,#efe4ba 84%,#ffefce); box-shadow: 0 0 65px 12px #a3c9a347, 0 0 160px 40px #82b08b24; }
+.threshold-opening::after { content: ''; position: absolute; inset: 0 8% 0 0; background: linear-gradient(100deg,#142c22 0%,#2c4836 65%,#5a7150 100%); box-shadow: 4px 0 12px #f1e7b988; }
+.threshold-wall { position: absolute; inset: 0; }
+.threshold-wall-left { clip-path: polygon(0 0,43% 23%,43% 68%,0 100%); background: repeating-linear-gradient(92deg,transparent 0 3px,#d0c6a703 4px 5px),linear-gradient(95deg,#080f0d 0%,#172b22 68%,#53634a 100%); }
+.threshold-wall-right { clip-path: polygon(70% 23%,100% 0,100% 100%,70% 68%); background: repeating-linear-gradient(88deg,transparent 0 2px,#e5dcb204 3px 4px),linear-gradient(90deg,#b2b28b 30%,#344b37 74%,#102219 100%); }
+.threshold-floor { position: absolute; inset: 0; clip-path: polygon(43% 68%,70% 68%,100% 100%,0 100%); background: linear-gradient(180deg,transparent 66%,#54634a 68%,#1b2e22 82%,#080f0d 100%); }
+.threshold-reflection { position: absolute; top: 68%; left: 40%; width: 42%; height: 34%; clip-path: polygon(62% 0,72% 0,100% 100%,0 100%); background: linear-gradient(180deg,#efdfaa9c,#b6c39530 55%,transparent); filter: blur(5px); }
+.threshold-awareness { position: absolute; top: 52%; left: 66.4%; width: 5px; height: 5px; border-radius: 50%; background: #edfff7; box-shadow: 0 0 12px 5px #b6f4d3aa,0 0 42px 16px #94e5b54d; animation: threshold-notice 7s ease-in-out infinite; }
+.inside-presence { position: absolute; bottom: 56px; left: 6%; right: 6%; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #becfc4; font-size: 12px; line-height: 1.6; }
+.inside-presence > span:first-child { width: 5px; height: 5px; border-radius: 50%; background: #bcf1d7; box-shadow: 0 0 12px #b6f4d3; }
+.inside-presence-name { color: #ddede3; font: 10px/1.6 monospace; letter-spacing: .16em; }
+@keyframes threshold-notice { 0%,100% { opacity: .55; transform: scale(.8); } 45% { opacity: 1; transform: scale(1.3); } }
 @media (max-width: 767px) {
-  #system::after { left: 76%; top: 18%; bottom: 23%; opacity: .62; }
-  #system .inside-beam { left: 70% !important; width: 20% !important; }
-  #system .plane-back { left: 2% !important; width: 54% !important; }
-  #system .plane-mid { right: 1% !important; width: 51% !important; }
-  #system .plane-front { left: 10% !important; width: 80% !important; }
-  #system .mora-presence { right: 1% !important; max-width: 180px !important; }
+  .inside-scene { min-height: 660px; }
+  .inside-copy { padding: 48px 24px 0; max-width: 500px; }
+  .inside-copy h2 { margin-top: 19px; max-width: 380px; font-size: clamp(38px,10.4vw,54px); line-height: 1.04; }
+  .inside-description { margin-top: 18px; font-size: 14px; }
+  .threshold-room { inset: 245px -20px 45px; mask-image: linear-gradient(180deg,transparent,#000 16%,#000 88%,transparent); }
+  .inside-presence { bottom: 25px; left: 24px; right: 24px; gap: 8px; font-size: 11px; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  #system::after,
-  #system .mora-trace,
-  #system .context-pulse,
-  #system .mora-presence { animation: none !important; }
-}
+@media (prefers-reduced-motion: reduce) { .threshold-awareness { animation: none; } }

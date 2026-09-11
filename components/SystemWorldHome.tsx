@@ -65,34 +65,23 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section id="system" className="relative min-h-[100svh] overflow-hidden border-b border-white/[.07] bg-[#080b09] text-[#f3f0e6]">
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,244,216,.035),transparent_28%),radial-gradient(ellipse_at_72%_45%,rgba(92,157,126,.10),transparent_30%),linear-gradient(180deg,#080b09_0%,#0a0f0c_100%)]" />
-        <div className="inside-beam pointer-events-none absolute -top-[18%] left-[57%] h-[118%] w-[22%] -rotate-[11deg] bg-[linear-gradient(90deg,transparent,rgba(238,222,176,.08),transparent)] blur-2xl" />
-        <div className="inside-haze pointer-events-none absolute -right-[18%] top-[18%] h-[58%] w-[52%] rounded-full bg-[radial-gradient(circle,rgba(91,168,133,.11),transparent_68%)] blur-3xl" />
-        <div className="relative mx-auto grid min-h-[100svh] max-w-7xl px-5 py-20 sm:px-8 md:grid-cols-[.72fr_1.28fr] md:items-center md:gap-16 md:py-28 lg:px-10">
-          <div className="relative z-20 self-center">
-            <p className="font-mono text-[9px] font-semibold tracking-[.30em] text-[#c9ae69]/68 sm:text-[10px]">{c.fieldEyebrow}</p>
-            <h2 className="mt-6 max-w-xl font-serif text-[clamp(3.2rem,7vw,6.8rem)] font-light leading-[.88] tracking-[-.05em] text-[#f2efe4]">{c.fieldTitle}</h2>
-            <div className="mt-10 h-px w-20 bg-[#c9ae69]/38" />
-            <p className="mt-6 max-w-sm text-sm leading-7 text-[#d8d7cf]/48 sm:text-base">{c.saimorText}</p>
+      <section id="system" className="inside-system relative overflow-hidden border-b border-white/[.07] text-[#f3f0e6]" aria-labelledby="inside-title">
+        <div className="inside-scene">
+          <div className="inside-copy">
+            <p className="inside-eyebrow">{c.fieldEyebrow}</p>
+            <h2 id="inside-title">{c.fieldTitle}</h2>
+            <p className="inside-description">{locale === 'de' ? 'Ein Raum, der Zusammenhang hält.' : 'A space that holds things together.'}</p>
           </div>
-
-          <div className="relative mt-14 h-[570px] md:mt-0 md:h-[720px]">
-            <div className="absolute inset-y-[7%] left-[6%] right-[2%] [perspective:1200px]">
-              <div className="inside-plane plane-back absolute left-[7%] top-[4%] h-[82%] w-[62%] border border-white/[.07] bg-[linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.006))] shadow-[0_40px_100px_rgba(0,0,0,.38)] backdrop-blur-[2px] [transform:rotateY(18deg)_rotateX(2deg)]" />
-              <div className="inside-plane plane-mid absolute right-[4%] top-[16%] h-[66%] w-[54%] border border-[#b7d8c6]/[.09] bg-[linear-gradient(150deg,rgba(87,139,112,.08),rgba(7,12,9,.20))] shadow-[0_50px_110px_rgba(0,0,0,.46)] backdrop-blur-[3px] [transform:rotateY(-15deg)_translateZ(30px)]" />
-              <div className="inside-plane plane-front absolute bottom-[2%] left-[18%] h-[38%] w-[58%] border border-[#d4bd7b]/[.11] bg-[linear-gradient(155deg,rgba(222,201,142,.055),rgba(10,15,12,.34))] shadow-[0_34px_90px_rgba(0,0,0,.5)] backdrop-blur-[4px] [transform:rotateX(7deg)_rotateZ(-2deg)_translateZ(70px)]" />
-
-              <div className="absolute left-[14%] top-[15%] z-20"><div className="font-mono text-[8px] tracking-[.25em] text-white/28">01 / FILES</div><div className="mt-2 h-px w-24 bg-white/[.10]" /></div>
-              <div className="absolute right-[9%] top-[34%] z-20 text-right"><div className="font-mono text-[8px] tracking-[.25em] text-white/28">02 / WORK</div><div className="mt-2 ml-auto h-px w-20 bg-white/[.10]" /></div>
-              <div className="absolute bottom-[14%] left-[26%] z-20"><div className="font-mono text-[8px] tracking-[.25em] text-[#d5bc78]/42">03 / {c.saimor}</div></div>
-
-              <div className="mora-trace absolute right-[18%] top-[25%] z-30 h-[42%] w-px bg-gradient-to-b from-transparent via-[#91dec7]/70 to-transparent shadow-[0_0_20px_rgba(145,222,199,.45)]" />
-              <div className="mora-presence absolute bottom-[18%] right-[5%] z-30 max-w-[220px] text-right"><div className="font-mono text-[9px] tracking-[.26em] text-[#91dec7]/72">{c.mora}</div><div className="mt-3 font-serif text-2xl font-light leading-tight text-[#e8eee8]/82 sm:text-3xl">{c.moraText}</div></div>
-              <span className="context-pulse absolute left-[43%] top-[44%] z-30 h-2 w-2 rounded-full bg-[#dfca8d] shadow-[0_0_30px_rgba(223,202,141,.72)]" />
-            </div>
-            <div className="absolute bottom-0 left-[9%] right-[5%] h-px bg-gradient-to-r from-transparent via-white/[.10] to-transparent" />
+          <div className="threshold-room" aria-hidden="true">
+            <div className="threshold-vault" />
+            <div className="threshold-opening" />
+            <div className="threshold-wall threshold-wall-left" />
+            <div className="threshold-wall threshold-wall-right" />
+            <div className="threshold-floor" />
+            <div className="threshold-reflection" />
+            <div className="threshold-awareness" />
           </div>
+          <p className="inside-presence"><span aria-hidden="true" /><span className="inside-presence-name">{c.mora}</span>{c.moraText}</p>
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 pb-20 sm:px-8 md:pb-28 lg:px-10"><div className="grid gap-8 border-t border-white/[.09] pt-8 md:grid-cols-[.8fr_1.2fr] md:items-end"><div><div className="flex items-center gap-2 font-mono text-[9px] font-semibold tracking-[.22em] text-[#91dec7]/72"><span className="h-1.5 w-1.5 rounded-full bg-[#91dec7]" />{c.entryLabel}</div><h3 className="mt-4 max-w-md font-serif text-3xl font-light leading-tight text-[#f2efe4] sm:text-4xl">{c.entryTitle}</h3></div><div><p className="max-w-2xl text-sm leading-6 text-[#d7ddd8]/52 sm:text-base sm:leading-7">{c.entryText}</p><Link href={securityHref} className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#e8e6dd] transition hover:text-white">{c.entryCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link></div></div></div>
