@@ -5,8 +5,21 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: ['/'],
-      disallow: ['/owner', '/account', '/login', '/portal', '/systems', '/auth', '/api'],
+      disallow: [
+        '/owner',
+        '/account',
+        '/login',
+        '/portal',
+        '/systems',
+        '/auth',
+        '/api',
+        '/demo',
+        '/wall',
+        '/yori',
+        '/en/yori',
+      ],
     },
-    sitemap: 'https://saimor.world/sitemap.xml'
+    sitemap: 'https://saimor.world/sitemap.xml',
+    host: 'https://saimor.world',
   };
 }
