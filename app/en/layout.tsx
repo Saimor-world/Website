@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 
-const title = 'Saimôr – OS with proactive AI assistance';
-const description = 'Saimôr OS connects work, files, integrations and AI in one shared context, with Môra as a proactive assistant plus talks and training.';
+const title = 'Saimôr OS – Work, files and AI in one place';
+const description = 'Saimôr OS brings files, meetings, tasks and AI into one shared workspace. MÔRA keeps track of where things stand and can continue from there.';
 
 export const metadata: Metadata = {
   title,
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: 'https://saimor.world/en',
     siteName: 'Saimôr',
     images: ['/og'],
-    locale: 'en-US',
+    locale: 'en_US',
     type: 'website',
   },
   twitter: {
@@ -25,7 +25,10 @@ export const metadata: Metadata = {
     description,
     images: ['/og'],
   },
-  alternates: { canonical: '/en' },
+  alternates: {
+    canonical: '/en',
+    languages: { de: '/de', en: '/en', 'x-default': '/de' },
+  },
 };
 
 export const viewport: Viewport = {
