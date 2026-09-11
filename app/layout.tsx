@@ -12,8 +12,8 @@ import CommandPalette from '@/components/CommandPalette';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
-const SYSTEM_TITLE = 'Saimôr – OS mit proaktiver KI-Assistenz';
-const SYSTEM_DESCRIPTION = 'Saimôr OS verbindet Arbeit, Dateien, Integrationen und KI in einem gemeinsamen Kontext. Môra ist die proaktive Assistenz im System.';
+const SYSTEM_TITLE = 'Saimôr OS – Arbeit, Dateien und KI an einem Ort';
+const SYSTEM_DESCRIPTION = 'Saimôr OS bringt Dateien, Termine, Aufgaben und KI in einen gemeinsamen Arbeitsraum. MÔRA behält den Stand im Blick und kann dort weitermachen, wo du aufgehört hast.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -25,15 +25,16 @@ export const metadata: Metadata = {
   keywords: [
     'Saimôr',
     'Saimôr OS',
-    'Môra',
+    'MÔRA',
     'KI Arbeitsraum',
-    'proaktive KI Assistenz',
-    'Kontextsystem',
-    'Souveräne KI',
     'AI Workspace',
+    'proaktive KI Assistenz',
+    'souveräne KI',
+    'Dateien und KI',
+    'Arbeitsorganisation mit KI',
+    'Security Check',
     'KI Schulung',
     'KI Workshop',
-    'Security Check',
   ],
   authors: [{ name: 'Saimôr' }],
   creator: 'Saimôr',
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
         url: '/og',
         width: 1200,
         height: 630,
-        alt: SYSTEM_TITLE,
+        alt: 'Saimôr OS – Arbeit, Dateien und KI an einem Ort',
       },
     ],
     locale: 'de_DE',
@@ -79,6 +80,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: '/de',
+    languages: {
+      de: '/de',
+      en: '/en',
+      'x-default': '/de',
+    },
   },
 };
 
@@ -102,7 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Saimôr',
               url: 'https://saimor.world',
               logo: 'https://saimor.world/icon.png',
-              description: 'Unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume, Vorträge und Schulungen.',
+              description: 'Unabhängiges Produktstudio hinter Saimôr OS, MÔRA sowie Vorträgen und Schulungen zu praktischer KI.',
               foundingDate: '2024',
               contactPoint: {
                 '@type': 'ContactPoint',
@@ -123,7 +129,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Saimôr OS',
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'Web',
-              description: 'Digitaler Arbeitsraum mit gemeinsamem Kontext, proaktiver Môra-Assistenz, Integrationen und nachvollziehbarer Ausführung.',
+              url: 'https://saimor.world/de',
+              description: 'Arbeitsraum für Dateien, Termine, Aufgaben, Integrationen und KI. MÔRA behält den Arbeitsstand im Blick und kann auf vorhandenem Kontext aufbauen.',
               offers: {
                 '@type': 'Offer',
                 price: '0',
@@ -131,10 +138,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 availability: 'https://schema.org/ComingSoon',
               },
               featureList: [
-                'Shared work context',
-                'Proactive Môra assistance',
-                'Traceable integrations and agents',
-                'Security Check onboarding',
+                'Gemeinsamer Arbeitskontext',
+                'MÔRA Assistenz',
+                'Dateien, Kalender und Aufgaben',
+                'Security Check als Einstieg',
               ],
               author: {
                 '@type': 'Organization',
