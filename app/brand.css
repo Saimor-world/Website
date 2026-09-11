@@ -1,8 +1,10 @@
-/* Saimôr 2026 mark: replace the legacy raster seal without touching navigation behavior. */
+/* Saimôr orbital seal in the global navigation. */
 header a[aria-label*="Saimôr"] > span:first-child {
-  overflow: visible;
-  border: 0 !important;
-  background: transparent !important;
+  overflow: hidden;
+  border: 1px solid rgba(224, 199, 124, .34) !important;
+  border-radius: 999px;
+  background: #0b2118 !important;
+  box-shadow: 0 4px 16px rgba(3, 15, 10, .24), 0 0 18px rgba(214, 168, 72, .08);
 }
 
 header a[aria-label*="Saimôr"] > span:first-child > img {
@@ -12,11 +14,12 @@ header a[aria-label*="Saimôr"] > span:first-child > img {
 header a[aria-label*="Saimôr"] > span:first-child::before {
   content: "";
   position: absolute;
-  inset: -3px;
-  background: url('/saimor-mark.svg') center / contain no-repeat;
-  filter: drop-shadow(0 2px 8px rgba(218, 184, 92, .16));
+  inset: 0;
+  border-radius: inherit;
+  background: url('/saimor-mark.svg') center / cover no-repeat;
 }
 
+/* The old detached status dot is now part of the seal itself. */
 header a[aria-label*="Saimôr"] > span:first-child > span {
   display: none;
 }
