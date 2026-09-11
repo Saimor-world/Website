@@ -7,8 +7,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${base}/de`, lastModified: now, priority: 1 },
     { url: `${base}/en`, lastModified: now, priority: 0.9 },
-    { url: `${base}/mora`, lastModified: now, priority: 0.75 },
-    { url: `${base}/en/mora`, lastModified: now, priority: 0.7 },
+    { url: `${base}/mora`, lastModified: now, priority: 0.78 },
+    { url: `${base}/en/mora`, lastModified: now, priority: 0.72 },
+    { url: `${base}/mora/deep-view`, lastModified: now, priority: 0.66 },
+    { url: `${base}/en/mora/deep-view`, lastModified: now, priority: 0.62 },
     { url: `${base}/earth`, lastModified: now, priority: 0.55 },
     { url: `${base}/de/trust`, lastModified: now, priority: 0.6 },
     { url: `${base}/en/trust`, lastModified: now, priority: 0.6 },
