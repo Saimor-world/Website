@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
+import './brand.css';
 import ClientProviders from '../components/ClientProviders';
 import AuthProvider from '../components/AuthProvider';
 import LayoutWrapper from '../components/LayoutWrapper';
@@ -22,6 +23,10 @@ export const metadata: Metadata = {
     template: '%s | Saimôr',
   },
   description: SYSTEM_DESCRIPTION,
+  icons: {
+    icon: [{ url: '/saimor-mark.svg', type: 'image/svg+xml' }],
+    shortcut: '/saimor-mark.svg',
+  },
   keywords: [
     'Saimôr',
     'Saimôr OS',
@@ -107,7 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@type': 'Organization',
               name: 'Saimôr',
               url: 'https://saimor.world',
-              logo: 'https://saimor.world/icon.png',
+              logo: 'https://saimor.world/saimor-mark.svg',
               description: 'Unabhängiges Produktstudio hinter Saimôr OS, MÔRA sowie Vorträgen und Schulungen zu praktischer KI.',
               foundingDate: '2024',
               contactPoint: {
