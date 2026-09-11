@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Saimôr</title>
+  <desc id="desc">Green and gold Saimôr system mark</desc>
+  <defs>
+    <radialGradient id="field" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#1f6248"/>
+      <stop offset=".48" stop-color="#0f4633"/>
+      <stop offset="1" stop-color="#06251c"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0b0"/>
+      <stop offset=".32" stop-color="#e8c45f"/>
+      <stop offset=".68" stop-color="#b9852f"/>
+      <stop offset="1" stop-color="#f6dc86"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="35%" cy="28%" r="74%">
+      <stop offset="0" stop-color="#c9e9bf"/>
+      <stop offset=".32" stop-color="#72976d"/>
+      <stop offset="1" stop-color="#214d3b"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="124" cy="132" r="91" fill="url(#field)"/>
+  <circle cx="124" cy="132" r="87" fill="none" stroke="url(#gold)" stroke-width="2.5" opacity=".95"/>
+  <ellipse cx="124" cy="132" rx="108" ry="101" fill="none" stroke="url(#gold)" stroke-width="2.8" transform="rotate(-12 124 132)" opacity=".95"/>
+  <path d="M151 66c-26 7-48 20-51 39-2 15 10 25 27 34 16 9 22 17 18 28-5 14-22 26-45 35 31-5 56-17 62-37 5-18-8-31-28-42-13-7-18-14-15-23 4-12 16-23 32-34z" fill="url(#gold)" filter="url(#soft)"/>
+  <circle cx="212" cy="63" r="18" fill="url(#orb)" stroke="url(#gold)" stroke-width="2.8"/>
+  <circle cx="206" cy="57" r="4" fill="#f6efc5" opacity=".7"/>
+</svg>
