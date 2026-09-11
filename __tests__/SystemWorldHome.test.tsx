@@ -15,11 +15,16 @@ describe('SystemWorldHome', () => {
     expect(
       screen.getByText('Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.'),
     ).toBeInTheDocument();
-    expect(screen.getByText('Was heute über viele Tools verteilt ist, lebt hier zusammen.')).toBeInTheDocument();
+    expect(screen.getByText('Ein Raum, in dem Dinge zueinander finden.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
+    expect(screen.getByText('Der Raum, der Kontext hält.')).toBeInTheDocument();
+    expect(screen.getByText('Die Präsenz, die Veränderungen bemerkt.')).toBeInTheDocument();
+    expect(screen.queryByText('ARBEIT')).not.toBeInTheDocument();
+    expect(screen.queryByText('KONTEXT')).not.toBeInTheDocument();
+    expect(screen.queryByText('AUSFÜHRUNG')).not.toBeInTheDocument();
+    expect(screen.queryByText('YORI')).not.toBeInTheDocument();
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
     expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Nicht vier Produkte/i)).not.toBeInTheDocument();
     expect(screen.getByText('Vorträge')).toBeInTheDocument();
     expect(screen.getByText('Schulungen & Workshops')).toBeInTheDocument();
 
@@ -33,6 +38,7 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByText('Dein System beginnt mit etwas Echtem.')).not.toBeInTheDocument();
     expect(screen.queryByText('Vom ersten Check in deinen eigenen Raum')).not.toBeInTheDocument();
     expect(screen.queryByText(/Vier Ebenen derselben Idee/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Was heute über viele Tools verteilt ist/i)).not.toBeInTheDocument();
   });
 
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
