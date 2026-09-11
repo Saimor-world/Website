@@ -1,11 +1,5 @@
-import type { Metadata } from 'next';
-import MoraDeepView from '@/components/MoraDeepView';
+import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Môra – Deep View',
-  description: 'Môra Deep View connects public live signals into a calm, transparent real-time view.',
-};
-
-export default function MoraDeepViewPage() {
-  return <MoraDeepView locale="en" />;
+export default function LegacyMoraAnalogAffectPage() {
+  redirect('/en/mora/deep-view');
 }
