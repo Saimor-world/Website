@@ -17,34 +17,23 @@
    PERFORMANCE & RENDERING OPTIMIZATIONS
    ======================================== */
 
-/* Smooth scrolling with optimized performance */
 html,
 body {
   height: 100%;
   background: #0B0F10;
   scroll-behavior: smooth;
   overflow-x: hidden !important;
-  /* Fix mobile horizontal overflow */
   width: 100%;
   position: relative;
-
-  /* Enhanced font rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-
-  /* Prevent text size adjustment on orientation change */
   -webkit-text-size-adjust: 100%;
-
-  /* Enable smooth scrolling with momentum on iOS */
   -webkit-overflow-scrolling: touch;
-
-  /* Optimize for touch devices */
   touch-action: manipulation;
 }
 
-/* Ensure all containers respect overflow-x */
 main,
 #__next,
 [data-saimor] {
@@ -54,8 +43,6 @@ main,
   position: relative;
 }
 
-/* GPU Acceleration for Smooth Animations - Optimized */
-/* Only apply to elements that need it for performance */
 .animate-element,
 [motion],
 [data-framer-component] {
@@ -64,23 +51,15 @@ main,
   transform: translateZ(0);
 }
 
-/* Strategic will-change usage - only for actively animating elements */
-.will-change-transform {
-  will-change: transform;
-}
+.will-change-transform { will-change: transform; }
+.will-change-opacity { will-change: opacity; }
 
-.will-change-opacity {
-  will-change: opacity;
-}
-
-/* Prevent layout shift */
 img,
 video {
   max-width: 100%;
   height: auto;
 }
 
-/* Touch optimizations - Enhanced */
 button,
 a,
 [role="button"],
@@ -90,7 +69,6 @@ a,
   cursor: pointer;
 }
 
-/* Enhanced focus visibility for accessibility */
 *:focus-visible {
   outline: 3px solid #D4A857;
   outline-offset: 3px;
@@ -98,7 +76,6 @@ a,
   transition: outline-offset 0.2s ease;
 }
 
-/* Screen Reader Only - visually hidden but accessible */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -122,15 +99,9 @@ a,
   white-space: normal;
 }
 
-/* Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -142,7 +113,6 @@ a,
    ======================================== */
 
 :root {
-  /* === BIBEL PRIMARY COLORS === */
   --saimor-waldgruen: #1A3C32;
   --saimor-green-900: #0F231C;
   --saimor-green-800: #1A3C32;
@@ -153,76 +123,31 @@ a,
   --saimor-nebel: #AAB0B2;
   --saimor-cream: #F8F7F3;
   --saimor-white: #FFFFFF;
-
-  /* Easing Curves */
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Reveal animation */
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px) translateZ(0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) translateZ(0);
-  }
+  from { opacity: 0; transform: translateY(12px) translateZ(0); }
+  to { opacity: 1; transform: translateY(0) translateZ(0); }
 }
 
-.reveal {
-  animation: fade-up 0.5s var(--ease-out) both;
-}
+.reveal { animation: fade-up 0.5s var(--ease-out) both; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.5); }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-}
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.3);
-  border-radius: 4px;
-}
+kbd { font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace; }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.5);
-}
-
-/* Stagger delays for elements */
-.stagger-1 {
-  animation-delay: 0.1s;
-}
-
-.stagger-2 {
-  animation-delay: 0.2s;
-}
-
-.stagger-3 {
-  animation-delay: 0.3s;
-}
-
-.stagger-4 {
-  animation-delay: 0.4s;
-}
-
-.stagger-5 {
-  animation-delay: 0.5s;
-}
-
-/* Keyboard key styling */
-kbd {
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
-}
-
-/* Glass morphism effect */
 .glass {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
@@ -235,7 +160,6 @@ kbd {
   border: 1px solid rgba(16, 185, 129, 0.1);
 }
 
-/* Text gradient helper */
 .text-gradient-saimor {
   background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
   -webkit-background-clip: text;
@@ -243,66 +167,31 @@ kbd {
   background-clip: text;
 }
 
-/* Konami Code Animations */
 @keyframes konamiFall {
-  0% {
-    transform: translateY(-20px) rotate(0deg);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(100vh) rotate(360deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
 @keyframes matrixPulse {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-    opacity: 0.1;
-  }
-
-  50% {
-    background-position: 100% 50%;
-    opacity: 0.3;
-  }
+  0%, 100% { background-position: 0% 50%; opacity: 0.1; }
+  50% { background-position: 100% 50%; opacity: 0.3; }
 }
 
-/* Focus ring styles */
 .focus-ring {
   @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#081410];
 }
 
-/* Interactive element base styles */
 .interactive {
   @apply transition-all duration-200 ease-out;
   @apply hover:scale-[1.02] active:scale-[0.98];
 }
 
-/* Glow effect on hover */
-.glow-hover {
-  @apply transition-shadow duration-300;
-}
+.glow-hover { @apply transition-shadow duration-300; }
+.glow-hover:hover { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1); }
 
-.glow-hover:hover {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
-}
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.animate-spin-slow { animation: spin-slow 8s linear infinite; }
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 8s linear infinite;
-}
 /* Saimôr World system: SAIMÔR architecture, MÔRA meaning, YORI flow */
 :root {
   --world-ink: #070B0C;
@@ -326,6 +215,7 @@ kbd {
   --world-border: rgba(164, 190, 182, .22);
 }
 html, body { background: var(--world-ink); }
+
 /* Saimor unified world surfaces */
 :root {
   --world-ink: #070B0C;
@@ -355,6 +245,189 @@ html, body { background: var(--world-ink); }
 .yori-paper-noise{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E")}
 
 html,
-body {
-  background: var(--world-ink);
+body { background: var(--world-ink); }
+
+/* =========================================================
+   HOMEPAGE / INSIDE SAIMÔR
+   Hero remains untouched. This scene deliberately changes
+   visual language: orbit outside -> material threshold inside.
+   ========================================================= */
+#system {
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 78% 28%, rgba(70, 126, 102, .09), transparent 28%),
+    radial-gradient(ellipse at 58% 72%, rgba(201, 174, 105, .055), transparent 25%),
+    linear-gradient(180deg, #070907 0%, #090d0a 46%, #070a08 100%) !important;
+}
+
+#system::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(30, 70, 53, .22) 0, rgba(10, 15, 12, 0) 12%),
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,.032) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 64% 42%, rgba(255,255,255,.025) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 82% 72%, rgba(214,168,72,.035) 0 1px, transparent 1.7px);
+  background-size: auto, 97px 97px, 131px 131px, 167px 167px;
+  opacity: .72;
+}
+
+#system::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  top: 10%;
+  bottom: 16%;
+  left: 63%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(239,215,158,.10) 18%, rgba(239,215,158,.72) 49%, rgba(145,222,199,.22) 72%, transparent);
+  box-shadow: 0 0 28px rgba(224, 190, 112, .11), 0 0 80px rgba(145, 222, 199, .05);
+  animation: insideThresholdBreath 9s ease-in-out infinite;
+}
+
+#system > div { position: relative; z-index: 4; }
+
+#system .inside-beam {
+  left: 61% !important;
+  width: 14% !important;
+  opacity: .7;
+  filter: blur(34px);
+  background: linear-gradient(90deg, transparent, rgba(238,222,176,.095), transparent) !important;
+}
+
+#system .inside-haze {
+  right: -8% !important;
+  top: 12% !important;
+  width: 48% !important;
+  height: 66% !important;
+  background: radial-gradient(ellipse, rgba(69, 135, 105, .13), rgba(33, 76, 59, .035) 42%, transparent 70%) !important;
+  filter: blur(52px);
+}
+
+#system .inside-plane {
+  animation: none !important;
+  backdrop-filter: blur(10px) saturate(.8) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(.8) !important;
+}
+
+#system .plane-back {
+  left: 8% !important;
+  top: 2% !important;
+  width: 46% !important;
+  height: 90% !important;
+  transform: perspective(1100px) rotateY(9deg) translateZ(-24px) !important;
+  clip-path: polygon(8% 0, 100% 5%, 94% 100%, 0 91%);
+  border-color: rgba(255,255,255,.055) !important;
+  background:
+    linear-gradient(100deg, rgba(255,255,255,.018), transparent 34%),
+    linear-gradient(180deg, rgba(26,45,35,.52), rgba(5,8,6,.73)) !important;
+  box-shadow: inset -1px 0 rgba(255,255,255,.04), 0 65px 150px rgba(0,0,0,.5) !important;
+}
+
+#system .plane-mid {
+  right: 7% !important;
+  top: 12% !important;
+  width: 43% !important;
+  height: 72% !important;
+  transform: perspective(1100px) rotateY(-7deg) translateZ(26px) !important;
+  clip-path: polygon(0 7%, 94% 0, 100% 89%, 7% 100%);
+  border-color: rgba(148,196,174,.075) !important;
+  background:
+    linear-gradient(125deg, rgba(128,185,158,.065), transparent 32%),
+    linear-gradient(180deg, rgba(16,33,25,.46), rgba(4,8,6,.58)) !important;
+  box-shadow: inset 1px 0 rgba(145,222,199,.055), 0 55px 130px rgba(0,0,0,.46) !important;
+}
+
+#system .plane-front {
+  left: 20% !important;
+  bottom: 3% !important;
+  width: 65% !important;
+  height: 34% !important;
+  transform: perspective(900px) rotateX(61deg) rotateZ(-1.2deg) translateZ(32px) !important;
+  transform-origin: 50% 100%;
+  clip-path: polygon(7% 8%, 96% 0, 100% 84%, 0 100%);
+  border-color: rgba(214,184,106,.08) !important;
+  background: linear-gradient(150deg, rgba(226,203,141,.06), rgba(14,22,17,.17) 42%, rgba(3,6,4,.55)) !important;
+  box-shadow: 0 38px 100px rgba(0,0,0,.52) !important;
+}
+
+#system .mora-trace {
+  top: 46% !important;
+  right: 5% !important;
+  width: 54% !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, rgba(145,222,199,.08), rgba(145,222,199,.82), rgba(145,222,199,.12), transparent) !important;
+  box-shadow: 0 0 22px rgba(145,222,199,.24) !important;
+  animation: insideSignalPass 7.5s ease-in-out infinite !important;
+}
+
+#system .context-pulse {
+  left: 59% !important;
+  top: 45.6% !important;
+  width: 30px !important;
+  height: 1px !important;
+  border-radius: 999px !important;
+  transform: rotate(-8deg);
+  background: linear-gradient(90deg, transparent, #dfca8d, transparent) !important;
+  box-shadow: 0 0 26px rgba(223,202,141,.55) !important;
+  animation: insideShardPulse 5.2s ease-in-out infinite !important;
+}
+
+#system .mora-presence {
+  right: 3% !important;
+  bottom: 16% !important;
+  opacity: .72;
+  animation: insideMoraPresence 10s ease-in-out infinite !important;
+}
+
+#system .mora-presence::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -18px;
+  width: 42px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(145,222,199,.65));
+}
+
+@keyframes insideThresholdBreath {
+  0%,100% { opacity: .38; transform: scaleY(.94); }
+  48% { opacity: .9; transform: scaleY(1.02); }
+}
+
+@keyframes insideSignalPass {
+  0%,100% { opacity: .18; transform: translateX(-7%); }
+  42% { opacity: .82; }
+  60% { opacity: .58; transform: translateX(9%); }
+}
+
+@keyframes insideShardPulse {
+  0%,100% { opacity: .24; filter: blur(.2px); }
+  50% { opacity: .95; filter: blur(0); }
+}
+
+@keyframes insideMoraPresence {
+  0%,100% { opacity: .38; transform: translateY(3px); }
+  46% { opacity: .78; transform: translateY(0); }
+  70% { opacity: .58; }
+}
+
+@media (max-width: 767px) {
+  #system::after { left: 76%; top: 18%; bottom: 23%; opacity: .62; }
+  #system .inside-beam { left: 70% !important; width: 20% !important; }
+  #system .plane-back { left: 2% !important; width: 54% !important; }
+  #system .plane-mid { right: 1% !important; width: 51% !important; }
+  #system .plane-front { left: 10% !important; width: 80% !important; }
+  #system .mora-presence { right: 1% !important; max-width: 180px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #system::after,
+  #system .mora-trace,
+  #system .context-pulse,
+  #system .mora-presence { animation: none !important; }
 }
