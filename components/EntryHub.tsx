@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Bot, Cpu, ExternalLink } from 'lucide-react';
+import { ArrowRight, Shield, Bot, Cpu, ExternalLink, WalletCards } from 'lucide-react';
 import { entryContent, type EntryLocale, type EntryPillar } from '@/lib/entry-content';
 
 // Security first — it's the primary product and strongest entry point
@@ -109,7 +109,6 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
           <p className="text-white/60 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             {content.subtitle}
           </p>
-          {/* Horizontal rule with gradient */}
           <div className="pt-4 flex items-center gap-4 justify-center">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-emerald-400/30" />
             <span className="text-[9px] tracking-[0.4em] uppercase text-white/20">Saimor</span>
@@ -168,7 +167,7 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                 : 'Your free security check — see immediately where your business is exposed.'}
             </p>
           </div>
-          <div className="relative shrink-0 flex flex-col sm:flex-row gap-2">
+          <div className="relative shrink-0 flex flex-col sm:flex-row gap-2 flex-wrap justify-end">
             <Link
               href={locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check'}
               className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-black hover:bg-amber-400 transition-all duration-200"
@@ -182,6 +181,13 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
             >
               <ExternalLink size={16} />
               {locale === 'de' ? 'OS-Demo starten' : 'Start OS demo'}
+            </Link>
+            <Link
+              href={locale === 'de' ? '/de/einstieg/xrp-canary' : '/en/entry/xrp-canary'}
+              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-400/[0.08] px-5 py-3 text-sm font-semibold text-emerald-100 transition-all hover:bg-emerald-400/[0.14]"
+            >
+              <WalletCards size={16} />
+              {locale === 'de' ? 'XRP Canary · 1 XRP' : 'XRP Canary · 1 XRP'}
             </Link>
             <Link
               href="/wall"
@@ -200,7 +206,6 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
             const PillarIcon = theme.Icon;
             return (
               <div key={pillar} className="space-y-5">
-                {/* Section heading */}
                 <div className="flex items-center gap-3">
                   <PillarIcon className={`w-5 h-5 ${theme.iconColor} shrink-0`} strokeWidth={1.5} />
                   <h2
@@ -212,7 +217,6 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                   <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent ml-2" />
                 </div>
 
-                {/* Article cards */}
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                   {list.map((article, index) => {
                     const isFeatured = article.slug === 'security-check';
@@ -228,14 +232,12 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                           : 'border-white/8 bg-white/[0.03] backdrop-blur-md hover:border-white/15 hover:bg-white/[0.05]'
                       }`}
                     >
-                      {/* Top accent bar */}
                       <div
                         className="h-[2px] w-full shrink-0"
                         style={{ background: `linear-gradient(to right, ${pillarTopAccent[pillar]}, transparent)` }}
                       />
 
                       <div className="p-6 flex flex-col flex-1">
-                        {/* Category + reading time row */}
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-2">
                             <span
@@ -255,7 +257,6 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                           </span>
                         </div>
 
-                        {/* Title */}
                         <h3
                           className="text-2xl font-medium leading-snug mb-3 text-white/95 group-hover:text-white transition-colors"
                           style={{ fontFamily: 'Cormorant Garamond, serif' }}
@@ -263,12 +264,10 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                           {article.title}
                         </h3>
 
-                        {/* Excerpt */}
                         <p className="text-white/50 text-sm leading-relaxed mb-5 flex-1 line-clamp-3">
                           {article.excerpt}
                         </p>
 
-                        {/* Tags */}
                         <div className="flex flex-wrap gap-1.5 mb-5">
                           {article.tags.slice(0, 2).map((tag) => (
                             <span
@@ -280,7 +279,6 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
                           ))}
                         </div>
 
-                        {/* CTA */}
                         <Link
                           href={`${basePath}/${article.slug}`}
                           className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] ${theme.tagColor} hover:brightness-125 transition-all`}
