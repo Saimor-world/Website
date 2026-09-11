@@ -42,8 +42,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
     const paired: Record<string, string> = {
       '/mora': '/en/mora',
       '/en/mora': '/mora',
-      '/mora/analog-affect': '/en/mora/analog-affect',
-      '/en/mora/analog-affect': '/mora/analog-affect',
+      '/mora/deep-view': '/en/mora/deep-view',
+      '/en/mora/deep-view': '/mora/deep-view',
+      '/mora/analog-affect': '/en/mora/deep-view',
+      '/en/mora/analog-affect': '/mora/deep-view',
       '/yori': '/en/yori',
       '/en/yori': '/yori',
     };
