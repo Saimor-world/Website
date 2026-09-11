@@ -1,9 +1,9 @@
 import MoraProductPage from '@/components/MoraProductPage';
 
 export const metadata = {
-  title: 'Môra – proactive assistant inside Saimôr OS',
+  title: 'MÔRA – proactive assistance inside Saimôr OS',
   description:
-    'Môra is the proactive assistant inside Saimôr OS: she keeps context, notices relevant signals, prepares next steps and can act through system capabilities.',
+    'MÔRA works inside Saimôr OS with files, meetings, tasks and context. She keeps track of the current state, notices changes and can prepare next steps.',
 };
 
 export default function MoraPage() {
