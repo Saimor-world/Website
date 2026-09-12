@@ -1,130 +1,218 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Eye, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CalendarDays, CircleCheck, FileText, ShieldCheck, Sparkles } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
 
 type Props = { locale: 'de' | 'en' };
 
 const COPY = {
   de: {
-    eyebrow: 'MÔRA / IM SYSTEM',
-    title: 'Sie weiß, wo du aufgehört hast.',
-    lead: 'MÔRA ist keine zweite App neben Saimôr. Sie sitzt im selben Arbeitsraum wie Dateien, Termine und offene Arbeit. Wenn sich etwas ändert, muss der Zusammenhang nicht jedes Mal neu erklärt werden.',
+    eyebrow: 'MÔRA / KONTEXT',
+    title: 'Du musst nicht jedes Mal von vorn anfangen.',
+    lead: 'Dateien, Termine und offene Dinge bleiben zusammen. MÔRA kennt den Stand und kann dort weitermachen.',
+    note: 'MÔRA ist die Intelligenzschicht im Saimôr OS – kein zweiter Chat neben deiner Arbeit.',
     demo: 'MÔRA im OS erleben',
     deep: 'Deep View öffnen',
-    rolesEyebrow: 'WAS SIE TUT',
-    rolesTitle: 'Nicht mehr Chat. Mehr Kontinuität.',
+    mapLabel: 'ARBEITSKONTEXT',
+    mapCenter: 'MÔRA',
+    file: 'Dateien',
+    calendar: 'Termine',
+    open: 'Offene Dinge',
+    sectionEyebrow: 'WAS MÔRA HÄLT',
+    sectionTitle: 'Der Zusammenhang bleibt bestehen.',
     roles: [
-      ['Erinnern', 'Der Arbeitsstand bleibt verfügbar, auch wenn du zwischen Dateien, Kalender, Aufgaben und Gesprächen wechselst.'],
-      ['Beobachten', 'Verbundene Signale können auffallen, ohne dass du jedes Fenster selbst offenhalten musst.'],
-      ['Vorbereiten', 'Offene Fäden werden gebündelt und nächste Schritte können vorbereitet werden, bevor du wieder bei null anfängst.'],
-      ['Handeln', 'Über freigegebene Systemfunktionen und Automationen kann MÔRA Arbeit anstoßen – mit sichtbaren Grenzen.'],
+      ['Zustand', 'Was ist gerade offen, entschieden oder erledigt? MÔRA arbeitet mit dem bestehenden Arbeitsstand statt mit einer leeren Promptbox.'],
+      ['Veränderung', 'Wenn sich in verbundenen Quellen etwas ändert, kann der neue Stand im gleichen Kontext auftauchen.'],
+      ['Nächster Schritt', 'Aus dem vorhandenen Zusammenhang kann MÔRA einen sinnvollen nächsten Schritt vorbereiten. Aktionen brauchen die passenden Freigaben.'],
     ],
-    deepEyebrow: 'LIVE / DEEP VIEW',
-    deepTitle: 'Nicht erklären. Zusehen.',
-    deepText: 'Deep View nimmt öffentliche Live-Signale und zeigt, wie MÔRA daraus Muster und Zusammenhänge verdichtet. Keine erfundenen Demo-Zahlen, kein Dashboard-Mockup.',
-    deepCta: 'Deep View starten',
-    osEyebrow: 'LIVE / SAIMÔR OS',
-    osTitle: 'Dann mit MÔRA in den Arbeitsraum.',
-    osText: 'Der Demo-Start erzeugt einen getrennten Beispielraum. Kein Account nötig und keine privaten Betreiber- oder Kundendaten im Demo-Tenant.',
+    exampleEyebrow: 'EIN ZUSAMMENHANG',
+    exampleTitle: 'Vier Signale. Eine Arbeitslage.',
+    exampleBody: 'Ein Dokument wurde geändert. Ein Termin rückt näher. Eine Freigabe fehlt. Statt drei Apps und einen Chat neu zusammenzusetzen, bleibt daraus eine gemeinsame Lage.',
+    chips: ['Angebot geändert', 'Termin · Freitag 10:30', 'Freigabe offen', 'Letzte Rückfrage vorhanden'],
+    outcomeLabel: 'MÔRA / NÄCHSTER SCHRITT',
+    outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
+    deepEyebrow: 'DEEP VIEW',
+    deepTitle: 'Sehen, warum der nächste Schritt Sinn ergibt.',
+    deepText: 'Deep View zeigt nicht irgendein KI-Spektakel. Es legt offen, welche Kontextstücke zusammengehören und wie daraus ein nächster Schritt entsteht.',
+    deepCta: 'Deep View ansehen',
+    osEyebrow: 'SAIMÔR OS',
+    osTitle: 'MÔRA gehört in den Arbeitsraum.',
+    osText: 'Im Demo-Raum kannst du die Rolle von MÔRA im OS ansehen. Der Demo-Tenant bleibt getrennt; eigene Daten kommen erst über ausdrücklich verbundene Quellen hinzu.',
     security: 'Mit eigener Domain starten',
-    realityEyebrow: 'STAND / SEPTEMBER 2026',
-    realityTitle: 'Was heute schon real ist',
-    realityText: 'Kontext, Dokumente und Beziehungen werden in der jeweiligen Saimôr-Instanz gehalten. Für Sprach- und Denkaufgaben können externe Modellanbieter genutzt werden. Welche Verbindung aktiv ist, soll sichtbar und austauschbar bleiben. Vollständig lokale Inferenz ist ein Zielbild – keine Behauptung über den heutigen Stand.',
+    realityEyebrow: 'HEUTIGER STAND',
+    realityTitle: 'Klare Grenzen statt Magie.',
+    realityText: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können externe Modellanbieter genutzt werden. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
   },
   en: {
-    eyebrow: 'MÔRA / INSIDE THE SYSTEM',
-    title: 'She knows where you left off.',
-    lead: 'MÔRA is not a second app next to Saimôr. She lives in the same workspace as files, meetings and open work. When something changes, the context does not have to be explained again from scratch.',
+    eyebrow: 'MÔRA / CONTEXT',
+    title: 'You do not have to start from scratch every time.',
+    lead: 'Files, meetings and open work stay together. MÔRA keeps the state and can continue from there.',
+    note: 'MÔRA is the intelligence layer inside Saimôr OS – not another chat sitting next to your work.',
     demo: 'Experience MÔRA in the OS',
     deep: 'Open Deep View',
-    rolesEyebrow: 'WHAT SHE DOES',
-    rolesTitle: 'Less chat. More continuity.',
+    mapLabel: 'WORK CONTEXT',
+    mapCenter: 'MÔRA',
+    file: 'Files',
+    calendar: 'Meetings',
+    open: 'Open work',
+    sectionEyebrow: 'WHAT MÔRA KEEPS',
+    sectionTitle: 'The relationship between things stays intact.',
     roles: [
-      ['Remember', 'The working state stays available while you move between files, calendar, tasks and conversations.'],
-      ['Notice', 'Connected signals can surface without you keeping every window open yourself.'],
-      ['Prepare', 'Open threads are condensed and next steps can be prepared before you have to reconstruct the situation.'],
-      ['Act', 'Through approved system capabilities and automations, MÔRA can trigger work within visible boundaries.'],
+      ['State', 'What is open, decided or done? MÔRA works with the current state instead of an empty prompt box.'],
+      ['Change', 'When something changes in connected sources, the new state can appear inside the same context.'],
+      ['Next step', 'From that context MÔRA can prepare a useful next step. Actions still require the appropriate permissions.'],
     ],
-    deepEyebrow: 'LIVE / DEEP VIEW',
-    deepTitle: 'Do not explain it. Watch it.',
-    deepText: 'Deep View uses public live signals to show how MÔRA condenses patterns and relationships. No invented demo metrics and no dashboard mockup.',
-    deepCta: 'Start Deep View',
-    osEyebrow: 'LIVE / SAIMÔR OS',
-    osTitle: 'Then enter the workspace with MÔRA.',
-    osText: 'The demo launch creates an isolated example workspace. No account is required and no private operator or customer data is loaded into the demo tenant.',
+    exampleEyebrow: 'ONE CONTEXT',
+    exampleTitle: 'Four signals. One working state.',
+    exampleBody: 'A document changed. A meeting is getting closer. An approval is missing. Instead of rebuilding the situation across three apps and a chat, it stays one coherent state.',
+    chips: ['Proposal changed', 'Meeting · Friday 10:30', 'Approval open', 'Last question available'],
+    outcomeLabel: 'MÔRA / NEXT STEP',
+    outcome: 'Check the approval and have the current proposal ready before the meeting.',
+    deepEyebrow: 'DEEP VIEW',
+    deepTitle: 'See why the next step makes sense.',
+    deepText: 'Deep View is not an AI spectacle. It exposes which pieces of context belong together and how they lead to a next step.',
+    deepCta: 'View Deep View',
+    osEyebrow: 'SAIMÔR OS',
+    osTitle: 'MÔRA belongs inside the workspace.',
+    osText: 'The demo workspace lets you see MÔRA inside the OS. The demo tenant stays isolated; your own data only appears through sources you explicitly connect.',
     security: 'Start with your own domain',
-    realityEyebrow: 'STATE / SEPTEMBER 2026',
-    realityTitle: 'What is real today',
-    realityText: 'Context, documents and relationships are held inside the relevant Saimôr instance. External model providers may be used for language and reasoning tasks. The active connection is intended to stay visible and replaceable. Fully local inference is a target – not a claim about the current product.',
+    realityEyebrow: 'CURRENT STATE',
+    realityTitle: 'Clear boundaries instead of magic.',
+    realityText: 'MÔRA can only work with context that exists in the system or is connected to it. External model providers may be used for language and reasoning. Actions run through approved capabilities and are intended to remain visible.',
   },
 } as const;
 
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
-  const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const deepHref = locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view';
+  const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
 
   return (
-    <main className="overflow-hidden bg-[#07110d] text-[#f5f4ec]">
-      <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.08] bg-[radial-gradient(circle_at_72%_34%,rgba(117,205,171,.24),transparent_24%),radial-gradient(circle_at_64%_58%,rgba(214,168,72,.13),transparent_23%),linear-gradient(145deg,#183b2d_0%,#0a1712_56%,#050807_100%)] px-5 pb-14 pt-28 sm:px-8 sm:pt-36 lg:px-10">
-        <div className="mora-stars absolute inset-0" aria-hidden="true" />
-        <div className="mora-hyphae absolute inset-0" aria-hidden="true"><span className="mh mh1" /><span className="mh mh2" /><span className="mh mh3" /><span className="mh mh4" /><span className="mh mh5" /><i className="mn mn1" /><i className="mn mn2" /><i className="mn mn3" /><i className="mn mn4" /></div>
+    <main className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
+      <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07] px-5 pb-16 pt-28 sm:px-8 sm:pt-36 lg:px-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_25%,rgba(234,216,159,.4)_0_1px,transparent_1.2px),radial-gradient(circle_at_70%_60%,rgba(143,218,190,.32)_0_1px,transparent_1.2px)] [background-size:119px_119px,173px_173px]" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto grid min-h-[72svh] max-w-7xl items-center gap-10 md:grid-cols-[.88fr_1.12fr]">
+        <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-12 md:grid-cols-[.93fr_1.07fr] lg:gap-16">
           <div className="max-w-2xl">
-            <p className="font-mono text-[9px] font-semibold tracking-[.30em] text-[#e3c878]/82 sm:text-[10px]">{c.eyebrow}</p>
-            <h1 className="mt-6 font-serif text-[clamp(3.8rem,8vw,7.8rem)] font-light leading-[.86] tracking-[-.055em] text-[#fbfaf2]">{c.title}</h1>
-            <p className="mt-7 max-w-xl text-base leading-7 text-[#dce9e0]/70 sm:text-lg sm:leading-8">{c.lead}</p>
+            <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e2c576]/82 sm:text-[10px]">{c.eyebrow}</p>
+            <h1 className="mt-6 font-serif text-[clamp(3.5rem,7.3vw,7.2rem)] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
+            <p className="mt-7 max-w-xl text-base leading-7 text-[#dbe8df]/72 sm:text-lg sm:leading-8">{c.lead}</p>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-white/38">{c.note}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <DemoLaunchButton label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef2e6] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
-              <Link href={deepHref} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[.035] px-7 py-3.5 text-sm font-semibold text-white/80 transition hover:border-white/30 hover:bg-white/[.06] hover:text-white"><Eye className="h-4 w-4" />{c.deep}</Link>
+              <DemoLaunchButton label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
+              <Link href={deepHref} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-[#d8c27d]/24 bg-white/[.025] px-7 py-3.5 text-sm font-semibold text-[#f0e7cc] transition hover:border-[#d8c27d]/42 hover:bg-white/[.05]">
+                <Sparkles className="h-4 w-4" />{c.deep}
+              </Link>
             </div>
           </div>
 
-          <div className="relative mx-auto h-[430px] w-full max-w-[680px] sm:h-[560px] md:h-[650px]" aria-hidden="true">
-            <div className="absolute left-[7%] top-[8%] h-[84%] w-[84%] rounded-full border border-[#9ce3cb]/10" />
-            <div className="absolute left-[18%] top-[18%] h-[64%] w-[64%] rounded-[48%] border border-[#e0bd67]/18 [transform:rotate(-22deg)_scaleY(.72)]" />
-            <div className="absolute left-[28%] top-[27%] h-[46%] w-[46%] rounded-[50%] border border-white/[.08] [transform:rotate(31deg)_scaleY(.64)]" />
-            <div className="mora-orb absolute left-[47%] top-[42%] h-6 w-6 rounded-full bg-[#baf2df] shadow-[0_0_20px_rgba(186,242,223,.8),0_0_80px_rgba(107,210,172,.42)]" />
-            <div className="absolute left-[50%] top-[45%] h-px w-[42%] origin-left -rotate-[11deg] bg-[linear-gradient(90deg,rgba(186,242,223,.75),rgba(214,168,72,.25),transparent)] shadow-[0_0_16px_rgba(186,242,223,.28)]" />
-            <div className="absolute left-[12%] top-[56%] h-px w-[58%] rotate-[7deg] bg-[linear-gradient(90deg,transparent,rgba(145,222,199,.20),rgba(240,218,157,.58),transparent)]" />
-            <div className="absolute bottom-[11%] right-[5%] font-serif text-[clamp(4rem,11vw,9rem)] font-light tracking-[-.06em] text-white/[.055]">MÔRA</div>
+          <div className="relative mx-auto h-[410px] w-full max-w-[620px] sm:h-[520px]" aria-label={c.mapLabel}>
+            <div className="absolute inset-[8%] rounded-full border border-[#a6d7c2]/10" />
+            <div className="absolute inset-[18%] rounded-full border border-[#d8c27d]/12 [transform:rotate(-18deg)_scaleY(.72)]" />
+            <svg viewBox="0 0 600 500" className="absolute inset-0 h-full w-full" aria-hidden="true">
+              <defs>
+                <linearGradient id="moraLine" x1="0" x2="1">
+                  <stop offset="0" stopColor="#8ed4b8" stopOpacity=".16" />
+                  <stop offset=".5" stopColor="#e6cd82" stopOpacity=".66" />
+                  <stop offset="1" stopColor="#8ed4b8" stopOpacity=".12" />
+                </linearGradient>
+              </defs>
+              <path d="M300 250 C240 215 190 165 132 112" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
+              <path d="M300 250 C370 205 430 165 492 128" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
+              <path d="M300 250 C326 320 357 365 408 408" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
+              <circle cx="300" cy="250" r="118" fill="none" stroke="#c9b46e" strokeOpacity=".10" />
+              <circle cx="300" cy="250" r="72" fill="none" stroke="#9ad8bf" strokeOpacity=".13" />
+            </svg>
+
+            <div className="absolute left-1/2 top-1/2 grid h-32 w-32 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#e4ce87]/25 bg-[radial-gradient(circle_at_38%_32%,rgba(227,246,235,.28),rgba(33,77,59,.52)_36%,rgba(7,18,13,.96)_72%)] shadow-[0_0_70px_rgba(107,195,159,.18)] sm:h-40 sm:w-40">
+              <div className="text-center"><span className="block h-2 w-2 mx-auto rounded-full bg-[#c8f3df] shadow-[0_0_20px_rgba(200,243,223,.9)]" /><span className="mt-4 block font-mono text-[9px] tracking-[.26em] text-[#f1dfaa]">{c.mapCenter}</span></div>
+            </div>
+
+            <ContextNode className="left-[3%] top-[14%]" icon={<FileText className="h-4 w-4" />} label={c.file} />
+            <ContextNode className="right-[1%] top-[20%]" icon={<CalendarDays className="h-4 w-4" />} label={c.calendar} />
+            <ContextNode className="bottom-[6%] right-[13%]" icon={<CircleCheck className="h-4 w-4" />} label={c.open} />
+            <div className="absolute bottom-[3%] left-[5%] font-mono text-[8px] tracking-[.22em] text-white/24">{c.mapLabel}</div>
           </div>
         </div>
       </section>
 
       <section className="px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#93ddc7]/72">{c.rolesEyebrow}</p>
-          <h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl md:text-7xl">{c.rolesTitle}</h2>
-          <div className="mt-12 border-t border-white/[.11]">{c.roles.map(([title, body], index) => <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.75fr_1.25fr] sm:items-start sm:gap-8"><div className="font-mono text-[9px] tracking-[.18em] text-white/26">0{index + 1}</div><h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3><p className="max-w-2xl text-sm leading-7 text-white/48 sm:text-base">{body}</p></article>)}</div>
+          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.sectionEyebrow}</p>
+          <h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl md:text-7xl">{c.sectionTitle}</h2>
+          <div className="mt-12 border-t border-white/[.11]">
+            {c.roles.map(([title, body], index) => (
+              <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.72fr_1.28fr] sm:items-start sm:gap-8">
+                <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/48">0{index + 1}</div>
+                <h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3>
+                <p className="max-w-2xl text-sm leading-7 text-white/49 sm:text-base">{body}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-y border-white/[.08] bg-[#0d2119] px-5 py-24 sm:px-8 md:py-32 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(125,220,187,.20),transparent_24%),radial-gradient(circle_at_53%_75%,rgba(214,168,72,.10),transparent_24%)]" />
-        <div className="absolute inset-y-0 right-0 w-[70%] opacity-45 [background-image:radial-gradient(circle_at_20%_20%,rgba(202,241,226,.36)_0_1px,transparent_1.5px),radial-gradient(circle_at_68%_42%,rgba(225,193,112,.30)_0_1px,transparent_1.5px)] [background-size:91px_91px,137px_137px]" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.8fr_1.2fr] md:items-center">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.deepEyebrow}</p><h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2><p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.deepText}</p><Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]"><Eye className="h-4 w-4" />{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link></div>
-          <div className="relative h-[360px] sm:h-[460px]" aria-hidden="true"><div className="absolute inset-[8%] rounded-full border border-[#8be0c5]/12" /><div className="absolute inset-[18%] rounded-full border border-[#d6a848]/14 [transform:scaleY(.58)_rotate(24deg)]" /><div className="absolute inset-[30%] rounded-full bg-[radial-gradient(circle,rgba(190,243,224,.42),rgba(72,146,119,.16)_35%,transparent_68%)] shadow-[0_0_110px_rgba(117,205,171,.18)]" /><div className="absolute left-[50%] top-[48%] h-2.5 w-2.5 rounded-full bg-[#dff9ef] shadow-[0_0_18px_rgba(223,249,239,.95),0_0_60px_rgba(125,220,187,.55)]" /></div>
+      <section className="border-y border-white/[.08] bg-[#0b1c15] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.78fr_1.22fr] lg:items-center">
+          <div>
+            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.exampleEyebrow}</p>
+            <h2 className="mt-5 font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.exampleTitle}</h2>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.exampleBody}</p>
+          </div>
+          <div className="relative overflow-hidden rounded-[2rem] border border-[#b8d4c5]/12 bg-[#07130e]/78 p-6 shadow-[0_28px_90px_rgba(0,0,0,.22)] sm:p-8">
+            <div className="absolute -right-16 -top-20 h-52 w-52 rounded-full bg-[#4d9676]/10 blur-3xl" aria-hidden="true" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              {c.chips.map((chip, index) => <div key={chip} className="border-b border-white/[.08] px-1 py-4 text-sm text-white/62"><span className="mr-3 font-mono text-[8px] tracking-[.16em] text-[#d8c27d]/50">0{index + 1}</span>{chip}</div>)}
+            </div>
+            <div className="mt-7 border-l border-[#dfc775]/45 pl-5">
+              <div className="font-mono text-[8px] tracking-[.22em] text-[#dfc775]/70">{c.outcomeLabel}</div>
+              <p className="mt-3 max-w-xl font-serif text-2xl leading-tight text-[#f5f1e4] sm:text-3xl">{c.outcome}</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      <section className="relative overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.82fr_1.18fr] md:items-center">
+          <div>
+            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.deepEyebrow}</p>
+            <h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.deepText}</p>
+            <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
+          </div>
+          <div className="relative h-[330px] overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] sm:h-[430px]" aria-hidden="true">
+            <div className="absolute left-[8%] top-[20%] h-px w-[70%] rotate-[7deg] bg-gradient-to-r from-transparent via-[#8dd4b7]/45 to-transparent" />
+            <div className="absolute left-[14%] top-[56%] h-px w-[72%] -rotate-[8deg] bg-gradient-to-r from-transparent via-[#dec77e]/45 to-transparent" />
+            <div className="absolute left-[50%] top-[50%] h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#a1d9c1]/15 bg-[radial-gradient(circle,rgba(157,224,195,.23),transparent_66%)]" />
+            <span className="absolute left-[18%] top-[24%] h-2 w-2 rounded-full bg-[#d9c47d] shadow-[0_0_16px_rgba(217,196,125,.55)]" />
+            <span className="absolute right-[17%] top-[35%] h-2 w-2 rounded-full bg-[#92d9bd] shadow-[0_0_16px_rgba(146,217,189,.55)]" />
+            <span className="absolute bottom-[22%] left-[31%] h-2 w-2 rounded-full bg-[#d9c47d] shadow-[0_0_16px_rgba(217,196,125,.55)]" />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#93ddc7]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
-          <div><p className="max-w-2xl text-sm leading-7 text-white/50 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton label={c.demo} className="inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-[#eef2e6] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-13 items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
+          <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
+          <div><p className="max-w-2xl text-sm leading-7 text-white/50 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
       </section>
 
-      <section className="border-t border-white/[.08] bg-[#050907] px-5 py-16 sm:px-8 md:py-20 lg:px-10"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]"><div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/36">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div><p className="max-w-3xl text-sm leading-7 text-white/45 sm:text-base">{c.realityText}</p></div></section>
-
-      <style jsx>{`
-        .mora-stars{opacity:.58;background-image:radial-gradient(circle at 12% 20%,rgba(255,255,255,.35) 0 1px,transparent 1.4px),radial-gradient(circle at 76% 24%,rgba(158,227,204,.30) 0 1px,transparent 1.4px),radial-gradient(circle at 58% 72%,rgba(229,198,118,.28) 0 1px,transparent 1.4px);background-size:149px 149px,211px 211px,263px 263px;mask-image:linear-gradient(to bottom,transparent,black 12%,black 88%,transparent)}
-        .mora-hyphae{opacity:.66}.mh{position:absolute;height:1px;transform-origin:left center;background:linear-gradient(90deg,transparent,rgba(126,220,190,.13),rgba(219,236,224,.45),transparent)}.mh1{left:42%;top:26%;width:50%;transform:rotate(17deg)}.mh2{left:35%;top:42%;width:58%;transform:rotate(-9deg)}.mh3{left:48%;top:56%;width:44%;transform:rotate(26deg)}.mh4{left:28%;top:70%;width:62%;transform:rotate(-6deg)}.mh5{left:57%;top:18%;width:33%;transform:rotate(51deg)}.mn{position:absolute;width:5px;height:5px;border-radius:999px;background:#c8f4e4;box-shadow:0 0 18px rgba(160,235,210,.65)}.mn1{left:58%;top:35%}.mn2{left:72%;top:49%}.mn3{left:52%;top:63%}.mn4{left:83%;top:66%}.mora-orb{animation:moraPulse 5.6s ease-in-out infinite}@keyframes moraPulse{0%,100%{transform:scale(.8);opacity:.64}50%{transform:scale(1.15);opacity:1}}@media(prefers-reduced-motion:reduce){.mora-orb{animation:none}}
-      `}</style>
+      <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">
+          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/36">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
+          <p className="max-w-3xl text-sm leading-7 text-white/45 sm:text-base">{c.realityText}</p>
+        </div>
+      </section>
     </main>
   );
+}
+
+function ContextNode({ className, icon, label }: { className: string; icon: React.ReactNode; label: string }) {
+  return <div className={`absolute ${className} flex items-center gap-3 rounded-full border border-white/[.10] bg-[#0b1c15]/90 px-4 py-3 text-[#dce9e0]/72 shadow-[0_12px_38px_rgba(0,0,0,.18)] backdrop-blur-md`}>
+    <span className="text-[#e0c878]">{icon}</span><span className="text-xs font-medium sm:text-sm">{label}</span>
+  </div>;
 }
