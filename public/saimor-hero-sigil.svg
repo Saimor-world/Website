@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Saimôr</title>
+  <desc id="desc">Transparent Saimôr sigil with a gold S, one orbit and the MÔRA node.</desc>
+  <defs>
+    <linearGradient id="gold" x1="64" y1="42" x2="194" y2="214" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0a8"/>
+      <stop offset="0.22" stop-color="#d6a848"/>
+      <stop offset="0.5" stop-color="#fff2b5"/>
+      <stop offset="0.72" stop-color="#b97722"/>
+      <stop offset="1" stop-color="#f0cf78"/>
+    </linearGradient>
+    <linearGradient id="goldSoft" x1="34" y1="52" x2="218" y2="206" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8e7a5" stop-opacity="0.92"/>
+      <stop offset="0.55" stop-color="#c99635" stop-opacity="0.88"/>
+      <stop offset="1" stop-color="#f2d681" stop-opacity="0.92"/>
+    </linearGradient>
+    <radialGradient id="mora" cx="0" cy="0" r="1" gradientTransform="translate(178 78) rotate(128) scale(26)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d8fff0"/>
+      <stop offset="0.18" stop-color="#79d7ad"/>
+      <stop offset="0.48" stop-color="#19724f"/>
+      <stop offset="0.78" stop-color="#0a3d2b"/>
+      <stop offset="1" stop-color="#051f17"/>
+    </radialGradient>
+    <filter id="goldGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.86  0 1 0 0 0.62  0 0 1 0 0.18  0 0 0 .34 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="3.1" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="128" cy="128" r="103" fill="none" stroke="url(#goldSoft)" stroke-width="3" opacity="0.95"/>
+  <circle cx="128" cy="128" r="97" fill="none" stroke="#f3d47f" stroke-width="0.8" opacity="0.28"/>
+  <ellipse cx="130" cy="132" rx="79" ry="42" fill="none" stroke="url(#goldSoft)" stroke-width="2.15" opacity="0.94" transform="rotate(-17 130 132)"/>
+  <path d="M165 64 C145 50 111 51 94 66 C79 79 79 98 93 110 C105 120 126 124 144 131 C164 139 175 151 173 168 C171 188 150 204 123 207 C104 209 87 204 77 196 C95 198 110 194 121 186 C132 179 137 169 133 161 C128 151 111 146 96 139 C76 130 65 117 67 99 C70 77 92 59 119 55 C137 53 153 56 165 64Z" fill="url(#gold)" filter="url(#goldGlow)"/>
+  <path d="M151 67 C131 61 109 65 98 77 C88 88 92 99 103 106 C114 113 132 116 148 123" fill="none" stroke="#fff4c4" stroke-width="4.4" stroke-linecap="round" opacity="0.42"/>
+  <path d="M138 145 C148 151 153 159 151 169 C149 179 139 188 126 193" fill="none" stroke="#9b5c18" stroke-width="3.8" stroke-linecap="round" opacity="0.34"/>
+  <g filter="url(#nodeGlow)">
+    <circle cx="178" cy="91" r="13.5" fill="#071d15" stroke="#dcb65d" stroke-width="1.8"/>
+    <circle cx="178" cy="91" r="11.2" fill="url(#mora)"/>
+    <circle cx="174.5" cy="87.5" r="2.4" fill="#efffe9" opacity="0.7"/>
+  </g>
+</svg>
