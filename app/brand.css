@@ -1,4 +1,4 @@
-/* Saimôr orbital seal in the global navigation. */
+/* One canonical Saimôr mark everywhere. */
 header a[aria-label*="Saimôr"] > span:first-child {
   overflow: hidden;
   border: 1px solid rgba(224, 199, 124, .34) !important;
@@ -8,18 +8,14 @@ header a[aria-label*="Saimôr"] > span:first-child {
 }
 
 header a[aria-label*="Saimôr"] > span:first-child > img {
-  opacity: 0 !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  mix-blend-mode: normal !important;
 }
 
-header a[aria-label*="Saimôr"] > span:first-child::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: url('/saimor-mark.svg') center / cover no-repeat;
-}
-
-/* The old detached status dot is now part of the seal itself. */
+/* No detached status dot: the mark carries its own visual language. */
 header a[aria-label*="Saimôr"] > span:first-child > span {
   display: none;
 }
