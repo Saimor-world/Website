@@ -1,21 +1,28 @@
-/* One canonical Saimôr mark everywhere. */
-header a[aria-label*="Saimôr"] > span:first-child {
+/* One canonical Saimôr mark everywhere. The master asset is /saimor-mark.svg. */
+header a[aria-label*="Saimôr"] > span:first-child,
+footer a[href="/de"] > span:first-child,
+footer a[href="/en"] > span:first-child {
   overflow: hidden;
   border: 1px solid rgba(224, 199, 124, .34) !important;
   border-radius: 999px;
-  background: #0b2118 !important;
+  background: #0b2118 url('/saimor-mark.svg') center / cover no-repeat !important;
   box-shadow: 0 4px 16px rgba(3, 15, 10, .24), 0 0 18px rgba(214, 168, 72, .08);
 }
 
-header a[aria-label*="Saimôr"] > span:first-child > img {
-  opacity: 1 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  mix-blend-mode: normal !important;
+header a[aria-label*="Saimôr"] > span:first-child > img,
+footer a[href="/de"] > span:first-child > img,
+footer a[href="/en"] > span:first-child > img {
+  opacity: 0 !important;
 }
 
 /* No detached status dot: the mark carries its own visual language. */
 header a[aria-label*="Saimôr"] > span:first-child > span {
   display: none;
+}
+
+/* SYSTEM / 00 and SYSTEM / WORLD were presentation labels, not product concepts. */
+header a[aria-label*="Saimôr"] > span:nth-child(2) > span:last-child,
+footer a[href="/de"] > span:nth-child(2) > span:last-child,
+footer a[href="/en"] > span:nth-child(2) > span:last-child {
+  display: none !important;
 }
