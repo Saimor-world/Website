@@ -12,10 +12,10 @@ describe('SystemWorldHome', () => {
   it('explains the product to a first-time visitor and keeps the real entry path', () => {
     render(<SystemWorldHome locale="de" />);
     expect(screen.getByText('Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.')).toBeInTheDocument();
-    expect(screen.getByText('Nicht noch ein Tool. Ein Zusammenhang.')).toBeInTheDocument();
+    expect(screen.getByText('Du musst nicht jedes Mal von vorn anfangen.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
-    expect(screen.getByText('Was zusammengehört, bleibt zusammen.')).toBeInTheDocument();
-    expect(screen.getByText('Bemerkt, wenn sich etwas verändert.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'MÔRA kennenlernen' })).toHaveAttribute('href', '/mora');
+    expect(screen.getByRole('button', { name: 'Öffentliche Signale laden' })).toBeInTheDocument();
     expect(screen.queryByText('YORI')).not.toBeInTheDocument();
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
     expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();

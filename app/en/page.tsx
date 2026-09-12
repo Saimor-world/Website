@@ -1,5 +1,4 @@
 import YoriGate from '@/components/YoriGate';
-import HomepageReframe from '@/components/HomepageReframe';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
@@ -10,7 +9,6 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <HomepageReframe />
       <LivingForestWorld locale="en" />
       <YoriGate locale="en" />
     </>
