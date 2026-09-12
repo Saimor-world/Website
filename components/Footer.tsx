@@ -87,16 +87,15 @@ export default function Footer({ locale }: { locale: Locale }) {
             <a href={homeHref} className="inline-flex items-center gap-3">
               <span className="relative grid h-11 w-11 place-items-center rounded-full border border-[#d6a848]/22 bg-black/25">
                 <Image
-                  src="/saimor-sigil.svg"
+                  src="/saimor-mark.svg"
                   alt="Saimôr"
                   width={36}
                   height={36}
-                  className="object-contain mix-blend-screen opacity-95"
+                  className="object-contain opacity-95"
                 />
               </span>
               <span>
                 <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
-                <span className="mt-1.5 block font-mono text-[8px] tracking-[.24em] text-white/24">SYSTEM / WORLD</span>
               </span>
             </a>
             <p className="mt-5 max-w-sm text-sm leading-6 text-white/34">{c.tagline}</p>
