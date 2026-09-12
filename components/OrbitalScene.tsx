@@ -9,6 +9,6 @@ export default function OrbitalScene() {
     <div className={`${styles.orbit} ${styles.middle}`}><span className={`${styles.moon} ${styles.emerald}`} /></div>
     <div className={`${styles.orbit} ${styles.inner}`}><span className={styles.star} /></div>
     <div className={styles.crossing} />
-    <Image src="/saimor-sigil.svg" alt="" width={240} height={240} unoptimized className={styles.sigil} />
+    <Image src="/saimor-mark.svg" alt="" width={240} height={240} unoptimized className={styles.sigil} />
   </div>;
 }
