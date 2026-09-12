@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, FileText, CalendarDays, CircleCheck, Sparkles } from 'lucide-react';
 
 import styles from './SystemWorldHome.module.css';
+import OrbitalScene from './OrbitalScene';
 import MoraSignalPreview from './MoraSignalPreview';
 
 type Locale = 'de' | 'en';
@@ -52,7 +53,8 @@ export default function SystemWorldHome({ locale }: Props) {
   return (
     <div className={styles.world}>
       <section className={styles.hero} aria-labelledby="world-title">
-        <Image src="/images/saimor-cosmos.webp" alt="" fill priority sizes="100vw" className={styles.heroImage} />
+        <label className={styles.motionControl}><input type="checkbox" name="world-motion" />{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</label>
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
@@ -71,10 +73,7 @@ export default function SystemWorldHome({ locale }: Props) {
               </div>
               <p className={styles.entryNote}>{c.entryNote}</p>
             </div>
-            <div className={styles.sealWorld} aria-hidden="true">
-              <div className={styles.sealHalo} />
-              <Image src="/saimor-seal-256.webp" alt="" width={256} height={256} sizes="(max-width: 700px) 100px, 200px" className={styles.seal} />
-            </div>
+            <OrbitalScene />
           </div>
           <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><a href="#system">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></a></div>
         </div>
@@ -82,8 +81,9 @@ export default function SystemWorldHome({ locale }: Props) {
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">
         <div className={styles.threshold}>
-          <Image src="/images/saimor-forest-threshold.webp" alt="" fill sizes="100vw" className={styles.forestImage} />
+          <Image src="/images/saimor-forest-layer.webp" alt="" fill quality={95} sizes="(min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.forestImage} />
           <div className={styles.forestShade} aria-hidden="true" />
+          <div className={styles.portalScene} aria-hidden="true"><div className={styles.portalFrame}><span className={styles.portalVeil} /></div><div className={styles.portalReflection} /><span className={styles.moraLight} /><span className={styles.lightThread} /></div>
           <div className={styles.thresholdInner}>
             <div className={styles.contextCopy}>
               <p className={styles.eyebrow}>{c.fieldEyebrow}</p>

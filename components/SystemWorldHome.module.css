@@ -50,3 +50,27 @@
 @media(max-width:1000px){.heroInner{padding:125px 32px 28px}.heroGrid{grid-template-columns:1.2fr .8fr}.seal{width:150px;height:150px}.sealHalo{width:195px;height:195px;top:-2px}.thresholdInner{padding:80px 32px;min-height:720px}.contextCopy{max-width:420px}.contextObjects{width:160px}.contextObjects li{padding:14px;gap:10px}.thresholdCaption{left:32px}.moraIntroduction,.entry{margin:0 32px;gap:40px}}
 @media(max-width:700px){.hero,.heroInner{min-height:0}.heroInner{padding:104px 24px 25px}.heroGrid{display:block;padding:32px 0 38px}.heroImage{object-position:70% top}.heroShade{background:linear-gradient(90deg,#031009dd,#03100955),linear-gradient(0deg,#04100c,transparent 60%)}.heroCopy{padding-top:105px}.heroCopy h1{font-size:84px}.thesis{font-size:28px;max-width:360px}.intro{font-size:14px;line-height:1.75;max-width:410px;margin-top:22px}.actions{gap:12px;margin-top:26px}.primary{font-size:13px;padding:14px 20px}.actions .textLink{padding-left:4px}.sealWorld{left:auto;right:24px;top:138px;width:95px;height:95px;transform:none;padding:0}.seal{width:95px;height:95px}.sealHalo{width:115px;height:115px;top:-10px}.sceneFooter{font-size:8px;letter-spacing:.13em}.sceneFooter a{display:none}.thresholdInner{min-height:920px;padding:60px 24px 70px;display:block}.forestImage{object-position:67% center}.forestShade{background:linear-gradient(180deg,#04110cf5, #04110cc9 37%,transparent 70%,#05100c),linear-gradient(90deg,#04110c40,transparent)}.contextCopy{max-width:440px}.contextCopy h2{font-size:49px;max-width:365px}.contextBody{font-size:15px;max-width:340px}.outline{margin-top:23px}.contextObjects{margin:100px 0 0 auto;width:160px;gap:9px}.contextObjects li{padding:12px 14px}.thresholdCaption{left:24px;bottom:28px;font-size:8px}.moraIntroduction,.entry{margin:0 24px;padding:55px 0;grid-template-columns:1fr;gap:28px}.moraIntroduction h3,.entry h3{font-size:34px}}
 @media(prefers-reduced-motion:reduce){.primary,.outline{transition:none}}
+/* Scenic bitmaps provide atmosphere; these foreground edges remain resolution independent. */
+.motionControl{position:absolute;z-index:3;right:64px;top:112px;display:flex;align-items:center;gap:8px;color:#cfc9b1;font-size:11px;cursor:pointer;min-height:30px}
+.motionControl input{accent-color:#d8be78;width:14px;height:14px}
+.world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
+.portalScene{position:absolute;inset:0;pointer-events:none}
+.portalFrame{position:absolute;left:65%;top:12%;width:16%;height:61%;border:5px solid #e5c887;border-left-color:#fff2c6;border-bottom-color:#bc9147;transform:perspective(900px) rotateY(-16deg);background:linear-gradient(105deg,#d8c68c15,#fff2c652 60%,#e4d8a523);box-shadow:0 0 3px #fff8d7,inset 0 0 28px #ffe8a34d,0 0 35px #f8ce793b,16px 12px 0 #14271dbb;overflow:hidden}
+.portalVeil{position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 30%,#fff5d626 48%,transparent 65%);animation:portal-light 14s ease-in-out infinite}
+.portalReflection{position:absolute;left:63%;top:74%;width:21%;height:22%;background:linear-gradient(180deg,#edd08c4d,transparent);clip-path:polygon(12% 0,82% 0,100% 100%,0 100%);filter:blur(3px)}
+.moraLight{position:absolute;left:62%;top:54%;width:9px;height:9px;border-radius:50%;background:#f9efc8;box-shadow:0 0 14px #e9d994,0 0 35px #ade8b5;animation:mora-drift 12s ease-in-out infinite}
+.lightThread{position:absolute;left:50%;top:55%;width:37%;height:1px;background:linear-gradient(90deg,transparent,#e4cb8cb3,transparent);transform:rotate(-12deg)}
+.contextObjects{position:relative;z-index:1}
+@keyframes portal-light{0%,100%{transform:translateX(-12%);opacity:.45}50%{transform:translateX(12%);opacity:.85}}
+@keyframes mora-drift{0%,100%{transform:translate(0,0)}50%{transform:translate(13px,-9px)}}
+@media(max-width:700px){.heroCopy{padding-top:215px}.motionControl{top:auto;bottom:8px;right:24px;font-size:10px}.sceneFooter{padding-bottom:30px}.portalFrame{left:22%;top:49%;width:35%;height:34%;border-width:3px}.portalReflection{left:20%;top:83%;width:41%;height:15%}.moraLight{left:20%;top:65%}.lightThread{left:12%;top:69%;width:68%}}
+@media(prefers-reduced-motion:reduce){.portalVeil,.moraLight{animation:none}.motionControl{display:none}}
+/* Never stretch the 1672px scenic sources across a Retina desktop viewport.
+   At DPR 2 the raster occupies at most 836 CSS px; at DPR 3 at most 557.
+   The surrounding atmosphere and foreground geometry are native CSS/SVG. */
+.heroImage{left:auto!important;top:auto!important;right:0!important;bottom:0!important;width:min(100%,836px)!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain;object-position:center;mask-image:linear-gradient(90deg,transparent,#000 22%),linear-gradient(0deg,#000,transparent);mask-composite:intersect}
+.hero{background:radial-gradient(ellipse at 78% 36%,#163225 0,transparent 43%),#05110c}
+.forestImage{left:auto!important;top:auto!important;right:0!important;bottom:5%!important;width:min(100%,836px)!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain;object-position:center;mask-image:radial-gradient(ellipse at 65% 55%,#000 28%,transparent 74%)}
+.threshold{background:radial-gradient(ellipse at 72% 45%,#233725,#05100c 68%)}
+@media(min-resolution:2.5dppx){.heroImage,.forestImage{width:min(100%,557px)!important}}
+@media(max-width:700px){.forestImage{bottom:9%!important}.heroImage{bottom:0!important}}

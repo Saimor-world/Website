@@ -87,7 +87,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             <a href={homeHref} className="inline-flex items-center gap-3">
               <span className="relative grid h-11 w-11 place-items-center rounded-full border border-[#d6a848]/22 bg-black/25">
                 <Image
-                  src="/saimor-seal-256.webp"
+                  src="/saimor-sigil.svg"
                   alt="Saimôr"
                   width={36}
                   height={36}
