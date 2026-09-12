@@ -91,7 +91,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
           }`}>
             <a href={homeHref} className="group flex items-center gap-3" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
               <span className="relative grid h-9 w-9 place-items-center rounded-full border border-[#e0c77c]/38 bg-[#183a2c]/76">
-                <Image src="/saimor-mark.svg" alt="Saimôr" width={31} height={31} priority className="object-contain opacity-100" />
+                <Image src="/saimor-mark.svg" alt="Saimôr" width={31} height={31} priority className="object-contain mix-blend-screen opacity-100" />
               </span>
               <span className="hidden sm:block">
                 <span className="block font-serif text-lg font-light leading-none tracking-[.02em] text-[#f5f3e9]">Saimôr</span>
