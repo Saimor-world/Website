@@ -130,7 +130,15 @@ export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [autoTrace, setAutoTrace] = useState(true);
+  const [autoTrace, setAutoTrace] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setAutoTrace(!preference.matches);
+    const update = () => { if (preference.matches) setAutoTrace(false); };
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
 
   const moraHref = locale === 'de' ? '/mora' : '/en/mora';
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
@@ -187,7 +195,7 @@ export default function MoraDeepView({ locale }: Props) {
           </div>
 
           {/* Mobile: deliberately layered, not a squeezed desktop diagram. */}
-          <div className="mora-mobile-stage relative h-[760px] overflow-hidden rounded-[1.6rem] border border-white/[.10] bg-[#07110e] shadow-[0_30px_90px_rgba(0,0,0,.36)] md:hidden">
+          <div className="mora-mobile-stage relative min-h-[760px] overflow-hidden rounded-[1.6rem] border border-white/[.10] bg-[#07110e] shadow-[0_30px_90px_rgba(0,0,0,.36)] lg:hidden">
             <div className="mora-grid absolute inset-0" aria-hidden="true" />
             <div className="mora-mobile-glow absolute inset-0" aria-hidden="true" />
             <div className="mora-scanlines pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
@@ -196,7 +204,7 @@ export default function MoraDeepView({ locale }: Props) {
               <span className="h-1.5 w-1.5 rounded-full bg-[#78e1bd] shadow-[0_0_14px_rgba(120,225,189,.95)]" />
               <span className="font-mono text-[7px] tracking-[.18em] text-white/42">SIGNAL FIELD / 04</span>
             </div>
-            <button type="button" onClick={() => setAutoTrace((value) => !value)} className="absolute right-3 top-3 z-40 grid h-9 w-9 place-items-center rounded-full border border-white/[.10] bg-black/30 text-white/55 backdrop-blur-xl">
+            <button type="button" onClick={() => setAutoTrace((value) => !value)} className="absolute right-3 top-3 z-40 grid h-11 w-11 place-items-center rounded-full border border-white/[.10] bg-black/30 text-white/55 backdrop-blur-xl">
               {autoTrace ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
               <span className="sr-only">{autoTrace ? c.pause : c.run}</span>
             </button>
@@ -238,19 +246,19 @@ export default function MoraDeepView({ locale }: Props) {
               {current.kind} → {current.confidence}
             </div>
 
-            <div key={`detail-${current.key}`} className="mora-mobile-overlay absolute inset-x-3 top-[485px] z-50 rounded-[1.35rem] border border-white/[.11] bg-[#0a1813]/86 p-4 shadow-[0_22px_55px_rgba(0,0,0,.36)] backdrop-blur-2xl">
+            <div key={`detail-${current.key}`} className="mora-mobile-overlay relative mx-3 mt-[485px] z-50 rounded-[1.35rem] border border-white/[.11] bg-[#0a1813]/86 p-4 shadow-[0_22px_55px_rgba(0,0,0,.36)] backdrop-blur-2xl">
               <div className="flex items-center justify-between gap-3"><div className="font-mono text-[7px] tracking-[.19em] text-white/32">{c.active}</div><div className="font-mono text-[7px] tracking-[.15em]" style={{ color: current.color }}>{c.confidence} · {current.confidence}</div></div>
               <div className="mt-3 flex items-start gap-3"><span className="mt-1 h-2 w-2 shrink-0 rounded-full" style={{ background: current.color, boxShadow: `0 0 14px ${current.color}` }} /><div><div className="text-sm font-semibold text-white/90">{current.title}</div><p className="mt-1.5 text-[11px] leading-5 text-white/45">{current.detail}</p></div></div>
             </div>
 
-            <div key={`terminal-${current.key}`} className="mora-mobile-terminal absolute inset-x-7 top-[605px] z-[60] overflow-hidden rounded-[1.2rem] border border-white/[.10] bg-[#020706]/92 shadow-[0_20px_55px_rgba(0,0,0,.48)] backdrop-blur-2xl">
+            <div key={`terminal-${current.key}`} className="mora-mobile-terminal relative mx-7 -mt-1 mb-6 z-[60] overflow-hidden rounded-[1.2rem] border border-white/[.10] bg-[#020706]/92 shadow-[0_20px_55px_rgba(0,0,0,.48)] backdrop-blur-2xl">
               <div className="flex items-center justify-between border-b border-white/[.07] px-3 py-2"><span className="font-mono text-[6px] tracking-[.18em] text-[#78e0bd]/58">{c.terminal}</span><span className="flex gap-1"><i className="h-1.5 w-1.5 rounded-full bg-[#d98db2]/60" /><i className="h-1.5 w-1.5 rounded-full bg-[#e8bd62]/60" /><i className="h-1.5 w-1.5 rounded-full bg-[#72dfbd]/60" /></span></div>
               <div className="space-y-1 px-3 py-2.5 font-mono text-[8px] leading-4"><div className="text-white/25">$ mora.trace --source {current.key}</div><div style={{ color: current.color }}>→ {current.code}</div><div className="text-[#70c8f4]/62">→ relation.scan(4)</div><div className="mora-terminal-caret text-white/38">→ ready_</div></div>
             </div>
           </div>
 
           {/* Desktop / tablet signal field */}
-          <div ref={stageRef} onPointerMove={(event) => moveField(event.clientX, event.clientY)} className="mora-signal-stage relative hidden min-h-[760px] overflow-hidden rounded-[2rem] border border-white/[.10] bg-[#07110e] shadow-[0_38px_120px_rgba(0,0,0,.36)] md:block">
+          <div ref={stageRef} onPointerMove={(event) => moveField(event.clientX, event.clientY)} className="mora-signal-stage relative hidden min-min-h-[760px] overflow-hidden rounded-[2rem] border border-white/[.10] bg-[#07110e] shadow-[0_38px_120px_rgba(0,0,0,.36)] lg:block">
             <div className="mora-grid absolute inset-0" aria-hidden="true" />
             <div className="mora-cursor-glow absolute inset-0" aria-hidden="true" />
             <div className="mora-scanlines pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
@@ -299,7 +307,7 @@ export default function MoraDeepView({ locale }: Props) {
         .mora-mobile-overlay{animation:moraOverlayIn .42s cubic-bezier(.2,.8,.2,1)}.mora-mobile-terminal{animation:moraTerminalIn .48s cubic-bezier(.2,.8,.2,1)}.mora-mobile-pulse{animation:moraPulseIn .7s ease both}
         @keyframes moraTrace{to{stroke-dashoffset:-38}}@keyframes moraBreathe{0%,100%{transform:scale(.985);opacity:.88}50%{transform:scale(1.035);opacity:1}}@keyframes moraOrbit{to{transform:rotate(360deg)}}@keyframes moraOrbitReverse{to{transform:rotate(-360deg)}}@keyframes moraWave{0%,100%{transform:scaleX(.88);opacity:.45}50%{transform:scaleX(1.08);opacity:1}}@keyframes moraBlink{0%,55%{opacity:1}56%,100%{opacity:.12}}
         @keyframes moraOverlayIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes moraTerminalIn{from{opacity:0;transform:translate(12px,18px) rotate(1.5deg)}to{opacity:1;transform:translate(0,0) rotate(0)}}@keyframes moraPulseIn{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}35%{opacity:1}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
-        @media(prefers-reduced-motion:reduce){.mora-trace-line,.mora-core,.mora-orbit,.mora-orbit-reverse,.mora-wave,.mora-terminal-caret,.mora-mobile-overlay,.mora-mobile-terminal,.mora-mobile-pulse{animation:none!important}.mora-grid{transition:none}}
+        @media(prefers-reduced-motion:reduce){.mora-trace-line,.mora-core,.mora-orbit,.mora-orbit-reverse,.mora-wave,.mora-terminal-caret,.mora-mobile-overlay,.mora-mobile-terminal,.mora-mobile-pulse{animation:none!important}.mora-grid{transition:none;transform:none}.mora-mobile-stage button,.mora-signal-stage button{transition:none!important;transform:none!important}}
       `}</style>
     </main>
   );
