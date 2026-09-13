@@ -33,8 +33,8 @@ const COPY = {
     outcomeLabel: 'MÔRA / NÄCHSTER SCHRITT',
     outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Sehen, warum der nächste Schritt Sinn ergibt.',
-    deepText: 'Deep View zeigt nicht irgendein KI-Spektakel. Es legt offen, welche Kontextstücke zusammengehören und wie daraus ein nächster Schritt entsteht.',
+    deepTitle: 'Ein kleines Experiment mit Kontext.',
+    deepText: 'Tippe auf ein Signal: Verbindungen, Licht und Trace reagieren. Ein programmiertes Interface mit Beispieldaten – zum Erkunden, nicht als Produktnachweis.',
     deepCta: 'Deep View ansehen',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA gehört in den Arbeitsraum.',
@@ -94,10 +94,10 @@ export default function MoraProductPage({ locale }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
         <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_25%,rgba(234,216,159,.4)_0_1px,transparent_1.2px),radial-gradient(circle_at_70%_60%,rgba(143,218,190,.32)_0_1px,transparent_1.2px)] [background-size:119px_119px,173px_173px]" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-12 md:grid-cols-[.93fr_1.07fr] lg:gap-16">
-          <div className="max-w-2xl">
+        <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-8 lg:grid-cols-[.93fr_1.07fr] lg:gap-16">
+          <div className="min-w-0 max-w-2xl">
             <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e2c576]/82 sm:text-[10px]">{c.eyebrow}</p>
-            <h1 className="mt-6 font-serif text-[clamp(3.5rem,7.3vw,7.2rem)] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
+            <h1 className="mt-6 font-serif text-[clamp(3rem,7.3vw,7.2rem)] [overflow-wrap:break-word] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-[#dbe8df]/72 sm:text-lg sm:leading-8">{c.lead}</p>
             <p className="mt-4 max-w-xl text-sm leading-6 text-white/38">{c.note}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -108,7 +108,7 @@ export default function MoraProductPage({ locale }: Props) {
             </div>
           </div>
 
-          <div className="relative mx-auto h-[410px] w-full max-w-[620px] sm:h-[520px]" aria-label={c.mapLabel}>
+          <div className="relative mx-auto h-[350px] w-full max-w-[620px] sm:h-[520px]" aria-label={c.mapLabel}>
             <div className="absolute inset-[8%] rounded-full border border-[#a6d7c2]/10" />
             <div className="absolute inset-[18%] rounded-full border border-[#d8c27d]/12 [transform:rotate(-18deg)_scaleY(.72)]" />
             <svg viewBox="0 0 600 500" className="absolute inset-0 h-full w-full" aria-hidden="true">
@@ -131,7 +131,7 @@ export default function MoraProductPage({ locale }: Props) {
             </div>
 
             <ContextNode className="left-[3%] top-[14%]" icon={<FileText className="h-4 w-4" />} label={c.file} />
-            <ContextNode className="right-[1%] top-[20%]" icon={<CalendarDays className="h-4 w-4" />} label={c.calendar} />
+            <ContextNode className="right-[1%] top-[27%] sm:top-[20%]" icon={<CalendarDays className="h-4 w-4" />} label={c.calendar} />
             <ContextNode className="bottom-[6%] right-[13%]" icon={<CircleCheck className="h-4 w-4" />} label={c.open} />
             <div className="absolute bottom-[3%] left-[5%] font-mono text-[8px] tracking-[.22em] text-white/24">{c.mapLabel}</div>
           </div>

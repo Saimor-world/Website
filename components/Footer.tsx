@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import BrandSigil from './BrandSigil';
 import { useEffect, useState } from 'react';
 import ShareButton from '@/components/ShareButton';
 
@@ -85,15 +85,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         <div className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
             <a href={homeHref} className="inline-flex items-center gap-3">
-              <span className="relative grid h-11 w-11 place-items-center rounded-full border border-[#d6a848]/22 bg-black/25">
-                <Image
-                  src="/saimor-mark.svg"
-                  alt="Saimôr"
-                  width={36}
-                  height={36}
-                  className="object-contain opacity-95"
-                />
-              </span>
+              <span className="block h-11 w-11 shrink-0"><BrandSigil /></span>
               <span>
                 <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
               </span>

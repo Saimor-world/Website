@@ -63,14 +63,14 @@ export default function YoriLanding({ locale }: Props) {
                 <input type="hidden" name="platform" value="instagram" />
                 <div className="flex items-stretch border-b border-[#284d3a]/22 bg-white/30 transition focus-within:border-[#284d3a]/55">
                   <span className="flex items-center pl-1 pr-2 text-sm text-[#284d3a]/38">@</span>
-                  <input name="creator" required maxLength={64} autoComplete="off" placeholder={c.placeholder} className="min-w-0 flex-1 bg-transparent py-4 text-sm text-[#173529] outline-none placeholder:text-[#284d3a]/28" />
+                  <input aria-label={c.placeholder} name="creator" required maxLength={64} autoComplete="off" placeholder={c.placeholder} className="min-w-0 flex-1 bg-transparent py-4 text-sm text-[#173529] outline-none placeholder:text-[#284d3a]/28" />
                   <button type="submit" className="px-4 font-mono text-[8px] tracking-[.18em] text-[#244c38]/65 transition hover:text-[#173529]">{c.enter} →</button>
                 </div>
                 <div className="mt-3 font-mono text-[7px] tracking-[.18em] text-[#315441]/35">{c.profile}</div>
               </form>
             </div>
 
-            <div className="relative hidden h-[650px] lg:block" aria-hidden="true">
+            <div className="relative mx-auto h-[230px] w-full max-w-[650px] sm:h-[300px] lg:h-[650px]" aria-hidden="true">
               <div className="absolute bottom-[13%] left-[12%] h-[110px] w-[170px] rotate-[-7deg] rounded-[48%_52%_45%_55%/58%_54%_46%_42%] bg-[radial-gradient(circle_at_36%_25%,#fff_0%,#e7e5dc_42%,#cbc9bf_100%)] shadow-[0_25px_55px_rgba(49,67,53,.12),inset_0_1px_0_rgba(255,255,255,.9)]" />
               <div className="absolute bottom-[31%] right-[22%] h-[78px] w-[118px] rotate-[5deg] rounded-[53%_47%_56%_44%/48%_59%_41%_52%] bg-[radial-gradient(circle_at_35%_26%,#fff_0%,#ece9df_46%,#cfcdc3_100%)] shadow-[0_22px_48px_rgba(49,67,53,.1)]" />
               <div className="absolute right-[6%] top-[17%] h-[62px] w-[91px] rotate-[-4deg] rounded-[48%_52%_46%_54%/58%_52%_48%_42%] bg-[radial-gradient(circle_at_36%_24%,#fff_0%,#ebe8df_48%,#cbc9bf_100%)] shadow-[0_18px_44px_rgba(49,67,53,.09)]" />
@@ -94,7 +94,7 @@ export default function YoriLanding({ locale }: Props) {
             <div className="absolute inset-[5%] rounded-[50%] border border-[#41624d]/[.055]" />
             <div className="absolute inset-[15%_9%] rounded-[50%] border border-[#41624d]/[.05]" />
             {c.stones.map(([title, sub], index) => {
-              const positions = ['left-[6%] bottom-[12%]', 'left-[39%] top-[39%]', 'right-[5%] top-[13%]', 'right-[12%] bottom-[12%]'];
+              const positions = ['left-[3%] bottom-[27%] sm:left-[6%] sm:bottom-[12%]', 'left-[8%] top-[36%] sm:left-[39%] sm:top-[39%]', 'right-[3%] top-[5%] sm:right-[5%] sm:top-[13%]', 'right-[3%] bottom-[2%] sm:right-[12%] sm:bottom-[12%]'];
               const sizes = ['h-28 w-40', 'h-20 w-28', 'h-32 w-44', 'h-24 w-36'];
               const rotations = ['-rotate-6', 'rotate-3', '-rotate-3', 'rotate-2'];
               return <div key={title} className={`group absolute ${positions[index]}`}>
@@ -139,7 +139,7 @@ function ZenGardenScene({ hero = false }: { hero?: boolean }) {
       .branch-lines{animation:yoriBranches 14s ease-in-out infinite alternate;transform-origin:80% 8%}
       @keyframes yoriSand{from{transform:translate3d(-.8%,0,0)}to{transform:translate3d(.9%,.5%,0)}}
       @keyframes yoriBranches{from{transform:rotate(-.35deg) translateY(0)}to{transform:rotate(.55deg) translateY(3px)}}
-      @media(prefers-reduced-motion:reduce){.sand-lines,.branch-lines{animation:none!important}}
+      @media(prefers-reduced-motion:reduce){.sand-lines,.branch-lines{animation:none!important}.group:hover>div{transition:none!important;transform:none!important}}
     `}</style>
   </div>;
 }
