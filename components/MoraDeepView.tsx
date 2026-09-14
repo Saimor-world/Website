@@ -258,7 +258,7 @@ export default function MoraDeepView({ locale }: Props) {
           </div>
 
           {/* Desktop / tablet signal field */}
-          <div ref={stageRef} onPointerMove={(event) => moveField(event.clientX, event.clientY)} className="mora-signal-stage relative hidden min-min-h-[760px] overflow-hidden rounded-[2rem] border border-white/[.10] bg-[#07110e] shadow-[0_38px_120px_rgba(0,0,0,.36)] lg:block">
+          <div ref={stageRef} onPointerMove={(event) => moveField(event.clientX, event.clientY)} className="mora-signal-stage relative hidden min-h-[760px] overflow-hidden rounded-[2rem] border border-white/[.10] bg-[#07110e] shadow-[0_38px_120px_rgba(0,0,0,.36)] lg:block">
             <div className="mora-grid absolute inset-0" aria-hidden="true" />
             <div className="mora-cursor-glow absolute inset-0" aria-hidden="true" />
             <div className="mora-scanlines pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
