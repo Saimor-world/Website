@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, CircleCheck, FileText, ShieldCheck, Sparkles } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
+import MoraOrb, { type MoraOrbState } from '@/components/MoraOrb';
 
 type Props = { locale: 'de' | 'en' };
 
@@ -15,10 +17,18 @@ const COPY = {
     demo: 'MÔRA im OS erleben',
     deep: 'Deep View öffnen',
     mapLabel: 'ARBEITSKONTEXT',
-    mapCenter: 'MÔRA',
     file: 'Dateien',
     calendar: 'Termine',
     open: 'Offene Dinge',
+    personaEyebrow: 'WER MÔRA IST',
+    personaTitle: 'Der Jadestein im Zeichen.',
+    personaText: 'Im Saimôr-Zeichen kreist ein Jadestein auf seiner Bahn um das goldene S. Das ist MÔRA: das Gedächtnis, das um die Arbeit einer Firma kreist. Die Adern im Stein sind das Myzel – die Verbindungen zwischen Dateien, Mails, Terminen und Entscheidungen.',
+    statesLabel: 'Zustand wählen',
+    states: [
+      ['rest', 'Ruht', 'Nichts Neues. MÔRA hält den Stand und bleibt still.'],
+      ['dream', 'Träumt', 'MÔRA ordnet, was passiert ist: verbindet nur mit Grund und verwirft Rauschen.'],
+      ['speak', 'Spricht', 'Wenn etwas wirklich wichtig ist, meldet sich MÔRA – im OS, per Stimme oder über Telegram.'],
+    ] as [MoraOrbState, string, string][],
     sectionEyebrow: 'WAS MÔRA HÄLT',
     sectionTitle: 'Der Zusammenhang bleibt bestehen.',
     roles: [
@@ -33,8 +43,8 @@ const COPY = {
     outcomeLabel: 'MÔRA / NÄCHSTER SCHRITT',
     outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Ein kleines Experiment mit Kontext.',
-    deepText: 'Tippe auf ein Signal: Verbindungen, Licht und Trace reagieren. Ein programmiertes Interface mit Beispieldaten – zum Erkunden, nicht als Produktnachweis.',
+    deepTitle: 'Sieh MÔRA beim Träumen zu.',
+    deepText: 'Sechs Beispielsignale und feste Regeln: welche Verbindungen belegt sind, was verworfen wird und wann aus einem Zusammenhang eine Aufgabe wird.',
     deepCta: 'Deep View ansehen',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA gehört in den Arbeitsraum.',
@@ -52,10 +62,18 @@ const COPY = {
     demo: 'Experience MÔRA in the OS',
     deep: 'Open Deep View',
     mapLabel: 'WORK CONTEXT',
-    mapCenter: 'MÔRA',
     file: 'Files',
     calendar: 'Meetings',
     open: 'Open work',
+    personaEyebrow: 'WHO MÔRA IS',
+    personaTitle: 'The jade stone in the sign.',
+    personaText: 'In the Saimôr sign a jade stone circles the golden S on its orbit. That is MÔRA: the memory that keeps circling a company’s work. The veins inside the stone are the mycelium – the connections between files, mail, meetings and decisions.',
+    statesLabel: 'Choose a state',
+    states: [
+      ['rest', 'Resting', 'Nothing new. MÔRA keeps the state and stays quiet.'],
+      ['dream', 'Dreaming', 'MÔRA sorts what happened: connects only with a reason and drops noise.'],
+      ['speak', 'Speaking', 'When something truly matters, MÔRA speaks up – in the OS, by voice or via Telegram.'],
+    ] as [MoraOrbState, string, string][],
     sectionEyebrow: 'WHAT MÔRA KEEPS',
     sectionTitle: 'The relationship between things stays intact.',
     roles: [
@@ -70,8 +88,8 @@ const COPY = {
     outcomeLabel: 'MÔRA / NEXT STEP',
     outcome: 'Check the approval and have the current proposal ready before the meeting.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'See why the next step makes sense.',
-    deepText: 'Deep View is not an AI spectacle. It exposes which pieces of context belong together and how they lead to a next step.',
+    deepTitle: 'Watch MÔRA dream.',
+    deepText: 'Six example signals and fixed rules: which connections are backed, what gets dropped and when a context becomes a task.',
     deepCta: 'View Deep View',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA belongs inside the workspace.',
@@ -81,12 +99,14 @@ const COPY = {
     realityTitle: 'Clear boundaries instead of magic.',
     realityText: 'MÔRA can only work with context that exists in the system or is connected to it. External model providers may be used for language and reasoning. Actions run through approved capabilities and are intended to remain visible.',
   },
-} as const;
+};
 
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
+  const [orbState, setOrbState] = useState<MoraOrbState>('dream');
   const deepHref = locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view';
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
+  const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
   return (
     <main className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
@@ -110,7 +130,6 @@ export default function MoraProductPage({ locale }: Props) {
 
           <div className="relative mx-auto h-[350px] w-full max-w-[620px] sm:h-[520px]" aria-label={c.mapLabel}>
             <div className="absolute inset-[8%] rounded-full border border-[#a6d7c2]/10" />
-            <div className="absolute inset-[18%] rounded-full border border-[#d8c27d]/12 [transform:rotate(-18deg)_scaleY(.72)]" />
             <svg viewBox="0 0 600 500" className="absolute inset-0 h-full w-full" aria-hidden="true">
               <defs>
                 <linearGradient id="moraLine" x1="0" x2="1">
@@ -122,18 +141,38 @@ export default function MoraProductPage({ locale }: Props) {
               <path d="M300 250 C240 215 190 165 132 112" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
               <path d="M300 250 C370 205 430 165 492 128" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
               <path d="M300 250 C326 320 357 365 408 408" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
-              <circle cx="300" cy="250" r="118" fill="none" stroke="#c9b46e" strokeOpacity=".10" />
-              <circle cx="300" cy="250" r="72" fill="none" stroke="#9ad8bf" strokeOpacity=".13" />
             </svg>
 
-            <div className="absolute left-1/2 top-1/2 grid h-32 w-32 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#e4ce87]/25 bg-[radial-gradient(circle_at_38%_32%,rgba(227,246,235,.28),rgba(33,77,59,.52)_36%,rgba(7,18,13,.96)_72%)] shadow-[0_0_70px_rgba(107,195,159,.18)] sm:h-40 sm:w-40">
-              <div className="text-center"><span className="block h-2 w-2 mx-auto rounded-full bg-[#c8f3df] shadow-[0_0_20px_rgba(200,243,223,.9)]" /><span className="mt-4 block font-mono text-[9px] tracking-[.26em] text-[#f1dfaa]">{c.mapCenter}</span></div>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <MoraOrb size={150} state="dream" orbit className="h-auto w-[220px] drop-shadow-[0_0_60px_rgba(107,195,159,.22)] sm:w-[300px]" />
             </div>
 
             <ContextNode className="left-[3%] top-[14%]" icon={<FileText className="h-4 w-4" />} label={c.file} />
             <ContextNode className="right-[1%] top-[27%] sm:top-[20%]" icon={<CalendarDays className="h-4 w-4" />} label={c.calendar} />
             <ContextNode className="bottom-[6%] right-[13%]" icon={<CircleCheck className="h-4 w-4" />} label={c.open} />
             <div className="absolute bottom-[3%] left-[5%] font-mono text-[8px] tracking-[.22em] text-white/24">{c.mapLabel}</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden border-b border-white/[.07] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(79,169,131,.12),transparent_32%)]" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.9fr_1.1fr]">
+          <div className="grid place-items-center">
+            <MoraOrb size={260} state={orbState} className="h-auto w-[240px] sm:w-[320px]" />
+          </div>
+          <div>
+            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.personaEyebrow}</p>
+            <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.personaTitle}</h2>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/62 sm:text-base">{c.personaText}</p>
+            <div className="mt-9 flex flex-wrap gap-2" role="group" aria-label={c.statesLabel}>
+              {c.states.map(([key, label]) => (
+                <button key={key} type="button" aria-pressed={orbState === key} onClick={() => setOrbState(key)} className={`inline-flex min-h-[44px] items-center rounded-full border px-5 text-sm font-semibold transition ${orbState === key ? 'border-[#e0c878]/60 bg-[#e0c878]/10 text-[#f5e6b8]' : 'border-white/12 text-white/55 hover:border-white/26 hover:text-white'}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <p className="mt-5 max-w-xl border-l border-[#dfc775]/45 pl-5 text-sm leading-6 text-white/60" aria-live="polite">{activeState[2]}</p>
           </div>
         </div>
       </section>
@@ -166,9 +205,12 @@ export default function MoraProductPage({ locale }: Props) {
             <div className="grid gap-3 sm:grid-cols-2">
               {c.chips.map((chip, index) => <div key={chip} className="border-b border-white/[.08] px-1 py-4 text-sm text-white/62"><span className="mr-3 font-mono text-[8px] tracking-[.16em] text-[#d8c27d]/50">0{index + 1}</span>{chip}</div>)}
             </div>
-            <div className="mt-7 border-l border-[#dfc775]/45 pl-5">
-              <div className="font-mono text-[8px] tracking-[.22em] text-[#dfc775]/70">{c.outcomeLabel}</div>
-              <p className="mt-3 max-w-xl font-serif text-2xl leading-tight text-[#f5f1e4] sm:text-3xl">{c.outcome}</p>
+            <div className="mt-7 flex items-start gap-4 border-l border-[#dfc775]/45 pl-5">
+              <MoraOrb size={40} state="speak" className="mt-1 h-10 w-10 shrink-0" />
+              <div>
+                <div className="font-mono text-[8px] tracking-[.22em] text-[#dfc775]/70">{c.outcomeLabel}</div>
+                <p className="mt-3 max-w-xl font-serif text-2xl leading-tight text-[#f5f1e4] sm:text-3xl">{c.outcome}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -183,14 +225,17 @@ export default function MoraProductPage({ locale }: Props) {
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.deepText}</p>
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
           </div>
-          <div className="relative h-[330px] overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] sm:h-[430px]" aria-hidden="true">
-            <div className="absolute left-[8%] top-[20%] h-px w-[70%] rotate-[7deg] bg-gradient-to-r from-transparent via-[#8dd4b7]/45 to-transparent" />
-            <div className="absolute left-[14%] top-[56%] h-px w-[72%] -rotate-[8deg] bg-gradient-to-r from-transparent via-[#dec77e]/45 to-transparent" />
-            <div className="absolute left-[50%] top-[50%] h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#a1d9c1]/15 bg-[radial-gradient(circle,rgba(157,224,195,.23),transparent_66%)]" />
-            <span className="absolute left-[18%] top-[24%] h-2 w-2 rounded-full bg-[#d9c47d] shadow-[0_0_16px_rgba(217,196,125,.55)]" />
-            <span className="absolute right-[17%] top-[35%] h-2 w-2 rounded-full bg-[#92d9bd] shadow-[0_0_16px_rgba(146,217,189,.55)]" />
-            <span className="absolute bottom-[22%] left-[31%] h-2 w-2 rounded-full bg-[#d9c47d] shadow-[0_0_16px_rgba(217,196,125,.55)]" />
-          </div>
+          <Link href={deepHref} className="relative grid h-[330px] place-items-center overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] transition hover:border-[#d8c27d]/30 sm:h-[430px]" aria-label={c.deepCta}>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+              <line x1="22" y1="26" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
+              <line x1="80" y1="34" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
+              <line x1="32" y1="78" x2="50" y2="50" stroke="#9fb8ae" strokeOpacity=".4" strokeDasharray="5 5" vectorEffect="non-scaling-stroke" />
+            </svg>
+            <span className="absolute left-[22%] top-[26%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#72dfbd] shadow-[0_0_16px_rgba(114,223,189,.7)]" />
+            <span className="absolute left-[80%] top-[34%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#70c8f4] shadow-[0_0_16px_rgba(112,200,244,.7)]" />
+            <span className="absolute left-[32%] top-[78%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d98db2] shadow-[0_0_16px_rgba(217,141,178,.7)]" />
+            <MoraOrb size={120} state="dream" className="relative h-28 w-28 sm:h-32 sm:w-32" />
+          </Link>
         </div>
       </section>
 
@@ -212,7 +257,7 @@ export default function MoraProductPage({ locale }: Props) {
 }
 
 function ContextNode({ className, icon, label }: { className: string; icon: React.ReactNode; label: string }) {
-  return <div className={`absolute ${className} flex items-center gap-3 rounded-full border border-white/[.10] bg-[#0b1c15]/90 px-4 py-3 text-[#dce9e0]/72 shadow-[0_12px_38px_rgba(0,0,0,.18)] backdrop-blur-md`}>
+  return <div className={`absolute ${className} z-10 flex items-center gap-3 rounded-full border border-white/[.10] bg-[#0b1c15]/90 px-4 py-3 text-[#dce9e0]/72 shadow-[0_12px_38px_rgba(0,0,0,.18)] backdrop-blur-md`}>
     <span className="text-[#e0c878]">{icon}</span><span className="text-xs font-medium sm:text-sm">{label}</span>
   </div>;
 }
