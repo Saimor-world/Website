@@ -144,7 +144,7 @@ export default function MoraProductPage({ locale }: Props) {
             </svg>
 
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <MoraOrb size={150} state="dream" orbit className="h-auto w-[220px] drop-shadow-[0_0_60px_rgba(107,195,159,.22)] sm:w-[300px]" />
+              <MoraOrb size={220} state="dream" priority className="h-[180px] w-[180px] sm:h-[260px] sm:w-[260px]" />
             </div>
 
             <ContextNode className="left-[3%] top-[14%]" icon={<FileText className="h-4 w-4" />} label={c.file} />
