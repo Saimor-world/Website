@@ -5,6 +5,7 @@ import { prisma as prismaClient } from './prisma';
 import crypto from 'crypto';
 import { authPreflight } from './env-preflight';
 import { isTrialActive, isTrialExpired } from './trial';
+import { ownerLoginAllowed, parseEmailList, roleForEmail } from './auth-role';
 
 authPreflight();
 
@@ -15,11 +16,14 @@ function verifyPassword(password: string, storedPassword: string) {
   return hash === verifyHash;
 }
 
-function parseEmailList(value?: string) {
-  return (value ?? '')
-    .split(',')
-    .map((v) => v.trim().toLowerCase())
-    .filter(Boolean);
+// A stored owner that is no longer on OWNER_EMAILS is demoted in the database too.
+async function applyRole<T extends { id: string; email: string | null; role: string }>(user: T): Promise<T> {
+  const role = roleForEmail(user.email ?? '', user.role);
+  if (role === user.role) return user;
+  if (user.role === 'owner') {
+    await prismaClient.user.update({ where: { id: user.id }, data: { role } });
+  }
+  return { ...user, role };
 }
 
 function hashMagicToken(token: string) {
@@ -56,13 +60,14 @@ const providers: any[] = [
       if (magicToken.email.toLowerCase() !== email) return null;
       if (magicToken.expiresAt <= now) return null;
 
-      const user = await findExistingUserByEmail(email);
-      if (!user || isTrialExpired(user, now)) return null;
+      const existing = await findExistingUserByEmail(email);
+      if (!existing || isTrialExpired(existing, now)) return null;
 
       await prismaClient.magicLoginToken.update({
         where: { id: magicToken.id },
         data: { usedAt: now },
       });
+      const user = await applyRole(existing);
 
       return {
         id: user.id,
@@ -88,7 +93,8 @@ const providers: any[] = [
       try {
         const ownerEmails = parseEmailList(process.env.OWNER_EMAILS);
         const ownerPassword = process.env.OWNER_PASSWORD;
-        const ownerAllowed = ownerEmails.length === 0 || ownerEmails.includes(email);
+        // An empty list allows nobody: the owner password alone must never grant owner.
+        const ownerAllowed = ownerEmails.includes(email);
 
         if (ownerPassword && credentials.password === ownerPassword && ownerAllowed) {
           const ownerUser = await prismaClient.user.upsert({
@@ -115,11 +121,12 @@ const providers: any[] = [
           return null;
         }
 
-        const user = await prisma.user.findUnique({ where: { email } });
-        if (!user || !user.password || isTrialExpired(user)) return null;
+        const existing = await prisma.user.findUnique({ where: { email } });
+        if (!existing || !existing.password || isTrialExpired(existing)) return null;
 
-        const isValid = verifyPassword(credentials.password, user.password);
+        const isValid = verifyPassword(credentials.password, existing.password);
         if (!isValid) return null;
+        const user = await applyRole(existing);
 
         return {
           id: user.id,
@@ -146,14 +153,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user, account }: { token: JWT; user?: any; account?: any }) {
       if (user && account) {
         const email = (user.email ?? '').toString().trim().toLowerCase();
-        const ownerEmails = parseEmailList(process.env.OWNER_EMAILS);
-        const proEmails = parseEmailList(process.env.PRO_EMAILS);
-
-        token.role =
-          user.role ||
-          (email && ownerEmails.includes(email) ? 'owner' : undefined) ||
-          (email && proEmails.includes(email) ? 'pro' : undefined) ||
-          'free';
+        token.role = roleForEmail(email, user.role);
 
         (token as any).trialEndsAt = user.trialEndsAt || null;
       }
