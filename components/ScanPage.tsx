@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, ExternalLink, Download, Mail, Sparkles } from 'lucide-react';
 import DemoHqPreview from './DemoHqPreview';
+import WallRequestCard from './WallRequestCard';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
 import { buildContextToken } from '@/lib/entry-token';
 
@@ -779,6 +780,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 )}
               </div>
             </details>
+
+            {/* ── 9. SUPPORTER WALL — visitor opts in, verified by email, owner publishes ── */}
+            <WallRequestCard
+              key={results.id || results.target}
+              auditId={results.persisted === false ? null : results.id}
+              companyName={results.companyName}
+              contactName={results.contactName}
+              email={results.email}
+              locale={locale}
+            />
 
             <footer className="pt-8 pb-16 flex flex-col sm:flex-row gap-4 justify-center print:hidden border-t border-white/5">
               <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">

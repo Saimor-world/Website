@@ -8,6 +8,7 @@ import { Shield, Users, Activity, AlertTriangle, ChevronRight, Search, Mail, Dow
 import { CORE_BASE_URL, OWNER_CONSOLE_CORE_TOKEN, fetchCoreOwnerJson } from '@/lib/core-owner';
 import { buildOsAuditUrl } from '@/lib/os-links';
 import { signWebsiteEntryToken } from '@/lib/entry-token';
+import { deriveWallTag } from '@/lib/wall-entry-service';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,6 +112,45 @@ async function updateWallStatus(formData: FormData) {
   });
 
   revalidatePath('/owner');
+}
+
+/**
+ * Owner can put any existing security check on the wall - also older checks that
+ * never went through the visitor's email verification (14.09.: old test accounts in
+ * the owner dashboard could not be added at all). The entry starts private or in
+ * review; publishing stays an explicit second click.
+ */
+async function addAuditToWall(formData: FormData) {
+  'use server';
+
+  const session = await getServerSession(authOptions);
+  if (!session?.user || session.user.role !== 'owner') {
+    redirect('/owner/login');
+  }
+
+  const auditId = String(formData.get('auditId') || '');
+  const visibility = String(formData.get('visibility') || 'company-anonymous');
+  if (!auditId || !['named', 'company-anonymous', 'anonymous'].includes(visibility)) return;
+
+  const audit = await prisma.securityAudit.findUnique({ where: { id: auditId }, include: { wallEntry: true } });
+  if (!audit || audit.wallEntry) return;
+
+  await prisma.wallEntry.create({
+    data: {
+      auditId: audit.id,
+      name: audit.name,
+      company: null,
+      tag: deriveWallTag(audit.industry),
+      domain: audit.targetDomain || audit.domain || null,
+      score: audit.score,
+      kind: 'supporter',
+      visibility,
+      status: 'pending_review',
+    },
+  });
+
+  revalidatePath('/owner');
+  revalidatePath('/wall');
 }
 
 async function updateLeadLifecycle(formData: FormData) {
@@ -910,7 +950,25 @@ export default async function OwnerDashboard() {
                         Review
                       </button>
                     </form>
-                  ) : null}
+                  ) : (
+                    <form action={addAuditToWall} className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/5 pt-4">
+                      <input type="hidden" name="auditId" value={audit.id} />
+                      <span className="text-[9px] uppercase tracking-[0.2em] text-white/35">Noch nicht auf der Wall</span>
+                      <select
+                        name="visibility"
+                        defaultValue="company-anonymous"
+                        className="rounded-lg border border-white/10 bg-[#070b0a] px-3 py-2 text-[11px] text-white/75 outline-none focus:border-emerald-400/40"
+                      >
+                        <option value="company-anonymous">Firma anonym</option>
+                        <option value="anonymous">Ganz anonym</option>
+                        <option value="named">Name sichtbar</option>
+                      </select>
+                      <button className="rounded-lg border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-[10px] uppercase tracking-widest text-emerald-200 hover:bg-emerald-400/15">
+                        Auf die Wall setzen
+                      </button>
+                      <span className="text-[10px] text-white/28">landet zuerst im Review</span>
+                    </form>
+                  )}
                 </div>
                 );
               })}
