@@ -83,6 +83,21 @@ export default function SystemWorldHome({ locale }: Props) {
         <div className={styles.threshold}>
           <Image src="/images/saimor-forest-layer.webp" alt="" fill quality={95} sizes="(min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.forestImage} />
           <div className={styles.forestShade} aria-hidden="true" />
+          {/* Marius 14.09.: "wenn man links die Rundung der Erde nachzeichnen
+              wuerde, kaeme man beim Portal raus". Die Linie fuehrt die
+              beleuchtete Horizontkante des Planeten weiter - ueber die
+              Abschnittsgrenze hinweg - bis in die obere Ecke des Portals. */}
+          <svg className={styles.earthThread} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="earth-thread-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#f3d68f" stopOpacity="0" />
+                <stop offset=".35" stopColor="#f3d68f" stopOpacity=".55" />
+                <stop offset="1" stopColor="#fff2c6" stopOpacity=".95" />
+              </linearGradient>
+            </defs>
+            <path className={styles.earthThreadGlow} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
+            <path className={styles.earthThreadLine} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
+          </svg>
           <div className={styles.portalScene} aria-hidden="true"><div className={styles.portalFrame}><span className={styles.portalVeil} /></div><div className={styles.portalReflection} /><span className={styles.moraLight} /><span className={styles.lightThread} /></div>
           <div className={styles.thresholdInner}>
             <div className={styles.contextCopy}>

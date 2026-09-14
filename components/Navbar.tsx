@@ -15,11 +15,16 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const otherLocale = locale === 'de' ? 'en' : 'de';
 
+  // globals.css gibt html UND body height:100% plus overflow-x:hidden - dadurch
+  // wird body selbst zum Scroll-Container und window.scrollY bleibt immer 0.
+  // Die Leiste blieb deshalb beim Scrollen durchsichtig, und Seitentext lief
+  // unter Logo und Navigation durch. Beide Quellen lesen, im Capture-Modus
+  // lauschen (body-Scroll-Events bubbeln nicht bis window).
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 18);
+    const onScroll = () => setScrolled(Math.max(window.scrollY, document.body.scrollTop, document.documentElement.scrollTop) > 18);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    return () => document.removeEventListener('scroll', onScroll, { capture: true });
   }, []);
 
   useEffect(() => setMenuOpen(false), [pathname]);
