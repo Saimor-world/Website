@@ -8,6 +8,9 @@ describe('client world config', () => {
     expect(world?.clientName).toBe('Luana');
     expect(world?.modules.map((module) => module.id)).toEqual(['yori', 'os', 'mora']);
     expect(world?.presence.every((source) => source.state === 'not_connected')).toBe(true);
+    expect(world?.connections.some((connection) => connection.state === 'live')).toBe(true);
+    expect(world?.connections.some((connection) => connection.state === 'preview')).toBe(true);
+    expect(world?.connections.some((connection) => connection.state === 'not_connected')).toBe(true);
     expect(JSON.stringify(world)).not.toContain('CLIENT_WORLD_LUANA_CODE');
   });
 
