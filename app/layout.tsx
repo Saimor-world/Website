@@ -5,11 +5,7 @@ import './brand.css';
 import ClientProviders from '../components/ClientProviders';
 import AuthProvider from '../components/AuthProvider';
 import LayoutWrapper from '../components/LayoutWrapper';
-import CookieBanner from '@/components/CookieBanner';
-import ScrollProgress from '@/components/ScrollProgress';
 import PWARegistration from '@/components/PWARegistration';
-import DesktopDiscoveries from '@/components/DesktopDiscoveries';
-import CommandPalette from '@/components/CommandPalette';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
@@ -163,10 +159,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             <ClientProviders />
             <PWARegistration />
-            <DesktopDiscoveries />
-            <CommandPalette />
-            <ScrollProgress />
-            <CookieBanner />
             <LayoutWrapper>
               <main id="main-content" role="main">
                 {children}

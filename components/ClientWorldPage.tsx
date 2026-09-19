@@ -47,6 +47,7 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
   const [websiteConceptView, setWebsiteConceptView] = useState<'arrival' | 'offer' | 'contact'>('arrival');
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
   const [busyReaction, setBusyReaction] = useState<string | null>(null);
+  const [reactionError, setReactionError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState('');
   const [feedbackState, setFeedbackState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -67,9 +68,12 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
   async function react(idea: ClientWorldIdea, value: Reaction) {
     if (busyReaction) return;
     setBusyReaction(idea.id);
+    setReactionError(null);
     try {
       await postInteraction('idea_reaction', idea.id, value);
       setReactions((current) => ({ ...current, [idea.id]: value }));
+    } catch {
+      setReactionError(idea.id);
     } finally {
       setBusyReaction(null);
     }
@@ -408,6 +412,11 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
                       Nicht meins
                     </ReactionButton>
                   </div>
+                  {reactionError === idea.id ? (
+                    <p role="status" className="mt-3 text-xs text-red-100/55">
+                      Konnte gerade nicht gespeichert werden. Versuch es gleich noch einmal.
+                    </p>
+                  ) : null}
                 </article>
               ))}
             </div>
@@ -480,7 +489,7 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
       <footer className="border-t border-white/[.06] bg-[#07100d] px-6 py-8 sm:px-10 lg:px-14">
         <div className="mx-auto flex max-w-[1380px] flex-col gap-3 text-xs text-white/26 sm:flex-row sm:items-center sm:justify-between">
           <span>{world.clientName} × SAIMÔR · Private World</span>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span>Preview ≠ verbundene Quelle</span>
             <button
               type="button"
