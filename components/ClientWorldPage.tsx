@@ -74,6 +74,16 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
     }
   }
 
+  async function leaveWorld() {
+    try {
+      await fetch(`/api/world/${encodeURIComponent(world.slug)}/logout`, {
+        method: 'POST',
+      });
+    } finally {
+      window.location.reload();
+    }
+  }
+
   async function submitFeedback(event: React.FormEvent) {
     event.preventDefault();
     if (!feedback.trim() || feedbackState === 'sending') return;
@@ -391,7 +401,16 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
       <footer className="border-t border-white/[.06] bg-[#07100d] px-6 py-8 sm:px-10 lg:px-14">
         <div className="mx-auto flex max-w-[1380px] flex-col gap-3 text-xs text-white/26 sm:flex-row sm:items-center sm:justify-between">
           <span>{world.clientName} × SAIMÔR · Private World</span>
-          <span>Preview ≠ verbundene Quelle</span>
+          <div className="flex items-center gap-4">
+            <span>Preview ≠ verbundene Quelle</span>
+            <button
+              type="button"
+              onClick={() => void leaveWorld()}
+              className="text-white/30 underline decoration-white/10 underline-offset-4 transition hover:text-white/55"
+            >
+              Zugang auf diesem Gerät beenden
+            </button>
+          </div>
         </div>
       </footer>
     </main>
