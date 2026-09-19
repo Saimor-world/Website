@@ -163,7 +163,7 @@ export default function ClientWorldPage({
           <div className="grid flex-1 items-center gap-14 py-16 lg:grid-cols-[1.12fr_.88fr]">
             <div className="max-w-4xl">
               <p className="font-mono text-[9px] uppercase tracking-[.3em] text-[#d6a848]/72">
-                Heute · gemeinsamer Stand
+                Aktueller Stand
               </p>
               <h1 className="mt-6 max-w-4xl font-serif text-[clamp(4.2rem,8.2vw,8.4rem)] font-light leading-[.84] tracking-[-.06em] text-[#f3efe4]">
                 {world.title}
@@ -209,7 +209,7 @@ export default function ClientWorldPage({
           <div className="mt-7 grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
             <div>
               <h2 className="font-serif text-[clamp(3.5rem,6vw,6.8rem)] font-light leading-[.88] tracking-[-.055em]">
-                Nicht mehr zeigen. Klarer verbinden.
+                Wie wir auf deinen Auftritt schauen.
               </h2>
             </div>
             <div className="grid gap-9 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
@@ -227,7 +227,7 @@ export default function ClientWorldPage({
             <div className="lg:sticky lg:top-12">
               <p className="font-mono text-[8px] uppercase tracking-[.26em] text-[#d6a848]/55">Website direction</p>
               <h2 className="mt-5 font-serif text-[clamp(3.4rem,5.5vw,6rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
-                Nicht deine Seite spiegeln. Ihre nächste Form zeigen.
+                Wohin wir deine Website entwickeln würden.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/45">{world.websiteDirection.lead}</p>
               <TruthBadge state="preview" />
@@ -246,8 +246,8 @@ export default function ClientWorldPage({
               <div className="mt-10 rounded-[2rem] border border-white/[.09] bg-[#efeade] p-3 text-[#173529] shadow-[0_30px_80px_rgba(0,0,0,.2)] sm:p-4">
                 <div className="flex flex-col gap-4 border-b border-[#173529]/10 px-3 pb-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/38">Click concept · Struktur, keine erfundenen Inhalte</p>
-                    <p className="mt-1 text-sm font-semibold">So könnte sich die nächste Website anfühlen</p>
+                    <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/38">Skizze · Struktur, noch ohne echte Inhalte</p>
+                    <p className="mt-1 text-sm font-semibold">Die vier Seiten zum Durchklicken</p>
                   </div>
                   <div className="flex flex-wrap gap-1 rounded-full bg-[#173529]/[.05] p-1">
                     {WEBSITE_CONCEPT_VIEWS.map(({ id, label }) => (
@@ -325,11 +325,11 @@ export default function ClientWorldPage({
             <div>
               <p className="font-mono text-[8px] uppercase tracking-[.27em] text-emerald-100/38">Presence</p>
               <h2 className="mt-4 font-serif text-[clamp(3.2rem,5vw,5.8rem)] font-light leading-[.9] tracking-[-.05em] text-[#f0ede3]">
-                Erst verbinden. Dann urteilen.
+                Was wir noch nicht sehen können.
               </h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-white/35">
-              Wo noch keine Quelle verbunden ist, zeigt die World bewusst keinen Score und keine erfundene Analyse.
+              Ohne Zugang zu einer Quelle steht hier keine Bewertung. Wir schätzen nichts, was wir nicht gesehen haben.
             </p>
           </div>
           <div className="mt-12 border-t border-white/[.08]">
@@ -353,10 +353,10 @@ export default function ClientWorldPage({
             <div>
               <p className="font-mono text-[8px] uppercase tracking-[.27em] text-emerald-100/38">Verbindungen</p>
               <h2 className="mt-5 font-serif text-[clamp(3.3rem,5.2vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
-                Die World zeigt auch, was wohin fließen kann.
+                Wie die Teile zusammenhängen.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
-                Nicht als Integrations-Theater: Jede Verbindung sagt offen, ob sie schon echt ist, nur als Preview existiert oder noch auf eine Quelle wartet.
+                Bei jeder Verbindung steht dabei, ob sie schon läuft, ob sie bisher nur eine Vorschau ist oder ob noch eine Quelle fehlt.
               </p>
             </div>
 
@@ -418,10 +418,10 @@ export default function ClientWorldPage({
           <div className="mt-5 grid gap-10 lg:grid-cols-[.62fr_1.38fr]">
             <div>
               <h2 className="font-serif text-[clamp(3.5rem,5.6vw,6.2rem)] font-light leading-[.9] tracking-[-.055em]">
-                Drei Räume. Eine Geschichte.
+                Die anderen Bereiche von Saimôr.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-[#315643]/56">
-                Diese Bereiche gehören zur möglichen Gesamtwelt. Heute sind sie bewusst als Preview getrennt von echten Verbindungen.
+                Sie gehören zum größeren Bild. Mit deinen Daten ist bisher keiner davon verbunden, deshalb siehst du hier Vorschauen.
               </p>
 
               <div className="mt-9 space-y-2">
@@ -459,20 +459,20 @@ export default function ClientWorldPage({
                 <Sparkles className="h-4 w-4" /> Proaktive Vorschläge
               </div>
               <h2 className="mt-5 font-serif text-[clamp(3.4rem,5vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
-                Ideen dürfen früh auftauchen.
+                Was wir vorschlagen würden.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
-                Noch keine automatische MÔRA-Auswertung. Jede Idee hier hat aber einen sichtbaren Ausgangspunkt aus unserer Perspektive oben — sie fällt nicht vom Himmel. Ausdrücklich Preview, du kannst uns aber schon sagen, was davon zu dir passt.
+                Automatisch ausgewertet hat hier nichts. Jeder Vorschlag hat einen Ausgangspunkt aus der Einschätzung weiter oben, und alle sind als Vorschau gekennzeichnet. Sag uns trotzdem schon, was davon zu dir passt.
               </p>
               {returningWithReactions ? (
                 <p className="mt-5 flex max-w-md items-start gap-2 text-xs leading-6 text-emerald-100/40">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  Deine letzten Rückmeldungen sind schon eingeordnet — du erkennst sie unten an der aktiven Auswahl.
+                  Deine Antworten vom letzten Mal stehen unten noch drin.
                 </p>
               ) : null}
               {allIdeasReacted ? (
                 <p className="mt-3 max-w-md text-xs leading-6 text-white/30">
-                  Alle aktuellen Vorschläge sind eingeordnet. Der nächste Vorschlag entsteht aus deiner Rückmeldung.
+                  Du hast alle Vorschläge beantwortet. Was als Nächstes kommt, richtet sich danach.
                 </p>
               ) : null}
             </div>
@@ -518,7 +518,7 @@ export default function ClientWorldPage({
                       disabled={busyReaction === idea.id}
                       onClick={() => void react(idea, 'not_for_me')}
                     >
-                      Nicht meins
+                      Eher nicht
                     </ReactionButton>
                   </div>
                   {reactionError === idea.id ? (
@@ -544,10 +544,10 @@ export default function ClientWorldPage({
               <MessageSquareText className="h-4 w-4" /> Dein Blick
             </div>
             <h2 className="mt-5 max-w-xl font-serif text-[clamp(3.2rem,5vw,5.4rem)] font-light leading-[.92] tracking-[-.05em] text-[#f1ede2]">
-              Korrigier die World, bevor sie fest wird.
+              Deine Rückmeldung.
             </h2>
             <p className="mt-6 max-w-lg text-sm leading-7 text-white/38">
-              Ein Wunsch, eine Grenze, ein „so auf keinen Fall“ — genau solche Hinweise sollen später Teil des gemeinsamen Kontexts werden.
+              Was dir fehlt, was du anders siehst, was auf keinen Fall passieren soll. Das hilft uns mehr als Zustimmung.
             </p>
 
             <form onSubmit={submitFeedback} className="mt-8 max-w-xl">
@@ -627,10 +627,10 @@ function WebsiteConcept({ view }: { view: WebsiteConceptView }) {
           <div>
             <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Persönlichkeit</p>
             <h3 className="mt-4 max-w-sm font-serif text-4xl font-light leading-[.94] tracking-[-.04em]">
-              Nicht Dekoration. Tragende Ebene.
+              Bild und Sprache tragen die Seite.
             </h3>
             <p className="mt-5 max-w-sm text-xs leading-6 text-[#173529]/52">
-              Ein echtes Bild, ein eigener Ton statt generischer Website-Sprache, eine erkennbare Haltung — das trägt hier genauso viel wie Struktur und Angebot. Welches Bild und welche Worte das später sind, entsteht mit dir, nicht als Platzhalter-Text.
+              Ein echtes Bild, ein eigener Ton, eine erkennbare Haltung. Das trägt auf der Seite genauso viel wie Struktur und Angebot. Welches Bild und welche Worte es werden, entscheiden wir mit dir.
             </p>
           </div>
         </div>
@@ -645,10 +645,10 @@ function WebsiteConcept({ view }: { view: WebsiteConceptView }) {
           <div>
             <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Angebotslogik</p>
             <h3 className="mt-4 max-w-sm font-serif text-4xl font-light leading-[.94] tracking-[-.04em]">
-              Nicht alles gleichzeitig erklären.
+              Die Angebote in einer Reihenfolge.
             </h3>
             <p className="mt-5 max-w-sm text-xs leading-6 text-[#173529]/52">
-              Erst Orientierung, dann passende Tiefe. Die konkreten Angebote bleiben hier absichtlich Platzhalter, bis sie mit Luana festgelegt sind.
+              Zuerst Orientierung, dann die passende Tiefe. Die Bezeichnungen daneben sind Platzhalter, bis wir sie gemeinsam festlegen.
             </p>
           </div>
           <div className="space-y-2">
@@ -670,9 +670,9 @@ function WebsiteConcept({ view }: { view: WebsiteConceptView }) {
       <div className="min-h-[360px] px-4 py-8 sm:px-7 sm:py-10">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Ein nächster Schritt</p>
-          <h3 className="mt-5 font-serif text-5xl font-light leading-[.9] tracking-[-.045em]">Kein Formular-Labyrinth.</h3>
+          <h3 className="mt-5 font-serif text-5xl font-light leading-[.9] tracking-[-.045em]">Ein klarer nächster Schritt.</h3>
           <p className="mx-auto mt-6 max-w-lg text-sm leading-6 text-[#173529]/52">
-            Der spätere CTA richtet sich nach dem echten Angebotsmodell. In der Preview zeigen wir nur das Prinzip: ein klarer Weg statt konkurrierender Aktionen.
+            Wie der Knopf am Ende heißt, hängt von deinen Angeboten ab. Hier geht es nur um das Prinzip: ein deutlicher Weg, nicht mehrere gleichwertige nebeneinander.
           </p>
           <div className="mx-auto mt-8 max-w-sm rounded-full bg-[#173529] px-5 py-4 text-xs font-semibold text-[#efeade]">
             Passenden nächsten Schritt öffnen
@@ -690,10 +690,10 @@ function WebsiteConcept({ view }: { view: WebsiteConceptView }) {
         <div>
           <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Ankunft</p>
           <h3 className="mt-5 max-w-xl font-serif text-[clamp(3rem,5vw,5rem)] font-light leading-[.88] tracking-[-.05em]">
-            Person zuerst. Angebot sofort verständlich.
+            Zuerst siehst du, wer dahintersteht.
           </h3>
           <p className="mt-6 max-w-lg text-sm leading-6 text-[#173529]/52">
-            Bildsprache, ein klarer Satz zur Positionierung und genau eine primäre Handlung. Konkrete Claims werden erst mit echtem Luana-Input geschrieben.
+            Ein Bild, ein klarer Satz dazu, wofür du stehst, und genau eine Handlung. Die konkreten Sätze schreiben wir mit dir.
           </p>
         </div>
         <div className="rounded-[1.8rem] border border-[#173529]/10 bg-white/38 p-5">
@@ -728,7 +728,7 @@ function WorldModulePreview({ module }: { module: ClientWorldModule }) {
         <div aria-hidden="true" className="absolute right-[-8%] top-[-12%] h-56 w-56 rounded-full bg-[#244d38]/[.06]" />
         <div className="relative">
           <p className="font-serif text-xl tracking-[.18em]">YORI</p>
-          <p className="mt-16 max-w-sm font-serif text-5xl font-light leading-[.92] tracking-[-.045em]">Mehr Raum. Weniger Lärm.</p>
+          <p className="mt-16 max-w-sm font-serif text-5xl font-light leading-[.92] tracking-[-.045em]">Ein Ort für deine Inhalte.</p>
           <div className="mt-10 flex gap-5">
             <div className="h-16 w-24 -rotate-3 rounded-[50%] bg-white shadow-[0_15px_30px_rgba(38,65,48,.12)]" />
             <div className="mt-8 h-12 w-20 rotate-3 rounded-[50%] bg-white shadow-[0_15px_30px_rgba(38,65,48,.1)]" />

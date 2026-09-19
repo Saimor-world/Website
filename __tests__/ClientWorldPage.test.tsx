@@ -12,16 +12,21 @@ afterEach(cleanup);
 const world = getClientWorld('luana')!;
 
 describe('ClientWorldPage — memory of past reactions', () => {
+  /*
+   * Diese Tests haengen absichtlich an kurzen, tragenden Textstellen statt am
+   * ganzen Satz - sonst wird jede Umformulierung zum roten Test, auch eine
+   * richtige.
+   */
   it('shows no "we remember" note on a first visit with no prior reactions', () => {
     render(<ClientWorldPage world={world} />);
-    expect(screen.queryByText(/schon eingeordnet/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/vom letzten Mal/i)).not.toBeInTheDocument();
   });
 
   it('tells a returning client their past reactions are already reflected', () => {
     render(<ClientWorldPage world={world} initialReactions={{ 'content-bridge': 'interesting' }} />);
-    expect(screen.getByText(/Deine letzten Rückmeldungen sind schon eingeordnet/i)).toBeInTheDocument();
+    expect(screen.getByText(/vom letzten Mal/i)).toBeInTheDocument();
     // The confirmation reads back as "already noted", not as a fresh action.
-    expect(screen.getAllByText(/Notiert — danke\./i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Notiert/i).length).toBeGreaterThan(0);
   });
 
   it('acknowledges once every current idea has a reaction', () => {
@@ -31,6 +36,6 @@ describe('ClientWorldPage — memory of past reactions', () => {
         initialReactions={Object.fromEntries(world.ideas.map((idea) => [idea.id, 'interesting' as const]))}
       />
     );
-    expect(screen.getByText(/Alle aktuellen Vorschläge sind eingeordnet/i)).toBeInTheDocument();
+    expect(screen.getByText(/alle Vorschläge beantwortet/i)).toBeInTheDocument();
   });
 });

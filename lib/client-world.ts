@@ -81,53 +81,53 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
   luana: {
     slug: 'luana',
     clientName: 'Luana',
-    title: 'Dein Business, als zusammenhängende Welt.',
+    title: 'Dein Auftritt, wie wir ihn sehen.',
     intro:
-      'Hier sammeln wir nicht einfach Ergebnisse. Wir zeigen dir, wie wir deinen Auftritt weiterdenken würden, welche Wege sich verbinden lassen und wo du selbst mitentscheiden kannst.',
+      'Auf dieser Seite steht, woran wir gerade arbeiten, welche Richtung wir für deine Website vorschlagen und welche Teile davon heute schon echt sind. Widersprich überall dort, wo wir danebenliegen.',
     accessEnvKey: 'CLIENT_WORLD_LUANA_CODE',
     today: {
       note:
-        'Wir bauen gerade die erste gemeinsame Sicht: Webauftritt, Außenwirkung und die Frage, wie YORI, Saimôr OS und MÔRA später sinnvoll zusammenkommen könnten.',
+        'Im Moment geht es um deine Website und darum, wie sie mit deinen Kanälen zusammenpasst. Alles Weitere kommt später, und nur dann, wenn es dir wirklich etwas bringt.',
       focus: [
-        'Website nicht kopieren, sondern als klare nächste Version denken',
-        'TikTok, Instagram und Domain später als zusammenhängende Präsenz verstehen',
-        'Die größere Saimôr-Welt jetzt schon als ehrliche Preview erlebbar machen',
+        'Eine klare nächste Version deiner Website entwerfen',
+        'Website, TikTok und Instagram aufeinander abstimmen',
+        'Zeigen, welche Teile von Saimôr für dich überhaupt in Frage kommen',
       ],
     },
     perspective: {
       preserve: [
-        'Die Person soll vor dem System sichtbar bleiben.',
-        'Der Auftritt darf ruhig und hochwertig wirken, ohne steril zu werden.',
+        'Du sollst vor dem System sichtbar bleiben.',
+        'Der Auftritt darf ruhig und hochwertig wirken, ohne kalt zu werden.',
       ],
       clarify: [
-        'Besucher sollen schneller verstehen, was du anbietest und welcher nächste Schritt sinnvoll ist.',
-        'Website und Social-Auftritt sollen dieselbe Geschichte erzählen statt nebeneinander zu existieren.',
+        'Besucher sollen schneller verstehen, was du anbietest und welcher Schritt für sie der richtige ist.',
+        'Website und Social-Auftritt sollen dieselbe Geschichte erzählen.',
       ],
       explore: [
-        'Ein eigener YORI-Raum für Content, Ideen und Kooperationen.',
-        'Ein späterer OS-Bereich für Termine, Aufgaben, Dateien und verbundene Quellen.',
-        'MÔRA als proaktive Schicht, die aus verbundenen Signalen Vorschläge vorbereitet.',
+        'Ein eigener YORI-Bereich für Content, Ideen und Kooperationen.',
+        'Später ein OS-Bereich für Termine, Aufgaben und Dateien.',
+        'MÔRA als Schicht, die aus verbundenen Quellen Vorschläge vorbereitet.',
       ],
     },
     websiteDirection: {
       lead:
-        'Nicht deine bestehende Website noch einmal zeigen — sondern sichtbar machen, welche Richtung wir daraus entwickeln würden.',
+        'Die vier Punkte beschreiben, was wir an der Struktur ändern würden. Texte und Bilder entstehen später mit dir.',
       moves: [
         {
           title: 'Ankunft',
-          body: 'In wenigen Sekunden verständlich machen, für wen du da bist und welches Gefühl die Zusammenarbeit haben soll.',
+          body: 'In wenigen Sekunden verständlich machen, für wen du da bist und wie sich die Zusammenarbeit anfühlt.',
         },
         {
           title: 'Angebote',
-          body: 'Weniger gleichwertige Optionen nebeneinander. Eine klare Reihenfolge vom ersten Interesse bis zur konkreten Buchung oder Anfrage.',
+          body: 'Eine klare Reihenfolge vom ersten Interesse bis zur Anfrage, damit nicht alle Optionen gleich schwer wiegen.',
         },
         {
           title: 'Persönlichkeit',
-          body: 'Bilder, Sprache und Haltung nicht als Dekoration behandeln, sondern als tragende Ebene der Seite.',
+          body: 'Bilder, Sprache und Haltung als tragende Ebene der Seite behandeln.',
         },
         {
           title: 'Nächster Schritt',
-          body: 'Jede wichtige Seite bekommt genau einen offensichtlichen nächsten Schritt statt mehrere konkurrierende Calls-to-Action.',
+          body: 'Jede wichtige Seite bekommt genau einen offensichtlichen nächsten Schritt.',
         },
       ],
     },
@@ -136,19 +136,19 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         id: 'domain',
         label: 'Domain / Website',
         state: 'not_connected',
-        note: 'Sobald die finale Domain feststeht, können Technik, Struktur, SEO und Sichtbarkeit mit belegter Quelle analysiert werden.',
+        note: 'Sobald die Domain feststeht, können wir Technik, Struktur und Sichtbarkeit mit belegter Quelle prüfen.',
       },
       {
         id: 'tiktok',
         label: 'TikTok',
         state: 'not_connected',
-        note: 'Noch keine Live-Verbindung. Später können echte Posts, Muster und Content-Fragen in dieselbe World einfließen.',
+        note: 'Noch keine Verbindung. Später können echte Posts und wiederkehrende Muster hier einfließen.',
       },
       {
         id: 'instagram',
         label: 'Instagram',
         state: 'not_connected',
-        note: 'Noch keine Live-Verbindung. Bis dahin zeigen wir nur Konzepte und erfinden keine Reichweiten- oder Performance-Daten.',
+        note: 'Noch keine Verbindung. Bis dahin zeigen wir Konzepte und erfinden keine Reichweiten.',
       },
     ],
     modules: [
@@ -158,7 +158,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         eyebrow: 'Creator world',
         state: 'preview',
         description:
-          'Ein ruhiger Arbeitsraum für Content, Ideen, Kooperationen und Termine. Hier zeigen wir schon das Produktgefühl — ohne zu behaupten, dass deine Accounts bereits verbunden sind.',
+          'Ein ruhiger Arbeitsraum für Content, Ideen, Kooperationen und Termine. Was du hier siehst, ist das Produkt selbst. Deine Accounts sind damit nicht verbunden.',
         link: { label: 'YORI ansehen', href: '/yori' },
       },
       {
@@ -167,7 +167,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         eyebrow: 'Operating world',
         state: 'preview',
         description:
-          'Der größere Arbeitsraum für Dateien, Termine, Aufgaben und verbundene Dienste. Für deine World zunächst als Vorschau und mögliche spätere Erweiterung.',
+          'Der größere Arbeitsraum für Dateien, Termine, Aufgaben und verbundene Dienste. Für dich vorerst eine Vorschau, mögliche Erweiterung später.',
         link: { label: 'OS-Prinzip ansehen', href: '/de#system' },
       },
       {
@@ -176,7 +176,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         eyebrow: 'Context & suggestions',
         state: 'preview',
         description:
-          'Die Kontextschicht, die verbundene Signale verstehen und proaktive Vorschläge vorbereiten kann. Die gezeigten Beispiele sind derzeit bewusst Demo.',
+          'Die Schicht, die verbundene Quellen liest und daraus Vorschläge vorbereitet. Die Beispiele hier sind eine Demo, keine Auswertung deiner Daten.',
         link: { label: 'Deep View ansehen', href: '/mora/deep-view' },
       },
     ],
@@ -233,26 +233,26 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
     ideas: [
       {
         id: 'content-bridge',
-        title: 'Eine Idee → mehrere Oberflächen',
-        body: 'Ein Gedanke könnte später in YORI beginnen und daraus Website-Text, TikTok-Draft und einen offenen nächsten Schritt erzeugen.',
-        why: 'Damit nicht jeder Kanal wieder bei null beginnt.',
-        observedFrom: 'Website und Social-Auftritt sollen dieselbe Geschichte erzählen statt nebeneinander zu existieren.',
+        title: 'Ein Gedanke, mehrere Kanäle',
+        body: 'Ein Gedanke beginnt in YORI. Daraus entstehen ein Website-Text, ein TikTok-Entwurf und ein offener nächster Schritt.',
+        why: 'Damit nicht jeder Kanal wieder bei null anfängt.',
+        observedFrom: 'Website und Social-Auftritt sollen dieselbe Geschichte erzählen.',
         state: 'preview',
       },
       {
         id: 'booking-path',
         title: 'Ein ruhiger Buchungsweg',
-        body: 'Social oder Website führt nicht in ein Menü, sondern abhängig vom Interesse direkt zum passenden Angebot oder Gespräch.',
-        why: 'Weniger Auswahl kann den nächsten Schritt klarer machen.',
-        observedFrom: 'Besucher sollen schneller verstehen, was du anbietest und welcher nächste Schritt sinnvoll ist.',
+        body: 'Je nachdem, was jemanden interessiert, führt der Weg direkt zum passenden Angebot oder zu einem Gespräch.',
+        why: 'Weniger Auswahl macht den nächsten Schritt klarer.',
+        observedFrom: 'Besucher sollen schneller verstehen, was du anbietest und welcher Schritt für sie der richtige ist.',
         state: 'preview',
       },
       {
         id: 'presence-brief',
-        title: 'Wöchentlicher Presence Brief',
-        body: 'Wenn Quellen verbunden sind, könnte MÔRA einmal pro Woche Veränderungen, offene Fragen und auffällige Muster zusammenfassen.',
-        why: 'Ein Überblick statt drei Plattformen einzeln prüfen zu müssen.',
-        observedFrom: 'MÔRA als proaktive Schicht, die aus verbundenen Signalen Vorschläge vorbereitet.',
+        title: 'Wochenüberblick',
+        body: 'Sobald Quellen verbunden sind, fasst MÔRA einmal pro Woche Veränderungen, offene Fragen und auffällige Muster zusammen.',
+        why: 'Damit du nicht drei Plattformen einzeln durchsehen musst.',
+        observedFrom: 'MÔRA als Schicht, die aus verbundenen Quellen Vorschläge vorbereitet.',
         state: 'preview',
       },
     ],
@@ -270,15 +270,15 @@ export const CLIENT_WORLD_CONNECTION_STAGES: Record<
 > = {
   in: {
     label: 'Was hereinkommt',
-    hint: 'Signale und Inhalte, die später zusammengeführt werden.',
+    hint: 'Quellen, die später zusammengeführt werden.',
   },
   core: {
-    label: 'Was MÔRA vorbereitet',
-    hint: 'Verbundener Kontext wird zu konkreten nächsten Schritten.',
+    label: 'Was MÔRA daraus macht',
+    hint: 'Aus verbundenem Kontext werden konkrete nächste Schritte.',
   },
   out: {
-    label: 'Was zurückfließt',
-    hint: 'Ergebnisse, die wieder sichtbar in deiner World landen.',
+    label: 'Was bei dir ankommt',
+    hint: 'Ergebnisse, die wieder auf dieser Seite auftauchen.',
   },
 };
 
