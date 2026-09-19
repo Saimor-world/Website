@@ -15,6 +15,21 @@ describe('client world config', () => {
     expect(JSON.stringify(world)).not.toContain('CLIENT_WORLD_LUANA_CODE');
   });
 
+  it('grounds every proactive idea in a real editorial observation, not an unexplained suggestion', () => {
+    const world = getClientWorld('luana');
+    const perspective = [
+      ...(world?.perspective.preserve ?? []),
+      ...(world?.perspective.clarify ?? []),
+      ...(world?.perspective.explore ?? []),
+    ];
+
+    expect(world?.ideas.length).toBeGreaterThan(0);
+    for (const idea of world?.ideas ?? []) {
+      expect(idea.observedFrom.length).toBeGreaterThan(0);
+      expect(perspective).toContain(idea.observedFrom);
+    }
+  });
+
   it('keeps the access environment key on the server-side definition boundary', () => {
     expect(getClientWorldAccessEnvKey('luana')).toBe('CLIENT_WORLD_LUANA_CODE');
     expect(getClientWorldAccessEnvKey('missing')).toBeNull();

@@ -11,6 +11,12 @@ export type ClientWorldIdea = {
   title: string;
   body: string;
   why: string;
+  /**
+   * The concrete editorial observation (verbatim from `perspective`) this
+   * idea was drawn from. Makes the suggestion traceable to something
+   * Saimôr actually looked at, instead of reading as unexplained AI output.
+   */
+  observedFrom: string;
   state: ClientWorldTruth;
 };
 
@@ -230,6 +236,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         title: 'Eine Idee → mehrere Oberflächen',
         body: 'Ein Gedanke könnte später in YORI beginnen und daraus Website-Text, TikTok-Draft und einen offenen nächsten Schritt erzeugen.',
         why: 'Damit nicht jeder Kanal wieder bei null beginnt.',
+        observedFrom: 'Website und Social-Auftritt sollen dieselbe Geschichte erzählen statt nebeneinander zu existieren.',
         state: 'preview',
       },
       {
@@ -237,6 +244,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         title: 'Ein ruhiger Buchungsweg',
         body: 'Social oder Website führt nicht in ein Menü, sondern abhängig vom Interesse direkt zum passenden Angebot oder Gespräch.',
         why: 'Weniger Auswahl kann den nächsten Schritt klarer machen.',
+        observedFrom: 'Besucher sollen schneller verstehen, was du anbietest und welcher nächste Schritt sinnvoll ist.',
         state: 'preview',
       },
       {
@@ -244,6 +252,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         title: 'Wöchentlicher Presence Brief',
         body: 'Wenn Quellen verbunden sind, könnte MÔRA einmal pro Woche Veränderungen, offene Fragen und auffällige Muster zusammenfassen.',
         why: 'Ein Überblick statt drei Plattformen einzeln prüfen zu müssen.',
+        observedFrom: 'MÔRA als proaktive Schicht, die aus verbundenen Signalen Vorschläge vorbereitet.',
         state: 'preview',
       },
     ],

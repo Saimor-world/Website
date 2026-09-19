@@ -1,10 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
+  ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   Check,
   CircleDot,
+  Eye,
   Globe2,
   Lightbulb,
   MessageSquareText,
@@ -26,6 +30,13 @@ type Reaction = 'interesting' | 'later' | 'not_for_me';
 const CONNECTION_STAGE_ORDER: ClientWorldConnectionStage[] = ['in', 'core', 'out'];
 
 type WebsiteConceptView = 'arrival' | 'personality' | 'offer' | 'contact';
+
+const WEBSITE_CONCEPT_VIEWS: Array<{ id: WebsiteConceptView; label: string; path: string }> = [
+  { id: 'arrival', label: 'Ankunft', path: '/ankunft' },
+  { id: 'personality', label: 'Persönlichkeit', path: '/ueber-mich' },
+  { id: 'offer', label: 'Angebot', path: '/angebot' },
+  { id: 'contact', label: 'Kontakt', path: '/kontakt' },
+];
 
 const TRUTH_COPY: Record<ClientWorldTruth, string> = {
   live: 'Verbunden',
@@ -57,6 +68,12 @@ export default function ClientWorldPage({
 }) {
   const [activeModuleId, setActiveModuleId] = useState(world.modules[0]?.id ?? '');
   const [websiteConceptView, setWebsiteConceptView] = useState<WebsiteConceptView>('arrival');
+  const reduceMotion = useReducedMotion();
+  const conceptViewIndex = WEBSITE_CONCEPT_VIEWS.findIndex((view) => view.id === websiteConceptView);
+  const activeConceptView = WEBSITE_CONCEPT_VIEWS[conceptViewIndex];
+  const prevConceptView =
+    WEBSITE_CONCEPT_VIEWS[(conceptViewIndex - 1 + WEBSITE_CONCEPT_VIEWS.length) % WEBSITE_CONCEPT_VIEWS.length];
+  const nextConceptView = WEBSITE_CONCEPT_VIEWS[(conceptViewIndex + 1) % WEBSITE_CONCEPT_VIEWS.length];
   const [reactions, setReactions] = useState<Record<string, Reaction>>(initialReactions);
   const returningWithReactions = useMemo(() => Object.keys(initialReactions).length > 0, [initialReactions]);
   const allIdeasReacted = world.ideas.length > 0 && world.ideas.every((idea) => Boolean(reactions[idea.id]));
@@ -233,16 +250,11 @@ export default function ClientWorldPage({
                     <p className="mt-1 text-sm font-semibold">So könnte sich die nächste Website anfühlen</p>
                   </div>
                   <div className="flex flex-wrap gap-1 rounded-full bg-[#173529]/[.05] p-1">
-                    {[
-                      ['arrival', 'Ankunft'],
-                      ['personality', 'Persönlichkeit'],
-                      ['offer', 'Angebot'],
-                      ['contact', 'Kontakt'],
-                    ].map(([id, label]) => (
+                    {WEBSITE_CONCEPT_VIEWS.map(({ id, label }) => (
                       <button
                         key={id}
                         type="button"
-                        onClick={() => setWebsiteConceptView(id as WebsiteConceptView)}
+                        onClick={() => setWebsiteConceptView(id)}
                         className={`rounded-full px-3 py-2 text-[10px] transition ${
                           websiteConceptView === id
                             ? 'bg-[#173529] text-[#efeade]'
@@ -255,7 +267,52 @@ export default function ClientWorldPage({
                   </div>
                 </div>
 
-                <WebsiteConcept view={websiteConceptView} />
+                <div className="flex items-center gap-2 border-b border-[#173529]/8 bg-[#173529]/[.035] px-4 py-2.5">
+                  <span className="flex shrink-0 gap-1.5" aria-hidden="true">
+                    <span className="h-2 w-2 rounded-full bg-[#173529]/15" />
+                    <span className="h-2 w-2 rounded-full bg-[#173529]/15" />
+                    <span className="h-2 w-2 rounded-full bg-[#173529]/15" />
+                  </span>
+                  <span className="flex-1 truncate rounded-full bg-white/55 px-3 py-1.5 font-mono text-[9px] text-[#173529]/45">
+                    deine-naechste-website.de{activeConceptView.path}
+                  </span>
+                </div>
+
+                <div className="overflow-hidden">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={websiteConceptView}
+                      initial={reduceMotion ? false : { opacity: 0, x: 12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={reduceMotion ? undefined : { opacity: 0, x: -12 }}
+                      transition={{ duration: reduceMotion ? 0 : 0.22, ease: 'easeOut' }}
+                    >
+                      <WebsiteConcept view={websiteConceptView} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 border-t border-[#173529]/8 px-4 py-3">
+                  <button
+                    type="button"
+                    onClick={() => setWebsiteConceptView(prevConceptView.id)}
+                    aria-label={`Zurück zu ${prevConceptView.label}`}
+                    className="flex items-center gap-1.5 text-[10px] text-[#173529]/45 transition hover:text-[#173529]/75"
+                  >
+                    <ArrowLeft className="h-3 w-3" /> {prevConceptView.label}
+                  </button>
+                  <span className="font-mono text-[8px] text-[#173529]/30">
+                    Seite {conceptViewIndex + 1}/{WEBSITE_CONCEPT_VIEWS.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setWebsiteConceptView(nextConceptView.id)}
+                    aria-label={`Weiter zu ${nextConceptView.label}`}
+                    className="flex items-center gap-1.5 text-[10px] font-semibold text-[#173529]/70 transition hover:text-[#173529]"
+                  >
+                    {nextConceptView.label} <ArrowRight className="h-3 w-3" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -405,7 +462,7 @@ export default function ClientWorldPage({
                 Ideen dürfen früh auftauchen.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
-                Noch keine automatische MÔRA-Auswertung. Diese Vorschläge sind kuratiert und ausdrücklich Preview — du kannst uns aber schon sagen, was davon zu dir passt.
+                Noch keine automatische MÔRA-Auswertung. Jede Idee hier hat aber einen sichtbaren Ausgangspunkt aus unserer Perspektive oben — sie fällt nicht vom Himmel. Ausdrücklich Preview, du kannst uns aber schon sagen, was davon zu dir passt.
               </p>
               {returningWithReactions ? (
                 <p className="mt-5 flex max-w-md items-start gap-2 text-xs leading-6 text-emerald-100/40">
@@ -429,7 +486,14 @@ export default function ClientWorldPage({
                   </div>
                   <h3 className="mt-5 font-serif text-3xl font-light text-white/85">{idea.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-white/43">{idea.body}</p>
-                  <p className="mt-4 flex gap-2 text-xs leading-6 text-emerald-100/40">
+                  <p className="mt-4 flex gap-2 text-xs leading-6 text-white/28">
+                    <Eye className="mt-1 h-3.5 w-3.5 shrink-0" />
+                    <span>
+                      <span className="uppercase tracking-[.1em] text-white/22">Beobachtet: </span>
+                      „{idea.observedFrom}“
+                    </span>
+                  </p>
+                  <p className="mt-3 flex gap-2 text-xs leading-6 text-emerald-100/40">
                     <Lightbulb className="mt-1 h-3.5 w-3.5 shrink-0" />
                     {idea.why}
                   </p>
