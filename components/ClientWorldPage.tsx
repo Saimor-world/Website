@@ -237,6 +237,51 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
         </div>
       </section>
 
+      <section className="border-t border-white/[.07] bg-[#07100d]">
+        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+          <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
+            <div>
+              <p className="font-mono text-[8px] uppercase tracking-[.27em] text-emerald-100/38">Verbindungen</p>
+              <h2 className="mt-5 font-serif text-[clamp(3.3rem,5.2vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
+                Die World zeigt auch, was wohin fließen kann.
+              </h2>
+              <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
+                Nicht als Integrations-Theater: Jede Verbindung sagt offen, ob sie schon echt ist, nur als Preview existiert oder noch auf eine Quelle wartet.
+              </p>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/[.08] bg-white/[.025] p-4 sm:p-6">
+              {world.connections.map((connection, index) => (
+                <article
+                  key={connection.id}
+                  className="grid gap-4 border-b border-white/[.07] px-2 py-6 last:border-0 sm:grid-cols-[.75fr_52px_.75fr_1.35fr] sm:items-center sm:gap-5"
+                >
+                  <div>
+                    <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Quelle</p>
+                    <p className="mt-1 text-sm text-white/70">{connection.from}</p>
+                  </div>
+                  <div className="hidden items-center gap-2 sm:flex">
+                    <span className="h-px flex-1 bg-gradient-to-r from-white/8 to-[#d6a848]/35" />
+                    <ArrowUpRight className="h-3.5 w-3.5 rotate-45 text-[#d6a848]/50" />
+                  </div>
+                  <div>
+                    <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Ziel</p>
+                    <p className="mt-1 text-sm text-white/70">{connection.to}</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="font-mono text-[7px] text-white/18">0{index + 1}</span>
+                      <TruthBadge state={connection.state} />
+                    </div>
+                    <p className="mt-3 text-xs leading-5 text-white/36">{connection.purpose}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="relative overflow-hidden bg-[#e9e5da] text-[#153529]">
         <div aria-hidden="true" className="absolute right-[-10rem] top-[-10rem] h-[38rem] w-[38rem] rounded-full border border-[#315643]/[.06]" />
         <div className="relative mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
