@@ -44,6 +44,7 @@ function TruthBadge({ state }: { state: ClientWorldTruth }) {
 
 export default function ClientWorldPage({ world }: { world: ClientWorldConfig }) {
   const [activeModuleId, setActiveModuleId] = useState(world.modules[0]?.id ?? '');
+  const [websiteConceptView, setWebsiteConceptView] = useState<'arrival' | 'offer' | 'contact'>('arrival');
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
   const [busyReaction, setBusyReaction] = useState<string | null>(null);
   const [feedback, setFeedback] = useState('');
@@ -196,14 +197,47 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
               <p className="mt-6 max-w-md text-sm leading-7 text-white/45">{world.websiteDirection.lead}</p>
               <TruthBadge state="preview" />
             </div>
-            <div className="border-t border-white/[.08]">
-              {world.websiteDirection.moves.map((move, index) => (
-                <article key={move.title} className="grid gap-3 border-b border-white/[.08] py-7 sm:grid-cols-[84px_.8fr_1.2fr] sm:gap-7">
-                  <div className="font-mono text-[9px] text-[#d6a848]/45">0{index + 1}</div>
-                  <h3 className="font-serif text-3xl font-light text-white/86">{move.title}</h3>
-                  <p className="text-sm leading-7 text-white/43">{move.body}</p>
-                </article>
-              ))}
+            <div>
+              <div className="border-t border-white/[.08]">
+                {world.websiteDirection.moves.map((move, index) => (
+                  <article key={move.title} className="grid gap-3 border-b border-white/[.08] py-7 sm:grid-cols-[84px_.8fr_1.2fr] sm:gap-7">
+                    <div className="font-mono text-[9px] text-[#d6a848]/45">0{index + 1}</div>
+                    <h3 className="font-serif text-3xl font-light text-white/86">{move.title}</h3>
+                    <p className="text-sm leading-7 text-white/43">{move.body}</p>
+                  </article>
+                ))}
+              </div>
+
+              <div className="mt-10 rounded-[2rem] border border-white/[.09] bg-[#efeade] p-3 text-[#173529] shadow-[0_30px_80px_rgba(0,0,0,.2)] sm:p-4">
+                <div className="flex flex-col gap-4 border-b border-[#173529]/10 px-3 pb-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/38">Click concept · Struktur, keine erfundenen Inhalte</p>
+                    <p className="mt-1 text-sm font-semibold">So könnte sich die nächste Website anfühlen</p>
+                  </div>
+                  <div className="flex flex-wrap gap-1 rounded-full bg-[#173529]/[.05] p-1">
+                    {[
+                      ['arrival', 'Ankunft'],
+                      ['offer', 'Angebot'],
+                      ['contact', 'Kontakt'],
+                    ].map(([id, label]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setWebsiteConceptView(id as 'arrival' | 'offer' | 'contact')}
+                        className={`rounded-full px-3 py-2 text-[10px] transition ${
+                          websiteConceptView === id
+                            ? 'bg-[#173529] text-[#efeade]'
+                            : 'text-[#173529]/50 hover:text-[#173529]/75'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <WebsiteConcept view={websiteConceptView} />
+              </div>
             </div>
           </div>
         </div>
@@ -459,6 +493,75 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
         </div>
       </footer>
     </main>
+  );
+}
+
+function WebsiteConcept({ view }: { view: 'arrival' | 'offer' | 'contact' }) {
+  if (view === 'offer') {
+    return (
+      <div className="min-h-[360px] px-4 py-8 sm:px-7 sm:py-10">
+        <div className="grid gap-7 lg:grid-cols-[.8fr_1.2fr]">
+          <div>
+            <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Angebotslogik</p>
+            <h3 className="mt-4 max-w-sm font-serif text-4xl font-light leading-[.94] tracking-[-.04em]">
+              Nicht alles gleichzeitig erklären.
+            </h3>
+            <p className="mt-5 max-w-sm text-xs leading-6 text-[#173529]/52">
+              Erst Orientierung, dann passende Tiefe. Die konkreten Angebote bleiben hier absichtlich Platzhalter, bis sie mit Luana festgelegt sind.
+            </p>
+          </div>
+          <div className="space-y-2">
+            {['Einstieg / Hauptangebot', 'Vertiefung / zweiter Weg', 'Individuelle Anfrage'].map((label, index) => (
+              <div key={label} className="grid grid-cols-[34px_1fr_auto] items-center gap-3 rounded-2xl border border-[#173529]/10 bg-white/35 px-4 py-4">
+                <span className="font-mono text-[8px] text-[#173529]/30">0{index + 1}</span>
+                <span className="text-sm">{label}</span>
+                <ArrowUpRight className="h-4 w-4 text-[#173529]/28" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (view === 'contact') {
+    return (
+      <div className="min-h-[360px] px-4 py-8 sm:px-7 sm:py-10">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Ein nächster Schritt</p>
+          <h3 className="mt-5 font-serif text-5xl font-light leading-[.9] tracking-[-.045em]">Kein Formular-Labyrinth.</h3>
+          <p className="mx-auto mt-6 max-w-lg text-sm leading-6 text-[#173529]/52">
+            Der spätere CTA richtet sich nach dem echten Angebotsmodell. In der Preview zeigen wir nur das Prinzip: ein klarer Weg statt konkurrierender Aktionen.
+          </p>
+          <div className="mx-auto mt-8 max-w-sm rounded-full bg-[#173529] px-5 py-4 text-xs font-semibold text-[#efeade]">
+            Passenden nächsten Schritt öffnen
+          </div>
+          <p className="mt-3 font-mono text-[7px] uppercase tracking-[.16em] text-[#173529]/28">Preview · noch keine Buchungsfunktion</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative min-h-[360px] overflow-hidden px-4 py-8 sm:px-7 sm:py-10">
+      <div aria-hidden="true" className="absolute -right-20 top-8 h-64 w-64 rounded-full border border-[#173529]/[.07]" />
+      <div className="relative grid min-h-[300px] items-end gap-8 lg:grid-cols-[1.1fr_.9fr]">
+        <div>
+          <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Ankunft</p>
+          <h3 className="mt-5 max-w-xl font-serif text-[clamp(3rem,5vw,5rem)] font-light leading-[.88] tracking-[-.05em]">
+            Person zuerst. Angebot sofort verständlich.
+          </h3>
+          <p className="mt-6 max-w-lg text-sm leading-6 text-[#173529]/52">
+            Bildsprache, ein klarer Satz zur Positionierung und genau eine primäre Handlung. Konkrete Claims werden erst mit echtem Luana-Input geschrieben.
+          </p>
+        </div>
+        <div className="rounded-[1.8rem] border border-[#173529]/10 bg-white/38 p-5">
+          <div className="aspect-[4/3] rounded-[1.3rem] bg-[radial-gradient(circle_at_55%_35%,rgba(23,53,41,.12),transparent_24%),linear-gradient(145deg,rgba(23,53,41,.04),rgba(23,53,41,.12))]" />
+          <div className="mt-4 h-2 w-2/3 rounded-full bg-[#173529]/12" />
+          <div className="mt-2 h-2 w-1/2 rounded-full bg-[#173529]/8" />
+        </div>
+      </div>
+    </div>
   );
 }
 
