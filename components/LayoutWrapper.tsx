@@ -9,11 +9,12 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const isEn = pathname?.startsWith('/en/') || pathname === '/en';
   const locale = isEn ? 'en' : 'de';
   const isYori = pathname === '/yori' || pathname === '/en/yori';
+  const isPrivateWorld = pathname?.startsWith('/world/');
 
-  // YORI is intentionally a second world inside Saimôr. Its garden arrival
-  // already carries its own back-navigation and identity; the OS navigation
-  // and World footer would visually pull the visitor back into the forest.
-  if (isYori) return <>{children}</>;
+  // YORI and private Client Worlds are intentionally immersive surfaces.
+  // Their own navigation and identity would be diluted by the public
+  // Saimôr header/footer around them.
+  if (isYori || isPrivateWorld) return <>{children}</>;
 
   return (
     <>
