@@ -62,9 +62,11 @@ function TruthBadge({ state }: { state: ClientWorldTruth }) {
 export default function ClientWorldPage({
   world,
   initialReactions = {},
+  openPreview = false,
 }: {
   world: ClientWorldConfig;
   initialReactions?: Record<string, Reaction>;
+  openPreview?: boolean;
 }) {
   const [activeModuleId, setActiveModuleId] = useState(world.modules[0]?.id ?? '');
   const [websiteConceptView, setWebsiteConceptView] = useState<WebsiteConceptView>('arrival');
@@ -88,6 +90,7 @@ export default function ClientWorldPage({
   );
 
   async function postInteraction(kind: 'idea_reaction' | 'feedback' | 'module_interest', itemId: string | undefined, value: string) {
+    if (openPreview) return;
     const response = await fetch(`/api/world/${encodeURIComponent(world.slug)}/feedback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -139,54 +142,59 @@ export default function ClientWorldPage({
   }
 
   return (
-    <main className="min-h-[100svh] bg-[#07100d] text-white selection:bg-[#d6a848]/30">
-      <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07]">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_78%_14%,rgba(62,143,139,.19),transparent_29%),radial-gradient(circle_at_20%_70%,rgba(214,168,72,.07),transparent_26%),linear-gradient(180deg,#07100d_0%,#0b1713_68%,#07100d_100%)]"
-        />
-        <div aria-hidden="true" className="absolute right-[-11rem] top-[8rem] h-[38rem] w-[38rem] rounded-full border border-white/[.045]" />
-        <div aria-hidden="true" className="absolute right-[-4rem] top-[15rem] h-[24rem] w-[24rem] rounded-full border border-[#d6a848]/[.07]" />
+    <main className="min-h-[100svh] overflow-x-hidden bg-[#f1ecdf] text-[#2b3d30] selection:bg-[#9d8656]/25">
+      {openPreview ? (
+        <div className="sticky top-0 z-[80] border-b border-[#24382a]/10 bg-[#f1ecdf]/95 px-4 py-2 text-center backdrop-blur">
+          <p className="font-mono text-[8px] uppercase tracking-[.16em] text-[#7f704f]">
+            Offene Design-Preview · Eingaben werden nicht gespeichert
+          </p>
+        </div>
+      ) : null}
+      <section className="relative min-h-[92svh] overflow-hidden border-b border-[#233426]/10">
+        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,#f1ecdf_0%,#f1ecdf_16%,#73864f_16%,#53683d_62%,#344a35_100%)]" />
+        <div aria-hidden="true" className="absolute inset-x-0 top-[16%] h-[84%] bg-[radial-gradient(circle_at_50%_58%,rgba(239,232,211,.14),transparent_18%),radial-gradient(circle_at_14%_18%,rgba(184,161,105,.14),transparent_24%),linear-gradient(130deg,rgba(255,255,255,.03),rgba(20,45,28,.18))]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-[1460px] flex-col px-6 pb-12 pt-7 sm:px-10 lg:px-14">
-          <header className="flex items-center justify-between gap-4">
+        <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-[1460px] flex-col px-5 pb-10 pt-[calc(1.25rem+env(safe-area-inset-top))] sm:px-10 sm:pb-12 sm:pt-7 lg:px-14">
+          <header className="flex flex-col gap-4 text-[#29392c] sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <div className="font-serif text-lg tracking-[.12em] text-[#f2efe4]">SAIMÔR</div>
-              <div className="mt-1 font-mono text-[7px] uppercase tracking-[.24em] text-white/30">Private World</div>
+              <div className="font-serif text-xl tracking-[.17em] text-[#2f4032] sm:text-2xl">LUANA LUMINA</div>
+              <div className="mt-2 max-w-md text-[8px] uppercase tracking-[.22em] text-[#52604f]/70 sm:text-[9px] sm:tracking-[.28em]">
+                Bewusstseinstraining · Identitätsshift · Energiearbeit
+              </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm text-white/70">{world.clientName}</div>
-              <div className="mt-1 font-mono text-[7px] uppercase tracking-[.18em] text-emerald-100/35">persönlicher Raum</div>
+            <div className="text-left sm:text-right">
+              <div className="font-mono text-[8px] uppercase tracking-[.2em] text-[#6f6245]">SAIMÔR WORLD</div>
+              <div className="mt-2 text-[9px] uppercase tracking-[.16em] text-[#52604f]/60">persönlicher Raum</div>
             </div>
           </header>
 
-          <div className="grid flex-1 items-center gap-14 py-16 lg:grid-cols-[1.12fr_.88fr]">
-            <div className="max-w-4xl">
-              <p className="font-mono text-[9px] uppercase tracking-[.3em] text-[#d6a848]/72">
-                Heute · gemeinsamer Stand
+          <div className="grid flex-1 items-end gap-8 pb-10 pt-20 sm:gap-12 sm:pb-14 sm:pt-28 lg:grid-cols-[1.12fr_.88fr] lg:gap-14 lg:pb-20 lg:pt-32">
+            <div className="min-w-0 max-w-4xl">
+              <p className="font-mono text-[8px] uppercase tracking-[.24em] text-[#d6bd84] sm:text-[9px] sm:tracking-[.32em]">
+                Deine nächste digitale Form
               </p>
-              <h1 className="mt-6 max-w-4xl font-serif text-[clamp(4.2rem,8.2vw,8.4rem)] font-light leading-[.84] tracking-[-.06em] text-[#f3efe4]">
+              <h1 className="mt-5 max-w-[11ch] break-words font-serif text-[clamp(3.1rem,14vw,5.2rem)] font-light leading-[.9] tracking-[-.045em] text-[#f6f0e2] sm:mt-6 sm:max-w-4xl sm:text-[clamp(4.4rem,8.2vw,8.8rem)] sm:leading-[.84] sm:tracking-[-.055em]">
                 {world.title}
               </h1>
-              <p className="mt-8 max-w-2xl text-base leading-7 text-white/50 sm:text-lg sm:leading-8">
+              <p className="mt-6 max-w-[34rem] text-[15px] leading-7 text-[#f6f0e2]/82 sm:mt-8 sm:text-lg sm:leading-8">
                 {world.intro}
               </p>
             </div>
 
-            <aside className="rounded-[2.2rem] border border-white/10 bg-white/[.035] p-6 shadow-[0_30px_100px_rgba(0,0,0,.32)] backdrop-blur-2xl sm:p-8">
-              <div className="flex items-start gap-4">
+            <aside className="min-w-0 rounded-[1.6rem] border border-[#f2ead6]/18 bg-[#f2ead6]/[.10] p-4 shadow-[0_24px_70px_rgba(20,35,22,.20)] backdrop-blur-2xl sm:rounded-[2.2rem] sm:p-8">
+              <div className="flex min-w-0 items-start gap-3 sm:gap-4">
                 <MoraOrb size={58} state="dream" />
-                <div>
-                  <p className="font-mono text-[8px] uppercase tracking-[.22em] text-emerald-100/42">MÔRA · Preview note</p>
-                  <p className="mt-3 text-sm leading-6 text-white/65">{world.today.note}</p>
+                <div className="min-w-0">
+                  <p className="font-mono text-[8px] uppercase tracking-[.22em] text-[#d4bd86]/70">MÔRA · Preview note</p>
+                  <p className="mt-3 break-words text-[13px] leading-6 text-[#f5eedf]/82 sm:text-sm">{world.today.note}</p>
                 </div>
               </div>
-              <div className="mt-7 space-y-3 border-t border-white/[.07] pt-6">
+              <div className="mt-5 space-y-3 border-t border-[#f3ecd9]/12 pt-5 sm:mt-7 sm:pt-6">
                 {world.today.focus.map((item, index) => (
-                  <div key={item} className="flex gap-3 text-sm leading-6 text-white/48">
-                    <span className="mt-[.6rem] h-1 w-1 shrink-0 rounded-full bg-[#d6a848]/70" />
-                    <span>
-                      <span className="mr-2 font-mono text-[8px] text-white/24">0{index + 1}</span>
+                  <div key={item} className="flex min-w-0 gap-3 text-[13px] leading-6 text-[#f3ecd9]/70 sm:text-sm">
+                    <span className="mt-[.6rem] h-1 w-1 shrink-0 rounded-full bg-[#c8aa6a]" />
+                    <span className="min-w-0 break-words">
+                      <span className="mr-2 font-mono text-[8px] text-[#f3ecd9]/30">0{index + 1}</span>
                       {item}
                     </span>
                   </div>
@@ -195,20 +203,20 @@ export default function ClientWorldPage({
             </aside>
           </div>
 
-          <div className="grid gap-3 border-t border-white/[.06] pt-5 text-xs text-white/32 sm:grid-cols-3">
-            <p>Keine erfundenen Live-Daten.</p>
-            <p>Preview und echte Quellen bleiben getrennt.</p>
-            <p className="sm:text-right">Dieser Raum wächst mit deinen Antworten.</p>
+          <div className="grid gap-2 border-t border-[#f3ecd9]/14 pt-5 text-[11px] leading-5 text-[#f3ecd9]/58 sm:grid-cols-3 sm:gap-3 sm:text-xs">
+            <p>Luana zuerst. Technik im Hintergrund.</p>
+            <p>Preview und echte Quellen bleiben klar getrennt.</p>
+            <p className="sm:text-right">Diese World wächst mit ihren Entscheidungen.</p>
           </div>
         </div>
       </section>
 
       <section className="bg-[#efeade] text-[#153529]">
-        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <p className="font-mono text-[8px] uppercase tracking-[.27em] text-[#315643]/45">Unsere Sicht · noch ohne Plattformmetriken</p>
           <div className="mt-7 grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
             <div>
-              <h2 className="font-serif text-[clamp(3.5rem,6vw,6.8rem)] font-light leading-[.88] tracking-[-.055em]">
+              <h2 className="font-serif text-[clamp(2.8rem,12vw,6.8rem)] font-light leading-[.88] tracking-[-.055em]">
                 Nicht mehr zeigen. Klarer verbinden.
               </h2>
             </div>
@@ -222,11 +230,11 @@ export default function ClientWorldPage({
       </section>
 
       <section className="border-y border-white/[.07] bg-[#08120f]">
-        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <div className="grid gap-14 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
             <div className="lg:sticky lg:top-12">
               <p className="font-mono text-[8px] uppercase tracking-[.26em] text-[#d6a848]/55">Website direction</p>
-              <h2 className="mt-5 font-serif text-[clamp(3.4rem,5.5vw,6rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
+              <h2 className="mt-5 font-serif text-[clamp(2.75rem,11vw,6rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
                 Nicht deine Seite spiegeln. Ihre nächste Form zeigen.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/45">{world.websiteDirection.lead}</p>
@@ -320,11 +328,11 @@ export default function ClientWorldPage({
       </section>
 
       <section className="bg-[#0c1814]">
-        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
               <p className="font-mono text-[8px] uppercase tracking-[.27em] text-emerald-100/38">Presence</p>
-              <h2 className="mt-4 font-serif text-[clamp(3.2rem,5vw,5.8rem)] font-light leading-[.9] tracking-[-.05em] text-[#f0ede3]">
+              <h2 className="mt-4 font-serif text-[clamp(2.7rem,10.5vw,5.8rem)] font-light leading-[.9] tracking-[-.05em] text-[#f0ede3]">
                 Erst verbinden. Dann urteilen.
               </h2>
             </div>
@@ -348,11 +356,11 @@ export default function ClientWorldPage({
       </section>
 
       <section className="border-t border-white/[.07] bg-[#07100d]">
-        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
             <div>
               <p className="font-mono text-[8px] uppercase tracking-[.27em] text-emerald-100/38">Verbindungen</p>
-              <h2 className="mt-5 font-serif text-[clamp(3.3rem,5.2vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
+              <h2 className="mt-5 font-serif text-[clamp(2.75rem,10.5vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
                 Die World zeigt auch, was wohin fließen kann.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
@@ -413,11 +421,11 @@ export default function ClientWorldPage({
 
       <section className="relative overflow-hidden bg-[#e9e5da] text-[#153529]">
         <div aria-hidden="true" className="absolute right-[-10rem] top-[-10rem] h-[38rem] w-[38rem] rounded-full border border-[#315643]/[.06]" />
-        <div className="relative mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="relative mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <p className="font-mono text-[8px] uppercase tracking-[.27em] text-[#315643]/44">World preview · schon jetzt</p>
           <div className="mt-5 grid gap-10 lg:grid-cols-[.62fr_1.38fr]">
             <div>
-              <h2 className="font-serif text-[clamp(3.5rem,5.6vw,6.2rem)] font-light leading-[.9] tracking-[-.055em]">
+              <h2 className="font-serif text-[clamp(2.8rem,11vw,6.2rem)] font-light leading-[.9] tracking-[-.055em]">
                 Drei Räume. Eine Geschichte.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-[#315643]/56">
@@ -452,13 +460,13 @@ export default function ClientWorldPage({
       </section>
 
       <section className="bg-[#07100d]">
-        <div className="mx-auto max-w-[1380px] px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+        <div className="mx-auto max-w-[1380px] px-5 py-16 sm:px-10 sm:py-20 lg:px-14 lg:py-28">
           <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr]">
             <div>
               <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[.26em] text-[#d6a848]/55">
                 <Sparkles className="h-4 w-4" /> Proaktive Vorschläge
               </div>
-              <h2 className="mt-5 font-serif text-[clamp(3.4rem,5vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
+              <h2 className="mt-5 font-serif text-[clamp(2.75rem,10.5vw,5.9rem)] font-light leading-[.9] tracking-[-.05em] text-[#f1ede2]">
                 Ideen dürfen früh auftauchen.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
@@ -543,7 +551,7 @@ export default function ClientWorldPage({
             <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[.26em] text-emerald-100/38">
               <MessageSquareText className="h-4 w-4" /> Dein Blick
             </div>
-            <h2 className="mt-5 max-w-xl font-serif text-[clamp(3.2rem,5vw,5.4rem)] font-light leading-[.92] tracking-[-.05em] text-[#f1ede2]">
+            <h2 className="mt-5 max-w-xl font-serif text-[clamp(2.7rem,10vw,5.4rem)] font-light leading-[.92] tracking-[-.05em] text-[#f1ede2]">
               Korrigier die World, bevor sie fest wird.
             </h2>
             <p className="mt-6 max-w-lg text-sm leading-7 text-white/38">
