@@ -51,6 +51,13 @@ export type ClientWorldConfig = {
   };
   presence: ClientWorldPresence[];
   modules: ClientWorldModule[];
+  connections: Array<{
+    id: string;
+    from: string;
+    to: string;
+    purpose: string;
+    state: ClientWorldTruth;
+  }>;
   ideas: ClientWorldIdea[];
   nextQuestions: string[];
 };
@@ -160,6 +167,43 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         description:
           'Die Kontextschicht, die verbundene Signale verstehen und proaktive Vorschläge vorbereiten kann. Die gezeigten Beispiele sind derzeit bewusst Demo.',
         link: { label: 'Deep View ansehen', href: '/mora/deep-view' },
+      },
+    ],
+    connections: [
+      {
+        id: 'website-mora',
+        from: 'Website',
+        to: 'MÔRA',
+        purpose: 'Struktur, Inhalte und Veränderungen später als belegten Kontext verstehen.',
+        state: 'not_connected',
+      },
+      {
+        id: 'social-yori',
+        from: 'TikTok + Instagram',
+        to: 'YORI',
+        purpose: 'Content-Ideen, Entwürfe und Rückblicke in einem Creator-Raum bündeln.',
+        state: 'not_connected',
+      },
+      {
+        id: 'feedback-context',
+        from: 'Dein Feedback',
+        to: 'Client World',
+        purpose: 'Wünsche und Grenzen fließen schon jetzt als echter Input in den gemeinsamen Stand.',
+        state: 'live',
+      },
+      {
+        id: 'mora-os',
+        from: 'MÔRA',
+        to: 'Saimôr OS',
+        purpose: 'Aus verbundenem Kontext später konkrete nächste Schritte und Arbeitsobjekte vorbereiten.',
+        state: 'preview',
+      },
+      {
+        id: 'yori-world',
+        from: 'YORI',
+        to: 'Client World',
+        purpose: 'Creator-Arbeit nicht isoliert lassen, sondern als Teil der gesamten Business-Story sichtbar machen.',
+        state: 'preview',
       },
     ],
     ideas: [
