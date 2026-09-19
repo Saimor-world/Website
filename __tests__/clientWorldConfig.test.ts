@@ -11,6 +11,7 @@ describe('client world config', () => {
     expect(world?.connections.some((connection) => connection.state === 'live')).toBe(true);
     expect(world?.connections.some((connection) => connection.state === 'preview')).toBe(true);
     expect(world?.connections.some((connection) => connection.state === 'not_connected')).toBe(true);
+    expect(world?.connections.every((connection) => ['in', 'core', 'out'].includes(connection.stage))).toBe(true);
     expect(JSON.stringify(world)).not.toContain('CLIENT_WORLD_LUANA_CODE');
   });
 

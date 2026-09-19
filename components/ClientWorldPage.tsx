@@ -12,14 +12,20 @@ import {
   Sparkles,
 } from 'lucide-react';
 import MoraOrb from '@/components/MoraOrb';
-import type {
-  ClientWorldConfig,
-  ClientWorldIdea,
-  ClientWorldModule,
-  ClientWorldTruth,
+import {
+  CLIENT_WORLD_CONNECTION_STAGES,
+  type ClientWorldConfig,
+  type ClientWorldConnectionStage,
+  type ClientWorldIdea,
+  type ClientWorldModule,
+  type ClientWorldTruth,
 } from '@/lib/client-world';
 
 type Reaction = 'interesting' | 'later' | 'not_for_me';
+
+const CONNECTION_STAGE_ORDER: ClientWorldConnectionStage[] = ['in', 'core', 'out'];
+
+type WebsiteConceptView = 'arrival' | 'personality' | 'offer' | 'contact';
 
 const TRUTH_COPY: Record<ClientWorldTruth, string> = {
   live: 'Verbunden',
@@ -44,7 +50,7 @@ function TruthBadge({ state }: { state: ClientWorldTruth }) {
 
 export default function ClientWorldPage({ world }: { world: ClientWorldConfig }) {
   const [activeModuleId, setActiveModuleId] = useState(world.modules[0]?.id ?? '');
-  const [websiteConceptView, setWebsiteConceptView] = useState<'arrival' | 'offer' | 'contact'>('arrival');
+  const [websiteConceptView, setWebsiteConceptView] = useState<WebsiteConceptView>('arrival');
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
   const [busyReaction, setBusyReaction] = useState<string | null>(null);
   const [reactionError, setReactionError] = useState<string | null>(null);
@@ -221,13 +227,14 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
                   <div className="flex flex-wrap gap-1 rounded-full bg-[#173529]/[.05] p-1">
                     {[
                       ['arrival', 'Ankunft'],
+                      ['personality', 'Persönlichkeit'],
                       ['offer', 'Angebot'],
                       ['contact', 'Kontakt'],
                     ].map(([id, label]) => (
                       <button
                         key={id}
                         type="button"
-                        onClick={() => setWebsiteConceptView(id as 'arrival' | 'offer' | 'contact')}
+                        onClick={() => setWebsiteConceptView(id as WebsiteConceptView)}
                         className={`rounded-full px-3 py-2 text-[10px] transition ${
                           websiteConceptView === id
                             ? 'bg-[#173529] text-[#efeade]'
@@ -289,32 +296,51 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
             </div>
 
             <div className="rounded-[2rem] border border-white/[.08] bg-white/[.025] p-4 sm:p-6">
-              {world.connections.map((connection, index) => (
-                <article
-                  key={connection.id}
-                  className="grid gap-4 border-b border-white/[.07] px-2 py-6 last:border-0 sm:grid-cols-[.75fr_52px_.75fr_1.35fr] sm:items-center sm:gap-5"
-                >
-                  <div>
-                    <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Quelle</p>
-                    <p className="mt-1 text-sm text-white/70">{connection.from}</p>
-                  </div>
-                  <div className="hidden items-center gap-2 sm:flex">
-                    <span className="h-px flex-1 bg-gradient-to-r from-white/8 to-[#d6a848]/35" />
-                    <ArrowUpRight className="h-3.5 w-3.5 rotate-45 text-[#d6a848]/50" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Ziel</p>
-                    <p className="mt-1 text-sm text-white/70">{connection.to}</p>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono text-[7px] text-white/18">0{index + 1}</span>
-                      <TruthBadge state={connection.state} />
+              {CONNECTION_STAGE_ORDER.map((stage) => {
+                const stageConnections = world.connections.filter((connection) => connection.stage === stage);
+                if (stageConnections.length === 0) return null;
+                const copy = CLIENT_WORLD_CONNECTION_STAGES[stage];
+
+                return (
+                  <div key={stage} className="border-b border-white/[.07] py-6 first:pt-2 last:border-0 last:pb-2">
+                    <div className="px-2">
+                      <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#d6a848]/50">{copy.label}</p>
+                      <p className="mt-1 text-xs leading-5 text-white/32">{copy.hint}</p>
                     </div>
-                    <p className="mt-3 text-xs leading-5 text-white/36">{connection.purpose}</p>
+                    <div className="mt-5">
+                      {stageConnections.map((connection) => {
+                        const index = world.connections.indexOf(connection);
+                        return (
+                          <article
+                            key={connection.id}
+                            className="grid gap-4 border-t border-white/[.05] px-2 py-6 first:border-0 first:pt-0 sm:grid-cols-[.75fr_52px_.75fr_1.35fr] sm:items-center sm:gap-5"
+                          >
+                            <div>
+                              <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Quelle</p>
+                              <p className="mt-1 text-sm text-white/70">{connection.from}</p>
+                            </div>
+                            <div className="hidden items-center gap-2 sm:flex">
+                              <span className="h-px flex-1 bg-gradient-to-r from-white/8 to-[#d6a848]/35" />
+                              <ArrowUpRight className="h-3.5 w-3.5 rotate-45 text-[#d6a848]/50" />
+                            </div>
+                            <div>
+                              <p className="font-mono text-[7px] uppercase tracking-[.18em] text-white/22">Ziel</p>
+                              <p className="mt-1 text-sm text-white/70">{connection.to}</p>
+                            </div>
+                            <div>
+                              <div className="flex items-center justify-between gap-3">
+                                <span className="font-mono text-[7px] text-white/18">0{index + 1}</span>
+                                <TruthBadge state={connection.state} />
+                              </div>
+                              <p className="mt-3 text-xs leading-5 text-white/36">{connection.purpose}</p>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
                   </div>
-                </article>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -416,6 +442,10 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
                     <p role="status" className="mt-3 text-xs text-red-100/55">
                       Konnte gerade nicht gespeichert werden. Versuch es gleich noch einmal.
                     </p>
+                  ) : reactions[idea.id] ? (
+                    <p role="status" className="mt-3 flex items-center gap-1.5 text-xs text-emerald-100/45">
+                      <Check className="h-3.5 w-3.5" /> Notiert — danke.
+                    </p>
                   ) : null}
                 </article>
               ))}
@@ -505,7 +535,26 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
   );
 }
 
-function WebsiteConcept({ view }: { view: 'arrival' | 'offer' | 'contact' }) {
+function WebsiteConcept({ view }: { view: WebsiteConceptView }) {
+  if (view === 'personality') {
+    return (
+      <div className="min-h-[360px] px-4 py-8 sm:px-7 sm:py-10">
+        <div className="grid items-center gap-8 lg:grid-cols-[.85fr_1.15fr]">
+          <div className="mx-auto aspect-[3/4] w-full max-w-[220px] rounded-[1.6rem] border border-[#173529]/10 bg-[radial-gradient(circle_at_50%_32%,rgba(23,53,41,.14),transparent_45%),linear-gradient(160deg,rgba(23,53,41,.05),rgba(23,53,41,.13))]" />
+          <div>
+            <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#173529]/36">Persönlichkeit</p>
+            <h3 className="mt-4 max-w-sm font-serif text-4xl font-light leading-[.94] tracking-[-.04em]">
+              Nicht Dekoration. Tragende Ebene.
+            </h3>
+            <p className="mt-5 max-w-sm text-xs leading-6 text-[#173529]/52">
+              Ein echtes Bild, ein eigener Ton statt generischer Website-Sprache, eine erkennbare Haltung — das trägt hier genauso viel wie Struktur und Angebot. Welches Bild und welche Worte das später sind, entsteht mit dir, nicht als Platzhalter-Text.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (view === 'offer') {
     return (
       <div className="min-h-[360px] px-4 py-8 sm:px-7 sm:py-10">

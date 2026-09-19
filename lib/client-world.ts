@@ -31,6 +31,17 @@ export type ClientWorldPresence = {
   note: string;
 };
 
+export type ClientWorldConnectionStage = 'in' | 'core' | 'out';
+
+export type ClientWorldConnection = {
+  id: string;
+  from: string;
+  to: string;
+  purpose: string;
+  state: ClientWorldTruth;
+  stage: ClientWorldConnectionStage;
+};
+
 export type ClientWorldConfig = {
   slug: string;
   clientName: string;
@@ -51,13 +62,7 @@ export type ClientWorldConfig = {
   };
   presence: ClientWorldPresence[];
   modules: ClientWorldModule[];
-  connections: Array<{
-    id: string;
-    from: string;
-    to: string;
-    purpose: string;
-    state: ClientWorldTruth;
-  }>;
+  connections: ClientWorldConnection[];
   ideas: ClientWorldIdea[];
   nextQuestions: string[];
 };
@@ -176,6 +181,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         to: 'MÔRA',
         purpose: 'Struktur, Inhalte und Veränderungen später als belegten Kontext verstehen.',
         state: 'not_connected',
+        stage: 'in',
       },
       {
         id: 'social-yori',
@@ -183,6 +189,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         to: 'YORI',
         purpose: 'Content-Ideen, Entwürfe und Rückblicke in einem Creator-Raum bündeln.',
         state: 'not_connected',
+        stage: 'in',
       },
       {
         id: 'feedback-context',
@@ -190,6 +197,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         to: 'Client World',
         purpose: 'Wünsche und Grenzen fließen schon jetzt als echter Input in den gemeinsamen Stand.',
         state: 'live',
+        stage: 'in',
       },
       {
         id: 'mora-os',
@@ -197,6 +205,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         to: 'Saimôr OS',
         purpose: 'Aus verbundenem Kontext später konkrete nächste Schritte und Arbeitsobjekte vorbereiten.',
         state: 'preview',
+        stage: 'core',
       },
       {
         id: 'yori-world',
@@ -204,6 +213,15 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         to: 'Client World',
         purpose: 'Creator-Arbeit nicht isoliert lassen, sondern als Teil der gesamten Business-Story sichtbar machen.',
         state: 'preview',
+        stage: 'out',
+      },
+      {
+        id: 'direction-website',
+        from: 'Website Direction (Preview)',
+        to: 'Website',
+        purpose: 'Die gezeigte Struktur später Schritt für Schritt mit dir in die echte Website übersetzen.',
+        state: 'preview',
+        stage: 'out',
       },
     ],
     ideas: [
@@ -234,6 +252,24 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
       'Was soll auf keinen Fall nach „typischer Wellness-/Creator-Seite“ aussehen?',
       'Welche Domain bzw. welcher finale Web-Auftritt soll später die technische Quelle sein?',
     ],
+  },
+};
+
+export const CLIENT_WORLD_CONNECTION_STAGES: Record<
+  ClientWorldConnectionStage,
+  { label: string; hint: string }
+> = {
+  in: {
+    label: 'Was hereinkommt',
+    hint: 'Signale und Inhalte, die später zusammengeführt werden.',
+  },
+  core: {
+    label: 'Was MÔRA vorbereitet',
+    hint: 'Verbundener Kontext wird zu konkreten nächsten Schritten.',
+  },
+  out: {
+    label: 'Was zurückfließt',
+    hint: 'Ergebnisse, die wieder sichtbar in deiner World landen.',
   },
 };
 
