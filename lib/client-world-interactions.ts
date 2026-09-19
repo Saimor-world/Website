@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/prisma';
 
-export type ClientWorldReactionValue = 'interesting' | 'later' | 'not_for_me';
+export type ClientWorldReactionValue = 'interesting' | 'later' | 'disagree';
 
-const REACTION_VALUES = new Set(['interesting', 'later', 'not_for_me']);
+const REACTION_VALUES = new Set(['interesting', 'later', 'disagree']);
 
 /**
  * Reads back this visitor's past idea reactions from the existing

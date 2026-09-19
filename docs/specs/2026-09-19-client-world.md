@@ -1,183 +1,81 @@
 # Client World — Luana pilot
 
-**Status:** implementation spec for the first private client-facing Saimôr World.
-**Date:** 2026-09-19
+**Status:** implementation spec for the first private client-facing page.
 **Surface:** `Saimor-world/Website`
 **Pilot route:** `/world/luana`
 
-## Product intent
+## Was das ist
 
-Client World is not a generic customer portal and not a second Saimôr OS.
+Eine private Seite für eine Kundin. Sie enthält das, was wir ihr gerade
+konkret zu sagen haben: Antworten auf ihre Fragen, Beobachtungen zu ihrem
+Auftritt, und ein Feld, in das sie zurückschreiben kann.
 
-It is a private, personalized front page inside the Saimôr universe that explains what Saimôr currently sees in a client's business, shows concrete directions and previews, and lets the client react before a full project or integration exists.
+Kein Kundenportal, kein Dashboard, keine Produktführung.
 
-The Luana pilot must already feel like a preview of the wider Saimôr world:
+## Was wir beim ersten Versuch falsch gemacht haben
 
-- current focus and proactive suggestions,
-- SAIMÔR perspective on the business,
-- website redesign direction rather than a copy of the current website,
-- digital presence cards for domain / TikTok / Instagram,
-- a visible bridge into YORI, Saimôr OS and MÔRA,
-- idea reactions and free-form feedback,
-- a very small set of next questions.
+Die erste Fassung hatte acht Abschnitte und hat fast ausschließlich über
+uns geredet: YORI, MÔRA, Saimôr OS, Verbindungen zwischen Produkten,
+Truth-State-Badges, ein interaktives Website-Konzept aus Platzhaltern.
+Über die Kundin selbst stand dort ihr Vorname.
 
-No prices, invoices or contract UI in this pilot.
+Dazu kam die Sprache. Fast jede Überschrift folgte derselben Formel —
+„Nicht mehr zeigen. Klarer verbinden.", „Erst verbinden. Dann urteilen.",
+„Nicht Dekoration. Tragende Ebene." Ein Dutzend Headlines, ein Rhythmus.
+Das liest sich als maschinell erzeugt, weil es das war.
 
-## Truth contract
+Beides ist raus. Die Regeln daraus:
 
-Every module carries an explicit truth state:
+- **Konkret vor schön.** Ein echter Satz über ihre Seite schlägt drei
+  Absätze über unsere Architektur.
+- **Keine Antithesen-Headlines.** Keine zweiteiligen Kurzsätze als
+  Überschrift. Normale Sätze, unterschiedliche Länge.
+- **Keine Produktnamen ohne Anlass.** YORI, MÔRA und OS gehören erst auf
+  die Seite, wenn davon etwas für sie läuft. Ein Test hält das fest.
+- **Keine abstrakten Nomen** als Träger (Raum, Welt, Fluss, Ebene,
+  Signale). Sie hat ein Business, keine World.
 
-- `live`: backed by a real connected source or real persisted client input,
-- `preview`: a Saimôr concept/demo, not connected truth,
-- `not_connected`: the source is missing; absence must never be presented as a negative finding.
+## Inhalt (Luana, Stand September 2026)
 
-The pilot must not invent social metrics, bookings, revenue, connected accounts, website audit results or completed work.
+Was wir belegen können, steht drin; alles andere nicht.
 
-## Architecture
+| Quelle | Was wir daraus verwenden |
+|---|---|
+| Ihre Website (Screenshot, Handy) | Markenname, Positionierungszeile, Headline, zwei CTAs, fünf konkrete Beobachtungen zum Einstieg |
+| Ihre Sprachnachricht | Frage zur E-Mail-Domain, Tatsache dass die Domain bei IONOS liegt |
 
-```text
-Client World (Website)
-  ├─ personalized editorial layer
-  ├─ access-code session
-  ├─ reactions / feedback
-  └─ bridges
-      ├─ YORI
-      ├─ Saimôr OS
-      └─ MÔRA / Deep View
+Nicht verwendet, weil nicht vorhanden: Reichweite, Besucherzahlen,
+Buchungen, Umsatz, Inhalte ihrer Angebote. Dafür gibt es einen eigenen
+Abschnitt „Was wir nicht wissen", der das offen sagt, statt es zu füllen.
 
-CORE remains truth for real integrations and actions.
-YORI remains its own product.
-Saimôr OS remains its own product.
-```
+## Zugang
 
-The Website surface is therefore an arrival/orchestration layer, not a second backend.
+Per-World-Code aus der Server-Umgebung (`CLIENT_WORLD_LUANA_CODE`), nie im
+Browser-Quelltext. Erfolgreicher Eintausch setzt ein signiertes HttpOnly-
+Cookie (30 Tage, `NEXTAUTH_SECRET` als Schlüssel), das nur Slug, zufällige
+Session-Id und Ablauf enthält.
 
-## V1 access
+Private Worlds tragen keine öffentliche Navigation, keinen Cookie-Banner,
+keine Achievements und kein Cmd+K — und erben auch keine Marketing-
+Metadaten (Canonical, OpenGraph, Twitter werden überschrieben).
 
-The pilot uses a per-world server-side access code stored only in the deployment environment.
+## Interaktionen
 
-For Luana:
+Persistiert über den bestehenden `WebsiteEvent`-Store, kein zweites
+Backend:
 
-`CLIENT_WORLD_LUANA_CODE`
+- `client_world.idea_reaction` — Reaktion auf einen konkreten Vorschlag
+  (`interesting` | `later` | `disagree`), `itemId` ist eine Note-Id
+- `client_world.feedback` — Freitext
 
-The code is never embedded in HTML or client JavaScript.
+Reaktionen werden beim Aufruf serverseitig zurückgelesen
+(`getPriorIdeaReactions`), damit die Seite den Stand behält. Schlägt die
+DB fehl, wird leer geladen statt den Zugang zu blockieren.
 
-Successful access creates a signed HttpOnly cookie scoped by world slug. The cookie contains only:
+## Offen
 
-- world slug,
-- random session id,
-- expiry.
-
-Signing uses the existing `NEXTAUTH_SECRET`. No user password is created.
-
-This is intentionally a pilot access mechanism. A later multi-client admin flow can replace environment-backed codes without changing the URL or page model.
-
-## V1 interaction persistence
-
-To avoid a premature second schema, pilot reactions are persisted through the existing generic `WebsiteEvent` store with explicit event names:
-
-- `client_world.idea_reaction`
-- `client_world.feedback`
-- `client_world.module_interest`
-
-Payloads include the world slug and only the submitted value. The signed world session id is used as the visitor id.
-
-If Client World becomes a durable client workspace, these interactions move behind a canonical CORE/client contract.
-
-## Luana V1 sections
-
-### 1. Today
-
-Personal greeting and a short current-state editorial note.
-
-Three focus items maximum.
-
-### 2. Perspective
-
-What already feels strong, what Saimôr would clarify, and where there is potential.
-
-These are editorial observations, not fabricated analytics.
-
-### 3. Website direction
-
-Show the direction Saimôr would take:
-
-- clearer arrival,
-- offer hierarchy,
-- stronger personal presence,
-- one obvious next action.
-
-A later dedicated clickable redesign can be attached as the module's deep link.
-
-### 4. Presence
-
-Cards for:
-
-- domain / website,
-- TikTok,
-- Instagram.
-
-Until sources are connected, show `not_connected` and explain what will become possible after connection.
-
-### 5. World preview
-
-Show the wider world already now:
-
-- YORI: creator/content operating space,
-- Saimôr OS: business operating space,
-- MÔRA: context and proactive intelligence.
-
-These are `preview` unless a real integration is attached.
-
-Deep links may point to existing product previews, but they must not claim Luana's data is already present there.
-
-### 6. Proactive suggestions
-
-Curated suggestions from Saimôr, each with:
-
-- title,
-- rationale,
-- impact hypothesis,
-- truth state,
-- reaction controls.
-
-Reaction choices:
-
-- interesting,
-- later,
-- not for me.
-
-### 7. Feedback
-
-One short free-text field for wishes / corrections / constraints.
-
-### 8. Next
-
-At most three current questions.
-
-## Design
-
-Client World is visually related to Saimôr but more intimate and editorial than the public homepage.
-
-Requirements:
-
-- mobile-first,
-- quiet, warm, premium,
-- dark forest / paper / jade / gold palette already present in the Website,
-- no dashboard tile wall,
-- visible transitions between Saimôr, YORI and OS,
-- reduced-motion support,
-- noindex / nofollow.
-
-## Acceptance for the first slice
-
-1. `/world/luana` cannot be opened without the configured code.
-2. The code itself never reaches browser source.
-3. A successful code entry persists a signed session.
-4. Luana sees Today, Perspective, Website Direction, Presence, World Preview, Suggestions, Feedback and Next.
-5. Preview and missing-source states are visibly distinguished.
-6. Idea reactions and feedback persist as `WebsiteEvent` records.
-7. The surface contains bridges to YORI, OS and MÔRA without pretending they are already connected to Luana.
-8. Public Saimôr navigation/footer are not wrapped around the private world.
-9. The page is noindex.
-10. No production deploy is part of this implementation slice.
+- `CLIENT_WORLD_LUANA_CODE` in Vercel setzen, dann End-to-End-Test des
+  Zugangs
+- Texte werden derzeit von Saimôr geschrieben; sobald die Kundin selbst
+  antwortet, ersetzt ihr Wortlaut unsere Formulierungen
+- Kein Production-Deploy im Rahmen dieses Slices
