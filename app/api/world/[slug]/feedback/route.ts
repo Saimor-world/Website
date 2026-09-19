@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getClientWorld, getClientWorldNoteIds } from '@/lib/client-world';
+import { getClientWorld } from '@/lib/client-world';
 import { readWorldSession, worldCookieName } from '@/lib/client-world-session';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const REACTIONS = new Set(['interesting', 'later', 'disagree']);
+const REACTIONS = new Set(['interesting', 'later', 'not_for_me']);
 
 function sameOrigin(request: NextRequest) {
   const origin = request.headers.get('origin');
@@ -56,10 +56,15 @@ export async function POST(
 
   let event: string;
   if (kind === 'idea_reaction') {
-    if (!itemId || !getClientWorldNoteIds(world).includes(itemId) || !REACTIONS.has(value)) {
+    if (!itemId || !world.ideas.some((idea) => idea.id === itemId) || !REACTIONS.has(value)) {
       return NextResponse.json({ error: 'Ungültige Reaktion.' }, { status: 400 });
     }
     event = 'client_world.idea_reaction';
+  } else if (kind === 'module_interest') {
+    if (!itemId || !world.modules.some((module) => module.id === itemId) || value !== 'open') {
+      return NextResponse.json({ error: 'Ungültiges Modul.' }, { status: 400 });
+    }
+    event = 'client_world.module_interest';
   } else if (kind === 'feedback') {
     if (!value || value.length > 1200) {
       return NextResponse.json({ error: 'Feedback muss zwischen 1 und 1200 Zeichen lang sein.' }, { status: 400 });

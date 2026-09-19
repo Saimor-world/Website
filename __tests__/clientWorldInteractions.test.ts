@@ -13,16 +13,16 @@ describe('getPriorIdeaReactions', () => {
 
   it('folds past idea_reaction events into a itemId -> value map, last write wins', async () => {
     mocks.findMany.mockResolvedValue([
-      { payload: { slug: 'luana', itemId: 'zwei-buttons', value: 'interesting' } },
-      { payload: { slug: 'luana', itemId: 'versalien', value: 'later' } },
-      { payload: { slug: 'luana', itemId: 'zwei-buttons', value: 'disagree' } },
+      { payload: { slug: 'luana', itemId: 'content-bridge', value: 'interesting' } },
+      { payload: { slug: 'luana', itemId: 'booking-path', value: 'later' } },
+      { payload: { slug: 'luana', itemId: 'content-bridge', value: 'not_for_me' } },
     ]);
 
     const reactions = await getPriorIdeaReactions('luana', 'sid-123');
 
     expect(reactions).toEqual({
-      'zwei-buttons': 'disagree',
-      versalien: 'later',
+      'content-bridge': 'not_for_me',
+      'booking-path': 'later',
     });
     expect(mocks.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
