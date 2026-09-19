@@ -48,10 +48,18 @@ function TruthBadge({ state }: { state: ClientWorldTruth }) {
   );
 }
 
-export default function ClientWorldPage({ world }: { world: ClientWorldConfig }) {
+export default function ClientWorldPage({
+  world,
+  initialReactions = {},
+}: {
+  world: ClientWorldConfig;
+  initialReactions?: Record<string, Reaction>;
+}) {
   const [activeModuleId, setActiveModuleId] = useState(world.modules[0]?.id ?? '');
   const [websiteConceptView, setWebsiteConceptView] = useState<WebsiteConceptView>('arrival');
-  const [reactions, setReactions] = useState<Record<string, Reaction>>({});
+  const [reactions, setReactions] = useState<Record<string, Reaction>>(initialReactions);
+  const returningWithReactions = useMemo(() => Object.keys(initialReactions).length > 0, [initialReactions]);
+  const allIdeasReacted = world.ideas.length > 0 && world.ideas.every((idea) => Boolean(reactions[idea.id]));
   const [busyReaction, setBusyReaction] = useState<string | null>(null);
   const [reactionError, setReactionError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState('');
@@ -399,6 +407,17 @@ export default function ClientWorldPage({ world }: { world: ClientWorldConfig })
               <p className="mt-6 max-w-md text-sm leading-7 text-white/38">
                 Noch keine automatische MÔRA-Auswertung. Diese Vorschläge sind kuratiert und ausdrücklich Preview — du kannst uns aber schon sagen, was davon zu dir passt.
               </p>
+              {returningWithReactions ? (
+                <p className="mt-5 flex max-w-md items-start gap-2 text-xs leading-6 text-emerald-100/40">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  Deine letzten Rückmeldungen sind schon eingeordnet — du erkennst sie unten an der aktiven Auswahl.
+                </p>
+              ) : null}
+              {allIdeasReacted ? (
+                <p className="mt-3 max-w-md text-xs leading-6 text-white/30">
+                  Alle aktuellen Vorschläge sind eingeordnet. Der nächste Vorschlag entsteht aus deiner Rückmeldung.
+                </p>
+              ) : null}
             </div>
 
             <div className="space-y-4">
