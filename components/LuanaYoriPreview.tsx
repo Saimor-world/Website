@@ -50,7 +50,7 @@ export default function LuanaYoriPreview({ world }: Props) {
             </div>
             <p className="mt-2 text-[8px] uppercase tracking-[.18em] text-[#efe4d0]/60">{TAGLINE}</p>
           </div>
-          <span className="pt-1 text-[8px] uppercase tracking-[.18em] text-[#d4af68]">DEIN YORI</span>
+          <span className="whitespace-nowrap pt-1 text-[8px] uppercase tracking-[.18em] text-[#d4af68]">DEIN YORI</span>
         </header>
 
         <div className="grid flex-1 items-center gap-8 py-8 lg:grid-cols-[.82fr_1.18fr] lg:gap-14">
@@ -67,7 +67,7 @@ export default function LuanaYoriPreview({ world }: Props) {
 
             <div className="mt-7 border-y border-[#d4af68]/30 py-5">
               <TruthRow label="Instagram" value="@luanalumiina" state="bekannt · nicht verifiziert" />
-              <TruthRow label="Sprache" value="Bewusstseinstraining · Identitätsshift · Energiearbeit" state="bekannt" />
+              <TruthRow label="Sprache" value={TAGLINE} state="bekannt" />
               <TruthRow label="3 Wege" value="Orakellegung · Skool-Mitgliedschaft · 1:1 Mentoring" state="aus deinem Auftritt" />
               <TruthRow label="Website" value="aktueller Entwurf bekannt" state="Produktions-Domain offen" />
             </div>
