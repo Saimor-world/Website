@@ -412,6 +412,15 @@ function DeskRoom({
               >
                 Entscheidung ansehen
               </button>
+
+              <div className="mx-auto mt-8 max-w-sm border-t border-[#f4e2c6]/[.08] pt-6">
+                <p className="font-serif text-xl font-light leading-tight text-[#f4ecdf]/[.82]">
+                  Wenn sich dieser Raum nach dir anfühlt, bauen wir von hier weiter.
+                </p>
+                <p className="mt-3 text-[10px] leading-5 text-[#f4ecdf]/[.34]">
+                  Antworte auf meine Nachricht einfach mit „weiter“.
+                </p>
+              </div>
             </div>
           </div>
         ) : (
