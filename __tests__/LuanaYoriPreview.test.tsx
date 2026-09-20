@@ -11,7 +11,14 @@ describe('LuanaYoriPreview', () => {
   it('arrives as Luana first and explains the World before asking for a decision', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getAllByText(/LUANA LUMINA/i).length).toBeGreaterThan(0);
+    /*
+     * Der Markenzug ist zweifarbig wie auf ihrer Seite - LUANA in Tinte,
+     * LUMINA in Messing - und steht deshalb in zwei Elementen. Deshalb hier
+     * ueber den zusammengesetzten Textinhalt pruefen.
+     */
+    expect(
+      screen.getAllByText((_, element) => element?.textContent?.trim() === 'LUANA LUMINA').length
+    ).toBeGreaterThan(0);
     expect(screen.getByText(/DEINE WORLD · YORI/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Meine World entdecken/i })).toBeInTheDocument();
 
