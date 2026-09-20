@@ -33,10 +33,16 @@ describe('LuanaYoriPreview', () => {
   it('shows only truthful connector capabilities', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getByText(/^TikTok$/i)).toBeInTheDocument();
+    /*
+     * "TikTok" steht zweimal auf der Seite: einmal als Plattform-Reiter und
+     * einmal als Quelle in der Leiste. Gemeint ist hier die Quelle, also auf
+     * deren Auszeichnung eingegrenzt statt die Zusicherung aufzuweichen.
+     */
+    const source = { selector: 'strong' } as const;
+    expect(screen.getByText(/^TikTok$/i, source)).toBeInTheDocument();
     expect(screen.getByText(/OAuth · echte Profil- & Videodaten/i)).toBeInTheDocument();
-    expect(screen.getByText(/^Kalender$/i)).toBeInTheDocument();
-    expect(screen.getByText(/^Website$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Kalender$/i, source)).toBeInTheDocument();
+    expect(screen.getByText(/^Website$/i, source)).toBeInTheDocument();
     expect(screen.getByText(/Keine Social-Zahl wird geraten/i)).toBeInTheDocument();
   });
 
