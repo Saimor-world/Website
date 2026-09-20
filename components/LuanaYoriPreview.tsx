@@ -34,6 +34,7 @@ const ROOMS: Array<{
 
 export default function LuanaYoriPreview({ world, initialDecision = null }: Props) {
   const [entered, setEntered] = useState(Boolean(initialDecision));
+  const [arrivalLeaving, setArrivalLeaving] = useState(false);
   const [room, setRoom] = useState<RoomId>('heute');
   const [decision, setDecision] = useState<Decision | null>(initialDecision);
   const [savingDecision, setSavingDecision] = useState(false);
@@ -200,7 +201,14 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
         </nav>
 
         {!entered ? (
-          <ArrivalOverlay onEnter={() => setEntered(true)} />
+          <ArrivalOverlay
+            leaving={arrivalLeaving}
+            onEnter={() => {
+              if (arrivalLeaving) return;
+              setArrivalLeaving(true);
+              window.setTimeout(() => setEntered(true), 460);
+            }}
+          />
         ) : null}
 
         {paperOpen ? (
@@ -219,13 +227,67 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
           />
         ) : null}
       </div>
+
+      <style>{`
+        @keyframes luana-arrival-in {
+          from { opacity: 0; transform: scale(1.01); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes luana-paper-in {
+          from { opacity: 0; transform: translateY(18px) scale(.985); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes luana-backdrop-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .luana-arrival {
+          animation: luana-arrival-in .72s cubic-bezier(.22,.72,.22,1) both;
+          transition: opacity .42s ease, filter .42s ease, transform .42s cubic-bezier(.22,.72,.22,1);
+        }
+        .luana-arrival--leaving {
+          opacity: 0;
+          filter: blur(7px);
+          transform: scale(1.012);
+          pointer-events: none;
+        }
+        .luana-paper-backdrop {
+          animation: luana-backdrop-in .24s ease-out both;
+        }
+        .luana-paper-surface {
+          animation: luana-paper-in .34s cubic-bezier(.22,.72,.22,1) both;
+          transform-origin: 50% 80%;
+        }
+        @media (min-width: 640px) {
+          @keyframes luana-paper-in {
+            from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)) scale(.985); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .luana-arrival,
+          .luana-paper-backdrop,
+          .luana-paper-surface {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }
 
-function ArrivalOverlay({ onEnter }: { onEnter: () => void }) {
+function ArrivalOverlay({
+  onEnter,
+  leaving,
+}: {
+  onEnter: () => void;
+  leaving: boolean;
+}) {
   return (
-    <section className="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-[#efe9dc] px-5 py-8 text-[#193d2f]">
+    <section
+      className={`luana-arrival fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-[#efe9dc] px-5 py-8 text-[#193d2f] ${leaving ? 'luana-arrival--leaving' : ''}`}
+    >
       <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(255,255,255,.92),transparent_25%),radial-gradient(circle_at_16%_88%,rgba(78,109,76,.18),transparent_30%),linear-gradient(180deg,#f0eadf_0%,#e8e0d2_100%)]" />
       <div aria-hidden="true" className="absolute -right-[18vw] top-[8vh] h-[62vw] max-h-[720px] w-[62vw] max-w-[720px] rounded-full border border-[#294d3c]/[.07]" />
       <div aria-hidden="true" className="absolute -right-[7vw] top-[18vh] h-[38vw] max-h-[440px] w-[38vw] max-w-[440px] rounded-full border border-[#294d3c]/[.08]" />
@@ -255,7 +317,8 @@ function ArrivalOverlay({ onEnter }: { onEnter: () => void }) {
           <button
             type="button"
             onClick={onEnter}
-            className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#294737] px-6 py-3 text-sm font-semibold text-[#f5f0e4] shadow-[0_14px_34px_rgba(34,67,49,.16)] transition hover:-translate-y-0.5 hover:bg-[#213b2f]"
+            disabled={leaving}
+            className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#294737] px-6 py-3 text-sm font-semibold text-[#f5f0e4] shadow-[0_14px_34px_rgba(34,67,49,.16)] transition hover:-translate-y-0.5 hover:bg-[#213b2f] disabled:cursor-wait disabled:opacity-70"
           >
             Meine World öffnen
             <ArrowRight className="h-4 w-4" />
@@ -592,9 +655,9 @@ function PaperSurface({
         type="button"
         onClick={onClose}
         aria-label="Papier schließen"
-        className="fixed inset-0 z-[80] bg-[#0b0806]/[.48] backdrop-blur-[6px]"
+        className="luana-paper-backdrop fixed inset-0 z-[80] bg-[#0b0806]/[.48] backdrop-blur-[6px]"
       />
-      <section className="fixed inset-x-3 bottom-3 z-[90] max-h-[88svh] overflow-y-auto rounded-[8px_28px_10px_24px] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_36px_110px_rgba(0,0,0,.34)] sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[min(680px,calc(100%-40px))] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:p-9">
+      <section className="luana-paper-surface fixed inset-x-3 bottom-3 z-[90] max-h-[88svh] overflow-y-auto rounded-[8px_28px_10px_24px] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_36px_110px_rgba(0,0,0,.34)] sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[min(680px,calc(100%-40px))] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:p-9">
         <div className="flex items-center justify-between">
           <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">AUF DEINEM TISCH</p>
           <button type="button" onClick={onClose} className="text-[10px] text-[#5d665e]/[.44]">schließen</button>
