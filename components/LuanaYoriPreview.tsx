@@ -41,7 +41,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
   const [paperOpen, setPaperOpen] = useState(false);
 
   async function chooseDecision(value: Decision) {
-    if (savingDecision) return;
+    if (savingDecision) return false;
 
     setSavingDecision(true);
     setDecisionError(false);
@@ -55,8 +55,10 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
 
       if (!response.ok) throw new Error('decision failed');
       setDecision(value);
+      return true;
     } catch {
       setDecisionError(true);
+      return false;
     } finally {
       setSavingDecision(false);
     }
@@ -205,7 +207,13 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
             saving={savingDecision}
             error={decisionError}
             onClose={() => setPaperOpen(false)}
-            onChoose={chooseDecision}
+            onChoose={async (value) => {
+              const saved = await chooseDecision(value);
+              if (saved) {
+                setPaperOpen(false);
+                setRoom('heute');
+              }
+            }}
           />
         ) : null}
       </div>
