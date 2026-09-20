@@ -59,7 +59,7 @@ export default function LuanaYoriPreview({ world }: Props) {
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url("${YORI_ORIGIN}/scene/rooms/room-desk.png")` }}
+        style={{ backgroundImage: 'url("/world/luana/room-desk.webp")' }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,20,16,.76)_0%,rgba(14,20,16,.46)_48%,rgba(14,20,16,.2)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,9,.08),rgba(8,12,9,.5))]" />
