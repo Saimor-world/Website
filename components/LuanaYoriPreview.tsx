@@ -124,7 +124,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
     <main className="min-h-[100svh] bg-[#f7f2e6] text-[#1c2b20]">
       <LightWorldAmbient />
 
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-[#b8893f]/[.30] bg-[#f3eddd]/[.76] px-6 pb-7 pt-8 backdrop-blur-[22px] lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-[#b8893f]/[.34] bg-[#f3eddd]/[.76] px-6 pb-7 pt-8 backdrop-blur-[22px] lg:flex">
         <a href="#ankommen" className="pb-10 text-left">
           <span className="flex items-center gap-2.5">
             <YoriMark className="h-8 w-8 shrink-0 text-[#25382a]" title="YORI" />
@@ -135,22 +135,22 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
           </span>
         </a>
 
-        <nav className="grid border-t border-[#b8893f]/[.24] pt-4" aria-label="Luana World Kapitel">
+        <nav className="grid border-t border-[#b8893f]/[.34] pt-4" aria-label="Luana World Kapitel">
           {NAV.map(([id, label]) => (
             <a
               key={id}
               href={`#${id}`}
-              className="border-b border-[#b8893f]/[.20] py-4 text-[10px] uppercase tracking-[.17em] text-[#5f6e63] transition hover:text-[#1c2b20]"
+              className="border-b border-[#b8893f]/[.34] py-4 text-[10px] uppercase tracking-[.17em] text-[#5f6e63] transition hover:text-[#1c2b20]"
             >
               {label}
             </a>
           ))}
         </nav>
 
-        <div className="mt-auto border-t border-[#b8893f]/[.28] pt-6">
+        <div className="mt-auto border-t border-[#b8893f]/[.34] pt-6">
           <p className="font-mono text-[9px] font-bold tracking-[.22em] text-[#2c6b68]">DEINE WORLD · YORI</p>
           <p className="mt-3 text-[11px] leading-5 text-[#5f6e63]">
-            Ein erster Blick für {world.clientName}. Noch ohne verbundene Quellen.
+            Ein erster Blick für {world.clientName}. Noch nichts davon ist mit deinen Konten verbunden.
           </p>
           {decision ? (
             <a href="#weiter" className="mt-5 block text-[9px] uppercase tracking-[.16em] text-[#8c6224] underline decoration-[#b8893f] underline-offset-4">
@@ -172,11 +172,11 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                 Für Luana
               </p>
             </div>
-            <p className="mt-2.5 text-[8px] uppercase tracking-[.15em] text-[#5f6e63] lg:hidden">{TAGLINE}</p>
+            <p className="mt-2.5 text-[9px] uppercase tracking-[.15em] text-[#5f6e63] lg:hidden">{TAGLINE}</p>
           </div>
         </header>
 
-        <nav className="border-b border-[#b8893f]/[.22] lg:hidden" aria-label="Luana World mobile Kapitel">
+        <nav className="border-b border-[#b8893f]/[.34] lg:hidden" aria-label="Luana World mobile Kapitel">
           {/*
             Die Leiste scrollt, aber der Balken ist ausgeblendet und "04 ·
             Weiter" liegt im Ruhezustand ausserhalb des Schirms. Ohne Hinweis
@@ -219,7 +219,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
 
             <div className="mt-20 border-y border-[#b8893f]/[.34] py-12 sm:mt-28 sm:py-16">
               <p className="text-center text-[10px] uppercase tracking-[.20em] text-[#8c6224]">Warum für dich?</p>
-              <p className="mx-auto mt-6 max-w-3xl text-center font-serif text-[clamp(1.6rem,3.4vw,2.25rem)] font-light leading-[1.26]">
+              <p className="mx-auto mt-6 max-w-3xl text-center font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-[1.26]">
                 Weil dein Auftritt schon heute wie eine kleine Welt funktioniert – mit eigener Sprache, mehreren Wegen, Stimmen und Dingen, die weiterwachsen.
               </p>
               <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
@@ -230,7 +230,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
             <SectionOpener
               eyebrow="Ankommen"
               title={`Hallo ${world.clientName}. Was ist das hier eigentlich?`}
-              body="Die wichtigsten Fragen zuerst. Nicht als Produktpitch – sondern damit du nach ein paar Minuten selbst beurteilen kannst, ob diese Idee überhaupt zu dir passt."
+              body="Die wichtigsten Fragen zuerst. Damit du nach ein paar Minuten selbst beurteilen kannst, ob diese Idee überhaupt zu dir passt."
             />
 
             <dl className="mt-2 grid lg:grid-cols-2 lg:gap-x-16">
@@ -261,7 +261,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                   <div className={`grid items-center gap-10 lg:gap-16 ${index % 2 ? 'lg:grid-cols-[.82fr_1.18fr]' : 'lg:grid-cols-[1.18fr_.82fr]'}`}>
                     <div className={index % 2 ? 'lg:order-2' : undefined}>
                       <p className="font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">{chapter}</p>
-                      <h3 className="mt-5 max-w-[17ch] font-serif text-[clamp(1.65rem,3.4vw,2.35rem)] font-light leading-[1.16]">{title}</h3>
+                      <h3 className="mt-5 max-w-[17ch] font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-[1.16]">{title}</h3>
                       <p className="mt-5 max-w-lg text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">{body}</p>
                     </div>
                     <div className={index % 2 ? 'lg:order-1' : undefined}>
@@ -277,7 +277,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                 <YoriMark className="h-[min(62vw,22rem)] w-[min(62vw,22rem)] text-[#3E8F8B]" title="YORI" />
               </div>
               <p className="font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">DER EIGENTLICHE GEDANKE</p>
-              <p className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(1.75rem,3.8vw,2.6rem)] font-light leading-[1.22]">
+              <p className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-[1.22]">
                 Deine World soll nicht mehr von dir verlangen. <Marker>Sie soll weniger verlieren lassen.</Marker>
               </p>
               <p className="mx-auto mt-7 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
@@ -304,7 +304,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
             <SectionOpener
               eyebrow="Weiter"
               title="Was würde das für dich praktisch bedeuten?"
-              body="Noch bevor irgendetwas gebaut wird, sind diese Fragen wichtiger als weitere Features."
+              body="Noch bevor irgendetwas gebaut wird, sind diese Fragen wichtiger als alles andere."
             />
 
             <dl className="mt-2 grid lg:grid-cols-2 lg:gap-x-16">
@@ -380,7 +380,7 @@ function Hero() {
         <div aria-hidden="true" className="absolute -left-8 -top-8 h-[75%] w-[80%] rounded-full bg-[radial-gradient(circle_at_38%_34%,rgba(255,255,255,.92),rgba(196,208,182,.30)_58%,transparent_74%)] blur-2xl" />
         <div className="relative border-y border-[#b8893f]/[.34] py-9">
           <p className="text-[10px] uppercase tracking-[.20em] text-[#8c6224]">Deine World könnte</p>
-          <p className="mt-4 font-serif text-[clamp(1.8rem,3.6vw,2.45rem)] font-light leading-tight">erinnern, ordnen, verbinden.</p>
+          <p className="mt-4 font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-tight">erinnern, ordnen, verbinden.</p>
           <p className="mt-5 max-w-sm text-[14px] leading-7 text-[#5f6e63]">Und dabei im Hintergrund bleiben, solange du sie nicht brauchst.</p>
         </div>
         <p className="mt-8 font-serif text-[19px] font-light leading-relaxed text-[#5f6e63]">Heute — nur das, was gerade zählt.</p>
@@ -399,10 +399,10 @@ function WorldFlow() {
 
   return (
     <div className="mt-12 border-y border-[#b8893f]/[.34] py-3">
-      <p className="py-5 text-center font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">SO SOLL SICH YORI VERHALTEN</p>
+      <p className="py-5 text-center font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">SO WÜRDE ES SICH ANFÜHLEN</p>
       <div className="grid md:grid-cols-3">
         {steps.map(([eyebrow, title, body], index) => (
-          <div key={eyebrow} className={`relative px-1 py-8 md:px-8 ${index ? 'border-t border-[#b8893f]/[.24] md:border-l md:border-t-0' : ''}`}>
+          <div key={eyebrow} className={`relative px-1 py-8 md:px-8 ${index ? 'border-t border-[#b8893f]/[.34] md:border-l md:border-t-0' : ''}`}>
             <p className="text-[9px] uppercase tracking-[.18em] text-[#8c6224]">{eyebrow}</p>
             <h3 className="mt-3 font-serif text-[22px] font-light leading-snug">{title}</h3>
             <p className="mt-4 text-[14px] leading-7 text-[#55655a]">{body}</p>
@@ -416,18 +416,18 @@ function WorldFlow() {
 function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) {
   if (kind === 'page') {
     return (
-      <div aria-hidden="true" className="mx-auto w-full max-w-[320px] rounded-[1.4rem_.5rem_1.5rem_.6rem] border border-[#b8893f]/[.30] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
-        <div className="h-1.5 w-16 bg-[#c8a86a]" /><div className="mt-5 h-2.5 w-[88%] bg-[#1c2b20]/[.16]" /><div className="mt-2 h-2.5 w-[62%] bg-[#1c2b20]/[.16]" /><div className="mt-6 h-px w-28 bg-[#b8893f]" /><div className="mt-6 h-px w-full bg-[#b8893f]/[.28]" /><div className="mt-5 h-1.5 w-[45%] bg-[#1c2b20]/[.10]" />
+      <div aria-hidden="true" className="mx-auto w-full max-w-[320px] rounded-[1.4rem_.5rem_1.5rem_.6rem] border border-[#b8893f]/[.34] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
+        <div className="h-1.5 w-16 bg-[#c8a86a]" /><div className="mt-5 h-2.5 w-[88%] bg-[#1c2b20]/[.16]" /><div className="mt-2 h-2.5 w-[62%] bg-[#1c2b20]/[.16]" /><div className="mt-6 h-px w-28 bg-[#b8893f]" /><div className="mt-6 h-px w-full bg-[#b8893f]/[.34]" /><div className="mt-5 h-1.5 w-[45%] bg-[#1c2b20]/[.10]" />
       </div>
     );
   }
   if (kind === 'note') {
     return (
       <div aria-hidden="true" className="mx-auto w-full max-w-[320px]">
-        <div className="rotate-[-1.4deg] rounded-[.5rem_1.4rem_.6rem_1.3rem] border border-[#b8893f]/[.30] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
+        <div className="rotate-[-1.4deg] rounded-[.5rem_1.4rem_.6rem_1.3rem] border border-[#b8893f]/[.34] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
           <div className="h-1.5 w-12 bg-[#c8a86a]" /><div className="mt-5 space-y-2.5"><div className="h-2 w-[90%] bg-[#1c2b20]/[.13]" /><div className="h-2 w-[74%] bg-[#1c2b20]/[.13]" /><div className="h-2 w-[40%] bg-[#1c2b20]/[.09]" /></div>
         </div>
-        <div className="ml-10 mt-4 w-[66%] rotate-[1.8deg] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.22] bg-[#fdfaf1]/[.70] p-4"><div className="h-2 w-[70%] bg-[#1c2b20]/[.09]" /></div>
+        <div className="ml-10 mt-4 w-[66%] rotate-[1.8deg] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.34] bg-[#fdfaf1]/[.70] p-4"><div className="h-2 w-[70%] bg-[#1c2b20]/[.09]" /></div>
       </div>
     );
   }
@@ -435,16 +435,16 @@ function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) 
     return (
       <div aria-hidden="true" className="mx-auto grid w-full max-w-[320px]">
         <div className="rounded-[1.2rem_.4rem_1.3rem_.5rem] border-l-2 border-[#3E8F8B] bg-[#fdfaf1] px-5 py-5 shadow-[7px_8px_0_rgba(62,143,139,.12)]"><div className="h-1.5 w-10 bg-[#3E8F8B]" /><div className="mt-3.5 h-2.5 w-[76%] bg-[#1c2b20]/[.18]" /></div>
-        <div className="border-b border-[#b8893f]/[.20] px-5 py-5"><div className="h-2 w-[58%] bg-[#1c2b20]/[.08]" /></div>
+        <div className="border-b border-[#b8893f]/[.34] px-5 py-5"><div className="h-2 w-[58%] bg-[#1c2b20]/[.08]" /></div>
         <div className="px-5 py-5"><div className="h-2 w-[44%] bg-[#1c2b20]/[.06]" /></div>
       </div>
     );
   }
   return (
     <div aria-hidden="true" className="relative mx-auto h-[200px] w-full max-w-[320px]">
-      <div className="absolute left-0 top-0 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.18] bg-[#fdfaf1]/[.45] p-4"><div className="h-2 w-[50%] bg-[#1c2b20]/[.07]" /></div>
-      <div className="absolute left-9 top-11 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.24] bg-[#fdfaf1]/[.72] p-4"><div className="h-2 w-[62%] bg-[#1c2b20]/[.10]" /></div>
-      <div className="absolute left-[4.5rem] top-[5.5rem] w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.30] bg-[#fdfaf1] p-4 shadow-[7px_8px_0_rgba(62,143,139,.12)]"><div className="h-1.5 w-10 bg-[#c8a86a]" /><div className="mt-3 h-2.5 w-[78%] bg-[#1c2b20]/[.18]" /></div>
+      <div className="absolute left-0 top-0 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.34] bg-[#fdfaf1]/[.45] p-4"><div className="h-2 w-[50%] bg-[#1c2b20]/[.07]" /></div>
+      <div className="absolute left-9 top-11 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.34] bg-[#fdfaf1]/[.72] p-4"><div className="h-2 w-[62%] bg-[#1c2b20]/[.10]" /></div>
+      <div className="absolute left-[4.5rem] top-[5.5rem] w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.34] bg-[#fdfaf1] p-4 shadow-[7px_8px_0_rgba(62,143,139,.12)]"><div className="h-1.5 w-10 bg-[#c8a86a]" /><div className="mt-3 h-2.5 w-[78%] bg-[#1c2b20]/[.18]" /></div>
     </div>
   );
 }
@@ -468,7 +468,7 @@ function ExampleContent() {
             <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_12%,rgba(240,244,222,.34),transparent_62%),radial-gradient(ellipse_at_50%_112%,rgba(28,43,32,.45),transparent_58%)]" />
             <div className="relative">
               <p className="text-[9px] uppercase tracking-[.19em] text-[#f2eeda]/80">{TAGLINE}</p>
-              <h3 className="mx-auto mt-8 max-w-xl font-serif text-[clamp(1.9rem,4.4vw,3rem)] font-light leading-[1.12] text-[#fbf8ee]">Du stehst an der Schwelle zu einer neuen Identität.</h3>
+              <h3 className="mx-auto mt-8 max-w-xl font-serif text-[clamp(1.95rem,4.6vw,3rem)] font-light leading-[1.12] text-[#fbf8ee]">Du stehst an der Schwelle zu einer neuen Identität.</h3>
               <div className="mt-10 grid justify-items-center gap-5">
                 <span className="border-b border-[#d9b877] pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#fbf8ee]">Angebote entdecken</span>
                 <span className="border-b border-[#fbf8ee]/45 pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#fbf8ee]/80">Identitätsshift Guide</span>
@@ -483,7 +483,7 @@ function ExampleContent() {
           <dl className="mt-6">
             {holdings.map(([q, a]) => (
               <div key={q} className="border-b border-[#b8893f]/[.34] py-7">
-                <dt className="font-serif text-[clamp(1.3rem,2.6vw,1.6rem)] font-light leading-snug">{q}</dt>
+                <dt className="font-serif text-[clamp(1.35rem,2.8vw,1.7rem)] font-light leading-snug">{q}</dt>
                 <dd className="mt-3 text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">{a}</dd>
               </div>
             ))}
@@ -492,7 +492,7 @@ function ExampleContent() {
       </div>
 
       <div className="py-16 text-center sm:py-20">
-        <p className="mx-auto max-w-3xl font-serif text-[clamp(1.55rem,3.4vw,2.2rem)] font-light leading-[1.24]">Nichts davon müsste neu erfunden werden. <Marker>Es müsste nur zusammenbleiben.</Marker></p>
+        <p className="mx-auto max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-[1.24]">Nichts davon müsste neu erfunden werden. <Marker>Es müsste nur zusammenbleiben.</Marker></p>
         <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">Eine World ist der Ort, an dem dein Bild, dein Satz, deine Wege und die Gespräche darüber denselben Zusammenhang behalten — auch in einem Jahr, wenn wieder etwas Neues dazukommt.</p>
       </div>
     </>
@@ -515,7 +515,7 @@ function DecisionSection({
       {decision ? (
         <>
           <p className="text-[10px] uppercase tracking-[.20em] text-[#8c6224]">Deine Antwort ist notiert</p>
-          <h2 className="mx-auto mt-6 max-w-[22ch] font-serif text-[clamp(1.85rem,4.2vw,2.8rem)] font-light leading-[1.18]">{decision === 'yes' ? 'Dann bauen wir von hier weiter.' : 'Dann ändern wir zuerst die Richtung.'}</h2>
+          <h2 className="mx-auto mt-6 max-w-[22ch] font-serif text-[clamp(1.95rem,4.6vw,3rem)] font-light leading-[1.18]">{decision === 'yes' ? 'Dann bauen wir von hier weiter.' : 'Dann ändern wir zuerst die Richtung.'}</h2>
           <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
             {decision === 'yes'
               ? 'Deine World erinnert sich an diese Entscheidung. Wenn du möchtest, reicht als nächster Schritt ein kurzes „weiter“.'
@@ -525,7 +525,7 @@ function DecisionSection({
       ) : (
         <>
           <p className="text-[10px] uppercase tracking-[.20em] text-[#8c6224]">Eine letzte Frage</p>
-          <h2 className="mx-auto mt-6 max-w-[25ch] font-serif text-[clamp(1.85rem,4.2vw,2.8rem)] font-light leading-[1.18]">Fühlt sich das nach einer World an, die dir wirklich etwas abnehmen könnte – ohne dir Kontrolle zu nehmen?</h2>
+          <h2 className="mx-auto mt-6 max-w-[25ch] font-serif text-[clamp(1.95rem,4.6vw,3rem)] font-light leading-[1.18]">Fühlt sich das nach einer World an, die dir wirklich etwas abnehmen könnte – ohne dir Kontrolle zu nehmen?</h2>
           <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">Nicht: Ist schon alles perfekt? Sondern nur: Ist die Richtung interessant genug, um daraus gemeinsam einen echten kleinen nächsten Schritt zu machen?</p>
 
           <div className="mx-auto mt-12 max-w-3xl border-y border-[#b8893f]/[.34]">
@@ -537,7 +537,7 @@ function DecisionSection({
             >
               <span className="text-[10px] uppercase tracking-[.20em] text-[#8c6224]">JA — WEITERDENKEN</span>
               <span className="mt-3 flex items-end justify-between gap-6">
-                <span className="font-serif text-[clamp(1.5rem,3.3vw,2.15rem)] font-light leading-tight">Das möchte ich gemeinsam weiterbauen.</span>
+                <span className="font-serif text-[clamp(1.7rem,3.6vw,2.35rem)] font-light leading-tight">Das möchte ich gemeinsam weiterbauen.</span>
                 <span aria-hidden="true" className="mb-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#3E8F8B] transition group-hover:scale-125" />
               </span>
             </button>
@@ -546,7 +546,7 @@ function DecisionSection({
               type="button"
               disabled={saving}
               onClick={() => onChoose('change')}
-              className="w-full border-t border-[#b8893f]/[.24] py-6 text-left text-[11px] uppercase tracking-[.17em] text-[#5f6e63] transition hover:text-[#1c2b20] disabled:cursor-wait disabled:opacity-50"
+              className="w-full border-t border-[#b8893f]/[.34] py-6 text-left text-[11px] uppercase tracking-[.17em] text-[#5f6e63] transition hover:text-[#1c2b20] disabled:cursor-wait disabled:opacity-50"
             >
               Die Richtung braucht noch etwas anderes
             </button>
@@ -565,7 +565,7 @@ function ChapterBridge({ number, title, href }: { number: string; title: string;
       <a href={href} className="group flex items-end justify-between gap-6">
         <span>
           <span className="font-mono text-[9px] font-bold tracking-[.18em] text-[#2c6b68]">KAPITEL {number}</span>
-          <span className="mt-2 block font-serif text-[clamp(1.35rem,2.8vw,1.8rem)] font-light">{title}</span>
+          <span className="mt-2 block font-serif text-[clamp(1.35rem,2.8vw,1.7rem)] font-light">{title}</span>
         </span>
         <span aria-hidden="true" className="mb-1 block h-px w-12 bg-[#b8893f] transition group-hover:w-20" />
       </a>
