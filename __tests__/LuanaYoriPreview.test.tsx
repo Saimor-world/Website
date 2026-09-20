@@ -33,10 +33,10 @@ describe('LuanaYoriPreview', () => {
   it('shows only truthful connector capabilities', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getByText(/TikTok verbinden/i)).toBeInTheDocument();
-    expect(screen.getByText(/Follower, Likes, Videoanzahl und bis zu 20 aktuelle Videos/i)).toBeInTheDocument();
-    expect(screen.getByText(/Kalender verbinden/i)).toBeInTheDocument();
-    expect(screen.getByText(/Website bestätigen/i)).toBeInTheDocument();
+    expect(screen.getByText(/^TikTok$/i)).toBeInTheDocument();
+    expect(screen.getByText(/OAuth · echte Profil- & Videodaten/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Kalender$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Website$/i)).toBeInTheDocument();
     expect(screen.getByText(/Keine Social-Zahl wird geraten/i)).toBeInTheDocument();
   });
 
