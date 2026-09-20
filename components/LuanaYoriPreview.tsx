@@ -4,12 +4,10 @@ import { useMemo, useState } from 'react';
 import YoriMark from '@/components/YoriMark';
 import type { ClientWorldConfig } from '@/lib/client-world';
 
-type Decision = 'yes' | 'change';
 type Platform = 'instagram' | 'tiktok';
 
 type Props = {
   world: ClientWorldConfig;
-  initialDecision?: Decision | null;
 };
 
 const DEFAULT_HANDLE = 'luanalumiina';
