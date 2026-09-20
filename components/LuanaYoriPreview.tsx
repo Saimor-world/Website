@@ -35,11 +35,10 @@ export default function LuanaYoriPreview({ world }: Props) {
 
   return (
     <main className="relative min-h-[100svh] overflow-hidden bg-[#182019] text-[#f8f2e5]">
-      <img
-        src={`${YORI_ORIGIN}/scene/rooms/room-desk.png`}
-        alt=""
+      <div
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url("${YORI_ORIGIN}/scene/rooms/room-desk.png")` }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,20,16,.83)_0%,rgba(15,20,16,.52)_46%,rgba(15,20,16,.18)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,15,12,.12),rgba(10,15,12,.46))]" />
