@@ -26,9 +26,16 @@ function safeEqual(left: string, right: string) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+function safeWorldSlug(slug: string) {
+  return slug.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+}
+
 export function worldCookieName(slug: string) {
-  const safeSlug = slug.toLowerCase().replace(/[^a-z0-9_-]/g, '');
-  return `saimor_world_${safeSlug}`;
+  return `saimor_world_${safeWorldSlug(slug)}`;
+}
+
+export function worldPreviewCookieName(slug: string) {
+  return `saimor_world_preview_${safeWorldSlug(slug)}`;
 }
 
 export function createWorldSession(slug: string) {
