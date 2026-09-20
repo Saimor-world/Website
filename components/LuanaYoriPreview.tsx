@@ -168,7 +168,9 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                 decision={decision}
                 saving={savingDecision}
                 error={decisionError}
-                onChoose={chooseDecision}
+                onChoose={(value) => {
+                  void chooseDecision(value);
+                }}
                 onBack={() => setRoom('heute')}
               />
             )}
