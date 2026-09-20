@@ -14,44 +14,50 @@ describe('LuanaYoriPreview', () => {
     expect(
       screen.getAllByText((_, element) => element?.textContent?.trim() === 'LUANA LUMINA').length
     ).toBeGreaterThan(0);
-    expect(screen.getByRole('heading', { name: /Luana, hier liegt schon etwas von dir/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Nicht noch ein Chat. Ein Ort für deine ganze Arbeit./i })).toBeInTheDocument();
     expect(screen.getByDisplayValue('luanalumiina')).toBeInTheDocument();
-    expect(screen.getByText(/bekannt · nicht verifiziert/i)).toBeInTheDocument();
-    expect(screen.getByText(/Produktions-Domain offen/i)).toBeInTheDocument();
+    expect(screen.getByText(/Genannt heißt nicht verbunden/i)).toBeInTheDocument();
   });
 
-  it('links the prefilled public handle into the real YORI creator preview', () => {
+  it('shows the real tool context Luana named without pretending it is connected', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    const link = screen.getByRole('link', { name: /Haus mit @luanalumiina betreten/i });
+    for (const tool of ['Claude', 'Notion', 'Canva', 'Calendly', 'MailerLite', 'Stripe', 'PayPal', 'Zoom', 'CapCut']) {
+      expect(screen.getByText(tool)).toBeInTheDocument();
+    }
+    expect(screen.getByText(/Quelle erst als aktiv, wenn eine echte Provider-Verbindung steht/i)).toBeInTheDocument();
+  });
+
+  it('carries the prefilled handle into the public creator preview', () => {
+    render(<LuanaYoriPreview world={world} />);
+
+    const link = screen.getByRole('link', { name: /YORI mit @luanalumiina öffnen/i });
     expect(link).toHaveAttribute(
       'href',
       'https://yori-pm0i.onrender.com/demo?platform=instagram&creator=luanalumiina'
     );
   });
 
-  it('shows only truthful connector capabilities', () => {
+  it('links real account connections into the protected YORI login flow', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    /*
-     * "TikTok" steht zweimal auf der Seite: einmal als Plattform-Reiter und
-     * einmal als Quelle in der Leiste. Gemeint ist hier die Quelle, also auf
-     * deren Auszeichnung eingegrenzt statt die Zusicherung aufzuweichen.
-     */
-    const source = { selector: 'strong' } as const;
-    expect(screen.getByText(/^TikTok$/i, source)).toBeInTheDocument();
-    expect(screen.getByText(/OAuth · echte Profil- & Videodaten/i)).toBeInTheDocument();
-    expect(screen.getByText(/^Kalender$/i, source)).toBeInTheDocument();
-    expect(screen.getByText(/^Website$/i, source)).toBeInTheDocument();
-    expect(screen.getByText(/Keine Social-Zahl wird geraten/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Geschützte Konten verbinden/i })).toHaveAttribute(
+      'href',
+      'https://yori-pm0i.onrender.com/login?next=%2F%3Fconnections%3D1'
+    );
+
+    expect(screen.getByText(/TikTok/i, { selector: 'strong' })).toBeInTheDocument();
+    expect(screen.getByText(/Google OAuth/i)).toBeInTheDocument();
+    expect(screen.getByText(/IMAP \/ SMTP/i)).toBeInTheDocument();
+    expect(screen.getByText(/YORI Cut · nativ/i)).toBeInTheDocument();
   });
 
-  it('does not bring back the long audit or chapter experience', () => {
+  it('does not bring back the long audit or fake connection language', () => {
     render(<LuanaYoriPreview world={world} />);
 
     expect(screen.queryByText(/Gemeinsamer Stand/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Wir haben uns deinen Auftritt angesehen/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/01 · Ankommen/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Nicht mehr Oberfläche\. Mehr Zusammenhang/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/alle Konten sind verbunden/i)).not.toBeInTheDocument();
   });
 });
