@@ -5,8 +5,11 @@ import { ArrowRight, Check, ChevronDown, House, MessageCircle, Sparkles, Waves }
 import YoriMark from '@/components/YoriMark';
 import type { ClientWorldConfig } from '@/lib/client-world';
 
+type Decision = 'yes' | 'change';
+
 type Props = {
   world: ClientWorldConfig;
+  initialDecision?: Decision | null;
 };
 
 type RoomId = 'heute' | 'auftritt' | 'ideen' | 'weg';
@@ -48,10 +51,34 @@ const ROOMS: Array<{
   },
 ];
 
-export default function LuanaYoriPreview({ world }: Props) {
+export default function LuanaYoriPreview({ world, initialDecision = null }: Props) {
   const [room, setRoom] = useState<RoomId>('heute');
-  const [decision, setDecision] = useState<'yes' | 'change' | null>(null);
+  const [decision, setDecision] = useState<Decision | null>(initialDecision);
+  const [savingDecision, setSavingDecision] = useState(false);
+  const [decisionError, setDecisionError] = useState(false);
   const activeRoom = ROOMS.find((item) => item.id === room) ?? ROOMS[0];
+
+  async function chooseDecision(value: Decision) {
+    if (savingDecision) return;
+
+    setSavingDecision(true);
+    setDecisionError(false);
+
+    try {
+      const response = await fetch(`/api/world/${encodeURIComponent(world.slug)}/preview-decision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value }),
+      });
+
+      if (!response.ok) throw new Error('decision failed');
+      setDecision(value);
+    } catch {
+      setDecisionError(true);
+    } finally {
+      setSavingDecision(false);
+    }
+  }
 
   return (
     <main className="relative overflow-hidden bg-[#efe9dc] text-[#18362b] selection:bg-[#7b8d6a]/[.25]">
@@ -329,10 +356,10 @@ export default function LuanaYoriPreview({ world }: Props) {
                         Für diese Preview würden wir „Angebote entdecken“ führen und den Guide als ruhigeren zweiten Weg behalten.
                       </p>
                       <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                        <button type="button" onClick={() => setDecision('yes')} className="min-h-14 bg-[#294737] px-5 text-sm font-semibold text-[#f5f0e4]">
+                        <button type="button" onClick={() => void chooseDecision('yes')} className="min-h-14 bg-[#294737] px-5 text-sm font-semibold text-[#f5f0e4]">
                           Angebot führt
                         </button>
-                        <button type="button" onClick={() => setDecision('change')} className="min-h-14 border border-[#315341]/[.12] px-5 text-sm text-[#34513f]/[.64]">
+                        <button type="button" onClick={() => void chooseDecision('change')} className="min-h-14 border border-[#315341]/[.12] px-5 text-sm text-[#34513f]/[.64]">
                           Ich würde es anders lösen
                         </button>
                       </div>
@@ -457,8 +484,9 @@ export default function LuanaYoriPreview({ world }: Props) {
             <div className="mt-8 space-y-3">
               <button
                 type="button"
-                onClick={() => setDecision('yes')}
-                className={`flex min-h-14 w-full items-center justify-between rounded-full px-5 text-sm font-semibold transition ${
+                disabled={savingDecision}
+                onClick={() => void chooseDecision('yes')}
+                className={`flex min-h-14 w-full items-center justify-between rounded-full px-5 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60 ${
                   decision === 'yes'
                     ? 'bg-[#d9c58c] text-[#183127]'
                     : 'bg-[#efe7d7] text-[#183127] hover:bg-white'
@@ -470,8 +498,9 @@ export default function LuanaYoriPreview({ world }: Props) {
 
               <button
                 type="button"
-                onClick={() => setDecision('change')}
-                className={`min-h-12 w-full rounded-full border px-5 text-sm transition ${
+                disabled={savingDecision}
+                onClick={() => void chooseDecision('change')}
+                className={`min-h-12 w-full rounded-full border px-5 text-sm transition disabled:cursor-wait disabled:opacity-60 ${
                   decision === 'change'
                     ? 'border-[#d9c58c]/[.35] bg-[#d9c58c]/[.10] text-[#eadcb7]'
                     : 'border-[#eee5d4]/[.12] text-[#eee5d4]/[.52] hover:border-[#eee5d4]/[.25] hover:text-[#eee5d4]/[.74]'
@@ -484,7 +513,11 @@ export default function LuanaYoriPreview({ world }: Props) {
             {decision ? (
               <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-[#dfd5c0]/[.38]">
                 <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                Design-Preview: In der echten World wird diese Entscheidung gespeichert und führt in den nächsten Schritt.
+                Gespeichert. Wenn du wiederkommst, erinnert sich diese Preview an deine Entscheidung.
+              </p>
+            ) : decisionError ? (
+              <p className="mt-5 text-xs leading-5 text-[#e6b1a6]/70">
+                Konnte gerade nicht gespeichert werden. Bitte nochmal versuchen.
               </p>
             ) : null}
           </div>
