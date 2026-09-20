@@ -43,34 +43,3 @@ export async function getPriorIdeaReactions(
   }
 }
 
-
-export type ClientWorldPreviewDecisionValue = 'yes' | 'change';
-
-const PREVIEW_DECISION_VALUES = new Set(['yes', 'change']);
-
-export async function getPriorPreviewDecision(
-  slug: string,
-  visitorId: string
-): Promise<ClientWorldPreviewDecisionValue | null> {
-  try {
-    const event = await prisma.websiteEvent.findFirst({
-      where: {
-        event: 'client_world.preview_decision',
-        visitorId,
-        path: `/world/${slug}/preview`,
-      },
-      orderBy: { createdAt: 'desc' },
-      select: { payload: true },
-    });
-
-    const payload = event?.payload;
-    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null;
-    const value = (payload as Record<string, unknown>).value;
-    return typeof value === 'string' && PREVIEW_DECISION_VALUES.has(value)
-      ? (value as ClientWorldPreviewDecisionValue)
-      : null;
-  } catch (error) {
-    console.error('getPriorPreviewDecision failed', error);
-    return null;
-  }
-}
