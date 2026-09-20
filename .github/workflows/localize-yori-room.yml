@@ -1,0 +1,46 @@
+name: Localize YORI room asset
+
+on:
+  push:
+    branches:
+      - feat/client-world-luana-open-preview
+    paths:
+      - ".github/workflows/localize-yori-room.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/client-world-luana-open-preview
+      - name: Fetch YORI room
+        run: |
+          set -euo pipefail
+          mkdir -p public/world/luana
+          curl --fail --location --retry 4 --retry-delay 2 \
+            --output /tmp/room-desk.png \
+            https://yori-pm0i.onrender.com/scene/rooms/room-desk.png
+      - name: Convert to compact WebP
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq webp
+          cwebp -quiet -resize 1920 0 -q 68 /tmp/room-desk.png -o public/world/luana/room-desk.webp
+          test -s public/world/luana/room-desk.webp
+          ls -lh public/world/luana/room-desk.webp
+      - name: Commit localized asset
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/world/luana/room-desk.webp
+          if git diff --cached --quiet; then
+            echo "Asset already current."
+            exit 0
+          fi
+          git commit -m "chore(world): localize YORI room asset"
+          git push origin HEAD:feat/client-world-luana-open-preview
