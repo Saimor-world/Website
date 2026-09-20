@@ -33,7 +33,7 @@ const ROOMS: Array<{
 ];
 
 export default function LuanaYoriPreview({ world, initialDecision = null }: Props) {
-  const [entered, setEntered] = useState(false);
+  const [entered, setEntered] = useState(Boolean(initialDecision));
   const [room, setRoom] = useState<RoomId>('heute');
   const [decision, setDecision] = useState<Decision | null>(initialDecision);
   const [savingDecision, setSavingDecision] = useState(false);
@@ -108,7 +108,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
               Preview
             </span>
             <small className="mt-1.5 block text-[8px] leading-4 text-[#f4ecdf]/[.42]">
-              Keine verbundenen Quellen. Eine Entscheidung wartet.
+              {decision ? 'Keine verbundenen Quellen. Schreibtisch frei.' : 'Keine verbundenen Quellen. Eine Entscheidung wartet.'}
             </small>
           </section>
 
@@ -319,30 +319,48 @@ function DeskRoom({
       <div className="relative mt-10 min-h-[470px] overflow-hidden rounded-[28px_8px_30px_10px] border border-[#f4e2c6]/[.08] bg-[linear-gradient(180deg,rgba(65,49,36,.50),rgba(28,21,16,.62))] p-5 shadow-[0_32px_90px_rgba(0,0,0,.25)] sm:p-8">
         <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_76%_20%,rgba(214,173,109,.08),transparent_28%),radial-gradient(circle_at_18%_85%,rgba(87,120,92,.08),transparent_30%)]" />
 
-        <button
-          type="button"
-          onClick={onOpenPaper}
-          className="group relative z-10 block min-h-[320px] w-full max-w-[700px] rotate-[-.35deg] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-left text-[#2c4336] shadow-[0_28px_80px_rgba(0,0,0,.18)] transition hover:-translate-y-1 hover:rotate-0 sm:p-8"
-        >
-          <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.46]">AUF DEINEM TISCH</p>
-          <h2 className="mt-5 max-w-xl font-serif text-3xl font-light leading-[1.02] tracking-[-.035em] sm:text-4xl">
-            Der Einstieg deiner Website wartet auf eine Entscheidung.
-          </h2>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-[#5d665e]/[.58]">
-            Deine Haltung bleibt. Offen ist nur, welcher Weg im ersten Moment führt: Angebot oder Guide.
-          </p>
-
-          <div className="mt-8 flex items-center justify-between border-t border-[#5b665e]/[.10] pt-4">
-            <span className="text-[10px] text-[#4b5f50]/[.46]">
-              {decision === 'yes'
-                ? 'Angebot führt · notiert'
-                : decision === 'change'
-                  ? 'Änderung gewünscht · notiert'
-                  : 'Öffnen und entscheiden'}
-            </span>
-            <ArrowRight className="h-4 w-4 text-[#294737]/[.42] transition group-hover:translate-x-1" />
+        {decision ? (
+          <div className="relative z-10 grid min-h-[320px] w-full max-w-[700px] place-items-center rounded-[18px_6px_20px_7px] border border-[#f4e2c6]/[.07] bg-white/[.025] p-8 text-center backdrop-blur-sm">
+            <div className="max-w-md">
+              <span className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-[#d6ad6d]/[.18] bg-[#d6ad6d]/[.08] text-[#d6ad6d]">
+                <Check className="h-4 w-4" />
+              </span>
+              <p className="mt-5 text-[7px] uppercase tracking-[.18em] text-[#d6ad6d]/[.54]">SCHREIBTISCH FREI</p>
+              <h2 className="mt-3 font-serif text-3xl font-light leading-tight text-[#f4ecdf]">
+                Die Entscheidung ist notiert.
+              </h2>
+              <p className="mt-4 text-sm leading-6 text-[#f4ecdf]/[.42]">
+                Erledigte Dinge bleiben nicht liegen. Wenn wieder etwas deine Aufmerksamkeit braucht, kommt es zurück auf den Tisch.
+              </p>
+              <button
+                type="button"
+                onClick={onOpenDecision}
+                className="mt-6 text-[10px] text-[#d6ad6d]/[.66] underline decoration-[#d6ad6d]/[.24] underline-offset-4"
+              >
+                Entscheidung ansehen
+              </button>
+            </div>
           </div>
-        </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenPaper}
+            className="group relative z-10 block min-h-[320px] w-full max-w-[700px] rotate-[-.35deg] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-left text-[#2c4336] shadow-[0_28px_80px_rgba(0,0,0,.18)] transition hover:-translate-y-1 hover:rotate-0 sm:p-8"
+          >
+            <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.46]">AUF DEINEM TISCH</p>
+            <h2 className="mt-5 max-w-xl font-serif text-3xl font-light leading-[1.02] tracking-[-.035em] sm:text-4xl">
+              Der Einstieg deiner Website wartet auf eine Entscheidung.
+            </h2>
+            <p className="mt-5 max-w-xl text-sm leading-7 text-[#5d665e]/[.58]">
+              Deine Haltung bleibt. Offen ist nur, welcher Weg im ersten Moment führt: Angebot oder Guide.
+            </p>
+
+            <div className="mt-8 flex items-center justify-between border-t border-[#5b665e]/[.10] pt-4">
+              <span className="text-[10px] text-[#4b5f50]/[.46]">Öffnen und entscheiden</span>
+              <ArrowRight className="h-4 w-4 text-[#294737]/[.42] transition group-hover:translate-x-1" />
+            </div>
+          </button>
+        )}
 
         <aside className="relative z-10 mt-5 grid gap-3 sm:grid-cols-2 lg:absolute lg:right-8 lg:top-8 lg:mt-0 lg:w-[290px] lg:grid-cols-1">
           <button
