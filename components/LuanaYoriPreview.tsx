@@ -196,7 +196,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
         </nav>
 
         {!entered ? (
-          <ArrivalOverlay world={world} onEnter={() => setEntered(true)} />
+          <ArrivalOverlay onEnter={() => setEntered(true)} />
         ) : null}
 
         {paperOpen ? (
@@ -213,13 +213,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
   );
 }
 
-function ArrivalOverlay({
-  world,
-  onEnter,
-}: {
-  world: ClientWorldConfig;
-  onEnter: () => void;
-}) {
+function ArrivalOverlay({ onEnter }: { onEnter: () => void }) {
   return (
     <section className="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-[#efe9dc] px-5 py-8 text-[#193d2f]">
       <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(255,255,255,.92),transparent_25%),radial-gradient(circle_at_16%_88%,rgba(78,109,76,.18),transparent_30%),linear-gradient(180deg,#f0eadf_0%,#e8e0d2_100%)]" />
