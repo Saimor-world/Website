@@ -1,16 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  ArrowRight,
-  BookOpen,
-  Check,
-  Compass,
-  House,
-  Lightbulb,
-  Sparkles,
-  Waves,
-} from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowRight, Check } from 'lucide-react';
 import YoriMark from '@/components/YoriMark';
 import type { ClientWorldConfig } from '@/lib/client-world';
 
@@ -22,16 +13,11 @@ type Props = {
   initialDecision?: Decision | null;
 };
 
-const ROOMS: Array<{
-  id: RoomId;
-  label: string;
-  hint: string;
-  icon: typeof House;
-}> = [
-  { id: 'orientierung', label: 'Ankommen', hint: 'Was ist das hier?', icon: House },
-  { id: 'world', label: 'Deine World', hint: 'Was sie für dich hält', icon: Compass },
-  { id: 'beispiel', label: 'Ein Beispiel', hint: 'Wie daraus Arbeit wird', icon: Waves },
-  { id: 'weiter', label: 'Weiter', hint: 'Fragen & nächster Schritt', icon: Sparkles },
+const ROOMS: Array<{ id: RoomId; label: string; hint: string }> = [
+  { id: 'orientierung', label: 'Ankommen', hint: 'Was ist das hier?' },
+  { id: 'world', label: 'Deine World', hint: 'Was sie für dich hält' },
+  { id: 'beispiel', label: 'Ein Beispiel', hint: 'Wie daraus Arbeit wird' },
+  { id: 'weiter', label: 'Weiter', hint: 'Fragen & nächster Schritt' },
 ];
 
 const WORLD_QA = [
@@ -53,30 +39,35 @@ const WORLD_QA = [
   },
 ];
 
+/** Vier Raeume statt vier Absaetze: jedes Thema bekommt eigene Flaeche und ein eigenes Objekt. */
 const WORLD_OBJECTS = [
   {
     eyebrow: 'AUFTRITT',
     title: 'Was du nach außen zeigst.',
     body: 'Website, Angebote und Sprache können zusammen gedacht werden, ohne dass deine eigene Handschrift verloren geht.',
-    icon: Waves,
+    tint: 'bg-[#f7f2e7]',
+    object: 'page' as const,
   },
   {
     eyebrow: 'GEDANKEN',
     title: 'Was noch unfertig sein darf.',
     body: 'Eine Idee muss nicht sofort Post, Projekt oder Aufgabe werden. Sie darf liegen bleiben und später mit ihrem Zusammenhang wieder auftauchen.',
-    icon: Lightbulb,
+    tint: 'bg-[#f2ecdd]',
+    object: 'note' as const,
   },
   {
     eyebrow: 'ENTSCHEIDUNGEN',
     title: 'Was deine Aufmerksamkeit braucht.',
     body: 'YORI soll nicht alles anzeigen. Es soll unterscheiden, was gerade wirklich eine Entscheidung von dir braucht – und was warten darf.',
-    icon: Compass,
+    tint: 'bg-[#eceee1]',
+    object: 'choice' as const,
   },
   {
     eyebrow: 'ERINNERUNG',
     title: 'Was nicht wieder bei null beginnen soll.',
     body: 'Wenn etwas später wieder relevant wird, kommt nicht nur der Punkt zurück, sondern auch der Kontext, aus dem er entstanden ist.',
-    icon: BookOpen,
+    tint: 'bg-[#f5f0e4]',
+    object: 'memory' as const,
   },
 ];
 
@@ -96,12 +87,11 @@ const NEXT_QA = [
 ];
 
 export default function LuanaYoriPreview({ world, initialDecision = null }: Props) {
-  const [entered, setEntered] = useState(Boolean(initialDecision));
-  const [arrivalLeaving, setArrivalLeaving] = useState(false);
   const [room, setRoom] = useState<RoomId>(initialDecision ? 'weiter' : 'orientierung');
   const [decision, setDecision] = useState<Decision | null>(initialDecision);
   const [savingDecision, setSavingDecision] = useState(false);
   const [decisionError, setDecisionError] = useState(false);
+  const explainRef = useRef<HTMLDivElement>(null);
 
   async function chooseDecision(value: Decision) {
     if (savingDecision) return false;
@@ -127,16 +117,28 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
     }
   }
 
+  function goTo(next: RoomId) {
+    setRoom(next);
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        document.body.scrollTo({ top: 0, behavior: 'auto' });
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      });
+    }
+  }
+
   return (
-    <main className="min-h-[100svh] overflow-hidden bg-[#f3eee3] text-[#1f3b2d]">
+    <main className="min-h-[100svh] bg-[#f4efe4] text-[#1f3b2d]">
       <div className="relative min-h-[100svh]">
         <LightWorldAmbient />
 
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[236px] flex-col border-r border-[#1f3b2d]/[.09] bg-[#ebe5d8]/[.78] px-5 pb-6 pt-7 backdrop-blur-[22px] lg:flex">
+        {/* Navigation als ruhige Marginalspalte, nicht als App-Schiene:
+            keine Pillen, keine Icons - nur Haarlinie und Goldmarke. */}
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[232px] flex-col border-r border-[#1f3b2d]/[.08] bg-[#efe9dc]/[.72] px-6 pb-7 pt-8 backdrop-blur-[22px] lg:flex">
           <button
             type="button"
-            onClick={() => setRoom('orientierung')}
-            className="flex items-center gap-3 px-1 pb-9 text-left"
+            onClick={() => goTo('orientierung')}
+            className="flex items-center gap-3 pb-10 text-left"
           >
             <YoriMark className="h-9 w-9 text-[#2c4a3a]" title="YORI" />
             <span className="grid">
@@ -147,64 +149,62 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
             </span>
           </button>
 
-          <nav className="grid gap-1" aria-label="Luana World Bereiche">
-            {ROOMS.map(({ id, label, hint, icon: Icon }) => (
+          <nav className="grid" aria-label="Luana World Bereiche">
+            {ROOMS.map(({ id, label, hint }) => (
               <button
                 key={id}
                 type="button"
-                onClick={() => setRoom(id)}
+                onClick={() => goTo(id)}
                 aria-current={room === id ? 'page' : undefined}
-                className={`flex min-h-[56px] items-center gap-3 rounded-[14px] px-3 text-left transition ${
+                className={`grid min-h-[58px] content-center border-l-2 py-2 pl-4 text-left transition ${
                   room === id
-                    ? 'bg-[#f8f3e9] text-[#1f3b2d] shadow-[inset_2px_0_#9b7f42]'
-                    : 'text-[#556c5e] hover:bg-white/[.45] hover:text-[#1f3b2d]'
+                    ? 'border-[#9b7f42] text-[#1f3b2d]'
+                    : 'border-transparent text-[#556c5e] hover:border-[#1f3b2d]/[.15] hover:text-[#1f3b2d]'
                 }`}
               >
-                <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.6} />
-                <span className="grid">
-                  <strong className="text-[13px] font-medium">{label}</strong>
-                  <small className="mt-0.5 text-[11px] leading-4 text-[#556c5e]">{hint}</small>
-                </span>
+                <strong className="text-[14px] font-medium">{label}</strong>
+                <small className="mt-0.5 text-[11px] leading-4 text-[#556c5e]">{hint}</small>
               </button>
             ))}
           </nav>
 
-          <p className="mt-auto border-t border-[#1f3b2d]/[.08] px-1 pt-5 text-[11px] leading-5 text-[#556c5e]">
+          <p className="mt-auto pt-6 text-[11px] leading-5 text-[#556c5e]">
             Ein persönlicher Entwurf für {world.clientName} — noch kein fertiges Produkt.
           </p>
         </aside>
 
-        <section className="relative z-10 min-h-[100svh] lg:pl-[236px]">
-          <header className="mx-auto flex h-[72px] w-[calc(100%-40px)] max-w-[1260px] items-center justify-between gap-4 border-b border-[#1f3b2d]/[.09] lg:w-[calc(100%-96px)]">
+        <section className="relative z-10 min-h-[100svh] lg:pl-[232px]">
+          <header className="mx-auto flex h-[68px] w-[calc(100%-40px)] max-w-[1180px] items-center justify-between gap-4 lg:w-[calc(100%-96px)]">
+            {/* Mobil traegt die Kopfzeile den Markenzug einmal - in der Ankunft
+                stand er sonst ein zweites Mal direkt darunter. */}
             <div className="flex items-center gap-3 lg:hidden">
               <YoriMark className="h-8 w-8 text-[#2c4a3a]" title="YORI" />
-              <div>
-                <div className="font-serif text-[16px] font-medium tracking-[.06em] text-[#1f3b2d]">LUANA</div>
-                <div className="mt-0.5 text-[10px] uppercase tracking-[.14em] text-[#7d6430]">DEINE WORLD</div>
-              </div>
+              <span className="font-serif text-[15px] font-medium tracking-[.09em] text-[#1f3b2d]">
+                LUANA LUMINA
+              </span>
             </div>
-
-            <div className="hidden text-[12px] text-[#556c5e] lg:block">
-              {ROOMS.find((item) => item.id === room)?.hint}
-            </div>
-
-            <div className="ml-auto flex shrink-0 items-center gap-2 text-[11px] text-[#556c5e]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#9b7f42]" />
-              Persönlicher Entwurf
-            </div>
+            <p className="ml-auto shrink-0 text-[11px] text-[#556c5e]">Persönlicher Entwurf</p>
           </header>
 
-          <div className="mx-auto min-h-[calc(100svh-72px)] w-[calc(100%-40px)] max-w-[1180px] pb-[124px] pt-10 lg:w-[calc(100%-96px)] lg:pb-20 lg:pt-14">
+          <div
+            key={room}
+            className="luana-room mx-auto w-[calc(100%-40px)] max-w-[1180px] pb-[116px] pt-4 lg:w-[calc(100%-96px)] lg:pb-24 lg:pt-8"
+          >
             {room === 'orientierung' ? (
               <OrientationRoom
                 clientName={world.clientName}
-                onExplore={() => setRoom('world')}
-                onExample={() => setRoom('beispiel')}
+                explainRef={explainRef}
+                onExplain={() =>
+                  explainRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+                onExplore={() => goTo('world')}
+                onExample={() => goTo('beispiel')}
+                onDecide={() => goTo('weiter')}
               />
             ) : room === 'world' ? (
-              <WorldRoom onExample={() => setRoom('beispiel')} />
+              <WorldRoom onExample={() => goTo('beispiel')} />
             ) : room === 'beispiel' ? (
-              <ExampleRoom onContinue={() => setRoom('weiter')} />
+              <ExampleRoom onContinue={() => goTo('weiter')} />
             ) : (
               <NextRoom
                 decision={decision}
@@ -218,87 +218,76 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
           </div>
         </section>
 
+        {/* Mobil: Textleiste mit Goldmarke statt Icon-Raster mit Karten-Hintergrund. */}
         <nav
-          className="fixed bottom-[max(10px,env(safe-area-inset-bottom))] left-1/2 z-50 flex min-h-[76px] w-[calc(100%-20px)] -translate-x-1/2 gap-1 rounded-[22px] border border-[#1f3b2d]/[.10] bg-[#f6f1e6]/[.96] p-1.5 shadow-[0_14px_45px_rgba(31,59,45,.12)] backdrop-blur-xl lg:hidden"
+          className="fixed inset-x-0 bottom-0 z-50 border-t border-[#1f3b2d]/[.10] bg-[#f4efe4]/[.94] pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
           aria-label="Luana World mobile Bereiche"
         >
-          {ROOMS.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setRoom(id)}
-              aria-current={room === id ? 'page' : undefined}
-              className={`flex min-h-[64px] flex-1 flex-col items-center justify-center gap-1.5 rounded-[16px] px-1 transition ${
-                room === id ? 'bg-[#dde5da] text-[#1f3b2d]' : 'text-[#556c5e] hover:bg-white/[.55]'
-              }`}
-            >
-              <Icon className="h-5 w-5" strokeWidth={1.7} />
-              <strong className="text-[11px] font-medium leading-none">{label}</strong>
-            </button>
-          ))}
+          <div className="flex">
+            {ROOMS.map(({ id, label }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => goTo(id)}
+                aria-current={room === id ? 'page' : undefined}
+                className={`min-h-[56px] flex-1 border-t-2 px-1 text-[13px] transition ${
+                  room === id
+                    ? 'border-[#9b7f42] font-medium text-[#1f3b2d]'
+                    : 'border-transparent text-[#556c5e]'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </nav>
-
-        {!entered ? (
-          <ArrivalOverlay
-            leaving={arrivalLeaving}
-            onEnter={() => {
-              if (arrivalLeaving) return;
-              setArrivalLeaving(true);
-              window.setTimeout(() => setEntered(true), 460);
-            }}
-          />
-        ) : null}
       </div>
 
       <style>{`
-        @keyframes luana-arrival-in {
-          from { opacity: 0; transform: scale(1.008); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .luana-arrival {
-          animation: luana-arrival-in .72s cubic-bezier(.22,.72,.22,1) both;
-          transition: opacity .42s ease, filter .42s ease, transform .42s cubic-bezier(.22,.72,.22,1);
-        }
-        .luana-arrival--leaving {
-          opacity: 0;
-          filter: blur(7px);
-          transform: scale(1.012);
-          pointer-events: none;
+        .luana-room { animation: luana-room-in .5s cubic-bezier(.22,.72,.22,1) both; }
+        @keyframes luana-room-in {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .luana-arrival {
-            animation: none !important;
-            transition: none !important;
-          }
+          .luana-room { animation: none !important; }
+          html { scroll-behavior: auto !important; }
         }
       `}</style>
     </main>
   );
 }
 
-function ArrivalOverlay({
-  onEnter,
-  leaving,
+function OrientationRoom({
+  clientName,
+  explainRef,
+  onExplain,
+  onExplore,
+  onExample,
+  onDecide,
 }: {
-  onEnter: () => void;
-  leaving: boolean;
+  clientName: string;
+  explainRef: React.RefObject<HTMLDivElement>;
+  onExplain: () => void;
+  onExplore: () => void;
+  onExample: () => void;
+  onDecide: () => void;
 }) {
   return (
-    <section
-      className={`luana-arrival fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-[#f1ebe0] px-6 py-10 text-[#1f3b2d] ${
-        leaving ? 'luana-arrival--leaving' : ''
-      }`}
-    >
-      <LightWorldAmbient />
-
-      <div className="relative z-10 mx-auto grid w-full max-w-[1120px] gap-14 lg:grid-cols-[1.02fr_.98fr] lg:items-center">
+    <section>
+      {/*
+        Die Ankunft ist kein Vorhang mehr, durch den man erst klicken muss.
+        Sie ist der Anfang desselben Raums - der Knopf fuehrt weiter, statt zu
+        oeffnen. Das war einer der Zwischenschritte, die vom 30-Sekunden-Budget
+        abgingen.
+      */}
+      <div className="grid gap-12 pt-10 lg:grid-cols-[1.04fr_.96fr] lg:items-center lg:gap-16 lg:pt-16">
         <div>
-          <div className="flex items-center gap-3">
-            <YoriMark className="h-9 w-9 text-[#2c4a3a]" title="YORI" />
-            <p className="font-serif text-[17px] font-medium tracking-[.1em] text-[#1f3b2d]">LUANA LUMINA</p>
-          </div>
+          <p className="hidden font-serif text-[17px] font-medium tracking-[.1em] text-[#1f3b2d] lg:block">
+            LUANA LUMINA
+          </p>
 
-          <p className="mt-8 text-[11px] uppercase tracking-[.18em] text-[#7d6430]">
+          <p className="mt-2 text-[11px] uppercase tracking-[.18em] text-[#7d6430] lg:mt-9">
             Ein erster Blick in etwas, das dir gehören könnte
           </p>
           <h1 className="mt-5 max-w-[15ch] font-serif text-[clamp(2.35rem,6.6vw,4.2rem)] font-light leading-[1.02] tracking-[-.03em]">
@@ -308,31 +297,10 @@ function ArrivalOverlay({
             Einen Ort, der nicht nur zeigt, was du anbietest – sondern mit dir zusammenhält, was du denkst, entscheidest und als Nächstes aufbauen willst.
           </p>
 
-          {/* Mobil fehlt die grosse Komposition rechts. Statt abstrakter Formen
-              traegt hier dieselbe Notiz wie dort - sie sagt etwas, statt nur zu
-              schmuecken. */}
-          <div className="relative mt-8 lg:hidden">
-            <div
-              aria-hidden="true"
-              className="absolute -left-6 -top-8 h-[190px] w-[78%] rounded-full bg-[radial-gradient(circle_at_38%_34%,rgba(255,255,255,.9),rgba(196,208,182,.32)_58%,transparent_74%)] blur-2xl"
-            />
-            <div className="relative rotate-[-.6deg] rounded-[20px_7px_22px_8px] border border-[#1f3b2d]/[.10] bg-[#fffaf0]/[.9] p-6 shadow-[0_18px_50px_rgba(42,70,52,.08)] backdrop-blur-md">
-              <p className="text-[10px] uppercase tracking-[.16em] text-[#7d6430]">Deine World könnte</p>
-              <p className="mt-3 font-serif text-[25px] font-light leading-tight text-[#1f3b2d]">
-                erinnern, ordnen, verbinden.
-              </p>
-              <div className="mt-4 h-px bg-[#1f3b2d]/[.10]" />
-              <p className="mt-3 text-[13px] leading-6 text-[#556c5e]">
-                Ohne aus deinem Business ein weiteres Dashboard zu machen.
-              </p>
-            </div>
-          </div>
-
           <button
             type="button"
-            onClick={onEnter}
-            disabled={leaving}
-            className="mt-8 inline-flex min-h-[56px] items-center gap-3 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] shadow-[0_14px_34px_rgba(44,74,58,.18)] transition hover:-translate-y-0.5 hover:bg-[#233d2f] disabled:cursor-wait disabled:opacity-70"
+            onClick={onExplain}
+            className="mt-8 inline-flex min-h-[56px] items-center gap-3 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] shadow-[0_14px_34px_rgba(44,74,58,.18)] transition hover:-translate-y-0.5 hover:bg-[#233d2f]"
           >
             Meine World entdecken
             <ArrowRight className="h-4 w-4" />
@@ -343,78 +311,88 @@ function ArrivalOverlay({
           </p>
         </div>
 
-        <div className="relative hidden min-h-[560px] lg:block" aria-hidden="true">
-          <div className="absolute right-[4%] top-[7%] h-[64%] w-[66%] rounded-[49%_51%_48%_52%/58%_48%_52%_42%] bg-[radial-gradient(circle_at_35%_28%,rgba(255,255,255,.96)_0%,rgba(232,230,217,.88)_38%,rgba(177,190,163,.62)_100%)] shadow-[0_35px_90px_rgba(43,69,51,.12)]" />
-          <div className="absolute bottom-[8%] left-[6%] h-[34%] w-[46%] rotate-[-4deg] rounded-[52%_48%_44%_56%/58%_52%_48%_42%] bg-[radial-gradient(circle_at_34%_24%,rgba(255,255,255,.96)_0%,rgba(225,224,207,.84)_44%,rgba(168,185,156,.60)_100%)] shadow-[0_28px_65px_rgba(43,69,51,.10)]" />
-
-          <div className="absolute left-[10%] top-[18%] w-[288px] rotate-[-1deg] rounded-[20px_7px_24px_8px] border border-[#1f3b2d]/[.10] bg-[#fffaf0]/[.88] p-6 shadow-[0_18px_55px_rgba(42,70,52,.08)] backdrop-blur-md">
+        <div className="relative">
+          <div
+            aria-hidden="true"
+            className="absolute -left-8 -top-10 h-[62%] w-[74%] rounded-full bg-[radial-gradient(circle_at_38%_34%,rgba(255,255,255,.92),rgba(196,208,182,.3)_58%,transparent_74%)] blur-2xl lg:-left-16 lg:h-[70%] lg:w-[80%]"
+          />
+          <div className="relative rotate-[-.6deg] rounded-[22px_8px_24px_9px] border border-[#1f3b2d]/[.10] bg-[#fffaf0]/[.92] p-7 shadow-[0_22px_60px_rgba(42,70,52,.09)] backdrop-blur-md">
             <p className="text-[10px] uppercase tracking-[.16em] text-[#7d6430]">Deine World könnte</p>
-            <p className="mt-3 font-serif text-[26px] font-light leading-tight text-[#1f3b2d]">
+            <p className="mt-3 font-serif text-[clamp(1.6rem,3.4vw,2.1rem)] font-light leading-tight text-[#1f3b2d]">
               erinnern, ordnen, verbinden.
             </p>
-            <div className="mt-4 h-px bg-[#1f3b2d]/[.10]" />
-            <p className="mt-3 text-[13px] leading-6 text-[#556c5e]">
+            <div className="mt-5 h-px bg-[#1f3b2d]/[.10]" />
+            <p className="mt-4 text-[14px] leading-6 text-[#556c5e]">
               Ohne aus deinem Business ein weiteres Dashboard zu machen.
             </p>
           </div>
 
-          <div className="absolute bottom-[15%] right-[7%] w-[236px] rotate-[1.5deg] rounded-[8px_20px_9px_18px] border border-[#1f3b2d]/[.09] bg-[#e6ebdf]/[.82] p-5">
+          <div
+            aria-hidden="true"
+            className="mt-5 ml-auto w-[76%] rotate-[1.4deg] rounded-[9px_20px_10px_18px] bg-[#e8ecdf]/[.86] p-5"
+          >
             <p className="text-[10px] uppercase tracking-[.15em] text-[#556c5e]">Heute</p>
-            <p className="mt-2 font-serif text-[21px] font-light text-[#1f3b2d]">Nur das, was gerade zählt.</p>
+            <p className="mt-2 font-serif text-[20px] font-light text-[#1f3b2d]">Nur das, was gerade zählt.</p>
           </div>
         </div>
       </div>
-    </section>
-  );
-}
 
-function OrientationRoom({
-  clientName,
-  onExplore,
-  onExample,
-}: {
-  clientName: string;
-  onExplore: () => void;
-  onExample: () => void;
-}) {
-  return (
-    <section>
-      <RoomIntro
-        eyebrow="Ankommen"
-        title={`Hallo ${clientName}. Was ist das hier eigentlich?`}
-        body="Wir haben das für dich gebaut, weil wir gern mit dir arbeiten würden – und weil sich so ein Raum schwer beschreiben lässt, solange man ihn nicht sieht. Deine Website ist dabei nur ein möglicher Anfang, nicht der Mittelpunkt."
-      />
+      <div ref={explainRef} className="scroll-mt-6 pt-20 lg:pt-28">
+        <p className="text-[11px] uppercase tracking-[.18em] text-[#7d6430]">Ankommen</p>
+        <h2 className="mt-4 max-w-[820px] font-serif text-[clamp(1.85rem,4.4vw,2.9rem)] font-light leading-[1.12] tracking-[-.02em] text-[#1f3b2d]">
+          Hallo {clientName}. Was ist das hier eigentlich?
+        </h2>
+        <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#3d5748] sm:text-[16px]">
+          Wir haben das für dich gebaut, weil wir gern mit dir arbeiten würden – und weil sich so ein Raum schwer beschreiben lässt, solange man ihn nicht sieht. Deine Website ist dabei nur ein möglicher Anfang, nicht der Mittelpunkt.
+        </p>
 
-      {/* Antworten als redaktionelle Liste statt als vier gleiche Kaesten:
-          die Fragen sollen sich lesen lassen, nicht wie UI wirken. */}
-      <dl className="mt-12 grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10] md:grid-cols-2">
-        {WORLD_QA.map((item, index) => (
-          <div key={item.q} className="bg-[#faf6ed] p-6 sm:p-8">
-            <span className="text-[11px] tracking-[.14em] text-[#7d6430]">0{index + 1}</span>
-            <dt className="mt-3 font-serif text-[21px] font-light leading-snug text-[#1f3b2d] sm:text-[23px]">
-              {item.q}
-            </dt>
-            <dd className="mt-3 text-[15px] leading-[1.75] text-[#3d5748] sm:text-[16px]">{item.a}</dd>
+        <dl className="mt-12 grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10] md:grid-cols-2">
+          {WORLD_QA.map((item, index) => (
+            <div key={item.q} className="bg-[#faf6ed] p-6 sm:p-8">
+              <span className="text-[11px] tracking-[.14em] text-[#7d6430]">0{index + 1}</span>
+              <dt className="mt-3 font-serif text-[21px] font-light leading-snug text-[#1f3b2d] sm:text-[23px]">
+                {item.q}
+              </dt>
+              <dd className="mt-3 text-[15px] leading-[1.75] text-[#3d5748] sm:text-[16px]">{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {/*
+          Wer nie navigiert, soll den Kern trotzdem haben: was noch kommt und
+          wo die Entscheidung liegt, steht hier am Ende des ersten Raums.
+        */}
+        <div className="mt-12 rounded-[24px] bg-[#e9ece0]/[.7] p-7 sm:p-10">
+          <p className="text-[11px] uppercase tracking-[.16em] text-[#7d6430]">Was noch kommt</p>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <button type="button" onClick={onExplore} className="text-left">
+              <p className="font-serif text-[20px] font-light text-[#1f3b2d]">Deine World</p>
+              <p className="mt-2 text-[15px] leading-7 text-[#3d5748]">
+                Die vier Dinge, die so ein Raum für dich zusammenhalten würde.
+              </p>
+            </button>
+            <button type="button" onClick={onExample} className="text-left">
+              <p className="font-serif text-[20px] font-light text-[#1f3b2d]">Ein Beispiel</p>
+              <p className="mt-2 text-[15px] leading-7 text-[#3d5748]">
+                Ein kleiner Ausschnitt deines Auftritts, damit es nicht abstrakt bleibt.
+              </p>
+            </button>
+            <button type="button" onClick={onDecide} className="text-left">
+              <p className="font-serif text-[20px] font-light text-[#1f3b2d]">Weiter</p>
+              <p className="mt-2 text-[15px] leading-7 text-[#3d5748]">
+                Was es praktisch bedeuten würde – und eine einzige Frage an dich.
+              </p>
+            </button>
           </div>
-        ))}
-      </dl>
-
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-        <button
-          type="button"
-          onClick={onExplore}
-          className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] transition hover:bg-[#233d2f]"
-        >
-          Was meine World können könnte
-          <ArrowRight className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          onClick={onExample}
-          className="min-h-[54px] rounded-full border border-[#1f3b2d]/[.16] px-7 text-[15px] text-[#3d5748] transition hover:bg-white/[.5]"
-        >
-          direkt zu einem Beispiel
-        </button>
+          <button
+            type="button"
+            onClick={onExplore}
+            className="mt-8 inline-flex min-h-[52px] items-center gap-2 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] transition hover:bg-[#233d2f]"
+          >
+            Weiter zu deiner World
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -429,26 +407,38 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
         body="YORI soll nicht vor dir stehen. Es soll im Hintergrund dafür sorgen, dass Dinge, die zu deinem Business gehören, nicht voneinander getrennt herumliegen."
       />
 
-      <div className="mt-12 grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10] md:grid-cols-2">
-        {WORLD_OBJECTS.map(({ eyebrow, title, body, icon: Icon }) => (
-          <article key={eyebrow} className="bg-[#faf6ed] p-6 sm:p-8">
-            <div className="flex items-start justify-between gap-5">
-              <div>
+      {/*
+        Vorher vier gleich gebaute Absaetze in einem Raster - es las sich als
+        Aufzaehlung. Jetzt vier Flaechen mit eigenem Ton und eigenem Objekt,
+        abwechselnd gesetzt, damit ein Rhythmus entsteht.
+      */}
+      <div className="mt-14 grid gap-5">
+        {WORLD_OBJECTS.map(({ eyebrow, title, body, tint, object }, index) => (
+          <article
+            key={eyebrow}
+            className={`overflow-hidden rounded-[26px] px-7 py-11 sm:px-12 sm:py-14 ${tint}`}
+          >
+            <div
+              className={`grid items-center gap-9 lg:gap-14 ${
+                index % 2 === 1 ? 'lg:grid-cols-[.85fr_1.15fr]' : 'lg:grid-cols-[1.15fr_.85fr]'
+              }`}
+            >
+              <div className={index % 2 === 1 ? 'lg:order-2' : undefined}>
                 <p className="text-[11px] uppercase tracking-[.16em] text-[#7d6430]">{eyebrow}</p>
-                <h2 className="mt-3 max-w-md font-serif text-[21px] font-light leading-snug text-[#1f3b2d] sm:text-[23px]">
+                <h2 className="mt-4 max-w-[16ch] font-serif text-[clamp(1.6rem,3.4vw,2.35rem)] font-light leading-[1.14] text-[#1f3b2d]">
                   {title}
                 </h2>
+                <p className="mt-5 max-w-lg text-[15px] leading-[1.75] text-[#3d5748] sm:text-[16px]">{body}</p>
               </div>
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#e7ebe0] text-[#3d5748]">
-                <Icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
-              </span>
+              <div className={index % 2 === 1 ? 'lg:order-1' : undefined}>
+                <WorldObject kind={object} />
+              </div>
             </div>
-            <p className="mt-4 text-[15px] leading-[1.75] text-[#3d5748] sm:text-[16px]">{body}</p>
           </article>
         ))}
       </div>
 
-      <div className="mt-10 rounded-[24px] bg-[#e3e9dd]/[.72] p-7 sm:p-10">
+      <div className="mt-12 rounded-[26px] bg-[#e3e9dd]/[.72] p-7 sm:p-11">
         <p className="text-[11px] uppercase tracking-[.16em] text-[#7d6430]">Der eigentliche Gedanke</p>
         <p className="mt-4 max-w-3xl font-serif text-[clamp(1.65rem,3.6vw,2.5rem)] font-light leading-[1.18] text-[#1f3b2d]">
           Deine World soll nicht mehr von dir verlangen. Sie soll weniger verlieren lassen.
@@ -459,7 +449,7 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
         <button
           type="button"
           onClick={onExample}
-          className="mt-7 inline-flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-[#2c4a3a] underline decoration-[#9b7f42]/50 underline-offset-[7px]"
+          className="mt-7 inline-flex min-h-[52px] items-center gap-2 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] transition hover:bg-[#233d2f]"
         >
           Zeig mir das an etwas Konkretem
           <ArrowRight className="h-4 w-4" />
@@ -469,16 +459,82 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
   );
 }
 
+/** Ruhige Papier-Objekte statt Icons: YORI bleibt spuerbar, ohne zu dominieren. */
+function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) {
+  if (kind === 'page') {
+    return (
+      <div aria-hidden="true" className="mx-auto w-full max-w-[320px] rounded-[16px] bg-[#fffaf0] p-5 shadow-[0_16px_44px_rgba(42,70,52,.07)]">
+        <div className="h-1.5 w-16 rounded-full bg-[#c8b489]" />
+        <div className="mt-4 h-2.5 w-[88%] rounded-full bg-[#1f3b2d]/[.16]" />
+        <div className="mt-2 h-2.5 w-[62%] rounded-full bg-[#1f3b2d]/[.16]" />
+        <div className="mt-5 h-8 w-32 rounded-full bg-[#2c4a3a]" />
+        <div className="mt-4 h-px w-full bg-[#1f3b2d]/[.08]" />
+        <div className="mt-4 h-1.5 w-[45%] rounded-full bg-[#1f3b2d]/[.10]" />
+      </div>
+    );
+  }
+
+  if (kind === 'note') {
+    return (
+      <div aria-hidden="true" className="mx-auto w-full max-w-[320px]">
+        <div className="rotate-[-1.6deg] rounded-[6px_18px_7px_16px] bg-[#fffaf0] p-5 shadow-[0_14px_40px_rgba(42,70,52,.07)]">
+          <div className="h-1.5 w-12 rounded-full bg-[#c8b489]" />
+          <div className="mt-4 space-y-2">
+            <div className="h-2 w-[90%] rounded-full bg-[#1f3b2d]/[.13]" />
+            <div className="h-2 w-[74%] rounded-full bg-[#1f3b2d]/[.13]" />
+            <div className="h-2 w-[40%] rounded-full bg-[#1f3b2d]/[.09]" />
+          </div>
+        </div>
+        <div className="mt-3 ml-8 w-[68%] rotate-[2deg] rounded-[16px_6px_18px_7px] bg-[#fffaf0]/[.7] p-4">
+          <div className="h-2 w-[70%] rounded-full bg-[#1f3b2d]/[.09]" />
+        </div>
+      </div>
+    );
+  }
+
+  if (kind === 'choice') {
+    return (
+      <div aria-hidden="true" className="mx-auto grid w-full max-w-[320px] gap-3">
+        <div className="rounded-[14px] border-l-2 border-[#9b7f42] bg-[#fffaf0] p-4 shadow-[0_12px_34px_rgba(42,70,52,.06)]">
+          <div className="h-1.5 w-10 rounded-full bg-[#c8b489]" />
+          <div className="mt-3 h-2.5 w-[76%] rounded-full bg-[#1f3b2d]/[.18]" />
+        </div>
+        <div className="rounded-[14px] bg-[#fffaf0]/[.55] p-4">
+          <div className="h-2 w-[58%] rounded-full bg-[#1f3b2d]/[.08]" />
+        </div>
+        <div className="rounded-[14px] bg-[#fffaf0]/[.35] p-4">
+          <div className="h-2 w-[44%] rounded-full bg-[#1f3b2d]/[.06]" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div aria-hidden="true" className="relative mx-auto h-[190px] w-full max-w-[320px]">
+      <div className="absolute left-0 top-0 w-[74%] rounded-[14px] bg-[#fffaf0]/[.4] p-4">
+        <div className="h-2 w-[50%] rounded-full bg-[#1f3b2d]/[.07]" />
+      </div>
+      <div className="absolute left-8 top-10 w-[74%] rounded-[14px] bg-[#fffaf0]/[.68] p-4">
+        <div className="h-2 w-[62%] rounded-full bg-[#1f3b2d]/[.10]" />
+      </div>
+      <div className="absolute left-16 top-20 w-[74%] rounded-[14px] bg-[#fffaf0] p-4 shadow-[0_14px_38px_rgba(42,70,52,.08)]">
+        <div className="h-1.5 w-10 rounded-full bg-[#c8b489]" />
+        <div className="mt-3 h-2.5 w-[78%] rounded-full bg-[#1f3b2d]/[.18]" />
+      </div>
+    </div>
+  );
+}
+
 function ExampleRoom({ onContinue }: { onContinue: () => void }) {
   return (
     <section>
       <RoomIntro
         eyebrow="Ein Beispiel"
         title="Ein kleiner Ausschnitt, damit es nicht abstrakt bleibt."
-        body="Wir nehmen einen Teil deines Auftritts, den du schon hast. Nicht um ihn zu prüfen, sondern um zu zeigen, wie YORI aus etwas Vorhandenem einen nächsten Gedanken machen könnte."
+        body="Wir nehmen einen Teil deines Auftritts, den du schon hast, und zeigen daran, wie YORI aus etwas Vorhandenem einen nächsten Gedanken machen könnte."
       />
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[.86fr_1.14fr] lg:items-start">
+      <div className="mt-14 grid gap-6 lg:grid-cols-[.86fr_1.14fr] lg:items-start">
         <div className="grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10]">
           <article className="bg-[#faf6ed] p-6 sm:p-8">
             <p className="text-[11px] uppercase tracking-[.16em] text-[#7d6430]">Was schon trägt</p>
@@ -528,7 +584,7 @@ function ExampleRoom({ onContinue }: { onContinue: () => void }) {
         </article>
       </div>
 
-      <div className="mt-10 rounded-[24px] bg-white/[.46] p-7 sm:p-10">
+      <div className="mt-12 rounded-[26px] bg-[#f0ebdf]/[.8] p-7 sm:p-11">
         <p className="max-w-3xl font-serif text-[clamp(1.5rem,3.2vw,2.1rem)] font-light leading-[1.2] text-[#1f3b2d]">
           Das Entscheidende ist nicht dieser eine Website-Punkt.
         </p>
@@ -538,7 +594,7 @@ function ExampleRoom({ onContinue }: { onContinue: () => void }) {
         <button
           type="button"
           onClick={onContinue}
-          className="mt-6 inline-flex min-h-[48px] items-center gap-2 text-[15px] font-semibold text-[#2c4a3a] underline decoration-[#9b7f42]/50 underline-offset-[7px]"
+          className="mt-7 inline-flex min-h-[52px] items-center gap-2 rounded-full bg-[#2c4a3a] px-7 text-[15px] font-semibold text-[#f7f1e5] transition hover:bg-[#233d2f]"
         >
           Was würde das für mich bedeuten?
           <ArrowRight className="h-4 w-4" />
@@ -567,7 +623,7 @@ function NextRoom({
         body="Noch bevor irgendetwas gebaut wird, sind diese Fragen wichtiger als weitere Features."
       />
 
-      <dl className="mt-12 grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10] lg:grid-cols-3">
+      <dl className="mt-14 grid gap-px overflow-hidden rounded-[20px] bg-[#1f3b2d]/[.10] lg:grid-cols-3">
         {NEXT_QA.map((item) => (
           <div key={item.q} className="bg-[#faf6ed] p-6 sm:p-8">
             <dt className="font-serif text-[21px] font-light leading-snug text-[#1f3b2d] sm:text-[23px]">
@@ -578,7 +634,7 @@ function NextRoom({
         ))}
       </dl>
 
-      <article className="mt-8 overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,rgba(225,232,220,.9),rgba(245,238,224,.94))] p-7 shadow-[0_24px_72px_rgba(31,59,45,.07)] sm:p-11">
+      <article className="mt-8 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,rgba(225,232,220,.9),rgba(245,238,224,.94))] p-7 shadow-[0_24px_72px_rgba(31,59,45,.07)] sm:p-12">
         {decision ? (
           <div className="max-w-3xl">
             <span className="grid h-11 w-11 place-items-center rounded-full bg-[#2c4a3a] text-[#f7f1e5]">
@@ -645,7 +701,7 @@ function RoomIntro({
   body: string;
 }) {
   return (
-    <header className="max-w-[820px]">
+    <header className="max-w-[820px] pt-8 lg:pt-12">
       <p className="text-[11px] uppercase tracking-[.18em] text-[#7d6430]">{eyebrow}</p>
       <h1 className="mt-4 font-serif text-[clamp(1.85rem,4.4vw,2.9rem)] font-light leading-[1.12] tracking-[-.02em] text-[#1f3b2d]">
         {title}
@@ -658,8 +714,8 @@ function RoomIntro({
 function LightWorldAmbient() {
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,#f3eee3_0%,#ece5d8_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(255,255,255,.78),transparent_28%),radial-gradient(circle_at_12%_86%,rgba(103,128,101,.12),transparent_31%),radial-gradient(circle_at_64%_68%,rgba(197,180,142,.10),transparent_30%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#f6f1e6_0%,#ece6d7_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_10%,rgba(255,255,255,.82),transparent_30%),radial-gradient(circle_at_10%_84%,rgba(120,143,110,.13),transparent_33%),radial-gradient(circle_at_62%_66%,rgba(199,180,137,.12),transparent_32%)]" />
       <div className="absolute right-[5%] top-[8%] h-[48vh] w-[48vh] rounded-full border border-[#59705e]/[.045]" />
       <div className="absolute right-[12%] top-[16%] h-[31vh] w-[31vh] rounded-full border border-[#59705e]/[.05]" />
       <div className="absolute bottom-[-15%] left-[-8%] h-[46%] w-[44%] rounded-[50%] bg-[radial-gradient(circle,rgba(95,127,98,.10),transparent_68%)] blur-2xl" />
