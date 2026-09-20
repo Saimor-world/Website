@@ -81,17 +81,17 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
   luana: {
     slug: 'luana',
     clientName: 'Luana',
-    title: 'Dein Auftritt, wie wir ihn sehen.',
+    title: 'Deine Website. Der aktuelle Stand.',
     intro:
-      'Auf dieser Seite steht, woran wir gerade arbeiten, welche Richtung wir für deine Website vorschlagen und welche Teile davon heute schon echt sind. Widersprich überall dort, wo wir danebenliegen.',
+      'Hier siehst du auf einen Blick, woran wir gerade arbeiten, welche Entscheidungen offen sind und was als Nächstes passiert. Wenn etwas nicht zu dir passt, kannst du es direkt hier korrigieren.',
     accessEnvKey: 'CLIENT_WORLD_LUANA_CODE',
     today: {
       note:
-        'Im Moment geht es um deine Website und darum, wie sie mit deinen Kanälen zusammenpasst. Alles Weitere kommt später, und nur dann, wenn es dir wirklich etwas bringt.',
+        'Im Moment konzentrieren wir uns auf die Website: klare Struktur, ein stimmiger Einstieg und ein eindeutiger Weg für Besucher. Andere Saimôr-Bereiche kommen erst dazu, wenn sie dafür wirklich nützlich sind.',
       focus: [
-        'Eine klare nächste Version deiner Website entwerfen',
-        'Website, TikTok und Instagram aufeinander abstimmen',
-        'Zeigen, welche Teile von Saimôr für dich überhaupt in Frage kommen',
+        'Die nächste Website-Struktur festziehen',
+        'Klären, was Besucher zuerst verstehen sollen',
+        'Deine Entscheidungen direkt in die nächste Version übernehmen',
       ],
     },
     perspective: {
@@ -104,14 +104,14 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         'Website und Social-Auftritt sollen dieselbe Geschichte erzählen.',
       ],
       explore: [
-        'Ein eigener YORI-Bereich für Content, Ideen und Kooperationen.',
-        'Später ein OS-Bereich für Termine, Aufgaben und Dateien.',
-        'MÔRA als Schicht, die aus verbundenen Quellen Vorschläge vorbereitet.',
+        'Ein ruhiger Bereich für Content, Ideen und Kooperationen, falls du ihn später brauchst.',
+        'Später ein gemeinsamer Arbeitsbereich für Termine, Aufgaben und Dateien.',
+        'MÔRA könnte später aus verbundenen Quellen konkrete Vorschläge vorbereiten.',
       ],
     },
     websiteDirection: {
       lead:
-        'Die vier Punkte beschreiben, was wir an der Struktur ändern würden. Texte und Bilder entstehen später mit dir.',
+        'Die vier Schritte zeigen die geplante Nutzerführung. Texte, Bilder und Angebote werden erst mit dir finalisiert.',
       moves: [
         {
           title: 'Ankunft',
@@ -257,9 +257,9 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
       },
     ],
     nextQuestions: [
-      'Welche drei Angebote sollen in deinem Auftritt zuerst verstanden werden?',
-      'Was soll auf keinen Fall nach „typischer Wellness-/Creator-Seite“ aussehen?',
-      'Welche Domain bzw. welcher finale Web-Auftritt soll später die technische Quelle sein?',
+      'Welches Angebot soll ein neuer Besucher als Erstes verstehen?',
+      'Was darf sich auf der neuen Seite auf keinen Fall falsch oder fremd anfühlen?',
+      'Welche Seite oder Domain ist die verbindliche Basis, sobald wir technisch weitergehen?',
     ],
   },
 };
