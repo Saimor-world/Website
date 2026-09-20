@@ -24,8 +24,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${world.clientName} · World Preview`,
-    description: `Offene Design-Preview der Saimôr World für ${world.clientName}.`,
+    title: `${world.clientName} · Deine World`,
+    description: `Ein persönlicher erster Blick in die YORI World für ${world.clientName}.`,
     robots: { index: false, follow: false, noarchive: true, nosnippet: true },
   };
 }
