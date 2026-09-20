@@ -150,7 +150,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
         <div className="mt-auto border-t border-[#b8893f]/[.28] pt-6">
           <p className="font-mono text-[9px] font-bold tracking-[.22em] text-[#2c6b68]">DEINE WORLD · YORI</p>
           <p className="mt-3 text-[11px] leading-5 text-[#5f6e63]">
-            Ein persönlicher Entwurf für {world.clientName}. Luana vorne, YORI darunter.
+            Ein erster Blick für {world.clientName}. Noch ohne verbundene Quellen.
           </p>
           {decision ? (
             <a href="#weiter" className="mt-5 block text-[9px] uppercase tracking-[.16em] text-[#8c6224] underline decoration-[#b8893f] underline-offset-4">
@@ -169,7 +169,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                 <Wordmark className="whitespace-nowrap text-[14px]" />
               </span>
               <p className="ml-auto shrink-0 pt-1 text-[9px] uppercase tracking-[.16em] text-[#5f6e63] sm:text-[10px]">
-                Persönlicher Entwurf
+                Für Luana
               </p>
             </div>
             <p className="mt-2.5 text-[8px] uppercase tracking-[.15em] text-[#5f6e63] lg:hidden">{TAGLINE}</p>
@@ -360,7 +360,7 @@ function Hero() {
           Verstehen, was damit gemeint ist
         </a>
         <p className="mt-7 max-w-md text-[13px] leading-6 text-[#5f6e63]">
-          Gebaut, damit du die Idee erleben kannst – nicht damit wir dir ein fertiges System verkaufen.
+          Ein erster Blick, der dir zeigen soll, ob sich diese Idee überhaupt nach dir anfühlt.
         </p>
       </div>
 
@@ -504,7 +504,11 @@ function DecisionSection({
         <>
           <p className="text-[10px] uppercase tracking-[.20em] text-[#8c6224]">Deine Antwort ist notiert</p>
           <h2 className="mx-auto mt-6 max-w-[22ch] font-serif text-[clamp(1.85rem,4.2vw,2.8rem)] font-light leading-[1.18]">{decision === 'yes' ? 'Dann bauen wir von hier weiter.' : 'Dann ändern wir zuerst die Richtung.'}</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">Deine World erinnert sich an diese Entscheidung. Für den nächsten Schritt reicht eine kurze Nachricht – wir müssen daraus heute noch kein großes Projekt machen.</p>
+          <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
+            {decision === 'yes'
+              ? 'Deine World erinnert sich an diese Entscheidung. Wenn du möchtest, reicht als nächster Schritt ein kurzes „weiter“.'
+              : 'Deine World erinnert sich an diese Entscheidung. Sag uns nur, was sich noch nicht nach dir anfühlt – dann setzen wir dort wieder an.'}
+          </p>
         </>
       ) : (
         <>
