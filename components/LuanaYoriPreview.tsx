@@ -1,62 +1,44 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, Check, ChevronDown, House, MessageCircle, Sparkles, Waves } from 'lucide-react';
+import {
+  ArrowRight,
+  Check,
+  House,
+  Lightbulb,
+  Sparkles,
+  Waves,
+} from 'lucide-react';
 import YoriMark from '@/components/YoriMark';
 import type { ClientWorldConfig } from '@/lib/client-world';
 
 type Decision = 'yes' | 'change';
+type RoomId = 'heute' | 'auftritt' | 'ideen' | 'weg';
 
 type Props = {
   world: ClientWorldConfig;
   initialDecision?: Decision | null;
 };
 
-type RoomId = 'heute' | 'auftritt' | 'ideen' | 'weg';
-
 const ROOMS: Array<{
   id: RoomId;
   label: string;
   hint: string;
-  title: string;
-  body: string;
+  icon: typeof House;
 }> = [
-  {
-    id: 'heute',
-    label: 'Heute',
-    hint: 'was jetzt zählt',
-    title: 'Der Einstieg bekommt Ruhe.',
-    body: 'Die Haltung bleibt. Wir ordnen nur, was zuerst gesehen wird und welcher Weg wirklich wichtig ist.',
-  },
-  {
-    id: 'auftritt',
-    label: 'Auftritt',
-    hint: 'deine Außenwirkung',
-    title: 'Luana bleibt vor dem System.',
-    body: 'Die World trägt deine Sprache und deine Atmosphäre. YORI hält die Arbeit dahinter zusammen, ohne sich davorzustellen.',
-  },
-  {
-    id: 'ideen',
-    label: 'Ideen',
-    hint: 'noch nicht fertig',
-    title: 'Gedanken müssen nicht sofort Aufgaben werden.',
-    body: 'Sie können liegen, wachsen und später wieder auftauchen – mit dem Kontext, aus dem sie entstanden sind.',
-  },
-  {
-    id: 'weg',
-    label: 'Nächster Weg',
-    hint: 'eine Entscheidung',
-    title: 'Ein klarer Schritt reicht.',
-    body: 'Nicht fünf gleich laute Optionen. Erst eine Entscheidung, dann öffnet sich der nächste Raum.',
-  },
+  { id: 'heute', label: 'Heute', hint: 'Schreibtisch', icon: House },
+  { id: 'auftritt', label: 'Auftritt', hint: 'Außenwirkung', icon: Waves },
+  { id: 'ideen', label: 'Ideen', hint: 'Gedankenraum', icon: Lightbulb },
+  { id: 'weg', label: 'Weg', hint: 'Entscheidung', icon: Sparkles },
 ];
 
 export default function LuanaYoriPreview({ world, initialDecision = null }: Props) {
+  const [entered, setEntered] = useState(false);
   const [room, setRoom] = useState<RoomId>('heute');
   const [decision, setDecision] = useState<Decision | null>(initialDecision);
   const [savingDecision, setSavingDecision] = useState(false);
   const [decisionError, setDecisionError] = useState(false);
-  const activeRoom = ROOMS.find((item) => item.id === room) ?? ROOMS[0];
+  const [paperOpen, setPaperOpen] = useState(false);
 
   async function chooseDecision(value: Decision) {
     if (savingDecision) return;
@@ -81,564 +63,584 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
   }
 
   return (
-    <main className="relative overflow-hidden bg-[#efe9dc] text-[#18362b] selection:bg-[#7b8d6a]/[.25]">
-      <section className="relative min-h-[100svh] overflow-hidden border-b border-[#244a38]/[.10]">
-        <LuanaGardenScene hero />
+    <main className="min-h-[100svh] overflow-hidden bg-[#100d0b] text-[#f3ecdf]">
+      <div className="relative min-h-[100svh]">
+        <AmbientRoom />
 
-        <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1480px] flex-col px-5 pb-8 pt-[calc(1rem+env(safe-area-inset-top))] sm:px-9 sm:pb-10 lg:px-14">
-          <header className="flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#294d3c]/[.12] bg-white/[.46] shadow-[0_10px_36px_rgba(38,66,50,.07)]">
-                <YoriMark className="h-6 w-6 text-[#244a38]" title="Luana World" />
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[200px] flex-col border-r border-[#f4e2c6]/[.07] bg-[linear-gradient(180deg,rgba(30,22,15,.64),rgba(20,15,10,.48))] px-[15px] pb-5 pt-6 shadow-[18px_0_70px_rgba(0,0,0,.22)] backdrop-blur-[22px] lg:flex">
+          <button
+            type="button"
+            onClick={() => setRoom('heute')}
+            className="flex items-center gap-3 px-2 pb-7 text-left"
+          >
+            <YoriMark className="h-8 w-8 text-[#d6ad6d]" title="YORI" />
+            <span className="grid">
+              <b className="font-serif text-[22px] font-semibold tracking-[.02em] text-[#f4ecdf]">LUANA</b>
+              <small className="text-[8px] uppercase tracking-[.18em] text-[#d6ad6d]">YORI WORLD</small>
+            </span>
+          </button>
+
+          <nav className="grid gap-1.5" aria-label="Luana World Bereiche">
+            {ROOMS.map(({ id, label, hint, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setRoom(id)}
+                aria-current={room === id ? 'page' : undefined}
+                className={`flex min-h-12 items-center gap-3 rounded-xl border px-3 text-left text-[12px] transition ${
+                  room === id
+                    ? 'border-[#d6ad6d]/[.14] bg-[linear-gradient(90deg,rgba(214,173,109,.10),transparent_72%)] text-[#f4ecdf] shadow-[inset_2px_0_#d6ad6d]'
+                    : 'border-transparent text-[#f4ecdf]/[.58] hover:bg-white/[.035] hover:text-[#f4ecdf]'
+                }`}
+              >
+                <Icon className="h-4 w-4 shrink-0" strokeWidth={1.7} />
+                <span className="grid">
+                  <strong className="font-medium">{label}</strong>
+                  <small className="mt-0.5 text-[8px] text-[#f4ecdf]/[.34]">{hint}</small>
+                </span>
+              </button>
+            ))}
+          </nav>
+
+          <section className="mx-2 mt-8 rounded-xl border border-[#f4e2c6]/[.09] bg-white/[.025] p-3.5">
+            <span className="flex items-center gap-2 text-[10px] text-[#eee2d1]">
+              <i className="h-1.5 w-1.5 rounded-full bg-[#d6ad6d] shadow-[0_0_12px_rgba(214,173,109,.5)]" />
+              Preview
+            </span>
+            <small className="mt-1.5 block text-[8px] leading-4 text-[#f4ecdf]/[.42]">
+              Keine verbundenen Quellen. Eine Entscheidung wartet.
+            </small>
+          </section>
+
+          <div className="mt-auto border-t border-[#f4e2c6]/[.08] px-2 pt-4">
+            <div className="grid grid-cols-[36px_1fr] items-center gap-2.5">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#d6ad6d] font-serif text-sm font-semibold text-[#261b12]">
+                L
               </span>
-              <div className="min-w-0">
-                <div className="truncate font-serif text-[15px] tracking-[.18em] text-[#183b2d] sm:text-base">
-                  LUANA LUMINA
-                </div>
-                <div className="mt-1 truncate font-mono text-[6px] uppercase tracking-[.17em] text-[#385746]/[.45] sm:text-[7px] sm:tracking-[.2em]">
-                  DEINE WORLD · YORI
-                </div>
+              <span className="grid min-w-0">
+                <b className="truncate text-[11px] text-[#f4ecdf]">{world.clientName}</b>
+                <small className="text-[8px] text-[#f4ecdf]/[.42]">persönliche World</small>
+              </span>
+            </div>
+            <div className="mt-4 text-[6px] uppercase tracking-[.16em] text-[#f4ecdf]/[.22]">
+              YORI · A SAIMÔR CREATION
+            </div>
+          </div>
+        </aside>
+
+        <section className="relative z-10 min-h-[100svh] lg:pl-[200px]">
+          <header className="mx-auto flex h-[72px] w-[calc(100%-32px)] max-w-[1380px] items-center justify-between border-b border-[#f4e2c6]/[.08] lg:w-[calc(100%-72px)]">
+            <div className="flex items-center gap-3 lg:hidden">
+              <YoriMark className="h-7 w-7 text-[#d6ad6d]" title="YORI" />
+              <div>
+                <div className="font-serif text-[15px] tracking-[.12em]">LUANA</div>
+                <div className="text-[6px] uppercase tracking-[.18em] text-[#d6ad6d]">YORI WORLD</div>
               </div>
             </div>
 
-            <div className="shrink-0 text-right">
-              <div className="font-mono text-[7px] uppercase tracking-[.18em] text-[#385746]/[.40]">
-                BY SAIMÔR
-              </div>
-              <div className="mt-1 hidden text-[10px] text-[#385746]/[.42] sm:block">
-                persönliche Preview
-              </div>
+            <div className="hidden text-[9px] uppercase tracking-[.16em] text-[#f4ecdf]/[.34] lg:block">
+              {room === 'heute' ? 'SCHREIBTISCH' : room === 'auftritt' ? 'AUFTRITT' : room === 'ideen' ? 'IDEENRAUM' : 'NÄCHSTER WEG'}
+            </div>
+
+            <div className="ml-auto flex items-center gap-2 text-[8px] text-[#f4ecdf]/[.38]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#d6ad6d]" />
+              PERSÖNLICHE PREVIEW
             </div>
           </header>
 
-          <div className="grid flex-1 items-center gap-10 pb-12 pt-14 lg:grid-cols-[.82fr_1.18fr] lg:gap-8 lg:pb-16 lg:pt-20">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 font-mono text-[7px] uppercase tracking-[.22em] text-[#6d765a]/[.58] sm:text-[8px] sm:tracking-[.27em]">
-                <span className="h-px w-8 bg-[#667359]/[.35]" />
-                BEWUSSTSEINSTRAINING · IDENTITÄTSSHIFT · ENERGIEARBEIT
-              </div>
-
-              <h1 className="mt-7 max-w-[11ch] font-serif text-[clamp(3.45rem,15vw,6rem)] font-light leading-[.9] tracking-[-.055em] text-[#183a2d] sm:max-w-[12ch] lg:text-[clamp(5.2rem,7.3vw,8.6rem)]">
-                Du stehst an der Schwelle zu einer neuen Identität.
-              </h1>
-
-              <p className="mt-7 max-w-xl text-[15px] leading-7 text-[#365444]/[.62] sm:text-base sm:leading-8">
-                Nicht als neue Marke über dir. Sondern als ruhiger Raum hinter deinem Business – für das, was heute zählt und das, was später wieder wichtig wird.
-              </p>
-
-              <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <a
-                  href="#deine-world"
-                  className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[#294737] px-6 py-3 text-sm font-semibold text-[#f5f0e4] shadow-[0_14px_34px_rgba(34,67,49,.16)] transition hover:-translate-y-0.5 hover:bg-[#213b2f]"
-                >
-                  Deine World betreten
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <a
-                  href="#signal"
-                  className="text-sm text-[#355744]/[.52] underline decoration-[#355744]/[.16] underline-offset-4 transition hover:text-[#244a38]"
-                >
-                  sehen, wie daraus Arbeit wird
-                </a>
-              </div>
-            </div>
-
-            <div className="relative mx-auto h-[300px] w-full max-w-[690px] sm:h-[420px] lg:h-[650px]" aria-hidden="true">
-              <div className="absolute right-[2%] top-[8%] h-[58%] w-[68%] rounded-[49%_51%_48%_52%/58%_48%_52%_42%] bg-[radial-gradient(circle_at_35%_28%,rgba(255,255,255,.88)_0%,rgba(238,234,220,.72)_36%,rgba(198,199,178,.56)_100%)] shadow-[0_35px_90px_rgba(43,69,51,.13)]" />
-              <div className="absolute bottom-[8%] left-[7%] h-[34%] w-[48%] rotate-[-5deg] rounded-[52%_48%_44%_56%/58%_52%_48%_42%] bg-[radial-gradient(circle_at_34%_24%,rgba(255,255,255,.9)_0%,rgba(229,226,211,.76)_44%,rgba(183,189,164,.6)_100%)] shadow-[0_28px_65px_rgba(43,69,51,.12)]" />
-              <div className="absolute bottom-[28%] right-[4%] h-[19%] w-[27%] rotate-[5deg] rounded-[54%_46%_55%_45%/45%_58%_42%_55%] bg-[radial-gradient(circle_at_36%_25%,rgba(255,255,255,.92)_0%,rgba(232,228,215,.82)_48%,rgba(190,194,174,.62)_100%)] shadow-[0_22px_52px_rgba(43,69,51,.10)]" />
-
-              <div className="absolute left-[7%] top-[8%] max-w-[240px] rounded-[1.4rem] border border-[#315341]/[.12] bg-[#f6f1e6]/[.76] p-4 shadow-[0_18px_55px_rgba(42,70,52,.08)] backdrop-blur-md sm:left-[12%] sm:top-[14%] sm:p-5">
-                <div className="font-mono text-[7px] uppercase tracking-[.2em] text-[#456451]/[.42]">HEUTE</div>
-                <p className="mt-3 font-serif text-xl font-light leading-tight text-[#214432] sm:text-2xl">
-                  Ein Faden. Nicht alles gleichzeitig.
-                </p>
-                <div className="mt-4 h-px bg-[#315341]/[.10]" />
-                <p className="mt-3 text-xs leading-5 text-[#3d5b49]/[.48]">
-                  Einstieg ordnen · Hauptweg klären · Rest liegen lassen
-                </p>
-              </div>
-
-              <div className="absolute bottom-[13%] right-[11%] rounded-full border border-[#315341]/[.10] bg-[#f7f3e9]/[.72] px-4 py-2 font-mono text-[7px] uppercase tracking-[.16em] text-[#48604f]/[.46] shadow-[0_12px_35px_rgba(42,70,52,.06)] backdrop-blur">
-                YORI HÄLT DEN KONTEXT
-              </div>
-            </div>
+          <div className="mx-auto min-h-[calc(100svh-72px)] w-[calc(100%-32px)] max-w-[1280px] pb-[110px] pt-8 lg:w-[calc(100%-96px)] lg:pb-12 lg:pt-12">
+            {room === 'heute' ? (
+              <DeskRoom
+                clientName={world.clientName}
+                decision={decision}
+                onOpenPaper={() => setPaperOpen(true)}
+                onOpenAppearance={() => setRoom('auftritt')}
+                onOpenDecision={() => setRoom('weg')}
+              />
+            ) : room === 'auftritt' ? (
+              <AppearanceRoom onBack={() => setRoom('heute')} onDecision={() => setRoom('weg')} />
+            ) : room === 'ideen' ? (
+              <IdeasRoom onBack={() => setRoom('heute')} />
+            ) : (
+              <DecisionRoom
+                decision={decision}
+                saving={savingDecision}
+                error={decisionError}
+                onChoose={chooseDecision}
+                onBack={() => setRoom('heute')}
+              />
+            )}
           </div>
+        </section>
 
-          <a
-            href="#deine-world"
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-[#315341]/[.32]"
-            aria-label="Zur World scrollen"
-          >
-            <ChevronDown className="mx-auto h-5 w-5" />
-            <span className="mt-1 block font-mono text-[6px] uppercase tracking-[.23em]">WEITER</span>
-          </a>
-        </div>
-      </section>
+        <nav
+          className="fixed bottom-[max(8px,env(safe-area-inset-bottom))] left-1/2 z-50 flex min-h-[74px] w-[calc(100%-16px)] -translate-x-1/2 gap-0.5 rounded-[20px] border border-[#315341]/[.12] bg-[#f3eee4]/[.93] p-1.5 shadow-[0_14px_45px_rgba(0,0,0,.18)] backdrop-blur-xl lg:hidden"
+          aria-label="Luana World mobile Bereiche"
+        >
+          {ROOMS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setRoom(id)}
+              aria-current={room === id ? 'page' : undefined}
+              className={`flex min-h-[62px] flex-1 flex-col items-center justify-center gap-1 rounded-[14px] px-1 text-[9px] transition ${
+                room === id
+                  ? 'bg-[#dde5da] text-[#1d4c3e]'
+                  : 'text-[#52685a]/[.58] hover:bg-white/[.45] hover:text-[#294737]'
+              }`}
+            >
+              <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+              <strong className="text-[9px] font-medium">{label}</strong>
+            </button>
+          ))}
+        </nav>
 
-      <section id="deine-world" className="relative min-h-[100svh] overflow-hidden bg-[#f2ede2] px-4 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        <LuanaGardenScene />
+        {!entered ? (
+          <ArrivalOverlay world={world} onEnter={() => setEntered(true)} />
+        ) : null}
 
-        <div className="relative z-10 mx-auto max-w-[1440px]">
-          <div className="flex items-center justify-between border-b border-[#345442]/[.12] pb-4">
-            <div className="flex items-center gap-3">
-              <YoriMark className="h-7 w-7 text-[#234a37]" title="YORI" />
-              <div>
-                <p className="font-serif text-[14px] tracking-[.16em] text-[#1d4031]">LUANA</p>
-                <p className="mt-0.5 font-mono text-[6px] uppercase tracking-[.18em] text-[#496451]/[.40]">
-                  YORI WORLD
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-right">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#6f9478]" />
-              <span className="font-mono text-[6px] uppercase tracking-[.16em] text-[#4d6654]/[.42] sm:text-[7px]">
-                PREVIEW · NOCH KEINE LIVE-QUELLEN
-              </span>
-            </div>
-          </div>
-
-          <div className="relative mt-5 min-h-[720px] overflow-hidden border border-[#315341]/[.10] bg-[#f7f2e8]/[.70] shadow-[0_34px_100px_rgba(35,64,47,.09)] backdrop-blur-sm sm:mt-7 sm:min-h-[760px]">
-            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_84%_8%,rgba(255,255,255,.72),transparent_24%),linear-gradient(180deg,rgba(255,255,255,.14),transparent_58%)]" />
-            <div aria-hidden="true" className="absolute -right-24 top-10 h-[26rem] w-[26rem] rounded-full border border-[#47614e]/[.055]" />
-            <div aria-hidden="true" className="absolute right-2 top-28 h-[15rem] w-[15rem] rounded-full border border-[#47614e]/[.05]" />
-
-            <div className="relative z-10 grid min-h-[720px] grid-rows-[auto_1fr_auto] sm:min-h-[760px]">
-              <header className="grid gap-6 border-b border-[#315341]/[.10] px-5 py-6 sm:px-8 sm:py-7 lg:grid-cols-[1fr_auto] lg:items-end">
-                <div>
-                  <p className="font-mono text-[7px] uppercase tracking-[.22em] text-[#496451]/[.42]">
-                    {room === 'heute' ? 'SCHREIBTISCH' : room === 'auftritt' ? 'AUFTRITT' : room === 'ideen' ? 'IDEEN' : 'NÄCHSTER WEG'}
-                  </p>
-                  <h2 className="mt-3 font-serif text-[clamp(2.8rem,9vw,5.7rem)] font-light leading-[.92] tracking-[-.05em] text-[#193d2f]">
-                    {room === 'heute' ? 'Hallo Luana.' : activeRoom.label}
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-sm leading-6 text-[#3b5948]/[.52] sm:text-[15px] sm:leading-7">
-                    {room === 'heute'
-                      ? 'Hier liegt nur, was gerade deine Aufmerksamkeit braucht. Alles andere darf im Haus bleiben, ohne laut zu werden.'
-                      : activeRoom.body}
-                  </p>
-                  <span className="mt-5 block h-px w-16 bg-[#b29b60]/[.55]" />
-                </div>
-
-                <div className="flex items-center gap-2 text-left lg:text-right">
-                  <span className="font-mono text-[7px] uppercase tracking-[.14em] text-[#526b59]/[.36]">
-                    PERSÖNLICHER ARBEITSRAUM
-                  </span>
-                </div>
-              </header>
-
-              <div className="relative px-5 py-7 sm:px-8 sm:py-9">
-                {room === 'heute' ? (
-                  <div className="grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
-                    <article className="relative min-h-[340px] rotate-[-.25deg] border border-[#6d6959]/[.12] bg-[#fffaf0] p-6 shadow-[0_26px_70px_rgba(71,55,38,.10)] sm:p-8">
-                      <div className="absolute inset-x-0 top-[78px] h-px bg-[#7c7568]/[.07]" />
-                      <p className="font-mono text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">AUF DEINEM TISCH</p>
-                      <h3 className="mt-5 max-w-xl font-serif text-3xl font-light leading-[1.02] tracking-[-.035em] text-[#2c4336] sm:text-4xl">
-                        Der Einstieg deiner Website wartet auf eine Entscheidung.
-                      </h3>
-                      <p className="mt-5 max-w-xl text-sm leading-7 text-[#5d665e]/[.58]">
-                        Die Haltung funktioniert. Offen ist nur, welcher Weg im ersten Moment führt: Angebot oder Guide.
-                      </p>
-
-                      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                        <button
-                          type="button"
-                          onClick={() => setRoom('auftritt')}
-                          className="min-h-14 border border-[#315341]/[.12] bg-[#e2e9de] px-4 text-left text-sm text-[#274735] transition hover:-translate-y-0.5 hover:bg-[#dbe5d8]"
-                        >
-                          <span className="block font-semibold">Auftritt öffnen</span>
-                          <span className="mt-1 block text-[11px] text-[#46604f]/[.46]">den Einstieg ansehen</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setRoom('weg')}
-                          className="min-h-14 border border-[#315341]/[.10] bg-[#f2ead8] px-4 text-left text-sm text-[#4b4738] transition hover:-translate-y-0.5 hover:bg-[#eee3c9]"
-                        >
-                          <span className="block font-semibold">Entscheidung öffnen</span>
-                          <span className="mt-1 block text-[11px] text-[#645e49]/[.46]">einen Hauptweg wählen</span>
-                        </button>
-                      </div>
-                    </article>
-
-                    <div className="grid gap-4">
-                      <article className="border border-[#315341]/[.10] bg-[#e4eadf]/[.60] p-5 sm:p-6">
-                        <p className="font-mono text-[7px] uppercase tracking-[.17em] text-[#536c59]/[.40]">YORI NOTIZ</p>
-                        <p className="mt-4 font-serif text-2xl font-light leading-tight text-[#244735]">
-                          Nicht mehr Inhalt. Weniger Konkurrenz im ersten Moment.
-                        </p>
-                        <p className="mt-4 text-xs leading-6 text-[#47604f]/[.48]">
-                          Diese Notiz basiert nur auf dem bekannten Einstieg – nicht auf erfundenen Daten.
-                        </p>
-                      </article>
-
-                      <article className="border border-[#315341]/[.10] bg-white/[.38] p-5 sm:p-6">
-                        <p className="font-mono text-[7px] uppercase tracking-[.17em] text-[#536c59]/[.40]">IM HAUS</p>
-                        <div className="mt-4 space-y-3 text-sm text-[#34513f]/[.58]">
-                          <button type="button" onClick={() => setRoom('ideen')} className="flex w-full items-center justify-between border-b border-[#315341]/[.08] pb-3 text-left">
-                            <span>1 Idee liegt ruhig bereit</span>
-                            <ArrowRight className="h-3.5 w-3.5 opacity-40" />
-                          </button>
-                          <button type="button" onClick={() => setRoom('weg')} className="flex w-full items-center justify-between text-left">
-                            <span>1 Entscheidung braucht dich</span>
-                            <ArrowRight className="h-3.5 w-3.5 opacity-40" />
-                          </button>
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                ) : room === 'auftritt' ? (
-                  <div className="grid gap-5 lg:grid-cols-[.82fr_1.18fr]">
-                    <article className="border border-[#315341]/[.10] bg-white/[.38] p-6 sm:p-7">
-                      <p className="font-mono text-[7px] uppercase tracking-[.17em] text-[#536c59]/[.40]">WAS BLEIBT</p>
-                      <h3 className="mt-4 font-serif text-3xl font-light leading-tight text-[#244735]">
-                        Die Schwelle bleibt dein stärkster Satz.
-                      </h3>
-                      <p className="mt-4 text-sm leading-7 text-[#45604f]/[.52]">
-                        „Du stehst an der Schwelle zu einer neuen Identität.“ trägt Haltung und Richtung. YORI würde ihn nicht ersetzen, sondern ihm mehr Raum geben.
-                      </p>
-                    </article>
-
-                    <article className="overflow-hidden border border-[#315341]/[.12] bg-[#faf6ec] shadow-[0_24px_70px_rgba(43,69,51,.09)]">
-                      <div className="flex items-center justify-between border-b border-[#315341]/[.09] px-5 py-4">
-                        <span className="font-serif text-[13px] tracking-[.17em] text-[#244735]">LUANA LUMINA</span>
-                        <span className="font-mono text-[7px] uppercase tracking-[.14em] text-[#496350]/[.40]">EINSTIEG</span>
-                      </div>
-                      <div className="p-6 sm:p-8">
-                        <p className="font-mono text-[6px] uppercase tracking-[.17em] text-[#61725d]/[.45]">
-                          BEWUSSTSEINSTRAINING · IDENTITÄTSSHIFT · ENERGIEARBEIT
-                        </p>
-                        <h3 className="mt-5 max-w-lg font-serif text-4xl font-light leading-[.94] tracking-[-.04em] text-[#193b2e] sm:text-5xl">
-                          Du stehst an der Schwelle zu einer neuen Identität.
-                        </h3>
-                        <button type="button" className="mt-8 w-full rounded-full bg-[#294737] px-5 py-3.5 text-sm font-semibold text-[#f5f0e4] sm:w-auto sm:min-w-[230px]">
-                          Angebote entdecken
-                        </button>
-                        <button type="button" className="mt-3 block px-1 py-2 text-sm text-[#3d5b49]/[.48] sm:ml-5 sm:inline-block">
-                          Identitätsshift Guide
-                        </button>
-                      </div>
-                    </article>
-                  </div>
-                ) : room === 'ideen' ? (
-                  <div className="grid gap-5 lg:grid-cols-[1fr_.85fr]">
-                    <article className="relative min-h-[360px] rotate-[.3deg] border border-[#756b5a]/[.12] bg-[#fff9ed] p-6 shadow-[0_26px_70px_rgba(71,55,38,.09)] sm:p-8">
-                      <p className="font-mono text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">IDEENBLATT</p>
-                      <h3 className="mt-5 font-serif text-3xl font-light leading-tight text-[#2c4336] sm:text-4xl">
-                        Was wäre, wenn Website und Content nicht jedes Mal bei null anfangen?
-                      </h3>
-                      <p className="mt-5 max-w-2xl text-sm leading-7 text-[#5d665e]/[.58]">
-                        Ein Gedanke könnte in deiner World liegen bleiben, später für Website, Social oder einen Guide wieder auftauchen – mit dem Kontext, warum er überhaupt wichtig war.
-                      </p>
-                      <p className="mt-8 font-mono text-[7px] uppercase tracking-[.15em] text-[#7a6657]/[.32]">
-                        PREVIEW · KEINE VERBUNDENEN KANÄLE
-                      </p>
-                    </article>
-
-                    <article className="self-end border border-[#315341]/[.10] bg-[#dfe7db]/[.65] p-6 sm:p-7">
-                      <p className="font-mono text-[7px] uppercase tracking-[.17em] text-[#536c59]/[.40]">YORI HÄLT FEST</p>
-                      <p className="mt-4 font-serif text-2xl font-light leading-tight text-[#244735]">
-                        Ideen dürfen unfertig sein.
-                      </p>
-                      <p className="mt-4 text-sm leading-6 text-[#45604f]/[.50]">
-                        Sie müssen nicht sofort Aufgabe, Post oder Projekt werden. Erst wenn sie wieder relevant sind, kommen sie zurück auf den Tisch.
-                      </p>
-                    </article>
-                  </div>
-                ) : (
-                  <div className="mx-auto max-w-3xl">
-                    <article className="border border-[#315341]/[.10] bg-[#fffaf0] p-6 shadow-[0_28px_80px_rgba(71,55,38,.10)] sm:p-9">
-                      <p className="font-mono text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">ENTSCHEIDUNG</p>
-                      <h3 className="mt-5 font-serif text-3xl font-light leading-tight text-[#2c4336] sm:text-4xl">
-                        Welcher Weg soll im ersten Moment führen?
-                      </h3>
-                      <p className="mt-5 text-sm leading-7 text-[#5d665e]/[.56]">
-                        Für diese Preview würden wir „Angebote entdecken“ führen und den Guide als ruhigeren zweiten Weg behalten.
-                      </p>
-                      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                        <button type="button" onClick={() => void chooseDecision('yes')} className="min-h-14 bg-[#294737] px-5 text-sm font-semibold text-[#f5f0e4]">
-                          Angebot führt
-                        </button>
-                        <button type="button" onClick={() => void chooseDecision('change')} className="min-h-14 border border-[#315341]/[.12] px-5 text-sm text-[#34513f]/[.64]">
-                          Ich würde es anders lösen
-                        </button>
-                      </div>
-                    </article>
-                  </div>
-                )}
-              </div>
-
-              <nav className="mx-3 mb-3 grid grid-cols-4 border border-[#315341]/[.12] bg-[#f3eee4]/[.92] p-1.5 shadow-[0_14px_45px_rgba(43,69,51,.08)] backdrop-blur-md sm:mx-auto sm:mb-5 sm:w-fit sm:min-w-[520px]" aria-label="Luana World Bereiche">
-                {[
-                  { id: 'heute' as RoomId, label: 'Heute', Icon: House },
-                  { id: 'auftritt' as RoomId, label: 'Auftritt', Icon: Waves },
-                  { id: 'ideen' as RoomId, label: 'Ideen', Icon: MessageCircle },
-                  { id: 'weg' as RoomId, label: 'Weg', Icon: Sparkles },
-                ].map(({ id, label, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setRoom(id)}
-                    aria-current={room === id ? 'page' : undefined}
-                    className={`flex min-h-14 flex-col items-center justify-center gap-1 px-2 text-[9px] transition ${
-                      room === id
-                        ? 'bg-[#dde5da] text-[#1d4c3e]'
-                        : 'text-[#52685a]/[.52] hover:bg-white/[.45] hover:text-[#294737]'
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" strokeWidth={1.7} />
-                    <span>{label}</span>
-                  </button>
-                ))}
-              </nav>
-            </div>
-          </div>
-
-          <p className="mx-auto mt-5 max-w-2xl text-center text-[11px] leading-5 text-[#496451]/[.34]">
-            Eine personalisierte YORI-Vorschau: keine verbundenen Konten, keine erfundenen Kennzahlen, keine externen Aktionen.
-          </p>
-        </div>
-      </section>
-
-      <section id="signal" className="relative overflow-hidden border-y border-[#c8c1ad]/[.35] bg-[#e7dfcf] px-5 py-20 sm:px-9 sm:py-24 lg:px-14 lg:py-28">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_90%_12%,rgba(255,255,255,.5),transparent_27%),linear-gradient(120deg,rgba(49,79,59,.035),transparent_42%)]" />
-
-        <div className="relative z-10 mx-auto max-w-[1280px]">
-          <div className="max-w-3xl">
-            <p className="font-mono text-[7px] uppercase tracking-[.24em] text-[#5b6f5d]/[.44] sm:text-[8px]">
-              SIGNAL → ENTSCHEIDUNG → ARBEIT
-            </p>
-            <h2 className="mt-5 font-serif text-[clamp(3rem,10vw,6rem)] font-light leading-[.91] tracking-[-.05em] text-[#183a2d]">
-              YORI soll nicht nur schön liegen. Es soll etwas weiterbringen.
-            </h2>
-            <p className="mt-7 max-w-2xl text-sm leading-7 text-[#365444]/[.56] sm:text-base">
-              Ein Beispiel aus dem, was wir von deinem Einstieg wirklich kennen – ohne erfundene Reichweiten, Angebote oder Daten.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 lg:grid-cols-[.9fr_60px_.9fr_60px_1.15fr] lg:items-stretch">
-            <FlowCard
-              kicker="SIGNAL"
-              title="Zwei gleich starke Wege."
-              body="„Angebote entdecken“ und „Identitätsshift Guide“ konkurrieren im ersten Moment um dieselbe Aufmerksamkeit."
-            />
-            <FlowArrow />
-            <FlowCard
-              kicker="YORI ORDNET"
-              title="Ein Hauptweg."
-              body="Der wichtigste Schritt wird klar. Der Guide bleibt sichtbar, aber muss nicht genauso laut sein."
-              accent
-            />
-            <FlowArrow />
-            <article className="overflow-hidden rounded-[1.7rem] border border-[#315341]/[.12] bg-[#f5f0e4] shadow-[0_24px_70px_rgba(43,69,51,.10)]">
-              <div className="flex items-center justify-between border-b border-[#315341]/[.09] px-5 py-4">
-                <span className="font-serif text-[13px] tracking-[.17em] text-[#244735]">LUANA LUMINA</span>
-                <span className="font-mono text-[7px] uppercase tracking-[.14em] text-[#496350]/[.40]">ENTWURF</span>
-              </div>
-              <div className="p-6 sm:p-7">
-                <p className="font-mono text-[6px] uppercase tracking-[.17em] text-[#61725d]/[.45]">
-                  BEWUSSTSEINSTRAINING · IDENTITÄTSSHIFT · ENERGIEARBEIT
-                </p>
-                <h3 className="mt-5 font-serif text-4xl font-light leading-[.94] tracking-[-.04em] text-[#193b2e]">
-                  Du stehst an der Schwelle zu einer neuen Identität.
-                </h3>
-                <button type="button" className="mt-7 w-full rounded-full bg-[#294737] px-5 py-3.5 text-sm font-semibold text-[#f5f0e4]">
-                  Angebote entdecken
-                </button>
-                <button type="button" className="mt-3 w-full px-4 py-2 text-sm text-[#3d5b49]/[.52]">
-                  Identitätsshift Guide
-                </button>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-[#0d241b] px-5 py-20 text-[#f3ecde] sm:px-9 sm:py-24 lg:px-14 lg:py-28">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_76%_18%,rgba(108,144,111,.24),transparent_31%),radial-gradient(circle_at_18%_85%,rgba(62,143,139,.12),transparent_30%),linear-gradient(180deg,#10291e_0%,#0b1d16_100%)]" />
-        <div aria-hidden="true" className="absolute right-[-9rem] top-[4rem] h-[31rem] w-[31rem] rounded-full border border-[#e8d9b0]/[.07]" />
-        <div aria-hidden="true" className="absolute right-[1rem] top-[10rem] h-[18rem] w-[18rem] rounded-full border border-[#8ab09a]/[.08]" />
-
-        <div className="relative z-10 mx-auto grid max-w-[1180px] gap-14 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
-          <div>
-            <div className="flex items-center gap-3">
-              <YoriMark className="h-9 w-9 text-[#f1eadc]/[.78]" title="YORI" />
-              <span className="font-mono text-[7px] uppercase tracking-[.22em] text-[#d8cfb8]/[.38]">YORI · A SAIMÔR CREATION</span>
-            </div>
-
-            <h2 className="mt-8 max-w-2xl font-serif text-[clamp(3.2rem,10vw,6.4rem)] font-light leading-[.9] tracking-[-.05em]">
-              Deine World müsste nicht bei der Website enden.
-            </h2>
-            <p className="mt-7 max-w-xl text-sm leading-7 text-[#e8e0cf]/[.52] sm:text-base">
-              Wenn du möchtest, hält YORI später auch Ideen, Content, Kooperationen und Termine in demselben Kontext – ohne daraus ein lautes Dashboard zu machen.
-            </p>
-          </div>
-
-          <div className="rounded-[2rem] border border-[#e8dfcb]/[.10] bg-[#f2eadc]/[.055] p-6 shadow-[0_30px_100px_rgba(0,0,0,.22)] backdrop-blur-md sm:p-8">
-            <p className="font-mono text-[7px] uppercase tracking-[.2em] text-[#d8c89e]/[.48]">EINE ENTSCHEIDUNG</p>
-            <h3 className="mt-4 font-serif text-3xl font-light sm:text-4xl">Soll diese Richtung weiterleben?</h3>
-            <p className="mt-4 text-sm leading-6 text-[#eee5d4]/[.45]">
-              Mehr braucht es für diesen ersten Schritt nicht.
-            </p>
-
-            <div className="mt-8 space-y-3">
-              <button
-                type="button"
-                disabled={savingDecision}
-                onClick={() => void chooseDecision('yes')}
-                className={`flex min-h-14 w-full items-center justify-between rounded-full px-5 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60 ${
-                  decision === 'yes'
-                    ? 'bg-[#d9c58c] text-[#183127]'
-                    : 'bg-[#efe7d7] text-[#183127] hover:bg-white'
-                }`}
-              >
-                <span>{decision === 'yes' ? 'Ja — diese Richtung.' : 'Ja, zeig mir den nächsten Schritt'}</span>
-                {decision === 'yes' ? <Check className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-              </button>
-
-              <button
-                type="button"
-                disabled={savingDecision}
-                onClick={() => void chooseDecision('change')}
-                className={`min-h-12 w-full rounded-full border px-5 text-sm transition disabled:cursor-wait disabled:opacity-60 ${
-                  decision === 'change'
-                    ? 'border-[#d9c58c]/[.35] bg-[#d9c58c]/[.10] text-[#eadcb7]'
-                    : 'border-[#eee5d4]/[.12] text-[#eee5d4]/[.52] hover:border-[#eee5d4]/[.25] hover:text-[#eee5d4]/[.74]'
-                }`}
-              >
-                {decision === 'change' ? 'Verstanden — erst etwas ändern.' : 'Ich würde vorher etwas ändern'}
-              </button>
-            </div>
-
-            {decision ? (
-              <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-[#dfd5c0]/[.38]">
-                <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                Gespeichert. Wenn du wiederkommst, erinnert sich diese Preview an deine Entscheidung.
-              </p>
-            ) : decisionError ? (
-              <p className="mt-5 text-xs leading-5 text-[#e6b1a6]/70">
-                Konnte gerade nicht gespeichert werden. Bitte nochmal versuchen.
-              </p>
-            ) : null}
-          </div>
-        </div>
-
-        <footer className="relative z-10 mx-auto mt-20 flex max-w-[1180px] items-center justify-between border-t border-[#efe5d1]/[.08] pt-6 font-mono text-[6px] uppercase tracking-[.17em] text-[#e5dac3]/[.24] sm:text-[7px]">
-          <span>{world.clientName.toUpperCase()} WORLD</span>
-          <span>YORI · SAIMÔR</span>
-        </footer>
-      </section>
-
-      <style jsx global>{`
-        html { scroll-behavior: smooth; }
-        @media (prefers-reduced-motion: reduce) {
-          html { scroll-behavior: auto; }
-        }
-      `}</style>
+        {paperOpen ? (
+          <PaperSurface
+            decision={decision}
+            saving={savingDecision}
+            error={decisionError}
+            onClose={() => setPaperOpen(false)}
+            onChoose={chooseDecision}
+          />
+        ) : null}
+      </div>
     </main>
   );
 }
 
-function FlowCard({
-  kicker,
-  title,
-  body,
-  accent = false,
+function ArrivalOverlay({
+  world,
+  onEnter,
 }: {
-  kicker: string;
-  title: string;
-  body: string;
-  accent?: boolean;
+  world: ClientWorldConfig;
+  onEnter: () => void;
 }) {
   return (
-    <article
-      className={`rounded-[1.7rem] border p-6 sm:p-7 ${
-        accent
-          ? 'border-[#58745f]/[.16] bg-[#dce2d3]/[.62]'
-          : 'border-[#315341]/[.10] bg-[#f4ede0]/[.72]'
-      }`}
-    >
-      <p className="font-mono text-[7px] uppercase tracking-[.18em] text-[#57705d]/[.42]">{kicker}</p>
-      <h3 className="mt-4 font-serif text-2xl font-light leading-tight text-[#214432] sm:text-3xl">{title}</h3>
-      <p className="mt-4 text-sm leading-6 text-[#3d5b49]/[.52]">{body}</p>
-    </article>
+    <section className="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-[#efe9dc] px-5 py-8 text-[#193d2f]">
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(255,255,255,.92),transparent_25%),radial-gradient(circle_at_16%_88%,rgba(78,109,76,.18),transparent_30%),linear-gradient(180deg,#f0eadf_0%,#e8e0d2_100%)]" />
+      <div aria-hidden="true" className="absolute -right-[18vw] top-[8vh] h-[62vw] max-h-[720px] w-[62vw] max-w-[720px] rounded-full border border-[#294d3c]/[.07]" />
+      <div aria-hidden="true" className="absolute -right-[7vw] top-[18vh] h-[38vw] max-h-[440px] w-[38vw] max-w-[440px] rounded-full border border-[#294d3c]/[.08]" />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-[1180px] gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center">
+        <div>
+          <div className="flex items-center gap-3">
+            <YoriMark className="h-8 w-8 text-[#244a38]" title="YORI" />
+            <div>
+              <p className="font-serif text-[16px] tracking-[.16em] text-[#183b2d]">LUANA LUMINA</p>
+              <p className="mt-1 text-[7px] uppercase tracking-[.2em] text-[#59705e]/[.48]">
+                DEINE WORLD · YORI
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-12 text-[7px] uppercase tracking-[.22em] text-[#6b755e]/[.58] sm:text-[8px]">
+            BEWUSSTSEINSTRAINING · IDENTITÄTSSHIFT · ENERGIEARBEIT
+          </p>
+          <h1 className="mt-5 max-w-[11ch] font-serif text-[clamp(3.4rem,12vw,7.6rem)] font-light leading-[.9] tracking-[-.055em]">
+            Du stehst an der Schwelle zu einer neuen Identität.
+          </h1>
+          <p className="mt-7 max-w-xl text-[15px] leading-7 text-[#365444]/[.58]">
+            Wir haben daraus keinen Pitch gebaut. Sondern einen ersten Raum, in dem dein Auftritt bereits als echte Arbeit liegt.
+          </p>
+
+          <button
+            type="button"
+            onClick={onEnter}
+            className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#294737] px-6 py-3 text-sm font-semibold text-[#f5f0e4] shadow-[0_14px_34px_rgba(34,67,49,.16)] transition hover:-translate-y-0.5 hover:bg-[#213b2f]"
+          >
+            Meine World öffnen
+            <ArrowRight className="h-4 w-4" />
+          </button>
+
+          <p className="mt-5 text-[10px] text-[#496451]/[.34]">
+            persönliche Preview · keine verbundenen Konten
+          </p>
+        </div>
+
+        <div className="relative hidden min-h-[560px] lg:block" aria-hidden="true">
+          <div className="absolute right-[4%] top-[5%] h-[68%] w-[68%] rounded-[49%_51%_48%_52%/58%_48%_52%_42%] bg-[radial-gradient(circle_at_35%_28%,rgba(255,255,255,.94)_0%,rgba(232,230,217,.86)_38%,rgba(177,190,163,.64)_100%)] shadow-[0_35px_90px_rgba(43,69,51,.16)]" />
+          <div className="absolute bottom-[6%] left-[4%] h-[36%] w-[48%] rotate-[-4deg] rounded-[52%_48%_44%_56%/58%_52%_48%_42%] bg-[radial-gradient(circle_at_34%_24%,rgba(255,255,255,.94)_0%,rgba(225,224,207,.82)_44%,rgba(168,185,156,.62)_100%)] shadow-[0_28px_65px_rgba(43,69,51,.14)]" />
+          <div className="absolute left-[12%] top-[23%] w-[250px] rotate-[-1deg] border border-[#315341]/[.11] bg-[#fffaf0]/[.82] p-5 shadow-[0_18px_55px_rgba(42,70,52,.09)] backdrop-blur-md">
+            <p className="text-[7px] uppercase tracking-[.18em] text-[#58705e]/[.42]">AUF DEINEM TISCH</p>
+            <p className="mt-3 font-serif text-2xl font-light leading-tight text-[#214432]">
+              Eine Entscheidung wartet.
+            </p>
+            <div className="mt-4 h-px bg-[#315341]/[.10]" />
+            <p className="mt-3 text-xs leading-5 text-[#3d5b49]/[.48]">
+              Welcher Weg soll auf deiner Website zuerst führen?
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-6 left-6 text-[6px] uppercase tracking-[.16em] text-[#405a49]/[.25]">
+        YORI · A SAIMÔR CREATION
+      </div>
+    </section>
   );
 }
 
-function FlowArrow() {
+function DeskRoom({
+  clientName,
+  decision,
+  onOpenPaper,
+  onOpenAppearance,
+  onOpenDecision,
+}: {
+  clientName: string;
+  decision: Decision | null;
+  onOpenPaper: () => void;
+  onOpenAppearance: () => void;
+  onOpenDecision: () => void;
+}) {
   return (
-    <div className="flex items-center justify-center py-1 text-[#52705b]/[.30] lg:py-0" aria-hidden="true">
-      <ArrowRight className="h-5 w-5 rotate-90 lg:rotate-0" />
-    </div>
+    <section aria-label="YORI Arbeitsraum">
+      <header className="max-w-[760px]">
+        <p className="text-[8px] uppercase tracking-[.18em] text-[#d6ad6d]/[.70]">HEUTE · SCHREIBTISCH</p>
+        <h1 className="mt-3 font-serif text-[clamp(3.2rem,9vw,6rem)] font-medium leading-[.92] tracking-[-.055em] text-[#f4ecdf]">
+          Hallo {clientName}.
+        </h1>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-[#f4ecdf]/[.50]">
+          Hier liegt nur, was deine Aufmerksamkeit braucht.
+        </p>
+        <span className="mt-5 block h-px w-16 bg-[#d6ad6d]/[.62]" />
+        <div className="mt-5 flex items-center gap-3">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#d6ad6d] shadow-[0_0_12px_rgba(214,173,109,.45)]" />
+          <div>
+            <b className="block text-[10px] font-medium text-[#eee2d1]">
+              {decision ? 'Entscheidung gespeichert' : '1 Sache wartet auf dich'}
+            </b>
+            <small className="text-[8px] text-[#f4ecdf]/[.34]">
+              Preview · nur bekannter Website-Kontext
+            </small>
+          </div>
+        </div>
+      </header>
+
+      <div className="relative mt-10 min-h-[470px] overflow-hidden rounded-[28px_8px_30px_10px] border border-[#f4e2c6]/[.08] bg-[linear-gradient(180deg,rgba(65,49,36,.50),rgba(28,21,16,.62))] p-5 shadow-[0_32px_90px_rgba(0,0,0,.25)] sm:p-8">
+        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_76%_20%,rgba(214,173,109,.08),transparent_28%),radial-gradient(circle_at_18%_85%,rgba(87,120,92,.08),transparent_30%)]" />
+
+        <button
+          type="button"
+          onClick={onOpenPaper}
+          className="group relative z-10 block min-h-[320px] w-full max-w-[700px] rotate-[-.35deg] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-left text-[#2c4336] shadow-[0_28px_80px_rgba(0,0,0,.18)] transition hover:-translate-y-1 hover:rotate-0 sm:p-8"
+        >
+          <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.46]">AUF DEINEM TISCH</p>
+          <h2 className="mt-5 max-w-xl font-serif text-3xl font-light leading-[1.02] tracking-[-.035em] sm:text-4xl">
+            Der Einstieg deiner Website wartet auf eine Entscheidung.
+          </h2>
+          <p className="mt-5 max-w-xl text-sm leading-7 text-[#5d665e]/[.58]">
+            Deine Haltung bleibt. Offen ist nur, welcher Weg im ersten Moment führt: Angebot oder Guide.
+          </p>
+
+          <div className="mt-8 flex items-center justify-between border-t border-[#5b665e]/[.10] pt-4">
+            <span className="text-[10px] text-[#4b5f50]/[.46]">
+              {decision === 'yes'
+                ? 'Angebot führt · notiert'
+                : decision === 'change'
+                  ? 'Änderung gewünscht · notiert'
+                  : 'Öffnen und entscheiden'}
+            </span>
+            <ArrowRight className="h-4 w-4 text-[#294737]/[.42] transition group-hover:translate-x-1" />
+          </div>
+        </button>
+
+        <aside className="relative z-10 mt-5 grid gap-3 sm:grid-cols-2 lg:absolute lg:right-8 lg:top-8 lg:mt-0 lg:w-[290px] lg:grid-cols-1">
+          <button
+            type="button"
+            onClick={onOpenAppearance}
+            className="rounded-xl border border-[#f4e2c6]/[.08] bg-white/[.035] p-4 text-left backdrop-blur-sm transition hover:bg-white/[.055]"
+          >
+            <span className="text-[7px] uppercase tracking-[.15em] text-[#d6ad6d]/[.54]">AUFTRITT</span>
+            <p className="mt-2 font-serif text-xl font-light text-[#f4ecdf]">Was bleibt. Was klarer wird.</p>
+          </button>
+
+          <button
+            type="button"
+            onClick={onOpenDecision}
+            className="rounded-xl border border-[#f4e2c6]/[.08] bg-white/[.035] p-4 text-left backdrop-blur-sm transition hover:bg-white/[.055]"
+          >
+            <span className="text-[7px] uppercase tracking-[.15em] text-[#d6ad6d]/[.54]">NÄCHSTER WEG</span>
+            <p className="mt-2 font-serif text-xl font-light text-[#f4ecdf]">Eine Entscheidung reicht.</p>
+          </button>
+        </aside>
+
+        <p className="relative z-10 mt-7 text-[10px] italic text-[#f4ecdf]/[.26] lg:absolute lg:bottom-7 lg:right-8">
+          Der Schreibtisch darf ruhig bleiben.
+        </p>
+      </div>
+    </section>
   );
 }
 
-function LuanaGardenScene({ hero = false }: { hero?: boolean }) {
+function AppearanceRoom({
+  onBack,
+  onDecision,
+}: {
+  onBack: () => void;
+  onDecision: () => void;
+}) {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_14%,rgba(255,255,255,.86),transparent_29%),linear-gradient(180deg,rgba(255,255,255,.28),transparent_60%)]" />
-      <div
-        className={`luana-tree absolute ${
-          hero
-            ? '-right-[11%] -top-[8%] h-[92%] w-[53%]'
-            : '-right-[13%] -top-[12%] h-[78%] w-[45%]'
-        }`}
-      />
-      <div
-        className={`luana-tree luana-tree-left absolute ${
-          hero
-            ? '-left-[20%] bottom-[-10%] h-[55%] w-[38%]'
-            : '-left-[15%] bottom-[-14%] h-[52%] w-[35%]'
-        }`}
+    <section>
+      <RoomIntro
+        eyebrow="AUFTRITT"
+        title="Luana bleibt vor dem System."
+        body="YORI verändert nicht deine Haltung. Es macht klarer, was zuerst gesehen und welcher Weg zuerst gegangen wird."
       />
 
-      <svg viewBox="0 0 1200 720" preserveAspectRatio="none" className="luana-sand absolute inset-x-[-4%] bottom-[-4%] h-[64%] w-[108%]">
-        {Array.from({ length: 14 }).map((_, index) => (
-          <path
-            key={index}
-            d={`M-40 ${90 + index * 34} C190 ${25 + index * 31}, 315 ${150 + index * 26}, 520 ${95 + index * 32} S860 ${55 + index * 34}, 1240 ${105 + index * 32}`}
-            fill="none"
-            stroke="#405f4a"
-            strokeOpacity={0.045 + index * 0.002}
-            strokeWidth="1"
-          />
-        ))}
-      </svg>
+      <div className="mt-9 grid gap-5 lg:grid-cols-[.78fr_1.22fr]">
+        <article className="rounded-[7px_24px_9px_20px] border border-[#f4e2c6]/[.08] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_24px_65px_rgba(0,0,0,.16)] sm:p-8">
+          <p className="text-[7px] uppercase tracking-[.16em] text-[#7a6657]/[.44]">WAS BLEIBT</p>
+          <h2 className="mt-4 font-serif text-3xl font-light leading-tight">Die Schwelle ist der starke Satz.</h2>
+          <p className="mt-4 text-sm leading-7 text-[#5d665e]/[.56]">
+            „Du stehst an der Schwelle zu einer neuen Identität.“ trägt bereits Haltung und Richtung. Er braucht keinen Ersatz, sondern mehr Raum.
+          </p>
+        </article>
 
-      <svg viewBox="0 0 420 650" className="luana-branch absolute right-[-3%] top-[-4%] h-[72%] w-[38%] opacity-30">
-        <path d="M320 0 C300 120 286 206 304 334 C315 420 284 515 248 650" fill="none" stroke="#234b35" strokeWidth="3" strokeOpacity=".44" />
-        <path d="M301 170 C235 155 198 119 156 70 M304 278 C354 245 382 212 412 160 M293 390 C226 365 180 330 141 273 M281 492 C333 470 366 438 401 397" fill="none" stroke="#234b35" strokeWidth="1.4" strokeOpacity=".34" />
-      </svg>
+        <article className="overflow-hidden rounded-[7px_24px_9px_20px] border border-[#f4e2c6]/[.08] bg-[#f6f0e3] text-[#193b2e] shadow-[0_24px_65px_rgba(0,0,0,.16)]">
+          <div className="flex items-center justify-between border-b border-[#315341]/[.09] px-5 py-4">
+            <span className="font-serif text-[13px] tracking-[.17em]">LUANA LUMINA</span>
+            <span className="text-[7px] uppercase tracking-[.14em] text-[#496350]/[.40]">EINSTIEG</span>
+          </div>
+          <div className="p-6 sm:p-8">
+            <p className="text-[6px] uppercase tracking-[.17em] text-[#61725d]/[.45]">
+              BEWUSSTSEINSTRAINING · IDENTITÄTSSHIFT · ENERGIEARBEIT
+            </p>
+            <h3 className="mt-5 max-w-lg font-serif text-4xl font-light leading-[.94] tracking-[-.04em] sm:text-5xl">
+              Du stehst an der Schwelle zu einer neuen Identität.
+            </h3>
+            <button type="button" onClick={onDecision} className="mt-8 w-full rounded-full bg-[#294737] px-5 py-3.5 text-sm font-semibold text-[#f5f0e4] sm:w-auto sm:min-w-[230px]">
+              Angebote entdecken
+            </button>
+            <button type="button" className="mt-3 block px-1 py-2 text-sm text-[#3d5b49]/[.48] sm:ml-5 sm:inline-block">
+              Identitätsshift Guide
+            </button>
+          </div>
+        </article>
+      </div>
 
-      <style>{`
-        .luana-tree {
-          background: radial-gradient(ellipse at 70% 35%, rgba(63,95,61,.34), rgba(91,118,77,.14) 38%, transparent 69%);
-          filter: blur(20px);
-          opacity: .78;
-        }
-        .luana-tree-left {
-          background: radial-gradient(ellipse at 30% 58%, rgba(57,91,59,.28), rgba(112,126,79,.11) 41%, transparent 71%);
-          opacity: .48;
-        }
-        .luana-sand {
-          animation: luanaSand 18s ease-in-out infinite alternate;
-        }
-        .luana-branch {
-          animation: luanaBranch 14s ease-in-out infinite alternate;
-          transform-origin: 80% 8%;
-        }
-        @keyframes luanaSand {
-          from { transform: translate3d(-.8%,0,0); }
-          to { transform: translate3d(.9%,.5%,0); }
-        }
-        @keyframes luanaBranch {
-          from { transform: rotate(-.35deg) translateY(0); }
-          to { transform: rotate(.55deg) translateY(3px); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .luana-sand, .luana-branch { animation: none !important; }
-        }
-      `}</style>
+      <button type="button" onClick={onBack} className="mt-7 text-[10px] text-[#f4ecdf]/[.38] underline underline-offset-4">
+        zurück zum Schreibtisch
+      </button>
+    </section>
+  );
+}
+
+function IdeasRoom({ onBack }: { onBack: () => void }) {
+  return (
+    <section>
+      <RoomIntro
+        eyebrow="IDEEN"
+        title="Nicht jeder Gedanke muss sofort Arbeit werden."
+        body="Eine Idee darf in der World liegen bleiben, bis sie wieder relevant wird. Dann kommt sie mit ihrem Kontext zurück."
+      />
+
+      <div className="mt-9 grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
+        <article className="rotate-[.25deg] rounded-[6px_26px_8px_22px] border border-[#6f6658]/[.16] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_28px_80px_rgba(0,0,0,.18)] sm:p-8">
+          <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.46]">IDEENBLATT</p>
+          <h2 className="mt-5 font-serif text-3xl font-light leading-tight sm:text-4xl">
+            Was wäre, wenn Website und Content nicht jedes Mal bei null anfangen?
+          </h2>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-[#5d665e]/[.58]">
+            Derselbe Gedanke kann später wieder für Website, Social oder einen Guide auftauchen – ohne dass Luana den Zusammenhang jedes Mal neu erklären muss.
+          </p>
+          <p className="mt-8 text-[7px] uppercase tracking-[.15em] text-[#7a6657]/[.32]">
+            PREVIEW · KEINE VERBUNDENEN KANÄLE
+          </p>
+        </article>
+
+        <article className="self-end rounded-[18px_5px_19px_6px] border border-[#f4e2c6]/[.08] bg-[#dfe7db]/[.14] p-6 backdrop-blur-sm sm:p-7">
+          <p className="text-[7px] uppercase tracking-[.17em] text-[#d6ad6d]/[.54]">YORI HÄLT FEST</p>
+          <p className="mt-4 font-serif text-2xl font-light leading-tight text-[#f4ecdf]">
+            Ideen dürfen unfertig sein.
+          </p>
+          <p className="mt-4 text-sm leading-6 text-[#f4ecdf]/[.44]">
+            Erst wenn sie wieder wichtig werden, kommen sie zurück auf den Tisch.
+          </p>
+        </article>
+      </div>
+
+      <button type="button" onClick={onBack} className="mt-7 text-[10px] text-[#f4ecdf]/[.38] underline underline-offset-4">
+        zurück zum Schreibtisch
+      </button>
+    </section>
+  );
+}
+
+function DecisionRoom({
+  decision,
+  saving,
+  error,
+  onChoose,
+  onBack,
+}: {
+  decision: Decision | null;
+  saving: boolean;
+  error: boolean;
+  onChoose: (value: Decision) => void | Promise<void>;
+  onBack: () => void;
+}) {
+  return (
+    <section>
+      <RoomIntro
+        eyebrow="NÄCHSTER WEG"
+        title="Eine Entscheidung reicht."
+        body="YORI darf Kontext vorbereiten. Die Entscheidung bleibt bei dir."
+      />
+
+      <article className="mt-9 max-w-3xl rounded-[7px_26px_9px_22px] border border-[#6f6658]/[.16] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_28px_80px_rgba(0,0,0,.18)] sm:p-9">
+        <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">AUF DEINEM TISCH</p>
+        <h2 className="mt-5 font-serif text-3xl font-light leading-tight sm:text-4xl">
+          Welcher Weg soll auf deiner Website zuerst führen?
+        </h2>
+        <p className="mt-5 text-sm leading-7 text-[#5d665e]/[.56]">
+          Für diese Preview würden wir „Angebote entdecken“ führen und den Guide als ruhigeren zweiten Weg behalten.
+        </p>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => void onChoose('yes')}
+            className={`min-h-14 px-5 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60 ${
+              decision === 'yes'
+                ? 'bg-[#d8c289] text-[#23382d]'
+                : 'bg-[#294737] text-[#f5f0e4] hover:bg-[#213b2f]'
+            }`}
+          >
+            {decision === 'yes' ? 'Angebot führt · notiert' : 'Angebot soll führen'}
+          </button>
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => void onChoose('change')}
+            className={`min-h-14 border px-5 text-sm transition disabled:cursor-wait disabled:opacity-60 ${
+              decision === 'change'
+                ? 'border-[#8c7652]/[.25] bg-[#eadfca] text-[#514733]'
+                : 'border-[#315341]/[.14] text-[#34513f]/[.64]'
+            }`}
+          >
+            {decision === 'change' ? 'Änderung gewünscht · notiert' : 'Ich würde es anders lösen'}
+          </button>
+        </div>
+
+        {decision ? (
+          <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-[#4e6355]/[.52]">
+            <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            Gespeichert. Diese Preview erinnert sich beim nächsten Besuch.
+          </p>
+        ) : error ? (
+          <p className="mt-5 text-xs text-[#9a5649]">Konnte gerade nicht gespeichert werden. Bitte nochmal versuchen.</p>
+        ) : null}
+      </article>
+
+      <button type="button" onClick={onBack} className="mt-7 text-[10px] text-[#f4ecdf]/[.38] underline underline-offset-4">
+        zurück zum Schreibtisch
+      </button>
+    </section>
+  );
+}
+
+function PaperSurface({
+  decision,
+  saving,
+  error,
+  onClose,
+  onChoose,
+}: {
+  decision: Decision | null;
+  saving: boolean;
+  error: boolean;
+  onClose: () => void;
+  onChoose: (value: Decision) => void | Promise<void>;
+}) {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Papier schließen"
+        className="fixed inset-0 z-[80] bg-[#0b0806]/[.48] backdrop-blur-[6px]"
+      />
+      <section className="fixed inset-x-3 bottom-3 z-[90] max-h-[88svh] overflow-y-auto rounded-[8px_28px_10px_24px] border border-[#6f6658]/[.18] bg-[#fff8ec] p-6 text-[#2c4336] shadow-[0_36px_110px_rgba(0,0,0,.34)] sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[min(680px,calc(100%-40px))] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:p-9">
+        <div className="flex items-center justify-between">
+          <p className="text-[7px] uppercase tracking-[.18em] text-[#7a6657]/[.44]">AUF DEINEM TISCH</p>
+          <button type="button" onClick={onClose} className="text-[10px] text-[#5d665e]/[.44]">schließen</button>
+        </div>
+
+        <h2 className="mt-5 font-serif text-3xl font-light leading-tight sm:text-4xl">
+          Der Einstieg deiner Website wartet auf eine Entscheidung.
+        </h2>
+        <p className="mt-5 text-sm leading-7 text-[#5d665e]/[.56]">
+          Deine Haltung funktioniert bereits. Wir würden nur dafür sorgen, dass im ersten Moment ein Weg führt und der zweite ruhig daneben bestehen kann.
+        </p>
+
+        <div className="mt-7 border-y border-[#315341]/[.10] py-6">
+          <p className="text-[7px] uppercase tracking-[.16em] text-[#61725d]/[.42]">UNSER VORSCHLAG</p>
+          <p className="mt-3 font-serif text-2xl font-light">„Angebote entdecken“ führt.</p>
+          <p className="mt-2 text-sm leading-6 text-[#5d665e]/[.50]">Der Identitätsshift Guide bleibt sichtbar, aber leiser.</p>
+        </div>
+
+        <div className="mt-7 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => void onChoose('yes')}
+            className="min-h-14 bg-[#294737] px-5 text-sm font-semibold text-[#f5f0e4] disabled:opacity-60"
+          >
+            {decision === 'yes' ? 'Notiert · Angebot führt' : 'Passt so'}
+          </button>
+          <button
+            type="button"
+            disabled={saving}
+            onClick={() => void onChoose('change')}
+            className="min-h-14 border border-[#315341]/[.14] px-5 text-sm text-[#34513f]/[.64] disabled:opacity-60"
+          >
+            {decision === 'change' ? 'Notiert · erst ändern' : 'Ich würde es ändern'}
+          </button>
+        </div>
+
+        {error ? <p className="mt-4 text-xs text-[#9a5649]">Konnte gerade nicht gespeichert werden.</p> : null}
+      </section>
+    </>
+  );
+}
+
+function RoomIntro({
+  eyebrow,
+  title,
+  body,
+}: {
+  eyebrow: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <header className="max-w-[820px]">
+      <p className="text-[8px] font-semibold uppercase tracking-[.14em] text-[#d6ad6d]/[.68]">{eyebrow}</p>
+      <h1 className="mt-3 font-serif text-[clamp(3rem,8vw,5.3rem)] font-medium leading-[.94] tracking-[-.055em] text-[#f4ecdf]">
+        {title}
+      </h1>
+      <p className="mt-4 max-w-2xl text-sm leading-7 text-[#f4ecdf]/[.48]">{body}</p>
+      <span className="mt-5 block h-px w-16 bg-[#d6ad6d]/[.58]" />
+    </header>
+  );
+}
+
+function AmbientRoom() {
+  return (
+    <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#18120d_0%,#0e0b08_72%,#0a0806_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_77%_18%,rgba(214,173,109,.10),transparent_28%),radial-gradient(circle_at_68%_80%,rgba(72,108,76,.08),transparent_34%),radial-gradient(circle_at_28%_30%,rgba(255,241,213,.035),transparent_24%)]" />
+      <div className="absolute right-[7%] top-[9%] h-[52vh] w-[52vh] rounded-full border border-[#e3c892]/[.035]" />
+      <div className="absolute right-[13%] top-[16%] h-[34vh] w-[34vh] rounded-full border border-[#e3c892]/[.04]" />
+      <div className="absolute bottom-[-18%] right-[-8%] h-[52%] w-[48%] rounded-[50%] bg-[radial-gradient(circle,rgba(56,88,61,.10),transparent_67%)] blur-2xl" />
+      <div className="absolute inset-0 opacity-[.16] [background-image:url('data:image/svg+xml,%3Csvg_viewBox=%220_0_160_160%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter_id=%22n%22%3E%3CfeTurbulence_type=%22fractalNoise%22_baseFrequency=%22.8%22_numOctaves=%222%22/%3E%3C/filter%3E%3Crect_width=%22100%25%22_height=%22100%25%22_filter=%22url(%23n)%22_opacity=%22.11%22/%3E%3C/svg%3E')]" />
     </div>
   );
 }
