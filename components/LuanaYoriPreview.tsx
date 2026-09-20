@@ -72,7 +72,7 @@ export default function LuanaYoriPreview({ world }: Props) {
               LUANA <span className="text-[#d4af68]">LUMINA</span>
             </span>
           </div>
-          <span className="whitespace-nowrap pt-1 text-[8px] uppercase tracking-[.18em] text-[#d4af68]">DEINE WORLD</span>
+          <span className="whitespace-nowrap pt-1 text-[8px] uppercase tracking-[.18em] text-[#d4af68]">DEINE WORLD · {world.clientName}</span>
         </header>
 
         <div className="grid flex-1 items-center gap-7 py-7 lg:grid-cols-[.86fr_1.14fr] lg:gap-14">
