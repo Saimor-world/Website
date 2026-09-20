@@ -70,6 +70,7 @@ export default function LuanaYoriPreview({ world }: Props) {
             <div className="mt-7 border-y border-[#d4af68]/30 py-5">
               <TruthRow label="Instagram" value="@luanalumiina" state="bekannt · nicht verifiziert" />
               <TruthRow label="Sprache" value="Bewusstseinstraining · Identitätsshift · Energiearbeit" state="bekannt" />
+              <TruthRow label="3 Wege" value="Orakellegung · Skool-Mitgliedschaft · 1:1 Mentoring" state="aus deinem Auftritt" />
               <TruthRow label="Website" value="aktueller Entwurf bekannt" state="Produktions-Domain offen" />
             </div>
           </div>
