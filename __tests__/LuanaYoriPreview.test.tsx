@@ -37,4 +37,12 @@ describe('LuanaYoriPreview', () => {
     expect(screen.getByRole('button', { name: /Ideen/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Weg/i })).toBeInTheDocument();
   });
+
+  it('returns directly to a cleared desk after a remembered decision', () => {
+    render(<LuanaYoriPreview world={world} initialDecision="yes" />);
+
+    expect(screen.queryByRole('button', { name: /Meine World öffnen/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/Schreibtisch frei/i)).toBeInTheDocument();
+    expect(screen.getByText(/Die Entscheidung ist notiert/i)).toBeInTheDocument();
+  });
 });
