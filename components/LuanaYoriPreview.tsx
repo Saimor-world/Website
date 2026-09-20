@@ -177,7 +177,14 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
         </header>
 
         <nav className="border-b border-[#b8893f]/[.22] lg:hidden" aria-label="Luana World mobile Kapitel">
-          <div className="mx-auto flex w-[calc(100%-40px)] gap-7 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {/*
+            Die Leiste scrollt, aber der Balken ist ausgeblendet und "04 ·
+            Weiter" liegt im Ruhezustand ausserhalb des Schirms. Ohne Hinweis
+            findet man das Kapitel mit der Entscheidung nur zufaellig - daher
+            die weiche Kante rechts.
+          */}
+          <div className="relative mx-auto w-[calc(100%-40px)]">
+            <div className="flex gap-7 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {NAV.map(([id, label]) => (
               <a
                 key={id}
@@ -187,6 +194,11 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
                 {label}
               </a>
             ))}
+            </div>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-[linear-gradient(90deg,rgba(247,242,230,0),rgba(247,242,230,.95))]"
+            />
           </div>
         </nav>
 
