@@ -8,51 +8,44 @@ afterEach(cleanup);
 const world = getClientWorld('luana')!;
 
 describe('LuanaYoriPreview', () => {
-  it('explains the World before asking for a decision', () => {
+  it('opens as a compact Luana gateway into real YORI', () => {
     render(<LuanaYoriPreview world={world} />);
 
     expect(
       screen.getAllByText((_, element) => element?.textContent?.trim() === 'LUANA LUMINA').length
     ).toBeGreaterThan(0);
-
-    expect(screen.getByText(/Was ist eine eigene World\?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Warum habt ihr das für mich gebaut\?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Was macht YORI darin\?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Was hätte ich konkret davon\?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Ist das einfach eine neue Website\?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Bleibt das trotzdem meins\?/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Luana, hier liegt schon etwas von dir/i })).toBeInTheDocument();
+    expect(screen.getByDisplayValue('luanalumiina')).toBeInTheDocument();
+    expect(screen.getByText(/bekannt · nicht verifiziert/i)).toBeInTheDocument();
+    expect(screen.getByText(/Produktions-Domain offen/i)).toBeInTheDocument();
   });
 
-  it('keeps the experience as one continuous guided journey', () => {
+  it('links the prefilled public handle into the real YORI creator preview', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getByRole('heading', { name: /Nicht mehr Oberfläche\. Mehr Zusammenhang\./i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Alles, was du schon hast — an einem Ort\./i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Was würde das für dich praktisch bedeuten\?/i })).toBeInTheDocument();
-
-    expect(screen.getAllByRole('link', { name: /01 · Ankommen/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /02 · Deine World/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /03 · Ein Beispiel/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /04 · Weiter/i }).length).toBeGreaterThan(0);
+    const link = screen.getByRole('link', { name: /Haus mit @luanalumiina betreten/i });
+    expect(link).toHaveAttribute(
+      'href',
+      'https://yori-pm0i.onrender.com/demo?platform=instagram&creator=luanalumiina'
+    );
   });
 
-  it('keeps the website as one example instead of the product thesis', () => {
+  it('shows only truthful connector capabilities', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getByText(/Deine Seite trägt bereits eine eigene Welt/i)).toBeInTheDocument();
-    expect(screen.getByText(/Was deine World halten würde/i)).toBeInTheDocument();
+    expect(screen.getByText(/TikTok verbinden/i)).toBeInTheDocument();
+    expect(screen.getByText(/Follower, Likes, Videoanzahl und bis zu 20 aktuelle Videos/i)).toBeInTheDocument();
+    expect(screen.getByText(/Kalender verbinden/i)).toBeInTheDocument();
+    expect(screen.getByText(/Website bestätigen/i)).toBeInTheDocument();
+    expect(screen.getByText(/Keine Social-Zahl wird geraten/i)).toBeInTheDocument();
+  });
+
+  it('does not bring back the long audit or chapter experience', () => {
+    render(<LuanaYoriPreview world={world} />);
 
     expect(screen.queryByText(/Gemeinsamer Stand/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Wir haben uns deinen Auftritt angesehen/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Was wir von dir brauchen/i)).not.toBeInTheDocument();
-  });
-
-  it('shows remembered decisions without hiding the World', () => {
-    render(<LuanaYoriPreview world={world} initialDecision="yes" />);
-
-    expect(screen.getByText(/Willkommen zurück\. Deine letzte Antwort ist noch da\./i)).toBeInTheDocument();
-    expect(screen.getByText(/Deine Antwort ist notiert/i)).toBeInTheDocument();
-    expect(screen.getByText(/Dann bauen wir von hier weiter/i)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Was wäre, wenn dein Business einen eigenen ruhigen Raum hätte\?/i })).toBeInTheDocument();
+    expect(screen.queryByText(/01 · Ankommen/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Nicht mehr Oberfläche\. Mehr Zusammenhang/i)).not.toBeInTheDocument();
   });
 });
