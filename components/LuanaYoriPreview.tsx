@@ -41,26 +41,35 @@ const WORLD_QA = [
   },
 ];
 
+/**
+ * Kapitelnummern in YORIs eigener Schreibweise (01 / FLOW aus YoriSection).
+ * Mono, weit gesperrt, Jade - so markiert YORI seine Raeume, seit es die
+ * Marke gibt.
+ */
 const WORLD_OBJECTS = [
   {
+    chapter: '01 / AUFTRITT',
     eyebrow: 'Auftritt',
     title: 'Was du nach außen zeigst.',
     body: 'Website, Angebote und Sprache können zusammen gedacht werden, ohne dass deine eigene Handschrift verloren geht.',
     object: 'page' as const,
   },
   {
+    chapter: '02 / GEDANKEN',
     eyebrow: 'Gedanken',
     title: 'Was noch unfertig sein darf.',
     body: 'Eine Idee muss nicht sofort Post, Projekt oder Aufgabe werden. Sie darf liegen bleiben und später mit ihrem Zusammenhang wieder auftauchen.',
     object: 'note' as const,
   },
   {
+    chapter: '03 / ENTSCHEIDUNGEN',
     eyebrow: 'Entscheidungen',
     title: 'Was deine Aufmerksamkeit braucht.',
     body: 'YORI soll nicht alles anzeigen. Es soll unterscheiden, was gerade wirklich eine Entscheidung von dir braucht – und was warten darf.',
     object: 'choice' as const,
   },
   {
+    chapter: '04 / ERINNERUNG',
     eyebrow: 'Erinnerung',
     title: 'Was nicht wieder bei null beginnen soll.',
     body: 'Wenn etwas später wieder relevant wird, kommt nicht nur der Punkt zurück, sondern auch der Kontext, aus dem er entstanden ist.',
@@ -160,7 +169,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
           </nav>
 
           <div className="mt-auto border-t border-[#b8893f]/[.3] pt-6">
-            <p className="text-[9px] uppercase tracking-[.19em] text-[#8c6224]">DEINE WORLD · YORI</p>
+            <p className="font-mono text-[9px] font-bold tracking-[.22em] text-[#2c6b68]">DEINE WORLD · YORI</p>
             <p className="mt-3 text-[11px] leading-5 text-[#5f6e63]">
               Ein persönlicher Entwurf für {world.clientName} — noch kein fertiges Produkt.
             </p>
@@ -190,7 +199,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
 
           <div
             key={room}
-            className="luana-room mx-auto w-[calc(100%-40px)] max-w-[1180px] pb-[116px] pt-4 lg:w-[calc(100%-96px)] lg:pb-24 lg:pt-8"
+            className="luana-room mx-auto w-[calc(100%-40px)] max-w-[1180px] pb-10 pt-4 lg:w-[calc(100%-96px)] lg:pb-16 lg:pt-8"
           >
             {room === 'orientierung' ? (
               <OrientationRoom
@@ -218,6 +227,22 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
               />
             )}
           </div>
+
+          {/*
+            Herkunft, nicht Werbung: ein offener Kreis, die Zeile darunter und
+            YORIs eigener Satz. Saimôr steht unter der World, nicht neben Luana.
+          */}
+          <footer className="mx-auto w-[calc(100%-40px)] max-w-[1180px] border-t border-[#b8893f]/[.34] pb-[104px] pt-8 lg:w-[calc(100%-96px)] lg:pb-10">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <span className="flex items-center gap-3">
+                <YoriMark className="h-6 w-6 shrink-0 text-[#2c6b68]" title="YORI" />
+                <span className="font-mono text-[9px] font-bold tracking-[.22em] text-[#2c6b68]">
+                  YORI · A SAIMÔR CREATION
+                </span>
+              </span>
+              <span className="font-serif text-[19px] font-light italic text-[#a8752c]">Create in Flow.</span>
+            </div>
+          </footer>
         </section>
 
         <nav
@@ -427,7 +452,7 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
       />
 
       <div className="mt-4">
-        {WORLD_OBJECTS.map(({ eyebrow, title, body, object }, index) => (
+        {WORLD_OBJECTS.map(({ chapter, eyebrow, title, body, object }, index) => (
           <article key={eyebrow} className="border-b border-[#b8893f]/[.34] py-14 sm:py-20">
             <div
               className={`grid items-center gap-10 lg:gap-16 ${
@@ -435,8 +460,8 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
               }`}
             >
               <div className={index % 2 === 1 ? 'lg:order-2' : undefined}>
-                <p className="text-[10px] uppercase tracking-[.2em] text-[#8c6224]">{eyebrow}</p>
-                <h2 className="mt-4 max-w-[16ch] font-serif text-[clamp(1.7rem,3.6vw,2.5rem)] font-light leading-[1.14]">
+                <p className="font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">{chapter}</p>
+                <h2 className="mt-5 max-w-[16ch] font-serif text-[clamp(1.7rem,3.6vw,2.5rem)] font-light leading-[1.14]">
                   {title}
                 </h2>
                 <p className="mt-6 max-w-lg text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">{body}</p>
@@ -449,8 +474,19 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
         ))}
       </div>
 
-      <div className="py-16 text-center sm:py-20">
-        <p className="text-[10px] uppercase tracking-[.2em] text-[#8c6224]">Der eigentliche Gedanke</p>
+      <div className="relative isolate py-16 text-center sm:py-20">
+        {/* Der offene Kreis ist YORIs Zeichen - hier steht er gross und leise
+            hinter dem Satz, der die World erklaert. */}
+        {/* Deckkraft auf dem Rahmen, nicht auf der Textfarbe: der Jade-Strich
+            im Zeichen liegt als eigene Variable an und wuerde sonst voll
+            sichtbar ueber dem Text stehen. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 opacity-[.08]"
+        >
+          <YoriMark className="h-[min(62vw,22rem)] w-[min(62vw,22rem)] text-[#3E8F8B]" title="YORI" />
+        </div>
+        <p className="font-mono text-[10px] font-bold tracking-[.18em] text-[#2c6b68]">DER EIGENTLICHE GEDANKE</p>
         <p className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(1.75rem,3.8vw,2.6rem)] font-light leading-[1.22]">
           Deine World soll nicht mehr von dir verlangen.{' '}
           <Marker>Sie soll weniger verlieren lassen.</Marker>
@@ -469,7 +505,7 @@ function WorldRoom({ onExample }: { onExample: () => void }) {
 function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) {
   if (kind === 'page') {
     return (
-      <div aria-hidden="true" className="mx-auto w-full max-w-[320px] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-6">
+      <div aria-hidden="true" className="mx-auto w-full max-w-[320px] rounded-[1.4rem_.5rem_1.5rem_.6rem] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
         <div className="h-1.5 w-16 bg-[#c8a86a]" />
         <div className="mt-5 h-2.5 w-[88%] bg-[#1c2b20]/[.16]" />
         <div className="mt-2 h-2.5 w-[62%] bg-[#1c2b20]/[.16]" />
@@ -483,7 +519,7 @@ function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) 
   if (kind === 'note') {
     return (
       <div aria-hidden="true" className="mx-auto w-full max-w-[320px]">
-        <div className="rotate-[-1.4deg] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-6">
+        <div className="rotate-[-1.4deg] rounded-[.5rem_1.4rem_.6rem_1.3rem] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-6 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
           <div className="h-1.5 w-12 bg-[#c8a86a]" />
           <div className="mt-5 space-y-2.5">
             <div className="h-2 w-[90%] bg-[#1c2b20]/[.13]" />
@@ -491,7 +527,7 @@ function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) 
             <div className="h-2 w-[40%] bg-[#1c2b20]/[.09]" />
           </div>
         </div>
-        <div className="mt-4 ml-10 w-[66%] rotate-[1.8deg] border border-[#b8893f]/[.22] bg-[#fdfaf1]/[.7] p-4">
+        <div className="mt-4 ml-10 w-[66%] rotate-[1.8deg] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.22] bg-[#fdfaf1]/[.7] p-4">
           <div className="h-2 w-[70%] bg-[#1c2b20]/[.09]" />
         </div>
       </div>
@@ -501,8 +537,8 @@ function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) 
   if (kind === 'choice') {
     return (
       <div aria-hidden="true" className="mx-auto grid w-full max-w-[320px]">
-        <div className="border-l-2 border-[#b8893f] bg-[#fdfaf1] px-5 py-5">
-          <div className="h-1.5 w-10 bg-[#c8a86a]" />
+        <div className="rounded-[1.2rem_.4rem_1.3rem_.5rem] border-l-2 border-[#3E8F8B] bg-[#fdfaf1] px-5 py-5 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
+          <div className="h-1.5 w-10 bg-[#3E8F8B]" />
           <div className="mt-3.5 h-2.5 w-[76%] bg-[#1c2b20]/[.18]" />
         </div>
         <div className="border-b border-[#b8893f]/[.2] px-5 py-5">
@@ -517,13 +553,13 @@ function WorldObject({ kind }: { kind: 'page' | 'note' | 'choice' | 'memory' }) 
 
   return (
     <div aria-hidden="true" className="relative mx-auto h-[200px] w-full max-w-[320px]">
-      <div className="absolute left-0 top-0 w-[72%] border border-[#b8893f]/[.18] bg-[#fdfaf1]/[.45] p-4">
+      <div className="absolute left-0 top-0 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.18] bg-[#fdfaf1]/[.45] p-4">
         <div className="h-2 w-[50%] bg-[#1c2b20]/[.07]" />
       </div>
-      <div className="absolute left-9 top-11 w-[72%] border border-[#b8893f]/[.24] bg-[#fdfaf1]/[.72] p-4">
+      <div className="absolute left-9 top-11 w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.24] bg-[#fdfaf1]/[.72] p-4">
         <div className="h-2 w-[62%] bg-[#1c2b20]/[.10]" />
       </div>
-      <div className="absolute left-[4.5rem] top-[5.5rem] w-[72%] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-4">
+      <div className="absolute left-[4.5rem] top-[5.5rem] w-[72%] rounded-[1.2rem_.4rem_1.3rem_.5rem] border border-[#b8893f]/[.3] bg-[#fdfaf1] p-4 shadow-[7px_8px_0_rgba(62,143,139,.12)]">
         <div className="h-1.5 w-10 bg-[#c8a86a]" />
         <div className="mt-3 h-2.5 w-[78%] bg-[#1c2b20]/[.18]" />
       </div>
@@ -741,12 +777,41 @@ function SectionOpener({
   );
 }
 
+/**
+ * YORIs Garten atmet - 22s ein und aus, driftender Dunst, feines Korn. Hier
+ * dasselbe Verhalten, nur in ihrem Licht statt im dunklen Wald.
+ */
 function LightWorldAmbient() {
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#f8f4e9_0%,#eef0e2_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_10%,rgba(255,255,255,.8),transparent_30%),radial-gradient(circle_at_10%_84%,rgba(120,143,110,.11),transparent_33%)]" />
-      <div className="absolute bottom-[-15%] left-[-8%] h-[46%] w-[44%] rounded-[50%] bg-[radial-gradient(circle,rgba(95,127,98,.09),transparent_68%)] blur-2xl" />
+      <div className="world-haze absolute inset-0 bg-[radial-gradient(circle_at_82%_10%,rgba(255,255,255,.8),transparent_30%),radial-gradient(circle_at_10%_84%,rgba(120,143,110,.12),transparent_33%),radial-gradient(circle_at_58%_62%,rgba(62,143,139,.07),transparent_28%)]" />
+      <div className="world-breathe absolute bottom-[-15%] left-[-8%] h-[46%] w-[44%] rounded-[50%] bg-[radial-gradient(circle,rgba(95,127,98,.1),transparent_68%)] blur-2xl" />
+      <div className="world-grain absolute inset-0" />
+
+      <style>{`
+        .world-haze { animation: worldHaze 14s ease-in-out infinite alternate; }
+        .world-breathe { animation: worldBreathe 22s ease-in-out infinite alternate; }
+        .world-grain {
+          opacity: .1;
+          mix-blend-mode: multiply;
+          background-image:
+            radial-gradient(circle at 20% 30%, rgba(28,43,32,.12) 0 .45px, transparent .55px),
+            radial-gradient(circle at 70% 64%, rgba(28,43,32,.09) 0 .4px, transparent .5px);
+          background-size: 4px 4px, 5px 5px;
+        }
+        @keyframes worldHaze {
+          from { opacity: .72; transform: translate3d(-1%, .4%, 0); }
+          to { opacity: 1; transform: translate3d(1.2%, -.6%, 0); }
+        }
+        @keyframes worldBreathe {
+          from { transform: scale(1) translate3d(-.3%, .15%, 0); }
+          to { transform: scale(1.06) translate3d(.45%, -.18%, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .world-haze, .world-breathe { animation: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
