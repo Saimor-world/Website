@@ -105,7 +105,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
           <section className="mx-2 mt-8 rounded-xl border border-[#f4e2c6]/[.09] bg-white/[.025] p-3.5">
             <span className="flex items-center gap-2 text-[10px] text-[#eee2d1]">
               <i className="h-1.5 w-1.5 rounded-full bg-[#d6ad6d] shadow-[0_0_12px_rgba(214,173,109,.5)]" />
-              Preview
+              Entwurf
             </span>
             <small className="mt-1.5 block text-[8px] leading-4 text-[#f4ecdf]/[.42]">
               {decision ? 'Keine verbundenen Quellen. Schreibtisch frei.' : 'Keine verbundenen Quellen. Eine Entscheidung wartet.'}
@@ -144,7 +144,7 @@ export default function LuanaYoriPreview({ world, initialDecision = null }: Prop
 
             <div className="ml-auto flex items-center gap-2 text-[8px] text-[#f4ecdf]/[.38]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#d6ad6d]" />
-              PERSÖNLICHE PREVIEW
+              PERSÖNLICHER ENTWURF
             </div>
           </header>
 
@@ -252,7 +252,7 @@ function ArrivalOverlay({ onEnter }: { onEnter: () => void }) {
           </button>
 
           <p className="mt-5 text-[10px] text-[#496451]/[.34]">
-            persönliche Preview · keine verbundenen Konten
+            persönlicher Entwurf · keine verbundenen Konten
           </p>
         </div>
 
@@ -310,7 +310,7 @@ function DeskRoom({
               {decision ? 'Entscheidung gespeichert' : '1 Sache wartet auf dich'}
             </b>
             <small className="text-[8px] text-[#f4ecdf]/[.34]">
-              Preview · nur bekannter Website-Kontext
+              Entwurf · nur bekannter Website-Kontext
             </small>
           </div>
         </div>
@@ -467,7 +467,7 @@ function IdeasRoom({ onBack }: { onBack: () => void }) {
             Derselbe Gedanke kann später wieder für Website, Social oder einen Guide auftauchen – ohne dass du den Zusammenhang jedes Mal neu erklären musst.
           </p>
           <p className="mt-8 text-[7px] uppercase tracking-[.15em] text-[#7a6657]/[.32]">
-            PREVIEW · KEINE VERBUNDENEN KANÄLE
+            ENTWURF · KEINE VERBUNDENEN KANÄLE
           </p>
         </article>
 
@@ -516,7 +516,7 @@ function DecisionRoom({
           Welcher Weg soll auf deiner Website zuerst führen?
         </h2>
         <p className="mt-5 text-sm leading-7 text-[#5d665e]/[.56]">
-          Für diese Preview würden wir „Angebote entdecken“ führen und den Guide als ruhigeren zweiten Weg behalten.
+          Für diesen Entwurf würden wir „Angebote entdecken“ führen und den Guide als ruhigeren zweiten Weg behalten.
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -549,7 +549,7 @@ function DecisionRoom({
         {decision ? (
           <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-[#4e6355]/[.52]">
             <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            Gespeichert. Diese Preview erinnert sich beim nächsten Besuch.
+            Gespeichert. Deine World erinnert sich beim nächsten Besuch.
           </p>
         ) : error ? (
           <p className="mt-5 text-xs text-[#9a5649]">Konnte gerade nicht gespeichert werden. Bitte nochmal versuchen.</p>
