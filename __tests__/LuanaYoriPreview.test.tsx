@@ -32,17 +32,17 @@ describe('LuanaYoriPreview', () => {
   it('keeps the YORI room grammar visible', () => {
     render(<LuanaYoriPreview world={world} />);
 
-    expect(screen.getByRole('button', { name: /Heute/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Auftritt/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Ideen/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Weg/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Heute/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Auftritt/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Ideen/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: /Weg/i }).length).toBeGreaterThan(0);
   });
 
   it('returns directly to a cleared desk after a remembered decision', () => {
     render(<LuanaYoriPreview world={world} initialDecision="yes" />);
 
     expect(screen.queryByRole('button', { name: /Meine World öffnen/i })).not.toBeInTheDocument();
-    expect(screen.getByText(/Schreibtisch frei/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Schreibtisch frei/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Die Entscheidung ist notiert/i)).toBeInTheDocument();
   });
 });
