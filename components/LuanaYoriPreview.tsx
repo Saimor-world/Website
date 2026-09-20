@@ -536,69 +536,96 @@ function ExampleRoom({ onContinue }: { onContinue: () => void }) {
     <section>
       <SectionOpener
         eyebrow="Ein Beispiel"
-        title="Ein kleiner Ausschnitt, damit es nicht abstrakt bleibt."
-        body="Wir nehmen einen Teil deines Auftritts, den du schon hast, und zeigen daran, wie YORI aus etwas Vorhandenem einen nächsten Gedanken machen könnte."
+        title="Alles, was du schon hast — an einem Ort."
+        body="Deine Seite trägt bereits eine eigene Welt: ein Bild, einen Satz, drei Wege, Stimmen von Menschen, mit denen du gearbeitet hast. Eine World erfindet davon nichts neu. Sie hält es zusammen."
       />
 
-      <div className="mt-4 grid gap-12 lg:grid-cols-[.86fr_1.14fr] lg:items-start lg:gap-16">
-        <div>
-          <article className="border-b border-[#b8893f]/[.34] py-9">
-            <p className="text-[10px] uppercase tracking-[.2em] text-[#8c6224]">Was schon trägt</p>
-            <h2 className="mt-4 font-serif text-[clamp(1.4rem,3vw,1.8rem)] font-light leading-snug">
-              Deine starke Schwelle.
-            </h2>
-            <p className="mt-4 text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
-              „Du stehst an der Schwelle zu einer neuen Identität.“ trägt bereits Haltung. Eine gute World muss nicht alles verändern – sie sollte erkennen, was schon trägt.
-            </p>
-          </article>
-
-          <article className="border-b border-[#b8893f]/[.34] py-9">
-            <p className="text-[10px] uppercase tracking-[.2em] text-[#8c6224]">Was YORI daraus machen könnte</p>
-            <h2 className="mt-4 font-serif text-[clamp(1.4rem,3vw,1.8rem)] font-light leading-snug">
-              Einen Gedanken klarer führen.
-            </h2>
-            <p className="mt-4 text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
-              Wenn zwei Wege gleichzeitig Aufmerksamkeit wollen, könnte YORI einen davon zuerst führen lassen – und den anderen bewusst leiser halten. Nicht weil etwas falsch ist, sondern damit deine Wirkung schneller ankommt.
-            </p>
-          </article>
-        </div>
-
-        {/*
-          Der Ausschnitt spricht jetzt ihre Handlungssprache: Versalien mit
-          Goldlinie statt gefuelltem Knopf. So steht es auf ihrer Seite -
-          vorher zeigte unser Beispiel eine Schaltflaeche, die es dort nie gab.
-        */}
+      {/*
+        Frueher standen hier zwei Blocks - "was schon traegt" und "was YORI
+        daraus machen koennte". Das war trotz freundlicher Worte eine
+        Beurteilung. Jetzt kommen ihre eigenen Dinge herein und die World ist
+        das, was sie haelt.
+      */}
+      <div className="mt-4 grid gap-14 lg:grid-cols-[1.08fr_.92fr] lg:items-start lg:gap-16">
         <article className="border border-[#b8893f]/[.34] bg-[#fdfaf1]">
           <div className="flex items-center justify-between gap-4 border-b border-[#b8893f]/[.34] px-6 py-4">
             <Wordmark className="whitespace-nowrap text-[13px]" />
-            <span className="text-[10px] uppercase tracking-[.16em] text-[#5f6e63]">So könnte es aussehen</span>
+            <span className="text-[10px] uppercase tracking-[.16em] text-[#5f6e63]">Dein Auftritt</span>
           </div>
-          <div className="px-6 py-10 text-center sm:px-10 sm:py-14">
-            <p className="text-[9px] uppercase tracking-[.19em] text-[#5f6e63]">{TAGLINE}</p>
-            <h3 className="mx-auto mt-8 max-w-xl font-serif text-[clamp(1.9rem,4.4vw,3rem)] font-light leading-[1.12]">
-              Du stehst an der Schwelle zu einer neuen Identität.
-            </h3>
-            <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.8] text-[#55655a]">
-              Ein Satz führt. Ein Weg ist sichtbar. Der zweite bleibt da, ohne mit dem ersten zu konkurrieren.
-            </p>
-            <div className="mt-10 grid justify-items-center gap-5">
-              <span className="border-b border-[#b8893f] pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#1c2b20]">
-                Angebote entdecken
-              </span>
-              <span className="border-b border-[#5f6e63]/40 pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#5f6e63]">
-                Identitätsshift Guide
-              </span>
+
+          {/* Ihr Hero lebt von einem Bild im Gruen. Hier steht dessen Ton,
+              nicht dessen Ersatz - das echte Bild gehoert ihr. */}
+          <div className="relative isolate overflow-hidden px-6 py-14 text-center sm:px-10 sm:py-20">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[linear-gradient(176deg,#7f9660_0%,#5d7a45_44%,#46603a_100%)]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_12%,rgba(240,244,222,.34),transparent_62%),radial-gradient(ellipse_at_50%_112%,rgba(28,43,32,.45),transparent_58%)]"
+            />
+            <div className="relative">
+              <p className="text-[9px] uppercase tracking-[.19em] text-[#f2eeda]/80">{TAGLINE}</p>
+              <h3 className="mx-auto mt-8 max-w-xl font-serif text-[clamp(1.9rem,4.4vw,3rem)] font-light leading-[1.12] text-[#fbf8ee]">
+                Du stehst an der Schwelle zu einer neuen Identität.
+              </h3>
+              <div className="mt-10 grid justify-items-center gap-5">
+                <span className="border-b border-[#d9b877] pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#fbf8ee]">
+                  Angebote entdecken
+                </span>
+                <span className="border-b border-[#fbf8ee]/45 pb-1.5 text-[12px] uppercase tracking-[.19em] text-[#fbf8ee]/80">
+                  Identitätsshift Guide
+                </span>
+              </div>
             </div>
           </div>
+
+          <p className="border-t border-[#b8893f]/[.34] px-6 py-4 text-[12px] leading-5 text-[#5f6e63]">
+            Dein eigenes Bild steht hier — wir haben nur seinen Ton aufgenommen.
+          </p>
         </article>
+
+        <div>
+          <p className="text-[10px] uppercase tracking-[.2em] text-[#8c6224]">Was deine World halten würde</p>
+          <dl className="mt-6">
+            {[
+              {
+                q: 'Dein Satz',
+                a: '„Du stehst an der Schwelle zu einer neuen Identität.“ — er bleibt der erste Ton, egal wo jemand ankommt.',
+              },
+              {
+                q: 'Deine drei Felder',
+                a: 'Bewusstseinstraining, Identitätsshift, Energiearbeit. Sie stehen einmal und gelten überall.',
+              },
+              {
+                q: 'Deine drei Wege',
+                a: 'Orakellegung, Skool-Mitgliedschaft, 1:1 Mentoring. Jeder mit dem Kontext, aus dem er entstanden ist.',
+              },
+              {
+                q: 'Deine Stimmen',
+                a: 'Was Menschen dir nach der Arbeit geschrieben haben, liegt nicht mehr verstreut in Chats.',
+              },
+              {
+                q: 'Deine kleinen Portale',
+                a: 'Auch das, was noch unfertig ist, darf liegen bleiben und später wiederkommen.',
+              },
+            ].map((item) => (
+              <div key={item.q} className="border-b border-[#b8893f]/[.34] py-7">
+                <dt className="font-serif text-[clamp(1.3rem,2.6vw,1.6rem)] font-light leading-snug">{item.q}</dt>
+                <dd className="mt-3 text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
 
       <div className="py-16 text-center sm:py-20">
         <p className="mx-auto max-w-3xl font-serif text-[clamp(1.55rem,3.4vw,2.2rem)] font-light leading-[1.24]">
-          Das Entscheidende ist nicht dieser eine Website-Punkt.
+          Nichts davon müsste neu erfunden werden.{' '}
+          <Marker>Es müsste nur zusammenbleiben.</Marker>
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-[1.8] text-[#55655a] sm:text-[16px]">
-          Entscheidend wäre, dass deine World später versteht, warum etwas wichtig war, was daraus entstanden ist und wann es wieder auf deinen Tisch gehört.
+          Eine World ist der Ort, an dem dein Bild, dein Satz, deine Wege und die Gespräche darüber denselben Zusammenhang behalten — auch in einem Jahr, wenn wieder etwas Neues dazukommt.
         </p>
         <div className="mt-10">
           <TextCta onClick={onContinue}>Was würde das für mich bedeuten?</TextCta>
