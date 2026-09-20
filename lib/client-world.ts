@@ -252,7 +252,7 @@ const WORLDS: Record<string, ClientWorldDefinition> = {
         title: 'Wochenüberblick',
         body: 'Sobald Quellen verbunden sind, fasst MÔRA einmal pro Woche Veränderungen, offene Fragen und auffällige Muster zusammen.',
         why: 'Damit du nicht drei Plattformen einzeln durchsehen musst.',
-        observedFrom: 'MÔRA als Schicht, die aus verbundenen Quellen Vorschläge vorbereitet.',
+        observedFrom: 'MÔRA könnte später aus verbundenen Quellen konkrete Vorschläge vorbereiten.',
         state: 'preview',
       },
     ],
