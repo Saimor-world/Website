@@ -245,7 +245,7 @@ function ArrivalOverlay({
             Du stehst an der Schwelle zu einer neuen Identität.
           </h1>
           <p className="mt-7 max-w-xl text-[15px] leading-7 text-[#365444]/[.58]">
-            Wir haben daraus keinen Pitch gebaut. Sondern einen ersten Raum, in dem dein Auftritt bereits als echte Arbeit liegt.
+            Hier beginnt deine World. Dein Auftritt ist der erste Faden darin.
           </p>
 
           <button
@@ -414,19 +414,24 @@ function AppearanceRoom({
             <h3 className="mt-5 max-w-lg font-serif text-4xl font-light leading-[.94] tracking-[-.04em] sm:text-5xl">
               Du stehst an der Schwelle zu einer neuen Identität.
             </h3>
-            <button type="button" onClick={onDecision} className="mt-8 w-full rounded-full bg-[#294737] px-5 py-3.5 text-sm font-semibold text-[#f5f0e4] sm:w-auto sm:min-w-[230px]">
+            <div className="mt-8 w-full rounded-full bg-[#294737] px-5 py-3.5 text-center text-sm font-semibold text-[#f5f0e4] sm:w-[230px]">
               Angebote entdecken
-            </button>
-            <button type="button" className="mt-3 block px-1 py-2 text-sm text-[#3d5b49]/[.48] sm:ml-5 sm:inline-block">
+            </div>
+            <div className="mt-3 px-1 py-2 text-sm text-[#3d5b49]/[.48] sm:ml-5 sm:inline-block">
               Identitätsshift Guide
-            </button>
+            </div>
           </div>
         </article>
       </div>
 
-      <button type="button" onClick={onBack} className="mt-7 text-[10px] text-[#f4ecdf]/[.38] underline underline-offset-4">
-        zurück zum Schreibtisch
-      </button>
+      <div className="mt-7 flex flex-wrap items-center gap-5">
+        <button type="button" onClick={onDecision} className="inline-flex items-center gap-2 text-[11px] font-medium text-[#d6ad6d]/[.72]">
+          Richtung entscheiden <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+        <button type="button" onClick={onBack} className="text-[10px] text-[#f4ecdf]/[.38] underline underline-offset-4">
+          zurück zum Schreibtisch
+        </button>
+      </div>
     </section>
   );
 }
@@ -447,7 +452,7 @@ function IdeasRoom({ onBack }: { onBack: () => void }) {
             Was wäre, wenn Website und Content nicht jedes Mal bei null anfangen?
           </h2>
           <p className="mt-5 max-w-2xl text-sm leading-7 text-[#5d665e]/[.58]">
-            Derselbe Gedanke kann später wieder für Website, Social oder einen Guide auftauchen – ohne dass Luana den Zusammenhang jedes Mal neu erklären muss.
+            Derselbe Gedanke kann später wieder für Website, Social oder einen Guide auftauchen – ohne dass du den Zusammenhang jedes Mal neu erklären musst.
           </p>
           <p className="mt-8 text-[7px] uppercase tracking-[.15em] text-[#7a6657]/[.32]">
             PREVIEW · KEINE VERBUNDENEN KANÄLE
@@ -640,7 +645,7 @@ function AmbientRoom() {
       <div className="absolute right-[7%] top-[9%] h-[52vh] w-[52vh] rounded-full border border-[#e3c892]/[.035]" />
       <div className="absolute right-[13%] top-[16%] h-[34vh] w-[34vh] rounded-full border border-[#e3c892]/[.04]" />
       <div className="absolute bottom-[-18%] right-[-8%] h-[52%] w-[48%] rounded-[50%] bg-[radial-gradient(circle,rgba(56,88,61,.10),transparent_67%)] blur-2xl" />
-      <div className="absolute inset-0 opacity-[.16] [background-image:url('data:image/svg+xml,%3Csvg_viewBox=%220_0_160_160%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter_id=%22n%22%3E%3CfeTurbulence_type=%22fractalNoise%22_baseFrequency=%22.8%22_numOctaves=%222%22/%3E%3C/filter%3E%3Crect_width=%22100%25%22_height=%22100%25%22_filter=%22url(%23n)%22_opacity=%22.11%22/%3E%3C/svg%3E')]" />
+      <div className="absolute inset-0 opacity-[.12] bg-[repeating-linear-gradient(113deg,rgba(255,255,255,.012)_0px,rgba(255,255,255,.012)_1px,transparent_1px,transparent_5px)]" />
     </div>
   );
 }
