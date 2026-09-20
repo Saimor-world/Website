@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import LuanaYoriPreview from '@/components/LuanaYoriPreview';
 import { getClientWorld } from '@/lib/client-world';
-import { getPriorPreviewDecision } from '@/lib/client-world-interactions';
-import { readWorldSession, worldPreviewCookieName } from '@/lib/client-world-session';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,10 +38,5 @@ export default async function OpenWorldPreview({
   const world = getClientWorld(slug);
   if (!world) notFound();
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get(worldPreviewCookieName(slug))?.value;
-  const session = readWorldSession(token, slug);
-  const priorDecision = session ? await getPriorPreviewDecision(slug, session.sid) : null;
-
-  return <LuanaYoriPreview world={world} initialDecision={priorDecision} />;
+  return <LuanaYoriPreview world={world} />;
 }
