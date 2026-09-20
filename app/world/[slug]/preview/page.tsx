@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import ClientWorldPage from '@/components/ClientWorldPage';
+import LuanaYoriPreview from '@/components/LuanaYoriPreview';
 import { getClientWorld } from '@/lib/client-world';
 
 export const dynamic = 'force-dynamic';
@@ -38,5 +38,5 @@ export default async function OpenWorldPreview({
   const world = getClientWorld(slug);
   if (!world) notFound();
 
-  return <ClientWorldPage world={world} openPreview />;
+  return <LuanaYoriPreview world={world} />;
 }
