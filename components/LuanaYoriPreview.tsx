@@ -131,23 +131,12 @@ export default function LuanaYoriPreview({ world }: Props) {
           </div>
         </div>
 
-        <section className="border-t border-[#d4af68]/30 pt-5">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Connector
-              eyebrow="JETZT SCHON ECHT"
-              title="TikTok verbinden"
-              detail="Nach OAuth: Profil, Follower, Likes, Videoanzahl und bis zu 20 aktuelle Videos."
-            />
-            <Connector
-              eyebrow="ECHTE ARBEIT"
-              title="Kalender verbinden"
-              detail="YORI kann kommende Termine prüfen und private Vorbereitungsfäden vorschlagen. Erst nach deiner Bestätigung wird etwas angelegt."
-            />
-            <Connector
-              eyebrow="ALS NÄCHSTES"
-              title="Website bestätigen"
-              detail="Eine Produktions-Domain wird erst nach deiner Bestätigung als Quelle verarbeitet. Ein Preview-Link zählt nicht als Website-Identität."
-            />
+        <section className="border-t border-[#d4af68]/30 pt-4">
+          <p className="mb-3 text-[8px] uppercase tracking-[.18em] text-[#efe4d0]/45">Quellen, die das Haus echt füllen können</p>
+          <div className="grid border-y border-[#d4af68]/20 sm:grid-cols-3">
+            <SourceState label="TikTok" state="OAuth · echte Profil- & Videodaten" />
+            <SourceState label="Kalender" state="prüfen · Vorschläge erst bestätigen" />
+            <SourceState label="Website" state="Domain noch bestätigen" />
           </div>
         </section>
 
@@ -178,12 +167,11 @@ function TruthRow({ label, value, state }: { label: string; value: string; state
   );
 }
 
-function Connector({ eyebrow, title, detail }: { eyebrow: string; title: string; detail: string }) {
+function SourceState({ label, state }: { label: string; state: string }) {
   return (
-    <article className="border-l border-[#d4af68]/30 pl-4">
-      <p className="font-mono text-[8px] font-bold tracking-[.17em] text-[#77aaa4]">{eyebrow}</p>
-      <h3 className="mt-2 font-serif text-[19px] font-light text-[#f6ecdd]">{title}</h3>
-      <p className="mt-2 max-w-sm text-[11px] leading-5 text-[#e8dece]/60">{detail}</p>
-    </article>
+    <div className="flex items-center justify-between gap-4 border-b border-[#d4af68]/20 py-3 last:border-b-0 sm:border-b-0 sm:border-r sm:px-4 sm:first:pl-0 sm:last:border-r-0">
+      <strong className="font-serif text-[16px] font-light text-[#f6ecdd]">{label}</strong>
+      <span className="text-right text-[9px] leading-4 text-[#b7c0b7]">{state}</span>
+    </div>
   );
 }
