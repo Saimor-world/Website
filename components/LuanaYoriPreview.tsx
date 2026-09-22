@@ -62,8 +62,14 @@ export default function LuanaYoriPreview({ world }: Props) {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: 'url("/world/luana/room-desk.webp")' }}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,20,16,.76)_0%,rgba(14,20,16,.46)_48%,rgba(14,20,16,.2)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,9,.08),rgba(8,12,9,.5))]" />
+      {/*
+        Die Raumaufnahme hat eine helle Mitte (die Shoji-Fläche). Der Scrim ist
+        so gesetzt, dass die Textspalte auch dort AA erreicht: mobil liegt der
+        Text über der vollen Breite und braucht durchgehend Deckung, ab lg
+        bleibt die rechte Raumhälfte offen, weil dort nur die Karte steht.
+      */}
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,20,16,.88)_0%,rgba(14,20,16,.78)_48%,rgba(14,20,16,.58)_100%)] lg:bg-[linear-gradient(90deg,rgba(14,20,16,.86)_0%,rgba(14,20,16,.64)_48%,rgba(14,20,16,.24)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,9,.18),rgba(8,12,9,.58))]" />
 
       <section className="relative z-10 mx-auto flex min-h-[100svh] w-[calc(100%-32px)] max-w-[1180px] flex-col py-5 sm:w-[calc(100%-56px)] sm:py-7">
         <header className="flex items-start justify-between gap-4 border-b border-[#d4af68]/30 pb-4">
