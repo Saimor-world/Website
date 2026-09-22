@@ -2,9 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { yoriOrigin } from '../lib/product-origins';
 afterEach(() => vi.unstubAllEnvs());
 describe('YORI product origin', () => {
-  it('defaults to the canonical product domain', () => {
+  it('defaults to the verified production origin until domain cutover', () => {
     vi.stubEnv('NEXT_PUBLIC_YORI_ORIGIN', '');
-    expect(yoriOrigin()).toBe('https://yori.saimor.world');
+    expect(yoriOrigin()).toBe('https://frnt.saimor.world');
   });
   it('accepts a configured preview origin', () => {
     expect(yoriOrigin('https://preview.example/')).toBe('https://preview.example');
