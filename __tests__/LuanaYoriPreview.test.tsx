@@ -34,7 +34,7 @@ describe('LuanaYoriPreview', () => {
     const link = screen.getByRole('link', { name: /YORI mit @luanalumiina öffnen/i });
     expect(link).toHaveAttribute(
       'href',
-      'https://yori-pm0i.onrender.com/demo?platform=instagram&creator=luanalumiina'
+      'https://yori.saimor.world/demo?platform=instagram&creator=luanalumiina'
     );
   });
 
@@ -43,7 +43,7 @@ describe('LuanaYoriPreview', () => {
 
     expect(screen.getByRole('link', { name: /Geschützte Konten verbinden/i })).toHaveAttribute(
       'href',
-      'https://yori-pm0i.onrender.com/login?next=%2F%3Fconnections%3D1'
+      'https://yori.saimor.world/login?next=%2F%3Fconnections%3D1'
     );
 
     expect(screen.getByText(/TikTok/i, { selector: 'strong' })).toBeInTheDocument();

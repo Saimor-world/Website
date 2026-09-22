@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { yoriOrigin } from '@/lib/product-origins';
 import YoriMark from '@/components/YoriMark';
 import type { ClientWorldConfig } from '@/lib/client-world';
 
@@ -11,7 +12,7 @@ type Props = {
 };
 
 const DEFAULT_HANDLE = 'luanalumiina';
-const YORI_ORIGIN = 'https://yori-pm0i.onrender.com';
+const YORI_ORIGIN = yoriOrigin();
 
 const KNOWN_TOOLS = [
   'Claude',
