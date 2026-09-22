@@ -28,7 +28,6 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: null,
       siteName: 'YORI · Saimôr',
       type: 'website',
       images: [],
