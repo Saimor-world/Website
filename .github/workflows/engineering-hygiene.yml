@@ -18,7 +18,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Require repository engineering profile
         run: test -s ENGINEERING.md
@@ -39,3 +42,56 @@ jobs:
             git ls-files -u
             exit 1
           fi
+
+      - name: Reject newly added sensitive files and private keys
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          import subprocess
+          import sys
+          from pathlib import PurePosixPath
+
+          base = os.environ["BASE_SHA"]
+          added = subprocess.check_output(
+              ["git", "diff", "--name-only", "--diff-filter=A", base, "HEAD"],
+              text=True, errors="replace"
+          ).splitlines()
+
+          forbidden_names = {
+              ".env", ".env.local", ".env.production", ".env.development", ".env.test",
+              "id_rsa", "id_ed25519",
+          }
+          forbidden_suffixes = {".p12", ".pfx"}
+          bad_files = []
+          for item in added:
+              path = PurePosixPath(item)
+              name = path.name.lower()
+              if name.endswith((".example", ".sample", ".template")):
+                  continue
+              if name in forbidden_names or path.suffix.lower() in forbidden_suffixes:
+                  bad_files.append(item)
+
+          diff = subprocess.check_output(
+              ["git", "diff", "--unified=0", base, "HEAD"],
+              text=True, errors="replace"
+          )
+          private_key = re.compile(r"^\+.*BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY", re.MULTILINE)
+
+          failed = False
+          if bad_files:
+              failed = True
+              print("::error::Sensitive environment/key files must not be committed.")
+              for item in bad_files:
+                  print(f"  sensitive file: {item}")
+          if private_key.search(diff):
+              failed = True
+              print("::error::Private-key material appears in added diff content.")
+          if failed:
+              sys.exit(1)
+          print("Sensitive-file diff checks passed.")
+          PY
