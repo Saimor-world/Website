@@ -59,12 +59,18 @@ jobs:
           base = os.environ["BASE_SHA"]
           added = subprocess.check_output(
               ["git", "diff", "--name-only", "--diff-filter=A", base, "HEAD"],
-              text=True, errors="replace"
+              text=True,
+              errors="replace",
           ).splitlines()
 
           forbidden_names = {
-              ".env", ".env.local", ".env.production", ".env.development", ".env.test",
-              "id_rsa", "id_ed25519",
+              ".env",
+              ".env.local",
+              ".env.production",
+              ".env.development",
+              ".env.test",
+              "id_rsa",
+              "id_ed25519",
           }
           forbidden_suffixes = {".p12", ".pfx"}
           bad_files = []
@@ -78,9 +84,13 @@ jobs:
 
           diff = subprocess.check_output(
               ["git", "diff", "--unified=0", base, "HEAD"],
-              text=True, errors="replace"
+              text=True,
+              errors="replace",
           )
-          private_key = re.compile(r"^\+.*BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY", re.MULTILINE)
+          private_key = re.compile(
+              r"^\+.*BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY",
+              re.MULTILINE,
+          )
 
           failed = False
           if bad_files:
@@ -93,5 +103,6 @@ jobs:
               print("::error::Private-key material appears in added diff content.")
           if failed:
               sys.exit(1)
+
           print("Sensitive-file diff checks passed.")
           PY
