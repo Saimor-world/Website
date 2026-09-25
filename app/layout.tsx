@@ -115,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Saimôr',
               url: 'https://saimor.world',
               logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.png',
-              description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie ORBIT, PULSE und SYSTEMS für Klarheit, Workshops und Umsetzung.',
+              description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie Beratung, Workshops und Umsetzung rund um praktische KI-Arbeit.',
               foundingDate: '2024',
               contactPoint: {
                 '@type': 'ContactPoint',
