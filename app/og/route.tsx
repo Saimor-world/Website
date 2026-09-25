@@ -19,20 +19,108 @@ export async function GET() {
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 79% 37%, rgba(124,211,176,.18), transparent 27%), radial-gradient(circle at 72% 67%, rgba(214,168,72,.12), transparent 24%)' }} />
-        <div style={{ position: 'absolute', right: 72, top: 72, width: 256, height: 256, borderRadius: '50%', overflow: 'hidden', boxShadow: '0 28px 80px rgba(0,0,0,.38), 0 0 70px rgba(214,168,72,.12)', border: '1px solid rgba(224,189,103,.24)' }}>
+        <div
+          style={{
+            display: 'flex',
+            position: 'absolute',
+            inset: 0,
+            background:
+              'radial-gradient(circle at 79% 37%, rgba(124,211,176,.18), transparent 27%), radial-gradient(circle at 72% 67%, rgba(214,168,72,.12), transparent 24%)',
+          }}
+        />
+        <div
+          style={{
+            display: 'flex',
+            position: 'absolute',
+            right: 72,
+            top: 72,
+            width: 256,
+            height: 256,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            boxShadow: '0 28px 80px rgba(0,0,0,.38), 0 0 70px rgba(214,168,72,.12)',
+            border: '1px solid rgba(224,189,103,.24)',
+          }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={mark} width="256" height="256" alt="Saimôr orbital seal" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img
+            src={mark}
+            width="256"
+            height="256"
+            alt="Saimôr"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '66%', padding: '72px 0 72px 78px', position: 'relative' }}>
-          <div style={{ fontSize: 20, letterSpacing: '7px', textTransform: 'uppercase', color: 'rgba(224,189,103,.84)', marginBottom: 30 }}>SAIMÔR · SOVEREIGN AI SYSTEMS</div>
-          <div style={{ fontFamily: 'Georgia, serif', fontSize: 84, lineHeight: .94, letterSpacing: '-4px', marginBottom: 30 }}>Saimôr OS</div>
-          <div style={{ fontSize: 38, lineHeight: 1.15, maxWidth: 690, color: 'rgba(246,245,238,.92)' }}>Arbeit, Dateien und KI.<br />An einem Ort.</div>
-          <div style={{ display: 'flex', marginTop: 42, gap: 14, alignItems: 'center', color: 'rgba(219,232,223,.58)', fontSize: 18 }}><span>MÔRA</span><span>·</span><span>Security Check</span><span>·</span><span>Workspaces</span></div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            width: '66%',
+            padding: '72px 0 72px 78px',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              fontSize: 20,
+              letterSpacing: '7px',
+              textTransform: 'uppercase',
+              color: 'rgba(224,189,103,.84)',
+              marginBottom: 30,
+            }}
+          >
+            SAIMÔR · KLARHEIT IM WANDEL
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              fontFamily: 'Georgia, serif',
+              fontSize: 80,
+              lineHeight: 0.94,
+              letterSpacing: '-4px',
+              marginBottom: 28,
+            }}
+          >
+            Arbeitsräume, die Kontext behalten.
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              fontSize: 30,
+              lineHeight: 1.2,
+              maxWidth: 690,
+              color: 'rgba(246,245,238,.88)',
+            }}
+          >
+            <span>MÔRA hält den Zusammenhang.</span>
+            <span>Saimôr OS und YORI machen ihn nutzbar.</span>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              marginTop: 42,
+              gap: 14,
+              alignItems: 'center',
+              color: 'rgba(219,232,223,.58)',
+              fontSize: 18,
+            }}
+          >
+            <span>MÔRA</span>
+            <span>·</span>
+            <span>Saimôr OS</span>
+            <span>·</span>
+            <span>YORI</span>
+          </div>
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    { width: 1200, height: 630 },
   );
 }
