@@ -19,9 +19,9 @@ describe('SystemWorldHome', () => {
     expect(screen.getByRole('link', { name: 'YORI für Creator' })).toHaveAttribute('href', '/yori');
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
     expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();
-    expect(screen.getByText('ORBIT')).toBeInTheDocument();
-    expect(screen.getByText('PULSE')).toBeInTheDocument();
-    expect(screen.getByText('SYSTEMS')).toBeInTheDocument();
+    expect(screen.getByText('Beratung')).toBeInTheDocument();
+    expect(screen.getByText('Workshops')).toBeInTheDocument();
+    expect(screen.getByText('Umsetzung')).toBeInTheDocument();
     const enter = screen.getByRole('link', { name: /Saimôr OS ansehen/i });
     expect(enter).toHaveAttribute('href', '/de/einstieg/security-check');
   });
@@ -39,7 +39,7 @@ describe('SystemWorldHome', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';
     expect(publicCopy).toContain('Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang.');
-    expect(publicCopy).toContain('ORBIT klärt, was wirklich gebraucht wird.');
+    expect(publicCopy).toContain('Erst klären wir, was wirklich gebraucht wird.');
     expect(publicCopy).not.toMatch(/Marius Fahrländer/i);
     expect(publicCopy).not.toMatch(/Solo[- ]?Founder/i);
     expect(publicCopy).not.toMatch(/Gründer(?:in)?/i);
