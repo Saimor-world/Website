@@ -3,7 +3,7 @@ import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
   title: 'Saimôr – Klarheit im Wandel',
-  description: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. Mit MÔRA, Saimôr OS, YORI sowie ORBIT, PULSE und SYSTEMS.'
+  description: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. Mit MÔRA, Saimôr OS, YORI sowie Beratung, Workshops und Umsetzung.'
 };
 
 export default function Page() {
