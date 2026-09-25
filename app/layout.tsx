@@ -13,8 +13,8 @@ import CommandPalette from '@/components/CommandPalette';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
 
-const SYSTEM_TITLE = 'Saimôr OS – Arbeit, Dateien und KI an einem Ort';
-const SYSTEM_DESCRIPTION = 'Saimôr OS bringt Dateien, Termine, Aufgaben und KI in einen gemeinsamen Arbeitsraum. MÔRA behält den Stand im Blick und kann dort weitermachen, wo du aufgehört hast.';
+const SYSTEM_TITLE = 'Saimôr – Arbeitsräume, die Kontext behalten';
+const SYSTEM_DESCRIPTION = 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. MÔRA hält den Zusammenhang; Saimôr OS und YORI machen ihn in unterschiedlichen Arbeitsräumen nutzbar.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
   keywords: [
     'Saimôr',
     'Saimôr OS',
+    'YORI',
     'MÔRA',
     'KI Arbeitsraum',
     'AI Workspace',
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
         url: '/og',
         width: 1200,
         height: 630,
-        alt: 'Saimôr OS – Arbeit, Dateien und KI an einem Ort',
+        alt: 'Saimôr – Arbeitsräume, die Kontext behalten',
       },
     ],
     locale: 'de_DE',
@@ -114,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Saimôr',
               url: 'https://saimor.world',
               logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.png',
-              description: 'Unabhängiges Produktstudio hinter Saimôr OS, MÔRA sowie Vorträgen und Schulungen zu praktischer KI.',
+              description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie ORBIT, PULSE und SYSTEMS für Klarheit, Workshops und Umsetzung.',
               foundingDate: '2024',
               contactPoint: {
                 '@type': 'ContactPoint',
@@ -136,7 +137,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'Web',
               url: 'https://saimor.world/de',
-              description: 'Arbeitsraum für Dateien, Termine, Aufgaben, Integrationen und KI. MÔRA behält den Arbeitsstand im Blick und kann auf vorhandenem Kontext aufbauen.',
+              description: 'Arbeitsraum für Dateien, Termine, Aufgaben, Integrationen und KI. MÔRA hält den Arbeitskontext; YORI ergänzt Saimôr um einen ruhigeren Creator-Raum.',
               offers: {
                 '@type': 'Offer',
                 price: '0',
