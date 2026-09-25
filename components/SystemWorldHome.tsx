@@ -14,7 +14,7 @@ const COPY = {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
     intro: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, in dem Zusammenhang nicht in einzelnen Apps und Chats verloren geht. MÔRA hält den Kontext; Saimôr OS ist die Arbeitsoberfläche für Organisationen, YORI der ruhigere Raum für Creator und persönliche Arbeit.',
-    enter: 'Saimôr OS ansehen', learn: 'Wie Saimôr funktioniert', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
+    enter: 'Security Check starten', learn: 'Wie Saimôr funktioniert', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     entryNote: 'Der Security Check ist ein möglicher Einstieg: Er prüft öffentliche Signale deiner Domain und macht daraus ein erstes echtes Objekt statt einer leeren Promptbox.',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
@@ -30,7 +30,7 @@ const COPY = {
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
     intro: 'Saimôr connects work, data and AI into a system where context does not disappear across separate apps and chats. MÔRA keeps the thread; Saimôr OS is the operating surface for organisations, while YORI is the calmer space for creators and personal work.',
-    enter: 'Explore Saimôr OS', learn: 'How Saimôr works', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
+    enter: 'Start Security Check', learn: 'How Saimôr works', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     entryNote: 'The Security Check is one possible entry point: it examines public signals from your domain and turns them into a first real object instead of an empty prompt box.',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
