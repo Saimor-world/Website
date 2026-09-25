@@ -11,37 +11,37 @@ type Props = { locale: Locale };
 
 const COPY = {
   de: {
-    eyebrow: 'SAIMÔR · SOVEREIGN AI SYSTEMS',
-    thesis: 'Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.',
-    intro: 'Saimôr OS ist ein digitaler Arbeitsraum für tägliche Arbeit und intelligente Assistenz. Kalender, Dateien, Vorgänge, Integrationen und KI leben im selben Kontext – statt über einzelne Apps und Chats verteilt zu sein.',
-    enter: 'Saimôr OS ausprobieren', learn: 'System verstehen', login: 'Einloggen', training: 'Vorträge & Schulungen',
-    entryNote: 'Der Security Check prüft öffentliche Signale deiner Domain. Die Ergebnisse bilden den Ausgangspunkt deines persönlichen Vorschau-Raums.',
+    eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
+    thesis: 'Arbeitsräume, die Kontext behalten.',
+    intro: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, in dem Zusammenhang nicht in einzelnen Apps und Chats verloren geht. MÔRA hält den Kontext; Saimôr OS ist die Arbeitsoberfläche für Organisationen, YORI der ruhigere Raum für Creator und persönliche Arbeit.',
+    enter: 'Saimôr OS ansehen', learn: 'Wie Saimôr funktioniert', login: 'Einloggen', training: 'ORBIT · PULSE · SYSTEMS', yori: 'YORI für Creator',
+    entryNote: 'Der Security Check ist ein möglicher Einstieg: Er prüft öffentliche Signale deiner Domain und macht daraus ein erstes echtes Objekt statt einer leeren Promptbox.',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
-    fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Du musst nicht jedes Mal von vorn anfangen.',
-    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine und offene Dinge bleiben zusammen. MÔRA kennt den Stand und kann dort weitermachen.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
-    entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Nicht mit einem leeren Chat anfangen.',
+    fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
+    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine, Entscheidungen und offene Dinge bleiben zusammen. MÔRA arbeitet mit diesem Zusammenhang, statt bei jedem Kontakt wieder bei null zu beginnen.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
+    entryLabel: 'EINSTIEG / SECURITY CHECK', entryTitle: 'Mit etwas Echtem statt mit einer leeren Promptbox starten.',
     entryText: 'Du startest mit deiner Domain. Der Security Report wird zum ersten echten Objekt im OS. Damit beginnt der Raum bereits mit realem Kontext statt mit einer leeren Promptbox.', entryCta: 'Security Check starten',
-    studioEyebrow: 'SAIMÔR · STUDIO', studioTitle: 'Produkte bauen. KI verständlich machen.',
-    studioText: 'Saimôr ist unser unabhängiges Produktstudio. Wir verbinden Erfahrung aus IT-Systemmanagement und technischem Vertrieb mit eigener Produktentwicklung und bieten daneben Vorträge, Workshops und Schulungen zu praktischer KI an.',
-    offers: [['Vorträge', 'KI verständlich einordnen – ohne Show und Buzzword-Nebel.'], ['Schulungen & Workshops', 'Praxisnah für Teams, die KI sinnvoll in ihre Arbeit bringen wollen.'], ['Prototypen & Webprojekte', 'Ideen schnell in eine testbare, belastbare Form bringen.']],
-    talk: 'Vortrag oder Schulung anfragen', experiments: 'Weitere Arbeiten', experimentsText: 'Earth · ausgewählte Experimente, Webprojekte und Prototypen',
-    finalEyebrow: 'CONTACT / OPEN CHANNEL', finalTitle: 'Wenn Saimôr zu deinem Problem passt, reden wir darüber.', finalText: 'Schreib kurz, woran du arbeitest oder wo es gerade hängt.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
+    studioEyebrow: 'SAIMÔR · ORBIT / PULSE / SYSTEMS', studioTitle: 'Klarheit im Wandel – vom ersten Gespräch bis zur Umsetzung.',
+    studioText: 'Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang. ORBIT klärt, was wirklich gebraucht wird. PULSE bringt Teams gemeinsam in Bewegung. SYSTEMS setzt Integrationen, Automatisierungen und Arbeitsräume belastbar um.',
+    offers: [['ORBIT', 'Erstgespräch und Standortbestimmung: Wo entsteht Reibung, was ist schon da und wo lohnt sich ein nächster Schritt?'], ['PULSE', 'Workshops und gemeinsame Arbeitsformate, in denen Teams KI verständlich einordnen und praktisch anwenden.'], ['SYSTEMS', 'Umsetzung von Integrationen, Automatisierungen und Arbeitsräumen – mit klaren Grenzen, echten Daten und nachvollziehbaren Aktionen.']],
+    talk: 'ORBIT anfragen', experiments: 'Produkte', experimentsText: 'YORI · Saimôr Earth · ausgewählte Experimente und Prototypen',
+    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Wenn Arbeit, Wissen und KI auseinanderfallen, bauen wir den Zusammenhang.', finalText: 'Schreib kurz, woran du arbeitest, was heute verloren geht oder wo dein Team immer wieder neu anfangen muss.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
   },
   en: {
-    eyebrow: 'SAIMÔR · SOVEREIGN AI SYSTEMS', thesis: 'Files, tasks and AI. One shared workspace.',
-    intro: 'Saimôr OS is a digital workspace for everyday work and intelligent assistance. Calendar, files, tasks, integrations and AI live in the same context instead of being scattered across separate apps and chats.',
-    enter: 'Try Saimôr OS', learn: 'Understand the system', login: 'Log in', training: 'Talks & training',
-    entryNote: 'The Security Check examines public signals from your domain. Its results become the starting point of your personal preview workspace.',
+    eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
+    intro: 'Saimôr connects work, data and AI into a system where context does not disappear across separate apps and chats. MÔRA keeps the thread; Saimôr OS is the operating surface for organisations, while YORI is the calmer space for creators and personal work.',
+    enter: 'Explore Saimôr OS', learn: 'How Saimôr works', login: 'Log in', training: 'ORBIT · PULSE · SYSTEMS', yori: 'YORI for creators',
+    entryNote: 'The Security Check is one possible entry point: it examines public signals from your domain and turns them into a first real object instead of an empty prompt box.',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
-    fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'You should not have to start from scratch every time.',
-    saimor: 'SAIMÔR', saimorText: 'Files, meetings and open work stay together. MÔRA knows where things stand and can continue from there.', mora: 'MÔRA', moraText: 'notices when something changes',
-    entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Do not start with an empty chat.',
+    fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
+    saimor: 'SAIMÔR', saimorText: 'Files, meetings, decisions and open work stay together. MÔRA works with that shared context instead of starting from zero on every interaction.', mora: 'MÔRA', moraText: 'notices when something changes',
+    entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Start with something real instead of an empty prompt box.',
     entryText: 'You start with your domain. The Security Report becomes the first real object inside the OS, so the space begins with real context instead of an empty prompt box.', entryCta: 'Start Security Check',
-    studioEyebrow: 'SAIMÔR · STUDIO', studioTitle: 'Build products. Make AI understandable.',
-    studioText: 'Saimôr is our independent product studio. We combine experience in IT systems management and technical sales with hands-on product development, and we also offer talks, workshops and practical AI training.',
-    offers: [['Talks', 'Putting AI into context without hype or buzzword fog.'], ['Training & workshops', 'Practical sessions for teams that want to use AI meaningfully.'], ['Prototypes & web projects', 'Turning ideas into something robust and testable quickly.']],
-    talk: 'Ask about a talk or workshop', experiments: 'Other work', experimentsText: 'Earth · selected experiments, web projects and prototypes',
-    finalEyebrow: 'CONTACT / OPEN CHANNEL', finalTitle: 'If Saimôr fits your problem, we should talk.', finalText: 'Send a short note about what you are building or where you are stuck.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
+    studioEyebrow: 'SAIMÔR · ORBIT / PULSE / SYSTEMS', studioTitle: 'Clarity through change — from first conversation to implementation.',
+    studioText: 'We do not begin with a tool; we begin with the context. ORBIT clarifies what is actually needed. PULSE gets teams moving together. SYSTEMS implements integrations, automations and workspaces in a robust way.',
+    offers: [['ORBIT', 'A first conversation and clear assessment: where is the friction, what already exists and where is the next useful move?'], ['PULSE', 'Workshops and shared formats that help teams understand AI and apply it in real work.'], ['SYSTEMS', 'Implementation of integrations, automations and workspaces with clear boundaries, real data and auditable actions.']],
+    talk: 'Ask about ORBIT', experiments: 'Products', experimentsText: 'YORI · Saimôr Earth · selected experiments and prototypes',
+    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'When work, knowledge and AI drift apart, we rebuild the connection.', finalText: 'Send a short note about what you are building, what keeps getting lost or where your team repeatedly has to start over.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
   },
 } as const;
 
@@ -69,6 +69,7 @@ export default function SystemWorldHome({ locale }: Props) {
               </div>
               <div className={styles.utilityLinks}>
                 <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
+                <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
                 <a href="#studio"><Mic2 size={14} aria-hidden="true" />{c.training}</a>
               </div>
               <p className={styles.entryNote}>{c.entryNote}</p>
