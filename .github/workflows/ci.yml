@@ -5,6 +5,9 @@ on:
     branches: [ main, feat/**, fix/** ]
   pull_request:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -12,6 +15,7 @@ concurrency:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       NEXT_TELEMETRY_DISABLED: 1
       CI: true
@@ -35,8 +39,18 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
 
+      - name: Unit tests
+        run: npm test -- --run
+
       - name: Build
         run: npm run build
 
-      - name: Unit tests
-        run: npm test -- --run
+      - name: Production dependency audit against temporary baseline
+        shell: bash
+        run: |
+          set +e
+          npm audit --omit=dev --json > /tmp/npm-audit.json
+          audit_status=$?
+          set -e
+          echo "npm audit exit status: $audit_status"
+          node scripts/check-npm-audit-baseline.mjs /tmp/npm-audit.json security/npm-audit-baseline.json
