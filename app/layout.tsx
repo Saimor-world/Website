@@ -137,13 +137,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'Web',
               url: 'https://saimor.world/de',
-              description: 'Arbeitsraum für Dateien, Termine, Aufgaben, Integrationen und KI. MÔRA hält den Arbeitskontext; YORI ergänzt Saimôr um einen ruhigeren Creator-Raum.',
-              offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'EUR',
-                availability: 'https://schema.org/ComingSoon',
-              },
+              description: 'Arbeitsraum für Dateien, Termine, Aufgaben, Integrationen und KI. MÔRA hält den Arbeitskontext und kann auf vorhandenem Kontext aufbauen.',
               featureList: [
                 'Gemeinsamer Arbeitskontext',
                 'MÔRA Assistenz',
