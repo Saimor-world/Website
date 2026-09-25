@@ -85,7 +85,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         <div className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
             <a href={homeHref} className="inline-flex items-center gap-3">
-              <span className="block h-11 w-11 shrink-0"><BrandSigil /></span>
+              <span className="block h-11 w-11 shrink-0"><BrandSigil sizes="44px" /></span>
               <span>
                 <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
               </span>
