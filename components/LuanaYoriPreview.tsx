@@ -82,8 +82,16 @@ export default function LuanaYoriPreview({ world }: Props) {
             <span className="text-[8px] uppercase tracking-[.17em] text-[#8d7445]">{world.clientName} × YORI</span>
           </header>
 
+          {/*
+            min-w-0 auf beiden Spalten: Grid-Kinder haben min-width:auto und
+            können deshalb nicht unter ihre min-content-Breite schrumpfen. Das
+            Eingabefeld bringt über seine Standard-size ~334px mit, die Karte
+            damit 402px -- mehr als die 358px des Containers. Ohne min-w-0
+            wächst die ganze Spalte darauf mit, und overflow-hidden schneidet
+            den Text rechts ab, ohne dass man ihn erreichen kann.
+          */}
           <div className="grid flex-1 items-end gap-8 pb-7 pt-[31svh] sm:pt-[34svh] lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-16 lg:pb-10 lg:pt-10">
-            <div className="max-w-[650px] lg:py-10">
+            <div className="min-w-0 max-w-[650px] lg:py-10">
               <p className="text-[10px] font-medium uppercase tracking-[.18em] text-[#7a8d80]">
                 Ein erster Blick in deinen eigenen Arbeitsraum
               </p>
@@ -107,7 +115,7 @@ export default function LuanaYoriPreview({ world }: Props) {
               </div>
             </div>
 
-            <div className="lg:justify-self-end lg:w-full lg:max-w-[480px]">
+            <div className="min-w-0 lg:justify-self-end lg:w-full lg:max-w-[480px]">
               <section className="relative overflow-hidden border border-[#b49a66]/30 bg-[#fffaf0]/95 p-5 shadow-[0_24px_70px_rgba(63,48,24,.12)] backdrop-blur-md sm:p-7">
                 <div aria-hidden="true" className="absolute right-5 top-5 h-10 w-10 rounded-full border border-[#b59a64]/25" />
 
