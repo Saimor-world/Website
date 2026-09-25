@@ -47,5 +47,6 @@ describe('SystemWorldHome', () => {
     expect(publicCopy).not.toMatch(/Solo[- ]?Founder/i);
     expect(publicCopy).not.toMatch(/Gründer(?:in)?/i);
     expect(publicCopy).not.toMatch(/Founder/i);
+    expect(publicCopy).not.toMatch(/ORBIT|PULSE|SYSTEMS/i);
   });
 });
