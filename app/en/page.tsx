@@ -2,8 +2,8 @@ import YoriGate from '@/components/YoriGate';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
-  title: 'Saimôr – OS, Môra and sovereign AI systems',
-  description: 'Saimôr connects workspace, data and AI into a system that keeps context. With Saimôr OS, Môra, talks, training and prototypes.',
+  title: 'Saimôr – Clarity through change',
+  description: 'Saimôr connects work, data and AI into a system that keeps context. With MÔRA, Saimôr OS, YORI and ORBIT, PULSE and SYSTEMS.'
 };
 
 export default function Page() {
