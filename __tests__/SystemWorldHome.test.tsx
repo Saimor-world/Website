@@ -22,8 +22,11 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Beratung')).toBeInTheDocument();
     expect(screen.getByText('Workshops')).toBeInTheDocument();
     expect(screen.getByText('Umsetzung')).toBeInTheDocument();
-    const enter = screen.getByRole('link', { name: /Security Check starten/i });
-    expect(enter).toHaveAttribute('href', '/de/einstieg/security-check');
+    const entries = screen.getAllByRole('link', { name: /Security Check starten/i });
+    expect(entries.length).toBeGreaterThanOrEqual(1);
+    for (const entry of entries) {
+      expect(entry).toHaveAttribute('href', '/de/einstieg/security-check');
+    }
   });
 
   it('does not regress to the old card or orbit-like system framing', () => {
