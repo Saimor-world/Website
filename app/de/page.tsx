@@ -2,8 +2,8 @@ import YoriGate from '@/components/YoriGate';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 export const metadata = {
-  title: 'Saimôr – OS, Môra und souveräne KI-Systeme',
-  description: 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält. Mit Saimôr OS, Môra, Vorträgen, Schulungen und Prototypen.',
+  title: 'Saimôr – Klarheit im Wandel',
+  description: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. Mit MÔRA, Saimôr OS, YORI sowie Beratung, Workshops und Umsetzung.'
 };
 
 export default function Page() {
