@@ -22,7 +22,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Beratung')).toBeInTheDocument();
     expect(screen.getByText('Workshops')).toBeInTheDocument();
     expect(screen.getByText('Umsetzung')).toBeInTheDocument();
-    const enter = screen.getByRole('link', { name: /Saimôr OS ansehen/i });
+    const enter = screen.getByRole('link', { name: /Security Check starten/i });
     expect(enter).toHaveAttribute('href', '/de/einstieg/security-check');
   });
 
