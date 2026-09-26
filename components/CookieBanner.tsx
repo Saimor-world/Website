@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, Eye, EyeOff, Shield } from 'lucide-react';
 
 const COPY = {
@@ -47,6 +47,7 @@ export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const asideRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -90,12 +91,39 @@ export default function CookieBanner() {
     window._paq?.push(['optUserOut']);
   };
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!isVisible) {
+      root.style.setProperty('--consent-banner-height', '0px');
+      return;
+    }
+
+    const publish = () => {
+      const node = asideRef.current;
+      if (!node) return;
+      // bottom-3 / sm:bottom-5 plus etwas Luft, damit der Inhalt nicht klebt
+      root.style.setProperty('--consent-banner-height', `${Math.round(node.offsetHeight) + 32}px`);
+    };
+
+    publish();
+    const observer = new ResizeObserver(publish);
+    if (asideRef.current) observer.observe(asideRef.current);
+    window.addEventListener('resize', publish);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', publish);
+      root.style.setProperty('--consent-banner-height', '0px');
+    };
+  }, [isVisible, showDetails]);
+
   const privacyHref = locale === 'en' ? '/en/legal/privacy' : '/de/rechtliches/datenschutz';
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.aside
+          ref={asideRef}
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 30, opacity: 0 }}
