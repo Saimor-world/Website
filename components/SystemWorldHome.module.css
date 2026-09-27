@@ -52,7 +52,7 @@
 @media(prefers-reduced-motion:reduce){.primary,.outline{transition:none}}
 /* Scenic bitmaps provide atmosphere; these foreground edges remain resolution independent. */
 .motionControl{position:absolute;z-index:3;right:64px;top:112px;display:flex;align-items:center;gap:8px;color:#cfc9b1;font-size:11px;cursor:pointer;min-height:30px}
-.motionControl input{accent-color:#d8be78;width:14px;height:14px}
+.motionControl{opacity:.62;transition:opacity .2s ease}.motionControl:hover,.motionControl:focus-within{opacity:1}.motionControl input{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;width:26px;height:14px;margin:0;border-radius:999px;border:1px solid #cfc9b166;background:transparent;cursor:pointer;transition:background .2s ease,border-color .2s ease}.motionControl input::before{content:"";position:absolute;left:2px;top:2px;width:8px;height:8px;border-radius:50%;background:#cfc9b1;transition:transform .2s ease,background .2s ease}.motionControl input:checked{background:#d8be7833;border-color:#d8be78}.motionControl input:checked::before{transform:translateX(12px);background:#d8be78}.motionControl input:focus-visible{outline:2px solid #d8be78;outline-offset:2px}
 .world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
 .portalScene{position:absolute;inset:0;pointer-events:none}
 .portalFrame{position:absolute;left:65%;top:12%;width:16%;height:61%;border:5px solid #e5c887;border-left-color:#fff2c6;border-bottom-color:#bc9147;transform:perspective(900px) rotateY(-16deg);background:linear-gradient(105deg,#d8c68c15,#fff2c652 60%,#e4d8a523);box-shadow:0 0 3px #fff8d7,inset 0 0 28px #ffe8a34d,0 0 35px #f8ce793b,16px 12px 0 #14271dbb;overflow:hidden}

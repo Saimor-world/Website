@@ -46,7 +46,7 @@ function achievement(
 export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement('silent-observer', 'signal', 'Erst einmal ankommen', 'Take a moment', 'Du hast dir Zeit für den Einstieg genommen, statt sofort weiterzuklicken.', 'You took time to read the introduction instead of clicking away.', '◐'),
   achievement('scroll-champion', 'signal', 'Das ganze Bild', 'The full picture', 'Du hast die Seite bis zum Ende angesehen und den Zusammenhang mitgenommen.', 'You reached the end of the page and took in the full picture.', '↧'),
-  achievement('return-visitor', 'signal', 'Willkommen zurück', 'Welcome back', 'Du warst schon einmal hier und bist wiedergekommen.', 'You have been here before and came back.', '↺'),
+  achievement('return-visitor', 'signal', 'Wieder hier', 'Back again', 'Schön, dass du noch einmal vorbeischaust.', 'Good to see you stop by again.', '↺'),
   achievement('mora-explorer', 'depth', 'Môra angesehen', 'Met Môra', 'Du hast dir angesehen, wie Môra Kontext, Wissen und nächste Schritte verbindet.', 'You explored how Môra connects context, knowledge, and next steps.', '◎'),
   achievement('demo-explorer', 'depth', 'Demo ausprobiert', 'Tried the demo', 'Du hast die Produktbeschreibung verlassen und die Demo selbst geöffnet.', 'You moved beyond the product copy and opened the demo yourself.', '□'),
   achievement('clarity-navigator', 'path', 'Vertrauen geprüft', 'Checked the foundations', 'Du hast dir Sicherheit, Datenschutz oder die rechtlichen Grundlagen angesehen.', 'You checked the security, privacy, or legal foundations.', '△'),
@@ -54,6 +54,13 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
   achievement('konami', 'hidden', 'Überlagerung', 'Overlay', 'Du hast eine alte Resonanzschicht des Systems wieder geöffnet.', 'You reopened an old resonance layer of the system.', '◈', true),
   achievement('quad_logo', 'hidden', 'Das Zeichen lebt', 'The mark is alive', 'Du hast das Saimôr-Zeichen nicht nur gesehen, sondern genauer untersucht.', 'You did not just see the Saimôr mark — you looked a little closer.', '◌', true),
 ];
+
+// Only deliberate discoveries get a visible note. Everything that simply
+// happens while reading (time on page, scrolling, returning, visiting a
+// route) is recorded quietly and only shows up in the discoveries log.
+const ANNOUNCED_ACHIEVEMENTS = new Set(['first-contact', 'konami', 'quad_logo']);
+
+export function shouldAnnounceAchievement(id: string) { return ANNOUNCED_ACHIEVEMENTS.has(id) }
 
 export function getAchievementTitle(item: Achievement, locale: AchievementLocale = 'de') { return item.title[locale] }
 export function getAchievementDescription(item: Achievement, locale: AchievementLocale = 'de') { return item.description[locale] }

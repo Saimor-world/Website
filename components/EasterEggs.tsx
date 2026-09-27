@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { getAchievementManager, type Achievement, type AchievementLocale } from '@/lib/achievements';
+import { getAchievementManager, shouldAnnounceAchievement, type Achievement, type AchievementLocale } from '@/lib/achievements';
 import AchievementButton from './AchievementButton';
 import AchievementToast from './AchievementToast';
 
@@ -27,9 +27,11 @@ export default function EasterEggs() {
 
   const unlock = useCallback((id: string) => {
     const item = managerRef.current.unlock(id);
-    if (item) setNewAchievement(item);
+    if (item && shouldAnnounceAchievement(item.id)) setNewAchievement(item);
     return item;
   }, []);
+
+  const closeToast = useCallback(() => setNewAchievement(null), []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -43,7 +45,6 @@ export default function EasterEggs() {
         konamiIndexRef.current = 0;
         setResonance(true);
         unlock('konami');
-        window.dispatchEvent(new CustomEvent('saimor-achievement-menu-open'));
         window.setTimeout(() => setResonance(false), 3200);
         return;
       }
@@ -122,7 +123,7 @@ export default function EasterEggs() {
           </div>
         </div>
       ) : null}
-      <AchievementToast achievement={newAchievement} onClose={() => setNewAchievement(null)} locale={locale} />
+      <AchievementToast achievement={newAchievement} onClose={closeToast} locale={locale} />
       <AchievementButton />
     </>
   );

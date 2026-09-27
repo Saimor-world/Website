@@ -140,7 +140,7 @@ export default function CookieBanner() {
                 type="button"
                 onClick={() => setShowDetails((value) => !value)}
                 aria-expanded={showDetails}
-                className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-white/42 transition hover:text-white/72"
+                className="mr-4 mt-3 inline-flex items-center gap-1.5 align-middle text-[11px] font-medium text-white/42 transition hover:text-white/72"
               >
                 <motion.span animate={{ rotate: showDetails ? 180 : 0 }} transition={{ duration: 0.18 }}>
                   <ChevronDown className="h-3.5 w-3.5" />
@@ -202,7 +202,7 @@ export default function CookieBanner() {
                 )}
               </AnimatePresence>
 
-              <a href={privacyHref} className="mt-2 inline-block text-[10px] text-white/28 underline-offset-2 transition hover:text-white/55 hover:underline">
+              <a href={privacyHref} className="mt-3 inline-block align-middle text-[11px] text-white/32 underline-offset-2 transition hover:text-white/60 hover:underline">
                 {copy.privacy}
               </a>
             </div>
