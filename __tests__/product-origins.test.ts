@@ -4,9 +4,9 @@ import { yoriOrigin } from '../lib/product-origins';
 afterEach(() => vi.unstubAllEnvs());
 
 describe('YORI product origin', () => {
-  it('defaults to the verified production origin until domain cutover', () => {
+  it('defaults to the canonical YORI workspace origin', () => {
     vi.stubEnv('NEXT_PUBLIC_YORI_ORIGIN', '');
-    expect(yoriOrigin()).toBe('https://frnt.saimor.world');
+    expect(yoriOrigin()).toBe('https://yori.saimor.world');
   });
 
   it('accepts a configured HTTPS origin', () => {

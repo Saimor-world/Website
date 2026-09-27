@@ -1,9 +1,10 @@
 /** Public YORI product origin.
- * frnt.saimor.world remains the verified production host until yori.saimor.world
- * is cut over and explicitly configured.
+ * yori.saimor.world ist der kanonische Workspace-Host (config/site-estate.json).
+ * frnt.saimor.world war der Vorgaenger und hat seit dem DNS-Umzug keinen
+ * Eintrag mehr -- ein Standard darauf haette tote Links erzeugt.
  */
 export function yoriOrigin(value = process.env.NEXT_PUBLIC_YORI_ORIGIN): string {
-  const url = new URL(value?.trim() || 'https://frnt.saimor.world');
+  const url = new URL(value?.trim() || 'https://yori.saimor.world');
   const local =
     process.env.NODE_ENV !== 'production' &&
     ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
