@@ -3,17 +3,30 @@ name: Cleanup Neon preview branch
 on:
   pull_request:
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'list = nur anzeigen, was verwaist ist. prune = verwaiste preview/* wirklich loeschen.'
+        type: choice
+        options: [list, prune]
+        default: list
 
 permissions:
   contents: read
 
 concurrency:
-  group: neon-cleanup-${{ github.event.pull_request.head.ref }}
+  group: neon-cleanup-${{ github.event.pull_request.head.ref || github.run_id }}
   cancel-in-progress: false
 
+env:
+  NEON_PROJECT_ID: blue-darkness-10877775
+
 jobs:
+  # Unveraendert: raeumt den Branch weg, sobald seine PR geschlossen wird.
   delete-preview-branch:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -23,3 +36,114 @@ jobs:
           project_id: blue-darkness-10877775
           branch: preview/${{ github.event.pull_request.head.ref }}
           api_key: ${{ secrets.NEON_API_KEY }}
+
+  # Neu: der Cleanup oben greift nur beim Schliessen einer PR. Was ohne PR
+  # gepusht wurde oder dessen Cleanup einmal fehlschlug, bleibt fuer immer in
+  # Neon liegen -- und auf dem Free-Plan laeuft damit irgendwann das
+  # Branch-Limit voll. Dann lassen sich keine neuen Preview-Branches mehr
+  # anlegen, und JEDES Vercel-Preview-Deployment stirbt sofort, noch bevor eine
+  # Build-Maschine zugeteilt wird (0 ms, keine Logzeile). Production ist nicht
+  # betroffen, die braucht keinen neuen Branch.
+  #
+  # Dieser Job vergleicht die Neon-Branches mit den real existierenden
+  # Git-Branches. Standard ist "list" -- es wird nur angezeigt. Geloescht wird
+  # ausschliesslich bei ausdruecklich gewaehltem "prune", und nur Namen, die
+  # mit preview/ beginnen und deren Git-Branch nicht mehr existiert.
+  prune-orphans:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Vergleichen und ggf. aufraeumen
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${NEON_API_KEY:-}" ]; then
+            echo "::error::NEON_API_KEY ist nicht gesetzt."
+            exit 1
+          fi
+
+          api() {
+            curl -sS --fail-with-body -X "$1" \
+              -H "Authorization: Bearer ${NEON_API_KEY}" \
+              -H "Accept: application/json" \
+              "https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}$2"
+          }
+
+          echo "Neon-Branches werden gelesen ..."
+          api GET "/branches" > branches.json
+
+          # Lebende Git-Branches, wie Neon sie benennen wuerde: preview/<ref>
+          git ls-remote --heads origin \
+            | sed 's#.*refs/heads/#preview/#' \
+            | sort -u > alive.txt
+
+          # Alle preview/*-Branches in Neon, ausser dem primaeren
+          python3 - <<'PY' > neon.tsv
+          import json
+          d = json.load(open('branches.json'))
+          for b in d.get('branches', []):
+              name = b.get('name', '')
+              if not name.startswith('preview/'):
+                  continue
+              if b.get('primary') or b.get('default'):
+                  continue
+              print(f"{b['id']}\t{name}")
+          PY
+
+          total=$(wc -l < neon.tsv | tr -d ' ')
+          echo "preview/*-Branches in Neon: ${total}"
+
+          : > orphans.tsv
+          while IFS=$'\t' read -r id name; do
+            [ -z "${name:-}" ] && continue
+            if ! grep -Fxq "$name" alive.txt; then
+              printf '%s\t%s\n' "$id" "$name" >> orphans.tsv
+            fi
+          done < neon.tsv
+
+          orphans=$(wc -l < orphans.tsv | tr -d ' ')
+          {
+            echo "## Neon preview-Branches"
+            echo ""
+            echo "| | Anzahl |"
+            echo "|---|---|"
+            echo "| insgesamt | ${total} |"
+            echo "| ohne Git-Branch (verwaist) | ${orphans} |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$orphans" = "0" ]; then
+            echo "Nichts verwaist." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "### Verwaist" >> "$GITHUB_STEP_SUMMARY"
+          cut -f2 orphans.tsv | sed 's/^/- `/; s/$/`/' >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "${MODE}" != "prune" ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Modus \`list\` -- es wurde nichts geloescht. Zum Aufraeumen erneut mit \`prune\` starten." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Geloescht" >> "$GITHUB_STEP_SUMMARY"
+          failed=0
+          while IFS=$'\t' read -r id name; do
+            if api DELETE "/branches/${id}" > /dev/null; then
+              echo "- \`${name}\`" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- \`${name}\` -- FEHLGESCHLAGEN" >> "$GITHUB_STEP_SUMMARY"
+              failed=1
+            fi
+          done < orphans.tsv
+          exit "$failed"
