@@ -18,14 +18,14 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   if (slug === 'security-check') {
     return {
-      title: 'Gratis Sicherheits-Audit | Saimôr',
+      title: 'Security Check – Saimôr',
       description:
         'Was sieht man über dein Unternehmen von außen? Kostenloser Domain-Audit in Sekunden.',
     };
   }
   const article = entryContent.de.find((item) => item.slug === slug);
   return {
-    title: article ? `${article.title} | Saimôr Einstieg` : 'Artikel nicht gefunden | Saimôr',
+    title: article ? `${article.title} – Saimôr` : 'Artikel nicht gefunden – Saimôr',
     description: article?.excerpt ?? 'Artikel aus dem Saimor Einstieg',
   };
 }

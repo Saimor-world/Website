@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://saimor.world'),
   title: {
     default: SYSTEM_TITLE,
-    template: '%s | Saimôr',
+    template: '%s – Saimôr',
   },
   description: SYSTEM_DESCRIPTION,
   icons: {

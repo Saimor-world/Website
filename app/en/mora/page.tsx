@@ -1,7 +1,7 @@
 import MoraProductPage from '@/components/MoraProductPage';
 
 export const metadata = {
-  title: 'MÔRA – proactive assistance inside Saimôr OS',
+  title: 'MÔRA: proactive assistance – Saimôr',
   description:
     'MÔRA works inside Saimôr OS with files, meetings, tasks and context. She keeps track of the current state, notices changes and can prepare next steps.',
   alternates: {
