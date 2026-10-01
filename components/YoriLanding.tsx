@@ -7,7 +7,7 @@ import { yoriOrigin } from '@/lib/product-origins';
 type Props = { locale: 'de' | 'en' };
 type RoomKey = 'desk' | 'workshop' | 'cash';
 
-const YORI_ORIGIN = yoriOrigin();
+const YORI_ORIGIN = yoriOrigin() || 'https://yori.saimor.world';
 
 const ROOM_ASSETS: Record<RoomKey, string> = {
   desk: '/world/luana/room-desk.webp',
