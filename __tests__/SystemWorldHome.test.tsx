@@ -29,6 +29,18 @@ describe('SystemWorldHome', () => {
     }
   });
 
+  it('says each entry idea once and links the named products', () => {
+    for (const locale of ['de', 'en'] as const) {
+      const { container } = render(<SystemWorldHome locale={locale} />);
+      const copy = container.textContent ?? '';
+      const promptBox = locale === 'de' ? /leeren Promptbox/g : /empty prompt box/g;
+      expect(copy.match(promptBox)?.length ?? 0).toBe(1);
+      expect(screen.getByRole('link', { name: 'YORI' })).toHaveAttribute('href', locale === 'de' ? '/yori' : '/en/yori');
+      expect(screen.getByRole('link', { name: 'Saimôr Earth' })).toHaveAttribute('href', '/earth');
+      cleanup();
+    }
+  });
+
   it('does not regress to the old card or orbit-like system framing', () => {
     render(<SystemWorldHome locale="de" />);
     expect(screen.queryByText('Ein Raum, in dem Dinge zueinander finden.')).not.toBeInTheDocument();
