@@ -50,12 +50,12 @@ export default function LuanaYoriPreview() {
       <section className="relative min-h-[100svh]">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-[46svh] bg-cover bg-center sm:h-[50svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[58%]"
+          className="absolute inset-x-0 top-0 h-[27svh] bg-cover bg-center sm:h-[38svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[58%]"
           style={{ backgroundImage: 'url("/world/luana/room-desk.webp")' }}
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-[46svh] bg-[linear-gradient(180deg,rgba(244,237,222,.02)_0%,rgba(244,237,222,.22)_52%,rgba(244,237,222,.86)_78%,#f4edde_88%)] sm:h-[50svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[64%] lg:bg-[linear-gradient(90deg,#f4edde_0%,rgba(244,237,222,.78)_14%,rgba(244,237,222,.18)_50%,rgba(244,237,222,.06)_100%)]"
+          className="absolute inset-x-0 top-0 h-[27svh] bg-[linear-gradient(180deg,rgba(244,237,222,.02)_0%,rgba(244,237,222,.22)_52%,rgba(244,237,222,.86)_78%,#f4edde_88%)] sm:h-[38svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[64%] lg:bg-[linear-gradient(90deg,#f4edde_0%,rgba(244,237,222,.78)_14%,rgba(244,237,222,.18)_50%,rgba(244,237,222,.06)_100%)]"
         />
         {/*
           Kopf- und Fusszeile liegen ueber dem Raum und waren dort unlesbar
@@ -89,21 +89,30 @@ export default function LuanaYoriPreview() {
             <span className="whitespace-nowrap text-[8px] uppercase tracking-[.17em] text-[#79633b]">Luana × YORI</span>
           </header>
 
-          <div className="grid flex-1 items-end gap-8 pb-7 pt-[29svh] sm:pt-[32svh] lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-16 lg:pb-10 lg:pt-10">
-            <div className="min-w-0 max-w-[650px] lg:py-10">
+          {/*
+            Mobil stand die Handlung erst nach anderthalb Bildschirmen
+            Argumentation. Jetzt: Satz, dann Knopf, dann Begruendung -- wer
+            ueberzeugt ist, klickt sofort, wer zweifelt, liest weiter. Am
+            Desktop bleibt die Zweispaltigkeit, deshalb die drei Bloecke per
+            col-start/row-start wieder auf die alten Plaetze.
+          */}
+          <div className="flex flex-1 flex-col gap-6 pb-7 pt-[14svh] sm:pt-[22svh] lg:grid lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-x-16 lg:gap-y-5 lg:pb-10 lg:pt-10">
+            <div className="order-1 min-w-0 max-w-[650px] lg:col-start-1 lg:row-start-1 lg:pt-10">
               <p className="text-[10px] font-medium uppercase tracking-[.18em] text-[#5b6960]">
                 Ein erster Blick in deinen eigenen Arbeitsraum
               </p>
 
-              <h1 className="mt-4 max-w-[12ch] font-serif text-[clamp(2.65rem,6vw,5.5rem)] font-light leading-[.93] tracking-[-.04em] text-[#1f3028]">
+              <h1 className="mt-4 max-w-[12ch] font-serif text-[clamp(2.4rem,6vw,5.5rem)] font-light leading-[.93] tracking-[-.04em] text-[#1f3028]">
                 Nicht noch ein Tool. Ein Ort, der den Zusammenhang hält.
               </h1>
+            </div>
 
-              <p className="mt-5 max-w-[590px] text-[15px] leading-7 text-[#42594c] sm:text-[16px]">
+            <div className="order-3 min-w-0 max-w-[650px] lg:col-start-1 lg:row-start-2 lg:pb-10">
+              <p className="max-w-[590px] text-[15px] leading-7 text-[#42594c] sm:text-[16px]">
                 Deine Arbeit lebt in mehreren guten Werkzeugen. YORI ersetzt keines davon — es erinnert, was zusammengehört, damit du nicht jedes Mal von vorn erklären musst.
               </p>
 
-              <div className="mt-7 max-w-[610px]">
+              <div className="mt-6 max-w-[610px]">
                 <p className="text-[9px] uppercase tracking-[.16em] text-[#826336]">Die Werkzeuge, die du selbst genannt hast</p>
                 <p className="mt-2 font-serif text-[17px] leading-7 text-[#2d4337]">
                   {KNOWN_TOOLS.join(' · ')}
@@ -114,19 +123,19 @@ export default function LuanaYoriPreview() {
               </div>
             </div>
 
-            <div className="min-w-0 lg:justify-self-end lg:w-full lg:max-w-[480px]">
-              <section className="relative overflow-hidden border border-[#b49a66]/30 bg-[#fffaf0]/95 p-5 shadow-[0_24px_70px_rgba(63,48,24,.12)] backdrop-blur-md sm:p-7">
+            <div className="order-2 min-w-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:justify-self-end lg:w-full lg:max-w-[480px]">
+              <section className="relative overflow-hidden border border-[#b49a66]/30 bg-[#fffaf0]/95 p-4 shadow-[0_24px_70px_rgba(63,48,24,.12)] backdrop-blur-md sm:p-7">
                 <div aria-hidden="true" className="absolute right-5 top-5 h-10 w-10 rounded-full border border-[#b59a64]/25" />
 
                 <p className="text-[9px] uppercase tracking-[.18em] text-[#8d6932]">Der erste Faden</p>
-                <h2 className="mt-3 max-w-[12ch] font-serif text-[31px] font-light leading-[1.02] tracking-[-.025em] text-[#24382d]">
+                <h2 className="mt-2.5 max-w-[16ch] font-serif text-[23px] font-light leading-[1.08] tracking-[-.02em] text-[#24382d] sm:mt-3 sm:max-w-[12ch] sm:text-[31px] sm:leading-[1.02]">
                   Dein öffentlicher Handle ist schon da.
                 </h2>
                 <p className="mt-3 max-w-sm text-[12px] leading-5 text-[#607267]">
-                  Damit siehst du YORI einmal von innen — mit deinem öffentlichen Profil, ohne Anmeldung.
+                  YORI zeigt sich mit deinem Handle, ohne Anmeldung. Der Rest bleibt leer, bis du ihn freigibst — was gefüllt aussieht, ist ein Beispiel.
                 </p>
 
-                <div className="mt-6 flex gap-5 border-b border-[#b49a66]/25">
+                <div className="mt-5 flex gap-5 border-b border-[#b49a66]/25 sm:mt-6">
                   {(['instagram', 'tiktok'] as Platform[]).map((item) => (
                     <button
                       key={item}
@@ -156,7 +165,7 @@ export default function LuanaYoriPreview() {
 
                 <a
                   href={creatorPreviewHref}
-                  className="group mt-7 flex min-h-14 items-center justify-between gap-4 border-y border-[#b49a66]/28 py-4"
+                  className="group mt-4 flex min-h-14 items-center justify-between gap-4 border-b border-[#b49a66]/28 py-4 sm:mt-5"
                 >
                   <span className="min-w-0">
                     <small className="block text-[9px] uppercase tracking-[.17em] text-[#8d6932]">YORI ÖFFNEN</small>
@@ -166,7 +175,7 @@ export default function LuanaYoriPreview() {
                   </span>
                   <span
                     aria-hidden="true"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#668c7b] text-[#fffaf0] transition-transform group-hover:translate-x-0.5"
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#52796a] text-[#fffaf0] transition-transform group-hover:translate-x-0.5"
                   >
                     →
                   </span>
@@ -174,7 +183,7 @@ export default function LuanaYoriPreview() {
 
                 <a
                   href={liveConnectionsHref}
-                  className="mt-4 inline-block text-[9px] uppercase tracking-[.14em] text-[#637369] underline decoration-[#826336]/40 underline-offset-4"
+                  className="mt-4 inline-block text-[9px] uppercase tracking-[.14em] text-[#5e6e64] underline decoration-[#826336]/40 underline-offset-4"
                 >
                   Echte Konten in YORI verbinden
                 </a>
