@@ -322,7 +322,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           .rounded-3xl, .rounded-2xl { border-radius: 8px !important; }
         }
       `}</style>
-      <main className="min-h-screen bg-[#060a09] text-white p-6 md:p-20 print:bg-white print:text-black">
+      <div className="min-h-screen bg-[#060a09] text-white p-6 md:p-20 print:bg-white print:text-black">
       <div className="mx-auto max-w-4xl space-y-12 print:max-w-none">
         {wallVerifyState !== 'idle' ? (
           <div className={`rounded-3xl border p-6 ${
@@ -862,7 +862,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           </div>
         )}
       </div>
-              </main>
+              </div>
               </>
               );
               }
