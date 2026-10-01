@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: { absolute: 'The Wall | Saimôr' },
+  title: { absolute: 'The Wall – Saimôr' },
   description:
     'Der ruhige Backroom von Saimôr: Polaroids von Menschen, Projekten und Begegnungen, die einen Platz an der Wand bekommen haben.',
 };

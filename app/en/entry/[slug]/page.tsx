@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props) {
   const article = entryContent.en.find((item) => item.slug === slug);
 
   return {
-    title: article ? `${article.title} | Saimôr Entry` : 'Article not found | Saimôr',
+    title: article ? `${article.title} – Saimôr` : 'Article not found – Saimôr',
     description: article?.excerpt ?? 'Article from Saimor entry layer',
   };
 }

@@ -11,18 +11,22 @@ afterEach(cleanup);
 describe('SystemWorldHome', () => {
   it('explains the product to a first-time visitor and keeps the real entry path', () => {
     render(<SystemWorldHome locale="de" />);
-    expect(screen.getByText('Dateien, Aufgaben und KI. Ein gemeinsamer Arbeitsraum.')).toBeInTheDocument();
-    expect(screen.getByText('Du musst nicht jedes Mal von vorn anfangen.')).toBeInTheDocument();
+    expect(screen.getByText('Arbeitsräume, die Kontext behalten.')).toBeInTheDocument();
+    expect(screen.getByText('Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: 'MÔRA kennenlernen' })).toHaveAttribute('href', '/mora');
     expect(screen.getByRole('button', { name: 'Öffentliche Signale laden' })).toBeInTheDocument();
-    expect(screen.queryByText('YORI')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'YORI für Creator' })).toHaveAttribute('href', '/yori');
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
     expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();
-    expect(screen.getByText('Vorträge')).toBeInTheDocument();
-    expect(screen.getByText('Schulungen & Workshops')).toBeInTheDocument();
-    const enter = screen.getByRole('link', { name: /Saimôr OS ausprobieren/i });
-    expect(enter).toHaveAttribute('href', '/de/einstieg/security-check');
+    expect(screen.getByText('Beratung')).toBeInTheDocument();
+    expect(screen.getByText('Workshops')).toBeInTheDocument();
+    expect(screen.getByText('Umsetzung')).toBeInTheDocument();
+    const entries = screen.getAllByRole('link', { name: /Security Check starten/i });
+    expect(entries.length).toBeGreaterThanOrEqual(1);
+    for (const entry of entries) {
+      expect(entry).toHaveAttribute('href', '/de/einstieg/security-check');
+    }
   });
 
   it('does not regress to the old card or orbit-like system framing', () => {
@@ -37,11 +41,12 @@ describe('SystemWorldHome', () => {
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';
-    expect(publicCopy).toContain('Saimôr ist unser unabhängiges Produktstudio.');
-    expect(publicCopy).toContain('Wir verbinden Erfahrung aus IT-Systemmanagement');
+    expect(publicCopy).toContain('Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang.');
+    expect(publicCopy).toContain('Erst klären wir, was wirklich gebraucht wird.');
     expect(publicCopy).not.toMatch(/Marius Fahrländer/i);
     expect(publicCopy).not.toMatch(/Solo[- ]?Founder/i);
     expect(publicCopy).not.toMatch(/Gründer(?:in)?/i);
     expect(publicCopy).not.toMatch(/Founder/i);
+    expect(publicCopy).not.toMatch(/ORBIT|PULSE|SYSTEMS/i);
   });
 });
