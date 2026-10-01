@@ -50,12 +50,12 @@ export default function LuanaYoriPreview() {
       <section className="relative min-h-[100svh]">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-[48svh] bg-cover bg-center sm:h-[54svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[64%]"
+          className="absolute inset-x-0 top-0 h-[27svh] bg-cover bg-[center_38%] sm:h-[38svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[64%] lg:bg-center"
           style={{ backgroundImage: 'url("/world/luana/room-desk.webp")' }}
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-[48svh] bg-[linear-gradient(180deg,rgba(14,11,9,.28)_0%,rgba(14,11,9,.36)_52%,rgba(14,11,9,.92)_82%,#0e0b09_94%)] sm:h-[54svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[66%] lg:bg-[linear-gradient(90deg,#0e0b09_0%,rgba(14,11,9,.86)_18%,rgba(14,11,9,.28)_54%,rgba(14,11,9,.18)_100%)]"
+          className="absolute inset-x-0 top-0 h-[27svh] bg-[linear-gradient(180deg,rgba(14,11,9,.22)_0%,rgba(14,11,9,.36)_52%,rgba(14,11,9,.92)_80%,#0e0b09_92%)] sm:h-[38svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-[66%] lg:bg-[linear-gradient(90deg,#0e0b09_0%,rgba(14,11,9,.86)_18%,rgba(14,11,9,.28)_54%,rgba(14,11,9,.18)_100%)]"
         />
         <div
           aria-hidden="true"
@@ -77,50 +77,59 @@ export default function LuanaYoriPreview() {
                 <p className="font-serif text-[17px] tracking-[.11em] text-[#f4ecdf]">
                   LUANA <span className="text-[#d6ad6d]">LUMINA</span>
                 </p>
-                <p className="mt-0.5 text-[8px] uppercase tracking-[.16em] text-[#f4ecdf]/55">deine World</p>
+                <p className="mt-0.5 text-[8px] uppercase tracking-[.16em] text-[#f4ecdf]/68">deine World</p>
               </div>
             </div>
-            <span className="whitespace-nowrap text-[8px] uppercase tracking-[.17em] text-[#d6ad6d]/85">Luana × YORI</span>
+            <span className="whitespace-nowrap text-[8px] uppercase tracking-[.17em] text-[#d6ad6d]/90">Luana × YORI</span>
           </header>
 
-          <div className="grid flex-1 items-end gap-8 pb-7 pt-[29svh] sm:pt-[32svh] lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-16 lg:pb-10 lg:pt-10">
-            <div className="min-w-0 max-w-[650px] lg:py-10">
+          {/*
+            Mobil stand die Handlung erst nach anderthalb Bildschirmen
+            Argumentation. Jetzt: Satz, dann Knopf, dann Begruendung -- wer
+            ueberzeugt ist, klickt sofort, wer zweifelt, liest weiter. Am
+            Desktop bleibt die Zweispaltigkeit, deshalb die drei Bloecke per
+            col-start/row-start wieder auf die alten Plaetze.
+          */}
+          <div className="flex flex-1 flex-col gap-6 pb-7 pt-[14svh] sm:pt-[22svh] lg:grid lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:gap-x-16 lg:gap-y-5 lg:pb-10 lg:pt-10">
+            <div className="order-1 min-w-0 max-w-[650px] lg:col-start-1 lg:row-start-1 lg:pt-10">
               <p className="text-[10px] font-medium uppercase tracking-[.18em] text-[#d6ad6d]">
                 Ein erster Blick in deinen eigenen Arbeitsraum
               </p>
 
-              <h1 className="mt-4 max-w-[12ch] font-serif text-[clamp(2.65rem,6vw,5.5rem)] font-light leading-[.93] tracking-[-.04em] text-[#f4ecdf]">
+              <h1 className="mt-4 max-w-[12ch] font-serif text-[clamp(2.4rem,6vw,5.5rem)] font-light leading-[.93] tracking-[-.04em] text-[#f4ecdf]">
                 Nicht noch ein Tool. Ein Ort, der den Zusammenhang hält.
               </h1>
+            </div>
 
-              <p className="mt-5 max-w-[590px] text-[15px] leading-7 text-[#f4ecdf]/76 sm:text-[16px]">
+            <div className="order-3 min-w-0 max-w-[650px] lg:col-start-1 lg:row-start-2 lg:pb-10">
+              <p className="max-w-[590px] text-[15px] leading-7 text-[#f4ecdf]/78 sm:text-[16px]">
                 Deine Arbeit lebt in mehreren guten Werkzeugen. YORI ersetzt keines davon — es erinnert, was zusammengehört, damit du nicht jedes Mal von vorn erklären musst.
               </p>
 
-              <div className="mt-7 max-w-[610px]">
+              <div className="mt-6 max-w-[610px]">
                 <p className="text-[9px] uppercase tracking-[.16em] text-[#63aba6]">Die Werkzeuge, die du selbst genannt hast</p>
                 <p className="mt-2 font-serif text-[17px] leading-7 text-[#f4ecdf]/92">
                   {KNOWN_TOOLS.join(' · ')}
                 </p>
-                <p className="mt-2 text-[10px] leading-5 text-[#f4ecdf]/56">
+                <p className="mt-2 text-[10px] leading-5 text-[#f4ecdf]/65">
                   Genannt heißt nicht verbunden. Eine Quelle wird erst aktiv, wenn du sie in YORI selbst freigibst.
                 </p>
               </div>
             </div>
 
-            <div className="min-w-0 lg:justify-self-end lg:w-full lg:max-w-[480px]">
-              <section className="relative overflow-hidden rounded-[22px] border border-[#f4ecdf]/14 bg-[#18130f]/90 p-5 shadow-[0_32px_90px_rgba(0,0,0,.58)] backdrop-blur-xl sm:p-7">
+            <div className="order-2 min-w-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:justify-self-end lg:w-full lg:max-w-[480px]">
+              <section className="relative overflow-hidden rounded-[22px] border border-[#f4ecdf]/14 bg-[#18130f]/92 p-4 shadow-[0_32px_90px_rgba(0,0,0,.58)] backdrop-blur-xl sm:p-7">
                 <div aria-hidden="true" className="absolute right-5 top-5 h-10 w-10 rounded-full border border-[#d6ad6d]/25" />
 
                 <p className="text-[9px] uppercase tracking-[.18em] text-[#d6ad6d]">Der erste Faden</p>
-                <h2 className="mt-3 max-w-[12ch] font-serif text-[31px] font-light leading-[1.02] tracking-[-.025em] text-[#f4ecdf]">
+                <h2 className="mt-2.5 max-w-[16ch] font-serif text-[23px] font-light leading-[1.08] tracking-[-.02em] text-[#f4ecdf] sm:mt-3 sm:max-w-[12ch] sm:text-[31px] sm:leading-[1.02]">
                   Dein öffentlicher Handle ist schon da.
                 </h2>
-                <p className="mt-3 max-w-sm text-[12px] leading-5 text-[#f4ecdf]/65">
-                  Damit siehst du YORI einmal von innen — mit deinem öffentlichen Profil, ohne Anmeldung.
+                <p className="mt-3 max-w-sm text-[12px] leading-5 text-[#f4ecdf]/72">
+                  YORI zeigt sich mit deinem Handle, ohne Anmeldung. Der Rest bleibt leer, bis du ihn freigibst — was gefüllt aussieht, ist ein Beispiel.
                 </p>
 
-                <div className="mt-6 flex gap-5 border-b border-[#f4ecdf]/14">
+                <div className="mt-5 flex gap-5 border-b border-[#f4ecdf]/14 sm:mt-6">
                   {(['instagram', 'tiktok'] as Platform[]).map((item) => (
                     <button
                       key={item}
@@ -129,7 +138,7 @@ export default function LuanaYoriPreview() {
                       className={`border-b-2 pb-2 text-[10px] uppercase tracking-[.14em] transition ${
                         platform === item
                           ? 'border-[#63aba6] text-[#f4ecdf]'
-                          : 'border-transparent text-[#f4ecdf]/50'
+                          : 'border-transparent text-[#f4ecdf]/65'
                       }`}
                     >
                       {item === 'instagram' ? 'Instagram' : 'TikTok'}
@@ -143,14 +152,14 @@ export default function LuanaYoriPreview() {
                     value={handle}
                     onChange={(event) => setHandle(event.target.value)}
                     aria-label="Social Media Username"
-                    className="min-w-0 flex-1 bg-transparent font-serif text-[27px] text-[#f4ecdf] outline-none placeholder:text-[#f4ecdf]/35"
+                    className="min-w-0 flex-1 bg-transparent font-serif text-[27px] text-[#f4ecdf] outline-none placeholder:text-[#f4ecdf]/45"
                     placeholder="username"
                   />
                 </label>
 
                 <a
                   href={creatorPreviewHref}
-                  className="group mt-7 flex min-h-14 items-center justify-between gap-4 border-y border-[#f4ecdf]/14 py-4"
+                  className="group mt-4 flex min-h-14 items-center justify-between gap-4 border-b border-[#f4ecdf]/14 py-4 sm:mt-5"
                 >
                   <span className="min-w-0">
                     <small className="block text-[9px] uppercase tracking-[.17em] text-[#63aba6]">YORI ÖFFNEN</small>
@@ -160,7 +169,7 @@ export default function LuanaYoriPreview() {
                   </span>
                   <span
                     aria-hidden="true"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#3e8f8b] text-[#f4ecdf] transition-transform group-hover:translate-x-0.5"
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#3e8f8b] text-[#0e0b09] transition-transform group-hover:translate-x-0.5"
                   >
                     →
                   </span>
@@ -168,7 +177,7 @@ export default function LuanaYoriPreview() {
 
                 <a
                   href={liveConnectionsHref}
-                  className="mt-4 inline-block text-[9px] uppercase tracking-[.14em] text-[#f4ecdf]/65 underline decoration-[#63aba6]/50 underline-offset-4 transition hover:text-[#f4ecdf]"
+                  className="mt-4 inline-block text-[9px] uppercase tracking-[.14em] text-[#f4ecdf]/72 underline decoration-[#63aba6]/55 underline-offset-4 transition hover:text-[#f4ecdf]"
                 >
                   Echte Konten in YORI verbinden
                 </a>
@@ -182,11 +191,11 @@ export default function LuanaYoriPreview() {
                 {LIVE_YORI.map(([label, state]) => (
                   <span key={label} className="inline-flex items-baseline gap-1.5">
                     <strong className="font-serif text-[14px] font-light text-[#f4ecdf]/90">{label}</strong>
-                    <small className="text-[8px] text-[#f4ecdf]/55">{state}</small>
+                    <small className="text-[8px] text-[#f4ecdf]/65">{state}</small>
                   </span>
                 ))}
               </div>
-              <p className="text-[8px] uppercase tracking-[.16em] text-[#d6ad6d]/80">
+              <p className="text-[8px] uppercase tracking-[.16em] text-[#d6ad6d]/85">
                 YORI · a SAIMÔR creation
               </p>
             </div>
