@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, History, Map, MapPin, QrCode } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Earth – Ortsgedächtnis von Saimôr',
+  title: 'Earth: Ortsgedächtnis',
   description: 'Earth verbindet Geschichten, Wissen und Veränderung mit realen Orten — als ruhige Karte und Zeitleiste statt als Social Feed.',
 };
 
