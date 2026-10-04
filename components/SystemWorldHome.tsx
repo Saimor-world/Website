@@ -13,7 +13,7 @@ const COPY = {
   de: {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
-    intro: 'Saimôr verbindet Arbeit, Daten und KI zu einem System, in dem Zusammenhang nicht in einzelnen Apps und Chats verloren geht. MÔRA hält den Kontext; Saimôr OS ist die Arbeitsoberfläche für Organisationen, YORI der ruhigere Raum für Creator und persönliche Arbeit.',
+    intro: 'Saimôr verbindet Arbeit, Daten und Intelligenz zu einem System, in dem Zusammenhang nicht in einzelnen Apps, Modellen und Chats verloren geht. MÔRA hält den Kontext; Saimôr OS ist die Arbeitsoberfläche für Organisationen, YORI der ruhigere Raum für Creator und persönliche Arbeit.',
     enter: 'Security Check starten', learn: 'Wie Saimôr funktioniert', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     entryNote: 'Der Security Check ist ein möglicher Einstieg: Er prüft öffentliche Signale deiner Domain.',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
@@ -25,11 +25,17 @@ const COPY = {
     studioText: 'Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang. Erst klären wir, was wirklich gebraucht wird. Dann bringen wir Teams gemeinsam ins Arbeiten und setzen Integrationen, Automatisierungen und Arbeitsräume belastbar um.',
     offers: [['Beratung', 'Erstgespräch und Standortbestimmung: Wo entsteht Reibung, was ist schon da und wo lohnt sich ein nächster Schritt?'], ['Workshops', 'Gemeinsame Arbeitsformate, in denen Teams KI verständlich einordnen und praktisch anwenden.'], ['Umsetzung', 'Integrationen, Automatisierungen und Arbeitsräume – mit klaren Grenzen, echten Daten und nachvollziehbaren Aktionen.']],
     talk: 'Gespräch anfragen', experiments: 'Produkte', experimentsText: 'ausgewählte Experimente und Prototypen',
-    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Wenn Arbeit, Wissen und KI auseinanderfallen, bauen wir den Zusammenhang.', finalText: 'Schreib kurz, woran du arbeitest, was heute verloren geht oder wo dein Team immer wieder neu anfangen muss.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
+    intelligenceEyebrow: 'SAIMÔR / INTELLIGENCE LAYER',
+    intelligenceTitle: 'Modelle ändern sich. Kontext bleibt.',
+    intelligenceText: 'AI, Agents, neue Modelle und künftige Formen von Intelligence können wechseln. Saimôr hält Kontext, Regeln, Verbindungen und Freigaben stabil – damit dein System nicht mit jedem Modellwechsel neu gebaut werden muss.',
+    intelligenceMora: 'MÔRA hält den Zusammenhang',
+    intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
+    intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
+    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Wenn Arbeit, Wissen und Intelligenz auseinanderfallen, bauen wir den Zusammenhang.', finalText: 'Schreib kurz, woran du arbeitest, was heute verloren geht oder wo dein Team immer wieder neu anfangen muss.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
-    intro: 'Saimôr connects work, data and AI into a system where context does not disappear across separate apps and chats. MÔRA keeps the thread; Saimôr OS is the operating surface for organisations, while YORI is the calmer space for creators and personal work.',
+    intro: 'Saimôr connects work, data and intelligence into a system where context does not disappear across separate apps, models and chats. MÔRA keeps the thread; Saimôr OS is the operating surface for organisations, while YORI is the calmer space for creators and personal work.',
     enter: 'Start Security Check', learn: 'How Saimôr works', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     entryNote: 'The Security Check is one possible entry point: it examines public signals from your domain.',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
@@ -41,7 +47,13 @@ const COPY = {
     studioText: 'We do not begin with a tool; we begin with the context. First we clarify what is actually needed. Then we help teams work with it and implement integrations, automations and workspaces in a robust way.',
     offers: [['Consulting', 'A first conversation and clear assessment: where is the friction, what already exists and where is the next useful move?'], ['Workshops', 'Shared formats that help teams understand AI and apply it in real work.'], ['Implementation', 'Integrations, automations and workspaces with clear boundaries, real data and auditable actions.']],
     talk: 'Start a conversation', experiments: 'Products', experimentsText: 'selected experiments and prototypes',
-    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'When work, knowledge and AI drift apart, we rebuild the connection.', finalText: 'Send a short note about what you are building, what keeps getting lost or where your team repeatedly has to start over.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
+    intelligenceEyebrow: 'SAIMÔR / INTELLIGENCE LAYER',
+    intelligenceTitle: 'Models change. Context remains.',
+    intelligenceText: 'AI, agents, new models and future forms of intelligence can change. Saimôr keeps context, rules, connections and permissions stable — so your system does not need to be rebuilt every time the model changes.',
+    intelligenceMora: 'MÔRA keeps the thread',
+    intelligenceCore: 'CORE keeps truth, identity and boundaries',
+    intelligenceWorkers: 'Models, agents and tools stay replaceable',
+    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'When work, knowledge and intelligence drift apart, we rebuild the connection.', finalText: 'Send a short note about what you are building, what keeps getting lost or where your team repeatedly has to start over.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
   },
 } as const;
 
@@ -127,6 +139,33 @@ export default function SystemWorldHome({ locale }: Props) {
         <div className={styles.entry}>
           <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
           <div><p>{c.entryText}</p><Link href={securityHref} className={styles.textLink}>{c.entryCta}<ArrowRight size={17} aria-hidden="true" /></Link></div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden border-b border-white/[0.1] bg-[#050b08] px-5 py-20 sm:px-8 md:py-28 lg:px-10" aria-labelledby="intelligence-title">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_32%,rgba(118,190,160,.10),transparent_28%),radial-gradient(circle_at_18%_72%,rgba(214,168,72,.08),transparent_30%)]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-7xl">
+          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dec7]/82 sm:text-[10px]">{c.intelligenceEyebrow}</p>
+          <div className="mt-5 grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+            <h2 id="intelligence-title" className="max-w-4xl font-serif text-4xl font-light leading-[.95] tracking-[-.04em] text-white/96 sm:text-6xl md:text-7xl">{c.intelligenceTitle}</h2>
+            <p className="max-w-2xl text-sm leading-7 text-[#dce9e0]/64 sm:text-base">{c.intelligenceText}</p>
+          </div>
+          <div className="mt-12 grid border-t border-white/[0.12] md:grid-cols-3">
+            {[
+              ['01', 'MÔRA', c.intelligenceMora],
+              ['02', 'CORE', c.intelligenceCore],
+              ['03', locale === 'de' ? 'WORKER / MODELLE' : 'WORKERS / MODELS', c.intelligenceWorkers],
+            ].map(([index, title, text]) => (
+              <div key={index} className="border-b border-white/[0.1] py-7 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
+                <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/50">{index}</div>
+                <div className="mt-3 text-lg font-medium text-white/92">{title}</div>
+                <p className="mt-2 text-sm leading-6 text-[#dce9e0]/56">{text}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-9 font-mono text-[10px] uppercase tracking-[.18em] text-[#e0bd67]/78">
+            {locale === 'de' ? 'Die Intelligenz darf sich verändern. Der Kontext bleibt deiner.' : 'The intelligence may change. The context remains yours.'}
+          </p>
         </div>
       </section>
 
