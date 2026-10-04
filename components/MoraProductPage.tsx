@@ -52,7 +52,7 @@ const COPY = {
     security: 'Mit eigener Domain starten',
     realityEyebrow: 'HEUTIGER STAND',
     realityTitle: 'Klare Grenzen statt Magie.',
-    realityText: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können externe Modellanbieter genutzt werden. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
+    realityText: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können unterschiedliche externe Modellanbieter genutzt werden; MÔRA selbst ist nicht das Modell. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
   },
   en: {
     eyebrow: 'MÔRA / CONTEXT',
@@ -97,7 +97,7 @@ const COPY = {
     security: 'Start with your own domain',
     realityEyebrow: 'CURRENT STATE',
     realityTitle: 'Clear boundaries instead of magic.',
-    realityText: 'MÔRA can only work with context that exists in the system or is connected to it. External model providers may be used for language and reasoning. Actions run through approved capabilities and are intended to remain visible.',
+    realityText: 'MÔRA can only work with context that exists in the system or is connected to it. Different external model providers may be used for language and reasoning; MÔRA itself is not the model. Actions run through approved capabilities and are intended to remain visible.',
   },
 };
 

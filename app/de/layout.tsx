@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '../globals.css';
 
-const title = 'Saimôr OS – Arbeit, Dateien und KI an einem Ort';
-const description = 'Saimôr OS bringt Dateien, Termine, Aufgaben und KI in einen gemeinsamen Arbeitsraum. MÔRA behält den Stand im Blick und kann dort weitermachen, wo du aufgehört hast.';
+const title = 'Saimôr OS – Arbeit, Daten und Intelligenz im Kontext';
+const description = 'Saimôr OS bringt Dateien, Termine, Aufgaben und Intelligenz in einen gemeinsamen Arbeitsraum. MÔRA hält den Kontext, auch wenn Modelle und Werkzeuge wechseln.';
 
 export const metadata: Metadata = {
   title,
