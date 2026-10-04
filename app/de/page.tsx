@@ -3,7 +3,7 @@ import YoriGate from '@/components/YoriGate';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 const PAGE_TITLE = 'Saimôr – Klarheit im Wandel';
-const PAGE_DESCRIPTION = 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. Mit MÔRA, Saimôr OS, YORI sowie Beratung, Workshops und Umsetzung.';
+const PAGE_DESCRIPTION = 'Saimôr verbindet Arbeit, Daten und Intelligenz zu einem System, das Kontext über Apps, Modelle und Chats hinweg behält. Mit MÔRA, Saimôr OS, YORI sowie Beratung, Workshops und Umsetzung.';
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
