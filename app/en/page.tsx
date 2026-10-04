@@ -3,7 +3,7 @@ import YoriGate from '@/components/YoriGate';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 const PAGE_TITLE = 'Saimôr – Clarity through change';
-const PAGE_DESCRIPTION = 'Saimôr connects work, data and AI into a system that keeps context. With MÔRA, Saimôr OS, YORI plus consulting, workshops and implementation.';
+const PAGE_DESCRIPTION = 'Saimôr connects work, data and intelligence into a system that keeps context across apps, models and chats. With MÔRA, Saimôr OS, YORI plus consulting, workshops and implementation.';
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
