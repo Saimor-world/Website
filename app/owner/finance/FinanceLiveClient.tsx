@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Snapshot = {
@@ -49,7 +50,13 @@ const tB = (iso: string | null, timeOnly = false) => {
   }
 };
 
-export default function FinanceLiveClient({ envReady }: { envReady: boolean }) {
+export default function FinanceLiveClient({
+  envReady,
+  userLabel,
+}: {
+  envReady: boolean;
+  userLabel: string;
+}) {
   const [data, setData] = useState<Snapshot | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [live, setLive] = useState(false);
@@ -256,7 +263,7 @@ export default function FinanceLiveClient({ envReady }: { envReady: boolean }) {
         <span className="font-mono text-white/50">Keine Seeds · Adresse maskiert · lesen</span>
       </div>
 
-      <header className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-gradient-to-b from-[#050706]/95 to-transparent px-[5vw] py-3 backdrop-blur">
+      <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-b from-[#050706]/95 to-transparent px-[5vw] py-3 backdrop-blur">
         <div className="flex items-center gap-3">
           <img src="/owner/finance/sigil.png" alt="" className="h-9 w-9 rounded-full shadow-[0_0_22px_rgba(214,168,72,.35)]" />
           <div>
@@ -264,7 +271,10 @@ export default function FinanceLiveClient({ envReady }: { envReady: boolean }) {
             <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">Finance · Orbit des Sigils</div>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <span className="font-mono text-[10px] normal-case tracking-normal text-white/55">
+            Angemeldet als <strong className="font-medium text-[#F7F4E9]/90">{userLabel}</strong>
+          </span>
           <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
             <i className={`inline-block h-1.5 w-1.5 rounded-full ${live ? 'bg-[#91dec7] shadow-[0_0_10px_#91dec7]' : 'bg-white/30'}`} />
             {live ? 'XRPL · mainnet · lesen' : 'XRPL · …'}
@@ -272,6 +282,13 @@ export default function FinanceLiveClient({ envReady }: { envReady: boolean }) {
           <Link href="/owner" className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/70 hover:border-[#D6A848]">
             Zur Übersicht
           </Link>
+          <button
+            type="button"
+            onClick={() => signOut({ callbackUrl: '/owner/login' })}
+            className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/70 hover:border-[#e6a77a] hover:text-[#e6a77a]"
+          >
+            Abmelden
+          </button>
         </div>
       </header>
 

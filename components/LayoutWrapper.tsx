@@ -13,11 +13,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const locale = isEn ? 'en' : 'de';
   const isYori = pathname === '/yori' || pathname === '/en/yori';
   const isClientWorld = pathname?.startsWith('/world/');
-  const isImmersive = isYori || isClientWorld;
+  // Owner console (login, chat, finance, …) is its own surface. Marketing
+  // chrome (global nav / footer) overlaps sticky owner headers on desktop
+  // (~1024px) and pulls the operator out of the room — same rationale as YORI.
+  const isOwnerSurface = Boolean(pathname?.startsWith('/owner'));
+  const isImmersive = isYori || isClientWorld || isOwnerSurface;
 
-  // YORI and personalized Worlds are immersive surfaces. Public-site chrome
-  // would pull the user out of the room and make the pilot feel like a page
-  // inside the marketing site rather than the product itself.
+  // Immersive surfaces render without public-site chrome.
   if (isImmersive) return <>{children}</>;
 
   return (
