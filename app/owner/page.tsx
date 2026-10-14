@@ -555,6 +555,7 @@ export default async function OwnerDashboard() {
           </div>
           <div className="flex flex-wrap gap-4">
              <Link href="/de/einstieg/security-check" className="px-4 py-3 rounded-xl bg-white text-black text-xs font-bold hover:bg-emerald-200 transition-colors">Neuer Scan</Link>
+             <Link href="/owner/finance" className="px-4 py-3 rounded-xl bg-white/5 border border-[#D6A848]/35 text-xs text-[#e0bd67] hover:bg-[#D6A848]/10 transition-colors">Saimôr Finance</Link>
              <Link href="/systems/control" className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-xs hover:bg-white/10 transition-colors">System Health</Link>
              <Link href="/api/owner/leads/export" className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-xs text-emerald-300 flex items-center gap-2">
                <Download size={14} />
