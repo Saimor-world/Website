@@ -9,21 +9,13 @@ type Trade = {
   title: string;
   detail: string;
   date: string | null;
-  hash?: string;
+  hash: string;
+  hash_short?: string;
   price: number | null;
   xrp: number | null;
-  rlusd?: number | null;
-};
-
-type Round = {
-  id: string;
-  pnl_xrp: number;
-  sell_price: number | null;
-  buy_price: number | null;
-  closed_at: string | null;
-  sell_xrp: number | null;
-  buy_xrp: number | null;
-  title: string;
+  rlusd: number | null;
+  round_id: string | null;
+  round_pnl_xrp: number | null;
 };
 
 type Snapshot = {
@@ -47,7 +39,19 @@ type Snapshot = {
   balances: { xrp: number; rlusd: number };
   pnl: { starting_xrp: number; equity: number; delta: number; pct: number };
   trades: Trade[];
-  rounds: Round[];
+  sparks: Trade[];
+  spark_count: number;
+  ledger_tx_count: number;
+  rounds: Array<{
+    id: string;
+    pnl_xrp: number;
+    sell_price: number | null;
+    buy_price: number | null;
+    closed_at: string | null;
+    sell_xrp: number | null;
+    buy_xrp: number | null;
+    title: string;
+  }>;
   equity_curve: Array<{ day: string; equity: number }>;
   marks: {
     ref: number | null;
@@ -70,6 +74,22 @@ type Snapshot = {
   fetched_at: string;
   error?: string;
   message?: string;
+};
+
+type SparkHit = {
+  trade: Trade;
+  x: number;
+  y: number;
+  r: number;
+};
+
+type RingHit = {
+  id: 'next_buy' | 'next_sell' | 'ref';
+  label: string;
+  price: number;
+  radius: number;
+  cx: number;
+  cy: number;
 };
 
 const n = (v: number, d = 4) =>
@@ -98,7 +118,19 @@ export default function FinanceLiveClient({
   const [data, setData] = useState<Snapshot | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [live, setLive] = useState(false);
+  const [selected, setSelected] = useState<Trade | null>(null);
+  const [ringTip, setRingTip] = useState<{
+    id: string;
+    label: string;
+    price: number;
+    distPct: number | null;
+    x: number;
+    y: number;
+  } | null>(null);
+  const [view, setView] = useState({ scale: 1, ox: 0, oy: 0 });
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const priceRef = useRef<number | null>(null);
   const pnlPctRef = useRef(0);
   const marksRef = useRef<{ ref: number | null; next_buy: number | null; next_sell: number | null; grid: number }>({
@@ -107,9 +139,22 @@ export default function FinanceLiveClient({
     next_sell: null,
     grid: 0.5,
   });
-  const starsRef = useRef<
-    Array<{ p: number; a: number; col: string; w: number; pnl: number; k: number }>
+  const sparksRef = useRef<
+    Array<{ trade: Trade; p: number; a: number; col: string; w: number }>
   >([]);
+  const hitsRef = useRef<{ sparks: SparkHit[]; rings: RingHit[] }>({ sparks: [], rings: [] });
+  const viewRef = useRef(view);
+  viewRef.current = view;
+
+  const dragRef = useRef<{
+    active: boolean;
+    x: number;
+    y: number;
+    ox: number;
+    oy: number;
+    moved: boolean;
+  } | null>(null);
+  const pinchRef = useRef<{ dist: number; scale: number } | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -135,14 +180,13 @@ export default function FinanceLiveClient({
         next_sell: json.marks.next_sell,
         grid: json.marks.grid_step_pct,
       };
-      // Stars = completed rounds (sell→buy), color by round PnL
-      starsRef.current = (json.rounds || []).slice(0, 28).map((r, i) => ({
-        p: r.buy_price || r.sell_price || json.amm.price_xrp_per_rlusd || 1,
-        a: -1.57 + i * 2.399,
-        col: r.pnl_xrp >= 0 ? '145,222,199' : '230,167,122',
-        w: Math.max(0.6, Math.abs(r.pnl_xrp) * 4 + 1),
-        pnl: r.pnl_xrp,
-        k: i,
+      const list = json.sparks?.length ? json.sparks : json.trades.filter((t) => t.kind === 'buy' || t.kind === 'sell');
+      sparksRef.current = list.map((t, i) => ({
+        trade: t,
+        p: t.price || json.amm.price_xrp_per_rlusd || 1,
+        a: -1.57 + i * 2.399963,
+        col: t.kind === 'buy' ? '145,222,199' : '224,189,103',
+        w: Math.max(0.8, Math.abs(t.xrp || 1)),
       }));
     } catch (e: any) {
       setErr(String(e?.message || e));
@@ -157,6 +201,7 @@ export default function FinanceLiveClient({
     return () => clearInterval(id);
   }, [envReady, load]);
 
+  // Orbit draw + hit targets
   useEffect(() => {
     const cv = canvasRef.current;
     if (!cv) return;
@@ -168,7 +213,7 @@ export default function FinanceLiveClient({
     let yaw = 0;
     let tilt = 1.08;
     let moonA = 0.6;
-    const neb = Array.from({ length: 520 }, (_, i) => {
+    const neb = Array.from({ length: 420 }, (_, i) => {
       const arm = i % 3;
       const r = Math.pow(Math.random(), 0.7);
       return {
@@ -191,9 +236,10 @@ export default function FinanceLiveClient({
       x.setTransform(DP, 0, 0, DP, 0, 0);
       const W = rect.width;
       const H = rect.height;
-      const R = Math.min(W * 0.4, H * 0.78);
-      const C = { x: W * 0.58, y: H * 0.5 };
-      yaw += 0.0004;
+      const v = viewRef.current;
+      const R = Math.min(W * 0.4, H * 0.78) * v.scale;
+      const C = { x: W * 0.58 + v.ox, y: H * 0.5 + v.oy };
+      yaw += 0.00035;
       tilt = 1.08 + Math.sin(now / 9000) * 0.04;
       x.fillStyle = '#050706';
       x.fillRect(0, 0, W, H);
@@ -223,14 +269,15 @@ export default function FinanceLiveClient({
       x.globalCompositeOperation = 'source-over';
 
       const price = priceRef.current || marksRef.current.ref || 1;
-      const sp = (marksRef.current.grid || 0.5) / 100;
-      const ringAt = (lp: number, style: string, width: number, dash?: number[]) => {
-        const q = (lp / price - 1) / (4 * sp || 0.02);
+      const sp = (marksRef.current.grid || 0.5) / 100 || 0.005;
+      const rings: RingHit[] = [];
+
+      const ringAt = (lp: number, style: string, width: number, dash?: number[], hit?: RingHit['id'], label?: string) => {
+        const q = (lp / price - 1) / (4 * sp);
         const rr = Math.max(0.16, Math.min(0.98, 0.56 + q * 0.4)) * R;
         x.strokeStyle = style;
         x.lineWidth = width;
-        if (dash) x.setLineDash(dash);
-        else x.setLineDash([]);
+        x.setLineDash(dash || []);
         x.beginPath();
         for (let i = 0; i <= 96; i++) {
           const a = (i / 96) * Math.PI * 2;
@@ -240,22 +287,18 @@ export default function FinanceLiveClient({
         }
         x.stroke();
         x.setLineDash([]);
+        if (hit && label) rings.push({ id: hit, label, price: lp, radius: rr, cx: C.x, cy: C.y });
       };
 
       for (let k = -3; k <= 3; k++) {
         const lp = price * (1 + k * sp);
-        ringAt(
-          lp,
-          k === 0 ? 'rgba(214,168,72,.45)' : k < 0 ? 'rgba(145,222,199,.18)' : 'rgba(224,189,103,.18)',
-          k === 0 ? 1 : 0.6,
-        );
+        ringAt(lp, k === 0 ? 'rgba(214,168,72,.35)' : k < 0 ? 'rgba(145,222,199,.14)' : 'rgba(224,189,103,.14)', k === 0 ? 1 : 0.55);
       }
 
-      // Next buy / sell marks as distinct rings
       const mk = marksRef.current;
-      if (mk.next_buy != null) ringAt(mk.next_buy, 'rgba(145,222,199,.85)', 1.6, [5, 5]);
-      if (mk.next_sell != null) ringAt(mk.next_sell, 'rgba(224,189,103,.85)', 1.6, [5, 5]);
-      if (mk.ref != null) ringAt(mk.ref, 'rgba(247,244,233,.55)', 1.1);
+      if (mk.next_buy != null) ringAt(mk.next_buy, 'rgba(145,222,199,.9)', 2, [6, 5], 'next_buy', 'Kauf-Ring');
+      if (mk.next_sell != null) ringAt(mk.next_sell, 'rgba(224,189,103,.9)', 2, [6, 5], 'next_sell', 'Verkauf-Ring');
+      if (mk.ref != null) ringAt(mk.ref, 'rgba(247,244,233,.5)', 1.2, undefined, 'ref', 'Referenz');
 
       const sz = R * 0.25;
       g = x.createRadialGradient(C.x, C.y, 0, C.x, C.y, R * 0.42);
@@ -275,19 +318,26 @@ export default function FinanceLiveClient({
         x.restore();
       }
 
-      for (const st of starsRef.current) {
-        const qfac = (st.p / price - 1) / (4 * sp || 0.02);
-        const rr = Math.max(0.3, Math.min(0.98, 0.56 + qfac * 0.4)) * R;
+      const sparkHits: SparkHit[] = [];
+      for (const st of sparksRef.current) {
+        const qfac = (st.p / price - 1) / (4 * sp);
+        const rr = Math.max(0.28, Math.min(0.98, 0.56 + qfac * 0.4)) * R;
         const q = P(rr, st.a);
-        const s = (1.8 + st.w * 0.35) * q[2];
+        const s = (2.2 + st.w * 0.45) * q[2];
         g = x.createRadialGradient(q[0], q[1], 0, q[0], q[1], s * 6);
-        g.addColorStop(0, 'rgba(255,250,235,.9)');
-        g.addColorStop(0.2, `rgba(${st.col},.8)`);
+        g.addColorStop(0, 'rgba(255,250,235,.95)');
+        g.addColorStop(0.22, `rgba(${st.col},.85)`);
         g.addColorStop(1, `rgba(${st.col},0)`);
         x.fillStyle = g;
         x.beginPath();
         x.arc(q[0], q[1], s * 6, 0, 7);
         x.fill();
+        // core
+        x.fillStyle = `rgb(${st.col})`;
+        x.beginPath();
+        x.arc(q[0], q[1], Math.max(2.2, s * 0.9), 0, 7);
+        x.fill();
+        sparkHits.push({ trade: st.trade, x: q[0], y: q[1], r: Math.max(10, s * 5) });
       }
 
       if (priceRef.current) {
@@ -307,20 +357,159 @@ export default function FinanceLiveClient({
         x.beginPath();
         x.arc(q[0], q[1], m, 0, 7);
         x.fill();
-        x.strokeStyle = 'rgba(224,189,103,.8)';
-        x.beginPath();
-        x.arc(q[0], q[1], m + 3, 0, 7);
-        x.stroke();
       }
 
+      hitsRef.current = { sparks: sparkHits, rings };
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const localPoint = (clientX: number, clientY: number) => {
+    const cv = canvasRef.current;
+    if (!cv) return null;
+    const rect = cv.getBoundingClientRect();
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  };
+
+  const hitSpark = (x: number, y: number) => {
+    let best: SparkHit | null = null;
+    let bestD = Infinity;
+    for (const s of hitsRef.current.sparks) {
+      const d = Math.hypot(s.x - x, s.y - y);
+      if (d <= s.r && d < bestD) {
+        best = s;
+        bestD = d;
+      }
+    }
+    return best;
+  };
+
+  const hitRing = (x: number, y: number) => {
+    let best: RingHit | null = null;
+    let bestD = Infinity;
+    for (const r of hitsRef.current.rings) {
+      const d = Math.abs(Math.hypot(x - r.cx, y - r.cy) - r.radius);
+      if (d < 10 && d < bestD) {
+        best = r;
+        bestD = d;
+      }
+    }
+    return best;
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch' && (e as any).nativeEvent?.isPrimary === false) return;
+    const p = localPoint(e.clientX, e.clientY);
+    if (!p) return;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    dragRef.current = {
+      active: true,
+      x: e.clientX,
+      y: e.clientY,
+      ox: viewRef.current.ox,
+      oy: viewRef.current.oy,
+      moved: false,
+    };
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const p = localPoint(e.clientX, e.clientY);
+    if (!p) return;
+
+    if (dragRef.current?.active) {
+      const dx = e.clientX - dragRef.current.x;
+      const dy = e.clientY - dragRef.current.y;
+      if (Math.hypot(dx, dy) > 4) dragRef.current.moved = true;
+      setView((v) => ({ ...v, ox: dragRef.current!.ox + dx, oy: dragRef.current!.oy + dy }));
+      setRingTip(null);
+      return;
+    }
+
+    const spark = hitSpark(p.x, p.y);
+    const ring = hitRing(p.x, p.y);
+    const cv = canvasRef.current;
+    if (cv) cv.style.cursor = spark || ring ? 'pointer' : 'grab';
+
+    if (ring) {
+      const ref = marksRef.current.ref;
+      const distPct = ref ? ((ring.price - ref) / ref) * 100 : null;
+      setRingTip({
+        id: ring.id,
+        label: ring.label,
+        price: ring.price,
+        distPct,
+        x: p.x,
+        y: p.y,
+      });
+    } else {
+      setRingTip(null);
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    const drag = dragRef.current;
+    dragRef.current = null;
+    const p = localPoint(e.clientX, e.clientY);
+    if (!p || drag?.moved) return;
+    const spark = hitSpark(p.x, p.y);
+    if (spark) setSelected(spark.trade);
+  };
+
+  // Wheel zoom (non-passive) + touch pinch
+  useEffect(() => {
+    const el = canvasRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const factor = e.deltaY > 0 ? 0.92 : 1.08;
+      setView((v) => ({
+        ...v,
+        scale: Math.min(3.5, Math.max(0.45, v.scale * factor)),
+      }));
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY,
+        );
+        pinchRef.current = { dist: d, scale: viewRef.current.scale };
+        dragRef.current = null;
+      }
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && pinchRef.current) {
+        e.preventDefault();
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY,
+        );
+        const next = pinchRef.current.scale * (d / pinchRef.current.dist);
+        setView((v) => ({ ...v, scale: Math.min(3.5, Math.max(0.45, next)) }));
+      }
+    };
+    const onTouchEnd = () => {
+      pinchRef.current = null;
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd);
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
+
+  const resetView = () => setView({ scale: 1, ox: 0, oy: 0 });
+
   const pnl = data?.pnl;
   const up = (pnl?.delta || 0) >= 0;
+  const sparkCount = data?.spark_count ?? data?.sparks?.length ?? 0;
 
   const curve = useMemo(() => {
     const pts = data?.equity_curve || [];
@@ -338,7 +527,7 @@ export default function FinanceLiveClient({
         return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
       })
       .join(' ');
-    return { path, w, h, min, max, pts };
+    return { path, w, h, min, max };
   }, [data?.equity_curve]);
 
   const hardLabel = !data
@@ -350,8 +539,10 @@ export default function FinanceLiveClient({
   return (
     <main className="min-h-screen bg-[#050706] text-[#F7F4E9]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e6a77a]/66 bg-gradient-to-r from-[#e6a77a]/18 to-[#D6A848]/10 px-[5vw] py-2.5 text-[10px] uppercase tracking-[0.16em]">
-        <strong className="font-mono text-[#e6a77a]">Owner-only · Orbit v2 · lesen</strong>
-        <span className="font-mono text-white/50">Keine Seeds · Adresse maskiert · kein Control</span>
+        <strong className="font-mono text-[#e6a77a]">Owner-only · Orbit v2 · interaktiv · lesen</strong>
+        <span className="font-mono text-white/50">
+          {sparkCount} Funken · Adresse maskiert · kein Control
+        </span>
       </div>
 
       <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-b from-[#050706]/95 to-transparent px-[5vw] py-3 backdrop-blur">
@@ -385,16 +576,27 @@ export default function FinanceLiveClient({
 
       {!envReady && (
         <div className="mx-[5vw] mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-4 text-sm text-amber-100">
-          Server-Env «FINANCE_TRADER_WALLET» fehlt noch. Live-Daten starten nach Setzen der Variable (Wert nur in Secrets).
+          Server-Env «FINANCE_TRADER_WALLET» fehlt noch.
         </div>
       )}
       {err && (
         <div className="mx-[5vw] mt-4 rounded-2xl border border-rose-400/30 bg-rose-400/10 px-5 py-3 text-sm text-rose-100">{err}</div>
       )}
 
-      <section className="relative min-h-[560px] h-[min(92svh,900px)]">
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+      <section ref={sectionRef} className="relative min-h-[560px] h-[min(92svh,900px)] touch-none">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full cursor-grab touch-none"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={() => {
+            dragRef.current = null;
+            setRingTip(null);
+          }}
+        />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,transparent_40%,#050706_88%)]" />
+
         <div className="pointer-events-none absolute inset-0 flex flex-col justify-between px-[5vw] py-[4vh]">
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#D6A848]">Saimôr Finance · Orbit v2</div>
@@ -407,10 +609,10 @@ export default function FinanceLiveClient({
               des <em className="italic text-[#e0bd67]">Sigils</em>
             </h1>
             <p
-              className="mt-3 max-w-[36ch] font-serif text-lg italic text-[#dce9e0]/80"
+              className="mt-3 max-w-[38ch] font-serif text-lg italic text-[#dce9e0]/80"
               style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
             >
-              Jede Runde ein Stern. Gewinn grün, Verlust kupfer — der Ring zeigt den nächsten Kauf und Verkauf.
+              Jeder Trade ein Funke. Tippen oder hovern öffnet das Detail — Ringe zeigen den nächsten Kauf und Verkauf.
             </p>
           </div>
           <div className="flex flex-wrap items-end justify-between gap-6">
@@ -430,7 +632,7 @@ export default function FinanceLiveClient({
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="inline-block border border-[#D6A848] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#D6A848]">
-                  Heute {data?.day.label || '—/20'}
+                  Funken {sparkCount} · Heute {data?.day.label || '—/20'}
                 </span>
                 <span className="inline-block border border-white/20 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/60">
                   Hard-Stop {hardLabel}
@@ -439,31 +641,102 @@ export default function FinanceLiveClient({
             </div>
             <div className="text-right">
               <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">Referenz</div>
-              <div
-                className="font-serif text-3xl font-light tabular-nums"
-                style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-              >
+              <div className="font-serif text-3xl font-light tabular-nums" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}>
                 {data?.marks.ref != null ? n(data.marks.ref, 6) : '—'}
               </div>
               <div className="mt-1 max-w-[28ch] font-mono text-[10px] uppercase tracking-[0.14em] text-white/40">
                 {data?.marks.ref_label || '—'}
               </div>
-              <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[#91dec7]/90">
-                Kauf-Ring {data?.marks.next_buy != null ? n(data.marks.next_buy, 6) : '—'}
-              </div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#e0bd67]/90">
-                Verkauf-Ring {data?.marks.next_sell != null ? n(data.marks.next_sell, 6) : '—'}
-              </div>
             </div>
           </div>
         </div>
+
+        {/* Orbit controls */}
+        <div className="absolute bottom-4 right-[5vw] z-30 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setView((v) => ({ ...v, scale: Math.min(3.5, v.scale * 1.15) }))}
+            className="rounded-full border border-white/20 bg-black/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            onClick={() => setView((v) => ({ ...v, scale: Math.max(0.45, v.scale / 1.15) }))}
+            className="rounded-full border border-white/20 bg-black/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur"
+          >
+            −
+          </button>
+          <button
+            type="button"
+            onClick={resetView}
+            className="rounded-full border border-[#D6A848]/50 bg-black/50 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[#D6A848] backdrop-blur"
+          >
+            Reset Orbit
+          </button>
+        </div>
+
+        {ringTip && (
+          <div
+            className="pointer-events-none absolute z-40 rounded-xl border border-white/15 bg-[#0a1210]/92 px-3 py-2 font-mono text-[10px] text-[#F7F4E9] shadow-xl backdrop-blur"
+            style={{ left: Math.min(ringTip.x + 12, (sectionRef.current?.clientWidth || 400) - 180), top: Math.max(8, ringTip.y - 48) }}
+          >
+            <div className="uppercase tracking-[0.16em] text-white/45">{ringTip.label}</div>
+            <div className="mt-1 text-sm tabular-nums">{n(ringTip.price, 6)} XRP/RLUSD</div>
+            <div className="text-white/55">
+              Abstand Ref {ringTip.distPct == null ? '—' : pct(ringTip.distPct, 3)}
+            </div>
+          </div>
+        )}
+
+        {selected && (
+          <aside className="absolute left-[5vw] top-6 z-40 w-[min(360px,90vw)] rounded-2xl border border-white/15 bg-[#0a1210]/94 p-4 shadow-2xl backdrop-blur">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">Trade-Funke</div>
+                <div className={`mt-1 font-serif text-2xl ${selected.kind === 'buy' ? 'text-[#91dec7]' : 'text-[#e0bd67]'}`}>
+                  {selected.title}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                className="rounded-full border border-white/20 px-2 py-1 font-mono text-[10px] text-white/60"
+              >
+                Schließen
+              </button>
+            </div>
+            <dl className="mt-4 space-y-2 font-mono text-[11px]">
+              <div className="flex justify-between gap-3"><dt className="text-white/40">Zeit (Berlin)</dt><dd>{tB(selected.date)}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-white/40">Seite</dt><dd className="uppercase">{selected.kind}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-white/40">XRP</dt><dd>{selected.xrp != null ? n(selected.xrp, 4) : '—'}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-white/40">RLUSD</dt><dd>{selected.rlusd != null ? n(selected.rlusd, 4) : '—'}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-white/40">Preis</dt><dd>{selected.price != null ? n(selected.price, 6) : '—'}</dd></div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-white/40">Runden-PnL</dt>
+                <dd className={selected.round_pnl_xrp == null ? 'text-white/40' : selected.round_pnl_xrp >= 0 ? 'text-[#91dec7]' : 'text-[#e6a77a]'}>
+                  {selected.round_pnl_xrp == null ? 'offen / ungepaart' : `${sg(selected.round_pnl_xrp, 4)} XRP`}
+                </dd>
+              </div>
+            </dl>
+            {selected.hash ? (
+              <a
+                href={`https://livenet.xrpl.org/transactions/${selected.hash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 inline-flex rounded-full border border-[#D6A848]/60 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[#D6A848] hover:bg-[#D6A848]/10"
+              >
+                XRPL Explorer · {selected.hash_short || selected.hash.slice(0, 8)}
+              </a>
+            ) : null}
+          </aside>
+        )}
       </section>
 
       <div className="grid gap-8 px-[5vw] py-10 lg:grid-cols-3">
         <section className="space-y-4 border-t border-white/10 pt-5">
           <h2 className="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">
-            Equity-Kurve{' '}
-            <span className="font-serif text-base italic normal-case tracking-normal text-[#dce9e0]">täglich</span>
+            Equity-Kurve <span className="font-serif text-base italic normal-case tracking-normal text-[#dce9e0]">täglich</span>
           </h2>
           {curve ? (
             <svg viewBox={`0 0 ${curve.w} ${curve.h}`} className="w-full text-[#91dec7]" aria-label="Tägliche Equity">
@@ -472,77 +745,38 @@ export default function FinanceLiveClient({
           ) : (
             <p className="font-serif italic text-white/40">Noch keine Tagespunkte…</p>
           )}
-          <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/40">
-            {curve ? `${n(curve.min, 2)} – ${n(curve.max, 2)} XRP · Europe/Berlin` : '—'}
-          </div>
           <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/40">
-            Wallet {data?.mask || '••••'} · Adresse ausgeblendet
+            Wallet {data?.mask || '••••'} · Ledger-Tx {data?.ledger_tx_count ?? '—'}
           </p>
         </section>
 
         <section className="space-y-4 border-t border-white/10 pt-5 lg:col-span-2">
           <h2 className="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">
-            Runden-Sterne{' '}
-            <span className="font-serif text-base italic normal-case tracking-normal text-[#dce9e0]">
-              {data ? `${data.rounds.length} sell→buy` : '—'}
-            </span>
+            Alle Trade-Funken{' '}
+            <span className="font-serif text-base italic normal-case tracking-normal text-[#dce9e0]">{sparkCount}</span>
           </h2>
           <div className="max-h-[360px] space-y-0 overflow-auto font-mono text-[11px]">
-            {(data?.rounds || []).map((r) => (
-              <div key={r.id} className="grid grid-cols-[72px_1fr_auto] gap-2 border-b border-white/[0.06] py-2">
-                <span className="text-white/45">{tB(r.closed_at, true)}</span>
-                <span className="text-white/70">
-                  Sell @{r.sell_price != null ? n(r.sell_price, 6) : '—'} → Buy @
-                  {r.buy_price != null ? n(r.buy_price, 6) : '—'}
-                </span>
-                <span className={r.pnl_xrp >= 0 ? 'text-[#91dec7]' : 'text-[#e6a77a]'}>{sg(r.pnl_xrp, 4)} XRP</span>
-              </div>
+            {(data?.sparks || []).map((t) => (
+              <button
+                key={t.hash || `${t.date}-${t.kind}`}
+                type="button"
+                onClick={() => setSelected(t)}
+                className="grid w-full grid-cols-[72px_1.1fr_1.4fr_auto] gap-2 border-b border-white/[0.06] py-2 text-left hover:bg-white/[0.03]"
+              >
+                <span className="text-white/45">{tB(t.date, true)}</span>
+                <span className={t.kind === 'buy' ? 'text-[#91dec7]' : 'text-[#e0bd67]'}>{t.title}</span>
+                <span className="text-white/70">{t.detail || '—'}</span>
+                <span className="text-white/35">{t.hash_short || t.hash.slice(0, 8)}</span>
+              </button>
             ))}
-            {data && !data.rounds.length && (
-              <p className="font-serif italic text-white/40">Noch keine geschlossenen Runden im Ledger-Fenster…</p>
-            )}
             {!data && <p className="font-serif italic text-white/40">Warte auf das Ledger…</p>}
           </div>
         </section>
       </div>
 
-      <div className="grid gap-8 px-[5vw] pb-10 lg:grid-cols-3">
-        <section className="space-y-4 border-t border-white/10 pt-5">
-          <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">Pool · Status</h2>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="font-mono text-[10px] uppercase text-white/40">Pool XRP</div>
-              <div className="font-serif text-2xl">{data ? n(data.amm.pool_xrp, 2) : '—'}</div>
-            </div>
-            <div>
-              <div className="font-mono text-[10px] uppercase text-white/40">Pool RLUSD</div>
-              <div className="font-serif text-2xl">{data ? n(data.amm.pool_rlusd, 2) : '—'}</div>
-            </div>
-          </div>
-          <div className="inline-block border border-[#D6A848] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#D6A848]">
-            {data?.bot_status || 'Bot · laut Finance'}
-          </div>
-        </section>
-        <section className="space-y-4 border-t border-white/10 pt-5 lg:col-span-2">
-          <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">Ledger · letzte Trades</h2>
-          <div className="max-h-[220px] space-y-0 overflow-auto font-mono text-[11px]">
-            {(data?.trades || [])
-              .filter((t) => t.kind === 'buy' || t.kind === 'sell')
-              .map((t, i) => (
-                <div key={i} className="grid grid-cols-[72px_1.1fr_1.4fr_auto] gap-2 border-b border-white/[0.06] py-2">
-                  <span className="text-white/45">{tB(t.date, true)}</span>
-                  <span className={t.kind === 'buy' ? 'text-[#91dec7]' : 'text-[#e0bd67]'}>{t.title}</span>
-                  <span className="text-white/70">{t.detail || '—'}</span>
-                  <span className="text-white/35">{t.hash || ''}</span>
-                </div>
-              ))}
-          </div>
-        </section>
-      </div>
-
       <footer className="flex flex-wrap justify-between gap-3 border-t border-white/10 px-[5vw] py-5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/40">
-        <span>Saimôr Finance — Orbit v2 · display only</span>
-        <span>Zeiten · Europe/Berlin</span>
+        <span>Saimôr Finance — Orbit v2 interactive · display only</span>
+        <span>Zoom · Drag · Pinch · Reset</span>
         <span>{data ? tB(data.fetched_at) : '—'}</span>
       </footer>
     </main>
