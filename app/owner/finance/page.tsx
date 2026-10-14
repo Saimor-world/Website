@@ -19,6 +19,10 @@ export default async function OwnerFinancePage() {
   }
 
   const envReady = Boolean((process.env.FINANCE_TRADER_WALLET || '').trim());
+  const userLabel =
+    (typeof session.user.email === 'string' && session.user.email.trim()) ||
+    (typeof session.user.name === 'string' && session.user.name.trim()) ||
+    'Owner';
 
-  return <FinanceLiveClient envReady={envReady} />;
+  return <FinanceLiveClient envReady={envReady} userLabel={userLabel} />;
 }
