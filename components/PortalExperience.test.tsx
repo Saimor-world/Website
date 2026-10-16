@@ -9,15 +9,13 @@ describe('PortalExperience — continuity beyond the threshold', () => {
     render(<PortalExperience locale="de" />);
     const door = screen.getByRole('button', { name: 'Durch die Tür sehen' });
     expect(door).toHaveAttribute('aria-haspopup', 'dialog');
-    // The doorway should be a photographic, atmospheric place, not a technical drawing.
+    // The one photograph belongs to the parent forest section. The doorway
+    // is ONLY an accessible interaction hotspot, never a second picture.
+    expect(door.querySelectorAll('img')).toHaveLength(0);
+    expect(door.querySelectorAll('[class*="portalPhotograph"]')).toHaveLength(0);
     expect(door.querySelectorAll('[class*="pane"]')).toHaveLength(0);
     expect(door.querySelectorAll('[class*="connection"]')).toHaveLength(0);
     expect(door.querySelector('svg[viewBox="0 0 180 320"]')).toBeNull();
-    // The exterior reuses the site's real forest-portal photograph, with only
-    // light, quiet haze and a few particles layered over the image.
-    for (const layer of ['portalPhotograph', 'portalGlow', 'portalMist', 'particles']) {
-      expect(door.querySelector('[class*="' + layer + '"]')).not.toBeNull();
-    }
     fireEvent.click(door);
     expect(screen.getByRole('heading', { name: 'Drinnen beginnt der Zusammenhang nicht von vorn.' })).toBeInTheDocument();
     expect(screen.getByText('PRINZIPDARSTELLUNG · KEINE VERBUNDENEN LIVE-DATEN')).toBeInTheDocument();
