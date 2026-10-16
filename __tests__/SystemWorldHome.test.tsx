@@ -14,7 +14,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Arbeitsräume, die Kontext behalten.')).toBeInTheDocument();
     expect(screen.getByText('Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
-    expect(screen.getByRole('link', { name: 'MÔRA kennenlernen' })).toHaveAttribute('href', '/mora');
+    expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
     expect(screen.getByRole('button', { name: 'Öffentliche Signale laden' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'YORI für Creator' })).toHaveAttribute('href', '/yori');
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
@@ -80,30 +80,18 @@ describe('SystemWorldHome', () => {
     expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
   });
 
-  it('links the digital threshold without covering it and keeps four quiet context signals in both languages', () => {
+  it('leaves the forest as a teaser, while real product and Studio links stay discoverable', () => {
     for (const locale of ['de', 'en'] as const) {
       const { container } = render(<SystemWorldHome locale={locale} />);
-      const heading = screen.getByRole('heading', {
-        name: locale === 'de'
-          ? 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.'
-          : 'Context should come with you instead of being explained again every time.',
-      });
-      const section = heading.closest('section');
-      expect(section).toHaveAttribute('id', 'system');
-      const stage = section?.querySelector('[class*="contextStage"]');
-      expect(stage).not.toBeNull();
-      const portal = stage?.querySelector('[class*="portalCanvas"]');
+      const section = container.querySelector('#system');
+      expect(section).not.toBeNull();
+      const portal = section?.querySelector('[class*="portalCanvas"]');
       expect(portal).not.toBeNull();
-      expect(portal?.querySelector('[aria-hidden="true"]')).not.toBeNull();
-      const entry = screen.getByRole('link', { name: locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA' });
-      expect(stage?.contains(entry)).toBe(true);
-      expect(portal?.contains(entry)).toBe(false);
-      expect(entry).toHaveAttribute('href', locale === 'de' ? '/mora' : '/en/mora');
-      const list = section?.querySelector('ul[aria-label]');
-      expect(list?.children).toHaveLength(4);
-      expect(portal?.contains(list ?? null)).toBe(false);
-      // First discover the door and contextual examples, then the product link.
-      expect(list?.parentElement?.nextElementSibling).toBe(entry);
+      expect(portal?.querySelector('button[aria-haspopup="dialog"]')).not.toBeNull();
+      expect(section?.querySelector('ul[aria-label*="Arbeitsraum"],ul[aria-label*="workspace"]')).toBeNull();
+      expect(container.querySelectorAll('img[src="/images/saimor-forest-threshold.webp"]')).toHaveLength(1);
+      expect(screen.getAllByRole('link', { name: locale === 'de' ? 'Studio entdecken' : 'Explore Studio' }).some(link => link.getAttribute('href') === (locale === 'de' ? '/studio' : '/en/studio'))).toBe(true);
+      expect(screen.getByRole('link', { name: locale === 'de' ? 'Das YORI-Haus entdecken' : 'Explore the YORI house' })).toHaveAttribute('href', locale === 'de' ? '/yori' : '/en/yori');
       cleanup();
     }
   });
