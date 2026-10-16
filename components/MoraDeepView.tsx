@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState, type CSSProperties, type PointerEvent } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, RotateCcw } from 'lucide-react';
 import MoraOrb from './MoraOrb';
+import MoraOsFace from './MoraOsFace';
 import styles from './MoraDeepView.module.css';
 
 type Props = { locale: 'de' | 'en' };
@@ -56,7 +57,6 @@ const COPY = {
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
   const [scene, setScene] = useState<Scene>('uncertainty');
-  const [gaze, setGaze] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (scene !== 'uncertainty') return;
@@ -66,23 +66,9 @@ export default function MoraDeepView({ locale }: Props) {
     return () => window.clearTimeout(id);
   }, [scene]);
 
-  function trackEyes(event: PointerEvent<HTMLElement>) {
-    if (scene === 'uncertainty') return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const x = Math.max(-7, Math.min(7, ((event.clientX - rect.left) / rect.width - .5) * 14));
-    const y = Math.max(-5, Math.min(5, ((event.clientY - rect.top) / rect.height - .5) * 10));
-    setGaze({ x, y });
-  }
 
   return (
-    <main
-      className={styles.world}
-      data-scene={scene}
-      onPointerMove={trackEyes}
-      onPointerLeave={() => setGaze({ x: 0, y: 0 })}
-      style={{ '--eye-x': `${gaze.x}px`, '--eye-y': `${gaze.y}px` } as CSSProperties}
-    >
+    <main className={styles.world} data-scene={scene}>
       <div className={styles.atmosphere} aria-hidden="true">
         <div className={styles.darkSky} />
         <div className={styles.opening} />
@@ -113,13 +99,10 @@ export default function MoraDeepView({ locale }: Props) {
           <div key="mora" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <span className={styles.presenceAura} aria-hidden="true" />
-              <MoraOrb size={290} state={scene === 'clarity' ? 'speak' : 'dream'} className={styles.stone} label={locale === 'de' ? 'MÔRA, Jadestein' : 'MÔRA, jade stone'} />
-              <span className={styles.faceShadow} aria-hidden="true" />
-              <span className={styles.eyes} aria-hidden="true">
-                <span className={styles.eye}><span className={styles.iris}><span className={styles.pupil} /></span></span>
-                <span className={styles.eye}><span className={styles.iris}><span className={styles.pupil} /></span></span>
+              <span className={styles.stoneStage}>
+                <MoraOrb size={290} state={scene === 'clarity' ? 'speak' : 'dream'} className={styles.stone} label={locale === 'de' ? 'MÔRA, Jadestein' : 'MÔRA, jade stone'} />
+                <MoraOsFace size={290} state={scene === 'clarity' ? 'rest' : undefined} />
               </span>
-              <span className={styles.gazeHalo} aria-hidden="true" />
             </div>
 
             <div className={styles.encounterText}>
@@ -155,7 +138,6 @@ export default function MoraDeepView({ locale }: Props) {
         {scene !== 'uncertainty' && (
           <button type="button" className={styles.replay} onClick={() => {
             setScene('uncertainty');
-            setGaze({ x: 0, y: 0 });
           }}>
             <RotateCcw size={14} aria-hidden="true" />{c.reset}
           </button>
