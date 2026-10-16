@@ -130,6 +130,7 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await noOverflow(page);
   await shot(page, info, 'after-mist');
   await page.getByRole('button', { name: 'Licht hereinlassen', exact: true }).click();
+  await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
   await noOverflow(page);
   await shot(page, info, 'after-clarity');
@@ -158,6 +159,7 @@ test('reduced motion has no timer, zoom or forced transition; short viewport sta
   await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
   await page.getByRole('button', { name: 'Durch ihre Augen sehen' }).click();
   await expect(page.getByTestId('deep-clarity')).toBeVisible();
+  await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeVisible();
   await noOverflow(page);
   await shot(page, info, 'after-short-morning');

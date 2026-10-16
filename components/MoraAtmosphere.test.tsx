@@ -40,7 +40,9 @@ describe('mist and morning without GPU support', () => {
   });
 
   it('shows the morning immediately for reduced motion and a deliberate paused skip', () => {
-    const onArrival = vi.fn();
+    const onArrival = vi.fn(() => {
+      expect(document.querySelector('canvas')?.parentElement?.dataset.dawn).toBe('morning');
+    });
     const base = { dawn: true, hurry: false, paused: false, reduced: true, onArrival };
     const { rerender } = render(<MoraAtmosphere {...base} />);
     advance(25);

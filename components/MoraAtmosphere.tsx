@@ -56,8 +56,12 @@ export default function MoraAtmosphere(props: Props) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const layer = useRef<HTMLDivElement>(null);
   const controls = useRef(props);
-  const resetClock = useRef<(() => void) | null>(null);
-  useEffect(() => { controls.current = props; resetClock.current?.(); }, [props]);
+  const resetClock = useRef<((restart: boolean) => void) | null>(null);
+  useEffect(() => {
+    const restart = controls.current.dawn && !props.dawn;
+    controls.current = props;
+    resetClock.current?.(restart);
+  }, [props]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -115,10 +119,14 @@ export default function MoraAtmosphere(props: Props) {
     resize();
     const observer = new ResizeObserver(resize); observer.observe(surface);
     let frame = 0, previous = performance.now(), lastDraw = -100, clock = 0, progress = 0;
-    const syncClock = () => { previous = performance.now(); };
-    resetClock.current = syncClock;
-    document.addEventListener('visibilitychange', syncClock);
     let arrived = false, lastClock = -1, lastProgress = -1, lastWidth = 0, lastHeight = 0;
+    const syncClock = () => { previous = performance.now(); };
+    const restartClock = (restart: boolean) => {
+      syncClock();
+      if (restart) { progress = 0; arrived = false; lastProgress = -1; }
+    };
+    resetClock.current = restartClock;
+    document.addEventListener('visibilitychange', syncClock);
     const draw = (now: number) => {
       frame = requestAnimationFrame(draw);
       const dt = Math.max((now - previous) / 1000, 0); previous = now;
@@ -128,8 +136,7 @@ export default function MoraAtmosphere(props: Props) {
       if (!c.dawn) { progress = 0; arrived = false; }
       else if (c.reduced || (c.paused && c.hurry)) progress = 1;
       else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 11));
-      if (progress === 1 && !arrived) { arrived = true; c.onArrival(); }
-      if (now - lastDraw < 33) return;
+      if (now - lastDraw < 33 && progress !== 1) return;
       lastDraw = now;
       surface.style.setProperty('--dawn', String(progress));
       surface.dataset.still = String(!running);
@@ -144,6 +151,9 @@ export default function MoraAtmosphere(props: Props) {
         renderer.uniform1f(time, clock); renderer.uniform1f(dawn, progress);
         renderer.drawArrays(renderer.TRIANGLE_STRIP, 0, 4);
       }
+      surface.dataset.dawn = progress === 1 ? 'morning' : 'mist';
+      // The title arrives only after both the fallback and GPU have the morning.
+      if (progress === 1 && !arrived) { arrived = true; c.onArrival(); }
     };
     frame = requestAnimationFrame(draw);
     return () => {
