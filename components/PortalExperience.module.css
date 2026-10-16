@@ -146,3 +146,39 @@
   .door:hover .portalPhotograph,.door:focus-visible .portalPhotograph{transform:none}
   .node:hover{transform:none}
 }
+
+/* V15 — the whole woodland is the threshold, not a photograph pasted over it.
+   The portal artwork is feathered on ALL edges so it dissolves into the
+   underlying forest, and its original doorway stays within the crop. */
+.portalPhotograph{
+  background-size:auto 154%;
+  background-position:78% 3%;
+  -webkit-mask-image:radial-gradient(ellipse 53% 67% at 51% 48%,#000 0%,#000 43%,#000c 65%,transparent 100%);
+  mask-image:radial-gradient(ellipse 53% 67% at 51% 48%,#000 0%,#000 43%,#000c 65%,transparent 100%);
+}
+.portalGlow{opacity:.38;filter:blur(19px)}
+.portalMist{opacity:.34;filter:blur(22px)}
+.doorCaption{
+  left:50%;bottom:1px;min-height:44px;
+  padding:10px 14px;
+  border:1px solid #ead6aa6b;border-radius:999px;
+  background:#123526b8;
+  backdrop-filter:blur(11px);
+  box-shadow:0 8px 24px #071b16a8;
+  font-size:11px;letter-spacing:.01em;
+}
+.door:focus-visible .doorCaption{outline:2px solid #f6e7bf;outline-offset:3px}
+@media(max-width:700px){
+  .portalPhotograph{
+    background-size:auto 140%;
+    background-position:82% 2%;
+    -webkit-mask-image:radial-gradient(ellipse 53% 68% at 50% 48%,#000 0%,#000 44%,#000b 67%,transparent 100%);
+    mask-image:radial-gradient(ellipse 53% 68% at 50% 48%,#000 0%,#000 44%,#000b 67%,transparent 100%);
+  }
+  .portalGlow{left:52%;top:17%;width:27%;height:60%;opacity:.37}
+  .portalMist{left:23%;width:69%;bottom:11%;opacity:.31}
+  .doorCaption{left:50%;bottom:3px;font-size:10px;max-width:calc(100% - 36px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .doorCaption,.portalPhotograph{transition:none}
+}
