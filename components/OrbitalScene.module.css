@@ -13,7 +13,9 @@
 @keyframes orbit{to{rotate:360deg}}
 @media(max-width:1000px){.scene{right:1%;top:20%;width:45%}}
 @media(max-width:700px){
- .scene{right:15px;top:150px;width:166px}
+ /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
+    never to the text grid below the eyebrow. */
+ .scene{right:18px;top:clamp(105px,29vw,126px);width:min(43vw,158px)}
  .moon{width:13px}
  .emerald{width:10px}
  .star{width:4px;height:4px}
