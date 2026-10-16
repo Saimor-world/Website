@@ -112,8 +112,11 @@ export default function MoraAtmosphere(props: Props) {
     const resize = () => {
       const bounds = surface.getBoundingClientRect();
       const scale = Math.min(1, 960 / Math.max(bounds.width, 1), 640 / Math.max(bounds.height, 1));
-      element.width = Math.max(1, Math.round(bounds.width * scale));
-      element.height = Math.max(1, Math.round(bounds.height * scale));
+      const width = Math.max(1, Math.round(bounds.width * scale));
+      const height = Math.max(1, Math.round(bounds.height * scale));
+      // Assigning even the same canvas size clears its drawing buffer.
+      if (element.width !== width) element.width = width;
+      if (element.height !== height) element.height = height;
       renderer?.viewport(0, 0, element.width, element.height);
     };
     resize();
