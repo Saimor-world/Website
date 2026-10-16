@@ -25,7 +25,11 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     if (isClientWorld || isOwnerSurface) return;
     const previous = document.documentElement.lang;
     document.documentElement.lang = locale;
-    return () => { document.documentElement.lang = previous; };
+    document.documentElement.dataset.publicReady = 'true';
+    return () => {
+      document.documentElement.lang = previous;
+      delete document.documentElement.dataset.publicReady;
+    };
   }, [locale, isClientWorld, isOwnerSurface]);
 
   // Immersive surfaces render without public-site chrome.

@@ -2,6 +2,11 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 const baseline = process.env.QA_BASELINE_URL || 'http://127.0.0.1:3002';
 const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
+async function visit(page: Page, route: string) {
+  const response = await page.goto(route);
+  await expect(page.locator('html')).toHaveAttribute('data-public-ready', 'true');
+  return response;
+}
 async function consent(page: Page) {
   const essential = page.getByRole('button', { name: /Nur Essenziell|Essential only|Only essential/i });
   await essential.waitFor({ state: 'visible', timeout: 2000 }).catch(() => undefined);
@@ -12,12 +17,16 @@ async function shot(page: Page, info: TestInfo, name: string, fullPage = false) 
     await page.evaluate(async () => {
       const scrollport = document.body.scrollHeight > document.documentElement.scrollHeight ? document.body : document.scrollingElement!;
       for (let y = 0; y < scrollport.scrollHeight; y += innerHeight) {
-        scrollport.scrollTop = y;
+        scrollport.scrollTo({ top: y, behavior: 'instant' });
         await new Promise(resolve => setTimeout(resolve, 80));
       }
-      scrollport.scrollTop = 0;
-      await Promise.all(Array.from(document.images).filter(image => image.loading === 'lazy').map(image => image.decode().catch(() => undefined)));
+      scrollport.scrollTo({ top: 0, behavior: 'instant' });
+
     });
+    await expect.poll(() => page.locator('img').evaluateAll(images => images.filter(element => {
+      const image = element as HTMLImageElement;
+      return image.getClientRects().length > 0 && (!image.complete || image.naturalWidth === 0);
+    }).length), { timeout: 15000 }).toBe(0);
   }
   await page.screenshot({ path: info.outputPath(`${name}.png`), fullPage, animations: 'disabled' });
 }
@@ -47,7 +56,7 @@ test('public routes render, contain one headline, load images and fit the viewpo
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
   for (const route of routes) {
-    const response = await page.goto(route);
+    const response = await visit(page, route);
     expect(response?.status(), route).toBe(200);
     await consent(page);
     await expect(page.locator('h1')).toHaveCount(1);
@@ -61,7 +70,7 @@ test('public routes render, contain one headline, load images and fit the viewpo
 });
 
 test('homepage: wordless door, cinematic passage, escape, focus return, product and studio paths', async ({ page }, info) => {
-  await page.goto('/de');
+  await visit(page, '/de');
   await consent(page);
   const door = page.getByRole('button', { name: 'Schwelle betreten' });
   await door.scrollIntoViewIfNeeded();
@@ -92,7 +101,7 @@ test('homepage: wordless door, cinematic passage, escape, focus return, product 
 test('cinematic: deliberate passage, real face alignment, history, replay and localization', async ({ page }, info) => {
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
-  await page.goto('/mora/deep-view');
+  await visit(page, '/mora/deep-view');
   await consent(page);
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
@@ -114,7 +123,7 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Noch einmal' }).click();
   await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
-  await page.goto('/en/mora/deep-view');
+  await visit(page, '/en/mora/deep-view');
   await page.getByRole('button', { name: 'Meet MÔRA' }).click();
   await page.getByRole('button', { name: 'See through her eyes' }).click();
   await expect(page.getByRole('heading', { name: 'See the difference.' })).toBeVisible();
@@ -125,7 +134,7 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
 test('reduced motion has no timer, zoom or forced transition; short viewport stays usable', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: info.project.use.viewport?.width || 390, height: 620 });
-  await page.goto('/mora/deep-view');
+  await visit(page, '/mora/deep-view');
   await consent(page);
   await page.waitForTimeout(5100);
   await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
@@ -139,7 +148,7 @@ test('reduced motion has no timer, zoom or forced transition; short viewport sta
 
 test('mobile navigation: escape, keyboard focus and readable entry', async ({ page }, info) => {
   test.skip((info.project.use.viewport?.width || 390) >= 768, 'Mobile navigation only');
-  await page.goto('/de');
+  await visit(page, '/de');
   await consent(page);
   const menu = page.locator('button[aria-controls="saimor-mobile-menu"]');
   await menu.click();
@@ -151,16 +160,16 @@ test('mobile navigation: escape, keyboard focus and readable entry', async ({ pa
 });
 
 test('product states, workshop details and YORI example rooms respond', async ({ page }, info) => {
-  await page.goto('/mora'); await consent(page);
+  await visit(page, '/mora'); await consent(page);
   for (const name of ['Ruht', 'Träumt', 'Spricht']) {
     const state = page.getByRole('button', { name, exact: true });
     await state.click();
     await expect(state).toHaveAttribute('aria-pressed', 'true');
   }
-  await page.goto('/studio');
+  await visit(page, '/studio');
   await page.locator('#workshops summary').click();
   await expect(page.locator('#workshops details')).toHaveAttribute('open', '');
-  await page.goto('/yori');
+  await visit(page, '/yori');
   await page.getByRole('button', { name: 'Werkstatt', exact: true }).click();
   await expect(page.getByText('02 / WERKSTATT', { exact: true }).first()).toBeVisible();
   await shot(page, info, 'after-yori-workshop');
@@ -171,11 +180,11 @@ test('product states, workshop details and YORI example rooms respond', async ({
 test('demo failures and scanner failures are visible in both languages (controlled API fixtures)', async ({ page }) => {
   for (const locale of ['de', 'en']) {
     await page.route('**/api/demo-launch', route => route.fulfill({ status: 503, json: { error: 'QA failure fixture' } }));
-    await page.goto(locale === 'de' ? '/mora' : '/en/mora'); await consent(page);
+    await visit(page, locale === 'de' ? '/mora' : '/en/mora'); await consent(page);
     await page.getByRole('button', { name: locale === 'de' ? 'MÔRA im OS erleben' : 'Experience MÔRA in the OS', exact: true }).first().click();
     await expect(page.getByRole('alert').filter({ hasText: locale === 'de' ? 'gerade nicht erreichbar' : 'currently unavailable' })).toBeVisible();
     await page.route('**/api/security-scan', route => route.fulfill({ status: 503, json: { success: false, error: 'QA controlled scanner failure' } }));
-    await page.goto(locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check');
+    await visit(page, locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check');
     await page.getByPlaceholder(locale === 'de' ? 'deine-domain.de' : 'your-domain.com').fill('example.com');
     await page.getByPlaceholder(locale === 'de' ? 'dein@email.de' : 'you@example.com').fill('qa@example.com');
     await page.getByRole('button', { name: locale === 'de' ? 'Scan starten' : 'Start scan', exact: true }).click();
