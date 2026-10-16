@@ -40,3 +40,20 @@
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.signal{min-height:132px;padding:15px}.signalIcon{margin-top:11px;margin-bottom:9px}}
 @media(max-width:700px){.hint{margin-bottom:12px;font-size:9px}.grid{gap:9px}.signal{min-height:147px;border-radius:10px;padding:14px 13px}.signalIcon{margin-top:14px}.topline{font-size:8px}.title{font-size:14px}.subtitle{font-size:11px}.dialogBody{padding:23px}.dialog{border-radius:17px}.example{padding:18px}}
 @media(prefers-reduced-motion:reduce){.signal,.signal::before,.topline svg,.close,.deepLink{transition:none}.signal:hover,.signal:focus-visible{transform:none}.signal:hover .topline svg{transform:none}}
+
+/* V15 — readable forest-glass, deliberately tactile instead of floating outlines. */
+.signal{
+  background:linear-gradient(145deg,#102f25e8 0%,#1c4435ce 100%);
+  border-color:#e7dcc17a;
+  box-shadow:0 9px 24px #061b1545,inset 0 1px 0 #e6ecc71c;
+}
+.signal:hover,.signal:focus-visible{
+  background:linear-gradient(145deg,#174432f2,#2b5b44ec);
+  border-color:#f3dfacca;
+  box-shadow:0 13px 27px #061b1573,inset 0 1px 0 #fff7d52b;
+}
+.subtitle{color:#dce9da}
+.hint{color:#f1ebd9}
+@media(prefers-reduced-motion:reduce){
+  .signal:hover,.signal:focus-visible{transform:none}
+}
