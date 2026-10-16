@@ -99,34 +99,81 @@
 .moraIntroduction .textLink,.entry .textLink{color:#256447;font-weight:600}
 .moraIntroduction .textLink:hover,.entry .textLink:hover{color:#103d2a}
 .entry{border-top-color:#42604d3d;padding-top:62px;padding-bottom:86px}
-.pathways{padding:92px 24px 104px;background:#e0e9db;color:#163d2d;border-block:1px solid #7e9b853c}
-.pathwaysInner{max-width:1312px;margin:auto}
-.pathwaysHeader{display:grid;grid-template-columns:.9fr 1.1fr;align-items:end;gap:54px;margin-bottom:36px}
-.pathwaysHeader h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(45px,5.6vw,75px);font-weight:400;line-height:1.03;letter-spacing:-.045em;margin:15px 0 0;max-width:650px;text-wrap:balance}
-.pathwaysHeader>p{max-width:450px;font-size:17px;line-height:1.75;color:#3c5d49;margin:0}
-.pathways .eyebrow{color:#54735f}
-.pathwaysGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.pathwayCard{display:flex;flex-direction:column;align-items:flex-start;min-height:300px;padding:27px 27px 25px;background:#f9f8f1;border:1px solid #90a89385;border-radius:16px;color:#183e2d;text-decoration:none;box-shadow:0 10px 30px #2646330c;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
-.pathwayCard:hover,.pathwayCard:focus-visible{transform:translateY(-3px);border-color:#52735b;box-shadow:0 16px 34px #2646331a}
-.pathwayNumber{font:11px/1.6 monospace;letter-spacing:.2em;color:#4f7058}
-.pathwayCard h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:37px;line-height:1.1;font-weight:500;letter-spacing:-.035em;margin:24px 0 12px}
-.pathwayCard p{color:#486052;font-size:14px;line-height:1.75;margin:0 0 25px}
-.pathwayAction{display:inline-flex;gap:9px;align-items:center;color:#256447;font-weight:650;font-size:13px;margin-top:auto}
 .daylightIntelligence{background:#f5f1e7;color:#1b3b2c;border-bottom:1px solid #8d9c8645}
 .daylightStudio{background:radial-gradient(ellipse at 18% 12%,#e8e9d7,transparent 43%),#e9efe7;color:#17392a;border-bottom:1px solid #748d7945}
 .daylightContact{background:#f6f2e9;color:#173a2b}
-@media(max-width:900px){
-  .pathwaysHeader{grid-template-columns:1fr;gap:18px}
-  .pathwaysGrid{grid-template-columns:1fr}
-  .pathwayCard{min-height:0;padding:25px}
-  .pathwayCard h3{margin-top:15px}
-  .pathwayCard p{margin-bottom:18px}
-}
 @media(max-width:700px){
   .moraIntroduction{padding-top:66px;padding-bottom:66px}
   .entry{padding-top:50px;padding-bottom:66px}
-  .pathways{padding:65px 24px 72px}
-  .pathwaysHeader h2{font-size:48px}
-  .pathwaysHeader>p{font-size:15px}
 }
-@media(prefers-reduced-motion:reduce){.pathwayCard{transition:none}.pathwayCard:hover{transform:none}}
+
+
+/* Detail pass · warm light, restrained motion, better hero-to-world continuity */
+.hero{
+  background:radial-gradient(ellipse at 77% 38%,#254a36 0%,#123426 34%,#071b13 72%,#07150e 100%);
+  border-bottom:1px solid #e7cf9660;
+}
+.heroImage{filter:brightness(1.09) saturate(1.06)}
+.heroShade{
+  background:linear-gradient(90deg,#061a12ad 0%,#061a1250 43%,transparent 76%),
+    linear-gradient(0deg,#071b14 0%,transparent 20%),
+    radial-gradient(ellipse at 67% 44%,transparent 35%,#06181018 82%);
+}
+.heroCopy h1{text-shadow:0 6px 45px #02120b5c;letter-spacing:-.058em}
+.thesis{letter-spacing:-.026em;max-width:570px;color:#faf5e8}
+.intro{color:#e6ece4;max-width:510px;font-size:16px;line-height:1.85}
+.actions{margin-top:36px;gap:25px}
+.primary{min-height:56px;padding:16px 29px;letter-spacing:.01em;background:linear-gradient(117deg,#f4dfa7,#f9edcf 54%,#edce89);box-shadow:0 6px 28px #04170d4d,inset 0 1px #fff8e9}
+.primary:hover{background:#fff0c3;box-shadow:0 8px 32px #04170d62}
+.utilityLinks{flex-wrap:wrap;column-gap:25px;row-gap:7px;margin-top:26px}
+.utilityLinks a{transition:color .2s}
+.utilityLinks a:hover{color:#fff3ce}
+.entryNote{color:#c2d0c3}
+.sceneFooter{color:#dbdfc5}
+.sceneFooter a:hover{color:#fff1bf}
+.motionControl{opacity:.86}
+.thresholdInner{min-height:680px}
+.contextObjects{width:242px;gap:0;margin-top:70px;border-top:1px solid #f3e8be50}
+.contextObjects li{
+  border:0;border-bottom:1px solid #f3e8be50;
+  border-radius:0;background:transparent;backdrop-filter:none;
+  box-shadow:none;padding:21px 6px;
+}
+.contextObjects svg{color:#ffe5a1}
+.contextObjects span{color:#fff9e9;font-weight:600}
+.contextObjects small{color:#ecf1dc}
+.contextCopy h2{text-shadow:0 3px 24px #12281927}
+.contextBody{color:#f0f2e5}
+.moraIntroduction{gap:clamp(36px,6vw,94px)}
+.moraIntroduction h3,.entry h3{font-size:clamp(38px,3.6vw,50px);letter-spacing:-.035em}
+.daylightIntelligence{background:#f9f7ef}
+.daylightStudio{background:radial-gradient(ellipse at 17% 13%,#f5f1dd 0,transparent 46%),#e7eee5}
+.daylightContact{background:#f7f6ef}
+@media(max-width:1000px){
+  .contextObjects{width:200px}
+}
+@media(max-width:700px){
+  .heroCopy{padding-top:185px}
+  .heroCopy h1{font-size:clamp(76px,20vw,88px)}
+  .heroShade{background:linear-gradient(90deg,#061911cc,#06191173),linear-gradient(0deg,#071b14 0%,transparent 62%)}
+  .heroInner{padding-bottom:25px}
+  .thesis{font-size:clamp(26px,7vw,30px)}
+  .intro{font-size:14px;line-height:1.8}
+  .actions{gap:14px;margin-top:27px}
+  .primary{min-height:52px;padding:14px 20px}
+  .actions .textLink{padding:11px 3px}
+  .utilityLinks{margin-top:21px;column-gap:17px;row-gap:6px}
+  .entryNote{max-width:320px}
+  .thresholdInner{min-height:790px;padding-bottom:76px}
+  .forestShade{background:linear-gradient(180deg,#345940f2 0%,#325943ca 44%,transparent 81%,#254c38),linear-gradient(90deg,#264a3650,transparent)}
+  .contextCopy h2{font-size:clamp(45px,11vw,56px)}
+  .contextBody{font-size:15px}
+  .contextObjects{width:190px;gap:0;margin:90px 0 0 auto}
+  .contextObjects li{padding:13px 4px}
+  .contextObjects small{font-size:11px}
+  .moraIntroduction h3,.entry h3{font-size:39px}
+}
+@media(prefers-reduced-motion:reduce){
+  .utilityLinks a{transition:none}
+  .heroImage{filter:brightness(1.09) saturate(1.06)}
+}
