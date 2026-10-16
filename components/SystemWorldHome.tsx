@@ -22,13 +22,13 @@ const COPY = {
     saimor: 'SAIMÔR', saimorText: 'Dateien, Termine, Entscheidungen und offene Dinge bleiben zusammen. MÔRA arbeitet mit diesem Zusammenhang, statt bei jedem Kontakt wieder bei null zu beginnen.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
     entryLabel: 'EINSTIEG / SECURITY CHECK', entryTitle: 'Mit etwas Echtem statt mit einer leeren Promptbox starten.',
     entryText: 'Du startest mit deiner Domain. Der Security Report wird zum ersten echten Objekt im OS. Damit beginnt der Raum bereits mit realem Kontext.', entryCta: 'Security Check starten',
-    studioEyebrow: 'SAIMÔR · BERATUNG / WORKSHOPS / UMSETZUNG', studioTitle: 'Klarheit im Wandel – vom ersten Gespräch bis zur Umsetzung.',
-    studioText: 'Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang. Erst klären wir, was wirklich gebraucht wird. Dann bringen wir Teams gemeinsam ins Arbeiten und setzen Integrationen, Automatisierungen und Arbeitsräume belastbar um.',
+    studioEyebrow: 'SAIMÔR · BERATUNG / WORKSHOPS / UMSETZUNG', studioTitle: 'Aus einer Frage wird ein nächster Schritt.',
+    studioText: 'Wir beginnen nicht mit einem Tool, sondern mit dem Zusammenhang. Erst klären wir, was wirklich gebraucht wird. Dann entsteht, was hilft: ein Workshop, ein Pilot oder eine sauber integrierte Arbeitslösung.',
     offers: [['Beratung', 'Erstgespräch und Standortbestimmung: Wo entsteht Reibung, was ist schon da und wo lohnt sich ein nächster Schritt?'], ['Workshops', 'Gemeinsame Arbeitsformate, in denen Teams KI verständlich einordnen und praktisch anwenden.'], ['Umsetzung', 'Integrationen, Automatisierungen und Arbeitsräume – mit klaren Grenzen, echten Daten und nachvollziehbaren Aktionen.']],
     talk: 'Gespräch anfragen', experiments: 'Produkte', experimentsText: 'ausgewählte Experimente und Prototypen',
     intelligenceEyebrow: 'SAIMÔR / INTELLIGENCE LAYER',
     intelligenceTitle: 'Modelle ändern sich. Kontext bleibt.',
-    intelligenceText: 'AI, Agents, neue Modelle und künftige Formen von Intelligence können wechseln. Saimôr hält Kontext, Regeln, Verbindungen und Freigaben stabil – damit dein System nicht mit jedem Modellwechsel neu gebaut werden muss.',
+    intelligenceText: 'Modelle und Werkzeuge werden sich verändern. Was Menschen entscheiden, wissen und freigeben, braucht einen verlässlichen Zusammenhang. Dafür bauen wir SAIMÔR.',
     intelligenceMora: 'MÔRA hält den Zusammenhang',
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
@@ -37,7 +37,7 @@ const COPY = {
     pathsYori: 'YORI entdecken', pathsYoriText: 'Ein ruhiges digitales Haus für Creator: Termine, Kundenarbeit und Überblick an einem Ort. Beispiele sind als solche gekennzeichnet.',
     pathsStudio: 'Gemeinsam etwas bauen', pathsStudioText: 'Ein bestehender Prozess, eine schwierige Schnittstelle oder eine Idee? Wir klären zuerst, welcher nächste Schritt wirklich sinnvoll ist.',
     pathsExplore: 'Mehr erfahren', pathsContact: 'Projekt besprechen',
-    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Wenn Arbeit, Wissen und Intelligenz auseinanderfallen, bauen wir den Zusammenhang.', finalText: 'Schreib kurz, woran du arbeitest, was heute verloren geht oder wo dein Team immer wieder neu anfangen muss.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
+    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
@@ -49,13 +49,13 @@ const COPY = {
     saimor: 'SAIMÔR', saimorText: 'Files, meetings, decisions and open work stay together. MÔRA works with that shared context instead of starting from zero on every interaction.', mora: 'MÔRA', moraText: 'notices when something changes',
     entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Start with something real instead of an empty prompt box.',
     entryText: 'You start with your domain. The Security Report becomes the first real object inside the OS, so the space begins with real context.', entryCta: 'Start Security Check',
-    studioEyebrow: 'SAIMÔR · CONSULTING / WORKSHOPS / IMPLEMENTATION', studioTitle: 'Clarity through change — from first conversation to implementation.',
-    studioText: 'We do not begin with a tool; we begin with the context. First we clarify what is actually needed. Then we help teams work with it and implement integrations, automations and workspaces in a robust way.',
+    studioEyebrow: 'SAIMÔR · CONSULTING / WORKSHOPS / IMPLEMENTATION', studioTitle: 'A question becomes a next step.',
+    studioText: 'We do not begin with a tool; we begin with the context. First we clarify what is needed. Then we shape what helps: a workshop, a pilot or a thoughtfully connected workspace.',
     offers: [['Consulting', 'A first conversation and clear assessment: where is the friction, what already exists and where is the next useful move?'], ['Workshops', 'Shared formats that help teams understand AI and apply it in real work.'], ['Implementation', 'Integrations, automations and workspaces with clear boundaries, real data and auditable actions.']],
     talk: 'Start a conversation', experiments: 'Products', experimentsText: 'selected experiments and prototypes',
     intelligenceEyebrow: 'SAIMÔR / INTELLIGENCE LAYER',
     intelligenceTitle: 'Models change. Context remains.',
-    intelligenceText: 'AI, agents, new models and future forms of intelligence can change. Saimôr keeps context, rules, connections and permissions stable — so your system does not need to be rebuilt every time the model changes.',
+    intelligenceText: 'Models and tools will change. What people decide, know and approve deserves a reliable thread. That is what we are building SAIMÔR for.',
     intelligenceMora: 'MÔRA keeps the thread',
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
@@ -64,7 +64,7 @@ const COPY = {
     pathsYori: 'Explore YORI', pathsYoriText: 'A calmer digital home for creators: appointments, client work and clarity in one place. Example data is identified as such.',
     pathsStudio: 'Build something together', pathsStudioText: 'A messy workflow, a disconnected tool or an early idea? First we find the next step worth taking.',
     pathsExplore: 'Explore', pathsContact: 'Discuss a project',
-    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'When work, knowledge and intelligence drift apart, we rebuild the connection.', finalText: 'Send a short note about what you are building, what keeps getting lost or where your team repeatedly has to start over.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
+    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Better systems start with a better question.', finalText: 'What should become easier? What gets lost between people and tools? That is where we can begin.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
   },
 } as const;
 
@@ -95,7 +95,6 @@ export default function SystemWorldHome({ locale }: Props) {
                 <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
                 <a href="#studio"><Mic2 size={14} aria-hidden="true" />{c.training}</a>
               </div>
-              <p className={styles.entryNote}>{c.entryNote}</p>
             </div>
             <OrbitalScene />
           </div>
