@@ -177,3 +177,98 @@
   .utilityLinks a{transition:none}
   .heroImage{filter:brightness(1.09) saturate(1.06)}
 }
+
+/* === Signature continuity pass: one light system from cosmos to studio ===
+   Kept deliberately after responsive defaults to normalize older overrides.
+   No animation runs without respecting reduced-motion preferences. */
+.world{
+  --saimor-night:#081e17;
+  --saimor-forest:#224c39;
+  --saimor-verdigris:#618674;
+  --saimor-paper:#f6f4ec;
+  --saimor-brass:#e6c98d;
+}
+.hero{isolation:isolate;border-bottom:0;background:
+  radial-gradient(ellipse at 76% 36%,#31503c 0%,#153a2a 35%,#071b13 76%),
+  var(--saimor-night)}
+.hero::after{content:"";position:absolute;z-index:1;bottom:-1px;left:0;right:0;height:clamp(110px,16vw,240px);pointer-events:none;background:linear-gradient(180deg,transparent 0%,#081e1717 32%,#081e17 100%)}
+.heroImage{filter:brightness(1.055) saturate(.96) contrast(1.025)}
+.heroShade{background:linear-gradient(90deg,#071a12c7 0%,#071a125e 44%,transparent 78%),linear-gradient(0deg,#081e17 0%,transparent 25%)}
+.heroInner{z-index:3}
+.heroCopy{max-width:600px}
+.heroCopy h1{font-size:clamp(80px,8.5vw,130px);font-weight:400;letter-spacing:-.062em;text-shadow:0 3px 37px #071b145c}
+.thesis{max-width:550px;font-size:clamp(26px,2.35vw,35px);line-height:1.21;color:#f8f3e6}
+.intro{max-width:490px;line-height:1.84;color:#e5ece6}
+.primary{transition:transform .24s ease,background .24s ease,box-shadow .24s ease}
+.primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px #03190b6a,inset 0 1px #fff7de}
+.sceneFooter{position:relative;z-index:3}
+.system{background:var(--saimor-paper)}
+.threshold{isolation:isolate;min-height:720px;border:0;background:
+  radial-gradient(ellipse at 83% 47%,#597e5f50,transparent 50%),
+  linear-gradient(180deg,#081e17 0%,#143827 14%,#325b41 48%,#5a8168 79%,#f6f4ec 100%)}
+.threshold::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(180deg,#081e17 0%,#081e17cf 7%,transparent 26%),
+  linear-gradient(90deg,#163c2a68,transparent 64%)}
+.threshold::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:clamp(160px,21vw,270px);z-index:2;pointer-events:none;background:linear-gradient(180deg,transparent 0%,#f6f4ec28 32%,#f6f4ec 100%)}
+.forestImage{opacity:.88;filter:brightness(1.12) saturate(.78)}
+.forestShade{z-index:1;background:linear-gradient(90deg,#193b2a91,transparent 76%),linear-gradient(0deg,#244e3826,transparent 70%)}
+.portalScene{z-index:3}
+.thresholdInner{z-index:4;min-height:735px;padding-top:155px;padding-bottom:176px}
+.contextCopy h2{font-size:clamp(51px,5.3vw,80px);letter-spacing:-.047em;line-height:1.01}
+.contextCopy .eyebrow{color:#f0deb6}
+.contextBody{color:#f2f3e8;font-size:16px;max-width:420px}
+.outline{border-color:#f0d9a18a;background:#18382a5c;color:#fff2cb;box-shadow:0 4px 30px #11291b30}
+.outline:hover{background:#2a513e}
+.contextObjects{width:240px;border-color:#eaddba6e;margin-top:0}
+.contextObjects li{padding:21px 6px;border-color:#eaddba64}
+.contextObjects svg{color:#f4dba2}
+.contextObjects span{color:#fff7e5}
+.contextObjects small{color:#e9f0df}
+.portalFrame{left:65%;top:16%;width:15%;height:56%;border-width:2px;border-color:#f1d9a69c;border-left-color:#ffedbe;border-bottom-color:#caad78a1;box-shadow:0 0 2px #fff5dc7a,inset 0 0 44px #e4c58a29,0 0 42px #f0d6a13b,12px 10px 0 #1c35217a;transform:perspective(1000px) rotateY(-13deg)}
+.portalVeil{opacity:.55}
+.portalReflection{opacity:.47}
+.lightThread{opacity:.68}
+.moraLight{width:7px;height:7px;box-shadow:0 0 13px #e9d994,0 0 26px #ade8b56c}
+.thresholdCaption{bottom:85px;color:#3d6652;font-size:9px;letter-spacing:.18em}
+.moraIntroduction{position:relative;z-index:1;padding-top:75px;padding-bottom:104px}
+.moraIntroduction h3,.entry h3{font-size:clamp(37px,4vw,55px);line-height:1.05}
+.moraIntroduction .eyebrow,.entry .eyebrow{letter-spacing:.18em}
+.entry{padding-top:68px;padding-bottom:100px;border-top-color:#9bb2a044}
+.daylightIntelligence{background:linear-gradient(180deg,#f5f2e9,#f9f8f2)}
+.daylightStudio{background:linear-gradient(180deg,#eef1e8,#e7eee6)}
+.daylightContact{background:linear-gradient(180deg,#e7eee6,#f8f6ee 28%)}
+@media(max-width:1000px){
+  .thresholdInner{min-height:710px;padding-top:140px;padding-bottom:130px}
+  .contextObjects{width:195px}
+  .thresholdCaption{bottom:54px}
+}
+@media(max-width:700px){
+  .heroImage{filter:brightness(1.05) saturate(.95) contrast(1.02)}
+  .heroShade{background:linear-gradient(90deg,#061911e0,#0619118a),linear-gradient(0deg,#081e17 0%,transparent 64%)}
+  .heroCopy{padding-top:190px}
+  .heroCopy h1{font-size:clamp(74px,20.5vw,89px)}
+  .thesis{font-size:clamp(26px,6.8vw,30px)}
+  .primary:hover{transform:none}
+  .threshold{min-height:840px;background:
+    radial-gradient(ellipse at 70% 55%,#52785e70,transparent 53%),
+    linear-gradient(180deg,#081e17 0%,#153a2b 19%,#3f674e 56%,#6f987b 82%,#f6f4ec 100%)}
+  .threshold::before{background:linear-gradient(180deg,#081e17 0%,#081e17da 8%,transparent 35%),linear-gradient(90deg,#173d2d8c,transparent 85%)}
+  .threshold::after{height:190px}
+  .forestImage{opacity:.85}
+  .forestShade{background:linear-gradient(180deg,#153d2dbd 0%,transparent 70%),linear-gradient(90deg,#214a3380,transparent)}
+  .thresholdInner{min-height:810px;padding:100px 24px 150px}
+  .contextCopy h2{font-size:clamp(44px,11vw,55px)}
+  .contextBody{max-width:360px;font-size:15px}
+  .contextObjects{width:min(210px,58%);margin:104px 0 0 auto;border-color:#ecdbb36c}
+  .contextObjects li{padding:12px 4px}
+  .contextObjects small{color:#eaf1df}
+  .portalFrame{left:21%;top:49%;width:32%;height:29%;border-width:2px}
+  .portalReflection{top:81%;opacity:.2}
+  .thresholdCaption{left:24px;bottom:36px;color:#375a47;letter-spacing:.13em}
+  .moraIntroduction{padding-top:62px;padding-bottom:78px}
+  .entry{padding-top:55px;padding-bottom:86px}
+}
+@media(prefers-reduced-motion:reduce){
+  .primary{transition:none}
+  .primary:hover{transform:none}
+}
