@@ -51,6 +51,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
       '/en/mora/deep-view': '/mora/deep-view',
       '/mora/analog-affect': '/en/mora/deep-view',
       '/en/mora/analog-affect': '/mora/deep-view',
+      '/studio': '/en/studio',
+      '/en/studio': '/studio',
       '/yori': '/en/yori',
       '/en/yori': '/yori',
     };
@@ -81,7 +83,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const navItems = [
     { href: anchorHref('system'), label: copy.system },
     { href: moraHref, label: copy.mora },
-    { href: anchorHref('studio'), label: copy.studio },
+    { href: locale === 'de' ? '/studio' : '/en/studio', label: copy.studio },
   ];
 
   const track = (label: string) => MatomoEvents.navClick(label);
