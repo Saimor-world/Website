@@ -85,3 +85,48 @@
 .threshold{background:radial-gradient(ellipse at 72% 45%,#233725,#05100c 68%)}
 @media(min-resolution:2.5dppx){.heroImage,.forestImage{width:min(100%,557px)!important}}
 @media(max-width:700px){.forestImage{bottom:9%!important}.heroImage{bottom:0!important}}
+
+/* Editorial daylight pass, 16 Oct 2026.
+   All selectors below apply below the hero: the approved hero remains unchanged. */
+.system{background:#f3f1e8;color:#19382a}
+.threshold{background:radial-gradient(ellipse at 72% 43%,#486a4d 0%,#294a38 53%,#173b2e 100%);border-bottom-color:#e1d7b466}
+.forestShade{background:linear-gradient(90deg,#173a2cca,transparent 72%),linear-gradient(0deg,#173c2e 0%,transparent 30%,transparent 88%,#21443188)}
+.moraIntroduction{padding-top:104px;padding-bottom:100px}
+.moraIntroduction,.entry{color:#1a392b}
+.moraIntroduction h3,.entry h3{color:#173c2b}
+.moraIntroduction .eyebrow,.entry .eyebrow{color:#52705a}
+.moraIntroduction p:not(.eyebrow),.entry p:not(.eyebrow){color:#40594b}
+.moraIntroduction .textLink,.entry .textLink{color:#256447;font-weight:600}
+.moraIntroduction .textLink:hover,.entry .textLink:hover{color:#103d2a}
+.entry{border-top-color:#42604d3d;padding-top:62px;padding-bottom:86px}
+.pathways{padding:92px 24px 104px;background:#e0e9db;color:#163d2d;border-block:1px solid #7e9b853c}
+.pathwaysInner{max-width:1312px;margin:auto}
+.pathwaysHeader{display:grid;grid-template-columns:.9fr 1.1fr;align-items:end;gap:54px;margin-bottom:36px}
+.pathwaysHeader h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(45px,5.6vw,75px);font-weight:400;line-height:1.03;letter-spacing:-.045em;margin:15px 0 0;max-width:650px;text-wrap:balance}
+.pathwaysHeader>p{max-width:450px;font-size:17px;line-height:1.75;color:#3c5d49;margin:0}
+.pathways .eyebrow{color:#54735f}
+.pathwaysGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pathwayCard{display:flex;flex-direction:column;align-items:flex-start;min-height:300px;padding:27px 27px 25px;background:#f9f8f1;border:1px solid #90a89385;border-radius:16px;color:#183e2d;text-decoration:none;box-shadow:0 10px 30px #2646330c;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.pathwayCard:hover,.pathwayCard:focus-visible{transform:translateY(-3px);border-color:#52735b;box-shadow:0 16px 34px #2646331a}
+.pathwayNumber{font:11px/1.6 monospace;letter-spacing:.2em;color:#67806a}
+.pathwayCard h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:37px;line-height:1.1;font-weight:500;letter-spacing:-.035em;margin:24px 0 12px}
+.pathwayCard p{color:#486052;font-size:14px;line-height:1.75;margin:0 0 25px}
+.pathwayAction{display:inline-flex;gap:9px;align-items:center;color:#256447;font-weight:650;font-size:13px;margin-top:auto}
+.daylightIntelligence{background:#f5f1e7;color:#1b3b2c;border-bottom:1px solid #8d9c8645}
+.daylightStudio{background:radial-gradient(ellipse at 18% 12%,#e8e9d7,transparent 43%),#e9efe7;color:#17392a;border-bottom:1px solid #748d7945}
+.daylightContact{background:#f6f2e9;color:#173a2b}
+@media(max-width:900px){
+  .pathwaysHeader{grid-template-columns:1fr;gap:18px}
+  .pathwaysGrid{grid-template-columns:1fr}
+  .pathwayCard{min-height:0;padding:25px}
+  .pathwayCard h3{margin-top:15px}
+  .pathwayCard p{margin-bottom:18px}
+}
+@media(max-width:700px){
+  .moraIntroduction{padding-top:66px;padding-bottom:66px}
+  .entry{padding-top:50px;padding-bottom:66px}
+  .pathways{padding:65px 24px 72px}
+  .pathwaysHeader h2{font-size:48px}
+  .pathwaysHeader>p{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.pathwayCard{transition:none}.pathwayCard:hover{transform:none}}
