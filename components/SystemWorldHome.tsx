@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, FileText, CalendarDays, CircleCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, Sparkles } from 'lucide-react';
 
 import styles from './SystemWorldHome.module.css';
 import OrbitalScene from './OrbitalScene';
 import MoraSignalPreview from './MoraSignalPreview';
 import SaimorShowcase from './SaimorShowcase';
+import ContextSignals from './ContextSignals';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -81,7 +82,7 @@ export default function SystemWorldHome({ locale }: Props) {
               <div className={styles.utilityLinks}>
                 <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
                 <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
-                <a href="#studio"><Mic2 size={14} aria-hidden="true" />{c.training}</a>
+                <a href={locale === 'de' ? '/studio' : '/en/studio'}><Mic2 size={14} aria-hidden="true" />{c.training}</a>
               </div>
             </div>
             <OrbitalScene />
@@ -118,7 +119,11 @@ export default function SystemWorldHome({ locale }: Props) {
             <div className={styles.contextStage}>
               <div className={styles.portalCanvas}>
                 <div className={styles.portalScene} aria-hidden="true">
-                  <div className={styles.portalFrame}><span className={styles.portalVeil} /></div>
+                  <div className={styles.portalFrame}>
+                    <span className={styles.portalVeil} />
+                    <span className={styles.portalDust} aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>
+                    <span className={styles.portalDepth} />
+                  </div>
                   <div className={styles.portalReflection} />
                   <span className={styles.moraLight} />
                   <span className={styles.lightThread} />
@@ -128,17 +133,7 @@ export default function SystemWorldHome({ locale }: Props) {
                 {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
                 <ArrowRight size={17} aria-hidden="true" />
               </Link>
-              <ul className={styles.contextObjects} aria-label={locale === 'de' ? 'Zusammen im Arbeitsraum' : 'Together in the workspace'}>
-                {[{icon: FileText, title: locale === 'de' ? 'Dateien' : 'Files', detail: locale === 'de' ? 'im Kontext' : 'in context'},
-                  {icon: CalendarDays, title: locale === 'de' ? 'Termine' : 'Meetings', detail: locale === 'de' ? 'verbunden' : 'connected'},
-                  {icon: CircleCheck, title: locale === 'de' ? 'Offene Dinge' : 'Open work', detail: locale === 'de' ? 'im Blick' : 'in view'},
-                  {icon: Sparkles, title: 'MÔRA', detail: locale === 'de' ? 'im selben Raum' : 'in the same space'}].map(({icon: Icon, title, detail}) => (
-                    <li key={title}>
-                      <Icon size={19} strokeWidth={1.4} aria-hidden="true" />
-                      <div><span>{title}</span><small>{detail}</small></div>
-                    </li>
-                  ))}
-              </ul>
+              <ContextSignals locale={locale} />
               <div className={styles.thresholdCaption}>{locale === 'de' ? 'KONTEXT · KONTINUITÄT · KLARHEIT' : 'CONTEXT · CONTINUITY · CLARITY'}</div>
             </div>
           </div>
@@ -186,7 +181,7 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#637a58] sm:text-[10px]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={contactHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{c.talk}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="grid gap-3 border-b border-[#3a5e46]/20 py-7 sm:grid-cols-[42px_.8fr_1.2fr] sm:items-start sm:gap-6"><div className="font-mono text-[9px] tracking-[.18em] text-[#718675]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p></div>)}<div className="pt-7"><div className="font-mono text-[9px] uppercase tracking-[.2em] text-[#617966]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · <Link href="/earth" className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">Saimôr Earth</Link> · {c.experimentsText}</p></div></div></div></section>
+      <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#637a58] sm:text-[10px]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={locale === 'de' ? '/studio' : '/en/studio'} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{locale === 'de' ? 'Studio entdecken' : 'Explore Studio'}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="group grid gap-3 border-b border-[#3a5e46]/20 py-7 transition-colors hover:bg-[#b8d5b4]/10 sm:grid-cols-[42px_.8fr_1.2fr_auto] sm:items-start sm:gap-6"><div className="font-mono text-[9px] tracking-[.18em] text-[#718675]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p><Link href={`${locale === 'de' ? '/studio' : '/en/studio'}#${index === 0 ? 'beratung' : index === 1 ? 'workshops' : 'umsetzung'}`} className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-[#225e42] underline-offset-4 transition group-hover:gap-2 hover:underline" aria-label={`${name} ${locale === 'de' ? 'entdecken' : 'explore'}`}>{locale === 'de' ? 'Ansehen' : 'Explore'}<ArrowUpRight size={15} aria-hidden="true" /></Link></div>)}<div className="pt-7"><div className="font-mono text-[9px] uppercase tracking-[.2em] text-[#617966]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · <Link href="/earth" className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">Saimôr Earth</Link> · {c.experimentsText}</p></div></div></div></section>
       <section id="contact" className={`${styles.daylightContact} px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto max-w-7xl"><div className="grid gap-10 border-t border-[#3a5e46]/25 pt-10 md:grid-cols-[1fr_auto] md:items-end"><div><p className="font-mono text-[9px] font-semibold tracking-[.25em] text-[#476e55]">{c.finalEyebrow}</p><h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#173a2b] sm:text-6xl md:text-7xl">{c.finalTitle}</h2><p className="mt-6 max-w-2xl text-sm leading-7 text-[#405c49] sm:text-base">{c.finalText}</p></div><Link href={contactHref} className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#225c40] bg-[#225c40] px-6 py-3.5 text-sm font-semibold text-[#fff9ed] transition hover:border-[#17462f] hover:bg-[#17462f]">{c.finalCta}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div></div></section>
 
 
