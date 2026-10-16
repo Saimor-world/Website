@@ -1,88 +1,103 @@
-/* Forest threshold: real foliage, distant warm light, layers of mist.
-   No drawn glyphs, UI objects, symbolic vector art or separate generated imagery. */
+/* SAIMÔR / Forest threshold, v13
+   A physical doorway opening into an illuminated continuation of the forest.
+   The existing landscape image carries the detail; light/mist accent it only.
+   No drawn symbols, artificial screens, or opaque fog covering the passage. */
 .root{position:relative;width:100%;height:100%;isolation:isolate}
-.forestThreshold{position:relative;width:100%;height:100%}
+.forestThreshold{position:relative;height:100%;width:100%}
 .aura{
-  position:absolute;left:61%;top:4%;width:67%;height:89%;
-  transform:translateX(-50%);pointer-events:none;
-  background:radial-gradient(ellipse at 50% 46%,#d6e6b853 0%,#cfbe8e34 34%,transparent 73%);
-  filter:blur(30px);
+  position:absolute;left:61%;top:3%;width:63%;height:88%;pointer-events:none;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 48%,#e3d9a050 0%,#a2c8a82e 33%,transparent 74%);
+  filter:blur(29px)
 }
 .groundLight{
-  position:absolute;left:61%;bottom:6%;width:67%;height:15%;
-  transform:translateX(-50%) rotate(-7deg);pointer-events:none;
-  background:radial-gradient(ellipse,#f8e3b779 0%,#b5cf9f2e 44%,transparent 75%);
-  filter:blur(17px);
+  position:absolute;left:61%;bottom:5%;width:76%;height:20%;pointer-events:none;
+  transform:translateX(-50%) rotate(-5deg);
+  background:radial-gradient(ellipse at 50% 60%,#f3dea278 0%,#b1c9992a 34%,transparent 73%);
+  filter:blur(14px)
 }
 .door{
   position:absolute;z-index:2;left:61%;top:6%;height:90%;
   width:min(38%,185px);min-width:115px;transform:translateX(-50%);
-  display:flex;align-items:center;flex-direction:column;cursor:pointer;
-  appearance:none;text-align:center;color:#fff2d5;background:none;border:0;padding:0;
+  display:flex;flex-direction:column;align-items:center;
+  appearance:none;cursor:pointer;text-align:center;color:#fff4db;border:0;background:none;padding:0
 }
-.door:focus-visible{outline:2px solid #ffebb1;outline-offset:8px;border-radius:3px}
+.door:focus-visible{outline:2px solid #fbe8bb;outline-offset:8px;border-radius:2px}
 .doorframe{
   position:relative;display:block;flex-shrink:0;width:87%;height:85%;max-height:325px;
-  transform:perspective(1000px) rotateY(-9deg);transform-origin:bottom center;
-  border:1.5px solid #f4e3b9;border-left-color:#fff7db;
-  border-right-color:#d2d9b3;border-bottom-color:#f1dfa4;border-radius:2px;
-  box-shadow:0 0 1px 1px #f7e5b358,0 0 22px #f1dcac8c,
-    0 0 64px #dcebb46e,10px 9px 0 #11291a90;
-  transition:transform .55s cubic-bezier(.18,.75,.24,1),box-shadow .55s ease;
+  transform:perspective(950px) rotateY(-9deg);transform-origin:bottom center;
+  border:1px solid #e6d6b0;border-left:1.5px solid #fff4d6;border-right-color:#c5d2ae;
+  border-bottom:1.5px solid #e8d19c;border-radius:1px;
+  box-shadow:
+    inset 1px 0 1px #fff3d1b2,
+    0 0 1px 1px #f5dfb735,
+    0 0 16px #f0dfac73,
+    0 0 45px #c9d6aa5a,
+    10px 8px 0 #071e146e;
+  transition:transform .55s cubic-bezier(.18,.75,.24,1),box-shadow .55s ease
 }
 .door:hover .doorframe,.door:focus-visible .doorframe{
-  transform:perspective(1000px) rotateY(-3deg) translateY(-2px);
-  box-shadow:0 0 1px 1px #fff8d9b0,0 0 32px #f7e5b5a6,0 0 90px #d0eab693,
-    10px 9px 0 #11291a90;
+  transform:perspective(950px) rotateY(-4deg) translateY(-2px);
+  box-shadow:inset 1px 0 1px #fff5dbbd,0 0 2px #f7e7c8a1,0 0 20px #f2dfae97,
+    0 0 64px #c9dda881,10px 8px 0 #071e146e
 }
 .digitalSpace{
-  position:absolute;inset:0;display:block;overflow:hidden;isolation:isolate;
-  background:radial-gradient(ellipse at 57% 44%,#f3e8ba 0%,#bbd5a9 26%,#587c65 60%,#132b26 100%);
+  position:absolute;inset:0;display:block;isolation:isolate;overflow:hidden;
+  background:linear-gradient(170deg,#183b2c,#42674d 45%,#132c27 100%)
 }
+/* A second crop of the authentic forest, NOT an overexposed photographic rectangle.
+   The eye should be able to follow trees, rocks and water through the opening. */
 .beyondForest{
-  position:absolute;z-index:1;inset:-18% -38%;
-  background:url('/images/saimor-forest-layer.webp') 66% 46% / auto 125% no-repeat;
-  opacity:.83;filter:brightness(1.48) saturate(.73) blur(1.3px);
-  transform:scale(1.12);transform-origin:60% 50%;
-  -webkit-mask-image:radial-gradient(ellipse at 51% 48%,#000 17%,#0009 59%,transparent 92%);
-  mask-image:radial-gradient(ellipse at 51% 48%,#000 17%,#0009 59%,transparent 92%);
+  position:absolute;inset:-2% -7%;z-index:1;
+  background-image:url('/images/saimor-forest-layer.webp');
+  background-size:auto 112%;
+  background-position:73% 48%;
+  background-repeat:no-repeat;
+  filter:brightness(1.16) contrast(1.12) saturate(.94);
+  opacity:1;
+  transform:scale(1.04);
+  transform-origin:57% 55%;
+  transition:transform .75s cubic-bezier(.18,.75,.24,1),filter .75s
 }
+.door:hover .beyondForest,.door:focus-visible .beyondForest{
+  transform:scale(1.11);
+  filter:brightness(1.24) contrast(1.13) saturate(.98)
+}
+/* Light lives at the *far end*, not as a white overlay on top of everything. */
 .farLight{
-  position:absolute;z-index:2;inset:-12%;
-  background:radial-gradient(ellipse at 57% 43%,#fff8d6bb 0%,#f5e5b27a 18%,#d4e3b83b 41%,transparent 70%);
-  filter:blur(14px);pointer-events:none;
-  animation:portal-light-shift 14s ease-in-out infinite;
+  position:absolute;z-index:2;left:20%;right:7%;top:11%;height:53%;pointer-events:none;
+  background:radial-gradient(ellipse at 61% 32%,#ffefc78c 0%,#e2deb060 24%,transparent 70%);
+  filter:blur(18px);
+  opacity:.67;
+  animation:portal-light-shift 15s ease-in-out infinite
 }
-.mistBack,.mistMid,.mistFront{position:absolute;pointer-events:none;border-radius:50%;will-change:transform}
+.mistBack,.mistMid,.mistFront{position:absolute;pointer-events:none;border-radius:50%}
 .mistBack{
-  z-index:3;width:210%;height:46%;left:-60%;top:20%;
-  background:radial-gradient(ellipse,#f3f2cf72 0%,#d8eac450 30%,transparent 76%);
-  filter:blur(19px);animation:portal-mist-back 18s ease-in-out infinite;
+  z-index:3;width:152%;height:31%;left:-30%;top:34%;
+  background:radial-gradient(ellipse,#d9e5c048 0%,#b6ceb332 40%,transparent 76%);
+  filter:blur(18px);animation:portal-mist-back 23s ease-in-out infinite
 }
 .mistMid{
-  z-index:5;width:230%;height:55%;left:-72%;top:48%;
-  background:radial-gradient(ellipse,#f6eed18c 0%,#e2e8c569 28%,transparent 76%);
-  filter:blur(14px);animation:portal-mist-mid 14s ease-in-out infinite;
+  z-index:5;width:170%;height:32%;left:-34%;top:62%;
+  background:radial-gradient(ellipse,#f0e5c364 0%,#d4e5bc30 37%,transparent 75%);
+  filter:blur(17px);animation:portal-mist-mid 20s ease-in-out infinite
 }
 .pathLight{
-  position:absolute;z-index:4;left:50%;bottom:-10%;width:88%;height:74%;
+  position:absolute;z-index:4;left:49%;bottom:-3%;width:59%;height:35%;pointer-events:none;
   transform:translateX(-50%);
-  background:
-    radial-gradient(ellipse at 50% 90%,#fff2c4d9 0%,#f5ecb892 17%,transparent 56%),
-    linear-gradient(180deg,transparent 0%,#fff5dc57 69%,#f7e6bd9e 100%);
-  clip-path:polygon(48% 4%,57% 4%,100% 100%,0 100%);
-  filter:blur(11px);opacity:.69;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 95%,#f9e7b78a 0%,#ecdda841 26%,transparent 72%);
+  filter:blur(10px);opacity:.64
 }
 .mistFront{
-  z-index:7;width:260%;height:38%;left:-82%;bottom:-15%;
-  background:radial-gradient(ellipse,#fff0d6a8 0%,#f5ecc269 35%,transparent 75%);
-  filter:blur(15px);animation:portal-mist-mid 16s ease-in-out infinite reverse;
+  z-index:7;width:174%;height:24%;left:-34%;bottom:-11%;
+  background:radial-gradient(ellipse,#f5e8bd84 0%,#d9e7bd3a 39%,transparent 75%);
+  filter:blur(13px);animation:portal-mist-mid 23s ease-in-out infinite reverse
 }
 .particles{position:absolute;inset:0;z-index:6;pointer-events:none}
 .particles i{
-  position:absolute;display:block;width:2px;height:2px;border-radius:50%;
-  background:#fff1c5;box-shadow:0 0 9px #fff0bb;
-  animation:particle-drift 11s ease-in-out infinite;
+  position:absolute;display:block;width:1.7px;height:1.7px;border-radius:50%;
+  background:#fff0be;box-shadow:0 0 7px #f9e4a9a8;
+  animation:particle-drift 11s ease-in-out infinite
 }
 .particles i:nth-child(1){left:14%;top:19%;animation-delay:-1s}
 .particles i:nth-child(2){left:35%;top:34%;animation-delay:-3s}
@@ -97,25 +112,30 @@
 .particles i:nth-child(11){left:91%;top:39%;animation-delay:-2.5s}
 .particles i:nth-child(12){left:7%;top:46%;animation-delay:-4.5s}
 .particles i:nth-child(13){left:65%;top:16%;animation-delay:-8s}
+/* Just enough edge shadow for a portal to feel deeper than a picture frame. */
 .depthFog{
-  position:absolute;z-index:8;inset:0;pointer-events:none;
+  position:absolute;inset:0;z-index:8;pointer-events:none;
   background:
-    radial-gradient(ellipse at 50% 38%,transparent 21%,#d3e3bf1d 65%,#1029254e 100%),
-    linear-gradient(90deg,#233f3194 0%,transparent 14%,transparent 81%,#152c25ba 100%);
+    linear-gradient(90deg,#142f25a8 0%,transparent 13%,transparent 85%,#0c251fd1 100%),
+    linear-gradient(180deg,#102a2245 0%,transparent 19%,transparent 76%,#0b261fb4 100%)
 }
-.edge{position:absolute;inset:0;border-left:1px solid #fff7d39c;box-shadow:inset 1px 0 13px #f8ebbc31;pointer-events:none}
+.edge{
+  position:absolute;inset:0;pointer-events:none;
+  border-left:1px solid #fff5d39c;
+  box-shadow:inset 1px 0 8px #f5e8bd50
+}
 .doorCaption{
-  display:flex;align-items:center;gap:6px;min-height:37px;justify-content:center;
-  padding:8px 0 0;color:#fff5d5;text-shadow:0 2px 15px #05190dd4;
+  display:flex;align-items:center;justify-content:center;gap:6px;min-height:37px;
+  padding:8px 0 0;color:#fff6df;text-shadow:0 2px 12px #05190dd4;
   font:600 10px/1.4 ui-monospace,SFMono-Regular,monospace;
-  letter-spacing:.025em;white-space:nowrap;
+  letter-spacing:.025em;white-space:nowrap
 }
 .doorCaptionDot{width:5px;height:5px;flex-shrink:0;border-radius:50%;background:#f9d998;box-shadow:0 0 12px #f1dfb3}
 .doorCaption svg{transition:transform .2s}
 .door:hover .doorCaption svg,.door:focus-visible .doorCaption svg{transform:translate(2px,-2px)}
-@keyframes portal-light-shift{0%,100%{opacity:.65;transform:translateX(-3%)}50%{opacity:.98;transform:translateX(3%)}}
-@keyframes portal-mist-back{0%,100%{transform:translateX(-9%) translateY(0);opacity:.52}50%{transform:translateX(10%) translateY(-9%);opacity:.94}}
-@keyframes portal-mist-mid{0%,100%{transform:translateX(9%) translateY(3%);opacity:.52}50%{transform:translateX(-9%) translateY(-7%);opacity:.95}}
+@keyframes portal-light-shift{0%,100%{opacity:.55;transform:translateX(-2%)}50%{opacity:.76;transform:translateX(2%)}}
+@keyframes portal-mist-back{0%,100%{transform:translateX(-6%) translateY(0);opacity:.5}50%{transform:translateX(8%) translateY(-5%);opacity:.77}}
+@keyframes portal-mist-mid{0%,100%{transform:translateX(6%) translateY(0);opacity:.45}50%{transform:translateX(-7%) translateY(-4%);opacity:.7}}
 .dialog{width:min(1020px,calc(100vw - 28px));max-width:none;max-height:min(92dvh,970px);margin:auto;padding:0;overflow:auto;border:1px solid #9ebfa960;border-radius:20px;background:#0a261f;color:#f9f5e9;box-shadow:0 36px 120px #00150cc9;overscroll-behavior:contain}
 .dialog::backdrop{background:#06180fe0;backdrop-filter:blur(11px)}
 .inside{position:relative;isolation:isolate;min-height:570px;overflow:hidden;padding:29px clamp(22px,4vw,50px) 30px;background:radial-gradient(ellipse at 66% 35%,#315e5070 0%,transparent 63%),radial-gradient(ellipse at 26% 86%,#41695038 0%,transparent 57%),#0b291f}
@@ -185,8 +205,8 @@
   .insideFooter a{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){
-  .mistBack,.mistMid,.mistFront,.farLight,.particles i{animation:none;will-change:auto}
-  .doorframe,.node,.close,.doorCaption svg{transition:none}
-  .door:hover .doorframe,.door:focus-visible .doorframe{transform:perspective(900px) rotateY(-12deg)}
+  .mistBack,.mistMid,.mistFront,.farLight,.particles i{animation:none}
+  .doorframe,.beyondForest,.node,.close,.doorCaption svg{transition:none}
+  .door:hover .doorframe,.door:focus-visible .doorframe{transform:perspective(950px) rotateY(-9deg)}
   .node:hover{transform:none}
 }
