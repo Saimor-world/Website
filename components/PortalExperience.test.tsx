@@ -4,50 +4,33 @@ import PortalExperience from './PortalExperience';
 
 afterEach(cleanup);
 
-describe('PortalExperience — cinematic entry before contextual explanation', () => {
-  it('keeps the forest doorway wordless and opens a film-like, symbol-free first stage', () => {
-    const { container } = render(<PortalExperience locale="de" />);
-    const door = screen.getByRole('button', { name: 'Portal betreten' });
+describe('PortalExperience — a single evocative place', () => {
+  it('keeps the outside wordless and shows one quiet inside scene without icons or repeated explanations', () => {
+    render(<PortalExperience locale="de" />);
+    const door = screen.getByRole('button', { name: 'Schwelle betreten' });
     expect(door).toHaveAttribute('aria-haspopup', 'dialog');
     expect(door).toBeEmptyDOMElement();
-    expect(door.querySelectorAll('img')).toHaveLength(0);
     fireEvent.click(door);
     expect(screen.getByRole('heading', { name: 'Was bleibt, kommt mit.' })).toBeInTheDocument();
-    expect(container.querySelector('[data-stage="atmosphere"]')).not.toBeNull();
+    expect(screen.getByText('JENSEITS DER SCHWELLE')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'MÔRA entdecken' })).toHaveAttribute('href', '/mora');
     expect(screen.queryByRole('button', { name: 'Briefing' })).not.toBeInTheDocument();
-    expect(screen.queryByText('PRINZIPDARSTELLUNG · KEINE VERBUNDENEN LIVE-DATEN')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Dem Faden folgen' })).toBeInTheDocument();
+    expect(screen.queryByText(/EIN GEMEINSAMER FADEN/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Drinnen beginnt der Zusammenhang/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Dem Faden folgen' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Zurück in den Wald' }));
     expect(screen.queryByRole('heading', { name: 'Was bleibt, kommt mit.' })).not.toBeInTheDocument();
-  });
-
-  it('lets visitors deliberately advance to the existing contextual walkthrough', () => {
-    render(<PortalExperience locale="de" />);
-    fireEvent.click(screen.getByRole('button', { name: 'Portal betreten' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Dem Faden folgen' }));
-    expect(screen.getByRole('heading', { name: 'Drinnen beginnt der Zusammenhang nicht von vorn.' })).toBeInTheDocument();
-    expect(screen.getByText('PRINZIPDARSTELLUNG · KEINE VERBUNDENEN LIVE-DATEN')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Briefing' })).toHaveAttribute('aria-pressed','true');
-    fireEvent.click(screen.getByRole('button', { name: 'Nächster Zusammenhang' }));
-    expect(screen.getByRole('button', { name: 'Termin' })).toHaveAttribute('aria-pressed','true');
-    expect(screen.getByText('Besprechung, Dokument und nächste Schritte gehören zusammen.')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Entscheidung' }));
-    expect(screen.getByText(/Handlungen setzen passende Quellen und Freigaben voraus/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Mehr über MÔRA erfahren' })).toHaveAttribute('href','/mora');
-    fireEvent.click(screen.getByRole('button', { name: 'Zurück in den Wald' }));
-    expect(screen.queryByRole('heading', { name: 'Drinnen beginnt der Zusammenhang nicht von vorn.' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Portal betreten' }));
+    fireEvent.click(door);
     expect(screen.getByRole('heading', { name: 'Was bleibt, kommt mit.' })).toBeInTheDocument();
   });
 
-  it('localizes the atmosphere and subsequent MÔRA context for English readers', () => {
+  it('preserves English-language discovery and correct product links', () => {
     render(<PortalExperience locale="en" />);
-    fireEvent.click(screen.getByRole('button', { name: 'Enter the portal' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cross the threshold' }));
     expect(screen.getByRole('heading', { name: 'What matters stays with you.' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Meeting' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Follow the thread' }));
-    expect(screen.getByRole('heading', { name: 'Inside, context does not start over.' })).toBeInTheDocument();
-    expect(screen.getByText('CONCEPT ONLY · NO CONNECTED LIVE DATA')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Explore MÔRA' })).toHaveAttribute('href','/en/mora');
+    expect(screen.getByRole('link', { name: 'Explore MÔRA' })).toHaveAttribute('href', '/en/mora');
+    expect(screen.queryByText(/CONCEPT ONLY/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Return to the forest' }));
+    expect(screen.queryByRole('heading', { name: 'What matters stays with you.' })).not.toBeInTheDocument();
   });
 });
