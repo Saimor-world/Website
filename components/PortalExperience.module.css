@@ -1,233 +1,113 @@
-/* V16: THE SINGLE-SCENE PORTAL
-   Photograph and doorway are painted ONCE by SystemWorldHome.
-   This element is a transparent interaction region aligned over that door.
-   Never add another forest bitmap, vignette or portal drawing here. */
+/* SAIMÔR V18 · QUIET THRESHOLD
+   No second forest layer on the homepage and no drawn frame or tooltip.
+   The door is visible in the original artwork. This element makes it quietly
+   discoverable with pointer/focus feedback, then enters ONE cinematic space. */
 .root,.forestThreshold{position:relative;width:100%;height:100%}
 .door{
-  position:absolute;z-index:2;left:73%;top:0;width:32%;height:92%;
-  transform:translateX(-50%);display:block;
-  padding:0;margin:0;appearance:none;border:0;
-  background:transparent;color:#fff5dc;
-  cursor:pointer;-webkit-tap-highlight-color:transparent
+  position:absolute;z-index:2;left:73%;top:0;width:32%;height:89%;
+  transform:translateX(-50%);
+  padding:0;margin:0;border:0;appearance:none;
+  background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;
 }
-.door:focus-visible{outline:2px solid #fff2c7;outline-offset:2px}
-/* The entire physical door is the invitation. Hover/focus lets the light
-   respond, but nothing is written onto the photograph. */
 .door::after{
-  content:"";position:absolute;inset:4% 4% 0;border-radius:4px;
-  background:radial-gradient(ellipse at 50% 47%,#f2de9730,transparent 76%);
-  opacity:0;pointer-events:none;transition:opacity .36s ease
+  content:"";position:absolute;inset:4% 10% 1%;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 44%,#fae5ae34,transparent 67%);
+  opacity:0;transition:opacity .7s ease;
 }
 .door:hover::after,.door:focus-visible::after{opacity:1}
-@media(max-width:700px){
-  .door{left:60%;top:0;width:43%;height:86%}
+.door:focus-visible{outline:2px solid #f8e0a8;outline-offset:3px}
+.dialog{
+  position:fixed;inset:0;margin:0;
+  width:100vw;max-width:none;height:100dvh;max-height:none;
+  padding:0;border:0;border-radius:0;overflow:hidden;
+  color:#faf4e6;background:#112d24;
 }
-.dialog{width:min(1020px,calc(100vw - 28px));max-width:none;max-height:min(92dvh,970px);margin:auto;padding:0;overflow:auto;border:1px solid #9ebfa960;border-radius:20px;background:#0a261f;color:#f9f5e9;box-shadow:0 36px 120px #00150cc9;overscroll-behavior:contain}
-.dialog::backdrop{background:#06180fe0;backdrop-filter:blur(11px)}
-.inside{position:relative;isolation:isolate;min-height:570px;overflow:hidden;padding:29px clamp(22px,4vw,50px) 30px;background:radial-gradient(ellipse at 66% 35%,#315e5070 0%,transparent 63%),radial-gradient(ellipse at 26% 86%,#41695038 0%,transparent 57%),#0b291f}
-.inside::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 0,transparent 49.9%,#d0e8c20f 50%,transparent 50.1%),repeating-linear-gradient(0deg,transparent 0,transparent 76px,#a7e6c00c 77px)}
-.insideTop{display:flex;justify-content:space-between;align-items:center;gap:16px}
-.insideEyebrow,.eyebrow,.sceneHead,.explanationNumber,.insideFooter>span{font:600 9px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.17em;color:#e1d3a7}
-.close{display:grid;place-items:center;width:43px;height:43px;flex-shrink:0;border-radius:50%;border:1px solid #bdd4b16f;background:#183d2d8c;color:#fff3dc;transition:background .2s}
-.close:hover{background:#315d46}
-.close:focus-visible,.node:focus-visible,.advance:focus-visible,.insideFooter a:focus-visible{outline:3px solid #f6d9a1;outline-offset:4px}
-.insideHeading{display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:36px;margin:38px 0 35px}
-.eyebrow{margin:0 0 13px}
-.insideHeading h3{font:400 clamp(39px,5vw,66px)/.98 "Cormorant Garamond",Georgia,serif;letter-spacing:-.038em;max-width:660px;margin:0;text-wrap:balance}
-.insideHeading>p{font-size:14px;line-height:1.85;color:#d4e6d6;max-width:365px;margin:0}
-.experience{display:grid;grid-template-columns:1.03fr .97fr;min-height:315px;border:1px solid #c0d7b741;border-radius:15px;overflow:hidden;background:#12352aa3}
-.scene{position:relative;isolation:isolate;min-height:315px;padding:21px 19px;background:radial-gradient(ellipse at 56% 48%,#436b4f7a 0%,transparent 66%),linear-gradient(140deg,#0e3129,#0a262c)}
-.sceneHead{position:relative;z-index:2;font-size:8px}
-.thread{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-around;gap:12px;padding:42px 0 26px}
-.thread::before{content:"";position:absolute;z-index:-1;left:12%;right:12%;top:40%;height:1px;background:linear-gradient(90deg,#f0d69f50,#b8f0ca,#f0d69f70);box-shadow:0 0 12px #c5e9be7a}
-.node{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;min-width:0;max-width:126px;min-height:118px;padding:12px 9px;border:1px solid #aed9bf7d;border-radius:10px;background:#1a4a3fca;color:#e6efdf;font-size:12px;cursor:pointer;box-shadow:0 12px 30px #03191285;transition:border-color .2s,background .2s,transform .2s}
-.nodeIndex{position:absolute;left:9px;top:7px;color:#e0d1a0;font:600 9px ui-monospace,SFMono-Regular,monospace}
-.node svg{color:#e9dbaa}
-.node:hover{border-color:#fff3be;transform:translateY(-3px)}
-.activeNode{background:linear-gradient(135deg,#315b4c,#396e5b);border-color:#f6e3b0;box-shadow:0 0 18px #9ad2af4d,0 8px 30px #081d1599}
-.moraNode{position:relative;z-index:2;display:flex;align-items:flex-start;gap:12px;padding:17px 15px;border:1px solid #d7e0ba63;border-radius:11px;background:#11372dbb;color:#f5edce}
-.moraNode>svg{flex-shrink:0;margin-top:2px}
-.moraNode div{display:flex;flex-direction:column;gap:5px}
-.moraNode strong{font-size:13px}
-.moraNode span{font-size:11px;line-height:1.5;color:#c8dfd1}
-.sceneLight{position:absolute;z-index:1;left:50%;top:27%;width:44%;height:55%;border-radius:50%;transform:translateX(-50%);pointer-events:none;background:radial-gradient(circle,#b0e3bf2d,transparent 70%);filter:blur(16px)}
-.explanation{display:flex;flex-direction:column;padding:clamp(23px,3vw,36px);border-left:1px solid #c9d7b132}
-.explanationNumber{color:#e2cf9f}
-.explanation h4{font:400 clamp(34px,4vw,51px)/1 "Cormorant Garamond",Georgia,serif;letter-spacing:-.03em;margin:14px 0 5px}
-.activeSubtitle{color:#f0e2be;font-size:14px;margin:0}
-.paragraph{color:#d4e5d6;font-size:13px;line-height:1.83;margin:19px 0 18px}
-.keeps{display:flex;flex-direction:column;gap:6px;border-top:1px solid #dae0c248;padding-top:16px}
-.keeps span{font:600 9px ui-monospace,SFMono-Regular,monospace;letter-spacing:.14em;color:#cfbf9a}
-.keeps strong{font-size:13px;line-height:1.6;font-weight:500;color:#eef5dc}
-.advance{display:inline-flex;align-items:center;gap:12px;align-self:flex-start;min-height:44px;margin-top:auto;padding:12px 0 0;border-bottom:1px solid #eddbb27a;background:transparent;color:#f9e6b6;font-size:13px;font-weight:600;cursor:pointer}
-.advance:hover{color:#fff5d9}
-.insideFooter{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:22px}
-.insideFooter>span{font-size:8px;letter-spacing:.105em;color:#d6ddc1}
-.insideFooter a{display:inline-flex;align-items:center;gap:10px;color:#f4dfa9;font-size:13px;font-weight:650;border-bottom:1px solid #dcc38eaa;padding-bottom:8px}
-@keyframes particle-drift{0%,100%{opacity:.12;transform:translateY(9px) scale(.7)}50%{opacity:1;transform:translateY(-18px) scale(1.25)}}
-@keyframes pane-breathe{0%,100%{filter:brightness(.84)}50%{filter:brightness(1.2)}}
-
-
-@media(max-width:700px){
-  .dialog{width:calc(100vw - 16px);max-height:94dvh;border-radius:14px}
-  .inside{padding:18px 17px 25px}
-  .insideHeading{grid-template-columns:1fr;gap:15px;margin:24px 0}
-  .insideHeading h3{font-size:clamp(39px,10vw,54px);line-height:1}
-  .insideHeading>p{font-size:13px;line-height:1.7}
-  .experience{grid-template-columns:1fr}
-  .scene{min-height:265px;padding:18px 13px}
-  .thread{padding:31px 0 20px;gap:7px}
-  .node{min-height:95px;gap:7px;padding:15px 5px 9px;font-size:11px}
-  .node svg{width:20px;height:20px}
-  .moraNode{padding:14px 12px}
-  .explanation{border-top:1px solid #c9d7b132;border-left:0;padding:23px 18px}
-  .explanation h4{font-size:40px}
-  .paragraph{margin:15px 0}
-  .advance{margin-top:15px}
-  .insideFooter{gap:13px}
-  .insideFooter a{font-size:12px}
-}
-@media(prefers-reduced-motion:reduce){
-  .node,.close{transition:none}
-  .node:hover{transform:none}
-}
-
-/* V17 — the first destination is a feeling, not another UI.
-   The original woodland photo zooms past the lens and dissolves into an
-   imagined luminous interior. The user chooses whether to go on to details. */
+.dialog::backdrop{background:#07190fd9}
 .cinematic{
-  position:relative;isolation:isolate;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;width:100%;
-  min-height:min(79dvh,730px);overflow:hidden;
-  background:radial-gradient(ellipse at 55% 56%,#8b9b7961 0%,#3a604d88 27%,transparent 63%),#102e27;
-  color:#fff7e6;text-align:center;
+  position:relative;isolation:isolate;
+  width:100%;height:100dvh;min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#16352a;
 }
 .cinemaForest{
-  position:absolute;z-index:-1;inset:-12%;pointer-events:none;
-  background:url('/images/saimor-forest-threshold.webp') center center / cover no-repeat;
-  transform-origin:54% 49%;
-  animation:cinema-enter 1.35s cubic-bezier(.15,.75,.19,1) both
+  position:absolute;z-index:-3;inset:-3%;
+  background-image:url('/images/saimor-forest-threshold.webp');
+  background-size:cover;background-position:52% 48%;background-repeat:no-repeat;
+  transform:scale(1.01);
+  animation:forest-crossing 1.35s cubic-bezier(.15,.7,.27,1) both;
+  /* Deliberately no blur, brightness filter or giant zoom:
+     the source is a 1774x887 WebP and cannot survive extreme enlargement. */
 }
-.cinemaHorizon{
-  position:absolute;z-index:-1;inset:-15%;pointer-events:none;
+.cinemaLight{
+  position:absolute;z-index:-2;inset:0;
   background:
-    radial-gradient(ellipse 48% 64% at 54% 49%,#fff3c6ba 0%,#e6d8a37d 23%,#9dbba37a 48%,transparent 78%),
-    linear-gradient(155deg,#11392e,#789b79 49%,#1b493c);
-  opacity:0;animation:cinema-sunrise 1.45s ease-out both
+    radial-gradient(ellipse 53% 64% at 53% 40%,#ffe6b244 0%,#e9dcaf20 40%,transparent 75%),
+    linear-gradient(90deg,#061b15ab,transparent 27%,transparent 78%,#0b211aa9);
+  opacity:.46;animation:light-crossing 1.3s ease both;
 }
-.cinemaVeil{
-  position:absolute;z-index:-1;inset:-12%;pointer-events:none;
-  background:linear-gradient(95deg,#071f1b8c,transparent 28%,#f9edd013 53%,transparent 71%,#09251c9a),
-    radial-gradient(ellipse at 50% 56%,transparent 25%,#09281f7a 100%);
-  animation:cinema-soften 1.4s ease-out both
+.cinemaAtmosphere{
+  position:absolute;z-index:-1;inset:0;
+  background:linear-gradient(180deg,#0b221969 0%,#132f2440 35%,#071e18ad 100%);
 }
-.cinemaMist{
-  position:absolute;z-index:-1;left:-25%;right:-25%;bottom:-12%;height:56%;
-  pointer-events:none;filter:blur(28px);
-  background:radial-gradient(ellipse at 50% 63%,#e8dfb670 0%,#aac1a45b 31%,transparent 78%);
-  animation:cinema-mist-rise 2.3s ease-out both
+.close{
+  position:absolute;z-index:5;top:max(22px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));
+  display:grid;place-items:center;width:47px;height:47px;
+  border:1px solid #f7eacf80;border-radius:50%;
+  background:#12382bbd;color:#fff7e7;cursor:pointer;
+  transition:background .2s ease;
 }
-.cinemaClose{
-  position:absolute;z-index:4;top:clamp(15px,3vw,30px);right:clamp(15px,3vw,30px);
-  display:grid;place-items:center;width:45px;height:45px;cursor:pointer;
-  border:1px solid #f7f2dc8a;border-radius:50%;
-  background:#12382c8e;color:#fff9e8;backdrop-filter:blur(10px);
-  transition:background .2s ease,border-color .2s ease
+.close:hover{background:#26543e}
+.cinemaCopy{
+  position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;
+  gap:15px;width:100%;max-width:850px;
+  padding:90px 30px 105px;text-align:center;
+  opacity:0;animation:copy-reveal .7s ease-out .72s both;
 }
-.cinemaClose:hover{background:#1e4c38;border-color:#fff7e1}
-.cinemaCenter{
-  z-index:2;display:flex;align-items:center;flex-direction:column;gap:20px;
-  max-width:780px;padding:85px 38px 45px;
-  opacity:0;animation:cinema-title-arrive .85s ease-out 1s both
+.eyebrow{
+  margin:0;color:#fff0c2;font:600 10px/1.55 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.25em;text-shadow:0 2px 15px #12251bc4;
 }
-.cinemaEyebrow{
-  color:#fff0c6;font:600 10px/1.5 ui-monospace,SFMono-Regular,monospace;
-  letter-spacing:.3em;text-shadow:0 2px 20px #0b291d
+.cinemaCopy h2{
+  max-width:780px;margin:0;
+  font:400 clamp(60px,8.5vw,113px)/.97 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.045em;text-wrap:balance;
+  color:#fff9e9;text-shadow:0 5px 26px #0a251cd9;
 }
-.cinemaTitle{
-  max-width:720px;margin:0;
-  font:400 clamp(58px,8vw,112px)/.94 "Cormorant Garamond",Georgia,serif;
-  letter-spacing:-.049em;text-wrap:balance;
-  text-shadow:0 5px 40px #0a261dd4
+.filament{
+  width:92px;height:1px;margin-top:15px;
+  background:linear-gradient(90deg,transparent,#f6dea9,transparent);
+  box-shadow:0 0 13px #f4dda87a;
 }
-.cinemaFilament{
-  display:block;width:115px;height:1px;margin-top:13px;
-  background:linear-gradient(90deg,transparent,#f6dfad,transparent);
-  box-shadow:0 0 17px 2px #f8e8ba62
+.discover{
+  display:inline-flex;align-items:center;gap:12px;
+  min-height:49px;margin-top:27px;padding:10px 2px;
+  border-bottom:1px solid #f1dcadb3;
+  font-size:13px;font-weight:600;color:#fff4dc;
+  transition:gap .2s ease,color .2s ease;
 }
-.cinemaContinue{
-  z-index:2;display:inline-flex;align-items:center;justify-content:center;gap:15px;
-  min-height:51px;margin:0 16px 47px;padding:12px 22px;
-  border:1px solid #f1e0b9c9;border-radius:999px;
-  background:#113629cd;color:#fff5e1;
-  box-shadow:0 9px 31px #0c281da8;backdrop-filter:blur(8px);
-  font-size:13px;font-weight:650;cursor:pointer;
-  opacity:0;animation:cinema-title-arrive .65s ease-out 1.7s both;
-  transition:background .2s ease,transform .2s ease
+.discover:hover{gap:17px;color:white}
+.close:focus-visible,.discover:focus-visible{outline:3px solid #f7e6af;outline-offset:5px}
+@keyframes forest-crossing{
+  0%{transform:scale(1.01);opacity:.86}
+  100%{transform:scale(1.065);opacity:1}
 }
-.cinemaContinue:hover{background:#2a543d;transform:translateY(-2px)}
-.cinemaClose:focus-visible,.cinemaContinue:focus-visible{outline:3px solid #f8e2a5;outline-offset:4px}
-@keyframes cinema-enter{
-  0%{transform:scale(1);filter:brightness(.92) blur(0);opacity:1}
-  55%{transform:scale(1.52);filter:brightness(1.2) blur(1px);opacity:.83}
-  100%{transform:scale(2.24);filter:brightness(1.22) blur(13px);opacity:.2}
+@keyframes light-crossing{
+  0%{opacity:.68}100%{opacity:.36}
 }
-@keyframes cinema-sunrise{
-  0%{opacity:0;transform:scale(.84)}
-  54%{opacity:.7;transform:scale(1.04)}
-  100%{opacity:.9;transform:scale(1.16)}
-}
-@keyframes cinema-soften{
-  0%{opacity:0}60%{opacity:.45}100%{opacity:.85}
-}
-@keyframes cinema-mist-rise{
-  0%{opacity:0;transform:translateY(30%)}
-  100%{opacity:.78;transform:translateY(0)}
-}
-@keyframes cinema-title-arrive{
-  0%{opacity:0;transform:translateY(22px);filter:blur(4px)}
-  100%{opacity:1;transform:translateY(0);filter:blur(0)}
+@keyframes copy-reveal{
+  0%{opacity:0;transform:translateY(16px)}
+  100%{opacity:1;transform:translateY(0)}
 }
 @media(max-width:700px){
-  .cinematic{min-height:min(84dvh,760px)}
-  .cinemaForest{background-position:58% center}
-  .cinemaCenter{padding:104px 22px 52px;gap:19px}
-  .cinemaTitle{font-size:clamp(57px,14vw,80px)}
-  .cinemaEyebrow{font-size:9px;letter-spacing:.22em}
-  .cinemaContinue{margin-bottom:70px}
+  .door{left:60%;top:0;width:44%;height:86%}
+  .cinemaForest{background-position:53% 50%}
+  .cinemaCopy{gap:15px;padding:90px 23px 100px}
+  .eyebrow{font-size:9px;letter-spacing:.18em}
+  .cinemaCopy h2{font-size:clamp(57px,14vw,79px)}
+  .discover{margin-top:18px}
 }
 @media(prefers-reduced-motion:reduce){
-  .cinemaForest,.cinemaHorizon,.cinemaVeil,.cinemaMist,
-  .cinemaCenter,.cinemaContinue{animation:none!important;filter:none;opacity:1;transform:none}
-  .cinemaForest{opacity:.18;filter:blur(4px)}
-  .cinemaHorizon{opacity:.85}
-  .cinemaVeil{opacity:.8}
-  .cinemaMist{opacity:.55}
-  .cinemaContinue:hover{transform:none}
-  .cinemaClose,.cinemaContinue,.door::after{transition:none}
-}
-
-/* V17b: the atmosphere is a full-screen passage, not a framed pop-up. */
-.dialog[data-stage="atmosphere"]{
-  position:fixed;inset:0;margin:0;
-  width:100vw;height:100dvh;max-width:none;max-height:none;
-  border:0;border-radius:0;overflow:hidden;
-  background:#102e27;box-shadow:none;
-}
-.dialog[data-stage="atmosphere"] .cinematic{
-  min-height:100dvh;height:100dvh;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
-.dialog[data-stage="atmosphere"] .cinemaClose{
-  top:max(22px,env(safe-area-inset-top,0px));
-  right:max(22px,env(safe-area-inset-right,0px));
-}
-.dialog[data-stage="atmosphere"] .cinemaContinue{
-  margin-bottom:max(38px,env(safe-area-inset-bottom,0px));
-}
-@media(max-width:700px){
-  .dialog[data-stage="atmosphere"]{width:100vw;max-height:none;border-radius:0}
-  .cinemaCenter{padding-top:68px;padding-bottom:41px}
-  .cinemaContinue{min-height:49px}
+  .cinemaForest,.cinemaLight,.cinemaCopy{animation:none!important;opacity:1;transform:none!important}
+  .cinemaLight{opacity:.36}
+  .door::after,.discover,.close{transition:none}
 }
