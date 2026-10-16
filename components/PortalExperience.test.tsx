@@ -9,11 +9,13 @@ describe('PortalExperience — continuity beyond the threshold', () => {
     render(<PortalExperience locale="de" />);
     const door = screen.getByRole('button', { name: 'Durch die Tür sehen' });
     expect(door).toHaveAttribute('aria-haspopup', 'dialog');
-    // From outside, the doorway must be symbolic — never a thumbnail of the app.
+    // The doorway should be atmospheric, not a technical sketch or mini application.
     expect(door.querySelectorAll('[class*="pane"]')).toHaveLength(0);
     expect(door.querySelectorAll('[class*="connection"]')).toHaveLength(0);
-    expect(door.querySelector('svg[viewBox="0 0 180 320"]')).not.toBeNull();
-    expect(door.querySelectorAll('svg[viewBox="0 0 180 320"] path').length).toBeGreaterThanOrEqual(5);
+    expect(door.querySelector('svg[viewBox="0 0 180 320"]')).toBeNull();
+    for (const layer of ['beyondForest', 'farLight', 'mistBack', 'mistMid', 'mistFront', 'pathLight']) {
+      expect(door.querySelector('[class*="' + layer + '"]')).not.toBeNull();
+    }
     fireEvent.click(door);
     expect(screen.getByRole('heading', { name: 'Drinnen beginnt der Zusammenhang nicht von vorn.' })).toBeInTheDocument();
     expect(screen.getByText('PRINZIPDARSTELLUNG · KEINE VERBUNDENEN LIVE-DATEN')).toBeInTheDocument();
