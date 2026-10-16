@@ -21,7 +21,8 @@ describe('MÔRA official OS A4 face', () => {
     const { container } = render(<MoraOsFace size={290} state="rest" />);
     const face = container.querySelector('[data-face-state="rest"]');
     expect(face).not.toBeNull();
-    expect(face?.querySelectorAll('svg clipPath circle')).toHaveLength(1);
+    // JSDOM lowercases SVG clipPath selectors; assert the exact jade radius instead.
+    expect(face?.querySelectorAll('svg circle[r="43"]')).toHaveLength(1);
     expect(face?.querySelectorAll('svg filter')).toHaveLength(3);
     expect(face?.querySelectorAll('svg ellipse').length).toBeGreaterThanOrEqual(4);
     expect(container.querySelector('[class*="pupil"]')).toBeNull();
