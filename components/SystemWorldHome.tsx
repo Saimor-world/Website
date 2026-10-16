@@ -7,6 +7,7 @@ import OrbitalScene from './OrbitalScene';
 import MoraSignalPreview from './MoraSignalPreview';
 import SaimorShowcase from './SaimorShowcase';
 import ContextSignals from './ContextSignals';
+import PortalExperience from './PortalExperience';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -118,16 +119,7 @@ export default function SystemWorldHome({ locale }: Props) {
             </div>
             <div className={styles.contextStage}>
               <div className={styles.portalCanvas}>
-                <div className={styles.portalScene} aria-hidden="true">
-                  <div className={styles.portalFrame}>
-                    <span className={styles.portalVeil} />
-                    <span className={styles.portalDust} aria-hidden="true">{Array.from({ length: 12 }, (_, index) => <i key={index} />)}</span>
-                    <span className={styles.portalDepth} />
-                  </div>
-                  <div className={styles.portalReflection} />
-                  <span className={styles.moraLight} />
-                  <span className={styles.lightThread} />
-                </div>
+                <PortalExperience locale={locale} />
               </div>
               <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.portalEntry}>
                 {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
