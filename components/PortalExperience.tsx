@@ -15,7 +15,11 @@ const items = [
 
 const copy = {
   de: {
-    invite: 'Durch die Tür sehen',
+    invite: 'Portal betreten',
+    cinemaEyebrow: 'JENSEITS DER SCHWELLE',
+    cinemaTitle: 'Was bleibt, kommt mit.',
+    cinemaContinue: 'Dem Faden folgen',
+    cinemaBack: 'Zurück in den Wald',
     close: 'Zurück in den Wald',
     back: 'Zurück',
     next: 'Nächster Zusammenhang',
@@ -54,7 +58,11 @@ const copy = {
     explore: 'Mehr über MÔRA erfahren',
   },
   en: {
-    invite: 'Look beyond the doorway',
+    invite: 'Enter the portal',
+    cinemaEyebrow: 'BEYOND THE THRESHOLD',
+    cinemaTitle: 'What matters stays with you.',
+    cinemaContinue: 'Follow the thread',
+    cinemaBack: 'Return to the forest',
     close: 'Back to the forest',
     back: 'Back',
     next: 'Next connection',
@@ -98,6 +106,7 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
   const c = copy[locale];
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [entered, setEntered] = useState(false);
+  const [stage, setStage] = useState<'atmosphere' | 'explain'>('atmosphere');
   const [current, setCurrent] = useState<ThreadKey>('file');
   const order: ThreadKey[] = ['file', 'meeting', 'decision'];
   const active = c.details[current];
@@ -116,6 +125,7 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
 
   function enter() {
     setCurrent('file');
+    setStage('atmosphere');
     setEntered(true);
   }
   function exit() {
@@ -136,13 +146,7 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
         {/* The full forest AND doorway are a single photograph supplied by
             SystemWorldHome. This is a transparent interaction hotspot only:
             no second bitmap, no drawn portal, no rectangular compositing. */}
-        <button type="button" className={styles.door} onClick={enter} aria-haspopup="dialog" aria-label={c.invite}>
-          <span className={styles.doorCaption}>
-            <span className={styles.doorCaptionDot} aria-hidden="true" />
-            {c.invite}
-            <ArrowUpRight size={15} aria-hidden="true" />
-          </span>
-        </button>
+        <button type="button" className={styles.door} onClick={enter} aria-haspopup="dialog" aria-label={c.invite} />
       </div>
 
       <dialog
@@ -152,6 +156,25 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
         onClose={() => setEntered(false)}
         onClick={(event) => { if (event.target === event.currentTarget) exit(); }}
       >
+        {stage === 'atmosphere' ? (
+          <div className={styles.cinematic} data-stage="atmosphere">
+            {/* The same woodland photograph drives a film-like push-through.
+                Nothing here is a fake app or an extra forest on the homepage. */}
+            <span className={styles.cinemaForest} aria-hidden="true" />
+            <span className={styles.cinemaHorizon} aria-hidden="true" />
+            <span className={styles.cinemaVeil} aria-hidden="true" />
+            <span className={styles.cinemaMist} aria-hidden="true" />
+            <button type="button" className={styles.cinemaClose} onClick={exit} aria-label={c.cinemaBack}><X size={20} aria-hidden="true" /></button>
+            <div className={styles.cinemaCenter}>
+              <span className={styles.cinemaEyebrow}>{c.cinemaEyebrow}</span>
+              <h2 id="portal-inside-title" className={styles.cinemaTitle}>{c.cinemaTitle}</h2>
+              <span className={styles.cinemaFilament} aria-hidden="true" />
+            </div>
+            <button type="button" className={styles.cinemaContinue} onClick={() => setStage('explain')}>
+              {c.cinemaContinue}<ArrowRight size={17} aria-hidden="true" />
+            </button>
+          </div>
+        ) : (
         <div className={styles.inside}>
           <div className={styles.insideTop}>
             <span className={styles.insideEyebrow}>SAIMÔR / CONTINUITY</span>
@@ -197,6 +220,7 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
             <Link href={locale === 'de' ? '/mora' : '/en/mora'} onClick={exit}>{c.explore}<ArrowUpRight size={17} aria-hidden="true" /></Link>
           </div>
         </div>
+        )}
       </dialog>
     </div>
   );
