@@ -206,3 +206,28 @@
   .cinemaContinue:hover{transform:none}
   .cinemaClose,.cinemaContinue,.door::after{transition:none}
 }
+
+/* V17b: the atmosphere is a full-screen passage, not a framed pop-up. */
+.dialog[data-stage="atmosphere"]{
+  position:fixed;inset:0;margin:0;
+  width:100vw;height:100dvh;max-width:none;max-height:none;
+  border:0;border-radius:0;overflow:hidden;
+  background:#102e27;box-shadow:none;
+}
+.dialog[data-stage="atmosphere"] .cinematic{
+  min-height:100dvh;height:100dvh;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.dialog[data-stage="atmosphere"] .cinemaClose{
+  top:max(22px,env(safe-area-inset-top,0px));
+  right:max(22px,env(safe-area-inset-right,0px));
+}
+.dialog[data-stage="atmosphere"] .cinemaContinue{
+  margin-bottom:max(38px,env(safe-area-inset-bottom,0px));
+}
+@media(max-width:700px){
+  .dialog[data-stage="atmosphere"]{width:100vw;max-height:none;border-radius:0}
+  .cinemaCenter{padding-top:68px;padding-bottom:41px}
+  .cinemaContinue{min-height:49px}
+}
