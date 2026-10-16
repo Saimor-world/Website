@@ -78,7 +78,7 @@ describe('SystemWorldHome', () => {
     expect(forest).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 195vw'));
   });
 
-  it('makes portal, its CTA and four context signals one semantic stage in both languages', () => {
+  it('links the digital threshold without covering it and keeps four quiet context signals in both languages', () => {
     for (const locale of ['de', 'en'] as const) {
       const { container } = render(<SystemWorldHome locale={locale} />);
       const heading = screen.getByRole('heading', {
@@ -94,7 +94,8 @@ describe('SystemWorldHome', () => {
       expect(portal).not.toBeNull();
       expect(portal?.querySelector('[aria-hidden="true"]')).not.toBeNull();
       const entry = screen.getByRole('link', { name: locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA' });
-      expect(portal?.contains(entry)).toBe(true);
+      expect(stage?.contains(entry)).toBe(true);
+      expect(portal?.contains(entry)).toBe(false);
       expect(entry).toHaveAttribute('href', locale === 'de' ? '/mora' : '/en/mora');
       const list = section?.querySelector('ul[aria-label]');
       expect(list?.children).toHaveLength(4);
