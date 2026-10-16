@@ -6,11 +6,14 @@ afterEach(cleanup);
 
 describe('PortalExperience — continuity beyond the threshold', () => {
   it('shows the digital room from the forest, then opens a concept-only accessible walkthrough', () => {
-    const { container } = render(<PortalExperience locale="de" />);
+    render(<PortalExperience locale="de" />);
     const door = screen.getByRole('button', { name: 'Durch die Tür sehen' });
     expect(door).toHaveAttribute('aria-haspopup', 'dialog');
-    expect(container.querySelectorAll('[class*="pane"]')).toHaveLength(3);
-    expect(container.querySelectorAll('[class*="connection"]')).toHaveLength(2);
+    // From outside, the doorway must be symbolic — never a thumbnail of the app.
+    expect(door.querySelectorAll('[class*="pane"]')).toHaveLength(0);
+    expect(door.querySelectorAll('[class*="connection"]')).toHaveLength(0);
+    expect(door.querySelector('svg[viewBox="0 0 180 320"]')).not.toBeNull();
+    expect(door.querySelectorAll('svg[viewBox="0 0 180 320"] path').length).toBeGreaterThanOrEqual(5);
     fireEvent.click(door);
     expect(screen.getByRole('heading', { name: 'Drinnen beginnt der Zusammenhang nicht von vorn.' })).toBeInTheDocument();
     expect(screen.getByText('PRINZIPDARSTELLUNG · KEINE VERBUNDENEN LIVE-DATEN')).toBeInTheDocument();
