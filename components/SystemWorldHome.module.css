@@ -275,42 +275,44 @@
 
 .moraIntroduction a:focus-visible,.entry a:focus-visible{outline-color:#225b3e}
 
-/* Mobile art direction v4: image coverage and colour, never hero height. */
-/*
- * Desktop keeps the approved landscape composition.
- * The original mobile CSS confined the 16:9 photograph to a ~219px-tall strip
- * at the BOTTOM of a much taller hero. Combined with two fading masks and
- * a black left scrim, this made most of the iPhone view near-black.
- * Reframe the SAME image: let its aurora and sunrise occupy the upper/middle
- * of the hero, then carry that colour with ambient gradients to its foot.
- */
+/* Mobile v5: full-scene lighting, feathered photographic edges, no shorter hero.
+   The supplied iPhone screenshot showed a rectangular top seam at the photograph
+   and an oversized dark green plain above it. The ambient pass uses the SAME
+   artwork, blurred behind the sharp image: no second scene or fake UI. */
 @media (max-width:700px) {
   .hero {
+    isolation:isolate;
     background:
-      radial-gradient(ellipse 88% 39% at 86% 26%,#49856f9c 0%,#28574478 37%,transparent 84%),
-      radial-gradient(ellipse 112% 42% at 46% 62%,#7a87583c 0%,#2c695352 47%,transparent 81%),
-      radial-gradient(ellipse 95% 27% at 78% 84%,#d0aa6550 0%,transparent 75%),
-      linear-gradient(163deg,#0d2b22 0%,#1b4a39 40%,#245c49 67%,#0b3025 100%);
+      radial-gradient(ellipse 105% 42% at 83% 34%,#5d94785e 0%,transparent 76%),
+      radial-gradient(ellipse 85% 28% at 70% 70%,#d9b5744a 0%,transparent 79%),
+      linear-gradient(165deg,#0c2a22 0%,#204a3b 42%,#32644e 69%,#0d3226 100%);
   }
+  /* A very low-frequency echo of the original cosmos fills the negative space.
+     In particular, avoid the flat green band above the photo's hard top edge. */
   .hero::before {
     content:"";
     position:absolute;
-    inset:0;
     z-index:0;
+    inset:-20px;
     pointer-events:none;
-    background:
-      radial-gradient(ellipse 65% 30% at 91% 22%,#8bd5ba27,transparent 85%),
-      radial-gradient(ellipse 75% 30% at 17% 77%,#c5ab6630,transparent 83%);
+    background-image:url('/images/saimor-cosmos-layer.webp');
+    background-size:auto 100%;
+    background-position:76% 34%;
+    background-repeat:no-repeat;
+    opacity:.38;
+    filter:blur(32px) brightness(1.42) saturate(1.15);
+    mask-image:linear-gradient(180deg,#0009 0%,#000 42%,#000b 73%,transparent 100%);
   }
   .hero::after {
     z-index:2;
-    height:clamp(96px,24vw,156px);
-    background:linear-gradient(180deg,transparent 0%,#0b302533 45%,#0b3025 100%);
+    height:clamp(100px,25vw,154px);
+    background:linear-gradient(180deg,transparent 0%,#0c302524 43%,#0c3025 100%);
   }
   .heroImage {
+    /* Keep source image at its original photographic proportions. */
     left:auto!important;
-    right:-9%!important;
-    top:clamp(130px,37vw,180px)!important;
+    right:-10%!important;
+    top:clamp(91px,24vw,120px)!important;
     bottom:auto!important;
     width:175%!important;
     height:auto!important;
@@ -319,60 +321,70 @@
     object-fit:contain;
     object-position:center;
     opacity:1;
-    filter:brightness(1.33) saturate(1.21) contrast(1.035);
-    mask-image:linear-gradient(180deg,#000 0%,#000 76%,transparent 100%);
+    filter:brightness(1.29) saturate(1.13) contrast(1.035);
+    /* Both ends dissolve into ambient colour. No visible image rectangle. */
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 17%,#000 74%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 17%,#000 74%,transparent 100%);
     mask-composite:add;
   }
   .heroShade {
+    z-index:2;
     background:
-      linear-gradient(90deg,#0a3021bc 0%,#103e2b6c 49%,#0b32211a 100%),
-      linear-gradient(180deg,transparent 38%,#0f38271c 73%,#0b3025a8 100%);
+      linear-gradient(90deg,#0b30249e 0%,#0b382b49 52%,transparent 100%),
+      linear-gradient(180deg,transparent 10%,#0e312410 49%,#0c302582 100%);
   }
-  .heroCopy h1 {
-    text-shadow:0 2px 23px #08261bcc,0 10px 44px #06201469;
+  .heroInner{z-index:3}
+  .heroGrid{position:relative;z-index:3}
+  .heroCopy h1{
+    color:#fff7e8;
+    text-shadow:0 3px 21px #061c14a6,0 11px 38px #061c146b;
   }
-  .intro {
-    color:#f0f5ea;
-    text-shadow:0 1px 15px #0b281baa;
+  .thesis{
+    color:#fff8e9;
+    text-shadow:0 3px 20px #081e158f;
   }
-  .thesis {
-    color:#fff8e8;
-    text-shadow:0 2px 23px #09281ab8;
+  .intro{
+    color:#f2f5ed;
+    text-shadow:0 1px 18px #09291cb3;
   }
-  .sceneFooter{color:#ecdfb9}
-  .threshold{
+  .sceneFooter{color:#f2e4c4}
+  .threshold {
     background:
-      radial-gradient(ellipse 88% 44% at 75% 45%,#d4b96e40 0%,transparent 75%),
-      linear-gradient(180deg,#0b3025 0%,#1e4c37 13%,#4b7955 53%,#83a786 79%,#f6f4ec 100%);
+      radial-gradient(ellipse 90% 42% at 75% 46%,#d7c78833 0%,transparent 70%),
+      linear-gradient(180deg,#0c3025 0%,#1a4a38 13%,#467656 53%,#80a589 82%,#f6f4ec 100%);
   }
   .forestImage {
     left:auto!important;
     right:-20%!important;
-    top:clamp(146px,27vw,190px)!important;
+    top:clamp(126px,25vw,165px)!important;
     bottom:auto!important;
     width:195%!important;
     height:auto!important;
     max-height:none!important;
-    opacity:.94;
-    filter:brightness(1.27) saturate(1.05);
-    mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 72%,transparent 100%);
+    opacity:.92;
+    filter:brightness(1.23) saturate(1.07);
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 72%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 16%,#000 72%,transparent 100%);
     mask-composite:add;
   }
   .threshold::before{
     background:
-      linear-gradient(180deg,#0b3025bb 0%,#0e3929a3 14%,transparent 48%),
-      linear-gradient(90deg,#173f2dd9 0%,#20463369 73%,transparent 100%);
+      linear-gradient(180deg,#0b30259c 0%,#123c2c80 19%,transparent 49%),
+      linear-gradient(90deg,#163d2ba6 0%,#1c46325a 67%,transparent 100%);
   }
   .threshold::after{
     height:195px;
-    background:linear-gradient(180deg,transparent 0%,#e1e9d94d 39%,#f6f4ec 100%);
+    background:linear-gradient(180deg,transparent 0%,#dce8d949 40%,#f6f4ec 100%);
   }
   .forestShade{
-    background:linear-gradient(90deg,#173e2fc2 0%,#214e356b 56%,transparent 92%);
+    background:linear-gradient(90deg,#163b2b99 0%,#234f3861 62%,transparent 95%);
   }
 }
-/* Compact iPhone: keep the same art direction rather than revealing a black gap. */
-@media (max-width:390px) {
-  .heroImage{right:-14%!important;width:185%!important}
+/* Small iPhones use a slightly wider crop to keep the gold horizon visible. */
+@media (max-width:390px){
+  .heroImage{right:-13%!important;width:185%!important}
   .forestImage{right:-25%!important;width:205%!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero::before{filter:blur(32px) brightness(1.42) saturate(1.15)}
 }
