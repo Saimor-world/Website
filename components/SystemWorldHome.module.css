@@ -274,3 +274,105 @@
 }
 
 .moraIntroduction a:focus-visible,.entry a:focus-visible{outline-color:#225b3e}
+
+/* Mobile art direction v4: image coverage and colour, never hero height. */
+/*
+ * Desktop keeps the approved landscape composition.
+ * The original mobile CSS confined the 16:9 photograph to a ~219px-tall strip
+ * at the BOTTOM of a much taller hero. Combined with two fading masks and
+ * a black left scrim, this made most of the iPhone view near-black.
+ * Reframe the SAME image: let its aurora and sunrise occupy the upper/middle
+ * of the hero, then carry that colour with ambient gradients to its foot.
+ */
+@media (max-width:700px) {
+  .hero {
+    background:
+      radial-gradient(ellipse 88% 39% at 86% 26%,#49856f9c 0%,#28574478 37%,transparent 84%),
+      radial-gradient(ellipse 112% 42% at 46% 62%,#7a87583c 0%,#2c695352 47%,transparent 81%),
+      radial-gradient(ellipse 95% 27% at 78% 84%,#d0aa6550 0%,transparent 75%),
+      linear-gradient(163deg,#0d2b22 0%,#1b4a39 40%,#245c49 67%,#0b3025 100%);
+  }
+  .hero::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 65% 30% at 91% 22%,#8bd5ba27,transparent 85%),
+      radial-gradient(ellipse 75% 30% at 17% 77%,#c5ab6630,transparent 83%);
+  }
+  .hero::after {
+    z-index:2;
+    height:clamp(96px,24vw,156px);
+    background:linear-gradient(180deg,transparent 0%,#0b302533 45%,#0b3025 100%);
+  }
+  .heroImage {
+    left:auto!important;
+    right:-9%!important;
+    top:clamp(130px,37vw,180px)!important;
+    bottom:auto!important;
+    width:175%!important;
+    height:auto!important;
+    max-height:none!important;
+    aspect-ratio:1672/941;
+    object-fit:contain;
+    object-position:center;
+    opacity:1;
+    filter:brightness(1.33) saturate(1.21) contrast(1.035);
+    mask-image:linear-gradient(180deg,#000 0%,#000 76%,transparent 100%);
+    mask-composite:add;
+  }
+  .heroShade {
+    background:
+      linear-gradient(90deg,#0a3021bc 0%,#103e2b6c 49%,#0b32211a 100%),
+      linear-gradient(180deg,transparent 38%,#0f38271c 73%,#0b3025a8 100%);
+  }
+  .heroCopy h1 {
+    text-shadow:0 2px 23px #08261bcc,0 10px 44px #06201469;
+  }
+  .intro {
+    color:#f0f5ea;
+    text-shadow:0 1px 15px #0b281baa;
+  }
+  .thesis {
+    color:#fff8e8;
+    text-shadow:0 2px 23px #09281ab8;
+  }
+  .sceneFooter{color:#ecdfb9}
+  .threshold{
+    background:
+      radial-gradient(ellipse 88% 44% at 75% 45%,#d4b96e40 0%,transparent 75%),
+      linear-gradient(180deg,#0b3025 0%,#1e4c37 13%,#4b7955 53%,#83a786 79%,#f6f4ec 100%);
+  }
+  .forestImage {
+    left:auto!important;
+    right:-20%!important;
+    top:clamp(146px,27vw,190px)!important;
+    bottom:auto!important;
+    width:195%!important;
+    height:auto!important;
+    max-height:none!important;
+    opacity:.94;
+    filter:brightness(1.27) saturate(1.05);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 72%,transparent 100%);
+    mask-composite:add;
+  }
+  .threshold::before{
+    background:
+      linear-gradient(180deg,#0b3025bb 0%,#0e3929a3 14%,transparent 48%),
+      linear-gradient(90deg,#173f2dd9 0%,#20463369 73%,transparent 100%);
+  }
+  .threshold::after{
+    height:195px;
+    background:linear-gradient(180deg,transparent 0%,#e1e9d94d 39%,#f6f4ec 100%);
+  }
+  .forestShade{
+    background:linear-gradient(90deg,#173e2fc2 0%,#214e356b 56%,transparent 92%);
+  }
+}
+/* Compact iPhone: keep the same art direction rather than revealing a black gap. */
+@media (max-width:390px) {
+  .heroImage{right:-14%!important;width:185%!important}
+  .forestImage{right:-25%!important;width:205%!important}
+}
