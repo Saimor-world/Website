@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, FileText, CalendarD
 import styles from './SystemWorldHome.module.css';
 import OrbitalScene from './OrbitalScene';
 import MoraSignalPreview from './MoraSignalPreview';
+import SaimorShowcase from './SaimorShowcase';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -13,9 +14,9 @@ const COPY = {
   de: {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
-    intro: 'Saimôr verbindet Arbeit, Daten und Intelligenz zu einem System, in dem Zusammenhang nicht in einzelnen Apps, Modellen und Chats verloren geht. MÔRA hält den Kontext; Saimôr OS ist die Arbeitsoberfläche für Organisationen, YORI der ruhigere Raum für Creator und persönliche Arbeit.',
-    enter: 'Security Check starten', learn: 'Wie Saimôr funktioniert', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
-    entryNote: 'Der Security Check ist ein möglicher Einstieg: Er prüft öffentliche Signale deiner Domain.',
+    intro: 'Deine Arbeit lebt in vielen Apps. Dein Zusammenhang sollte das nicht müssen. SAIMÔR bringt Wissen, Werkzeuge und Entscheidungen in eine gemeinsame Arbeitswelt – mit MÔRA als Begleitung.',
+    enter: 'SAIMÔR entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
+    entryNote: 'Ein konkreter Einstieg: Der Security Check prüft öffentliche Signale deiner Domain.',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
     saimor: 'SAIMÔR', saimorText: 'Dateien, Termine, Entscheidungen und offene Dinge bleiben zusammen. MÔRA arbeitet mit diesem Zusammenhang, statt bei jedem Kontakt wieder bei null zu beginnen.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
@@ -40,9 +41,9 @@ const COPY = {
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
-    intro: 'Saimôr connects work, data and intelligence into a system where context does not disappear across separate apps, models and chats. MÔRA keeps the thread; Saimôr OS is the operating surface for organisations, while YORI is the calmer space for creators and personal work.',
-    enter: 'Start Security Check', learn: 'How Saimôr works', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
-    entryNote: 'The Security Check is one possible entry point: it examines public signals from your domain.',
+    intro: 'Your work lives across many apps. Your context should not have to. SAIMÔR brings knowledge, tools and decisions into a connected workspace – with MÔRA alongside you.',
+    enter: 'Discover SAIMÔR', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
+    entryNote: 'One practical starting point: the Security Check examines public signals from your domain.',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
     saimor: 'SAIMÔR', saimorText: 'Files, meetings, decisions and open work stay together. MÔRA works with that shared context instead of starting from zero on every interaction.', mora: 'MÔRA', moraText: 'notices when something changes',
@@ -86,8 +87,8 @@ export default function SystemWorldHome({ locale }: Props) {
               <p className={styles.thesis}>{c.thesis}</p>
               <p className={styles.intro}>{c.intro}</p>
               <div className={styles.actions}>
-                <Link href={securityHref} className={styles.primary}><ShieldCheck size={19} aria-hidden="true" />{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
-                <a href="#system" className={styles.textLink}>{c.learn}<ArrowRight size={17} aria-hidden="true" /></a>
+                <a href="#system" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></a>
+                <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
               <div className={styles.utilityLinks}>
                 <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
@@ -152,31 +153,7 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section className={styles.pathways} aria-labelledby="pathways-title">
-        <div className={styles.pathwaysInner}>
-          <div className={styles.pathwaysHeader}>
-            <div>
-              <p className={styles.eyebrow}>{c.pathsEyebrow}</p>
-              <h2 id="pathways-title">{c.pathsTitle}</h2>
-            </div>
-            <p>{c.pathsIntro}</p>
-          </div>
-          <div className={styles.pathwaysGrid}>
-            {[
-              { number: '01', title: c.pathsMora, text: c.pathsMoraText, href: locale === 'de' ? '/mora' : '/en/mora', action: c.pathsExplore },
-              { number: '02', title: c.pathsYori, text: c.pathsYoriText, href: locale === 'de' ? '/yori' : '/en/yori', action: c.pathsExplore },
-              { number: '03', title: c.pathsStudio, text: c.pathsStudioText, href: '#studio', action: c.pathsContact },
-            ].map(({ number, title, text, href, action }) => (
-              <Link key={number} href={href} className={styles.pathwayCard}>
-                <span className={styles.pathwayNumber}>{number} / SAIMÔR</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-                <span className={styles.pathwayAction}>{action}<ArrowUpRight size={17} aria-hidden="true" /></span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SaimorShowcase locale={locale} />
 
       <section className={`${styles.daylightIntelligence} relative overflow-hidden px-5 py-20 sm:px-8 md:py-28 lg:px-10`} aria-labelledby="intelligence-title">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_32%,rgba(118,164,128,.15),transparent_28%),radial-gradient(circle_at_18%_72%,rgba(214,168,72,.12),transparent_30%)]" aria-hidden="true" />
