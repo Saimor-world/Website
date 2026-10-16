@@ -73,7 +73,11 @@ export default function MoraAtmosphere(props: Props) {
     let buffer: WebGLBuffer | null = null;
     const shaders: WebGLShader[] = [];
     try {
-      gl = element.getContext('webgl', { alpha: false, antialias: false, depth: false });
+      if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+        gl = element.getContext('webgl', {
+          alpha: false, antialias: false, depth: false, preserveDrawingBuffer: true,
+        });
+      }
       cleanupGl = gl;
       if (gl) {
         const compile = (kind: number, source: string) => {
