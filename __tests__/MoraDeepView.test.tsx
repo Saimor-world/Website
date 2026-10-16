@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import MoraDeepView from '@/components/MoraDeepView';
+import MoraDeepViewLab from '@/components/MoraDeepViewLab';
 import { dream } from '@/lib/deep-view-dream';
 
 describe('deep view dream rules', () => {
@@ -33,9 +33,9 @@ describe('deep view dream rules', () => {
   });
 });
 
-describe('MoraDeepView', () => {
+describe('MoraDeepViewLab — optional deterministic technical view', () => {
   it('turns a proposal into a moon and then a star', () => {
-    render(<MoraDeepView locale="de" />);
+    render(<MoraDeepViewLab locale="de" />);
     expect(screen.getByText(/Keine Aufgabe/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Angebot_final.pdf' }));
@@ -53,7 +53,7 @@ describe('MoraDeepView', () => {
   });
 
   it('shows dropped noise in the dream log', () => {
-    render(<MoraDeepView locale="en" />);
+    render(<MoraDeepViewLab locale="en" />);
     fireEvent.click(screen.getByRole('button', { name: 'Newsletter' }));
     expect(screen.getByText(/Newsletter dropped – noise/)).toBeInTheDocument();
     expect(screen.getByText(/No task/)).toBeInTheDocument();
