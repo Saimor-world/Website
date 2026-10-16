@@ -1,7 +1,7 @@
 # SAIMÔR — Experience recovery (#84)
 
 Based on PR #83, immutable source commit `ec4ce00ab14692e4de617e088271dcc8f6d8485a`.
-PR #83 is retained. Work takes place on a separate branch. No production promotion, main merge, private OS change, or YORI pilot change.
+PR #83 is retained. Implementation was prepared on a separate work branch and then fast-forwarded into its existing preview branch to reuse that branch’s isolated Neon preview environment. New-branch previews failed at resource provisioning before a build started. No database branch was deleted. No production promotion, main merge, private OS change, or YORI pilot change.
 
 ## Art direction
 
@@ -33,6 +33,8 @@ Deep View owns its complete viewport, including minimal back/language/motion con
 
 Local lint/typecheck/unit tests are run separately. The local production build is blocked by the execution image (`uv_resident_set_memory`), so successful production build evidence must come from CI/Vercel.
 
-The PR CI builds first, then runs Playwright in Chromium at 375/390/430/1440 and WebKit with iPhone 13 parameters. It retains before/after screenshots from the immutable baseline and current commit, failures/traces and HTML reports. Tests cover all requested public routes, visible image loading, horizontal overflow, portal/Escape/focus return, product → Studio → contact, original face alignment, deliberate passage/history/replay, short viewport, reduced motion, and mobile navigation.
+The PR CI builds first, then runs Playwright in Chromium at 375/390/430/1440 and WebKit with iPhone 13 parameters. It retains before/after screenshots from a local production build of the immutable v21 SHA and the exact PR head commit, failures/traces and a JSON report. Tests cover all requested public routes, visible image loading, horizontal overflow, portal/Escape/focus return, product → Studio → contact, original face alignment, deliberate passage/history/replay, short viewport, reduced motion, and mobile navigation.
 
 WebKit emulation is not a physical iPhone Safari test. Screenshots must be inspected, not merely generated. CI and preview results are recorded after the actual runs; this document alone is not a visual sign-off.
+
+The first browser run exposed delayed cookie interference in Deep View, public-document scroll geometry and a native anchor history mismatch after product navigation. Deep View now defers the consent prompt without granting consent; public scroll geometry is scoped away from owner/client/YORI pilot surfaces; homepage anchors use the Next router. YORI public rooms are explicitly labelled as example content. No pilot data or pilot implementation changed.

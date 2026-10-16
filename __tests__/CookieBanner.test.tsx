@@ -2,7 +2,8 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import CookieBanner from '@/components/CookieBanner';
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/de' }));
+const route = vi.hoisted(() => ({ path: '/de' }));
+vi.mock('next/navigation', () => ({ usePathname: () => route.path }));
 vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   motion: {
@@ -14,6 +15,7 @@ vi.mock('framer-motion', () => ({
 
 beforeEach(() => {
   localStorage.clear();
+  route.path = '/de';
   vi.useFakeTimers();
   vi.stubGlobal('ResizeObserver', class {
     observe() {}
@@ -57,4 +59,12 @@ describe('CookieBanner — genuine consent choices', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Auswahl speichern' }));
     expect(localStorage.getItem('analytics_enabled')).toBe('false');
   });
+  it('leaves the staged encounter uninterrupted without recording consent', () => {
+    route.path = '/mora/deep-view';
+    showBanner();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(localStorage.getItem('cookie_consent')).toBeNull();
+    expect(localStorage.getItem('analytics_enabled')).toBeNull();
+  });
+
 });

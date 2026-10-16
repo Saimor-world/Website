@@ -28,9 +28,9 @@ const COPY = {
     profileLabel: 'Oder direkt mit deinem öffentlichen Handle eintreten',
     placeholder: 'deinusername',
     openHandle: 'Raum öffnen',
-    stageCaption: 'Echte Produktansicht · Klicke links auf Schreibtisch, Werkstatt oder Cash, um durch das Haus zu gehen',
-    railStatus: 'YORI bereit',
-    railStatusSub: 'CORE-Kontinuität · 3 Räume im Haus',
+    stageCaption: 'Interaktive Produktvorschau · Beispielinhalte · Entdecke Schreibtisch, Werkstatt und Cash',
+    railStatus: 'YORI · Vorschau',
+    railStatusSub: 'Beispielinhalte · 3 Räume im Haus',
     rooms: {
       desk: {
         id: 'desk' as const,
@@ -40,7 +40,7 @@ const COPY = {
         greeting: 'Guten Abend.',
         lead: 'Hier liegt nur, was deine Aufmerksamkeit oder Entscheidung braucht.',
         purpose: 'Was heute entschieden werden muss.',
-        body: 'Auf dem Holz liegen keine lauten Kurven oder erfundenen Follower-Zähler, sondern echte Vorgänge als greifbare Blätter: Verträge, Freigaben und der nächste kreative Schritt.',
+        body: 'Auf dem Holz liegen keine lauten Kurven oder erfundenen Follower-Zähler, sondern beispielhafte Vorgänge als greifbare Blätter: Verträge, Freigaben und der nächste kreative Schritt.',
         noteTitle: 'Notizen & Fäden',
         noteText: 'Nordlicht-Freigabe hängt mit dem Q4-Vertrag und dem morgigen Drehtermin um 11:00 Uhr zusammen.',
         papers: [
@@ -159,9 +159,9 @@ const COPY = {
     profileLabel: 'Or enter directly with your public handle',
     placeholder: 'yourusername',
     openHandle: 'Open room',
-    stageCaption: 'Real product view · Click Desk, Workshop or Cash on the left rail to walk through the house',
-    railStatus: 'YORI ready',
-    railStatusSub: 'CORE continuity · 3 rooms in the house',
+    stageCaption: 'Interactive product preview · Example content · Explore Desk, Workshop and Cash',
+    railStatus: 'YORI · Preview',
+    railStatusSub: 'Example content · 3 rooms in the house',
     rooms: {
       desk: {
         id: 'desk' as const,

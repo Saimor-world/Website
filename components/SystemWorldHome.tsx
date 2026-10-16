@@ -76,7 +76,7 @@ export default function SystemWorldHome({ locale }: Props) {
               <p className={styles.thesis}>{c.thesis}</p>
               <p className={styles.intro}>{c.intro}</p>
               <div className={styles.actions}>
-                <a href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></a>
+                <Link href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
               <div className={styles.utilityLinks}>
@@ -87,7 +87,7 @@ export default function SystemWorldHome({ locale }: Props) {
             </div>
             <OrbitalScene />
           </div>
-          <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><a href="#system">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></a></div>
+          <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><Link href="#system">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
       </section>
 

@@ -57,4 +57,30 @@ describe('MÔRA Deep View cinematic experience', () => {
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA begegnen' }));
     expect(screen.getByRole('heading', { name: 'MÔRA.' })).toBeInTheDocument();
   });
+  it('holds the introduction when paused and resumes only on a deliberate choice', () => {
+    vi.useFakeTimers();
+    render(<MoraDeepView locale="de" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
+    act(() => vi.advanceTimersByTime(9000));
+    expect(screen.getByTestId('deep-uncertainty')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'MÔRA begegnen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Durch ihre Augen sehen' }));
+    expect(screen.getByTestId('deep-clarity')).toBeInTheDocument();
+  });
+
+  it('cancels the passage when browser history restores the encounter', () => {
+    vi.useFakeTimers();
+    render(<MoraDeepView locale="de" />);
+    fireEvent.click(screen.getByRole('button', { name: 'MÔRA begegnen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Durch ihre Augen sehen' }));
+    expect(screen.getByRole('button', { name: 'Durch ihre Augen sehen' })).toBeDisabled();
+    act(() => {
+      window.history.replaceState(null, '', '#mora');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getByRole('heading', { name: 'MÔRA.' })).toBeInTheDocument();
+    expect(screen.queryByTestId('deep-clarity')).not.toBeInTheDocument();
+  });
+
 });

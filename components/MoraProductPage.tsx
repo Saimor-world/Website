@@ -109,7 +109,7 @@ export default function MoraProductPage({ locale }: Props) {
   const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
   return (
-    <main className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
+    <div className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
       <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07] px-5 pb-16 pt-28 sm:px-8 sm:pt-36 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
         <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_25%,rgba(234,216,159,.4)_0_1px,transparent_1.2px),radial-gradient(circle_at_70%_60%,rgba(143,218,190,.32)_0_1px,transparent_1.2px)] [background-size:119px_119px,173px_173px]" aria-hidden="true" />
@@ -252,7 +252,7 @@ export default function MoraProductPage({ locale }: Props) {
           <p className="max-w-3xl text-sm leading-7 text-white/65 sm:text-base">{c.realityText}</p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

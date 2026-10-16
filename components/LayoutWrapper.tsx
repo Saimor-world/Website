@@ -21,16 +21,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const isImmersive = isYori || isClientWorld || isOwnerSurface || isEncounter;
 
   // Immersive surfaces render without public-site chrome.
-  if (isImmersive) return <>{children}</>;
+  if (isImmersive) return isEncounter ? <div data-public-site>{children}</div> : <>{children}</>;
 
   return (
-    <>
+    <div data-public-site>
       <DesktopDiscoveries />
       <CommandPalette />
       <ScrollProgress />
       <Navbar locale={locale} />
       {children}
       <Footer locale={locale} />
-    </>
+    </div>
   );
 }

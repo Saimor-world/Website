@@ -13,7 +13,7 @@ const steps = [
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-[#f4f1e8] px-6 pb-24 pt-28 text-[#193a2b] sm:pt-36">
+    <div className="min-h-screen bg-[#f4f1e8] px-6 pb-24 pt-28 text-[#193a2b] sm:pt-36">
       <div className="mx-auto max-w-6xl">
         <p className="font-mono text-[11px] font-semibold tracking-[.22em] text-[#53735c]">SAIMÔR / KONTAKT</p>
         <h1 className="mt-5 max-w-4xl font-serif text-5xl font-normal leading-[1.02] tracking-[-.04em] sm:text-7xl">
@@ -45,6 +45,6 @@ export default function Page() {
           </section>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

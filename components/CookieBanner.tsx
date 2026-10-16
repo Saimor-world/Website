@@ -40,6 +40,9 @@ const COPY = {
 
 export default function CookieBanner() {
   const pathname = usePathname();
+  // The staged encounter has no data-dependent features or analytics opt-in.
+  // Keep the existing preference; visitors can choose on the public pages.
+  const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
   const locale = pathname?.startsWith('/en') ? 'en' : 'de';
   const copy = COPY[locale];
 
@@ -54,14 +57,14 @@ export default function CookieBanner() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isEncounter) return;
 
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
       const timer = window.setTimeout(() => setIsVisible(true), 1800);
       return () => window.clearTimeout(timer);
     }
-  }, [mounted]);
+  }, [mounted, isEncounter]);
 
   const acceptAll = () => {
     localStorage.setItem('cookie_consent', 'all');
@@ -93,7 +96,7 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!isVisible) {
+    if (!isVisible || isEncounter) {
       root.style.setProperty('--consent-banner-height', '0px');
       return;
     }
@@ -115,9 +118,11 @@ export default function CookieBanner() {
       window.removeEventListener('resize', publish);
       root.style.setProperty('--consent-banner-height', '0px');
     };
-  }, [isVisible, showDetails]);
+  }, [isVisible, showDetails, isEncounter]);
 
   const privacyHref = locale === 'en' ? '/en/legal/privacy' : '/de/rechtliches/datenschutz';
+
+  if (isEncounter) return null;
 
   return (
     <AnimatePresence>

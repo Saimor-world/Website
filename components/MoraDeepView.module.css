@@ -75,3 +75,8 @@
 }
 @media(max-height:740px) and (min-width:701px){.stage{min-height:0;padding-block:10px}.presence{width:230px;height:230px}.encounter{gap:15px}.topbar{min-height:72px}.footer{min-height:60px}}
 @media(prefers-reduced-motion:reduce){.world *,.world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.stone{opacity:1;filter:none}}
+/* Pausing must never strand an incoming scene at opacity zero. */
+.world[data-paused="true"] .intro,
+.world[data-paused="true"] .encounter,
+.world[data-paused="true"] .encounterText,
+.world[data-paused="true"] .stone{animation:none!important;opacity:1;transform:none;filter:none}
