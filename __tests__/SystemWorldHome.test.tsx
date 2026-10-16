@@ -52,7 +52,7 @@ describe('SystemWorldHome', () => {
 
   it('keeps the cosmic hero, forest, product worlds and contact in one readable sequence', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
-    const sections = [...container.querySelectorAll('section')];
+    const sections: Element[] = [...container.querySelectorAll('section')];
     const hero = container.querySelector('#world-title')?.closest('section');
     const forest = container.querySelector('#system');
     const products = container.querySelector('#products');
