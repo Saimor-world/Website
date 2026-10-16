@@ -29,7 +29,7 @@ const copy = {
     studioCategory: '03 / ZUSAMMENARBEIT',
     studioTitle: 'Etwas Eigenes vor?',
     studioBody: 'Von der ersten Frage bis zu einem sinnvollen Prototyp. Beratung, Workshops und Umsetzung – ohne unnötigen Überbau.',
-    studioCta: 'Projekt besprechen',
+    studioCta: 'Studio entdecken',
   },
   en: {
     eyebrow: 'SAIMÔR / THE WORLDS',
@@ -53,7 +53,7 @@ const copy = {
     studioCategory: '03 / WORKING TOGETHER',
     studioTitle: 'Something in mind?',
     studioBody: 'From the first question to a useful prototype. Consulting, workshops and implementation without unnecessary complexity.',
-    studioCta: 'Discuss your project',
+    studioCta: 'Explore Studio',
   },
 } as const;
 
@@ -111,7 +111,7 @@ export default function SaimorShowcase({ locale }: { locale: Locale }) {
             <h3>{c.studioTitle}</h3>
             <p>{c.studioBody}</p>
           </div>
-          <Link href={locale === 'de' ? '/de/kontakt' : '/en/contact'} className={styles.studioLink}>{c.studioCta}<ArrowRight size={19} aria-hidden="true" /></Link>
+          <Link href={locale === 'de' ? '/studio' : '/en/studio'} className={styles.studioLink}>{c.studioCta}<ArrowRight size={19} aria-hidden="true" /></Link>
         </div>
       </div>
     </section>
