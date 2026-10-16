@@ -86,3 +86,60 @@
  .featureLink,.studioLink,.yoriImage{transition:none}
  .yori:hover .yoriImage,.studioLink:hover{transform:none}
 }
+
+/* Signature art direction: the same verdigris, brass and paper as the hero.
+   Subtle contrast in materials is intentional; no default three-card grid. */
+.section{background:linear-gradient(180deg,#f6f4ec 0%,#edf2e9 15%,#f5f3ea 56%,#f6f4ec 100%);padding-top:104px;padding-bottom:114px}
+.header{padding-bottom:66px}
+.headerGrid{grid-template-columns:1.35fr .65fr;gap:70px}
+.headerGrid h2{font-size:clamp(54px,6.45vw,100px);line-height:.945;letter-spacing:-.051em}
+.headingSecond{color:#718e7b;font-style:normal}
+.headerGrid>p{max-width:350px;line-height:1.9}
+.feature{position:relative;border-radius:19px;min-height:610px;margin-bottom:22px;box-shadow:0 25px 70px #1a372515}
+.feature:focus-within{outline:1px solid #e6c98d80;outline-offset:4px}
+.featureCopy{padding:clamp(48px,5.3vw,82px)}
+.featureCopy h3{font-size:clamp(77px,8vw,120px);margin-top:25px;letter-spacing:-.05em}
+.featureStatement{font-size:clamp(28px,2.5vw,37px);line-height:1.16}
+.featureBody{font-size:15px;line-height:1.92;max-width:390px}
+.featureLink{padding:12px 0;font-size:14px}
+.mora{background:radial-gradient(ellipse at 87% 33%,#2d5b47 0%,#153b2c 44%,#0b211a 100%)}
+.moraArtwork{min-height:610px;background:radial-gradient(circle at 52% 47%,#55806938,transparent 58%)}
+.moraGlow{background:radial-gradient(circle,#e0cf9d2b 0,#77b79710 36%,transparent 70%);filter:blur(38px)}
+.moraOrbitOne{border-color:#e9dfb33d}
+.moraOrbitTwo{border-color:#e9d8a85a}
+.moraOrbitThree{border-color:#bbd7be2e}
+.moraCore{color:#fff9e7;text-shadow:0 0 40px #e1d7ae53}
+.artworkDisclaimer{color:#d4dfd0ad}
+.yori{background:#e8e2d7}
+.yoriArtwork{min-height:610px;background:#a18b70}
+.yoriImage{filter:saturate(.82) contrast(1.04) brightness(.99)}
+.yoriArtwork:after{background:linear-gradient(0deg,#171e14aa 0,transparent 28%),linear-gradient(90deg,transparent 83%,#e8e2d722)}
+.yori:hover .yoriImage{transform:scale(1.018)}
+.studioRow{padding-top:62px;margin-top:14px;border-color:#86a18a5a}
+.studioRow h3{letter-spacing:-.04em}
+.studioLink{border-radius:999px;padding:15px 27px;box-shadow:0 9px 25px #1c4b351c}
+@media(max-width:1000px){
+  .feature{min-height:515px}
+  .featureCopy{padding:42px}
+  .moraArtwork,.yoriArtwork{min-height:515px}
+}
+@media(max-width:760px){
+  .section{padding:73px 18px 86px}
+  .header{padding-bottom:40px}
+  .headerGrid{gap:25px}
+  .headerGrid h2{font-size:clamp(44px,10.2vw,67px);line-height:1.015}
+  .headerGrid>p{line-height:1.75}
+  .feature{min-height:0;border-radius:15px;box-shadow:0 17px 37px #1a372515}
+  .featureCopy{padding:38px 28px 38px}
+  .featureCopy h3{font-size:clamp(69px,17vw,85px);margin-top:20px}
+  .featureStatement{font-size:30px}
+  .featureBody{line-height:1.8}
+  .moraArtwork{min-height:330px}
+  .yoriArtwork{min-height:345px}
+  .moraCore{font-size:clamp(75px,19vw,90px)}
+  .studioRow{margin-top:6px;padding:45px 3px 0}
+  .studioRow h3{font-size:47px}
+}
+@media(prefers-reduced-motion:reduce){
+  .yori:hover .yoriImage{transform:none}
+}
