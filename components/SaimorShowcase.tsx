@@ -15,7 +15,7 @@ const copy = {
     moraTitle: 'MÔRA',
     moraStatement: 'Ein Gedanke geht weiter.',
     moraBody: 'Zwischen Nachrichten, Projekten und Terminen geht oft der Zusammenhang verloren. MÔRA hilft, ihn sichtbar zu halten – mit Quellen, Grenzen und deiner Freigabe vor Aktionen.',
-    moraCta: 'MÔRA kennenlernen',
+    moraCta: 'MÔRA im Detail entdecken',
     moraArtworkLabel: 'Prinzipdarstellung · keine Live-Daten',
     moraRingTop: 'QUELLEN',
     moraRingRight: 'KONTEXT',
