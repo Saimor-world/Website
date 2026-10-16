@@ -108,7 +108,7 @@
 .pathwaysGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .pathwayCard{display:flex;flex-direction:column;align-items:flex-start;min-height:300px;padding:27px 27px 25px;background:#f9f8f1;border:1px solid #90a89385;border-radius:16px;color:#183e2d;text-decoration:none;box-shadow:0 10px 30px #2646330c;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
 .pathwayCard:hover,.pathwayCard:focus-visible{transform:translateY(-3px);border-color:#52735b;box-shadow:0 16px 34px #2646331a}
-.pathwayNumber{font:11px/1.6 monospace;letter-spacing:.2em;color:#67806a}
+.pathwayNumber{font:11px/1.6 monospace;letter-spacing:.2em;color:#4f7058}
 .pathwayCard h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:37px;line-height:1.1;font-weight:500;letter-spacing:-.035em;margin:24px 0 12px}
 .pathwayCard p{color:#486052;font-size:14px;line-height:1.75;margin:0 0 25px}
 .pathwayAction{display:inline-flex;gap:9px;align-items:center;color:#256447;font-weight:650;font-size:13px;margin-top:auto}
