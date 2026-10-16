@@ -45,9 +45,8 @@ export default function MoraPerspective({ locale }: { locale: 'de' | 'en' }) {
     <div className={styles.perspective} data-testid="deep-clarity"
       data-revealed={revealed} data-decided={Boolean(decision)}
       onPointerMove={event => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        event.currentTarget.style.setProperty('--gaze-x', `${event.clientX - rect.left}px`);
-        event.currentTarget.style.setProperty('--gaze-y', `${event.clientY - rect.top}px`);
+        event.currentTarget.style.setProperty('--gaze-x', `${event.clientX}px`);
+        event.currentTarget.style.setProperty('--gaze-y', `${event.clientY}px`);
       }}>
       <div className={styles.light} aria-hidden="true" />
       <svg className={styles.constellation} viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
