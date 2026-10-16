@@ -103,7 +103,7 @@ export default function StudioWorld({ locale }: { locale: Locale }) {
   const homeHref = locale === 'de' ? '/de' : '/en';
 
   return (
-    <main className={styles.world}>
+    <div className={styles.world}>
       <section className={styles.hero} aria-labelledby="studio-title">
         <div className={styles.ambient} aria-hidden="true" />
         <div className={styles.heroInner}>
@@ -169,6 +169,6 @@ export default function StudioWorld({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
