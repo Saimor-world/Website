@@ -205,7 +205,7 @@
 .system{background:var(--saimor-paper)}
 .threshold{isolation:isolate;min-height:720px;border:0;background:
   radial-gradient(ellipse at 83% 47%,#597e5f50,transparent 50%),
-  linear-gradient(180deg,#081e17 0%,#143827 14%,#325b41 48%,#5a8168 79%,#f6f4ec 100%)}
+  linear-gradient(180deg,#081e17 0%,#143827 14%,#325b41 48%,#5a8168 79%,#f6f4ec 100%);color:#f8f3e8}
 .threshold::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:
   linear-gradient(180deg,#081e17 0%,#081e17cf 7%,transparent 26%),
   linear-gradient(90deg,#163c2a68,transparent 64%)}
@@ -272,3 +272,5 @@
   .primary{transition:none}
   .primary:hover{transform:none}
 }
+
+.moraIntroduction a:focus-visible,.entry a:focus-visible{outline-color:#225b3e}
