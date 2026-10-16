@@ -56,7 +56,8 @@ export default function MoraAtmosphere(props: Props) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const layer = useRef<HTMLDivElement>(null);
   const controls = useRef(props);
-  useEffect(() => { controls.current = props; }, [props]);
+  const resetClock = useRef<(() => void) | null>(null);
+  useEffect(() => { controls.current = props; resetClock.current?.(); }, [props]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -76,7 +77,9 @@ export default function MoraAtmosphere(props: Props) {
           if (!shader) throw new Error('Shader unavailable');
           shaders.push(shader);
           gl!.shaderSource(shader, source); gl!.compileShader(shader);
-          if (!gl!.getShaderParameter(shader, gl!.COMPILE_STATUS)) throw new Error('Shader unavailable');
+          if (!gl!.getShaderParameter(shader, gl!.COMPILE_STATUS)) {
+            throw new Error(gl!.getShaderInfoLog(shader) || 'Shader unavailable');
+          }
           return shader;
         };
         program = gl.createProgram();
@@ -91,7 +94,10 @@ export default function MoraAtmosphere(props: Props) {
         const position = gl.getAttribLocation(program, 'a_position');
         gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
       }
-    } catch { gl = null; }
+    } catch (error) {
+      surface.dataset.rendererError = error instanceof Error ? error.message : 'GPU unavailable';
+      gl = null;
+    }
     const renderer = gl;
     let gpuLost = false;
     const loseGpu = (event: Event) => { event.preventDefault(); gpuLost = true; };
@@ -109,10 +115,13 @@ export default function MoraAtmosphere(props: Props) {
     resize();
     const observer = new ResizeObserver(resize); observer.observe(surface);
     let frame = 0, previous = performance.now(), lastDraw = -100, clock = 0, progress = 0;
+    const syncClock = () => { previous = performance.now(); };
+    resetClock.current = syncClock;
+    document.addEventListener('visibilitychange', syncClock);
     let arrived = false, lastClock = -1, lastProgress = -1, lastWidth = 0, lastHeight = 0;
     const draw = (now: number) => {
       frame = requestAnimationFrame(draw);
-      const dt = Math.min((now - previous) / 1000, .05); previous = now;
+      const dt = Math.max((now - previous) / 1000, 0); previous = now;
       const c = controls.current;
       const running = !c.paused && !c.reduced && !document.hidden;
       if (running) clock += dt;
@@ -139,6 +148,8 @@ export default function MoraAtmosphere(props: Props) {
     frame = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(frame); observer.disconnect();
+      resetClock.current = null;
+      document.removeEventListener('visibilitychange', syncClock);
       element.removeEventListener('webglcontextlost', loseGpu);
       if (cleanupGl) {
         if (buffer) cleanupGl.deleteBuffer(buffer);
