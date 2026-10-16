@@ -56,14 +56,14 @@ const COPY: Record<'de' | 'en', Copy> = {
   de: {
     back: 'MÔRA',
     eyebrow: 'MÔRA / DEEP VIEW',
-    title: 'Aus Signalen wird ein Bild.',
-    lead: 'Tippe an, was heute passiert ist. MÔRA träumt darüber: verbindet nur mit Grund, verwirft Rauschen und schlägt höchstens eine Aufgabe vor.',
-    badge: 'INTERAKTIVE DEMO · BEISPIELDATEN · FESTE REGELN',
+    title: 'Klarheit beginnt mit einer Frage.',
+    lead: 'Was davon ist belegt? Was wirkt nur überzeugend? Und wer entscheidet, was geschehen darf? Hier wird aus dem Gefühl ein überprüfbarer Zusammenhang.',
+    badge: 'INTERAKTIVE PRINZIPDARSTELLUNG · KEINE LIVE-DATEN',
     fieldLabel: 'STERNENFELD',
-    play: 'Traum abspielen',
+    play: 'Prüfung ansehen',
     reset: 'Zurücksetzen',
     selected: (count) => (count === 1 ? '1 Signal' : `${count} Signale`),
-    hint: 'Tippe Sterne an – oder spiel den Traum ab.',
+    hint: 'Wähle Signale oder starte die Prüfung.',
     moraResting: 'MÔRA ruht',
     moraDreaming: 'MÔRA träumt',
     signals: {
@@ -110,12 +110,12 @@ const COPY: Record<'de' | 'en', Copy> = {
       done: { label: 'STERN', text: 'Erledigt. Sie bleibt als Stern im Gedächtnis – mit ihren Quellen.', action: '' },
     },
     dismiss: 'Verwerfen',
-    note: 'Beispieldaten und feste Regeln – so arbeitet der Traum. Im OS prüft CORE jede Entscheidung von MÔRA gegen dieselben Regeln, bevor sich etwas ändert.',
+    note: 'Beispieldaten und feste Regeln – keine verbundenen Kundendaten. Was eine KI nur vermutet, bleibt erkennbar; Aktionen brauchen einen Menschen oder ausdrücklich erteilte Freigaben.',
     legendBacked: 'belegt',
     legendGuessed: 'vermutet',
     legendRejected: 'abgelehnt',
-    whyEyebrow: 'WAS HIER PASSIERT',
-    whyTitle: 'Wenig, aber richtig.',
+    whyEyebrow: 'VOM RAUSCHEN ZUR KLARHEIT',
+    whyTitle: 'Prüfen, bevor etwas zusammengehört.',
     steps: [
       ['01', 'Signale', 'Rohes aus Dateien, Mails, Terminen und Nightwatch. Wiederholtes und Rauschen wird verworfen, nicht gespeichert.'],
       ['02', 'Traum', 'MÔRA verbindet nur mit Grund. Belegte Verbindungen sind durchgezogen, Vermutungen gestrichelt – und bleiben als Vermutung erkennbar.'],
@@ -127,14 +127,14 @@ const COPY: Record<'de' | 'en', Copy> = {
   en: {
     back: 'MÔRA',
     eyebrow: 'MÔRA / DEEP VIEW',
-    title: 'Signals become a picture.',
-    lead: 'Tap what happened today. MÔRA dreams over it: connects only with a reason, drops noise and proposes at most one task.',
-    badge: 'INTERACTIVE DEMO · EXAMPLE DATA · FIXED RULES',
+    title: 'Clarity begins with a question.',
+    lead: 'What is backed by evidence? What merely sounds convincing? And who gets to decide what happens? Here, intuition becomes something you can verify.',
+    badge: 'INTERACTIVE CONCEPT · NO LIVE DATA',
     fieldLabel: 'STAR FIELD',
-    play: 'Play the dream',
+    play: 'Explore the check',
     reset: 'Reset',
     selected: (count) => (count === 1 ? '1 signal' : `${count} signals`),
-    hint: 'Tap stars – or play the dream.',
+    hint: 'Choose signals or start the check.',
     moraResting: 'MÔRA is resting',
     moraDreaming: 'MÔRA is dreaming',
     signals: {
@@ -181,12 +181,12 @@ const COPY: Record<'de' | 'en', Copy> = {
       done: { label: 'STAR', text: 'Done. It stays in memory as a star – with its sources.', action: '' },
     },
     dismiss: 'Dismiss',
-    note: 'Example data and fixed rules – this is how the dream works. In the OS, CORE checks every decision MÔRA makes against the same rules before anything changes.',
+    note: 'Example data and fixed rules — no connected customer data. AI guesses remain identifiable; actions require a person or explicitly granted permissions.',
     legendBacked: 'backed',
     legendGuessed: 'guessed',
     legendRejected: 'rejected',
-    whyEyebrow: 'WHAT IS HAPPENING',
-    whyTitle: 'Little, but right.',
+    whyEyebrow: 'FROM NOISE TO CLARITY',
+    whyTitle: 'Verify before you connect.',
     steps: [
       ['01', 'Signals', 'Raw input from files, mail, meetings and Nightwatch. Repeats and noise are dropped, not stored.'],
       ['02', 'Dream', 'MÔRA connects only with a reason. Backed connections are solid, guesses dashed – and they stay recognisable as guesses.'],
@@ -297,21 +297,41 @@ export default function MoraDeepView({ locale }: Props) {
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#050a08] text-[#f5f3e9]">
-      <section className="relative border-b border-white/[.07] px-5 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-28 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_28%,rgba(70,194,155,.15),transparent_30%),radial-gradient(circle_at_22%_76%,rgba(112,200,244,.09),transparent_25%),linear-gradient(180deg,#0b2017_0%,#050a08_72%)]" aria-hidden="true" />
+      <section className="relative overflow-hidden border-b border-[#809c83]/35 bg-[#f5f3e9] px-5 pb-14 pt-24 text-[#183d2b] sm:px-8 sm:pb-20 sm:pt-28 lg:px-10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_79%_18%,rgba(224,203,146,.20),transparent_41%),radial-gradient(ellipse_at_12%_91%,rgba(147,187,150,.16),transparent_40%)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl">
-          <Link href={moraHref} className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[.2em] text-white/40 transition hover:text-white/75">
+          <Link href={moraHref} className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[.2em] text-[#43664c] transition hover:text-[#183e2b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315d40]">
             <ArrowLeft className="h-3.5 w-3.5" />{c.back}
           </Link>
           <div className="mt-12 max-w-4xl sm:mt-16">
-            <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e5c871]/82">{c.eyebrow}</p>
-            <h1 className="mt-5 font-serif text-[clamp(2.8rem,11vw,6.6rem)] font-light leading-[.92] tracking-[-.05em] text-[#fbfaf3]">{c.title}</h1>
-            <p className="mt-6 max-w-2xl text-[15px] leading-7 text-[#dbe8df]/64 sm:text-lg sm:leading-8">{c.lead}</p>
+            <p className="font-mono text-[10px] font-semibold tracking-[.23em] text-[#45664b]">{c.eyebrow}</p>
+            <h1 className="mt-5 max-w-5xl font-serif text-[clamp(2.8rem,11vw,6.6rem)] font-light leading-[.95] tracking-[-.05em] text-[#173c2c]">{c.title}</h1>
+            <p className="mt-6 max-w-2xl text-[15px] leading-7 text-[#3e5e48] sm:text-lg sm:leading-8">{c.lead}</p>
           </div>
+          <div className="mt-12 grid gap-0 border-y border-[#829d83]/40 sm:mt-16 md:grid-cols-3">
+            {(locale === 'de' ? [
+              ['01', 'BELEG', 'Woher wissen wir das?'],
+              ['02', 'VERMUTUNG', 'Wo fehlt ein Zusammenhang?'],
+              ['03', 'FREIGABE', 'Wer darf den nächsten Schritt auslösen?'],
+            ] : [
+              ['01', 'EVIDENCE', 'How do we know?'],
+              ['02', 'INFERENCE', 'Where is the link still uncertain?'],
+              ['03', 'PERMISSION', 'Who can approve the next action?'],
+            ]).map(([number, label, question]) => (
+              <div key={number} className="grid grid-cols-[35px_1fr] gap-3 border-b border-[#829d83]/30 py-5 last:border-0 md:border-b-0 md:border-r md:border-[#829d83]/30 md:px-5 md:first:pl-0 md:last:border-0">
+                <span className="font-mono text-[10px] text-[#62806a]">{number}</span>
+                <div>
+                  <p className="font-mono text-[10px] font-semibold tracking-[.16em] text-[#426950]">{label}</p>
+                  <p className="mt-2 text-sm leading-6 text-[#294933]">{question}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <a href="#deep-view-check" className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-[#37654a] py-2 text-sm font-semibold text-[#235439] transition hover:gap-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#235439]">{locale === 'de' ? 'Reality Check erleben' : 'Explore the Reality Check'}<ArrowRight size={17} aria-hidden="true" /></a>
         </div>
       </section>
 
-      <section className="px-3 py-10 sm:px-8 sm:py-14 lg:px-10">
+      <section id="deep-view-check" className="scroll-mt-16 px-3 py-10 sm:px-8 sm:py-14 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <div className="mb-4 font-mono text-[8px] font-semibold tracking-[.2em] text-[#d9c77f]/70">{c.badge}</div>
 
