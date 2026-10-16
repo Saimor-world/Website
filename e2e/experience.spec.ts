@@ -1,6 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
-const baseline = process.env.QA_BASELINE_URL || 'http://127.0.0.1:3002';
 const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
 async function visit(page: Page, route: string) {
   const response = await page.goto(route);
@@ -37,6 +36,7 @@ async function noOverflow(page: Page) {
 
 test('immutable v21 baseline: home, forest, encounter and clarity', async ({ page }, info) => {
   test.setTimeout(90000);
+  const baseline = process.env.QA_BASELINE_URL || (info.project.name.startsWith('webkit') ? 'https://127.0.0.1:3444' : 'http://127.0.0.1:3002');
   await page.goto(`${baseline}/de`);
   await consent(page);
   await page.locator('#world-title').waitFor();
@@ -93,9 +93,13 @@ test('homepage: wordless door, cinematic passage, escape, focus return, product 
   await expect(page.locator('#world-title')).toBeVisible();
   await page.getByRole('link', { name: 'Studio entdecken', exact: true }).first().click();
   await expect(page).toHaveURL(/\/studio$/);
+  await page.getByRole('link', { name: 'Die Möglichkeiten ansehen', exact: true }).click();
+  await expect(page).toHaveURL(/#wege$/);
   await page.getByRole('link', { name: 'Workshop anfragen', exact: true }).click();
   await expect(page).toHaveURL(/\/de\/kontakt$/);
   await expect(page.getByRole('link', { name: 'E-Mail schreiben' })).toHaveAttribute('href', /^mailto:contact@saimor.world/);
+  await page.goBack();
+  await expect(page.locator('#studio-title')).toBeVisible();
 });
 
 test('cinematic: deliberate passage, real face alignment, history, replay and localization', async ({ page }, info) => {

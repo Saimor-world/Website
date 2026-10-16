@@ -111,7 +111,7 @@ export default function StudioWorld({ locale }: { locale: Locale }) {
           <h1 id="studio-title">{c.title}<span>{c.titleAccent}</span></h1>
           <p className={styles.lead}>{c.intro}</p>
           <div className={styles.heroActions}>
-            <a href="#wege" className={styles.primary}>{c.explore}<ArrowDown size={17} aria-hidden="true" /></a>
+            <Link href="#wege" className={styles.primary}>{c.explore}<ArrowDown size={17} aria-hidden="true" /></Link>
             <Link href={contactHref} className={styles.secondary}>{c.talk}<ArrowUpRight size={16} aria-hidden="true" /></Link>
           </div>
           <div className={styles.process} aria-label={locale === 'de' ? 'Unser Prozess' : 'Our process'}>

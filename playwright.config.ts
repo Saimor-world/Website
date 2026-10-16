@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     { name: 'chromium-1440', use: { browserName: 'chromium', viewport: { width: 1440, height: 960 } } },
     ...[375, 390, 430].map(width => ({ name: `chromium-${width}`, use: { browserName: 'chromium' as const, viewport: { width, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 } })),
-    { name: 'webkit-390', use: { ...devices['iPhone 13'], browserName: 'webkit' } },
+    { name: 'webkit-390', use: { ...devices['iPhone 13'], browserName: 'webkit', baseURL: process.env.QA_BASE_URL || 'https://127.0.0.1:3443' } },
   ],
   webServer: process.env.QA_BASE_URL ? undefined : [{
     command: 'npx next start -p 3001',
@@ -32,6 +32,11 @@ export default defineConfig({
     command: 'npx next start -p 3002',
     cwd: path.resolve(process.cwd(), '../website-v21'),
     url: 'http://127.0.0.1:3002/de',
+    timeout: 90000,
+    reuseExistingServer: !process.env.CI,
+  }, {
+    command: 'node scripts/qa-https-proxy.mjs',
+    url: 'https://127.0.0.1:3443/de',
     timeout: 90000,
     reuseExistingServer: !process.env.CI,
   }],
