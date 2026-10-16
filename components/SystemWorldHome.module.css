@@ -961,3 +961,30 @@
   .threshold .contextStage{isolation:isolate}
   .threshold .thresholdInner{padding-bottom:72px}
 }
+
+/* V18 — forest is a teaser, not a second feature grid.
+   No decorative faux doorway, no competing CTA over the photographed door. */
+.threshold .portalCanvas::before,.threshold .portalCanvas::after{content:none}
+.threshold .contextStage{align-items:stretch}
+.threshold .contextCopy h2{text-wrap:balance}
+.threshold .contextBody{max-width:380px}
+@media(max-width:700px){
+  .threshold .thresholdInner{
+    gap:18px;
+    padding-top:79px;
+    padding-bottom:66px;
+  }
+  .threshold .portalCanvas{
+    height:clamp(490px,131vw,562px);
+  }
+  .threshold .contextBody{
+    max-width:350px;
+    font-size:14px;
+    line-height:1.72;
+  }
+  .threshold > .forestImage{
+    top:clamp(350px,98vw,428px)!important;
+    height:clamp(730px,212vw,890px)!important;
+  }
+  .threshold::after{height:31px}
+}
