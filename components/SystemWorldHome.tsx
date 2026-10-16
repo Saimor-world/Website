@@ -16,7 +16,7 @@ const COPY = {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
     intro: 'Deine Arbeit lebt in vielen Apps. Dein Zusammenhang sollte das nicht müssen. SAIMÔR bringt Wissen, Werkzeuge und Entscheidungen in eine gemeinsame Arbeitswelt – mit MÔRA als Begleitung.',
-    enter: 'SAIMÔR entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
+    enter: 'Produkte entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
     saimor: 'SAIMÔR', saimorText: 'Manches sollte nicht verloren gehen, nur weil der Tag weiterzieht.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
@@ -37,7 +37,7 @@ const COPY = {
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
     intro: 'Your work lives across many apps. Your context should not have to. SAIMÔR brings knowledge, tools and decisions into a connected workspace – with MÔRA alongside you.',
-    enter: 'Discover SAIMÔR', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
+    enter: 'Explore products', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
     saimor: 'SAIMÔR', saimorText: 'Some things should not get lost just because the day moves on.', mora: 'MÔRA', moraText: 'notices when something changes',
@@ -76,7 +76,7 @@ export default function SystemWorldHome({ locale }: Props) {
               <p className={styles.thesis}>{c.thesis}</p>
               <p className={styles.intro}>{c.intro}</p>
               <div className={styles.actions}>
-                <a href="#system" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></a>
+                <a href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></a>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
               <div className={styles.utilityLinks}>
