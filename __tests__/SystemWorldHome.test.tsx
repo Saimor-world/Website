@@ -68,6 +68,16 @@ describe('SystemWorldHome', () => {
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
   });
 
+  it('requests enough image detail for the re-composed iPhone landscapes', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const cosmos = container.querySelector('img[src="/images/saimor-cosmos-layer.webp"]');
+    const forest = container.querySelector('img[src="/images/saimor-forest-layer.webp"]');
+    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 390px) 185vw'));
+    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 175vw'));
+    expect(forest).toHaveAttribute('sizes', expect.stringContaining('(max-width: 390px) 205vw'));
+    expect(forest).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 195vw'));
+  });
+
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';
