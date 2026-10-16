@@ -152,6 +152,7 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
       <dialog
         ref={dialogRef}
         className={styles.dialog}
+        data-stage={stage}
         aria-labelledby="portal-inside-title"
         onClose={() => setEntered(false)}
         onClick={(event) => { if (event.target === event.currentTarget) exit(); }}
