@@ -1,6 +1,7 @@
 'use client';
 
 import BrandSigil from './BrandSigil';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LogIn, Menu, ShieldCheck, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -135,9 +136,9 @@ export default function Navbar({ locale }: { locale: Locale }) {
 
             <nav className="hidden items-center gap-1 md:flex" aria-label={locale === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
               {navItems.map((item) => (
-                <a key={item.href} href={item.href} onClick={() => track(item.label)} className="px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-[#d9eadf]/66 transition hover:text-[#fffdf2]">
+                <Link key={item.href} href={item.href} onClick={() => track(item.label)} className="px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-[#d9eadf]/66 transition hover:text-[#fffdf2]">
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -171,10 +172,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
 
             <nav className="mt-12 border-t border-[#cce0d2]/22">
               {navItems.map((item, index) => (
-                <a key={item.href} href={item.href} onClick={() => { setMenuOpen(false); track(item.label); }} className="flex items-center justify-between border-b border-[#cce0d2]/20 py-4">
+                <Link key={item.href} href={item.href} onClick={() => { setMenuOpen(false); track(item.label); }} className="flex items-center justify-between border-b border-[#cce0d2]/20 py-4">
                   <span className="font-serif text-4xl font-light tracking-[-.03em] text-[#fbfbf4]">{item.label}</span>
                   <span className="font-mono text-[9px] tracking-[.18em] text-[#d5e4d9]/62">0{index + 1}</span>
-                </a>
+                </Link>
               ))}
             </nav>
 

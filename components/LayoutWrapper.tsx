@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CommandPalette from './CommandPalette';
@@ -19,6 +20,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const isOwnerSurface = Boolean(pathname?.startsWith('/owner'));
   const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
   const isImmersive = isYori || isClientWorld || isOwnerSurface || isEncounter;
+
+  useEffect(() => {
+    if (isClientWorld || isOwnerSurface) return;
+    const previous = document.documentElement.lang;
+    document.documentElement.lang = locale;
+    return () => { document.documentElement.lang = previous; };
+  }, [locale, isClientWorld, isOwnerSurface]);
 
   // Immersive surfaces render without public-site chrome.
   if (isImmersive) return isEncounter ? <div data-public-site>{children}</div> : <>{children}</>;

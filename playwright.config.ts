@@ -8,7 +8,7 @@ export default defineConfig({
   timeout: 60000,
   expect: { timeout: 10000 },
   retries: 0,
-  maxFailures: 3,
+  maxFailures: 10,
   reporter: [['list'], ['json', { outputFile: '.qa/browser-results.json' }]],
   outputDir: 'test-results',
   use: {

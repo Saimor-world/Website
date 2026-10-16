@@ -1,6 +1,7 @@
 'use client';
 
 import BrandSigil from './BrandSigil';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ShareButton from '@/components/ShareButton';
 
@@ -44,7 +45,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         status: {
           checking: 'Status wird geprüft',
           available: 'Website erreichbar',
-          limited: 'System eingeschränkt',
+          limited: 'Website eingeschränkt',
           unknown: 'Status unbekannt',
         },
       }
@@ -53,9 +54,9 @@ export default function Footer({ locale }: { locale: Locale }) {
         trust: 'Security', imprint: 'Imprint', privacy: 'Privacy', terms: 'Terms', refund: 'Refund',
         tagline: 'Workspace, context and AI in one system.',
         status: {
-          checking: 'Checking system status',
+          checking: 'Checking website status',
           available: 'Website available',
-          limited: 'System limited',
+          limited: 'Website limited',
           unknown: 'Status unknown',
         },
       };
@@ -96,7 +97,7 @@ export default function Footer({ locale }: { locale: Locale }) {
           <div>
             <div className="font-mono text-[9px] uppercase tracking-[.22em] text-[#d6a848]/52">System</div>
             <div className="mt-4 grid gap-3 text-sm text-white/65">
-              <a className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</a>
+              <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</Link>
               <a className="transition hover:text-white/82" href={moraHref}>Môra</a>
               <a className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</a>
               <a className="transition hover:text-white/82" href={securityHref}>{c.entry}</a>

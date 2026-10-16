@@ -44,7 +44,7 @@ describe('Footer system status', () => {
     mocks.fetch.mockResolvedValue({ ok: false, json: async () => ({ ok: false }) });
     render(<Footer locale="de" />);
 
-    expect(await screen.findByText('System eingeschr\u00e4nkt')).toBeInTheDocument();
+    expect(await screen.findByText('Website eingeschr\u00e4nkt')).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'limited');
   });
   it('uses an honest unknown state when health cannot be reached', async () => {

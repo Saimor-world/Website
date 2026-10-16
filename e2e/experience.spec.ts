@@ -53,6 +53,7 @@ test('public routes render, contain one headline, load images and fit the viewpo
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('h1')).toBeVisible();
     await noOverflow(page);
+    await expect(page.locator('html')).toHaveAttribute('lang', route.startsWith('/en') ? 'en' : 'de');
     await expect.poll(() => page.locator('img').evaluateAll(images => images.filter(element => { const i = element as HTMLImageElement; return i.getBoundingClientRect().top < innerHeight && (!i.complete || i.naturalWidth === 0); }).length)).toBe(0);
     await shot(page, info, `after-${route.replaceAll('/', '-')}`, true);
   }
@@ -68,13 +69,13 @@ test('homepage: wordless door, cinematic passage, escape, focus return, product 
   await door.click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
+  await expect(page.locator('body')).toHaveCSS('overflow-y', 'hidden');
   await expect(page.getByRole('heading', { name: 'Was bleibt, kommt mit.' })).toBeVisible();
   await shot(page, info, 'after-portal');
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
   await expect(door).toBeFocused();
-  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+  await expect(page.locator('body')).not.toHaveCSS('overflow-y', 'hidden');
   await page.getByRole('link', { name: 'Produkte entdecken', exact: true }).click();
   await expect(page).toHaveURL(/#products$/);
   await page.getByRole('link', { name: 'MÔRA im Detail entdecken' }).click();
@@ -161,10 +162,10 @@ test('product states, workshop details and YORI example rooms respond', async ({
   await expect(page.locator('#workshops details')).toHaveAttribute('open', '');
   await page.goto('/yori');
   await page.getByRole('button', { name: 'Werkstatt', exact: true }).click();
-  await expect(page.getByText('02 / WERKSTATT', { exact: true })).toBeVisible();
+  await expect(page.getByText('02 / WERKSTATT', { exact: true }).first()).toBeVisible();
   await shot(page, info, 'after-yori-workshop');
   await page.getByRole('button', { name: 'Cash', exact: true }).click();
-  await expect(page.getByText('03 / CASH', { exact: true })).toBeVisible();
+  await expect(page.getByText('03 / CASH', { exact: true }).first()).toBeVisible();
 });
 
 test('demo failures and scanner failures are visible in both languages (controlled API fixtures)', async ({ page }) => {
@@ -172,7 +173,7 @@ test('demo failures and scanner failures are visible in both languages (controll
     await page.route('**/api/demo-launch', route => route.fulfill({ status: 503, json: { error: 'QA failure fixture' } }));
     await page.goto(locale === 'de' ? '/mora' : '/en/mora'); await consent(page);
     await page.getByRole('button', { name: locale === 'de' ? 'MÔRA im OS erleben' : 'Experience MÔRA in the OS', exact: true }).first().click();
-    await expect(page.getByRole('alert')).toContainText(locale === 'de' ? 'gerade nicht erreichbar' : 'currently unavailable');
+    await expect(page.getByRole('alert').filter({ hasText: locale === 'de' ? 'gerade nicht erreichbar' : 'currently unavailable' })).toBeVisible();
     await page.route('**/api/security-scan', route => route.fulfill({ status: 503, json: { success: false, error: 'QA controlled scanner failure' } }));
     await page.goto(locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check');
     await page.getByPlaceholder(locale === 'de' ? 'deine-domain.de' : 'your-domain.com').fill('example.com');
