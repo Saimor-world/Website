@@ -41,12 +41,22 @@ export default function MoraDeepView({ locale }: Props) {
   const [crossing, setCrossing] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const crossingTimer = useRef<number | undefined>(undefined);
+  const focusRequested = useRef(false);
 
   const go = (next: Scene) => {
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname : `#${next}`);
+    focusRequested.current = true;
     setScene(next);
-    window.requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
   };
+
+  useEffect(() => {
+    if (!focusRequested.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      heading.current?.focus({ preventScroll: true });
+      focusRequested.current = false;
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [scene]);
 
   useEffect(() => {
     const restore = () => {

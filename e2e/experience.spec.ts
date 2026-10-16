@@ -13,19 +13,22 @@ async function consent(page: Page) {
 }
 async function shot(page: Page, info: TestInfo, name: string, fullPage = false) {
   if (fullPage) {
-    await page.evaluate(async () => {
-      const scrollport = document.body.scrollHeight > document.documentElement.scrollHeight ? document.body : document.scrollingElement!;
-      for (let y = 0; y < scrollport.scrollHeight; y += innerHeight) {
-        scrollport.scrollTo({ top: y, behavior: 'instant' });
-        await new Promise(resolve => setTimeout(resolve, 80));
+    // Wait at each real image before returning to the top. WebKit may defer a
+    // footer lazy image when a scrolling sweep immediately jumps away again.
+    for (const image of await page.locator('img').all()) {
+      if (!await image.isVisible()) continue;
+      if (!await image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)) {
+        await image.scrollIntoViewIfNeeded();
+        await expect(image).toHaveJSProperty('complete', true, { timeout: 15000 });
+        await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth), {
+          timeout: 15000, message: `${name}: ${await image.getAttribute('src')}`,
+        }).toBeGreaterThan(0);
       }
-      scrollport.scrollTo({ top: 0, behavior: 'instant' });
-
+    }
+    await page.evaluate(() => {
+      const scrollport = document.body.scrollHeight > document.documentElement.scrollHeight ? document.body : document.scrollingElement!;
+      scrollport.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     });
-    await expect.poll(() => page.locator('img').evaluateAll(images => images.filter(element => {
-      const image = element as HTMLImageElement;
-      return image.getClientRects().length > 0 && (!image.complete || image.naturalWidth === 0);
-    }).length), { timeout: 15000 }).toBe(0);
   }
   await page.screenshot({ path: info.outputPath(`${name}.png`), fullPage, animations: 'disabled' });
 }
