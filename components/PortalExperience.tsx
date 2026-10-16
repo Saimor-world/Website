@@ -138,15 +138,25 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
         <button type="button" className={styles.door} onClick={enter} aria-haspopup="dialog" aria-label={c.invite}>
           <span className={styles.doorframe} aria-hidden="true">
             <span className={styles.digitalSpace}>
-              <span className={styles.vanishingPoint} />
-              <span className={styles.planes} />
-              <span className={styles.digitalFloor} />
-              <span className={styles.pane + ' ' + styles.paneOne}><FileText size={16} strokeWidth={1.25} /></span>
-              <span className={styles.pane + ' ' + styles.paneTwo}><CalendarDays size={16} strokeWidth={1.25} /></span>
-              <span className={styles.pane + ' ' + styles.paneThree}><CheckCircle2 size={16} strokeWidth={1.25} /></span>
-              <span className={styles.connectionOne} />
-              <span className={styles.connectionTwo} />
-              <span className={styles.core}><Sparkles size={15} strokeWidth={1.25} /></span>
+              {/* Only symbols are visible from the forest: three paths are drawn
+                  into the same luminous presence, never recognisable app icons. */}
+              <span className={styles.farHorizon} />
+              <span className={styles.lightVeils} />
+              <svg className={styles.sigil} viewBox="0 0 180 320" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+                <path className={styles.sigilRingOuter} d="M91 74 C136 74 158 110 159 158 C160 211 134 255 91 259 C45 262 22 218 22 160 C22 116 48 74 91 74Z" />
+                <path className={styles.sigilRingInner} d="M90 102 C125 104 140 127 140 160 C140 196 117 224 91 224 C63 224 42 196 42 160 C42 126 60 102 90 102Z" />
+                <path className={styles.sigilThread} d="M13 235 C39 223 37 173 66 157 C88 145 117 141 157 92" />
+                <path className={styles.sigilThreadSecondary} d="M17 90 C39 107 51 140 76 151 C105 163 114 209 159 232" />
+                <path className={styles.sigilThreadThird} d="M92 286 C96 241 73 211 80 173 C84 150 106 132 89 37" />
+                <path className={styles.sigilKnot} d="M61 161 C78 139 98 134 118 158 C106 180 83 185 61 161Z M80 146 C104 149 112 167 91 184 C72 175 70 158 80 146Z" />
+                <circle className={styles.sigilStar} cx="90" cy="160" r="3.6" />
+                <circle className={styles.sigilPoint} cx="20" cy="94" r="1.8" />
+                <circle className={styles.sigilPoint} cx="157" cy="92" r="1.9" />
+                <circle className={styles.sigilPoint} cx="158" cy="231" r="1.5" />
+                <circle className={styles.sigilPoint} cx="91" cy="279" r="1.8" />
+              </svg>
+              <span className={styles.innerHalo} />
+              <span className={styles.verticalLight} />
               <span className={styles.particles}>{Array.from({ length: 13 }, (_, i) => <i key={i} />)}</span>
               <span className={styles.depthFog} />
             </span>
