@@ -11,27 +11,16 @@
   cursor:pointer;-webkit-tap-highlight-color:transparent
 }
 .door:focus-visible{outline:2px solid #fff2c7;outline-offset:2px}
-.doorCaption{
-  position:absolute;left:50%;bottom:9px;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:45px;padding:10px 16px;
-  transform:translateX(-50%);white-space:nowrap;
-  border:1px solid #fff2ce96;border-radius:999px;
-  background:#102e25df;color:#fff2d5;
-  box-shadow:0 7px 30px #091d16bf;
-  backdrop-filter:blur(9px);
-  font:600 11px/1.4 ui-monospace,SFMono-Regular,monospace;
-  letter-spacing:.005em;
-  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease
+/* The entire physical door is the invitation. Hover/focus lets the light
+   respond, but nothing is written onto the photograph. */
+.door::after{
+  content:"";position:absolute;inset:4% 4% 0;border-radius:4px;
+  background:radial-gradient(ellipse at 50% 47%,#f2de9730,transparent 76%);
+  opacity:0;pointer-events:none;transition:opacity .36s ease
 }
-.doorCaptionDot{flex-shrink:0;width:5px;height:5px;border-radius:50%;background:#f0d69a;box-shadow:0 0 9px #f2d99f}
-.doorCaption svg{flex-shrink:0;transition:transform .2s ease}
-.door:hover .doorCaption,.door:focus-visible .doorCaption{border-color:#fff3d5;background:#174431f0;box-shadow:0 9px 35px #071e17b0}
-.door:hover .doorCaption svg,.door:focus-visible .doorCaption svg{transform:translate(3px,-2px)}
-.door:focus-visible .doorCaption{outline:2px solid #fff3c6;outline-offset:3px}
+.door:hover::after,.door:focus-visible::after{opacity:1}
 @media(max-width:700px){
   .door{left:60%;top:0;width:43%;height:86%}
-  .doorCaption{bottom:7px;font-size:10px;padding:10px 12px}
 }
 .dialog{width:min(1020px,calc(100vw - 28px));max-width:none;max-height:min(92dvh,970px);margin:auto;padding:0;overflow:auto;border:1px solid #9ebfa960;border-radius:20px;background:#0a261f;color:#f9f5e9;box-shadow:0 36px 120px #00150cc9;overscroll-behavior:contain}
 .dialog::backdrop{background:#06180fe0;backdrop-filter:blur(11px)}
@@ -99,6 +88,121 @@
   .insideFooter a{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){
-  .doorCaption,.node,.close{transition:none}
+  .node,.close{transition:none}
   .node:hover{transform:none}
+}
+
+/* V17 — the first destination is a feeling, not another UI.
+   The original woodland photo zooms past the lens and dissolves into an
+   imagined luminous interior. The user chooses whether to go on to details. */
+.cinematic{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;width:100%;
+  min-height:min(79dvh,730px);overflow:hidden;
+  background:radial-gradient(ellipse at 55% 56%,#8b9b7961 0%,#3a604d88 27%,transparent 63%),#102e27;
+  color:#fff7e6;text-align:center;
+}
+.cinemaForest{
+  position:absolute;z-index:-1;inset:-12%;pointer-events:none;
+  background:url('/images/saimor-forest-threshold.webp') center center / cover no-repeat;
+  transform-origin:54% 49%;
+  animation:cinema-enter 1.35s cubic-bezier(.15,.75,.19,1) both
+}
+.cinemaHorizon{
+  position:absolute;z-index:-1;inset:-15%;pointer-events:none;
+  background:
+    radial-gradient(ellipse 48% 64% at 54% 49%,#fff3c6ba 0%,#e6d8a37d 23%,#9dbba37a 48%,transparent 78%),
+    linear-gradient(155deg,#11392e,#789b79 49%,#1b493c);
+  opacity:0;animation:cinema-sunrise 1.45s ease-out both
+}
+.cinemaVeil{
+  position:absolute;z-index:-1;inset:-12%;pointer-events:none;
+  background:linear-gradient(95deg,#071f1b8c,transparent 28%,#f9edd013 53%,transparent 71%,#09251c9a),
+    radial-gradient(ellipse at 50% 56%,transparent 25%,#09281f7a 100%);
+  animation:cinema-soften 1.4s ease-out both
+}
+.cinemaMist{
+  position:absolute;z-index:-1;left:-25%;right:-25%;bottom:-12%;height:56%;
+  pointer-events:none;filter:blur(28px);
+  background:radial-gradient(ellipse at 50% 63%,#e8dfb670 0%,#aac1a45b 31%,transparent 78%);
+  animation:cinema-mist-rise 2.3s ease-out both
+}
+.cinemaClose{
+  position:absolute;z-index:4;top:clamp(15px,3vw,30px);right:clamp(15px,3vw,30px);
+  display:grid;place-items:center;width:45px;height:45px;cursor:pointer;
+  border:1px solid #f7f2dc8a;border-radius:50%;
+  background:#12382c8e;color:#fff9e8;backdrop-filter:blur(10px);
+  transition:background .2s ease,border-color .2s ease
+}
+.cinemaClose:hover{background:#1e4c38;border-color:#fff7e1}
+.cinemaCenter{
+  z-index:2;display:flex;align-items:center;flex-direction:column;gap:20px;
+  max-width:780px;padding:85px 38px 45px;
+  opacity:0;animation:cinema-title-arrive .85s ease-out 1s both
+}
+.cinemaEyebrow{
+  color:#fff0c6;font:600 10px/1.5 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.3em;text-shadow:0 2px 20px #0b291d
+}
+.cinemaTitle{
+  max-width:720px;margin:0;
+  font:400 clamp(58px,8vw,112px)/.94 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.049em;text-wrap:balance;
+  text-shadow:0 5px 40px #0a261dd4
+}
+.cinemaFilament{
+  display:block;width:115px;height:1px;margin-top:13px;
+  background:linear-gradient(90deg,transparent,#f6dfad,transparent);
+  box-shadow:0 0 17px 2px #f8e8ba62
+}
+.cinemaContinue{
+  z-index:2;display:inline-flex;align-items:center;justify-content:center;gap:15px;
+  min-height:51px;margin:0 16px 47px;padding:12px 22px;
+  border:1px solid #f1e0b9c9;border-radius:999px;
+  background:#113629cd;color:#fff5e1;
+  box-shadow:0 9px 31px #0c281da8;backdrop-filter:blur(8px);
+  font-size:13px;font-weight:650;cursor:pointer;
+  opacity:0;animation:cinema-title-arrive .65s ease-out 1.7s both;
+  transition:background .2s ease,transform .2s ease
+}
+.cinemaContinue:hover{background:#2a543d;transform:translateY(-2px)}
+.cinemaClose:focus-visible,.cinemaContinue:focus-visible{outline:3px solid #f8e2a5;outline-offset:4px}
+@keyframes cinema-enter{
+  0%{transform:scale(1);filter:brightness(.92) blur(0);opacity:1}
+  55%{transform:scale(1.52);filter:brightness(1.2) blur(1px);opacity:.83}
+  100%{transform:scale(2.24);filter:brightness(1.22) blur(13px);opacity:.2}
+}
+@keyframes cinema-sunrise{
+  0%{opacity:0;transform:scale(.84)}
+  54%{opacity:.7;transform:scale(1.04)}
+  100%{opacity:.9;transform:scale(1.16)}
+}
+@keyframes cinema-soften{
+  0%{opacity:0}60%{opacity:.45}100%{opacity:.85}
+}
+@keyframes cinema-mist-rise{
+  0%{opacity:0;transform:translateY(30%)}
+  100%{opacity:.78;transform:translateY(0)}
+}
+@keyframes cinema-title-arrive{
+  0%{opacity:0;transform:translateY(22px);filter:blur(4px)}
+  100%{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+@media(max-width:700px){
+  .cinematic{min-height:min(84dvh,760px)}
+  .cinemaForest{background-position:58% center}
+  .cinemaCenter{padding:104px 22px 52px;gap:19px}
+  .cinemaTitle{font-size:clamp(57px,14vw,80px)}
+  .cinemaEyebrow{font-size:9px;letter-spacing:.22em}
+  .cinemaContinue{margin-bottom:70px}
+}
+@media(prefers-reduced-motion:reduce){
+  .cinemaForest,.cinemaHorizon,.cinemaVeil,.cinemaMist,
+  .cinemaCenter,.cinemaContinue{animation:none!important;filter:none;opacity:1;transform:none}
+  .cinemaForest{opacity:.18;filter:blur(4px)}
+  .cinemaHorizon{opacity:.85}
+  .cinemaVeil{opacity:.8}
+  .cinemaMist{opacity:.55}
+  .cinemaContinue:hover{transform:none}
+  .cinemaClose,.cinemaContinue,.door::after{transition:none}
 }
