@@ -133,15 +133,10 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
   return (
     <div className={styles.root}>
       <div className={styles.forestThreshold}>
+        {/* The full forest AND doorway are a single photograph supplied by
+            SystemWorldHome. This is a transparent interaction hotspot only:
+            no second bitmap, no drawn portal, no rectangular compositing. */}
         <button type="button" className={styles.door} onClick={enter} aria-haspopup="dialog" aria-label={c.invite}>
-          {/* The original SAIMÔR portal artwork is a real forest scene with an
-              otherworldly passage. No generated chat mockup or CSS-drawn door. */}
-          <span className={styles.portalPhotograph} aria-hidden="true" />
-          <span className={styles.portalGlow} aria-hidden="true" />
-          <span className={styles.portalMist} aria-hidden="true" />
-          <span className={styles.particles} aria-hidden="true">
-            {Array.from({ length: 9 }, (_, i) => <i key={i} />)}
-          </span>
           <span className={styles.doorCaption}>
             <span className={styles.doorCaptionDot} aria-hidden="true" />
             {c.invite}
