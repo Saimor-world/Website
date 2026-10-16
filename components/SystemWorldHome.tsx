@@ -18,7 +18,7 @@ const COPY = {
     enter: 'SAIMÔR entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
-    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine und Entscheidungen bleiben verbunden. MÔRA hält den Faden – auch wenn du längst bei etwas anderem bist.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
+    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine, Entscheidungen. Was draußen verstreut ist, findet hier wieder zusammen. MÔRA hält den Faden.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
     entryLabel: 'EINSTIEG / SECURITY CHECK', entryTitle: 'Mit etwas Echtem statt mit einer leeren Promptbox starten.',
     entryText: 'Du startest mit deiner Domain. Der Security Report wird zum ersten echten Objekt im OS. Damit beginnt der Raum bereits mit realem Kontext.', entryCta: 'Security Check starten',
     studioEyebrow: 'SAIMÔR · BERATUNG / WORKSHOPS / UMSETZUNG', studioTitle: 'Aus einer Frage wird ein nächster Schritt.',
@@ -39,7 +39,7 @@ const COPY = {
     enter: 'Discover SAIMÔR', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
-    saimor: 'SAIMÔR', saimorText: 'Files, meetings and decisions stay connected. MÔRA keeps the thread, even when your attention has moved elsewhere.', mora: 'MÔRA', moraText: 'notices when something changes',
+    saimor: 'SAIMÔR', saimorText: 'Files, meetings, decisions. What is scattered out there comes together here. MÔRA keeps the thread.', mora: 'MÔRA', moraText: 'notices when something changes',
     entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Start with something real instead of an empty prompt box.',
     entryText: 'You start with your domain. The Security Report becomes the first real object inside the OS, so the space begins with real context.', entryCta: 'Start Security Check',
     studioEyebrow: 'SAIMÔR · CONSULTING / WORKSHOPS / IMPLEMENTATION', studioTitle: 'A question becomes a next step.',
@@ -123,11 +123,11 @@ export default function SystemWorldHome({ locale }: Props) {
                   <span className={styles.moraLight} />
                   <span className={styles.lightThread} />
                 </div>
-                <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.portalEntry}>
-                  {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
-                  <ArrowRight size={17} aria-hidden="true" />
-                </Link>
               </div>
+              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.portalEntry}>
+                {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
+                <ArrowRight size={17} aria-hidden="true" />
+              </Link>
               <ul className={styles.contextObjects} aria-label={locale === 'de' ? 'Zusammen im Arbeitsraum' : 'Together in the workspace'}>
                 {[{icon: FileText, title: locale === 'de' ? 'Dateien' : 'Files', detail: locale === 'de' ? 'im Kontext' : 'in context'},
                   {icon: CalendarDays, title: locale === 'de' ? 'Termine' : 'Meetings', detail: locale === 'de' ? 'verbunden' : 'connected'},
