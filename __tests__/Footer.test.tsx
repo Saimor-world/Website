@@ -36,7 +36,7 @@ describe('Footer system status', () => {
     mocks.fetch.mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
     render(<Footer locale="de" />);
 
-    expect(await screen.findByText('System verf\u00fcgbar')).toBeInTheDocument();
+    expect(await screen.findByText('Website erreichbar')).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveAttribute('data-system-status', 'available');
   });
 

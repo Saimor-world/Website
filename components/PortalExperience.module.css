@@ -1,0 +1,113 @@
+/* SAIMÔR V18 · QUIET THRESHOLD
+   No second forest layer on the homepage and no drawn frame or tooltip.
+   The door is visible in the original artwork. This element makes it quietly
+   discoverable with pointer/focus feedback, then enters ONE cinematic space. */
+.root,.forestThreshold{position:relative;width:100%;height:100%}
+.door{
+  position:absolute;z-index:2;left:47%;top:-8%;width:24%;height:76%;
+  transform:translateX(-50%);
+  padding:0;margin:0;border:0;appearance:none;
+  background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.door::after{
+  content:"";position:absolute;inset:4% 10% 1%;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 44%,#fae5ae34,transparent 67%);
+  opacity:0;transition:opacity .7s ease;
+}
+.door:hover::after,.door:focus-visible::after{opacity:1}
+.door:focus-visible{outline:2px solid #f8e0a8;outline-offset:3px}
+.dialog{
+  position:fixed;inset:0;margin:0;
+  width:100vw;max-width:none;height:100dvh;max-height:none;
+  padding:0;border:0;border-radius:0;overflow:hidden;
+  color:#faf4e6;background:#030806;
+}
+.dialog::backdrop{background:#07190fd9}
+.cinematic{
+  position:relative;isolation:isolate;
+  width:100%;height:100dvh;min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#030806;
+}
+.cinemaForest{
+  position:absolute;z-index:-3;inset:-3%;
+  background-image:url('/images/saimor-forest-threshold.webp');
+  background-size:cover;background-position:52% 48%;background-repeat:no-repeat;
+  transform:scale(1.01);
+  animation:forest-crossing 1.35s cubic-bezier(.15,.7,.27,1) both;
+  /* Deliberately no blur, brightness filter or giant zoom:
+     the source is a 1774x887 WebP and cannot survive extreme enlargement. */
+}
+.cinemaLight{
+  position:absolute;z-index:-2;inset:0;
+  background:
+    radial-gradient(ellipse 53% 64% at 53% 40%,#ffe6b244 0%,#e9dcaf20 40%,transparent 75%),
+    linear-gradient(90deg,#061b15ab,transparent 27%,transparent 78%,#0b211aa9);
+  opacity:.46;animation:light-crossing 1.3s ease both;
+}
+.cinemaAtmosphere{
+  position:absolute;z-index:-1;inset:0;
+  background:radial-gradient(ellipse at 50% 40%,#1c493422,transparent 70%);
+}
+.close{
+  position:absolute;z-index:5;top:max(22px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right));
+  display:grid;place-items:center;width:47px;height:47px;
+  border:0;border-radius:50%;
+  background:transparent;color:#fff7e7;cursor:pointer;
+  transition:background .2s ease;
+}
+.close:hover{background:#26543e}
+.cinemaCopy{
+  position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;
+  gap:15px;width:100%;max-width:850px;
+  padding:90px 30px 105px;text-align:center;
+  opacity:0;animation:copy-reveal 1.2s ease-out 1.1s both;
+}
+.eyebrow{
+  margin:0;color:#fff0c2;font:600 10px/1.55 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.25em;text-shadow:0 2px 15px #12251bc4;
+}
+.cinemaCopy h2{
+  max-width:780px;margin:0;
+  font:400 clamp(60px,8.5vw,113px)/.97 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.045em;text-wrap:balance;
+  color:#fff9e9;text-shadow:0 5px 26px #0a251cd9;
+}
+.filament{
+  display:none;width:92px;height:1px;margin-top:15px;
+  background:linear-gradient(90deg,transparent,#f6dea9,transparent);
+  box-shadow:0 0 13px #f4dda87a;
+}
+.discover{
+  display:inline-flex;align-items:center;gap:12px;
+  min-height:49px;margin-top:27px;padding:10px 2px;
+  border-bottom:1px solid #f1dcadb3;
+  font-size:13px;font-weight:600;color:#fff4dc;
+  transition:gap .2s ease,color .2s ease;
+}
+.discover:hover{gap:17px;color:white}
+.close:focus-visible,.discover:focus-visible{outline:3px solid #f7e6af;outline-offset:5px}
+@keyframes forest-crossing{
+  0%{transform:scale(1.01);opacity:.86}
+  100%{transform:scale(1.04);opacity:0}
+}
+@keyframes light-crossing{
+  0%{opacity:.68}100%{opacity:.36}
+}
+@keyframes copy-reveal{
+  0%{opacity:0;transform:translateY(16px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@media(max-width:700px){
+  .door{left:64%;top:0;width:27%;height:66%}
+  .cinemaForest{background-position:53% 50%}
+  .cinemaCopy{gap:15px;padding:90px 23px 100px}
+  .eyebrow{font-size:9px;letter-spacing:.18em}
+  .cinemaCopy h2{font-size:clamp(57px,14vw,79px)}
+  .discover{margin-top:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  .cinemaForest,.cinemaLight,.cinemaCopy{animation:none!important;opacity:1;transform:none!important}
+  .cinemaLight{opacity:.36}
+  .door::after,.discover,.close{transition:none}
+}

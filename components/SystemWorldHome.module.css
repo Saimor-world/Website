@@ -1,87 +1,76 @@
-.world{--ink:#05110c;--gold:#e6c781;--muted:#c3ccc5;background:var(--ink);color:#f7f4e9;overflow:hidden}
+/* SAIMÔR — one art direction. Night, threshold, reality, daylight. */
+.world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip}
 .world ::selection{background:var(--gold);color:var(--ink)}
-.world a:focus-visible{outline:2px solid #ffe6a7;outline-offset:6px}
-.hero{position:relative;min-height:820px;border-bottom:1px solid #b7985860;background:#06130d}
-.heroImage{object-fit:cover;object-position:65% center}
-.heroShade{position:absolute;inset:0;background:linear-gradient(90deg,#03100999,transparent 70%),linear-gradient(0deg,#04100c 0%,transparent 23%)}
-.heroInner{position:relative;max-width:1440px;margin:auto;padding:135px 64px 30px;min-height:820px;display:flex;flex-direction:column}
-.eyebrow{font-family:monospace;font-size:10px;letter-spacing:.24em;line-height:1.8;color:#dfcfaa}
-.heroGrid{display:grid;grid-template-columns:1.05fr 1fr;flex:1;align-items:center;padding:70px 0 50px}
-.heroCopy{max-width:620px;position:relative;z-index:1}
-.heroCopy h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(80px,9vw,138px);font-weight:400;line-height:.85;letter-spacing:-.065em}
-.thesis{font-size:clamp(24px,2.5vw,37px);font-weight:300;line-height:1.2;letter-spacing:-.035em;margin-top:28px;max-width:590px;text-wrap:balance}
-.intro{font-size:16px;line-height:1.75;color:#dde3dc;max-width:475px;margin-top:26px}
-.actions{display:flex;align-items:center;flex-wrap:wrap;gap:24px;margin-top:30px}
-.primary,.outline{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:54px;padding:15px 25px;border-radius:40px;font-size:14px;font-weight:600;transition:background .2s,box-shadow .2s}
-.primary{color:#152117;background:linear-gradient(115deg,#e1b965,#fff0ba 48%,#e7bf70);box-shadow:0 0 28px #dfb86126,inset 0 1px #fff7d8}
-.primary:hover{background:#ffebae;box-shadow:0 0 32px #dfb86145}
-.textLink{display:inline-flex;align-items:center;gap:10px;color:#ead5a1;font-size:13px;line-height:1.5;padding:10px 0}
-.textLink:hover{color:#fff2cf}
-.utilityLinks{display:flex;gap:22px;margin-top:20px;font-size:12px;color:#c6cec7}
-.utilityLinks a{display:inline-flex;gap:7px;align-items:center;min-height:30px}
-.entryNote{font-size:11px;line-height:1.7;color:#b5c0b8;max-width:430px;margin-top:12px}
-.sealWorld{position:absolute;left:77%;top:31%;width:190px;height:190px;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center}
-.seal{width:190px;height:190px;object-fit:contain;border-radius:50%;mix-blend-mode:screen;filter:drop-shadow(0 0 30px #d7b66432)}
-.sealHalo{position:absolute;top:-22px;width:235px;height:235px;border:1px solid #d8b66a45;border-radius:50%;box-shadow:0 0 55px #dbb66712,inset 0 0 50px #dbb6670c}
-.sceneFooter{display:flex;justify-content:space-between;gap:24px;font:9px/1.8 monospace;letter-spacing:.2em;color:#d7d4bf}
+.world a:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
+.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#31503c 0%,#153a2a 35%,#071b13 76%)}
+.heroImage{position:absolute!important;inset:auto 0 0 auto!important;width:min(100%,1100px)!important;height:auto!important;max-width:none;aspect-ratio:1672/941;object-fit:contain;opacity:.9;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent,#000 30%)}
+.heroShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071a12ad,transparent 75%),linear-gradient(0deg,#081e17,transparent 22%)}
+.heroInner{position:relative;z-index:2;max-width:1440px;margin:auto;padding:145px var(--gutter) 36px;min-height:850px;display:flex;flex-direction:column}
+.eyebrow{font:500 10px/1.8 ui-monospace,SFMono-Regular,monospace;letter-spacing:.2em;color:#d8cba8}
+.heroGrid{display:grid;grid-template-columns:1.05fr 1fr;flex:1;align-items:center;padding:65px 0 70px}
+.heroCopy{position:relative;z-index:2;max-width:620px}
+.heroCopy h1{font:400 clamp(88px,9vw,140px)/.95 "Cormorant Garamond",Georgia,serif;letter-spacing:-.06em;color:#fff8e9}
+.thesis{font-size:clamp(26px,2.35vw,35px);font-weight:350;line-height:1.25;letter-spacing:-.03em;margin-top:28px;max-width:550px;text-wrap:balance}
+.intro{font-size:16px;line-height:1.85;color:#dbe5dc;max-width:475px;margin-top:25px}
+.actions{display:flex;align-items:center;flex-wrap:wrap;gap:24px;margin-top:34px}
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-height:54px;padding:15px 27px;border-radius:40px;font-size:13px;font-weight:600;color:#15291e;background:#f0dfb6;transition:background .25s,transform .25s}
+.primary:hover{background:#fff0cd;transform:translateY(-2px)}
+.textLink{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:#ead5a1;font-size:13px;line-height:1.5;padding:10px 0}
+.textLink:hover{color:#fff5dc}
+.utilityLinks{display:flex;flex-wrap:wrap;column-gap:23px;row-gap:5px;margin-top:24px;font-size:11px;color:#c0d0c4}
+.utilityLinks a{display:inline-flex;gap:7px;align-items:center;min-height:36px}
+.sceneFooter{display:flex;justify-content:space-between;gap:24px;font:9px/1.8 ui-monospace,monospace;letter-spacing:.16em;color:#c8cfb9}
 .sceneFooter a{display:flex;align-items:center;gap:12px}
-.system{background:#05100c;scroll-margin-top:65px}
-.threshold{position:relative;border-bottom:1px solid #d0b37222}
-.forestImage{object-fit:cover;object-position:center}
-.forestShade{position:absolute;inset:0;background:linear-gradient(90deg,#03100be8,transparent 58%),linear-gradient(0deg,#05100c,transparent 17%,transparent 90%,#04100c70)}
-.thresholdInner{position:relative;max-width:1440px;margin:auto;padding:110px 64px 90px;min-height:760px;display:flex;align-items:center;justify-content:space-between;gap:45px}
-.contextCopy{max-width:495px;align-self:center}
-.contextCopy h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(46px,5.2vw,76px);font-weight:400;line-height:1;letter-spacing:-.04em;margin:25px 0;text-wrap:balance}
-.contextBody{max-width:360px;color:#dce0d7;font-size:17px;line-height:1.75}
-.outline{margin-top:30px;border:1px solid #e6c781c0;background:#07140d70;color:#f3e4bc;backdrop-filter:blur(8px)}
-.outline:hover{background:#183025}
-.contextObjects{list-style:none;padding:0;display:grid;gap:12px;width:190px;margin-top:75px}
-.contextObjects li{display:flex;align-items:center;gap:15px;padding:18px;border:1px solid #e2c48040;border-radius:13px;background:linear-gradient(120deg,#263426aa,#091a13d9);box-shadow:0 12px 28px #0003,inset 0 1px #fff1;backdrop-filter:blur(12px)}
-.contextObjects svg{color:#ead393;flex-shrink:0}
-.contextObjects span{font-size:14px;display:block}
-.contextObjects small{font-size:12px;color:#cad0c5;display:block;margin-top:3px}
-.thresholdCaption{position:absolute;bottom:35px;left:64px;color:#d7d4bf;font:9px/1.8 monospace;letter-spacing:.22em}
-.moraIntroduction,.entry{max-width:1312px;margin:auto;padding:80px 0;display:grid;grid-template-columns:1fr 1fr;gap:80px}
-.moraIntroduction h3,.entry h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:400;line-height:1.12;font-size:38px;letter-spacing:-.025em;margin:18px 0}
-.moraIntroduction p:not(.eyebrow),.entry p:not(.eyebrow){font-size:15px;line-height:1.8;color:#bdc8be}
-.moraIntroduction .textLink,.entry .textLink{margin-top:18px}
-.entry{border-top:1px solid #dcc78f26;align-items:center;padding:44px 0 75px}
-@media(max-width:1439px){.moraIntroduction,.entry{margin:0 64px}}
-@media(max-width:1000px){.heroInner{padding:125px 32px 28px}.heroGrid{grid-template-columns:1.2fr .8fr}.seal{width:150px;height:150px}.sealHalo{width:195px;height:195px;top:-2px}.thresholdInner{padding:80px 32px;min-height:720px}.contextCopy{max-width:420px}.contextObjects{width:160px}.contextObjects li{padding:14px;gap:10px}.thresholdCaption{left:32px}.moraIntroduction,.entry{margin:0 32px;gap:40px}}
-@media(max-width:700px){.hero,.heroInner{min-height:0}.heroInner{padding:104px 24px 25px}.heroGrid{display:block;padding:32px 0 38px}.heroImage{object-position:70% top}.heroShade{background:linear-gradient(90deg,#031009dd,#03100955),linear-gradient(0deg,#04100c,transparent 60%)}.heroCopy{padding-top:105px}.heroCopy h1{font-size:84px}.thesis{font-size:28px;max-width:360px}.intro{font-size:14px;line-height:1.75;max-width:410px;margin-top:22px}.actions{gap:12px;margin-top:26px}.primary{font-size:13px;padding:14px 20px}.actions .textLink{padding-left:4px}.sealWorld{left:auto;right:24px;top:138px;width:95px;height:95px;transform:none;padding:0}.seal{width:95px;height:95px}.sealHalo{width:115px;height:115px;top:-10px}.sceneFooter{font-size:8px;letter-spacing:.13em}.sceneFooter a{display:none}.thresholdInner{min-height:920px;padding:60px 24px 70px;display:block}.forestImage{object-position:67% center}.forestShade{background:linear-gradient(180deg,#04110cf5, #04110cc9 37%,transparent 70%,#05100c),linear-gradient(90deg,#04110c40,transparent)}.contextCopy{max-width:440px}.contextCopy h2{font-size:49px;max-width:365px}.contextBody{font-size:15px;max-width:340px}.outline{margin-top:23px}.contextObjects{margin:100px 0 0 auto;width:160px;gap:9px}.contextObjects li{padding:12px 14px}.thresholdCaption{left:24px;bottom:28px;font-size:8px}.moraIntroduction,.entry{margin:0 24px;padding:55px 0;grid-template-columns:1fr;gap:28px}.moraIntroduction h3,.entry h3{font-size:34px}}
-@media(prefers-reduced-motion:reduce){.primary,.outline{transition:none}}
-/* Scenic bitmaps provide atmosphere; these foreground edges remain resolution independent. */
-.motionControl{position:absolute;z-index:3;right:64px;top:112px;display:flex;align-items:center;gap:8px;color:#cfc9b1;font-size:11px;cursor:pointer;min-height:30px}
-.motionControl{opacity:.62;transition:opacity .2s ease}.motionControl:hover,.motionControl:focus-within{opacity:1}.motionControl input{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;width:26px;height:14px;margin:0;border-radius:999px;border:1px solid #cfc9b166;background:transparent;cursor:pointer;transition:background .2s ease,border-color .2s ease}.motionControl input::before{content:"";position:absolute;left:2px;top:2px;width:8px;height:8px;border-radius:50%;background:#cfc9b1;transition:transform .2s ease,background .2s ease}.motionControl input:checked{background:#d8be7833;border-color:#d8be78}.motionControl input:checked::before{transform:translateX(12px);background:#d8be78}.motionControl input:focus-visible{outline:2px solid #d8be78;outline-offset:2px}
+.motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:8px;color:#c6ceb9;font-size:10px;cursor:pointer;min-height:30px}
+.motionControl input{accent-color:#e6c98d;width:26px;height:15px}
 .world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
-.portalScene{position:absolute;inset:0;pointer-events:none}
-.portalFrame{position:absolute;left:65%;top:12%;width:16%;height:61%;border:5px solid #e5c887;border-left-color:#fff2c6;border-bottom-color:#bc9147;transform:perspective(900px) rotateY(-16deg);background:linear-gradient(105deg,#d8c68c15,#fff2c652 60%,#e4d8a523);box-shadow:0 0 3px #fff8d7,inset 0 0 28px #ffe8a34d,0 0 35px #f8ce793b,16px 12px 0 #14271dbb;overflow:hidden}
-.portalVeil{position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 30%,#fff5d626 48%,transparent 65%);animation:portal-light 14s ease-in-out infinite}
-.portalReflection{position:absolute;left:63%;top:74%;width:21%;height:22%;background:linear-gradient(180deg,#edd08c4d,transparent);clip-path:polygon(12% 0,82% 0,100% 100%,0 100%);filter:blur(3px)}
-.moraLight{position:absolute;left:62%;top:54%;width:9px;height:9px;border-radius:50%;background:#f9efc8;box-shadow:0 0 14px #e9d994,0 0 35px #ade8b5;animation:mora-drift 12s ease-in-out infinite}
-.lightThread{position:absolute;left:50%;top:55%;width:37%;height:1px;background:linear-gradient(90deg,transparent,#e4cb8cb3,transparent);transform:rotate(-12deg)}
-.contextObjects{position:relative;z-index:1}
-/* Earth horizon -> portal. Start: left end of the lit horizon in the right-anchored
-   836px hero image (736px from the right edge, 137px above the section border -
-   measured by fitting a circle to the horizon in saimor-cosmos-layer.webp).
-   End: top-left corner of the portal frame (65.6% / 10.4% of the threshold). */
-.earthThread{position:absolute;z-index:2;pointer-events:none;overflow:visible;left:calc(100% - 736px);top:-137px;width:calc(65.6% - (100% - 736px));height:calc(10.4% + 137px)}
-.earthThreadLine,.earthThreadGlow{fill:none;stroke:url(#earth-thread-gradient);stroke-linecap:round}
-.earthThreadLine{stroke-width:1.2px;stroke-dasharray:6 10;animation:earth-thread-flow 6s linear infinite}
-.earthThreadGlow{stroke-width:5px;opacity:.28;filter:blur(3px)}
-@keyframes earth-thread-flow{to{stroke-dashoffset:-64}}
-@media(max-width:1000px),(min-width:2200px){.earthThread{display:none}}
-@media(prefers-reduced-motion:reduce){.earthThreadLine{animation:none;stroke-dasharray:none}}
-@keyframes portal-light{0%,100%{transform:translateX(-12%);opacity:.45}50%{transform:translateX(12%);opacity:.85}}
-@keyframes mora-drift{0%,100%{transform:translate(0,0)}50%{transform:translate(13px,-9px)}}
-@media(max-width:700px){.heroCopy{padding-top:215px}.motionControl{top:auto;bottom:8px;right:24px;font-size:10px}.sceneFooter{padding-bottom:30px}.portalFrame{left:22%;top:49%;width:35%;height:34%;border-width:3px}.portalReflection{left:20%;top:83%;width:41%;height:15%}.moraLight{left:20%;top:65%}.lightThread{left:12%;top:69%;width:68%}}
-@media(prefers-reduced-motion:reduce){.portalVeil,.moraLight{animation:none}.motionControl{display:none}}
-/* Never stretch the 1672px scenic sources across a Retina desktop viewport.
-   At DPR 2 the raster occupies at most 836 CSS px; at DPR 3 at most 557.
-   The surrounding atmosphere and foreground geometry are native CSS/SVG. */
-.heroImage{left:auto!important;top:auto!important;right:0!important;bottom:0!important;width:min(100%,836px)!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain;object-position:center;mask-image:linear-gradient(90deg,transparent,#000 22%),linear-gradient(0deg,#000,transparent);mask-composite:intersect}
-.hero{background:radial-gradient(ellipse at 78% 36%,#163225 0,transparent 43%),#05110c}
-.forestImage{left:auto!important;top:auto!important;right:0!important;bottom:5%!important;width:min(100%,836px)!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain;object-position:center;mask-image:radial-gradient(ellipse at 65% 55%,#000 28%,transparent 74%)}
-.threshold{background:radial-gradient(ellipse at 72% 45%,#233725,#05100c 68%)}
-@media(min-resolution:2.5dppx){.heroImage,.forestImage{width:min(100%,557px)!important}}
-@media(max-width:700px){.forestImage{bottom:9%!important}.heroImage{bottom:0!important}}
+.system{background:var(--ink);scroll-margin-top:75px}
+.threshold{position:relative;isolation:isolate;background:#081e17;overflow:hidden}
+.forestImage{object-fit:cover;object-position:60% center;opacity:1}
+.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#081e17,transparent 20%,transparent 78%,#06110e)}
+.thresholdInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:105px var(--gutter);min-height:720px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
+.contextCopy{max-width:500px}
+.contextCopy h2{font:400 clamp(48px,5.3vw,78px)/1.04 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 25px;text-wrap:balance;color:#fff8e7}
+.contextBody{max-width:350px;color:#d4dfd1;font-size:15px;line-height:1.8}
+.contextStage{position:relative;min-width:0;width:100%;height:510px}
+.portalCanvas{position:relative;width:100%;height:100%}
+.moraIntroduction{position:relative;isolation:isolate;max-width:1440px;margin:auto;padding:120px var(--gutter) 100px;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:clamp(35px,7vw,110px);background:radial-gradient(ellipse at 85% 50%,#203b302e,transparent 60%)}
+.moraIntroduction h3{font:400 clamp(54px,6.3vw,94px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 26px;max-width:580px;text-wrap:balance}
+.moraIntroduction p:not(.eyebrow){font-size:15px;line-height:1.85;color:#b8c8bc;max-width:440px}
+.entry{max-width:1440px;margin:auto;padding:62px var(--gutter) 88px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:65px;border-top:1px solid #d4dbc51c}
+.entry h3{font:400 clamp(37px,3.6vw,51px)/1.08 "Cormorant Garamond",Georgia,serif;letter-spacing:-.03em;margin:18px 0;text-wrap:balance;max-width:560px}
+.entry p:not(.eyebrow){font-size:14px;line-height:1.85;color:#b8c8bc;max-width:470px}
+.entry .textLink{margin-top:16px}
+.daylightIntelligence{background:var(--paper);color:#1b3b2c}
+.daylightStudio{background:#e7ece2;color:#17392a}
+.daylightContact{background:var(--paper);color:#173a2b}
+@media(max-width:1000px){.heroGrid{grid-template-columns:1.2fr .8fr}.intro{max-width:430px}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
+@media(max-width:700px){
+ .hero{min-height:850px;background:radial-gradient(ellipse at 80% 36%,#37634d55,transparent 65%),#0b3024}
+ .hero::before{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/saimor-cosmos-layer.webp') 72% 33%/auto 100% no-repeat;opacity:.4;filter:blur(28px);-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
+ .heroImage{right:-10%!important;top:100px!important;bottom:auto!important;width:175%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
+ .heroShade{background:linear-gradient(90deg,#0b302480,transparent),linear-gradient(0deg,#081e17,transparent 60%)}
+ .heroInner{min-height:850px;padding:100px 24px 31px}
+ .heroGrid{display:block;padding:180px 0 45px}
+ .heroCopy h1{font-size:clamp(82px,22vw,104px);line-height:1}
+ .thesis{font-size:29px;line-height:1.2;margin-top:21px;max-width:360px}
+ .intro{font-size:14px;line-height:1.8;margin-top:23px;max-width:390px}
+ .actions{gap:12px 22px;margin-top:25px}
+ .primary{padding:14px 22px;min-height:52px}
+ .utilityLinks{font-size:10px;gap:5px 16px;margin-top:18px}
+ .sceneFooter{font-size:8px;padding-bottom:24px}.sceneFooter a{display:none}
+ .motionControl{top:auto;bottom:13px;right:24px;font-size:9px}
+ .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:65px 24px 0}
+ .contextCopy{max-width:480px;align-self:flex-start}
+ .contextCopy h2{font-size:clamp(43px,11vw,53px);line-height:1.06;margin:18px 0 20px;max-width:420px}
+ .contextBody{font-size:14px;line-height:1.75;max-width:350px}
+ .contextStage{height:310px;width:calc(100% + 48px);margin:32px -24px 0}
+ .forestImage{top:auto!important;bottom:0!important;height:340px!important;object-fit:cover;object-position:73% center;-webkit-mask-image:linear-gradient(transparent,#000 16%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 16%,#000 88%,transparent)}
+ .forestShade{background:linear-gradient(180deg,#081e17 0%,#081e17 45%,transparent 66%,transparent 89%,#06110e)}
+ .moraIntroduction{padding:78px 24px 58px;grid-template-columns:1fr;gap:30px}
+ .moraIntroduction h3{font-size:clamp(57px,14vw,72px);max-width:420px}
+ .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
+ .entry{padding:44px 24px 66px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:39px}
+}
+@media(max-width:390px){.heroImage{right:-13%!important;width:185%!important}}
+@media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}

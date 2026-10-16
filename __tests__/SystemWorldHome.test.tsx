@@ -14,8 +14,11 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Arbeitsräume, die Kontext behalten.')).toBeInTheDocument();
     expect(screen.getByText('Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
-    expect(screen.getByRole('link', { name: 'MÔRA kennenlernen' })).toHaveAttribute('href', '/mora');
-    expect(screen.getByRole('button', { name: 'Öffentliche Signale laden' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
+    expect(screen.getByRole('link', { name: 'Reality Check öffnen' })).toHaveAttribute('href', '/mora/deep-view');
+    expect(screen.getByText('Klingt sicher.')).toBeInTheDocument();
+    expect(screen.getByText('Ist es auch belegt?')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Öffentliche Signale laden' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'YORI für Creator' })).toHaveAttribute('href', '/yori');
     expect(screen.queryByText('DESK')).not.toBeInTheDocument();
     expect(screen.queryByText(/Saimôr Desk/i)).not.toBeInTheDocument();
@@ -26,6 +29,17 @@ describe('SystemWorldHome', () => {
     expect(entries.length).toBeGreaterThanOrEqual(1);
     for (const entry of entries) {
       expect(entry).toHaveAttribute('href', '/de/einstieg/security-check');
+    }
+  });
+
+  it('presents uncertain AI signals as a Reality Check rather than a public news feed in both languages', () => {
+    for (const locale of ['de', 'en'] as const) {
+      render(<SystemWorldHome locale={locale} />);
+      expect(screen.getByRole('link', { name: locale === 'de' ? 'Reality Check öffnen' : 'Open Reality Check' }))
+        .toHaveAttribute('href', locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view');
+      expect(screen.queryByText(/öffentliche Nachrichtenquellen|public news sources/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /public signals|öffentliche Signale/i })).not.toBeInTheDocument();
+      cleanup();
     }
   });
 
@@ -48,6 +62,52 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByText('Die Präsenz, die Veränderungen bemerkt.')).not.toBeInTheDocument();
     expect(screen.queryByText(/Vier Ebenen derselben Idee/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Was heute über viele Tools verteilt ist/i)).not.toBeInTheDocument();
+  });
+
+  it('keeps the cosmic hero, forest, product worlds and contact in one readable sequence', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const sections: Element[] = [...container.querySelectorAll('section')];
+    const hero = container.querySelector('#world-title')?.closest('section');
+    const forest = container.querySelector('#system');
+    const products = container.querySelector('#products');
+    const intelligence = container.querySelector('#intelligence-title')?.closest('section');
+    const studio = container.querySelector('#studio');
+    const contact = container.querySelector('#contact');
+    expect([hero, forest, products, intelligence, studio, contact].every(Boolean)).toBe(true);
+    const positions = [hero, forest, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    expect(positions.every((index) => index >= 0)).toBe(true);
+    expect(container.querySelectorAll('h1')).toHaveLength(1);
+    expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
+    expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
+  });
+
+  it('uses one scenic photograph throughout the entire forest chapter', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const cosmos = container.querySelector('img[src="/images/saimor-cosmos-layer.webp"]');
+    const forest = container.querySelector('img[src="/images/saimor-forest-threshold.webp"]');
+    const section = container.querySelector('#system');
+    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 390px) 185vw'));
+    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 175vw'));
+    expect(forest).toHaveAttribute('sizes', '100vw');
+    expect(section?.querySelectorAll('img[src*="forest"]')).toHaveLength(1);
+    expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
+  });
+
+  it('leaves the forest as a teaser, while real product and Studio links stay discoverable', () => {
+    for (const locale of ['de', 'en'] as const) {
+      const { container } = render(<SystemWorldHome locale={locale} />);
+      const section = container.querySelector('#system');
+      expect(section).not.toBeNull();
+      const portal = section?.querySelector('[class*="portalCanvas"]');
+      expect(portal).not.toBeNull();
+      expect(portal?.querySelector('button[aria-haspopup="dialog"]')).not.toBeNull();
+      expect(section?.querySelector('ul[aria-label*="Arbeitsraum"],ul[aria-label*="workspace"]')).toBeNull();
+      expect(container.querySelectorAll('img[src="/images/saimor-forest-threshold.webp"]')).toHaveLength(1);
+      expect(screen.getAllByRole('link', { name: locale === 'de' ? 'Studio entdecken' : 'Explore Studio' }).some(link => link.getAttribute('href') === (locale === 'de' ? '/studio' : '/en/studio'))).toBe(true);
+      expect(screen.getByRole('link', { name: locale === 'de' ? 'Das YORI-Haus entdecken' : 'Explore the YORI house' })).toHaveAttribute('href', locale === 'de' ? '/yori' : '/en/yori');
+      cleanup();
+    }
   });
 
   it('keeps the public studio voice organizational rather than solo-founder led', () => {

@@ -10,7 +10,7 @@ type Props = { locale: 'de' | 'en' };
 
 const COPY = {
   de: {
-    eyebrow: 'MÔRA / KONTEXT',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
     title: 'Du musst nicht jedes Mal von vorn anfangen.',
     lead: 'Dateien, Termine und offene Dinge bleiben zusammen. MÔRA kennt den Stand und kann dort weitermachen.',
     note: 'MÔRA ist die Intelligenzschicht im Saimôr OS – kein zweiter Chat neben deiner Arbeit.',
@@ -43,9 +43,9 @@ const COPY = {
     outcomeLabel: 'MÔRA / NÄCHSTER SCHRITT',
     outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Sieh MÔRA beim Träumen zu.',
-    deepText: 'Sechs Beispielsignale und feste Regeln: welche Verbindungen belegt sind, was verworfen wird und wann aus einem Zusammenhang eine Aufgabe wird.',
-    deepCta: 'Deep View ansehen',
+    deepTitle: 'Die Welt durch MÔRAs Augen.',
+    deepText: 'Eine filmische Begegnung statt eines Dashboards. Erst das Rauschen, dann MÔRA – und schließlich die Frage, was wirklich bleibt. Die technische Prinzipdarstellung ist separat erreichbar.',
+    deepCta: 'MÔRA begegnen',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA gehört in den Arbeitsraum.',
     osText: 'Im Demo-Raum kannst du die Rolle von MÔRA im OS ansehen. Der Demo-Tenant bleibt getrennt; eigene Daten kommen erst über ausdrücklich verbundene Quellen hinzu.',
@@ -55,7 +55,7 @@ const COPY = {
     realityText: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können unterschiedliche externe Modellanbieter genutzt werden; MÔRA selbst ist nicht das Modell. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
   },
   en: {
-    eyebrow: 'MÔRA / CONTEXT',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
     title: 'You do not have to start from scratch every time.',
     lead: 'Files, meetings and open work stay together. MÔRA keeps the state and can continue from there.',
     note: 'MÔRA is the intelligence layer inside Saimôr OS – not another chat sitting next to your work.',
@@ -88,9 +88,9 @@ const COPY = {
     outcomeLabel: 'MÔRA / NEXT STEP',
     outcome: 'Check the approval and have the current proposal ready before the meeting.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Watch MÔRA dream.',
-    deepText: 'Six example signals and fixed rules: which connections are backed, what gets dropped and when a context becomes a task.',
-    deepCta: 'View Deep View',
+    deepTitle: 'The world through MÔRA’s eyes.',
+    deepText: 'A cinematic encounter, not a dashboard. First the noise, then MÔRA – and finally the question of what can be trusted. The technical concept remains available separately.',
+    deepCta: 'Meet MÔRA',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA belongs inside the workspace.',
     osText: 'The demo workspace lets you see MÔRA inside the OS. The demo tenant stays isolated; your own data only appears through sources you explicitly connect.',
@@ -119,9 +119,9 @@ export default function MoraProductPage({ locale }: Props) {
             <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e2c576]/82 sm:text-[10px]">{c.eyebrow}</p>
             <h1 className="mt-6 font-serif text-[clamp(3rem,7.3vw,7.2rem)] [overflow-wrap:break-word] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-[#dbe8df]/72 sm:text-lg sm:leading-8">{c.lead}</p>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/38">{c.note}</p>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-white/60">{c.note}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <DemoLaunchButton label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
+              <DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
               <Link href={deepHref} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-[#d8c27d]/24 bg-white/[.025] px-7 py-3.5 text-sm font-semibold text-[#f0e7cc] transition hover:border-[#d8c27d]/42 hover:bg-white/[.05]">
                 <Sparkles className="h-4 w-4" />{c.deep}
               </Link>
@@ -186,7 +186,7 @@ export default function MoraProductPage({ locale }: Props) {
               <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.72fr_1.28fr] sm:items-start sm:gap-8">
                 <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/48">0{index + 1}</div>
                 <h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3>
-                <p className="max-w-2xl text-sm leading-7 text-white/49 sm:text-base">{body}</p>
+                <p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{body}</p>
               </article>
             ))}
           </div>
@@ -242,14 +242,14 @@ export default function MoraProductPage({ locale }: Props) {
       <section className="border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
-          <div><p className="max-w-2xl text-sm leading-7 text-white/50 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
+          <div><p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
       </section>
 
       <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/36">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
-          <p className="max-w-3xl text-sm leading-7 text-white/45 sm:text-base">{c.realityText}</p>
+          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/55">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
+          <p className="max-w-3xl text-sm leading-7 text-white/65 sm:text-base">{c.realityText}</p>
         </div>
       </section>
     </main>
