@@ -8,7 +8,7 @@ describe('SaimorShowcase', () => {
     expect(screen.getByRole('heading', { name: /Ein Zusammenhang.*Mehr Raum für das Wesentliche/i })).toBeTruthy();
     expect(screen.getByRole('link', { name: /MÔRA im Detail entdecken/ }).getAttribute('href')).toBe('/mora');
     expect(screen.getByRole('link', { name: /Das YORI-Haus entdecken/ }).getAttribute('href')).toBe('/yori');
-    expect(screen.getByRole('link', { name: /Projekt besprechen/ }).getAttribute('href')).toBe('/de/kontakt');
+    expect(screen.getByRole('link', { name: /Studio entdecken/ }).getAttribute('href')).toBe('/studio');
     expect(screen.getByRole('img', { name: /Prinzipdarstellung · keine Live-Daten/ })).toBeTruthy();
   });
 
@@ -16,6 +16,6 @@ describe('SaimorShowcase', () => {
     render(<SaimorShowcase locale="en" />);
     expect(screen.getByRole('link', { name: /Explore MÔRA/ }).getAttribute('href')).toBe('/en/mora');
     expect(screen.getByRole('link', { name: /Explore the YORI house/ }).getAttribute('href')).toBe('/en/yori');
-    expect(screen.getByRole('link', { name: /Discuss your project/ }).getAttribute('href')).toBe('/en/contact');
+    expect(screen.getByRole('link', { name: /Explore Studio/ }).getAttribute('href')).toBe('/en/studio');
   });
 });
