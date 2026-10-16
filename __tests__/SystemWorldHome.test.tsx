@@ -100,6 +100,8 @@ describe('SystemWorldHome', () => {
       const list = section?.querySelector('ul[aria-label]');
       expect(list?.children).toHaveLength(4);
       expect(portal?.contains(list ?? null)).toBe(false);
+      // First discover the door and contextual examples, then the product link.
+      expect(list?.parentElement?.nextElementSibling).toBe(entry);
       cleanup();
     }
   });
