@@ -31,6 +31,11 @@ const COPY = {
     intelligenceMora: 'MÔRA hält den Zusammenhang',
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
+    pathsEyebrow: 'DEIN EINSTIEG', pathsTitle: 'Drei Wege. Ein gemeinsamer Gedanke.', pathsIntro: 'Du musst nicht gleich ein ganzes System einführen. Entdecke die Idee, einen Raum für Creator oder den direkten Weg zu einem gemeinsamen Projekt.',
+    pathsMora: 'MÔRA kennenlernen', pathsMoraText: 'Wie eine Assistenz Zusammenhänge sichtbar macht – mit einer öffentlichen Vorschau, ohne Zugriff auf private Konten.',
+    pathsYori: 'YORI entdecken', pathsYoriText: 'Ein ruhiges digitales Haus für Creator: Termine, Kundenarbeit und Überblick an einem Ort. Beispiele sind als solche gekennzeichnet.',
+    pathsStudio: 'Gemeinsam etwas bauen', pathsStudioText: 'Ein bestehender Prozess, eine schwierige Schnittstelle oder eine Idee? Wir klären zuerst, welcher nächste Schritt wirklich sinnvoll ist.',
+    pathsExplore: 'Mehr erfahren', pathsContact: 'Projekt besprechen',
     finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Wenn Arbeit, Wissen und Intelligenz auseinanderfallen, bauen wir den Zusammenhang.', finalText: 'Schreib kurz, woran du arbeitest, was heute verloren geht oder wo dein Team immer wieder neu anfangen muss.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
   },
   en: {
@@ -53,6 +58,11 @@ const COPY = {
     intelligenceMora: 'MÔRA keeps the thread',
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
+    pathsEyebrow: 'FIND YOUR START', pathsTitle: 'Three paths. One connected idea.', pathsIntro: 'You do not need to adopt an entire system at once. Explore the idea, enter a creator workspace or start a practical conversation about your project.',
+    pathsMora: 'Meet MÔRA', pathsMoraText: 'See how an assistant can make context visible, with a public preview that never accesses private accounts.',
+    pathsYori: 'Explore YORI', pathsYoriText: 'A calmer digital home for creators: appointments, client work and clarity in one place. Example data is identified as such.',
+    pathsStudio: 'Build something together', pathsStudioText: 'A messy workflow, a disconnected tool or an early idea? First we find the next step worth taking.',
+    pathsExplore: 'Explore', pathsContact: 'Discuss a project',
     finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'When work, knowledge and intelligence drift apart, we rebuild the connection.', finalText: 'Send a short note about what you are building, what keeps getting lost or where your team repeatedly has to start over.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
   },
 } as const;
@@ -142,35 +152,61 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-b border-white/[0.1] bg-[#050b08] px-5 py-20 sm:px-8 md:py-28 lg:px-10" aria-labelledby="intelligence-title">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_32%,rgba(118,190,160,.10),transparent_28%),radial-gradient(circle_at_18%_72%,rgba(214,168,72,.08),transparent_30%)]" aria-hidden="true" />
-        <div className="relative mx-auto max-w-7xl">
-          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dec7]/82 sm:text-[10px]">{c.intelligenceEyebrow}</p>
-          <div className="mt-5 grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
-            <h2 id="intelligence-title" className="max-w-4xl font-serif text-4xl font-light leading-[.95] tracking-[-.04em] text-white/96 sm:text-6xl md:text-7xl">{c.intelligenceTitle}</h2>
-            <p className="max-w-2xl text-sm leading-7 text-[#dce9e0]/64 sm:text-base">{c.intelligenceText}</p>
+      <section className={styles.pathways} aria-labelledby="pathways-title">
+        <div className={styles.pathwaysInner}>
+          <div className={styles.pathwaysHeader}>
+            <div>
+              <p className={styles.eyebrow}>{c.pathsEyebrow}</p>
+              <h2 id="pathways-title">{c.pathsTitle}</h2>
+            </div>
+            <p>{c.pathsIntro}</p>
           </div>
-          <div className="mt-12 grid border-t border-white/[0.12] md:grid-cols-3">
+          <div className={styles.pathwaysGrid}>
+            {[
+              { number: '01', title: c.pathsMora, text: c.pathsMoraText, href: locale === 'de' ? '/mora' : '/en/mora', action: c.pathsExplore },
+              { number: '02', title: c.pathsYori, text: c.pathsYoriText, href: locale === 'de' ? '/yori' : '/en/yori', action: c.pathsExplore },
+              { number: '03', title: c.pathsStudio, text: c.pathsStudioText, href: '#studio', action: c.pathsContact },
+            ].map(({ number, title, text, href, action }) => (
+              <Link key={number} href={href} className={styles.pathwayCard}>
+                <span className={styles.pathwayNumber}>{number} / SAIMÔR</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                <span className={styles.pathwayAction}>{action}<ArrowUpRight size={17} aria-hidden="true" /></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={`${styles.daylightIntelligence} relative overflow-hidden px-5 py-20 sm:px-8 md:py-28 lg:px-10" aria-labelledby="intelligence-title">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_32%,rgba(118,164,128,.15),transparent_28%),radial-gradient(circle_at_18%_72%,rgba(214,168,72,.12),transparent_30%)]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-7xl">
+          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#3b6a52] sm:text-[10px]">{c.intelligenceEyebrow}</p>
+          <div className="mt-5 grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+            <h2 id="intelligence-title" className="max-w-4xl font-serif text-4xl font-light leading-[.95] tracking-[-.04em] text-[#17392b] sm:text-6xl md:text-7xl">{c.intelligenceTitle}</h2>
+            <p className="max-w-2xl text-sm leading-7 text-[#415c4b] sm:text-base">{c.intelligenceText}</p>
+          </div>
+          <div className="mt-12 grid border-t border-[#335343]/20 md:grid-cols-3">
             {[
               ['01', 'MÔRA', c.intelligenceMora],
               ['02', 'CORE', c.intelligenceCore],
               ['03', locale === 'de' ? 'WORKER / MODELLE' : 'WORKERS / MODELS', c.intelligenceWorkers],
             ].map(([index, title, text]) => (
-              <div key={index} className="border-b border-white/[0.1] py-7 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
-                <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/50">{index}</div>
-                <div className="mt-3 text-lg font-medium text-white/92">{title}</div>
-                <p className="mt-2 text-sm leading-6 text-[#dce9e0]/56">{text}</p>
+              <div key={index} className="border-b border-[#335343]/20 py-7 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
+                <div className="font-mono text-[9px] tracking-[.18em] text-[#718264]">{index}</div>
+                <div className="mt-3 text-lg font-medium text-[#244a36]">{title}</div>
+                <p className="mt-2 text-sm leading-6 text-[#4b6454]">{text}</p>
               </div>
             ))}
           </div>
-          <p className="mt-9 font-mono text-[10px] uppercase tracking-[.18em] text-[#e0bd67]/78">
+          <p className="mt-9 font-mono text-[10px] uppercase tracking-[.18em] text-[#4c694b]">
             {locale === 'de' ? 'Die Intelligenz darf sich verändern. Der Kontext bleibt deiner.' : 'The intelligence may change. The context remains yours.'}
           </p>
         </div>
       </section>
 
-      <section id="studio" className="relative border-b border-[#d9eadf]/10 bg-[radial-gradient(circle_at_20%_10%,rgba(214,168,72,.09),transparent_31%),#081710] px-5 py-20 sm:px-8 md:py-28 lg:px-10"><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/88 sm:text-[10px]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-white/96 sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#dce9e0]/68 sm:text-base">{c.studioText}</p><Link href={contactHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]"><Mic2 className="h-4 w-4" />{c.talk}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-white/[0.15]">{c.offers.map(([name,text],index)=><div key={name} className="grid gap-3 border-b border-white/[0.12] py-7 sm:grid-cols-[42px_.8fr_1.2fr] sm:items-start sm:gap-6"><div className="font-mono text-[9px] tracking-[.18em] text-white/46">0{index+1}</div><div className="text-lg font-medium text-white/94 sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#dce9e0]/64">{text}</p></div>)}<div className="pt-7"><div className="font-mono text-[9px] uppercase tracking-[.2em] text-white/48">{c.experiments}</div><p className="mt-2 text-sm text-[#dce9e0]/58"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#dce9e0]/82 underline decoration-white/20 underline-offset-4 transition hover:text-white hover:decoration-white/60">YORI</Link> · <Link href="/earth" className="text-[#dce9e0]/82 underline decoration-white/20 underline-offset-4 transition hover:text-white hover:decoration-white/60">Saimôr Earth</Link> · {c.experimentsText}</p></div></div></div></section>
-      <section id="contact" className="bg-[#06110d] px-5 py-20 sm:px-8 md:py-28 lg:px-10"><div className="mx-auto max-w-7xl"><div className="grid gap-10 border-t border-white/[0.15] pt-10 md:grid-cols-[1fr_auto] md:items-end"><div><p className="font-mono text-[9px] font-semibold tracking-[.25em] text-[#91dec7]/82">{c.finalEyebrow}</p><h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-white/96 sm:text-6xl md:text-7xl">{c.finalTitle}</h2><p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/64 sm:text-base">{c.finalText}</p></div><Link href={contactHref} className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#e0bd67]/40 px-6 py-3.5 text-sm font-semibold text-[#f0d38c] transition hover:border-[#e0bd67]/68 hover:bg-[#d6a848]/[0.07]">{c.finalCta}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div></div></section>
+      <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10"><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#637a58] sm:text-[10px]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={contactHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{c.talk}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="grid gap-3 border-b border-[#3a5e46]/20 py-7 sm:grid-cols-[42px_.8fr_1.2fr] sm:items-start sm:gap-6"><div className="font-mono text-[9px] tracking-[.18em] text-[#718675]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p></div>)}<div className="pt-7"><div className="font-mono text-[9px] uppercase tracking-[.2em] text-[#617966]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · <Link href="/earth" className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">Saimôr Earth</Link> · {c.experimentsText}</p></div></div></div></section>
+      <section id="contact" className={`${styles.daylightContact} px-5 py-20 sm:px-8 md:py-28 lg:px-10"><div className="mx-auto max-w-7xl"><div className="grid gap-10 border-t border-[#3a5e46]/25 pt-10 md:grid-cols-[1fr_auto] md:items-end"><div><p className="font-mono text-[9px] font-semibold tracking-[.25em] text-[#476e55]">{c.finalEyebrow}</p><h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#173a2b] sm:text-6xl md:text-7xl">{c.finalTitle}</h2><p className="mt-6 max-w-2xl text-sm leading-7 text-[#405c49] sm:text-base">{c.finalText}</p></div><Link href={contactHref} className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#225c40] bg-[#225c40] px-6 py-3.5 text-sm font-semibold text-[#fff9ed] transition hover:border-[#17462f] hover:bg-[#17462f]">{c.finalCta}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div></div></section>
 
 
     </div>
