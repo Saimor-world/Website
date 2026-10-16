@@ -50,6 +50,24 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByText(/Was heute über viele Tools verteilt ist/i)).not.toBeInTheDocument();
   });
 
+  it('keeps the cosmic hero, forest, product worlds and contact in one readable sequence', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const sections = [...container.querySelectorAll('section')];
+    const hero = container.querySelector('#world-title')?.closest('section');
+    const forest = container.querySelector('#system');
+    const products = container.querySelector('#products');
+    const intelligence = container.querySelector('#intelligence-title')?.closest('section');
+    const studio = container.querySelector('#studio');
+    const contact = container.querySelector('#contact');
+    expect([hero, forest, products, intelligence, studio, contact].every(Boolean)).toBe(true);
+    const positions = [hero, forest, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    expect(positions.every((index) => index >= 0)).toBe(true);
+    expect(container.querySelectorAll('h1')).toHaveLength(1);
+    expect(screen.getByRole('link', { name: 'SAIMÔR entdecken' })).toHaveAttribute('href', '#system');
+    expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
+  });
+
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';
