@@ -86,8 +86,8 @@
 @media(min-resolution:2.5dppx){.heroImage,.forestImage{width:min(100%,557px)!important}}
 @media(max-width:700px){.forestImage{bottom:9%!important}.heroImage{bottom:0!important}}
 
-/* Editorial daylight pass, 16 Oct 2026.
-   All selectors below apply below the hero: the approved hero remains unchanged. */
+/* Editorial daylight base, 16 Oct 2026.
+   Final hero, forest and cross-section art direction is defined in the signature continuity pass below. */
 .system{background:#f3f1e8;color:#19382a}
 .threshold{background:radial-gradient(ellipse at 72% 43%,#84977b 0%,#476f54 52%,#2c543f 100%);border-bottom-color:#d9dfc480}
 .forestShade{background:linear-gradient(90deg,#274c3ecf,transparent 74%),linear-gradient(0deg,#315843 0%,transparent 33%,transparent 88%,#31584340)}
