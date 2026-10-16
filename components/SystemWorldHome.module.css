@@ -988,3 +988,65 @@
   }
   .threshold::after{height:31px}
 }
+
+/* V19 — from enigmatic forest to the Reality Check.
+   Paper begins as an intentional section surface; the forest bitmap must not
+   bleed through the copy as it did in the user-supplied iPhone screenshot. */
+.system .moraIntroduction{
+  position:relative;z-index:4;isolation:isolate;
+  align-items:center;
+  padding-top:clamp(92px,10vw,133px);
+  padding-bottom:clamp(75px,9vw,125px);
+  color:#193b2b;
+}
+.system .moraIntroduction::before{
+  content:"";position:absolute;z-index:-1;
+  top:-2px;bottom:0;left:50%;width:100vw;
+  transform:translateX(-50%);background:#f6f4ec;
+  pointer-events:none;
+}
+.system .moraIntroduction h3{
+  margin:19px 0 22px;
+  max-width:660px;
+  font-size:clamp(47px,5vw,71px);
+  line-height:.99;
+  letter-spacing:-.044em;
+  color:#193d2b;
+  text-wrap:balance;
+}
+.system .moraIntroduction p:not(.eyebrow){
+  max-width:550px;
+  font-size:15px;line-height:1.88;color:#405d49;
+}
+.system .moraIntroduction .eyebrow{
+  color:#4b7058;
+  font-size:10px;
+  letter-spacing:.15em;
+}
+.system .moraIntroduction .textLink{
+  display:inline-flex;align-items:center;gap:14px;
+  margin-top:26px;padding:10px 0 12px;
+  color:#245b3f;border-bottom:1px solid #477355;
+  font-size:13px;font-weight:650;
+}
+.system .moraIntroduction .textLink:hover{gap:19px}
+@media(max-width:700px){
+  .system .moraIntroduction{
+    margin:0 24px;
+    padding-top:81px;
+    padding-bottom:85px;
+    gap:35px;
+  }
+  .system .moraIntroduction h3{
+    font-size:clamp(43px,11vw,59px);
+    line-height:1.015;
+    max-width:510px;
+  }
+  .system .moraIntroduction p:not(.eyebrow){
+    font-size:14.5px;line-height:1.8;
+  }
+  .system .moraIntroduction::before{top:-1px}
+}
+@media(prefers-reduced-motion:reduce){
+  .system .moraIntroduction .textLink{transition:none}
+}
