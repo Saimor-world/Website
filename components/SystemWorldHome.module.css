@@ -895,3 +895,69 @@
 @media(max-width:375px){
   .threshold .portalCanvas{width:calc(100% + 40px);margin-left:-20px}
 }
+
+/* V16 — one forest, one photograph, one doorway.
+   The scene is the existing saimor-forest-threshold.webp image. No second
+   image or portal-card may ever be layered over it. Below its naturally
+   feathered edge the same dark woodland color supports the context objects. */
+.threshold{
+  background:linear-gradient(180deg,#0b3024 0%,#153b2d 52%,#112d22 86%,#203d2d 100%);
+}
+.threshold > .forestImage{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  object-fit:cover;
+  object-position:60% 44%;
+  filter:brightness(.94) saturate(.94);
+  opacity:1;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 81%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 81%,transparent 100%);
+}
+.threshold > .forestShade{
+  background:
+    linear-gradient(90deg,#071b15d9 0%,#09261c7a 37%,transparent 77%),
+    linear-gradient(180deg,#09291fbc 0%,transparent 22%,transparent 65%,#153528b3 100%);
+}
+.threshold::before{
+  background:linear-gradient(180deg,#0b3024d1 0%,transparent 16%,transparent 84%,#17372b 100%);
+}
+.threshold::after{
+  height:42px;
+  background:linear-gradient(180deg,transparent,#f6f4ec);
+}
+@media(max-width:700px){
+  .threshold{
+    background:linear-gradient(180deg,#0d3024 0%,#173b2b 50%,#1d3c2d 86%,#294633 100%);
+  }
+  .threshold > .forestImage{
+    position:absolute!important;
+    top:clamp(390px,111vw,485px)!important;
+    right:0!important;
+    bottom:auto!important;
+    left:0!important;
+    width:100%!important;
+    height:clamp(680px,195vw,820px)!important;
+    max-height:none!important;
+    object-fit:cover;
+    object-position:78% 50%;
+    filter:brightness(.92) saturate(.91) contrast(1.04);
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 76%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 11%,#000 76%,transparent 100%);
+  }
+  .threshold > .forestShade{
+    background:linear-gradient(180deg,#0b3024dd 0%,#0d3224a1 24%,transparent 43%,transparent 69%,#18382cb8 91%,#21412fe0 100%);
+  }
+  .threshold::before{
+    background:linear-gradient(180deg,#0b3024cc 0%,transparent 18%,transparent 83%,#203c2ad1 100%);
+  }
+  .threshold::after{height:37px}
+  .threshold .portalCanvas{
+    height:clamp(480px,130vw,565px);
+    /* Already full bleed from v15; match the backdrop exactly. */
+  }
+  .threshold .contextStage{isolation:isolate}
+  .threshold .thresholdInner{padding-bottom:72px}
+}
