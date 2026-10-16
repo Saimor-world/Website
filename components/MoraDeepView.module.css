@@ -6,14 +6,12 @@
 .field{position:absolute;inset:0;width:100%;height:100%;opacity:.65;transition:opacity 2s}
 .unresolved{transform-origin:center;animation:field-drift 24s ease-in-out infinite alternate;transition:opacity 1.8s}
 .unresolved path:nth-child(2n){stroke-dasharray:2 14;opacity:.55}
-.resolved{opacity:0;transition:opacity 2.5s}
 .fragments{position:absolute;inset:0;transition:opacity 1.6s}
 .fragments span{position:absolute;color:#a6ad9061;font:italic 400 clamp(18px,2vw,29px) "Cormorant Garamond",Georgia,serif;animation:fragment-drift 12s ease-in-out infinite alternate;filter:blur(.5px)}
 .fragments span:nth-child(1){left:14%;top:27%;rotate:-7deg}.fragments span:nth-child(2){right:12%;top:43%;animation-delay:-7s;rotate:4deg}.fragments span:nth-child(3){left:26%;bottom:20%;animation-delay:-4s;rotate:-3deg}
 .world[data-scene="mora"] .fragments,.world[data-scene="mora"] .unresolved{opacity:0}
 .world[data-scene="mora"] .sky{opacity:.18}
 .world[data-scene="clarity"] .fragments,.world[data-scene="clarity"] .unresolved{opacity:0}
-.world[data-scene="clarity"] .resolved{opacity:.28}
 .world[data-scene="clarity"] .sky{opacity:.3}
 .passage{position:absolute;inset:-50%;background:radial-gradient(ellipse at center,#9fcb9559,transparent 42%);opacity:0;transform:scale(.2);pointer-events:none}
 .world[data-crossing="true"] .passage{animation:cross-light 1.15s ease-in both}
@@ -42,16 +40,6 @@
 .lead{font-size:14px;line-height:1.7;color:#b2c0ac;margin:16px 0 0;max-width:430px}
 .primary{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-height:52px;margin-top:29px;padding:14px 25px;border:0;border-radius:999px;background:#ece7d8;color:#163726;font-size:12px;font-weight:600;cursor:pointer;transition:background .3s,transform .3s}
 .primary:hover{background:#fff6df;transform:translateY(-2px)}
-.world[data-scene="clarity"] .presence{width:148px;height:148px}
-.world[data-scene="clarity"] .encounter{gap:30px}
-.reveal{display:flex;align-items:center;flex-direction:column}
-.reveal h1{font-size:clamp(58px,6.5vw,88px);letter-spacing:-.04em;margin-top:18px;line-height:1.03;text-wrap:balance}
-.principles{display:flex;justify-content:center;gap:48px;margin:36px 0 12px}
-.principles p{display:flex;gap:12px;align-items:center;margin:0;color:#d0dccb;font-size:13px;line-height:1.6}
-.evidence{width:20px;height:1px;background:#b5c7a7}
-.evidence[data-kind="1"]{background:repeating-linear-gradient(90deg,#b5c7a7 0 3px,transparent 3px 6px)}
-.evidence[data-kind="2"]{height:6px;width:6px;border-radius:50%;background:#dcc896;box-shadow:0 0 12px #dcc8964a}
-.links{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:30px}
 .footer{min-height:76px;padding-bottom:max(18px,env(safe-area-inset-bottom))}
 .disclosure{font:400 9px/1.7 ui-monospace,monospace;letter-spacing:.05em;color:#9aa38d}
 .replay{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:10px 0;border:0;background:transparent;cursor:pointer;color:#c1b99d;font-size:11px}
@@ -69,9 +57,7 @@
  .stage{min-height:0;padding:30px 24px 45px}.intro{padding:120px 0}.intro h1{font-size:clamp(58px,14.5vw,77px)}
  .fragments span:nth-child(1){left:9%;top:22%}.fragments span:nth-child(2){right:7%;top:73%}.fragments span:nth-child(3){display:none}
  .eyebrow{font-size:8px;letter-spacing:.15em}.presence{width:240px;height:240px}.encounter{gap:27px}.encounterText h1{font-size:36px}.lead{font-size:13px;max-width:280px}
- .world[data-scene="clarity"] .presence{width:130px;height:130px}.world[data-scene="clarity"] .encounter{gap:25px}.reveal h1{font-size:clamp(49px,13vw,64px);letter-spacing:-.04em}
- .principles{flex-direction:column;gap:19px;margin:30px 0 8px;text-align:left}.principles p{font-size:13px}.evidence[data-kind="2"]{margin-inline:7px}
- .links{flex-direction:column;gap:0}.links .quietAction{margin-top:12px}.footer{min-height:72px;align-items:center}.disclosure{font-size:8px;max-width:185px}.replay{font-size:10px}
+ .footer{min-height:72px;align-items:center}.disclosure{font-size:8px;max-width:185px}.replay{font-size:10px}
 }
 @media(max-height:740px) and (min-width:701px){.stage{min-height:0;padding-block:10px}.presence{width:230px;height:230px}.encounter{gap:15px}.topbar{min-height:72px}.footer{min-height:60px}}
 @media(prefers-reduced-motion:reduce){.world *,.world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.stone{opacity:1;filter:none}}
@@ -80,3 +66,6 @@
 .world[data-paused="true"] .encounter,
 .world[data-paused="true"] .encounterText,
 .world[data-paused="true"] .stone{animation:none!important;opacity:1;transform:none;filter:none}
+.world[data-paused="true"] h1{animation:none!important;opacity:1}
+
+.world[data-scene="clarity"] .stage{padding:0 0 16px;min-height:0}

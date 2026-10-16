@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
 import MoraOsFace from './MoraOsFace';
+import MoraPerspective from './MoraPerspective';
 import styles from './MoraDeepView.module.css';
 
 type Scene = 'uncertainty' | 'mora' | 'clarity';
@@ -13,25 +14,21 @@ const COPY = {
   de: {
     back: 'Zurück', world: 'DIE WELT DER KI', question: 'Alles klingt möglich.', doubt: 'Aber was ist wirklich wahr?',
     meet: 'MÔRA begegnen', name: 'MÔRA.', presence: 'Einen Moment. Wir schauen genauer hin.', look: 'Durch ihre Augen sehen',
-    clarity: 'Sieh den Unterschied.', clarityLabel: 'DURCH MÔRAS AUGEN',
-    truths: ['Was belegt ist.', 'Was Vermutung bleibt.', 'Was du entscheidest.'],
-    product: 'MÔRA kennenlernen', lab: 'Das Prinzip dahinter', reset: 'Noch einmal',
+    reset: 'Noch einmal',
     status: 'INSZENIERUNG · KEINE LIVE-ANALYSE', pause: 'Bewegung pausieren',
     noise: ['Gewissheit.', 'Verbindung.', 'Entscheidung.'],
   },
   en: {
     back: 'Back', world: 'THE WORLD OF AI', question: 'Everything sounds possible.', doubt: 'But what is actually true?',
     meet: 'Meet MÔRA', name: 'MÔRA.', presence: 'A moment. Let’s look a little closer.', look: 'See through her eyes',
-    clarity: 'See the difference.', clarityLabel: 'THROUGH MÔRA’S EYES',
-    truths: ['What is evidenced.', 'What remains a guess.', 'What you decide.'],
-    product: 'Discover MÔRA', lab: 'Explore the principle', reset: 'Experience again',
+    reset: 'Experience again',
     status: 'STAGED EXPERIENCE · NO LIVE ANALYSIS', pause: 'Pause motion',
     noise: ['Certainty.', 'Connection.', 'Decision.'],
   },
 } as const;
 
-/** A staged film in three acts. No fetching, AI claims, scene floor or invented face.
- * The same light field loses its ambiguity as the visitor moves through MÔRA's eyes.
+/** A staged encounter followed by an interactive, fictional perspective shift.
+ * No fetching, live AI claims, scene floor or invented face.
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
@@ -124,11 +121,6 @@ export default function MoraDeepView({ locale }: Props) {
             <path d="M60 -100 C1050 100 120 690 1430 1030" />
             <path d="M380 -180 C1440 410 100 590 990 1130" />
           </g>
-          <g className={styles.resolved} fill="none" stroke="#8daa8c" strokeWidth=".7">
-            <path d="M720 190 C720 380 310 320 280 640" />
-            <path d="M720 190 C720 380 720 430 720 640" strokeDasharray="3 9" />
-            <path d="M720 190 C720 380 1130 320 1160 640" stroke="#d5bd80" />
-          </g>
         </svg>
         <div className={styles.fragments}>{c.noise.map(word => <span key={word}>{word}</span>)}</div>
         <div className={styles.passage} />
@@ -151,32 +143,18 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <div className={styles.stoneStage}>
                 <Image src="/brand/mora-stone-v1.png" width={504} height={504} sizes="(max-width: 700px) 240px, 320px" priority draggable={false} className={styles.stone} alt={locale === 'de' ? 'MÔRA, Jadestein' : 'MÔRA, jade stone'} />
-                <MoraOsFace size={320} state={scene === 'clarity' ? 'rest' : undefined} />
+                <MoraOsFace size={320} />
               </div>
             </div>
             <div key={scene} className={styles.encounterText}>
-              {scene === 'mora' ? (
-                <>
-                  <h1 ref={heading} tabIndex={-1}>{c.name}</h1>
-                  <p className={styles.lead}>{c.presence}</p>
-                  <button type="button" className={styles.primary} disabled={crossing} onClick={see}>{c.look}<ArrowRight size={17} /></button>
-                </>
-              ) : (
-                <div className={styles.reveal} data-testid="deep-clarity">
-                  <p className={styles.eyebrow}>{c.clarityLabel}</p>
-                  <h1 ref={heading} tabIndex={-1}>{c.clarity}</h1>
-                  <div className={styles.principles}>{c.truths.map((truth, index) => <p key={truth}><span className={styles.evidence} data-kind={index} aria-hidden="true" />{truth}</p>)}</div>
-                  <div className={styles.links}>
-                    <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.primary}>{c.product}<ArrowUpRight size={17} /></Link>
-                    <Link href={locale === 'de' ? '/mora/deep-view/lab' : '/en/mora/deep-view/lab'} className={styles.quietAction}>{c.lab}<ArrowRight size={15} /></Link>
-                  </div>
-                </div>
-              )}
+              <h1 ref={heading} tabIndex={-1}>{c.name}</h1>
+              <p className={styles.lead}>{c.presence}</p>
+              <button type="button" className={styles.primary} disabled={crossing} onClick={see}>{c.look}<ArrowRight size={17} /></button>
             </div>
           </div>
         )}
