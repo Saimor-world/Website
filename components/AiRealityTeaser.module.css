@@ -1,0 +1,20 @@
+/* AI reality check: mysticism as an invitation to verify, not a news-feed gimmick */
+.world{position:relative;isolation:isolate;overflow:hidden;min-width:0;display:flex;flex-direction:column;gap:0;padding:30px clamp(24px,3vw,42px) 29px;border:1px solid #8d9f866f;border-radius:26px;background:radial-gradient(ellipse at 80% 18%,#355849aa,transparent 60%),linear-gradient(148deg,#122e25,#071d1d 76%,#132920);color:#f9f3e3;box-shadow:0 24px 57px #0b281c26}
+.glow{position:absolute;z-index:-1;left:55%;top:-45%;width:95%;aspect-ratio:1;border:1px solid #d7bd7542;border-radius:50%;box-shadow:0 0 0 55px #b8caa10a,0 0 0 140px #d8c7aa08;pointer-events:none;transform:rotate(-14deg) scaleY(.65)}
+.eyebrow{color:#e4d09e;font:600 10px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;margin:0}
+.intro{max-width:395px;margin:24px 0 26px;font:400 clamp(25px,3vw,35px)/1.15 "Cormorant Garamond",Georgia,serif;letter-spacing:-.02em;color:#faf4df}
+.signals{display:grid;gap:0;border-top:1px solid #cbd9c341}
+.signal{display:grid;grid-template-columns:32px 29px minmax(0,1fr);align-items:center;gap:15px;min-height:93px;padding:16px 2px;border-bottom:1px solid #cbd9c341;transition:background .24s ease,padding-left .24s ease}
+.signal:hover{background:#c7ddb00a;padding-left:9px}
+.number{align-self:center;color:#d5c391a6;font:600 10px ui-monospace,SFMono-Regular,monospace}
+.icon{color:#ddcca1}
+.signalText{display:flex;flex-direction:column;gap:5px;min-width:0}
+.signalText strong{font-size:15px;font-weight:600;color:#fcf7e9;line-height:1.35}
+.signalText span{font-size:12px;line-height:1.55;color:#dbe6da}
+.ending{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:31px}
+.disclaimer{font:500 8px/1.65 ui-monospace,SFMono-Regular,monospace;letter-spacing:.09em;color:#c0cdb6}
+.link{display:inline-flex;align-items:center;gap:11px;min-height:44px;padding:8px 0;border-bottom:1px solid #e7d19b;color:#f8e9bd;font-size:13px;font-weight:650;text-decoration:none;transition:gap .2s}
+.link:hover{gap:17px;color:white}
+.link:focus-visible{outline:2px solid #f8e9bd;outline-offset:5px}
+@media(max-width:700px){.world{padding:28px 22px;border-radius:19px}.intro{font-size:30px;margin:21px 0}.signal{gap:10px;grid-template-columns:25px 25px minmax(0,1fr);min-height:88px}.ending{margin-top:21px}.disclaimer{max-width:180px}.link{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.signal,.link{transition:none}.signal:hover{padding-left:2px}}
