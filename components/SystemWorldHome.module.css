@@ -89,8 +89,8 @@
 /* Editorial daylight pass, 16 Oct 2026.
    All selectors below apply below the hero: the approved hero remains unchanged. */
 .system{background:#f3f1e8;color:#19382a}
-.threshold{background:radial-gradient(ellipse at 72% 43%,#486a4d 0%,#294a38 53%,#173b2e 100%);border-bottom-color:#e1d7b466}
-.forestShade{background:linear-gradient(90deg,#173a2cca,transparent 72%),linear-gradient(0deg,#173c2e 0%,transparent 30%,transparent 88%,#21443188)}
+.threshold{background:radial-gradient(ellipse at 72% 43%,#84977b 0%,#476f54 52%,#2c543f 100%);border-bottom-color:#d9dfc480}
+.forestShade{background:linear-gradient(90deg,#274c3ecf,transparent 74%),linear-gradient(0deg,#315843 0%,transparent 33%,transparent 88%,#31584340)}
 .moraIntroduction{padding-top:104px;padding-bottom:100px}
 .moraIntroduction,.entry{color:#1a392b}
 .moraIntroduction h3,.entry h3{color:#173c2b}
