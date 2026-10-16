@@ -1,0 +1,88 @@
+/* The public product gallery is editorial, not a dashboard or a set of cards. */
+.section{position:relative;background:linear-gradient(180deg,#e7ece3 0%,#f5f3e9 26%,#f4f2e9 100%);padding:118px 32px 116px;color:#17392a}
+.inner{max-width:1320px;margin:0 auto}
+.header{padding:0 3px 62px}
+.eyebrow,.featureNumber{display:block;font:600 10px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.22em;color:#54715a}
+.headerGrid{display:grid;grid-template-columns:1.5fr .55fr;align-items:end;gap:44px;margin-top:17px}
+.headerGrid h2{margin:0;font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(52px,6.6vw,104px);font-weight:400;line-height:.91;letter-spacing:-.053em;text-wrap:balance}
+.headerGrid h2>span{display:block}
+.headingSecond{display:block;color:#78927b;font-style:italic}
+.headerGrid>p{font-size:16px;line-height:1.8;color:#496554;max-width:340px;margin:0 0 7px}
+.feature{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:26px;isolation:isolate;margin:0 0 22px;min-height:570px}
+.featureCopy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(38px,5vw,80px);min-width:0}
+.featureCopy h3{font:400 clamp(64px,8vw,125px)/.98 "Cormorant Garamond",Georgia,serif;letter-spacing:-.052em;margin:28px 0 8px}
+.featureStatement{font:400 clamp(23px,2.5vw,36px)/1.14 "Cormorant Garamond",Georgia,serif;letter-spacing:-.02em;max-width:400px;margin:0}
+.featureBody{font-size:15px;line-height:1.85;max-width:410px;margin:25px 0 33px}
+.featureLink{display:inline-flex;align-items:center;gap:14px;min-height:46px;font-size:13px;line-height:1.4;font-weight:650;border-bottom:1px solid currentColor;padding:10px 0;transition:gap .2s ease}
+.featureLink:hover{gap:22px}
+.featureLink:focus-visible,.studioLink:focus-visible{outline:3px solid #c8a865;outline-offset:6px}
+.mora{background:radial-gradient(circle at 78% 43%,#1b5544,#0b2d25 46%,#0a211c 100%);color:#faf8ec}
+.mora .featureNumber{color:#c9b982}
+.mora .featureStatement{color:#e4d8b7}
+.mora .featureBody{color:#c0d0c4}
+.mora .featureLink{color:#efdcaa}
+.moraArtwork{position:relative;min-height:570px;overflow:hidden;display:grid;place-items:center;background:radial-gradient(circle at 53% 50%,#2f644e5e 0%,#143c3112 54%,transparent 78%)}
+.moraGlow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#b7cda125 0,#77b79709 42%,transparent 72%);filter:blur(26px)}
+.moraOrbitOne,.moraOrbitTwo,.moraOrbitThree{position:absolute;border:1px solid #cbdcc035;border-radius:50%;aspect-ratio:1;pointer-events:none}
+.moraOrbitOne{width:74%;box-shadow:inset 0 0 80px #bbd29d0a,0 0 75px #a9cba40c}
+.moraOrbitTwo{width:52%;border-color:#e2d6a25c;transform:rotate(-26deg) scaleY(.79)}
+.moraOrbitThree{width:90%;border-color:#cce0b41e;transform:rotate(25deg) scaleY(.72)}
+.moraOrbitOne:before,.moraOrbitTwo:after{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:#e2d49d;box-shadow:0 0 24px #e6d7a76e}
+.moraOrbitOne:before{left:16%;top:12%}
+.moraOrbitTwo:after{right:8%;bottom:14%;width:7px;height:7px}
+.moraCore{position:relative;z-index:1;font-family:"Cormorant Garamond",Georgia,serif;font-weight:400;font-size:clamp(64px,7.4vw,123px);letter-spacing:-.08em;color:#f8f1d9;text-shadow:0 0 40px #e2dcaf50;transform:translateX(-5%)}
+.moraCore span{color:#d4c488}
+.orbitTop,.orbitRight,.orbitBottom{position:absolute;z-index:2;font:600 9px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.24em;color:#d2d6b0}
+.orbitTop{top:17%;left:24%}
+.orbitRight{right:7%;top:54%}
+.orbitBottom{bottom:17%;left:25%}
+.artworkDisclaimer,.yoriArtworkCaption{position:absolute;bottom:24px;right:30px;font:500 10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;color:#e0e9d4ab;z-index:3}
+.yori{grid-template-columns:1.03fr .97fr;background:#e5dfd1;color:#26372b}
+.yori .featureNumber{color:#69745a}
+.yori .featureStatement{color:#5c6955}
+.yori .featureBody{color:#4d5c4c}
+.yori .featureLink{color:#285b40}
+.yoriArtwork{position:relative;min-height:570px;overflow:hidden;background:#8c775c}
+.yoriArtwork:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#1b2618a1,transparent 32%),linear-gradient(90deg,transparent 80%,#e5dfd11a)}
+.yoriImage{object-fit:cover;object-position:center;transition:transform 1s cubic-bezier(.2,.75,.25,1)}
+.yori:hover .yoriImage{transform:scale(1.035)}
+.yoriArtworkCaption{left:30px;right:auto;color:#fff7e3}
+.studioRow{display:flex;justify-content:space-between;align-items:center;gap:40px;padding:53px 10px 14px;border-top:1px solid #5673634d}
+.studioRow h3{font:400 clamp(37px,4.5vw,63px)/1 "Cormorant Garamond",Georgia,serif;letter-spacing:-.03em;margin:11px 0}
+.studioRow p{font-size:15px;line-height:1.75;color:#506b57;max-width:650px;margin:0}
+.studioLink{display:inline-flex;flex:none;align-items:center;gap:16px;min-height:52px;padding:13px 24px;border-radius:999px;background:#1c4b35;color:#faf6e9;font-size:13px;font-weight:600;transition:background .2s,transform .2s}
+.studioLink:hover{background:#0e3625;transform:translateY(-2px)}
+@media(max-width:1000px){
+ .headerGrid{grid-template-columns:1fr;gap:23px}
+ .headerGrid>p{max-width:650px}
+ .feature{min-height:470px}
+ .featureCopy{padding:38px}
+ .moraArtwork,.yoriArtwork{min-height:470px}
+ .featureCopy h3{font-size:76px}
+}
+@media(max-width:760px){
+ .section{padding:78px 20px 82px}
+ .header{padding:0 4px 36px}
+ .headerGrid h2{font-size:clamp(46px,10vw,67px);line-height:1.01}
+ .headerGrid>p{font-size:15px}
+ .feature{display:flex;flex-direction:column;min-height:0;border-radius:19px;gap:0}
+ .featureCopy{padding:36px 29px 38px}
+ .featureCopy h3{font-size:73px;margin:20px 0 6px}
+ .featureBody{font-size:14px;margin:20px 0 22px}
+ .moraArtwork{min-height:345px;order:2}
+ .mora .featureCopy{order:1}
+ .moraCore{font-size:85px}
+ .yoriArtwork{min-height:330px;order:2}
+ .yori .featureCopy{order:1}
+ .orbitTop{top:12%;left:16%}
+ .orbitRight{right:7%;top:45%}
+ .orbitBottom{bottom:14%;left:22%}
+ .artworkDisclaimer,.yoriArtworkCaption{bottom:19px;right:20px;font-size:9px}
+ .yoriArtworkCaption{left:20px;right:auto}
+ .studioRow{flex-direction:column;align-items:flex-start;padding:38px 5px 0;gap:25px}
+ .studioRow h3{font-size:48px}
+}
+@media(prefers-reduced-motion:reduce){
+ .featureLink,.studioLink,.yoriImage{transition:none}
+ .yori:hover .yoriImage,.studioLink:hover{transform:none}
+}
