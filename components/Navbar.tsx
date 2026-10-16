@@ -77,12 +77,13 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
 
   const copy = locale === 'de'
-    ? { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
-    : { system: 'System', mora: 'Môra', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
+    ? { system: 'Produkte', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
+    : { system: 'Products', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
 
   const navItems = [
-    { href: anchorHref('system'), label: copy.system },
+    { href: anchorHref('products'), label: copy.system },
     { href: moraHref, label: copy.mora },
+    { href: locale === 'de' ? '/yori' : '/en/yori', label: copy.yori },
     { href: locale === 'de' ? '/studio' : '/en/studio', label: copy.studio },
   ];
 
@@ -141,7 +142,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
 
             <nav className="mt-12 border-t border-[#cce0d2]/22">
               {navItems.map((item, index) => (
-                <a key={item.href} href={item.href} onClick={() => { setMenuOpen(false); track(item.label); }} className="flex items-center justify-between border-b border-[#cce0d2]/20 py-5">
+                <a key={item.href} href={item.href} onClick={() => { setMenuOpen(false); track(item.label); }} className="flex items-center justify-between border-b border-[#cce0d2]/20 py-4">
                   <span className="font-serif text-4xl font-light tracking-[-.03em] text-[#fbfbf4]">{item.label}</span>
                   <span className="font-mono text-[9px] tracking-[.18em] text-[#d5e4d9]/62">0{index + 1}</span>
                 </a>
