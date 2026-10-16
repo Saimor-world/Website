@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, Sparkles } from 'lu
 
 import styles from './SystemWorldHome.module.css';
 import OrbitalScene from './OrbitalScene';
-import MoraSignalPreview from './MoraSignalPreview';
+import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
 
@@ -125,12 +125,12 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
         </div>
         <div className={styles.moraIntroduction}>
-          <div><p className={styles.eyebrow}>{locale === 'de' ? 'VOM SIGNAL ZUM NÄCHSTEN SCHRITT' : 'FROM SIGNAL TO NEXT STEP'}</p>
-            <h3>{locale === 'de' ? 'Eine Assistenz, die den Zusammenhang behält.' : 'An assistant that keeps the context.'}</h3>
-            <p>{locale === 'de' ? 'MÔRA arbeitet mit dem Kontext deines Arbeitsraums: Was gehört zusammen? Was hat sich verändert? Was ist als Nächstes dran? Verbundene Quellen bilden die Grundlage. Aktionen brauchen die passenden Freigaben.' : 'MÔRA works with the context of your workspace: What belongs together? What has changed? What comes next? Connected sources provide the foundation. Actions require the appropriate permissions.'}</p>
-            <Link href={locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'} className={styles.textLink}>{locale === 'de' ? 'Öffentliche Signale in Deep View ansehen' : 'Explore public signals in Deep View'}<ArrowRight size={17} aria-hidden="true" /></Link>
+          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / REALITY CHECK' : 'THE WORLD OF AI / REALITY CHECK'}</p>
+            <h3>{locale === 'de' ? 'Wenn alles möglich klingt. Was ist dann noch wahr?' : 'When anything sounds possible. What is actually true?'}</h3>
+            <p>{locale === 'de' ? 'KI kann faszinieren, verblüffen – und sehr überzeugend danebenliegen. Nicht jedes sichere Wort hat eine Quelle. Nicht jeder Zusammenhang ist echt. Hier beginnt die Frage, was wir wirklich wissen.' : 'AI can fascinate, surprise — and be convincingly wrong. Not every confident claim has a source. Not every connection is real. The first step is asking what we actually know.'}</p>
+            <Link href={locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'} className={styles.textLink}>{locale === 'de' ? 'Reality Check öffnen' : 'Open the Reality Check'}<ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
-          <MoraSignalPreview locale={locale} />
+          <AiRealityTeaser locale={locale} />
         </div>
         <div className={styles.entry}>
           <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
