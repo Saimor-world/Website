@@ -121,11 +121,11 @@ export default function SystemWorldHome({ locale }: Props) {
               <div className={styles.portalCanvas}>
                 <PortalExperience locale={locale} />
               </div>
+              <ContextSignals locale={locale} />
               <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.portalEntry}>
                 {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
                 <ArrowRight size={17} aria-hidden="true" />
               </Link>
-              <ContextSignals locale={locale} />
               <div className={styles.thresholdCaption}>{locale === 'de' ? 'KONTEXT · KONTINUITÄT · KLARHEIT' : 'CONTEXT · CONTINUITY · CLARITY'}</div>
             </div>
           </div>
