@@ -6,7 +6,7 @@ describe('SaimorShowcase', () => {
   it('offers three working journeys and identifies artwork as illustrative', () => {
     render(<SaimorShowcase locale="de" />);
     expect(screen.getByRole('heading', { name: /Ein Zusammenhang.*Mehr Raum für das Wesentliche/i })).toBeTruthy();
-    expect(screen.getByRole('link', { name: /MÔRA kennenlernen/ }).getAttribute('href')).toBe('/mora');
+    expect(screen.getByRole('link', { name: /MÔRA im Detail entdecken/ }).getAttribute('href')).toBe('/mora');
     expect(screen.getByRole('link', { name: /Das YORI-Haus entdecken/ }).getAttribute('href')).toBe('/yori');
     expect(screen.getByRole('link', { name: /Projekt besprechen/ }).getAttribute('href')).toBe('/de/kontakt');
     expect(screen.getByRole('img', { name: /Prinzipdarstellung · keine Live-Daten/ })).toBeTruthy();
