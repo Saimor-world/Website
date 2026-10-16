@@ -128,7 +128,6 @@ export default function SystemWorldHome({ locale }: Props) {
           <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / REALITY CHECK' : 'THE WORLD OF AI / REALITY CHECK'}</p>
             <h3>{locale === 'de' ? 'Wenn alles möglich klingt. Was ist dann noch wahr?' : 'When anything sounds possible. What is actually true?'}</h3>
             <p>{locale === 'de' ? 'KI kann faszinieren, verblüffen – und sehr überzeugend danebenliegen. Nicht jedes sichere Wort hat eine Quelle. Nicht jeder Zusammenhang ist echt. Hier beginnt die Frage, was wir wirklich wissen.' : 'AI can fascinate, surprise — and be convincingly wrong. Not every confident claim has a source. Not every connection is real. The first step is asking what we actually know.'}</p>
-            <Link href={locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'} className={styles.textLink}>{locale === 'de' ? 'Reality Check öffnen' : 'Open the Reality Check'}<ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
           <AiRealityTeaser locale={locale} />
         </div>
