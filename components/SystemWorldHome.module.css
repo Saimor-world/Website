@@ -299,8 +299,8 @@
     background-size:auto 100%;
     background-position:76% 34%;
     background-repeat:no-repeat;
-    opacity:.38;
-    filter:blur(32px) brightness(1.42) saturate(1.15);
+    opacity:.55;
+    filter:blur(26px) brightness(1.28) saturate(1.16);
     mask-image:linear-gradient(180deg,#0009 0%,#000 42%,#000b 73%,transparent 100%);
   }
   .hero::after {
@@ -323,8 +323,10 @@
     opacity:1;
     filter:brightness(1.29) saturate(1.13) contrast(1.035);
     /* Both ends dissolve into ambient colour. No visible image rectangle. */
-    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 17%,#000 74%,transparent 100%);
-    mask-image:linear-gradient(180deg,transparent 0%,#000 17%,#000 74%,transparent 100%);
+    /* One two-dimensional feather: Safari receives the same single mask.
+       Unlike a vertical-only fade, this removes the visible LEFT photo edge. */
+    -webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);
+    mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);
     mask-composite:add;
   }
   .heroShade {
@@ -334,7 +336,11 @@
       linear-gradient(180deg,transparent 10%,#0e312410 49%,#0c302582 100%);
   }
   .heroInner{z-index:3}
-  .heroGrid{position:relative;z-index:3}
+  /* Keeping the grid static anchors the absolute OrbitalScene to .hero
+     instead of the grid below the eyebrow (which overlapped the wordmark). */
+  .heroGrid{position:static;z-index:auto}
+  /* The typography always sits above the orbit artwork and the masked photo. */
+  .heroCopy{position:relative;z-index:4}
   .heroCopy h1{
     color:#fff7e8;
     text-shadow:0 3px 21px #061c14a6,0 11px 38px #061c146b;
