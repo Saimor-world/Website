@@ -95,21 +95,6 @@ export default function SystemWorldHome({ locale }: Props) {
         <div className={styles.threshold}>
           <Image src="/images/saimor-forest-threshold.webp" alt="" fill quality={90} sizes="100vw" className={styles.forestImage} />
           <div className={styles.forestShade} aria-hidden="true" />
-          {/* Marius 14.09.: "wenn man links die Rundung der Erde nachzeichnen
-              wuerde, kaeme man beim Portal raus". Die Linie fuehrt die
-              beleuchtete Horizontkante des Planeten weiter - ueber die
-              Abschnittsgrenze hinweg - bis in die obere Ecke des Portals. */}
-          <svg className={styles.earthThread} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="earth-thread-gradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#f3d68f" stopOpacity="0" />
-                <stop offset=".35" stopColor="#f3d68f" stopOpacity=".55" />
-                <stop offset="1" stopColor="#fff2c6" stopOpacity=".95" />
-              </linearGradient>
-            </defs>
-            <path className={styles.earthThreadGlow} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
-            <path className={styles.earthThreadLine} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
-          </svg>
           <div className={styles.thresholdInner}>
             <div className={styles.contextCopy}>
               <p className={styles.eyebrow}>{c.fieldEyebrow}</p>
@@ -126,8 +111,8 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
         <div className={styles.moraIntroduction}>
           <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / REALITY CHECK' : 'THE WORLD OF AI / REALITY CHECK'}</p>
-            <h3>{locale === 'de' ? 'Wenn alles möglich klingt. Was ist dann noch wahr?' : 'When anything sounds possible. What is actually true?'}</h3>
-            <p>{locale === 'de' ? 'KI kann faszinieren, verblüffen – und sehr überzeugend danebenliegen. Nicht jedes sichere Wort hat eine Quelle. Nicht jeder Zusammenhang ist echt. Hier beginnt die Frage, was wir wirklich wissen.' : 'AI can fascinate, surprise — and be convincingly wrong. Not every confident claim has a source. Not every connection is real. The first step is asking what we actually know.'}</p>
+            <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
+            <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
           </div>
           <AiRealityTeaser locale={locale} />
         </div>

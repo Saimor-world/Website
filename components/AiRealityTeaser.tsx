@@ -11,7 +11,7 @@ const COPY = {
       { number: '02', Icon: Fingerprint, question: 'Wirkt verbunden.', counterpoint: 'Gehört es wirklich zusammen?' },
       { number: '03', Icon: ShieldAlert, question: 'Kann etwas auslösen.', counterpoint: 'Wer gibt es frei?' },
     ],
-    step: 'KEIN NEWSFEED. KEINE LIVE-DATEN.',
+    step: 'Inszenierte Begegnung · keine Live-Analyse',
     action: 'Reality Check öffnen',
   },
   en: {
@@ -22,7 +22,7 @@ const COPY = {
       { number: '02', Icon: Fingerprint, question: 'Looks connected.', counterpoint: 'Does it really belong together?' },
       { number: '03', Icon: ShieldAlert, question: 'Could trigger an action.', counterpoint: 'Who approved it?' },
     ],
-    step: 'NOT A NEWSFEED. NO LIVE-DATA CLAIMS.',
+    step: 'Staged encounter · no live analysis',
     action: 'Open Reality Check',
   },
 } as const;

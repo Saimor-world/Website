@@ -17,7 +17,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // chrome (global nav / footer) overlaps sticky owner headers on desktop
   // (~1024px) and pulls the operator out of the room — same rationale as YORI.
   const isOwnerSurface = Boolean(pathname?.startsWith('/owner'));
-  const isImmersive = isYori || isClientWorld || isOwnerSurface;
+  const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
+  const isImmersive = isYori || isClientWorld || isOwnerSurface || isEncounter;
 
   // Immersive surfaces render without public-site chrome.
   if (isImmersive) return <>{children}</>;

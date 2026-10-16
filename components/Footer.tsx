@@ -43,7 +43,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         tagline: 'Arbeitsraum, Kontext und KI in einem System.',
         status: {
           checking: 'Status wird geprüft',
-          available: 'System verfügbar',
+          available: 'Website erreichbar',
           limited: 'System eingeschränkt',
           unknown: 'Status unbekannt',
         },
@@ -54,7 +54,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         tagline: 'Workspace, context and AI in one system.',
         status: {
           checking: 'Checking system status',
-          available: 'System available',
+          available: 'Website available',
           limited: 'System limited',
           unknown: 'Status unknown',
         },
@@ -90,23 +90,23 @@ export default function Footer({ locale }: { locale: Locale }) {
                 <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
               </span>
             </a>
-            <p className="mt-5 max-w-sm text-sm leading-6 text-white/34">{c.tagline}</p>
+            <p className="mt-5 max-w-sm text-sm leading-6 text-white/60">{c.tagline}</p>
           </div>
 
           <div>
             <div className="font-mono text-[9px] uppercase tracking-[.22em] text-[#d6a848]/52">System</div>
-            <div className="mt-4 grid gap-3 text-sm text-white/42">
+            <div className="mt-4 grid gap-3 text-sm text-white/65">
               <a className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</a>
               <a className="transition hover:text-white/82" href={moraHref}>Môra</a>
-              <a className="transition hover:text-white/82" href={`${homeHref}#studio`}>{c.studio}</a>
+              <a className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</a>
               <a className="transition hover:text-white/82" href={securityHref}>{c.entry}</a>
               <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
             </div>
           </div>
 
           <div>
-            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-white/22">{c.legal}</div>
-            <div className="mt-4 grid gap-3 text-sm text-white/34">
+            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-white/48">{c.legal}</div>
+            <div className="mt-4 grid gap-3 text-sm text-white/60">
               <a className="transition hover:text-white/72" href={legal.trust}>{c.trust}</a>
               <a className="transition hover:text-white/72" href={legal.imprint}>{c.imprint}</a>
               <a className="transition hover:text-white/72" href={legal.privacy}>{c.privacy}</a>
@@ -117,7 +117,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         </div>
 
         <div className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.2em] text-white/18">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.2em] text-white/45">
             <span>© {year} SAIMÔR</span>
             <span>EU / REMOTE</span>
           </div>
@@ -131,7 +131,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               className="flex items-center gap-2 border border-white/[0.08] px-3 py-2"
             >
               <span className={`h-1.5 w-1.5 rounded-full ${dotClass} ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
-              <span className="font-mono text-[8px] uppercase tracking-[.16em] text-white/28">{c.status[systemStatus]}</span>
+              <span className="font-mono text-[8px] uppercase tracking-[.16em] text-white/55">{c.status[systemStatus]}</span>
             </div>
           </div>
         </div>

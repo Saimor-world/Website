@@ -3,7 +3,7 @@
 import BrandSigil from './BrandSigil';
 import { usePathname } from 'next/navigation';
 import { LogIn, Menu, ShieldCheck, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MatomoEvents } from '@/lib/matomo';
 import { localizedLegalHref } from '@/lib/legal-routes';
 
@@ -13,6 +13,9 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const isLightPage = pathname === '/de/kontakt' || pathname === '/en/contact';
   const otherLocale = locale === 'de' ? 'en' : 'de';
 
   // globals.css gibt html UND body height:100% plus overflow-x:hidden - dadurch
@@ -33,7 +36,29 @@ export default function Navbar({ locale }: { locale: Locale }) {
     if (!menuOpen) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previous; };
+    const links = () => Array.from(menuRef.current?.querySelectorAll<HTMLElement>('a,button') || []);
+    links()[0]?.focus();
+    const keyboard = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+      if (event.key !== 'Tab') return;
+      const items = [toggleRef.current, ...links()].filter(Boolean) as HTMLElement[];
+      if (event.shiftKey && document.activeElement === items[0]) {
+        event.preventDefault(); items.at(-1)?.focus();
+      } else if (!event.shiftKey && document.activeElement === items.at(-1)) {
+        event.preventDefault(); items[0]?.focus();
+      }
+    };
+    const resize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
+    document.addEventListener('keydown', keyboard);
+    window.addEventListener('resize', resize);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', keyboard);
+      window.removeEventListener('resize', resize);
+    };
   }, [menuOpen]);
 
   const getSwitchHref = () => {
@@ -49,6 +74,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
       '/en/mora': '/mora',
       '/mora/deep-view': '/en/mora/deep-view',
       '/en/mora/deep-view': '/mora/deep-view',
+      '/mora/deep-view/lab': '/en/mora/deep-view/lab',
+      '/en/mora/deep-view/lab': '/mora/deep-view/lab',
+      '/de/kontakt': '/en/contact',
+      '/en/contact': '/de/kontakt',
       '/mora/analog-affect': '/en/mora/deep-view',
       '/en/mora/analog-affect': '/mora/deep-view',
       '/studio': '/en/studio',
@@ -93,7 +122,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
     <>
       <header className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-6 sm:pt-4">
-          <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${scrolled
+          <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${scrolled || isLightPage
             ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
             : 'md:border-transparent md:bg-transparent'
           }`}>
@@ -123,7 +152,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
                 <ShieldCheck className="h-3.5 w-3.5" />{copy.entry}
               </a>
 
-              <button type="button" onClick={() => setMenuOpen((value) => !value)} className="grid h-12 w-12 place-items-center rounded-full border border-[#c7dfcf]/28 bg-[#0d3024]/90 text-[#f2f7f3]/92 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl transition hover:border-[#e5e6bf]/60 hover:text-white md:hidden" aria-expanded={menuOpen} aria-controls="saimor-mobile-menu" aria-label={menuOpen ? `${copy.menu} schließen` : `${copy.menu} öffnen`}>
+              <button ref={toggleRef} type="button" onClick={() => setMenuOpen((value) => !value)} className="grid h-12 w-12 place-items-center rounded-full border border-[#c7dfcf]/28 bg-[#0d3024]/90 text-[#f2f7f3]/92 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl transition hover:border-[#e5e6bf]/60 hover:text-white md:hidden" aria-expanded={menuOpen} aria-controls="saimor-mobile-menu" aria-label={locale === 'de' ? (menuOpen ? 'Menü schließen' : 'Menü öffnen') : (menuOpen ? 'Close menu' : 'Open menu')}>
                 {menuOpen ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
               </button>
             </div>
@@ -132,7 +161,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
       </header>
 
       {menuOpen && (
-        <div id="saimor-mobile-menu" className="fixed inset-0 z-40 overflow-hidden bg-[#18392b] px-5 pb-8 pt-24 md:hidden">
+        <div ref={menuRef} id="saimor-mobile-menu" role="dialog" aria-modal="true" aria-label={copy.menu} className="fixed inset-0 z-40 overflow-y-auto bg-[#18392b] px-5 pb-8 pt-24 md:hidden">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_4%_12%,rgba(116,190,139,.27),transparent_34%),radial-gradient(ellipse_at_96%_18%,rgba(102,166,121,.24),transparent_35%),radial-gradient(ellipse_at_50%_88%,rgba(79,143,101,.18),transparent_42%),linear-gradient(180deg,#1a402f_0%,#153529_52%,#1a3b2d_100%)]" />
           <div className="pointer-events-none absolute left-1/2 top-[35%] h-72 w-72 -translate-x-1/2 rounded-full border border-[#e8d394]/30" />
           <div className="pointer-events-none absolute left-1/2 top-[35%] h-48 w-48 -translate-x-1/2 translate-y-12 rounded-full border border-[#9ad4bc]/25" />

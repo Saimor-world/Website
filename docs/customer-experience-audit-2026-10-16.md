@@ -54,3 +54,14 @@ Die kosmisch-natürliche Ästhetik ist ein Markenzeichen. Sie darf aber nicht ve
 2. Optische Einzelabnahme von Hero → Wald → Portal → Übergang → Produktwelten → Studio → Kontakt auf echtem iPhone und Desktop.
 3. Reale Produkt-/Daten-Claims im Käuferpfad mit nachprüfbaren Belegen abgleichen.
 4. Erst dann über Merge und Produktionsdeploy entscheiden.
+
+## Work review for #84 — concrete follow-up
+
+| Customer | Observed friction | Change / verification |
+|---|---|---|
+| Owner-managed business | Footer “Studio” returned to the home chapter; product maturity was easy to miss. | Dedicated Studio link, explicit MÔRA/OS product-preview label, stronger product-details contrast. Browser journey covers products → Studio → contact. |
+| Creator / coach | Scenic entrance competed with explanatory cards; the real pilot must remain stable. | One photographic doorway, one cinematic destination. YORI is labelled pilot in the public gallery; pilot route/assets/repository are untouched. Both YORI public routes are read-only QA targets. |
+| Team / workshop buyer | Contact locale switch could lead to a nonexistent route; menu keyboard exit was absent. | Exact contact locale pairs; Escape, focus cycle, resize cleanup; workshop CTA verified through the contact mailto destination without sending mail. |
+| IT / operations | Website health was presented as system availability; demo failure disappeared into console; DE/EN check differed. | Website health labelled narrowly; visible localized demo failure; shared scanner and localized static UI. No claim that all external connectors or backend-generated reports are translated. |
+
+The new artistic Reality Check does not assert real-time checking, AI incident monitoring, or established customer outcomes. No invented testimonials, integration states, packages, prices or quantified ROI are added. Physical iPhone Safari and a reference/impact case remain separate evidence gaps until actually available.

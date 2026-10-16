@@ -20,6 +20,6 @@ describe('AiRealityTeaser', () => {
     expect(screen.getByText('Is there evidence?')).toBeInTheDocument();
     expect(screen.getByText('Who approved it?')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Open Reality Check' })).toHaveAttribute('href', '/en/mora/deep-view');
-    expect(screen.getByText('NOT A NEWSFEED. NO LIVE-DATA CLAIMS.')).toBeInTheDocument();
+    expect(screen.getByText('Staged encounter · no live analysis')).toBeInTheDocument();
   });
 });

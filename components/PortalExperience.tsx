@@ -43,6 +43,18 @@ export default function PortalExperience({ locale }: { locale: Locale }) {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onHistory = () => setOpen(false);
+    window.addEventListener('popstate', onHistory);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener('popstate', onHistory);
+    };
+  }, [open]);
+
   const close = () => {
     const dialog = dialogRef.current;
     if (dialog?.open) {

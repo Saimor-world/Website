@@ -45,3 +45,8 @@ MORA_POLISH.md
 # Local dev server logs/scratch
 .codex-logs/
 tmp/
+
+# Browser QA output
+.qa/
+test-results/
+playwright-report/
