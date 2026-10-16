@@ -1,18 +1,7 @@
-/* A film in three acts: uncertain light, encounter, distinction. */
+/* Mist, encounter, morning. */
 .world{position:relative;isolation:isolate;display:flex;flex-direction:column;width:100%;min-height:100svh;overflow:clip;color:#f4f0e5;background:#020605}
 .atmosphere{position:absolute;z-index:-1;inset:0;pointer-events:none;overflow:hidden}
-.sky{position:absolute;inset:-10%;background:radial-gradient(ellipse 36% 45% at 25% 40%,#4b482a26,transparent),radial-gradient(ellipse 30% 45% at 75% 45%,#1b62563b,transparent);opacity:.7;animation:light-drift 19s ease-in-out infinite alternate;transition:opacity 2s}
 .grain{position:absolute;inset:0;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23g)' opacity='.28' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px}
-.field{position:absolute;inset:0;width:100%;height:100%;opacity:.65;transition:opacity 2s}
-.unresolved{transform-origin:center;animation:field-drift 24s ease-in-out infinite alternate;transition:opacity 1.8s}
-.unresolved path:nth-child(2n){stroke-dasharray:2 14;opacity:.55}
-.fragments{position:absolute;inset:0;transition:opacity 1.6s}
-.fragments span{position:absolute;color:#a6ad9061;font:italic 400 clamp(18px,2vw,29px) "Cormorant Garamond",Georgia,serif;animation:fragment-drift 12s ease-in-out infinite alternate;filter:blur(.5px)}
-.fragments span:nth-child(1){left:14%;top:27%;rotate:-7deg}.fragments span:nth-child(2){right:12%;top:43%;animation-delay:-7s;rotate:4deg}.fragments span:nth-child(3){left:26%;bottom:20%;animation-delay:-4s;rotate:-3deg}
-.world[data-scene="mora"] .fragments,.world[data-scene="mora"] .unresolved{opacity:0}
-.world[data-scene="mora"] .sky{opacity:.18}
-.world[data-scene="clarity"] .fragments,.world[data-scene="clarity"] .unresolved{opacity:0}
-.world[data-scene="clarity"] .sky{opacity:.3}
 .passage{position:absolute;inset:-50%;background:radial-gradient(ellipse at center,#9fcb9559,transparent 42%);opacity:0;transform:scale(.2);pointer-events:none}
 .world[data-crossing="true"] .passage{animation:cross-light 1.15s ease-in both}
 .world[data-crossing="true"] .presence{animation:through 1.15s cubic-bezier(.65,0,.95,.4) both}
@@ -47,15 +36,11 @@
 .world[data-paused="true"] *{animation-play-state:paused!important;transition:none!important}
 @keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes stone-reveal{from{opacity:.05;filter:brightness(.3)}to{opacity:1;filter:brightness(1)}}
-@keyframes light-drift{from{transform:translate(-5%,2%);opacity:.3}to{transform:translate(5%,-2%);opacity:.8}}
-@keyframes field-drift{from{transform:rotate(-9deg) scale(1.05)}to{transform:rotate(9deg) scale(1.15)}}
-@keyframes fragment-drift{from{translate:-8px 7px;opacity:.4}to{translate:12px -10px;opacity:.9}}
 @keyframes cross-light{0%{opacity:0;transform:scale(.2)}70%{opacity:.65}100%{opacity:0;transform:scale(3)}}
 @keyframes through{0%{transform:scale(1);opacity:1}70%{opacity:.65}100%{transform:scale(7);opacity:0}}
 @media(max-width:700px){
  .topbar{min-height:76px}.mark{font-size:8px;letter-spacing:.08em}.mark span{margin:0 3px}.back{font-size:11px;gap:6px}.controls{gap:0}.language,.motion{min-width:35px}
  .stage{min-height:0;padding:30px 24px 45px}.intro{padding:120px 0}.intro h1{font-size:clamp(58px,14.5vw,77px)}
- .fragments span:nth-child(1){left:9%;top:22%}.fragments span:nth-child(2){right:7%;top:73%}.fragments span:nth-child(3){display:none}
  .eyebrow{font-size:8px;letter-spacing:.15em}.presence{width:240px;height:240px}.encounter{gap:27px}.encounterText h1{font-size:36px}.lead{font-size:13px;max-width:280px}
  .footer{min-height:72px;align-items:center}.disclosure{font-size:8px;max-width:185px}.replay{font-size:10px}
 }
@@ -68,4 +53,6 @@
 .world[data-paused="true"] .stone{animation:none!important;opacity:1;transform:none;filter:none}
 .world[data-paused="true"] h1{animation:none!important;opacity:1}
 
-.world[data-scene="clarity"] .stage{padding:0 0 16px;min-height:0}
+
+.world[data-scene="clarity"] .stage{padding:0;min-height:0}
+.world[data-paused="true"] .stage *{animation:none!important}

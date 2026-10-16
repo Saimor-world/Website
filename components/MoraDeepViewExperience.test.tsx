@@ -2,6 +2,9 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraDeepView from './MoraDeepView';
 
+vi.mock('./MoraAtmosphere', () => ({
+  default: ({ onArrival }: { onArrival: () => void }) => <button data-testid="morning-arrival" onClick={onArrival} />,
+}));
 vi.mock('next/image', () => ({
   default: ({ alt = '', priority: _priority, ...props }: any) => <img alt={alt} {...props} />,
 }));
@@ -21,20 +24,14 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.queryByText('Was belegt ist.')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
     fireEvent.click(screen.getByRole('button', { name: 'Durch ihre Augen sehen' }));
-    expect(screen.getByRole('heading', { name: 'Wir starten morgen.' })).toBeInTheDocument();
     expect(window.location.pathname).toBe('/mora/deep-view');
-    expect(screen.queryByRole('link', { name: 'MÔRA kennenlernen' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('blockquote')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Genauer hinsehen' }));
-    expect(screen.getByRole('heading', { name: 'Noch nicht freigegeben.' })).toHaveFocus();
-    expect(screen.getByText('„Vorschlag: Wir starten morgen.“')).toBeVisible();
-    expect(screen.getByText('„Noch keine Freigabe. Bitte warten.“')).toBeVisible();
-    expect(screen.getAllByRole('blockquote')).toHaveLength(2);
-    fireEvent.click(screen.getByRole('button', { name: 'Freigabe klären' }));
-    expect(screen.getByRole('heading', { name: 'Erst klären.' })).toHaveFocus();
-    expect(screen.getByRole('status')).toHaveTextContent('Keine Nachricht, keine Aktion ausgelöst.');
-    expect(screen.getByRole('link', { name: 'MÔRA kennenlernen' })).toHaveAttribute('href', '/mora');
-    expect(screen.getByRole('link', { name: 'Das Prinzip dahinter' })).toHaveAttribute('href', '/mora/deep-view/lab');
+    expect(screen.getByRole('heading', { name: 'Durch MÔRAs Augen' })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Mit MÔRA weiter' })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Projektchat|Freigabe|Wir starten morgen/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Licht hereinlassen' }));
+    fireEvent.click(screen.getByTestId('morning-arrival'));
+    expect(screen.getByRole('heading', { name: 'Klarheit.' })).toHaveFocus();
+    expect(screen.getByRole('link', { name: 'Mit MÔRA weiter' })).toHaveAttribute('href', '/mora');
     expect(screen.getByText('INSZENIERUNG · KEINE LIVE-ANALYSE')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Noch einmal' }));
     expect(screen.getByRole('heading', { name: 'Alles klingt möglich.' })).toBeInTheDocument();
@@ -54,13 +51,11 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.getByLabelText('MÔRA’s luminous eyes')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Pause motion' }));
     fireEvent.click(screen.getByRole('button', { name: 'See through her eyes' }));
-    expect(screen.getByRole('heading', { name: 'We launch tomorrow.' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Look closer' }));
-    expect(screen.getByRole('heading', { name: 'Not yet approved.' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Leave it open' }));
-    expect(screen.getByRole('heading', { name: 'Deliberately open.' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Discover MÔRA' })).toHaveAttribute('href', '/en/mora');
-    expect(screen.getByRole('link', { name: 'Explore the principle' })).toHaveAttribute('href', '/en/mora/deep-view/lab');
+    expect(screen.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Let the light in' }));
+    fireEvent.click(screen.getByTestId('morning-arrival'));
+    expect(screen.getByRole('heading', { name: 'Clarity.' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Continue with MÔRA' })).toHaveAttribute('href', '/en/mora');
     expect(screen.getByText('STAGED EXPERIENCE · NO LIVE ANALYSIS')).toBeInTheDocument();
   });
 

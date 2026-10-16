@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
 import MoraOsFace from './MoraOsFace';
 import MoraPerspective from './MoraPerspective';
+import MoraAtmosphere from './MoraAtmosphere';
 import styles from './MoraDeepView.module.css';
 
 type Scene = 'uncertainty' | 'mora' | 'clarity';
@@ -16,19 +17,17 @@ const COPY = {
     meet: 'MÔRA begegnen', name: 'MÔRA.', presence: 'Einen Moment. Wir schauen genauer hin.', look: 'Durch ihre Augen sehen',
     reset: 'Noch einmal',
     status: 'INSZENIERUNG · KEINE LIVE-ANALYSE', pause: 'Bewegung pausieren',
-    noise: ['Gewissheit.', 'Verbindung.', 'Entscheidung.'],
   },
   en: {
     back: 'Back', world: 'THE WORLD OF AI', question: 'Everything sounds possible.', doubt: 'But what is actually true?',
     meet: 'Meet MÔRA', name: 'MÔRA.', presence: 'A moment. Let’s look a little closer.', look: 'See through her eyes',
     reset: 'Experience again',
     status: 'STAGED EXPERIENCE · NO LIVE ANALYSIS', pause: 'Pause motion',
-    noise: ['Certainty.', 'Connection.', 'Decision.'],
   },
 } as const;
 
-/** A staged encounter followed by an interactive, fictional perspective shift.
- * No fetching, live AI claims, scene floor or invented face.
+/** A cinematic passage from unfamiliar mist through MÔRA’s eyes into morning light.
+ * Moving mist gives way to morning light. No fetching, live AI claims or invented face.
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
@@ -36,11 +35,16 @@ export default function MoraDeepView({ locale }: Props) {
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [crossing, setCrossing] = useState(false);
+  const [morning, setMorning] = useState(false);
+  const [hurry, setHurry] = useState(false);
+  const arrive = useCallback(() => setMorning(true), []);
   const heading = useRef<HTMLHeadingElement>(null);
   const crossingTimer = useRef<number | undefined>(undefined);
   const focusRequested = useRef(false);
 
   const go = (next: Scene) => {
+    setMorning(false);
+    setHurry(false);
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname : `#${next}`);
     focusRequested.current = true;
     setScene(next);
@@ -59,6 +63,8 @@ export default function MoraDeepView({ locale }: Props) {
     const restore = () => {
       window.clearTimeout(crossingTimer.current);
       setCrossing(false);
+      setMorning(false);
+      setHurry(false);
       setScene(window.location.hash === '#clarity' ? 'clarity' : window.location.hash === '#mora' ? 'mora' : 'uncertainty');
     };
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -104,25 +110,9 @@ export default function MoraDeepView({ locale }: Props) {
   return (
     <div className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing}>
       <div className={styles.atmosphere} aria-hidden="true">
-        <div className={styles.sky} />
+        <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
+          reduced={reduced} onArrival={arrive} />
         <div className={styles.grain} />
-        <svg className={styles.field} viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="reality-thread" x1="0" y1="0" x2="1" y2="1">
-              <stop stopColor="#b8c9ab" stopOpacity="0" />
-              <stop offset=".5" stopColor="#d7bd7c" stopOpacity=".42" />
-              <stop offset="1" stopColor="#5fba9e" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <g className={styles.unresolved} fill="none" stroke="url(#reality-thread)" strokeWidth="1">
-            <path d="M-160 610 C290 120 380 900 940 210 S1320 850 1660 190" />
-            <path d="M-100 750 C310 210 540 980 1010 380 S1490 700 1600 390" />
-            <path d="M-140 500 C330 1030 440 80 1060 690 S1400 200 1640 620" />
-            <path d="M60 -100 C1050 100 120 690 1430 1030" />
-            <path d="M380 -180 C1440 410 100 590 990 1130" />
-          </g>
-        </svg>
-        <div className={styles.fragments}>{c.noise.map(word => <span key={word}>{word}</span>)}</div>
         <div className={styles.passage} />
       </div>
 
@@ -143,7 +133,7 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} /> : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <div className={styles.stoneStage}>
