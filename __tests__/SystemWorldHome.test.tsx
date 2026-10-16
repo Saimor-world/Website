@@ -64,7 +64,7 @@ describe('SystemWorldHome', () => {
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
-    expect(screen.getByRole('link', { name: 'SAIMÔR entdecken' })).toHaveAttribute('href', '#system');
+    expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
   });
 
