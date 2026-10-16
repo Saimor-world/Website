@@ -78,6 +78,31 @@ describe('SystemWorldHome', () => {
     expect(forest).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 195vw'));
   });
 
+  it('makes portal, its CTA and four context signals one semantic stage in both languages', () => {
+    for (const locale of ['de', 'en'] as const) {
+      const { container } = render(<SystemWorldHome locale={locale} />);
+      const heading = screen.getByRole('heading', {
+        name: locale === 'de'
+          ? 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.'
+          : 'Context should come with you instead of being explained again every time.',
+      });
+      const section = heading.closest('section');
+      expect(section).toHaveAttribute('id', 'system');
+      const stage = section?.querySelector('[class*="contextStage"]');
+      expect(stage).not.toBeNull();
+      const portal = stage?.querySelector('[class*="portalCanvas"]');
+      expect(portal).not.toBeNull();
+      expect(portal?.querySelector('[aria-hidden="true"]')).not.toBeNull();
+      const entry = screen.getByRole('link', { name: locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA' });
+      expect(portal?.contains(entry)).toBe(true);
+      expect(entry).toHaveAttribute('href', locale === 'de' ? '/mora' : '/en/mora');
+      const list = section?.querySelector('ul[aria-label]');
+      expect(list?.children).toHaveLength(4);
+      expect(portal?.contains(list ?? null)).toBe(false);
+      cleanup();
+    }
+  });
+
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';
