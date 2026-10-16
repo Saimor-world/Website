@@ -18,7 +18,7 @@ const COPY = {
     enter: 'SAIMÔR entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
-    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine, Entscheidungen und offene Dinge bleiben zusammen. MÔRA arbeitet mit diesem Zusammenhang, statt bei jedem Kontakt wieder bei null zu beginnen.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
+    saimor: 'SAIMÔR', saimorText: 'Dateien, Termine und Entscheidungen bleiben verbunden. MÔRA hält den Faden – auch wenn du längst bei etwas anderem bist.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
     entryLabel: 'EINSTIEG / SECURITY CHECK', entryTitle: 'Mit etwas Echtem statt mit einer leeren Promptbox starten.',
     entryText: 'Du startest mit deiner Domain. Der Security Report wird zum ersten echten Objekt im OS. Damit beginnt der Raum bereits mit realem Kontext.', entryCta: 'Security Check starten',
     studioEyebrow: 'SAIMÔR · BERATUNG / WORKSHOPS / UMSETZUNG', studioTitle: 'Aus einer Frage wird ein nächster Schritt.',
@@ -39,7 +39,7 @@ const COPY = {
     enter: 'Discover SAIMÔR', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
-    saimor: 'SAIMÔR', saimorText: 'Files, meetings, decisions and open work stay together. MÔRA works with that shared context instead of starting from zero on every interaction.', mora: 'MÔRA', moraText: 'notices when something changes',
+    saimor: 'SAIMÔR', saimorText: 'Files, meetings and decisions stay connected. MÔRA keeps the thread, even when your attention has moved elsewhere.', mora: 'MÔRA', moraText: 'notices when something changes',
     entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Start with something real instead of an empty prompt box.',
     entryText: 'You start with your domain. The Security Report becomes the first real object inside the OS, so the space begins with real context.', entryCta: 'Start Security Check',
     studioEyebrow: 'SAIMÔR · CONSULTING / WORKSHOPS / IMPLEMENTATION', studioTitle: 'A question becomes a next step.',
@@ -109,21 +109,38 @@ export default function SystemWorldHome({ locale }: Props) {
             <path className={styles.earthThreadGlow} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
             <path className={styles.earthThreadLine} d="M0 0 C -38 22, -30 72, 100 100" vectorEffect="non-scaling-stroke" />
           </svg>
-          <div className={styles.portalScene} aria-hidden="true"><div className={styles.portalFrame}><span className={styles.portalVeil} /></div><div className={styles.portalReflection} /><span className={styles.moraLight} /><span className={styles.lightThread} /></div>
           <div className={styles.thresholdInner}>
             <div className={styles.contextCopy}>
               <p className={styles.eyebrow}>{c.fieldEyebrow}</p>
               <h2 id="inside-title">{c.fieldTitle}</h2>
               <p className={styles.contextBody}>{c.saimorText}</p>
-              <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.outline}>{locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}<ArrowRight size={18} aria-hidden="true" /></Link>
             </div>
-            <ul className={styles.contextObjects} aria-label={locale === 'de' ? 'Zusammen im Arbeitsraum' : 'Together in the workspace'}>
-              {[{icon: FileText, title: locale === 'de' ? 'Dateien' : 'Files', detail: locale === 'de' ? 'im Kontext' : 'in context'},
-                {icon: CalendarDays, title: locale === 'de' ? 'Termine' : 'Meetings', detail: locale === 'de' ? 'verbunden' : 'connected'},
-                {icon: CircleCheck, title: locale === 'de' ? 'Offene Dinge' : 'Open work', detail: locale === 'de' ? 'im Blick' : 'in view'},
-                {icon: Sparkles, title: 'MÔRA', detail: locale === 'de' ? 'im selben Raum' : 'in the same space'}].map(({icon: Icon, title, detail}) => <li key={title}><Icon size={24} strokeWidth={1.3} aria-hidden="true" /><div><span>{title}</span><small>{detail}</small></div></li>)}
-            </ul>
-            <div className={styles.thresholdCaption}>{locale === 'de' ? 'KONTEXT · KONTINUITÄT · KLARHEIT' : 'CONTEXT · CONTINUITY · CLARITY'}</div>
+            <div className={styles.contextStage}>
+              <div className={styles.portalCanvas}>
+                <div className={styles.portalScene} aria-hidden="true">
+                  <div className={styles.portalFrame}><span className={styles.portalVeil} /></div>
+                  <div className={styles.portalReflection} />
+                  <span className={styles.moraLight} />
+                  <span className={styles.lightThread} />
+                </div>
+                <Link href={locale === 'de' ? '/mora' : '/en/mora'} className={styles.portalEntry}>
+                  {locale === 'de' ? 'MÔRA kennenlernen' : 'Meet MÔRA'}
+                  <ArrowRight size={17} aria-hidden="true" />
+                </Link>
+              </div>
+              <ul className={styles.contextObjects} aria-label={locale === 'de' ? 'Zusammen im Arbeitsraum' : 'Together in the workspace'}>
+                {[{icon: FileText, title: locale === 'de' ? 'Dateien' : 'Files', detail: locale === 'de' ? 'im Kontext' : 'in context'},
+                  {icon: CalendarDays, title: locale === 'de' ? 'Termine' : 'Meetings', detail: locale === 'de' ? 'verbunden' : 'connected'},
+                  {icon: CircleCheck, title: locale === 'de' ? 'Offene Dinge' : 'Open work', detail: locale === 'de' ? 'im Blick' : 'in view'},
+                  {icon: Sparkles, title: 'MÔRA', detail: locale === 'de' ? 'im selben Raum' : 'in the same space'}].map(({icon: Icon, title, detail}) => (
+                    <li key={title}>
+                      <Icon size={19} strokeWidth={1.4} aria-hidden="true" />
+                      <div><span>{title}</span><small>{detail}</small></div>
+                    </li>
+                  ))}
+              </ul>
+              <div className={styles.thresholdCaption}>{locale === 'de' ? 'KONTEXT · KONTINUITÄT · KLARHEIT' : 'CONTEXT · CONTINUITY · CLARITY'}</div>
+            </div>
           </div>
         </div>
         <div className={styles.moraIntroduction}>
