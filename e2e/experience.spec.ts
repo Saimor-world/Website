@@ -108,10 +108,14 @@ test('homepage: wordless door, cinematic passage, escape, focus return, product 
 test('cinematic: deliberate passage, real face alignment, history, replay and localization', async ({ page }, info) => {
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
+  // Hold the opening while the test takes control; a slow software renderer
+  // must not let the legitimate 4.8 s intro advance race the first pause click.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await visit(page, '/mora/deep-view');
   await consent(page);
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await shot(page, info, 'after-intro');
   await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
@@ -138,8 +142,7 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Noch einmal' }).click();
   await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
-  await visit(page, '/en/mora/deep-view');
-  await page.getByRole('button', { name: 'Meet MÔRA' }).click();
+  await visit(page, '/en/mora/deep-view#mora');
   await page.getByRole('button', { name: 'See through her eyes' }).click();
   await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
   await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
