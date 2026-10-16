@@ -92,11 +92,11 @@ export default function Navbar({ locale }: { locale: Locale }) {
     <>
       <header className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-6 sm:pt-4">
-          <div className={`flex h-[58px] items-center justify-between rounded-[20px] border px-3.5 shadow-[0_9px_28px_rgba(3,20,13,.22)] backdrop-blur-xl transition-colors duration-200 sm:px-4 md:rounded-none ${scrolled
-            ? 'border-[#b8dbc5]/[0.18] bg-[#102f24] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
-            : 'border-[#c2d7c8]/[.18] bg-[#102f24] md:border-transparent md:bg-transparent md:shadow-none'
+          <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${scrolled
+            ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
+            : 'md:border-transparent md:bg-transparent'
           }`}>
-            <a href={homeHref} className="group flex items-center gap-3" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
+            <a href={homeHref} className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#c4dfca]/25 bg-[#0d3024]/90 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl md:h-auto md:w-auto md:justify-start md:gap-3 md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-blur-none" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
               <span className="block h-9 w-9 shrink-0"><BrandSigil priority /></span>
               <span className="hidden sm:block">
                 <span className="block font-serif text-lg font-light leading-none tracking-[.02em] text-[#f5f3e9]">Saimôr</span>
@@ -122,7 +122,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
                 <ShieldCheck className="h-3.5 w-3.5" />{copy.entry}
               </a>
 
-              <button type="button" onClick={() => setMenuOpen((value) => !value)} className="grid h-10 w-10 place-items-center rounded-full border border-[#c7dfcf]/28 bg-[#1b3d2f]/78 text-[#f2f7f3]/92 transition hover:border-[#d0e3d5]/42 hover:text-white md:hidden" aria-expanded={menuOpen} aria-controls="saimor-mobile-menu" aria-label={menuOpen ? `${copy.menu} schließen` : `${copy.menu} öffnen`}>
+              <button type="button" onClick={() => setMenuOpen((value) => !value)} className="grid h-12 w-12 place-items-center rounded-full border border-[#c7dfcf]/28 bg-[#0d3024]/90 text-[#f2f7f3]/92 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl transition hover:border-[#e5e6bf]/60 hover:text-white md:hidden" aria-expanded={menuOpen} aria-controls="saimor-mobile-menu" aria-label={menuOpen ? `${copy.menu} schließen` : `${copy.menu} öffnen`}>
                 {menuOpen ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
               </button>
             </div>
