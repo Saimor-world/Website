@@ -92,9 +92,9 @@ export default function Navbar({ locale }: { locale: Locale }) {
     <>
       <header className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-6 sm:pt-4">
-          <div className={`flex h-[58px] items-center justify-between border px-3.5 transition-colors duration-200 sm:px-4 ${scrolled
-            ? 'border-[#b8dbc5]/[0.18] bg-[#17372a]/96 shadow-[0_8px_24px_rgba(3,15,10,.16)] md:bg-[#10251c]/88 md:backdrop-blur-lg'
-            : 'border-transparent bg-transparent'
+          <div className={`flex h-[58px] items-center justify-between rounded-[20px] border px-3.5 shadow-[0_9px_28px_rgba(3,20,13,.22)] backdrop-blur-xl transition-colors duration-200 sm:px-4 md:rounded-none ${scrolled
+            ? 'border-[#b8dbc5]/[0.18] bg-[#102f24] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
+            : 'border-[#c2d7c8]/[.18] bg-[#102f24] md:border-transparent md:bg-transparent md:shadow-none'
           }`}>
             <a href={homeHref} className="group flex items-center gap-3" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
               <span className="block h-9 w-9 shrink-0"><BrandSigil priority /></span>
