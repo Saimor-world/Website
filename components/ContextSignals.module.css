@@ -1,0 +1,42 @@
+/* Context objects: invitation to explore, not decorative feature labels. */
+.shell{position:relative;width:100%;padding-top:12px}
+.hint{display:flex;align-items:center;gap:9px;margin:0 0 15px;color:#f1e8d0;font:500 10px/1.55 ui-monospace,SFMono-Regular,monospace;letter-spacing:.08em}
+.hintDot{width:5px;height:5px;border-radius:50%;background:#d7c589;box-shadow:0 0 13px #f5dd98bd}
+.grid{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0;padding:0}
+.grid li{min-width:0}
+.signal{position:relative;display:flex;flex-direction:column;align-items:flex-start;width:100%;height:100%;min-height:160px;text-align:left;padding:17px 13px 16px;border:1px solid #e9e8d45a;border-radius:13px;background:linear-gradient(145deg,#06251a5e,#315b426e);color:#fff9ec;cursor:pointer;overflow:hidden;transition:background .26s ease,border-color .26s ease,transform .26s ease,box-shadow .26s ease}
+.signal::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 88% 7%,#dfd8a13d,transparent 64%);transition:opacity .3s ease}
+.signal:hover,.signal:focus-visible{border-color:#f3dfaccc;background:linear-gradient(145deg,#113a2baa,#3b7257b8);transform:translateY(-4px);box-shadow:0 17px 30px #0722195e}
+.signal:hover::before,.signal:focus-visible::before{opacity:1}
+.signal:focus-visible{outline:2px solid #ffe9ad;outline-offset:4px}
+.topline{display:flex;align-items:center;justify-content:space-between;width:100%;gap:4px;color:#e0d3b4;font:500 8px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:.08em}
+.topline svg{transition:transform .25s}
+.signal:hover .topline svg{transform:translate(2px,-2px)}
+.signalIcon{display:block;margin-top:18px;margin-bottom:12px;color:#e8d6a7}
+.title{font-size:15px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.subtitle{display:block;margin-top:5px;font-size:11px;line-height:1.5;color:#e0ead9}
+.dialog{width:min(570px,calc(100vw - 34px));max-height:min(86dvh,800px);max-width:none;margin:auto;padding:0;border:1px solid #b2c7ad63;border-radius:22px;background:#f7f5eb;color:#1c3b2c;box-shadow:0 29px 90px #00150bc9;overscroll-behavior:contain}
+.dialog::backdrop{background:#05190fd4;backdrop-filter:blur(9px)}
+.dialogBody{padding:clamp(23px,4vw,36px);overflow-y:auto}
+.dialogTop{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.kicker,.exampleLabel{font:600 9px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;color:#61745b}
+.close{display:grid;place-items:center;flex-shrink:0;width:42px;height:42px;border:1px solid #c4cfbd;border-radius:50%;color:#254c35;transition:background .2s}
+.close:hover{background:#e3eadb}
+.close:focus-visible,.deepLink:focus-visible{outline:3px solid #a6ba8a;outline-offset:4px}
+.dialogIcon{display:grid;place-items:center;width:61px;height:61px;margin:19px 0;border:1px solid #a9bea5;border-radius:50%;color:#2d6042;background:#e8eee2}
+.dialog h3{font:400 clamp(37px,7vw,54px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.035em;margin:0;max-width:480px}
+.description{font-size:14px;line-height:1.8;color:#45614c;margin:19px 0 25px;max-width:470px}
+.example{padding:21px 22px;background:linear-gradient(135deg,#e7eadd,#dfe9db);border:1px solid #cad8c6;border-radius:16px}
+.exampleLabel{font-size:9px;color:#54705c}
+.exampleSubject{display:flex;align-items:center;gap:12px;margin-top:18px;font-size:17px;font-weight:650;color:#214731}
+.exampleSeed{width:12px;height:12px;border-radius:50%;background:#2e7551;box-shadow:0 0 0 5px #2e755121}
+.exampleEdge{height:22px;width:1px;margin:7px 0 5px 5px;background:#77987d}
+.exampleRelation{font-size:13px;color:#345e47;line-height:1.7}
+.exampleRelation strong{font-weight:600}
+.exampleMeaning{display:flex;flex-direction:column;gap:3px;margin:20px 0 0;border-top:1px solid #afc0ad;padding-top:14px;font-size:13px;color:#3d624a}
+.exampleMeaning span{font:600 9px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.12em;color:#6d816c;text-transform:uppercase}
+.deepLink{display:inline-flex;align-items:center;gap:14px;margin-top:23px;padding:10px 0;border-bottom:1px solid #315f42;color:#245438;font-size:13px;font-weight:650;transition:gap .2s ease}
+.deepLink:hover{gap:20px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.signal{min-height:132px;padding:15px}.signalIcon{margin-top:11px;margin-bottom:9px}}
+@media(max-width:700px){.hint{margin-bottom:12px;font-size:9px}.grid{gap:9px}.signal{min-height:147px;border-radius:10px;padding:14px 13px}.signalIcon{margin-top:14px}.topline{font-size:8px}.title{font-size:14px}.subtitle{font-size:11px}.dialogBody{padding:23px}.dialog{border-radius:17px}.example{padding:18px}}
+@media(prefers-reduced-motion:reduce){.signal,.signal::before,.topline svg,.close,.deepLink{transition:none}.signal:hover,.signal:focus-visible{transform:none}.signal:hover .topline svg{transform:none}}
