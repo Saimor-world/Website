@@ -65,7 +65,7 @@ export default function SystemWorldHome({ locale }: Props) {
     <div className={styles.world}>
       <section className={styles.hero} aria-labelledby="world-title">
         <label className={styles.motionControl}><input type="checkbox" name="world-motion" />{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</label>
-        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.heroImage} />
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(max-width: 390px) 185vw, (max-width: 700px) 175vw, (min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
@@ -92,7 +92,7 @@ export default function SystemWorldHome({ locale }: Props) {
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">
         <div className={styles.threshold}>
-          <Image src="/images/saimor-forest-layer.webp" alt="" fill quality={95} sizes="(min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.forestImage} />
+          <Image src="/images/saimor-forest-layer.webp" alt="" fill quality={95} sizes="(max-width: 390px) 205vw, (max-width: 700px) 195vw, (min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.forestImage} />
           <div className={styles.forestShade} aria-hidden="true" />
           {/* Marius 14.09.: "wenn man links die Rundung der Erde nachzeichnen
               wuerde, kaeme man beim Portal raus". Die Linie fuehrt die
