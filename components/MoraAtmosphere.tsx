@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject, type MutableRefObject } from 'react';
 import styles from './MoraAtmosphere.module.css';
 import MoraClearing from './MoraClearing';
 
 type Props = {
-  dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void; settling?: RefObject<number>;
+  dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void; settling?: RefObject<number>; progress?: MutableRefObject<number>;
 };
 
 const VERTEX = `attribute vec2 a_position;
@@ -147,6 +147,7 @@ export default function MoraAtmosphere(props: Props) {
       if (now - lastDraw < 33 && progress !== 1) return;
       lastDraw = now;
       surface.style.setProperty('--dawn', String(progress));
+      if (c.progress) c.progress.current = progress;
       surface.dataset.still = String(!running);
       const canRender = renderer && !gpuLost && !renderer.isContextLost();
       surface.dataset.rendered = canRender ? 'true' : 'false';

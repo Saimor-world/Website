@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraDeepView from './MoraDeepView';
 
-vi.mock('./MoraDisorientation', () => ({ default: () => null }));
+vi.mock('./AmbientParticleField', () => ({ default: () => null }));
 vi.mock('./MoraAtmosphere', () => ({
   default: ({ onArrival }: { onArrival: () => void }) => <button data-testid="morning-arrival" onClick={onArrival} />,
 }));

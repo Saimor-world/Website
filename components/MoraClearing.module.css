@@ -5,14 +5,18 @@
 .water{position:absolute;left:25%;right:10%;top:63%;bottom:0;background:repeating-linear-gradient(178deg,transparent 0 13px,#fff3bf20 14px,transparent 15px 24px);mask-image:radial-gradient(ellipse 42% 50% at 50% 45%,#0008,transparent);animation:water 9s linear infinite;transform:perspective(260px) rotateX(35deg);mix-blend-mode:screen}
 .breath{position:absolute;inset:-25%;background:radial-gradient(ellipse 40% 10% at 55% 63%,#c9dfc319,transparent),radial-gradient(ellipse 30% 20% at 10% 35%,#c9dfc314,transparent);filter:blur(18px);animation:breath 27s ease-in-out infinite alternate;transform:translate3d(calc(var(--look-x,0)*32px),calc(var(--look-y,0)*16px),0);transition:transform 2s ease}
 .motes{position:absolute;inset:-5%;transform:translate3d(calc(var(--look-x,0)*-38px),calc(var(--look-y,0)*-24px),0);transition:transform 2s ease}
-.motes i{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:#ffe6aa;box-shadow:0 0 10px 2px #e7d49c29;animation:float var(--duration) ease-in-out var(--delay) infinite;opacity:0}
+.motes i{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:#e8e4bd;filter:blur(1px);box-shadow:0 0 12px 3px #d9dfbb20;animation:float var(--duration) ease-in-out var(--delay) infinite;opacity:0}
 .nearMist{position:absolute;inset:-30%;background:radial-gradient(ellipse 35% 35% at calc(50% + var(--look-x,0)*10%) 90%,#a7c6a626,transparent 75%);filter:blur(35px);animation:breath 32s ease-in-out -11s infinite alternate;transition:background-position 2s}
 .shade{position:absolute;inset:0;background:linear-gradient(#04100e99,transparent 25%,transparent 60%,#020b08c9),radial-gradient(ellipse 90% 90% at 63% 43%,transparent 25%,#03100c99);pointer-events:none}
 @keyframes light{from{opacity:.45}to{opacity:1}}
 @keyframes breath{from{translate:-3% 1%}to{translate:4% -2%}}
-@keyframes float{0%,100%{opacity:0;translate:0 16px}30%{opacity:.55}60%{opacity:.3}85%{opacity:0;translate:25px -45px}}
+@keyframes float{0%,100%{opacity:0;translate:0 16px}30%{opacity:.48}60%{opacity:.25}85%{opacity:0;translate:25px -45px}}
 @keyframes water{to{background-position:40px 24px}}
 @media(max-width:700px){.landscape{background-position:64% center;inset:-4% -16%}.rays{inset:-30% -100%}.sun{inset:-10% -55%}.water{left:0;right:0;top:61%}.motes i:nth-child(2n){display:none}}
 @media(prefers-reduced-motion:reduce){.clearing *{animation:none!important;transition:none!important;transform:none!important}.motes i{opacity:.3}}
 
 .connections{position:absolute;inset:-5%;width:110%;height:110%;opacity:calc(var(--dawn)*(1 - var(--dawn))*2.1);mix-blend-mode:screen;pointer-events:none}
+.waterMycelium{position:absolute;left:23%;top:64%;width:74%;height:33%;mix-blend-mode:screen;pointer-events:none;opacity:calc(var(--dawn)*.19);mask-image:radial-gradient(ellipse at 52% 47%,#000 12%,transparent 69%);animation:water-memory 23s ease-in-out infinite alternate}
+@keyframes water-memory{from{filter:blur(.3px);translate:-.7% .2%}to{filter:blur(.8px);translate:.7% -.2%}}
+@media(max-width:700px){.waterMycelium{left:-15%;width:125%;top:65%}}
+@media(prefers-reduced-motion:reduce){.waterMycelium{animation:none!important}}

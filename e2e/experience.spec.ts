@@ -185,9 +185,15 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await expect(page.getByText(/PROJEKTCHAT|Wir starten morgen|Was belegt ist/)).toHaveCount(0);
   await noOverflow(page);
   await shot(page, info, 'after-mist');
+  const starfield = page.locator('canvas[data-scene="clearing"]');
+  await expect(starfield).toHaveAttribute('data-phase', 'water');
+  await expect.poll(() => page.locator('[data-dawn]').evaluate(element => Number(getComputedStyle(element).getPropertyValue('--dawn')))).toBeGreaterThan(.25);
+  await expect.poll(() => starfield.getAttribute('data-fade').then(value => Number(value))).toBeGreaterThan(0);
+  await shot(page, info, 'after-first-light-stars');
   await page.getByRole('button', { name: 'Licht hereinlassen', exact: true }).click();
   await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
+  await expect(starfield).toHaveAttribute('data-phase', 'rest');
   await noOverflow(page);
   await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-clarity');

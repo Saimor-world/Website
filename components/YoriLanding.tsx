@@ -1,5 +1,7 @@
 'use client';
 
+import AmbientParticleField from './AmbientParticleField';
+
 import { useState } from 'react';
 import YoriMark from '@/components/YoriMark';
 import { yoriOrigin } from '@/lib/product-origins';
@@ -416,6 +418,8 @@ export default function YoriLanding({ locale }: Props) {
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(36%_32%_at_82%_72%,rgba(255,198,112,.22),transparent_70%)]"
               />
+
+              <AmbientParticleField tone="warm" />
 
               {/* Stage Interior Layout matching YORIApp + YoriTodayRoom */}
               <div className="relative z-10 grid min-h-[620px] lg:min-h-[680px] lg:grid-cols-[210px_1fr_280px]">

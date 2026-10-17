@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
 import MoraFocusStone, { type MoraFocusHandle } from './MoraFocusStone';
-import MoraDisorientation from './MoraDisorientation';
+import AmbientParticleField from './AmbientParticleField';
 import MoraPerspective from './MoraPerspective';
 import MoraAtmosphere from './MoraAtmosphere';
 import MoraUncertainty from './MoraUncertainty';
@@ -34,6 +34,7 @@ export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
   const world = useRef<HTMLDivElement>(null);
   const focusAmount = useRef(0);
+  const dawnAmount = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
   const focusControl = useRef<MoraFocusHandle>(null);
   const [focusing, setFocusing] = useState(false);
@@ -57,7 +58,8 @@ export default function MoraDeepView({ locale }: Props) {
 
   const go = (next: Scene) => {
     look(0, 0);
-    focusProgress(0); setFocusing(false); setFocusReset(value => value + 1);
+    focusProgress(next === 'clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
+    dawnAmount.current = 0;
     setMorning(false);
     setHurry(false);
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname + window.location.search : `#${next}`);
@@ -76,7 +78,8 @@ export default function MoraDeepView({ locale }: Props) {
 
   useEffect(() => {
     const restore = () => {
-      focusProgress(0); setFocusing(false); setFocusReset(value => value + 1);
+      focusProgress(window.location.hash === '#clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
+      dawnAmount.current = 0;
       const origin = new URLSearchParams(window.location.search).get('from');
       setEntry(origin === 'portal' || origin === 'mora' ? origin : null);
       window.clearTimeout(crossingTimer.current);
@@ -140,8 +143,8 @@ export default function MoraDeepView({ locale }: Props) {
       }}>
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
-          reduced={reduced} onArrival={arrive} settling={focusAmount} />
-        <MoraDisorientation active={scene !== 'clarity'} paused={paused} reduced={reduced} focus={focusAmount} pointer={pointer} />
+          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} />
+        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} />
         <div className={styles.grain} />
         <div className={styles.passage} />
       </div>

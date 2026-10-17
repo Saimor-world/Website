@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, CircleCheck, FileText, ShieldCheck, Sparkles } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
+import AmbientParticleField from './AmbientParticleField';
 import MoraOrb, { type MoraOrbState } from '@/components/MoraOrb';
 
 type Props = { locale: 'de' | 'en' };
@@ -112,7 +113,7 @@ export default function MoraProductPage({ locale }: Props) {
     <div className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
       <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07] px-5 pb-16 pt-28 sm:px-8 sm:pt-36 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
-        <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_25%,rgba(234,216,159,.4)_0_1px,transparent_1.2px),radial-gradient(circle_at_70%_60%,rgba(143,218,190,.32)_0_1px,transparent_1.2px)] [background-size:119px_119px,173px_173px]" aria-hidden="true" />
+        <AmbientParticleField />
 
         <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-8 lg:grid-cols-[.93fr_1.07fr] lg:gap-16">
           <div className="min-w-0 max-w-2xl">
@@ -226,14 +227,7 @@ export default function MoraProductPage({ locale }: Props) {
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
           </div>
           <Link href={deepHref} className="relative grid h-[330px] place-items-center overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] transition hover:border-[#d8c27d]/30 sm:h-[430px]" aria-label={c.deepCta}>
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
-              <line x1="22" y1="26" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
-              <line x1="80" y1="34" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
-              <line x1="32" y1="78" x2="50" y2="50" stroke="#9fb8ae" strokeOpacity=".4" strokeDasharray="5 5" vectorEffect="non-scaling-stroke" />
-            </svg>
-            <span className="absolute left-[22%] top-[26%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#72dfbd] shadow-[0_0_16px_rgba(114,223,189,.7)]" />
-            <span className="absolute left-[80%] top-[34%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#70c8f4] shadow-[0_0_16px_rgba(112,200,244,.7)]" />
-            <span className="absolute left-[32%] top-[78%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d98db2] shadow-[0_0_16px_rgba(217,141,178,.7)]" />
+            <AmbientParticleField />
             <MoraOrb size={120} state="dream" className="relative h-28 w-28 sm:h-32 sm:w-32" />
           </Link>
         </div>
