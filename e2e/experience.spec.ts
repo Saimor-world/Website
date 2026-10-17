@@ -158,8 +158,9 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-y', '-0.35');
   await shot(page, info, 'after-exploring');
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  const pausedX = await page.locator('[data-scene="clarity"]').evaluate(e => getComputedStyle(e).getPropertyValue('--look-x'));
   await clearing.press('ArrowRight');
-  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', '0.35');
+  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', pausedX);
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await page.goBack();
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();

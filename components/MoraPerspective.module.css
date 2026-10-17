@@ -2,7 +2,7 @@
 .unspoken{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;outline:none}
 .explore{position:absolute;inset:0;touch-action:none;cursor:grab;outline:none}
 .explore:active{cursor:grabbing}
-.explore:focus-visible{outline:1px solid #e6c98d80;outline-offset:-16px;border-radius:35%}
+.explore:focus-visible::after{content:"↔";position:absolute;left:24px;bottom:32px;width:36px;height:36px;display:grid;place-items:center;border:1px solid #e6c98d99;border-radius:50%;color:#f6e8bd;background:#06130d80;font-size:18px}
 .arrival{position:absolute;left:clamp(24px,5vw,80px);top:18%;display:flex;align-items:center;gap:14px;color:#fff0cf;font:400 clamp(24px,3vw,40px)/1.2 "Cormorant Garamond",Georgia,serif;letter-spacing:-.015em;pointer-events:none;animation:arrival 3s ease both;text-shadow:0 2px 25px #04100a}
 .arrival span{width:28px;height:1px;background:#e3cc91;opacity:.6}
 .hint{position:absolute;left:0;right:0;bottom:135px;display:flex;justify-content:center;align-items:center;gap:10px;color:#ecdfbead;font-size:11px;pointer-events:none;animation:arrival 3s ease 2s both}
