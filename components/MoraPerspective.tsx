@@ -1,10 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, MoveHorizontal } from 'lucide-react';
-import MoraOsFace from './MoraOsFace';
 import MoraWaterGuide from './MoraWaterGuide';
 import styles from './MoraPerspective.module.css';
 
@@ -52,7 +50,6 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   const focusRequested = useRef(false);
   const gaze = useRef({ x: 0, y: 0 });
   const [explored, setExplored] = useState(false);
-  const [guideReady, setGuideReady] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const [chapter, setChapter] = useState(-1);
   const activate = (index: number) => { setChapter(index); onChapter?.(index); };
@@ -74,13 +71,10 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
     onLook(gaze.current.x, gaze.current.y);
     setExplored(true);
   };
-  const guide = <span className={styles.stone} data-guide-ready={guideReady}>
-    <Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} unoptimized loading="eager" onLoad={() => setGuideReady(true)} />
-    {guideReady && <MoraOsFace size={72} state="rest" />}
-  </span>;
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
-      {morning && guideReady && <MoraWaterGuide chapter={chapter} still={still} />}
+      {morning && <MoraWaterGuide chapter={chapter} still={still} label={infoVisible ? c.rest : c.reopen}
+        onActivate={() => showInfo(!infoVisible)} buttonRef={reopen} />}
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>
       <div className={styles.explore} role="region" tabIndex={0} aria-label={c.explore} aria-describedby="clearing-instructions"
@@ -108,14 +102,12 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
           <summary><span className={styles.chapterNumber}>0{index + 1}</span><span>{title}</span><ChevronDown size={14} aria-hidden="true" /></summary><p>{text}</p>
         </details>)}</div>
         <Link className={styles.guide} href={`${locale === 'de' ? '/mora' : '/en/mora'}#im-os`}>
-          {guide}<span>{c.next}</span><ArrowUpRight size={15} aria-hidden="true" />
+          <span>{c.next}</span><ArrowUpRight size={15} aria-hidden="true" />
         </Link>
-        <button type="button" className={styles.rest} onClick={() => showInfo(false)}>{c.rest}<MoveHorizontal size={14} aria-hidden="true" /></button>
       </article> : null}
       {morning && !infoVisible && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
-      {!morning || !infoVisible ? <div className={styles.action}>
-        {morning ? <button ref={reopen} type="button" className={styles.guide} onClick={() => showInfo(true)}>{guide}<span>{c.reopen}</span><ArrowUpRight size={15} aria-hidden="true" /></button>
-          : <button type="button" className={styles.quiet}
+      {!morning ? <div className={styles.action}>
+        {<button type="button" className={styles.quiet}
             // The automatic dawn can remove this button between pointer down and up.
             // Keep focus on the scene rather than a control that is about to disappear.
             onPointerDown={event => event.preventDefault()}

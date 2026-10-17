@@ -66,6 +66,7 @@ export default function MoraDeepView({ locale }: Props) {
     setMorning(false);
     setHurry(false);
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname + window.location.search : `#${next}`);
+    window.dispatchEvent(new Event('hashchange'));
     focusRequested.current = true;
     setScene(next);
   };

@@ -9,7 +9,9 @@ afterEach(cleanup);
 describe('the clearing', () => {
   it('reveals the guide eyes only once the stone image has loaded', () => {
     const { container } = render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
+    expect(container.querySelectorAll('img')).toHaveLength(1);
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
+    expect(container.querySelectorAll('img')).toHaveLength(1);
     const image = container.querySelector('img')!;
     expect(container.querySelector('[data-face-state]')).toBeNull();
     fireEvent.error(image);

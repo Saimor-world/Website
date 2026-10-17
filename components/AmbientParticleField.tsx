@@ -28,6 +28,9 @@ export default function AmbientParticleField(props: Props) {
     let frame = 0, previous = performance.now(), clock = 0;
     let lastPaint = '', visible = true, viewWidth = 900, viewHeight = 700;
     let chapter = -1;
+    const cursor = { x: 0, y: 0 };
+    const dust = Array.from({ length: 24 }, () => ({ x: 0, y: 0, life: 0 }));
+    let dustIndex = 0, dustClock = 0;
     const chapterBlend = [0, 0, 0];
     // Preallocate geometry. RAF follows the display (including 120 Hz), not a 24 fps timer.
     const points = Array.from({ length: 72 }, (_, i) => ({
@@ -79,7 +82,13 @@ export default function AmbientParticleField(props: Props) {
       const paint = `${clock}:${d}:${c.focus?.current}:${c.pointer?.current?.x}:${c.pointer?.current?.y}:${c.scene}:${c.tone}:${still}:${targetChapter}`;
       if (paint === lastPaint) return;
       lastPaint = paint;
-      const w = el.width, h = el.height, f = ambient ? 0 : c.focus?.current ?? 0, p = c.pointer?.current ?? { x: 0, y: 0 };
+      const w = el.width, h = el.height, f = ambient ? 0 : c.focus?.current ?? 0;
+      const target = c.pointer?.current ?? { x: 0, y: 0 };
+      const follow = still ? 1 : 1 - Math.exp(-dt * 5);
+      const movement = Math.hypot(target.x - cursor.x, target.y - cursor.y);
+      cursor.x += (target.x - cursor.x) * follow;
+      cursor.y += (target.y - cursor.y) * follow;
+      const p = cursor;
       const water = ease(.06, .72, d);
       const project = waterProjection(viewWidth, viewHeight, d, p.x, p.y);
       const phase = ambient ? 'ambient' : d >= 1 ? 'water-memory' : c.scene === 'clearing' ? 'water' : 'field';
@@ -140,6 +149,26 @@ export default function AmbientParticleField(props: Props) {
         context.globalAlpha = 1;
       }
       context.restore();
+      // A small, pooled wake follows the pointer in every encounter phase.
+      // Emission follows elapsed time, so 120 Hz does not double the density.
+      if (!ambient && !still) {
+        dustClock += dt;
+        if (movement > .015 && dustClock >= .025) {
+          const mote = dust[dustIndex++ % dust.length];
+          mote.x = (p.x + 1) / 2 * w; mote.y = (p.y + 1) / 2 * h; mote.life = 1;
+          dustClock = 0;
+        }
+        for (let i = 0; i < dust.length; i++) {
+          const mote = dust[i];
+          if (mote.life <= 0) continue;
+          mote.life = Math.max(0, mote.life - dt * 1.5);
+          mote.x += Math.sin(i * 2.4) * dt * 9; mote.y -= dt * 12;
+          const radius = 3 + mote.life * 5;
+          context.globalAlpha = mote.life * .75;
+          context.drawImage(sprite, mote.x - radius, mote.y - radius, radius * 2, radius * 2);
+        }
+        context.globalAlpha = 1;
+      }
       if (!still && c.pointer?.current?.energy) c.pointer.current.energy = Math.max(0, c.pointer.current.energy - dt * .65);
     };
     frame = requestAnimationFrame(draw);

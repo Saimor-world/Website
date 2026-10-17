@@ -70,7 +70,7 @@ export default function CookieBanner() {
     localStorage.setItem('cookie_consent', 'all');
     localStorage.setItem('analytics_enabled', 'true');
     setIsVisible(false);
-    window._paq?.push(['rememberCookieConsentGiven']);
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   const acceptSelected = () => {
@@ -78,20 +78,14 @@ export default function CookieBanner() {
     localStorage.setItem('analytics_enabled', String(analyticsEnabled));
     setIsVisible(false);
 
-    if (analyticsEnabled) {
-      window._paq?.push(['rememberCookieConsentGiven']);
-    } else {
-      window._paq?.push(['forgetCookieConsentGiven']);
-      window._paq?.push(['optUserOut']);
-    }
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   const rejectAll = () => {
     localStorage.setItem('cookie_consent', 'essential');
     localStorage.setItem('analytics_enabled', 'false');
     setIsVisible(false);
-    window._paq?.push(['forgetCookieConsentGiven']);
-    window._paq?.push(['optUserOut']);
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   useEffect(() => {
