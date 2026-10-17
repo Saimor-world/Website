@@ -121,8 +121,16 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await expect(page.locator('[data-face-state="rest"]')).toBeVisible();
-  const face = await page.locator('[data-face-state]').boundingBox();
-  const stone = await page.getByRole('img', { name: 'MÔRA, Jadestein' }).boundingBox();
+  // Measure both layers in one browser frame. Separate round-trips can span
+  // the encounter's parent translate animation on slow software WebKit.
+  const { face, stone } = await page.getByTestId('deep-mora').evaluate(element => {
+    const bounds = (child: Element | null) => {
+      if (!child) return null;
+      const { x, y, width, height } = child.getBoundingClientRect();
+      return { x, y, width, height };
+    };
+    return { face: bounds(element.querySelector('[data-face-state]')), stone: bounds(element.querySelector('img')) };
+  });
   expect(face).not.toBeNull(); expect(stone).not.toBeNull();
   for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(face![key] - stone![key])).toBeLessThan(1);
   await shot(page, info, 'after-encounter');
