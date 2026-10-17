@@ -144,7 +144,7 @@ export default function MoraAtmosphere(props: Props) {
       if (!c.dawn) { progress = 0; arrived = false; }
       else if (c.reduced || (c.paused && c.hurry)) progress = 1;
       else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 8));
-      surface.style.setProperty('--dawn', String(progress));
+      if (progress !== lastProgress) surface.style.setProperty('--dawn', String(progress));
       if (c.progress) c.progress.current = progress;
       surface.dataset.still = String(!running);
       const canRender = renderer && !gpuLost && !renderer.isContextLost();
@@ -153,7 +153,8 @@ export default function MoraAtmosphere(props: Props) {
           lastHeight === element.height) return;
       lastClock = clock; lastProgress = progress;
       lastWidth = element.width; lastHeight = element.height;
-      if (canRender) {
+      // The opaque dawn scene no longer needs an invisible full-screen fog pass.
+      if (canRender && progress < 1) {
         renderer.uniform2f(size, element.width, element.height);
         renderer.uniform1f(time, clock); renderer.uniform1f(dawn, progress);
         renderer.drawArrays(renderer.TRIANGLE_STRIP, 0, 4);

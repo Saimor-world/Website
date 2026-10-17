@@ -7,9 +7,13 @@ async function visit(page: Page, route: string) {
   return response;
 }
 async function consent(page: Page) {
+  if (await page.evaluate(() => Boolean(localStorage.getItem('cookie_consent')))) return;
   const essential = page.getByRole('button', { name: /Nur Essenziell|Essential only|Only essential/i });
-  await essential.waitFor({ state: 'visible', timeout: 2000 }).catch(() => undefined);
-  if (await essential.isVisible()) await essential.click();
+  await essential.waitFor({ state: 'visible', timeout: 5000 }).catch(() => undefined);
+  if (await essential.isVisible()) {
+    await essential.click();
+    await expect(page.getByRole('dialog', { name: /Datenschutz|Privacy/, exact: true })).not.toBeVisible();
+  }
 }
 async function shot(page: Page, info: TestInfo, name: string, fullPage = false) {
   if (fullPage) {
@@ -81,7 +85,7 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await visit(page, home); await consent(page);
     const earth = page.getByRole('button', { name: /SAIMÔR Earth/ });
     await earth.click();
-    const earthPreview = page.getByRole('dialog');
+    const earthPreview = page.locator('dialog[aria-labelledby="earth-preview-title"]');
     await expect(earthPreview).toBeVisible();
     await earthPreview.getByRole('button', { name: german ? 'Wege' : 'Paths', exact: true }).click();
     await expect(earthPreview.getByRole('heading', { name: german ? 'Aus Spuren werden Verbindungen.' : 'Traces become connections.' })).toBeVisible();
@@ -146,6 +150,15 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   test.setTimeout(90000); // Includes seven full-resolution optical/scene captures on software WebKit.
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
+  await page.addInitScript(() => {
+    const qa = window as unknown as Window & { __waterFrames: number };
+    qa.__waterFrames = 0;
+    const clear = CanvasRenderingContext2D.prototype.clearRect;
+    CanvasRenderingContext2D.prototype.clearRect = function (...args) {
+      if (this.canvas.dataset.scene === 'clearing') qa.__waterFrames++;
+      return clear.apply(this, args);
+    };
+  });
   // Hold the opening while the test takes control; a slow software renderer
   // must not let the legitimate 7.2 s intro advance race the first pause click.
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -217,6 +230,24 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await page.mouse.move(waterBounds!.x + waterBounds!.width * .53, waterBounds!.y + waterBounds!.height * .77);
   await expect.poll(() => starfield.getAttribute('data-interaction').then(Number)).toBeGreaterThan(.1);
   await shot(page, info, 'after-water-mycelium-hover');
+  const timing = await page.evaluate(async () => {
+    const qa = window as unknown as Window & { __waterFrames: number };
+    const before = qa.__waterFrames, start = performance.now(), timestamps: number[] = [];
+    await new Promise<void>(resolve => {
+      const sample = (now: number) => {
+        timestamps.push(now);
+        if (now - start >= 1500) resolve(); else requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    const elapsed = timestamps.at(-1)! - start;
+    return { callbacks: timestamps.length, paintedFrames: qa.__waterFrames - before,
+      measuredFps: (qa.__waterFrames - before) * 1000 / elapsed,
+      maxFrameGapMs: Math.max(...timestamps.slice(1).map((time, i) => time - timestamps[i])),
+      note: 'Headless CI renderer; this measures this machine, not physical 120 Hz hardware.' };
+  });
+  await info.attach('water-frame-timing.json', { body: JSON.stringify(timing, null, 2), contentType: 'application/json' });
+  expect(timing.paintedFrames / timing.callbacks).toBeGreaterThan(.8);
   await noOverflow(page);
   await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-clarity');
