@@ -5,9 +5,18 @@ const route = vi.hoisted(() => ({ path: '/de' }));
 vi.mock('next/navigation', () => ({ usePathname: () => route.path }));
 beforeEach(() => {
   localStorage.clear(); delete window._paq; route.path = '/de';
+  vi.stubEnv('NEXT_PUBLIC_MATOMO_URL', 'https://analytics.example.test/');
+  vi.stubEnv('NEXT_PUBLIC_MATOMO_SITE_ID', '7');
   window.history.replaceState(null, '', '/de?fuer=private-name&token=secret');
 });
-afterEach(() => { cleanup(); document.querySelectorAll('script[data-saimor-analytics]').forEach(node => node.remove()); });
+afterEach(() => { cleanup(); vi.unstubAllEnvs(); document.querySelectorAll('script[data-saimor-analytics]').forEach(node => node.remove()); });
+it('stays off without an explicitly configured destination even after consent', () => {
+  vi.stubEnv('NEXT_PUBLIC_MATOMO_URL', '');
+  localStorage.setItem('analytics_enabled', 'true');
+  render(<MatomoTracker />);
+  expect(window._paq).toBeUndefined();
+  expect(document.querySelector('script[data-saimor-analytics]')).toBeNull();
+});
 it('makes no analytics request or queue before an explicit opt-in', () => {
   render(<MatomoTracker />);
   expect(window._paq).toBeUndefined();

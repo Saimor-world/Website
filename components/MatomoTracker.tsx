@@ -20,12 +20,16 @@ export default function MatomoTracker() {
         return;
       }
       if (!initialized.current) {
-        const url = new URL(process.env.NEXT_PUBLIC_MATOMO_URL || 'https://saimorworld.matomo.cloud/');
+        const endpoint = process.env.NEXT_PUBLIC_MATOMO_URL;
+        const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+        if (!endpoint || !siteId) return;
+        let url: URL;
+        try { url = new URL(endpoint); } catch { return; }
         if (url.protocol !== 'https:') return;
         const base = url.href.replace(/\/?$/, '/');
         window._paq = window._paq || [];
         window._paq.push(['requireConsent'], ['disableCookies'], ['setDoNotTrack', true],
-          ['setTrackerUrl', base + 'matomo.php'], ['setSiteId', process.env.NEXT_PUBLIC_MATOMO_SITE_ID || '1'],
+          ['setTrackerUrl', base + 'matomo.php'], ['setSiteId', siteId],
           ['setRequestMethod', 'POST']);
         if (!document.querySelector('script[data-saimor-analytics]')) {
           const script = document.createElement('script');
