@@ -1,0 +1,58 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import MoraOsFace from './MoraOsFace';
+import styles from './MoraWaterGuide.module.css';
+
+/** MÔRA's own jade face becomes a small guiding light, leaving a fading flight trace. */
+export default function MoraWaterGuide({ chapter, still }: { chapter: number; still: boolean }) {
+  const stone = useRef<HTMLSpanElement>(null), trail = useRef<SVGPathElement>(null);
+  const controls = useRef({ chapter, still }); controls.current = { chapter, still };
+  useEffect(() => {
+    let frame = 0, previous = performance.now(), time = 0, x = .5, y = .85;
+    const tail = Array.from({ length: 18 }, () => ({ x, y }));
+    let previousChapter = -2;
+    const draw = (now: number) => {
+      frame = requestAnimationFrame(draw);
+      const dt = Math.min(.05, Math.max(0, (now - previous) / 1000)); previous = now;
+      const c = controls.current;
+      if (document.hidden) return;
+      const anchor = [[.58,.70],[.72,.76],[.81,.61]][c.chapter] ?? [.55,.81];
+      const mobile = innerWidth <= 700;
+      const tx = mobile && c.chapter >= 0 ? .89 : anchor[0];
+      const ty = mobile && c.chapter >= 0 ? .36 + c.chapter * .085 : anchor[1];
+      if (c.still) {
+        if (previousChapter === c.chapter) return;
+        x = tx; y = ty;
+        tail.forEach(point => { point.x = x; point.y = y; });
+      } else {
+        time += dt;
+        const follow = 1 - Math.exp(-dt * 3.4);
+        x += (tx + Math.sin(time * 1.9) * .018 - x) * follow;
+        y += (ty + Math.cos(time * 2.5) * .012 - y) * follow;
+        // A time-based spring keeps the flight and its trace consistent at 60/120 Hz.
+        tail[0].x = x; tail[0].y = y;
+        for (let i = 1; i < tail.length; i++) {
+          const lag = 1 - Math.exp(-dt * 22);
+          tail[i].x += (tail[i - 1].x - tail[i].x) * lag;
+          tail[i].y += (tail[i - 1].y - tail[i].y) * lag;
+        }
+      }
+      previousChapter = c.chapter;
+      stone.current?.style.setProperty('transform', `translate3d(${x * innerWidth}px,${y * innerHeight}px,0)`);
+      trail.current?.setAttribute('d', tail.map((point, i) => `${i ? 'L' : 'M'}${(point.x * 1000).toFixed(1)} ${(point.y * 1000).toFixed(1)}`).join(' '));
+    };
+    frame = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} aria-hidden="true">
+    <svg viewBox="0 0 1000 1000" preserveAspectRatio="none"><path ref={trail} /></svg>
+    <span ref={stone} className={styles.position}><span className={styles.light} />
+      <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} />
+        <MoraOsFace size={34} state="rest" />
+      </span>
+      <i /><i /><i />
+    </span>
+  </div>;
+}

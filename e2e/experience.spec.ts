@@ -116,6 +116,12 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(page.getByRole('heading', { name: german ? 'Klarheit beginnt mit Zusammenhang.' : 'Clarity begins with context.' })).toBeVisible();
     await page.locator('article details summary').first().click();
     await expect(page.getByText(german ? /Eigene Daten kommen über Quellen/ : /Your own data comes through sources/)).toBeVisible();
+    const chapterSummaries = page.locator('article details summary');
+    for (let chapter = 0; chapter < 3; chapter++) {
+      await chapterSummaries.nth(chapter).focus();
+      await expect(page.locator('canvas[data-scene="clearing"]')).toHaveAttribute('data-chapter', String(chapter));
+      await expect(page.locator('[data-guide-chapter]')).toHaveAttribute('data-guide-chapter', String(chapter));
+    }
     await noOverflow(page);
     await shot(page, info, `after-mora-information-${locale}`);
     const product = page.getByRole('link', { name: german ? 'MÔRA im OS entdecken' : 'Discover MÔRA in the OS', exact: true });
@@ -147,7 +153,7 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
 });
 
 test('cinematic: deliberate passage, real face alignment, history and replay', async ({ page }, info) => {
-  test.setTimeout(90000); // Includes seven full-resolution optical/scene captures on software WebKit.
+  test.setTimeout(info.project.name.startsWith('webkit') ? 150000 : 90000); // Software WebKit includes full-resolution optical captures and frame sampling.
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
   await page.addInitScript(() => {
@@ -253,6 +259,12 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await shot(page, info, 'after-clarity');
   await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).toBeFocused();
+  for (let chapter = 0; chapter < 3; chapter++) {
+    await page.locator('article details summary').nth(chapter).hover();
+    await expect(starfield).toHaveAttribute('data-chapter', String(chapter));
+    await expect(page.locator('[data-guide-chapter]')).toHaveAttribute('data-guide-chapter', String(chapter));
+    await shot(page, info, `after-mora-chapter-${chapter + 1}`);
+  }
   await shot(page, info, 'after-mora-context');
   await page.getByRole('button', { name: 'Lichtung genießen', exact: true }).click();
   await expect(page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true })).toBeFocused();

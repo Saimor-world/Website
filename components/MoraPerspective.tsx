@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, MoveHorizontal } from 'lucide-react';
 import MoraOsFace from './MoraOsFace';
+import MoraWaterGuide from './MoraWaterGuide';
 import styles from './MoraPerspective.module.css';
 
 const COPY = {
@@ -39,9 +40,10 @@ const COPY = {
 } as const;
 
 /** The atmosphere leads into an honest introduction and a concrete product path. */
-export default function MoraPerspective({ locale, morning, onLight, onLook, still }: {
+export default function MoraPerspective({ locale, morning, onLight, onLook, still, onChapter }: {
   locale: 'de' | 'en'; morning: boolean; onLight: () => void;
   onLook: (x: number, y: number) => void; still: boolean;
+  onChapter?: (chapter: number) => void;
 }) {
   const c = COPY[locale];
   const heading = useRef<HTMLHeadingElement>(null);
@@ -52,6 +54,9 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   const [explored, setExplored] = useState(false);
   const [guideReady, setGuideReady] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
+  const [chapter, setChapter] = useState(-1);
+  const activate = (index: number) => { setChapter(index); onChapter?.(index); };
+  useEffect(() => () => onChapter?.(-1), [onChapter]);
   useEffect(() => {
     // Let WebKit finish the pointer-up default before restoring scene focus.
     const frame = window.requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
@@ -62,7 +67,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
     (infoVisible ? infoHeading.current : reopen.current)?.focus({ preventScroll: true });
     focusRequested.current = false;
   }, [infoVisible]);
-  const showInfo = (show: boolean) => { focusRequested.current = true; setInfoVisible(show); };
+  const showInfo = (show: boolean) => { focusRequested.current = true; setInfoVisible(show); if (!show) activate(-1); };
   const look = (x: number, y: number) => {
     if (still) return;
     gaze.current = { x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) };
@@ -75,6 +80,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   </span>;
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
+      {morning && guideReady && <MoraWaterGuide chapter={chapter} still={still} />}
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>
       <div className={styles.explore} role="region" tabIndex={0} aria-label={c.explore} aria-describedby="clearing-instructions"
@@ -95,8 +101,11 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
         <p className={styles.eyebrow}>{c.eyebrow}</p>
         <h2 id="clearing-mora-title" ref={infoHeading} tabIndex={-1}>{c.arrival}</h2>
         <p className={styles.lead}>{c.lead}</p>
-        <div className={styles.chapters}>{c.chapters.map(([title, text]) => <details key={title}>
-          <summary>{title}<ChevronDown size={14} aria-hidden="true" /></summary><p>{text}</p>
+        <div className={styles.chapters}>{c.chapters.map(([title, text], index) => <details key={title} data-active={chapter === index}
+          onPointerEnter={() => activate(index)} onPointerLeave={() => activate(-1)}
+          onFocus={() => activate(index)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) activate(-1); }}
+          onToggle={event => activate(event.currentTarget.open ? index : -1)}>
+          <summary><span className={styles.chapterNumber}>0{index + 1}</span><span>{title}</span><ChevronDown size={14} aria-hidden="true" /></summary><p>{text}</p>
         </details>)}</div>
         <Link className={styles.guide} href={`${locale === 'de' ? '/mora' : '/en/mora'}#im-os`}>
           {guide}<span>{c.next}</span><ArrowUpRight size={15} aria-hidden="true" />

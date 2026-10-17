@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, type RefObject } from 'react';
 import styles from './AmbientParticleField.module.css';
+import { WATER_BANKS, waterPoint, waterProjection } from './waterGeometry';
 
 type Props = {
   scene?: 'mist' | 'clearing' | 'ambient'; paused?: boolean; reduced?: boolean;
   focus?: RefObject<number>; dawn?: RefObject<number>; pointer?: RefObject<{ x: number; y: number; energy?: number }>;
   tone?: 'jade' | 'warm';
+  chapter?: RefObject<number>;
 };
 const ease = (start: number, end: number, value: number) => {
   const t = Math.max(0, Math.min(1, (value - start) / (end - start)));
@@ -24,9 +26,11 @@ export default function AmbientParticleField(props: Props) {
     if (!ctx) return;
     const context = ctx;
     let frame = 0, previous = performance.now(), clock = 0;
-    let lastPaint = '', visible = true;
+    let lastPaint = '', visible = true, viewWidth = 900, viewHeight = 700;
+    let chapter = -1;
+    const chapterBlend = [0, 0, 0];
     // Preallocate geometry. RAF follows the display (including 120 Hz), not a 24 fps timer.
-    const points = Array.from({ length: 54 }, (_, i) => ({
+    const points = Array.from({ length: 72 }, (_, i) => ({
       x: 0, y: 0, light: 0, a: i * 2.399963, r: .12 + (i % 9) * .043,
     }));
     const sprite = document.createElement('canvas');
@@ -44,6 +48,7 @@ export default function AmbientParticleField(props: Props) {
     motion?.addEventListener?.('change', syncMotion);
     const resize = () => {
       const bounds = el.getBoundingClientRect();
+      viewWidth = bounds.width || 900; viewHeight = bounds.height || 700;
       el.width = Math.max(1, Math.min(bounds.width, 900));
       el.height = Math.max(1, Math.min(bounds.height, 700));
       lastPaint = '';
@@ -63,47 +68,75 @@ export default function AmbientParticleField(props: Props) {
       if (!still) clock += dt;
       const ambient = !c.scene || c.scene === 'ambient';
       const d = c.scene === 'clearing' ? c.dawn?.current ?? 0 : 0;
-      const fade = 1 - ease(.35, 1, d) * .68;
+      const fade = 1 - ease(.35, 1, d) * .45;
+      const targetChapter = c.chapter?.current ?? -1;
+      if (!still) chapter += (targetChapter - chapter) * (1 - Math.exp(-dt * 7));
+      chapterBlend.forEach((amount, index) => {
+        const target = targetChapter === index ? 1 : 0;
+        chapterBlend[index] = still ? target : amount + (target - amount) * (1 - Math.exp(-dt * 5));
+      });
       // Keep the original points alive through the passage, not a new field on arrival.
-      const paint = `${clock}:${d}:${c.focus?.current}:${c.pointer?.current?.x}:${c.pointer?.current?.y}:${c.scene}:${c.tone}:${still}`;
+      const paint = `${clock}:${d}:${c.focus?.current}:${c.pointer?.current?.x}:${c.pointer?.current?.y}:${c.scene}:${c.tone}:${still}:${targetChapter}`;
       if (paint === lastPaint) return;
       lastPaint = paint;
       const w = el.width, h = el.height, f = ambient ? 0 : c.focus?.current ?? 0, p = c.pointer?.current ?? { x: 0, y: 0 };
-      const water = ease(.1, .85, d);
+      const water = ease(.06, .72, d);
+      const project = waterProjection(viewWidth, viewHeight, d, p.x, p.y);
       el.dataset.phase = ambient ? 'ambient' : d >= 1 ? 'water-memory' : c.scene === 'clearing' ? 'water' : 'field';
       el.dataset.fade = fade.toFixed(3);
       context.clearRect(0, 0, w, h);
-      const count = ambient ? 22 : 54;
+      context.save();
+      if (water > .99) {
+        context.beginPath();
+        WATER_BANKS.forEach(([u, v], i) => {
+          const bank = project(u, v);
+          if (i === 0) context.moveTo(bank.x * w, bank.y * h); else context.lineTo(bank.x * w, bank.y * h);
+        });
+        context.closePath(); context.clip();
+      }
+      const count = ambient ? 22 : 72;
       let interaction = 0;
       for (let i = 0; i < count; i++) {
         const point = points[i], { a, r } = point;
-        const restlessX = .5 + Math.cos(a + clock * (.045 + i % 3 * .019)) * r + Math.sin(clock * .24 + i) * .045 - p.x * Math.cos(i) * .055;
-        const restlessY = .5 + Math.sin(a - clock * .034) * r + Math.cos(clock * .2 + i) * .04 - p.y * Math.sin(i) * .045;
+        const restlessX = .5 + Math.cos(a + clock * (.13 + i % 3 * .037)) * r + Math.sin(clock * .55 + i) * .045 - p.x * Math.cos(i) * .055;
+        const restlessY = .5 + Math.sin(a - clock * .09) * r + Math.cos(clock * .42 + i) * .04 - p.y * Math.sin(i) * .045;
         const stableX = .5 + Math.cos(a) * r * .7, stableY = .44 + Math.sin(a) * r * .62;
         const x = restlessX * (1 - f) + stableX * f, y = restlessY * (1 - f) + stableY * f;
-        point.x = (x * (1 - water) + (.53 + Math.cos(a) * r * .85 + Math.sin(clock * .7 + i) * .004) * water) * w;
-        point.y = (y * (1 - water) + (.77 + Math.sin(a) * r * .25 + Math.cos(clock * .9 + i) * .003) * water) * h;
+        const t = (i / count + clock * .075) % 1;
+        const lane = Math.sin(a) * .88;
+        const bed = waterPoint(t, lane + Math.sin(clock * 1.6 + i) * .035);
+        const gathered = waterPoint(t, lane * .28);
+        bed.u += (gathered.u - bed.u) * chapterBlend[0];
+        const protectedPlace = waterPoint(.37, 0);
+        bed.u += (protectedPlace.u + Math.cos(a + clock * .55) * .065 - bed.u) * chapterBlend[2];
+        bed.v += (protectedPlace.v + Math.sin(a + clock * .55) * .026 - bed.v) * chapterBlend[2];
+        const flow = project(bed.u, bed.v);
+        point.x = (x * (1 - water) + flow.x * water) * w;
+        point.y = (y * (1 - water) + flow.y * water) * h;
         const distance = Math.hypot(point.x / w - (p.x + 1) / 2, point.y / h - (p.y + 1) / 2);
         const pulse = c.pointer?.current?.energy ?? 0;
-        point.light = still ? 0 : Math.max(0, 1 - distance / (.2 + pulse * .2)) * water;
+        const chapterLight = targetChapter < 0 ? 0 : .35 + .45 * (.5 + .5 * Math.sin(t * 16 - clock * (3 + chapter) + lane * chapter * 4));
+        point.light = still ? 0 : Math.max(Math.max(0, 1 - distance / (.2 + pulse * .2)), chapterLight) * water;
         interaction = Math.max(interaction, point.light);
       }
       el.dataset.interaction = interaction.toFixed(3);
+      el.dataset.chapter = String(targetChapter);
       for (let i = 0; i < count; i++) {
-        const a = points[i], sky = points[(i + 11) % count], root = points[Math.floor(i / 2)];
+        const a = points[i], sky = points[(i + 11) % count], root = points[(i + (targetChapter === 1 ? 5 : 3)) % count];
         const bx = sky.x * (1 - water) + root.x * water, by = sky.y * (1 - water) + root.y * water;
         if (!ambient) {
           context.beginPath(); context.moveTo(a.x, a.y);
           context.quadraticCurveTo((a.x + bx) / 2 + Math.sin(clock * .3 + i) * (10 + water * 20), (a.y + by) / 2 - water * 6, bx, by);
-          const traveling = .65 + Math.sin(clock * 2.4 - i * .65) * .35;
-          context.strokeStyle = `rgba(213,220,176,${(.025 + f * .075) * fade + a.light * .55 * traveling})`;
+          const traveling = .65 + Math.sin(clock * 5 - i * .65) * .35;
+          context.strokeStyle = `rgba(213,230,181,${(.045 + f * .12) * fade + a.light * .6 * traveling})`;
           context.lineWidth = .6 + a.light * .7; context.stroke();
         }
         const radius = (ambient ? 9 : 6) + f * 4 + a.light * 7;
-        context.globalAlpha = (.3 + f * .14) * fade + a.light * .6;
+        context.globalAlpha = (.42 + f * .2) * fade + a.light * .6;
         context.drawImage(sprite, a.x - radius, a.y - radius, radius * 2, radius * 2);
         context.globalAlpha = 1;
       }
+      context.restore();
       if (!still && c.pointer?.current?.energy) c.pointer.current.energy = Math.max(0, c.pointer.current.energy - dt * .65);
     };
     frame = requestAnimationFrame(draw);

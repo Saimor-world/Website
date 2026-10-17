@@ -35,6 +35,8 @@ export default function MoraDeepView({ locale }: Props) {
   const world = useRef<HTMLDivElement>(null);
   const focusAmount = useRef(0);
   const dawnAmount = useRef(0);
+  const chapter = useRef(-1);
+  const setChapter = useCallback((index: number) => { chapter.current = index; }, []);
   const pointer = useRef({ x: 0, y: 0, energy: 0 });
   const focusControl = useRef<MoraFocusHandle>(null);
   const [focusing, setFocusing] = useState(false);
@@ -151,7 +153,7 @@ export default function MoraDeepView({ locale }: Props) {
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
           reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} />
-        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} />
+        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
         <div className={styles.grain} />
         <div className={styles.passage} />
       </div>
@@ -174,7 +176,7 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} still={paused || reduced} /> : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} onChapter={setChapter} still={paused || reduced} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={reduced} disabled={crossing}

@@ -12,13 +12,6 @@ export default function MoraClearing() {
         <path d="M490 720 Q350 610 210 590 M530 460 Q660 410 780 450 T1010 400 M680 70 Q760 50 810 -10" />
       </g>
     </svg>
-    <svg className={styles.waterMycelium} viewBox="0 0 1000 260" preserveAspectRatio="none">
-      <g fill="none" stroke="#ead8a7" strokeWidth=".65" strokeLinecap="round">
-        <path d="M80 200 Q220 150 370 170 T700 105 Q820 90 930 40 M370 170 Q410 100 520 90 T760 30 M520 90 Q475 55 400 45 M700 105 Q740 170 870 180 M370 170 Q380 210 510 235" />
-        <path d="M220 164 Q180 115 90 120 M610 130 Q560 165 620 205 M780 96 Q840 120 960 110" />
-      </g>
-      <g fill="#f1dfae">{[[220,164],[370,170],[520,90],[610,130],[700,105],[780,96],[870,180]].map(([cx,cy]) => <circle key={cx} cx={cx} cy={cy} r="2.2" />)}</g>
-    </svg>
     <div className={styles.sun} />
     <div className={styles.rays} />
     <div className={styles.water} />

@@ -9,6 +9,7 @@ const context = {
   clearRect: vi.fn(), beginPath: vi.fn(), moveTo: vi.fn(), quadraticCurveTo: vi.fn(), stroke: vi.fn(),
   createRadialGradient: vi.fn((..._args: number[]) => ({ addColorStop: colors })), fillRect: vi.fn(), drawImage: vi.fn(), globalAlpha: 1,
   strokeStyle: '', fillStyle: '', lineWidth: 0,
+  save: vi.fn(), restore: vi.fn(), lineTo: vi.fn(), closePath: vi.fn(), clip: vi.fn(),
 };
 const advance = (ms = 50) => act(() => { now += ms; frame?.(now); });
 beforeEach(() => {
@@ -34,11 +35,12 @@ it('retains the same stars into first light and keeps an interactive water memor
   expect(document.querySelector('canvas')).toHaveAttribute('data-phase', 'water');
   expect(colors.mock.lastCall?.[0]).toBe(1);
   dawn.current = .8; advance();
-  const waterPoints = context.drawImage.mock.calls.slice(-54);
-  expect(waterPoints.every((args: unknown[]) => Number(args[2]) > 430)).toBe(true);
+  const waterPoints = context.drawImage.mock.calls.slice(-72);
+  expect(waterPoints.every((args: unknown[]) => Number(args[2]) > 350)).toBe(true);
+  expect(context.clip).toHaveBeenCalled();
   dawn.current = 1; advance();
   expect(document.querySelector('canvas')).toHaveAttribute('data-phase', 'water-memory');
-  expect(document.querySelector('canvas')).toHaveAttribute('data-fade', '0.320');
+  expect(document.querySelector('canvas')).toHaveAttribute('data-fade', '0.550');
   const clears = context.clearRect.mock.calls.length;
   advance(1000); expect(context.clearRect.mock.calls.length).toBeGreaterThan(clears);
 });
