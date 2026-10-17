@@ -15,10 +15,14 @@ jobs:
     env:
       NEXT_TELEMETRY_DISABLED: 1
       CI: true
+      NEXTAUTH_SECRET: saimor-ephemeral-ci-only
+      NEXTAUTH_URL: http://127.0.0.1:3001
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -40,3 +44,36 @@ jobs:
 
       - name: Unit tests
         run: npm test -- --run
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Build immutable v21 baseline for comparison
+        run: |
+          git fetch --depth=1 origin ec4ce00ab14692e4de617e088271dcc8f6d8485a
+          git worktree add --detach ../website-v21 ec4ce00ab14692e4de617e088271dcc8f6d8485a
+          ln -s "$GITHUB_WORKSPACE/node_modules" ../website-v21/node_modules
+          cd ../website-v21
+          npx next build
+
+      - name: Prepare trusted local HTTPS for WebKit
+        run: |
+          mkdir -p .qa
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout .qa/localhost.key -out .qa/localhost.crt -subj "/CN=SAIMOR ephemeral CI" -addext "subjectAltName=IP:127.0.0.1,DNS:localhost" -addext "basicConstraints=critical,CA:TRUE" > /dev/null 2>&1
+          sudo cp .qa/localhost.crt /usr/local/share/ca-certificates/saimor-ci-qa.crt
+          sudo update-ca-certificates
+
+      - name: Browser journeys and before-after evidence
+        env:
+          NODE_EXTRA_CA_CERTS: ${{ github.workspace }}/.qa/localhost.crt
+        run: npx playwright test
+
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saimor-experience-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            test-results/
+            .qa/browser-results.json
+          retention-days: 14
+          include-hidden-files: true

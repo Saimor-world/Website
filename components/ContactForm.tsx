@@ -1,29 +1,39 @@
-"use client";
-export default function ContactForm({ locale = "de" as "de" | "en" }) {
-  const t = (de: string, en: string) => (locale === "de" ? de : en);
+'use client';
+
+export default function ContactForm({ locale = 'de' as 'de' | 'en' }) {
+  const de = locale === 'de';
   const cal = process.env.NEXT_PUBLIC_CAL_URL;
+  const subject = encodeURIComponent(de ? 'Anfrage an SAIMÔR' : 'SAIMÔR enquiry');
+
   return (
-    <div className="grid gap-4">
-      <p className="text-sm text-warm-beige/80">
-        {t(
-          "In einem kostenlosen Erstgespräch finden wir heraus, wie Klarheit für euch aussehen kann.",
-          "In a free intro call we’ll explore how clarity can look for you."
-        )}
+    <div className="grid gap-5">
+      <p className="text-sm leading-7 text-[#e0eade]">
+        {de
+          ? 'Erzähl kurz, woran du arbeitest oder was in deinen Abläufen nicht zusammenpasst. Wir klären gemeinsam den nächsten sinnvollen Schritt.'
+          : 'Tell us what you are working on or which parts of your workflow are disconnected. We can explore a useful next step together.'}
       </p>
-
-      {cal ? (
-        <a href={cal} target="_blank" rel="noreferrer"
-           className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gold-primary text-forest-primary font-medium hover:bg-gold-dark hover:scale-105 transition-all duration-200">
-          {t("Gespräch buchen", "Book a call")}
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a
+          href={`mailto:contact@saimor.world?subject=${subject}`}
+          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#e8c985] px-6 py-3 text-sm font-semibold text-[#193c2b] transition hover:bg-[#f6dca1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+        >
+          {de ? 'E-Mail schreiben' : 'Send an email'}
         </a>
-      ) : (
-        <div className="text-sm text-rose-300">
-          {t("CAL_URL fehlt. Bitte NEXT_PUBLIC_CAL_URL setzen.", "CAL_URL missing. Please set NEXT_PUBLIC_CAL_URL.")}
-        </div>
-      )}
-
-      <p className="text-xs text-warm-beige/60">
-        {t("Hinweis: keine Profile; Buchung via Cal.com.", "Note: no profiling; booking via Cal.com.")}
+        {cal ? (
+          <a
+            href={cal}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#d9ddc6]/60 px-6 py-3 text-sm font-semibold text-[#fbf5e9] transition hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          >
+            {de ? 'Gespräch buchen' : 'Book a call'}
+          </a>
+        ) : null}
+      </div>
+      <p className="text-xs leading-6 text-[#b8c9b9]">
+        {de
+          ? 'Kontakt per E-Mail; bei Terminbuchungen öffnet sich der externe Kalenderanbieter.'
+          : 'Email contact; if online booking is available, it opens the external calendar provider.'}
       </p>
     </div>
   );

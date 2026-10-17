@@ -3,7 +3,7 @@ import MoraDeepView from '@/components/MoraDeepView';
 
 export const metadata: Metadata = {
   title: 'MÔRA Deep View',
-  description: 'MÔRA Deep View zeigt transparent, welche Kontextstücke zusammengehören und wie daraus ein sinnvoller nächster Schritt entsteht.',
+  description: 'Eine filmische Begegnung mit MÔRA: aus der Ungewissheit der KI in die Klarheit. Erlebe ihre Präsenz und sieh durch ihre Augen.',
   alternates: { canonical: '/mora/deep-view' },
 };
 

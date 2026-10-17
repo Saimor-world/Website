@@ -277,3 +277,15 @@ body { background: var(--world-ink); }
   .inside-presence { bottom: 25px; left: 24px; right: 24px; gap: 8px; font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) { .threshold-awareness { animation: none; } }
+
+/* Public marketing pages use the document scrollport. Immersive YORI/client
+   worlds keep their existing layout and are deliberately outside this scope. */
+html:has([data-public-site]),
+body:has([data-public-site]) {
+  height: auto;
+  min-height: 100%;
+  overflow-x: clip !important;
+}
+[data-public-site] main {
+  overflow-x: clip !important;
+}

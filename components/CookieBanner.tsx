@@ -9,7 +9,7 @@ const COPY = {
   de: {
     title: 'Datenschutz',
     subtitle: 'EU-Hosting · keine Werbe-Tracker',
-    body: 'Matomo hilft uns mit anonymen Nutzungsstatistiken. Analytics ist optional.',
+    body: 'Anonyme Nutzungsstatistik mit Matomo – nur mit deiner Einwilligung.',
     essential: 'Nur Essenziell',
     acceptAll: 'Alle akzeptieren',
     settings: 'Einstellungen',
@@ -24,7 +24,7 @@ const COPY = {
   en: {
     title: 'Privacy',
     subtitle: 'EU hosting · no ad trackers',
-    body: 'Matomo helps us understand anonymous usage. Analytics is optional.',
+    body: 'Anonymous Matomo analytics – only with your consent.',
     essential: 'Essential only',
     acceptAll: 'Accept all',
     settings: 'Settings',
@@ -40,6 +40,9 @@ const COPY = {
 
 export default function CookieBanner() {
   const pathname = usePathname();
+  // The staged encounter has no data-dependent features or analytics opt-in.
+  // Keep the existing preference; visitors can choose on the public pages.
+  const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
   const locale = pathname?.startsWith('/en') ? 'en' : 'de';
   const copy = COPY[locale];
 
@@ -54,20 +57,20 @@ export default function CookieBanner() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isEncounter) return;
 
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
       const timer = window.setTimeout(() => setIsVisible(true), 1800);
       return () => window.clearTimeout(timer);
     }
-  }, [mounted]);
+  }, [mounted, isEncounter]);
 
   const acceptAll = () => {
     localStorage.setItem('cookie_consent', 'all');
     localStorage.setItem('analytics_enabled', 'true');
     setIsVisible(false);
-    window._paq?.push(['rememberCookieConsentGiven']);
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   const acceptSelected = () => {
@@ -75,25 +78,19 @@ export default function CookieBanner() {
     localStorage.setItem('analytics_enabled', String(analyticsEnabled));
     setIsVisible(false);
 
-    if (analyticsEnabled) {
-      window._paq?.push(['rememberCookieConsentGiven']);
-    } else {
-      window._paq?.push(['forgetCookieConsentGiven']);
-      window._paq?.push(['optUserOut']);
-    }
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   const rejectAll = () => {
     localStorage.setItem('cookie_consent', 'essential');
     localStorage.setItem('analytics_enabled', 'false');
     setIsVisible(false);
-    window._paq?.push(['forgetCookieConsentGiven']);
-    window._paq?.push(['optUserOut']);
+    window.dispatchEvent(new Event('saimor-consent-change'));
   };
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!isVisible) {
+    if (!isVisible || isEncounter) {
       root.style.setProperty('--consent-banner-height', '0px');
       return;
     }
@@ -115,66 +112,75 @@ export default function CookieBanner() {
       window.removeEventListener('resize', publish);
       root.style.setProperty('--consent-banner-height', '0px');
     };
-  }, [isVisible, showDetails]);
+  }, [isVisible, showDetails, isEncounter]);
 
   const privacyHref = locale === 'en' ? '/en/legal/privacy' : '/de/rechtliches/datenschutz';
+
+  if (isEncounter) return null;
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.aside
           ref={asideRef}
+          role="dialog"
+          aria-modal={false}
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 30, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 380, damping: 34 }}
           aria-label={copy.title}
-          className="fixed bottom-3 left-3 right-3 z-[10000] sm:bottom-5 sm:left-5 sm:right-auto sm:w-[min(430px,calc(100vw-2.5rem))]"
+          className="fixed bottom-2 left-2 right-2 z-[10000] sm:bottom-5 sm:left-5 sm:right-auto sm:w-[min(430px,calc(100vw-2.5rem))]"
         >
-          <div className="overflow-hidden rounded-[1.4rem] border border-white/[0.12] bg-[#07110e]/[0.97] shadow-[0_24px_70px_rgba(0,0,0,.6)] backdrop-blur-2xl">
+          <div className="max-h-[min(78dvh,640px)] overflow-y-auto overscroll-contain rounded-[1.3rem] border border-[#d8c69c]/25 bg-[#0b291e]/[0.96] shadow-[0_14px_48px_rgba(2,18,10,.42)] backdrop-blur-xl">
             <div className="h-px bg-gradient-to-r from-[#d6a848]/70 via-[#7fd4c1]/55 to-transparent" />
 
-            <div className="p-4 sm:p-5">
+            <div className="p-3.5 sm:p-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#7fd4c1]/20 bg-[#7fd4c1]/[0.06] text-[#9de3d2]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#a9d3b6]/30 bg-[#a9d3b6]/[0.07] text-[#b8dec3] sm:h-9 sm:w-9">
                   <Shield className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-sm font-semibold text-white/92">{copy.title}</h2>
-                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[.15em] text-white/34">{copy.subtitle}</p>
+                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[.12em] text-white/60">{copy.subtitle}</p>
                 </div>
               </div>
 
-              <p className="mt-3 text-[12px] leading-5 text-white/56 sm:text-[13px]">{copy.body}</p>
+              <p className="mt-2 text-[12px] leading-[1.5] text-white/78 sm:mt-3 sm:text-[13px]">{copy.body}</p>
 
-              <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="mt-3 grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={rejectAll}
-                  className="min-h-11 rounded-full border border-white/16 px-3 py-2.5 text-xs font-semibold text-white/76 transition hover:border-white/30 hover:text-white"
+                  className="min-h-11 rounded-full border border-white/50 px-2 py-2.5 text-xs font-semibold text-white transition hover:border-white/80 hover:bg-white/10"
                 >
                   {copy.essential}
                 </button>
                 <button
                   type="button"
                   onClick={acceptAll}
-                  className="min-h-11 rounded-full bg-[#e7eadf] px-3 py-2.5 text-xs font-bold text-[#08100d] transition hover:bg-white"
+                  className="min-h-11 rounded-full bg-[#f4efde] px-2 py-2.5 text-xs font-semibold text-[#102b1d] transition hover:bg-white"
                 >
                   {copy.acceptAll}
                 </button>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setShowDetails((value) => !value)}
-                aria-expanded={showDetails}
-                className="mr-4 mt-3 inline-flex items-center gap-1.5 align-middle text-[11px] font-medium text-white/42 transition hover:text-white/72"
-              >
-                <motion.span animate={{ rotate: showDetails ? 180 : 0 }} transition={{ duration: 0.18 }}>
-                  <ChevronDown className="h-3.5 w-3.5" />
-                </motion.span>
-                {showDetails ? copy.less : copy.settings}
-              </button>
+              <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDetails((value) => !value)}
+                  aria-expanded={showDetails}
+                  className="inline-flex min-h-9 items-center gap-1.5 text-[11px] font-medium text-white/80 underline-offset-4 transition hover:text-white hover:underline"
+                >
+                  <motion.span animate={{ rotate: showDetails ? 180 : 0 }} transition={{ duration: 0.18 }}>
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </motion.span>
+                  {showDetails ? copy.less : copy.settings}
+                </button>
+                <a href={privacyHref} className="inline-flex min-h-9 items-center text-[11px] text-white/70 underline-offset-4 transition hover:text-white hover:underline">
+                  {copy.privacy}
+                </a>
+              </div>
 
               <AnimatePresence initial={false}>
                 {showDetails && (
@@ -230,9 +236,7 @@ export default function CookieBanner() {
                 )}
               </AnimatePresence>
 
-              <a href={privacyHref} className="mt-3 inline-block align-middle text-[11px] text-white/32 underline-offset-2 transition hover:text-white/60 hover:underline">
-                {copy.privacy}
-              </a>
+
             </div>
           </div>
         </motion.aside>

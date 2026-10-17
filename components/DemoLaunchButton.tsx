@@ -10,6 +10,7 @@ interface Props {
   className?: string;
   /** Optional company name pre-fill (e.g. from a form) */
   companyName?: string;
+  locale?: 'de' | 'en';
 }
 
 /**
@@ -20,33 +21,38 @@ export function DemoLaunchButton({
   label = 'OS-Demo starten',
   className,
   companyName,
+  locale = 'de',
 }: Props) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   async function handleClick() {
     if (loading) return;
     setLoading(true);
+    setError(false);
     try {
       const res = await fetch('/api/demo-launch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ companyName }),
+        body: JSON.stringify({ companyName, locale }),
       });
       const data = await res.json();
-      if (data.url) {
+      if (res.ok && data.url) {
         window.location.href = data.url;
       } else {
         console.error('[DemoLaunchButton] No URL in response', data);
         setLoading(false);
+        setError(true);
       }
     } catch (err) {
       console.error('[DemoLaunchButton] Error:', err);
       setLoading(false);
+      setError(true);
     }
   }
 
   return (
-    <button
+    <><button
       type="button"
       onClick={handleClick}
       disabled={loading}
@@ -60,7 +66,9 @@ export function DemoLaunchButton({
       ) : (
         <ExternalLink size={16} />
       )}
-      {loading ? 'Workspace wird vorbereitet…' : label}
+      {loading ? (locale === 'de' ? 'Workspace wird vorbereitet…' : 'Preparing workspace…') : label}
     </button>
+    {error ? <span role="alert" className="self-center text-sm leading-6 text-[#e9cfa7]">{locale === 'de' ? 'Die Demo ist gerade nicht erreichbar. Bitte versuche es erneut.' : 'The demo is currently unavailable. Please try again.'}</span> : null}
+    </>
   );
 }

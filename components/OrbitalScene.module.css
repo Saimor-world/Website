@@ -1,15 +1,24 @@
+/* SAIMÔR sigil choreography: precise, restrained, calm in motion. */
 .scene{position:absolute;right:3%;top:18%;width:46%;aspect-ratio:1;pointer-events:none;isolation:isolate}
-.aura{position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,#b18e391c,#163f2c22 45%,transparent 70%)}
-.orbit{position:absolute;border:1px solid #d8be786e;border-radius:50%;will-change:transform}
-.outer{inset:2%;animation:orbit 100s linear infinite}
-.middle{inset:15%;border-color:#94b6986b;animation:orbit 74s linear infinite reverse;transform:rotate(135deg)}
-.inner{inset:27%;border-color:#e7ca8170;animation:orbit 52s linear infinite}
-.crossing{position:absolute;inset:8%;border:1px solid #d1c18b38;border-radius:50%;transform:rotate(-30deg) scaleY(.72)}
-.moon{position:absolute;left:50%;top:0;width:clamp(20px,3vw,43px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 27% 23%,#fff1bb 0,#c8ab68 16%,#58614a 36%,#14231c 66%,#051009 84%);box-shadow:inset 2px 1px 2px #fff0bb88,2px 3px 12px #000a,0 0 18px #d2b46a24}
-.emerald{width:clamp(15px,2.2vw,31px);background:radial-gradient(circle at 25% 20%,#e2edbb,#6eaa7c 20%,#285b42 43%,#061a10 72%)}
-.star{position:absolute;left:50%;top:0;width:7px;height:7px;border-radius:50%;background:#ffe9aa;box-shadow:0 0 15px #ffd57d;transform:translate(-50%,-50%)}
-.sigil{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(44%,280px)}
-@keyframes orbit{from{rotate:0deg}to{rotate:360deg}}
+.aura{position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle,#cfc38c1a 0%,#71988111 42%,transparent 72%);filter:blur(9px)}
+.orbit{position:absolute;border:1px solid #e6d6a44f;border-radius:50%;will-change:rotate}
+.outer{inset:3%;animation:orbit 140s linear infinite}
+.middle{inset:16%;border-color:#b0ceb343;animation:orbit 108s linear infinite reverse;transform:rotate(135deg)}
+.inner{inset:29%;border-color:#e4d9ae62;animation:orbit 90s linear infinite}
+.crossing{position:absolute;inset:8%;border:1px solid #f0e1ab24;border-radius:50%;transform:rotate(-26deg) scaleY(.73)}
+.moon{position:absolute;left:50%;top:0;width:clamp(16px,2.5vw,34px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 26% 24%,#fff4d4 0%,#b6a67b 21%,#586958 49%,#172d23 74%,#0a1b13 100%);box-shadow:inset 1px 1px 2px #fff3d180,2px 5px 15px #061710a6,0 0 13px #d0ba8250}
+.emerald{width:clamp(13px,1.9vw,26px);background:radial-gradient(circle at 28% 21%,#e6f2ce 0%,#82ad8d 25%,#336751 58%,#102c21 88%)}
+.star{position:absolute;left:50%;top:0;width:5px;height:5px;border-radius:50%;background:#fff0c7;box-shadow:0 0 12px #f4d99e;transform:translate(-50%,-50%)}
+.sigil{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(42%,260px);filter:drop-shadow(0 0 28px #e3c98a20)}
+@keyframes orbit{to{rotate:360deg}}
 @media(max-width:1000px){.scene{right:1%;top:20%;width:45%}}
-@media(max-width:700px){.scene{right:12px;top:130px;width:180px}.moon{width:16px}.emerald{width:12px}}
+@media(max-width:700px){
+ /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
+    never to the text grid below the eyebrow. */
+ .scene{right:18px;top:clamp(105px,29vw,126px);width:min(43vw,158px)}
+ .moon{width:13px}
+ .emerald{width:10px}
+ .star{width:4px;height:4px}
+ .sigil{width:43%}
+}
 @media(prefers-reduced-motion:reduce){.orbit{animation:none;will-change:auto}}

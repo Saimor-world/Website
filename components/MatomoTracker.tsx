@@ -1,82 +1,62 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
+/** Consent-first page views and active-time heartbeats, without personal identifiers. */
 export default function MatomoTracker() {
+  const pathname = usePathname();
+  const initialized = useRef(false);
+  const lastPage = useRef('');
   useEffect(() => {
-    // Only load if analytics consent is given
-    const analyticsConsent = localStorage.getItem('cookie-consent-analytics');
-    if (analyticsConsent !== 'true') {
-      return; // Don't load Matomo if user hasn't consented
-    }
-
-    // Initialize Matomo tracking with saimorworld.matomo.cloud
-    (window as any)._paq = (window as any)._paq || [];
-    const _paq = (window as any)._paq;
-
-    // Privacy-focused tracker configuration (DSGVO-compliant)
-    _paq.push(['setDoNotTrack', true]);
-    _paq.push(['disableCookies']);
-    _paq.push(['anonymizeIp']);
-    _paq.push(['enableLinkTracking']);
-    _paq.push(['setRequestMethod', 'POST']); // More privacy-friendly
-    _paq.push(['setCustomRequestProcessing', '1']); // Process requests server-side
-
-    // Tracker URL and site configuration
-    const u = process.env.NEXT_PUBLIC_MATOMO_URL || 'https://saimorworld.matomo.cloud/';
-    const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID || '1';
-    
-    _paq.push(['setTrackerUrl', u + 'matomo.php']);
-    _paq.push(['setSiteId', siteId]);
-
-    // Enhanced privacy settings
-    _paq.push(['setSecureCookie', true]); // HTTPS only
-    _paq.push(['setVisitorId', null]); // Don't store visitor ID
-
-    // Create and append script with error handling
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.defer = true; // Load after page parse
-    script.src = u + 'matomo.js';
-    script.setAttribute('data-matomo-ignore', 'true');
-
-    // Handle script load errors gracefully (e.g., blocked by ad blockers)
-    script.onerror = () => {
-      console.debug('Matomo script blocked or failed to load');
-      // Remove _paq to prevent errors
-      delete (window as any)._paq;
-    };
-
-    script.onload = () => {
-      // Track initial page view after script loads
-      _paq.push(['trackPageView']);
-    };
-
-    const firstScript = document.getElementsByTagName('script')[0];
-    if (firstScript?.parentNode) {
-      firstScript.parentNode.insertBefore(script, firstScript);
-    } else {
-      document.head.appendChild(script);
-    }
-
-    // Listen for cookie consent changes
-    const handleConsentChange = (e: StorageEvent) => {
-      if (e.key === 'cookie-consent-analytics' && e.newValue === 'false') {
-        // User revoked consent - stop tracking
-        if ((window as any)._paq) {
-          _paq.push(['optUserOut']); // Opt user out
+    const sync = () => {
+      let allowed = false;
+      try { allowed = localStorage.getItem('analytics_enabled') === 'true'; } catch { return; }
+      if (navigator.doNotTrack === '1') allowed = false;
+      if (!allowed) {
+        if (initialized.current) {
+          window._paq?.push(['forgetConsentGiven'], ['disableHeartBeatTimer']);
+          lastPage.current = '';
         }
+        return;
       }
+      if (!initialized.current) {
+        const endpoint = process.env.NEXT_PUBLIC_MATOMO_URL;
+        const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+        if (!endpoint || !siteId) return;
+        let url: URL;
+        try { url = new URL(endpoint); } catch { return; }
+        if (url.protocol !== 'https:') return;
+        const base = url.href.replace(/\/?$/, '/');
+        window._paq = window._paq || [];
+        window._paq.push(['requireConsent'], ['disableCookies'], ['setDoNotTrack', true],
+          ['setTrackerUrl', base + 'matomo.php'], ['setSiteId', siteId],
+          ['setRequestMethod', 'POST']);
+        if (!document.querySelector('script[data-saimor-analytics]')) {
+          const script = document.createElement('script');
+          script.async = true; script.src = base + 'matomo.js'; script.dataset.saimorAnalytics = 'true';
+          document.head.appendChild(script);
+        }
+        initialized.current = true;
+      }
+      window._paq?.push(['setConsentGiven'], ['enableHeartBeatTimer', 15]);
+      const phase = ['#mora', '#clarity'].includes(location.hash) ? location.hash : '';
+      const page = location.origin + pathname + phase;
+      if (lastPage.current === page) return;
+      window._paq?.push(['setCustomUrl', page], ['setReferrerUrl', ''],
+        ['setDocumentTitle', pathname + phase], ['trackPageView']);
+      lastPage.current = page;
     };
-
-    window.addEventListener('storage', handleConsentChange);
-
-    // Cleanup function
+    sync();
+    window.addEventListener('saimor-consent-change', sync);
+    window.addEventListener('storage', sync);
+    window.addEventListener('hashchange', sync);
+    window.addEventListener('popstate', sync);
     return () => {
-      window.removeEventListener('storage', handleConsentChange);
-      // Don't remove script - it might be needed for other components
+      window.removeEventListener('saimor-consent-change', sync);
+      window.removeEventListener('storage', sync);
+      window.removeEventListener('hashchange', sync);
+      window.removeEventListener('popstate', sync);
     };
-  }, []);
-
+  }, [pathname]);
   return null;
 }

@@ -4,13 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, CircleCheck, FileText, ShieldCheck, Sparkles } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
+import AmbientParticleField from './AmbientParticleField';
 import MoraOrb, { type MoraOrbState } from '@/components/MoraOrb';
 
 type Props = { locale: 'de' | 'en' };
 
 const COPY = {
   de: {
-    eyebrow: 'MÔRA / KONTEXT',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
     title: 'Du musst nicht jedes Mal von vorn anfangen.',
     lead: 'Dateien, Termine und offene Dinge bleiben zusammen. MÔRA kennt den Stand und kann dort weitermachen.',
     note: 'MÔRA ist die Intelligenzschicht im Saimôr OS – kein zweiter Chat neben deiner Arbeit.',
@@ -43,9 +44,9 @@ const COPY = {
     outcomeLabel: 'MÔRA / NÄCHSTER SCHRITT',
     outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Sieh MÔRA beim Träumen zu.',
-    deepText: 'Sechs Beispielsignale und feste Regeln: welche Verbindungen belegt sind, was verworfen wird und wann aus einem Zusammenhang eine Aufgabe wird.',
-    deepCta: 'Deep View ansehen',
+    deepTitle: 'Die Welt durch MÔRAs Augen.',
+    deepText: 'Vom Nebel in eine Lichtung. Begegne MÔRA, sieh durch ihre Augen und entdecke, wie aus vorhandenem Kontext Orientierung für die Arbeit werden kann.',
+    deepCta: 'MÔRA begegnen',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA gehört in den Arbeitsraum.',
     osText: 'Im Demo-Raum kannst du die Rolle von MÔRA im OS ansehen. Der Demo-Tenant bleibt getrennt; eigene Daten kommen erst über ausdrücklich verbundene Quellen hinzu.',
@@ -55,7 +56,7 @@ const COPY = {
     realityText: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können unterschiedliche externe Modellanbieter genutzt werden; MÔRA selbst ist nicht das Modell. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
   },
   en: {
-    eyebrow: 'MÔRA / CONTEXT',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
     title: 'You do not have to start from scratch every time.',
     lead: 'Files, meetings and open work stay together. MÔRA keeps the state and can continue from there.',
     note: 'MÔRA is the intelligence layer inside Saimôr OS – not another chat sitting next to your work.',
@@ -88,9 +89,9 @@ const COPY = {
     outcomeLabel: 'MÔRA / NEXT STEP',
     outcome: 'Check the approval and have the current proposal ready before the meeting.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Watch MÔRA dream.',
-    deepText: 'Six example signals and fixed rules: which connections are backed, what gets dropped and when a context becomes a task.',
-    deepCta: 'View Deep View',
+    deepTitle: 'The world through MÔRA’s eyes.',
+    deepText: 'From mist into a clearing. Meet MÔRA, see through her eyes and discover how existing context can become orientation for your work.',
+    deepCta: 'Meet MÔRA',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA belongs inside the workspace.',
     osText: 'The demo workspace lets you see MÔRA inside the OS. The demo tenant stays isolated; your own data only appears through sources you explicitly connect.',
@@ -104,24 +105,24 @@ const COPY = {
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
   const [orbState, setOrbState] = useState<MoraOrbState>('dream');
-  const deepHref = locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view';
+  const deepHref = `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=mora`;
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
   return (
-    <main className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
+    <div className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
       <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07] px-5 pb-16 pt-28 sm:px-8 sm:pt-36 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
-        <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_25%,rgba(234,216,159,.4)_0_1px,transparent_1.2px),radial-gradient(circle_at_70%_60%,rgba(143,218,190,.32)_0_1px,transparent_1.2px)] [background-size:119px_119px,173px_173px]" aria-hidden="true" />
+        <AmbientParticleField />
 
         <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-8 lg:grid-cols-[.93fr_1.07fr] lg:gap-16">
           <div className="min-w-0 max-w-2xl">
             <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e2c576]/82 sm:text-[10px]">{c.eyebrow}</p>
             <h1 className="mt-6 font-serif text-[clamp(3rem,7.3vw,7.2rem)] [overflow-wrap:break-word] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-[#dbe8df]/72 sm:text-lg sm:leading-8">{c.lead}</p>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/38">{c.note}</p>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-white/60">{c.note}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <DemoLaunchButton label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
+              <DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
               <Link href={deepHref} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-[#d8c27d]/24 bg-white/[.025] px-7 py-3.5 text-sm font-semibold text-[#f0e7cc] transition hover:border-[#d8c27d]/42 hover:bg-white/[.05]">
                 <Sparkles className="h-4 w-4" />{c.deep}
               </Link>
@@ -186,7 +187,7 @@ export default function MoraProductPage({ locale }: Props) {
               <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.72fr_1.28fr] sm:items-start sm:gap-8">
                 <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/48">0{index + 1}</div>
                 <h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3>
-                <p className="max-w-2xl text-sm leading-7 text-white/49 sm:text-base">{body}</p>
+                <p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{body}</p>
               </article>
             ))}
           </div>
@@ -216,7 +217,7 @@ export default function MoraProductPage({ locale }: Props) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
+      <section id="deep-view" className="relative scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.82fr_1.18fr] md:items-center">
           <div>
@@ -226,33 +227,26 @@ export default function MoraProductPage({ locale }: Props) {
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
           </div>
           <Link href={deepHref} className="relative grid h-[330px] place-items-center overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] transition hover:border-[#d8c27d]/30 sm:h-[430px]" aria-label={c.deepCta}>
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
-              <line x1="22" y1="26" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
-              <line x1="80" y1="34" x2="50" y2="50" stroke="#9fe8cf" strokeOpacity=".5" vectorEffect="non-scaling-stroke" />
-              <line x1="32" y1="78" x2="50" y2="50" stroke="#9fb8ae" strokeOpacity=".4" strokeDasharray="5 5" vectorEffect="non-scaling-stroke" />
-            </svg>
-            <span className="absolute left-[22%] top-[26%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#72dfbd] shadow-[0_0_16px_rgba(114,223,189,.7)]" />
-            <span className="absolute left-[80%] top-[34%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#70c8f4] shadow-[0_0_16px_rgba(112,200,244,.7)]" />
-            <span className="absolute left-[32%] top-[78%] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d98db2] shadow-[0_0_16px_rgba(217,141,178,.7)]" />
+            <AmbientParticleField />
             <MoraOrb size={120} state="dream" className="relative h-28 w-28 sm:h-32 sm:w-32" />
           </Link>
         </div>
       </section>
 
-      <section className="border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      <section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
-          <div><p className="max-w-2xl text-sm leading-7 text-white/50 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
+          <div><p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
       </section>
 
       <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/36">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
-          <p className="max-w-3xl text-sm leading-7 text-white/45 sm:text-base">{c.realityText}</p>
+          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/55">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
+          <p className="max-w-3xl text-sm leading-7 text-white/65 sm:text-base">{c.realityText}</p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
