@@ -1,6 +1,6 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
-const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
+const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/earth', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
 async function visit(page: Page, route: string) {
   const response = await page.goto(route);
   await expect(page.locator('html')).toHaveAttribute('data-public-ready', 'true');
@@ -79,6 +79,24 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     const german = locale === 'de';
     const home = german ? '/de' : '/en';
     await visit(page, home); await consent(page);
+    const earth = page.getByRole('button', { name: /SAIMÔR Earth/ });
+    await earth.click();
+    const earthPreview = page.getByRole('dialog');
+    await expect(earthPreview).toBeVisible();
+    await earthPreview.getByRole('button', { name: german ? 'Wege' : 'Paths', exact: true }).click();
+    await expect(earthPreview.getByRole('heading', { name: german ? 'Aus Spuren werden Verbindungen.' : 'Traces become connections.' })).toBeVisible();
+    await earthPreview.getByRole('button', { name: german ? 'Lichtung' : 'Clearing', exact: true }).click();
+    await expect(earthPreview.getByRole('heading', { name: german ? 'Jede Welt braucht einen Eingang.' : 'Every world needs an entrance.' })).toBeVisible();
+    await expect(earthPreview.getByRole('link', { name: german ? 'Die Earth-Idee' : 'The Earth concept' })).toHaveAttribute('href', '/earth');
+    await noOverflow(page);
+    await shot(page, info, `after-earth-preview-${locale}`);
+    await page.keyboard.press('Escape');
+    await expect(earthPreview).not.toBeVisible();
+    await expect(earth).toBeFocused();
+    await earth.click();
+    await earthPreview.getByRole('link', { name: german ? 'Auf der Erde ankommen' : 'Arrive on Earth' }).click();
+    await expect(earthPreview).not.toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`${home}#system$`));
     const door = page.getByRole('link', { name: german ? 'Schwelle betreten' : 'Cross the threshold' });
     await door.scrollIntoViewIfNeeded();
     await shot(page, info, `after-forest-${locale}`);
@@ -193,7 +211,12 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await page.getByRole('button', { name: 'Licht hereinlassen', exact: true }).click();
   await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
-  await expect(starfield).toHaveAttribute('data-phase', 'rest');
+  await expect(starfield).toHaveAttribute('data-phase', 'water-memory');
+  await expect.poll(() => starfield.getAttribute('data-fade').then(Number)).toBeGreaterThan(.3);
+  const waterBounds = await starfield.boundingBox();
+  await page.mouse.move(waterBounds!.x + waterBounds!.width * .53, waterBounds!.y + waterBounds!.height * .77);
+  await expect.poll(() => starfield.getAttribute('data-interaction').then(Number)).toBeGreaterThan(.1);
+  await shot(page, info, 'after-water-mycelium-hover');
   await noOverflow(page);
   await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-clarity');

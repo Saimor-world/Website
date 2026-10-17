@@ -17,13 +17,13 @@ const COPY = {
     back: 'Zurück', world: 'DIE WELT DER KI', question: 'Alles antwortet.', doubt: 'Aber worauf kannst du dich verlassen?',
     meet: 'MÔRA begegnen', name: 'MÔRA.', presence: 'Lass uns sehen, was zusammengehört.', look: 'Durch ihre Augen sehen',
     reset: 'Noch einmal',
-    status: 'INSZENIERUNG · KEINE LIVE-ANALYSE', pause: 'Bewegung pausieren',
+    status: 'PRODUKTVORSCHAU · KEINE LIVE-DATEN', pause: 'Bewegung pausieren',
   },
   en: {
     back: 'Back', world: 'THE WORLD OF AI', question: 'Everything answers.', doubt: 'But what can you rely on?',
     meet: 'Meet MÔRA', name: 'MÔRA.', presence: 'Let’s see what belongs together.', look: 'See through her eyes',
     reset: 'Experience again',
-    status: 'STAGED EXPERIENCE · NO LIVE ANALYSIS', pause: 'Pause motion',
+    status: 'PRODUCT PREVIEW · NO LIVE DATA', pause: 'Pause motion',
   },
 } as const;
 
@@ -35,12 +35,13 @@ export default function MoraDeepView({ locale }: Props) {
   const world = useRef<HTMLDivElement>(null);
   const focusAmount = useRef(0);
   const dawnAmount = useRef(0);
-  const pointer = useRef({ x: 0, y: 0 });
+  const pointer = useRef({ x: 0, y: 0, energy: 0 });
   const focusControl = useRef<MoraFocusHandle>(null);
   const [focusing, setFocusing] = useState(false);
   const [focusReset, setFocusReset] = useState(0);
   const focusProgress = useCallback((amount: number) => { focusAmount.current = amount; world.current?.style.setProperty('--focus', String(amount)); }, []);
   const look = (x: number, y: number) => {
+    pointer.current.x = x; pointer.current.y = y;
     world.current?.style.setProperty('--look-x', String(x));
     world.current?.style.setProperty('--look-y', String(y));
   };
@@ -137,9 +138,15 @@ export default function MoraDeepView({ locale }: Props) {
   return (
     <div ref={world} className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing} data-focusing={focusing}
       onPointerMove={event => {
-        if (scene === 'clarity' || paused || reduced) return;
+        if (paused || reduced) return;
         const bounds = event.currentTarget.getBoundingClientRect();
-        pointer.current = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: (event.clientY - bounds.top) / bounds.height * 2 - 1 };
+        pointer.current.x = (event.clientX - bounds.left) / bounds.width * 2 - 1;
+        pointer.current.y = (event.clientY - bounds.top) / bounds.height * 2 - 1;
+      }}
+      onPointerDown={event => {
+        if (scene !== 'clarity' || paused || reduced) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        pointer.current = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: (event.clientY - bounds.top) / bounds.height * 2 - 1, energy: 1 };
       }}>
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}

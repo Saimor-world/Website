@@ -7,6 +7,7 @@ import OrbitalScene from './OrbitalScene';
 import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
+import EarthEntry from './EarthEntry';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -89,6 +90,7 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
           <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><Link href="#system">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
+        <EarthEntry locale={locale} />
       </section>
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">

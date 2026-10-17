@@ -5,7 +5,7 @@ import styles from './AmbientParticleField.module.css';
 
 type Props = {
   scene?: 'mist' | 'clearing' | 'ambient'; paused?: boolean; reduced?: boolean;
-  focus?: RefObject<number>; dawn?: RefObject<number>; pointer?: RefObject<{ x: number; y: number }>;
+  focus?: RefObject<number>; dawn?: RefObject<number>; pointer?: RefObject<{ x: number; y: number; energy?: number }>;
   tone?: 'jade' | 'warm';
 };
 const ease = (start: number, end: number, value: number) => {
@@ -23,8 +23,21 @@ export default function AmbientParticleField(props: Props) {
     try { ctx = el.getContext('2d'); } catch { return; }
     if (!ctx) return;
     const context = ctx;
-    let frame = 0, previous = performance.now(), clock = 0, lastDraw = -100;
+    let frame = 0, previous = performance.now(), clock = 0;
     let lastPaint = '', visible = true;
+    // Preallocate geometry. RAF follows the display (including 120 Hz), not a 24 fps timer.
+    const points = Array.from({ length: 54 }, (_, i) => ({
+      x: 0, y: 0, light: 0, a: i * 2.399963, r: .12 + (i % 9) * .043,
+    }));
+    const sprite = document.createElement('canvas');
+    sprite.width = sprite.height = 64;
+    const brush = sprite.getContext('2d');
+    if (!brush) return;
+    const glow = brush.createRadialGradient(32, 32, 0, 32, 32, 32);
+    glow.addColorStop(0, 'rgba(237,229,185,.9)');
+    glow.addColorStop(.22, 'rgba(181,213,191,.42)');
+    glow.addColorStop(1, 'rgba(100,130,120,0)');
+    brush.fillStyle = glow; brush.fillRect(0, 0, 64, 64);
     const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     let systemReduced = Boolean(motion?.matches);
     const syncMotion = () => { systemReduced = Boolean(motion?.matches); lastPaint = ''; };
@@ -44,46 +57,54 @@ export default function AmbientParticleField(props: Props) {
     const draw = (now: number) => {
       frame = requestAnimationFrame(draw);
       const c = controls.current;
-      const dt = Math.max(0, (now - previous) / 1000); previous = now;
+      const dt = Math.min(.05, Math.max(0, (now - previous) / 1000)); previous = now;
       if (document.hidden || !visible) return;
       const still = c.paused || c.reduced || systemReduced;
       if (!still) clock += dt;
       const ambient = !c.scene || c.scene === 'ambient';
       const d = c.scene === 'clearing' ? c.dawn?.current ?? 0 : 0;
-      const fade = 1 - ease(.35, 1, d);
+      const fade = 1 - ease(.35, 1, d) * .68;
       // Keep the original points alive through the passage, not a new field on arrival.
-      const paint = d >= 1 ? 'rest' : `${clock}:${d}:${c.focus?.current}:${c.pointer?.current?.x}:${c.pointer?.current?.y}:${c.scene}:${c.tone}`;
+      const paint = `${clock}:${d}:${c.focus?.current}:${c.pointer?.current?.x}:${c.pointer?.current?.y}:${c.scene}:${c.tone}:${still}`;
       if (paint === lastPaint) return;
-      if (now - lastDraw < 42) return;
-      lastDraw = now; lastPaint = paint;
+      lastPaint = paint;
       const w = el.width, h = el.height, f = ambient ? 0 : c.focus?.current ?? 0, p = c.pointer?.current ?? { x: 0, y: 0 };
       const water = ease(.1, .85, d);
-      el.dataset.phase = ambient ? 'ambient' : d >= 1 ? 'rest' : c.scene === 'clearing' ? 'water' : 'field';
+      el.dataset.phase = ambient ? 'ambient' : d >= 1 ? 'water-memory' : c.scene === 'clearing' ? 'water' : 'field';
       el.dataset.fade = fade.toFixed(3);
       context.clearRect(0, 0, w, h);
-      if (!fade) return;
-      const points = Array.from({ length: ambient ? 22 : 30 }, (_, i) => {
-        const a = i * 2.399963, r = .12 + (i % 9) * .043;
-        const restlessX = .5 + Math.cos(a + clock * (.025 + i % 3 * .013)) * r + Math.sin(clock * .19 + i) * .045 - p.x * Math.cos(i) * .055;
-        const restlessY = .5 + Math.sin(a - clock * .018) * r + Math.cos(clock * .14 + i) * .04 - p.y * Math.sin(i) * .045;
+      const count = ambient ? 22 : 54;
+      let interaction = 0;
+      for (let i = 0; i < count; i++) {
+        const point = points[i], { a, r } = point;
+        const restlessX = .5 + Math.cos(a + clock * (.045 + i % 3 * .019)) * r + Math.sin(clock * .24 + i) * .045 - p.x * Math.cos(i) * .055;
+        const restlessY = .5 + Math.sin(a - clock * .034) * r + Math.cos(clock * .2 + i) * .04 - p.y * Math.sin(i) * .045;
         const stableX = .5 + Math.cos(a) * r * .7, stableY = .44 + Math.sin(a) * r * .62;
         const x = restlessX * (1 - f) + stableX * f, y = restlessY * (1 - f) + stableY * f;
-        return { x: (x * (1 - water) + (.53 + Math.cos(a) * r * .85) * water) * w,
-          y: (y * (1 - water) + (.77 + Math.sin(a) * r * .25) * water) * h };
-      });
-      for (let i = 0; i < points.length; i++) {
-        const a = points[i], b = points[(i + 11) % points.length];
+        point.x = (x * (1 - water) + (.53 + Math.cos(a) * r * .85 + Math.sin(clock * .7 + i) * .004) * water) * w;
+        point.y = (y * (1 - water) + (.77 + Math.sin(a) * r * .25 + Math.cos(clock * .9 + i) * .003) * water) * h;
+        const distance = Math.hypot(point.x / w - (p.x + 1) / 2, point.y / h - (p.y + 1) / 2);
+        const pulse = c.pointer?.current?.energy ?? 0;
+        point.light = still ? 0 : Math.max(0, 1 - distance / (.2 + pulse * .2)) * water;
+        interaction = Math.max(interaction, point.light);
+      }
+      el.dataset.interaction = interaction.toFixed(3);
+      for (let i = 0; i < count; i++) {
+        const a = points[i], sky = points[(i + 11) % count], root = points[Math.floor(i / 2)];
+        const bx = sky.x * (1 - water) + root.x * water, by = sky.y * (1 - water) + root.y * water;
         if (!ambient) {
           context.beginPath(); context.moveTo(a.x, a.y);
-          context.quadraticCurveTo((a.x + b.x) / 2 + Math.sin(clock * .1 + i) * 28 * (1 - f), (a.y + b.y) / 2, b.x, b.y);
-          context.strokeStyle = `rgba(${Math.round(127 + f * 90)},${Math.round(150 + f * 51)},${Math.round(155 - f * 24)},${(.025 + f * .075) * fade})`;
-          context.lineWidth = .6; context.stroke();
+          context.quadraticCurveTo((a.x + bx) / 2 + Math.sin(clock * .3 + i) * (10 + water * 20), (a.y + by) / 2 - water * 6, bx, by);
+          const traveling = .65 + Math.sin(clock * 2.4 - i * .65) * .35;
+          context.strokeStyle = `rgba(213,220,176,${(.025 + f * .075) * fade + a.light * .55 * traveling})`;
+          context.lineWidth = .6 + a.light * .7; context.stroke();
         }
-        const glow = context.createRadialGradient(a.x, a.y, 0, a.x, a.y, (ambient ? 7 : 5) + f * 4);
-        glow.addColorStop(0, `rgba(${Math.round((c.tone === 'warm' ? 218 : 178) + f * 35)},${Math.round(195 + f * 15)},${Math.round((c.tone === 'warm' ? 153 : 196) - f * 35)},${(.22 + f * .15) * fade})`);
-        glow.addColorStop(1, 'rgba(100,130,120,0)');
-        context.fillStyle = glow; context.fillRect(a.x - 10, a.y - 10, 20, 20);
+        const radius = (ambient ? 9 : 6) + f * 4 + a.light * 7;
+        context.globalAlpha = (.3 + f * .14) * fade + a.light * .6;
+        context.drawImage(sprite, a.x - radius, a.y - radius, radius * 2, radius * 2);
+        context.globalAlpha = 1;
       }
+      if (!still && c.pointer?.current?.energy) c.pointer.current.energy = Math.max(0, c.pointer.current.energy - dt * .65);
     };
     frame = requestAnimationFrame(draw);
     return () => { cancelAnimationFrame(frame); observer.disconnect(); intersection?.disconnect(); motion?.removeEventListener?.('change', syncMotion); document.removeEventListener('visibilitychange', sync); };

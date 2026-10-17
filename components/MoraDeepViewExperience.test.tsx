@@ -34,7 +34,7 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.getByRole('heading', { name: 'Klarheit.' })).toHaveFocus();
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
     expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
-    expect(screen.getByText('INSZENIERUNG · KEINE LIVE-ANALYSE')).toBeInTheDocument();
+    expect(screen.getByText('PRODUKTVORSCHAU · KEINE LIVE-DATEN')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Noch einmal' }));
     expect(screen.getByRole('heading', { name: 'Alles antwortet.' })).toBeInTheDocument();
   });
@@ -69,7 +69,7 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.getByRole('heading', { name: 'Clarity.' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Get to know MÔRA' }));
     expect(screen.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
-    expect(screen.getByText('STAGED EXPERIENCE · NO LIVE ANALYSIS')).toBeInTheDocument();
+    expect(screen.getByText('PRODUCT PREVIEW · NO LIVE DATA')).toBeInTheDocument();
   });
 
   it('allows reduced motion visitors to skip the timed reveal', () => {

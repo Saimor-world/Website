@@ -126,7 +126,7 @@ export default function MoraAtmosphere(props: Props) {
     };
     resize();
     const observer = new ResizeObserver(resize); observer.observe(surface);
-    let frame = 0, previous = performance.now(), lastDraw = -100, clock = 0, progress = 0;
+    let frame = 0, previous = performance.now(), clock = 0, progress = 0;
     let arrived = false, lastClock = -1, lastProgress = -1, lastWidth = 0, lastHeight = 0;
     const syncClock = () => { previous = performance.now(); };
     const restartClock = (restart: boolean) => {
@@ -143,9 +143,7 @@ export default function MoraAtmosphere(props: Props) {
       if (running) clock += dt * (1 - (c.settling?.current ?? 0) * .9);
       if (!c.dawn) { progress = 0; arrived = false; }
       else if (c.reduced || (c.paused && c.hurry)) progress = 1;
-      else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 11));
-      if (now - lastDraw < 33 && progress !== 1) return;
-      lastDraw = now;
+      else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 8));
       surface.style.setProperty('--dawn', String(progress));
       if (c.progress) c.progress.current = progress;
       surface.dataset.still = String(!running);

@@ -24,15 +24,15 @@
 .motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:8px;color:#c6ceb9;font-size:10px;cursor:pointer;min-height:30px}
 .motionControl input{accent-color:#e6c98d;width:26px;height:15px}
 .world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
-.system{background:var(--ink);scroll-margin-top:75px}
-.threshold{position:relative;isolation:isolate;background:#081e17;overflow:hidden}
-.forestImage{object-fit:cover;object-position:60% center;opacity:1}
-.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#081e17,transparent 20%,transparent 78%,#06110e)}
+.system{position:relative;margin-top:-140px;background:transparent;scroll-margin-top:75px}
+.threshold{position:relative;isolation:isolate;background:transparent;overflow:hidden;pointer-events:none}
+.forestImage{object-fit:cover;object-position:60% center;opacity:1;mask-image:linear-gradient(180deg,transparent,#000 32%,#000 86%,transparent)}
+.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,transparent,transparent 78%,#06110e);mask-image:linear-gradient(180deg,transparent,#000 30%)}
 .thresholdInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:105px var(--gutter);min-height:720px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
-.contextCopy{max-width:500px}
+.contextCopy{max-width:500px;pointer-events:auto}
 .contextCopy h2{font:400 clamp(48px,5.3vw,78px)/1.04 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 25px;text-wrap:balance;color:#fff8e7}
 .contextBody{max-width:350px;color:#d4dfd1;font-size:15px;line-height:1.8}
-.contextStage{position:relative;min-width:0;width:100%;height:510px}
+.contextStage{position:relative;min-width:0;width:100%;height:510px;pointer-events:auto}
 .portalCanvas{position:relative;width:100%;height:100%}
 .moraIntroduction{position:relative;isolation:isolate;max-width:1440px;margin:auto;padding:120px var(--gutter) 100px;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:clamp(35px,7vw,110px);background:radial-gradient(ellipse at 85% 50%,#203b302e,transparent 60%)}
 .moraIntroduction h3{font:400 clamp(54px,6.3vw,94px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 26px;max-width:580px;text-wrap:balance}
@@ -48,7 +48,7 @@
 @media(max-width:700px){
  .hero{min-height:850px;background:radial-gradient(ellipse at 80% 36%,#37634d55,transparent 65%),#0b3024}
  .hero::before{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/saimor-cosmos-layer.webp') 72% 33%/auto 100% no-repeat;opacity:.4;filter:blur(28px);-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
- .heroImage{right:-10%!important;top:100px!important;bottom:auto!important;width:175%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
+ .heroImage{right:-10%!important;top:auto!important;bottom:0!important;width:175%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
  .heroShade{background:linear-gradient(90deg,#0b302480,transparent),linear-gradient(0deg,#081e17,transparent 60%)}
  .heroInner{min-height:850px;padding:100px 24px 31px}
  .heroGrid{display:block;padding:180px 0 45px}
@@ -60,7 +60,8 @@
  .utilityLinks{font-size:10px;gap:5px 16px;margin-top:18px}
  .sceneFooter{font-size:8px;padding-bottom:24px}.sceneFooter a{display:none}
  .motionControl{top:auto;bottom:13px;right:24px;font-size:9px}
- .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:65px 24px 0}
+ .system{margin-top:-55px}
+ .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:100px 24px 0}
  .contextCopy{max-width:480px;align-self:flex-start}
  .contextCopy h2{font-size:clamp(43px,11vw,53px);line-height:1.06;margin:18px 0 20px;max-width:420px}
  .contextBody{font-size:14px;line-height:1.75;max-width:350px}

@@ -16,7 +16,7 @@
 @media(prefers-reduced-motion:reduce){.clearing *{animation:none!important;transition:none!important;transform:none!important}.motes i{opacity:.3}}
 
 .connections{position:absolute;inset:-5%;width:110%;height:110%;opacity:calc(var(--dawn)*(1 - var(--dawn))*2.1);mix-blend-mode:screen;pointer-events:none}
-.waterMycelium{position:absolute;left:23%;top:64%;width:74%;height:33%;mix-blend-mode:screen;pointer-events:none;opacity:calc(var(--dawn)*.19);mask-image:radial-gradient(ellipse at 52% 47%,#000 12%,transparent 69%);animation:water-memory 23s ease-in-out infinite alternate}
-@keyframes water-memory{from{filter:blur(.3px);translate:-.7% .2%}to{filter:blur(.8px);translate:.7% -.2%}}
+.waterMycelium{position:absolute;left:23%;top:64%;width:74%;height:33%;mix-blend-mode:screen;pointer-events:none;opacity:calc(var(--dawn)*.12);mask-image:radial-gradient(ellipse at 52% 47%,#000 12%,transparent 69%);animation:water-memory 17s ease-in-out infinite alternate}
+@keyframes water-memory{from{translate:-.7% .2%}to{translate:.7% -.2%}}
 @media(max-width:700px){.waterMycelium{left:-15%;width:125%;top:65%}}
 @media(prefers-reduced-motion:reduce){.waterMycelium{animation:none!important}}

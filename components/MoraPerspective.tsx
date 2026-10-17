@@ -10,8 +10,8 @@ import styles from './MoraPerspective.module.css';
 const COPY = {
   de: {
     waiting: 'Durch MÔRAs Augen', title: 'Klarheit.', light: 'Licht hereinlassen',
-    next: 'MÔRA im OS entdecken', explore: 'Die Lichtung erkunden', hint: 'Bewege deinen Blick.',
-    instructions: 'Bewege die Maus oder streiche über die Lichtung. Mit den Pfeiltasten kannst du dich ebenfalls umsehen.',
+    next: 'MÔRA im OS entdecken', explore: 'Die Lichtung erkunden', hint: 'Berühre die Sterne im Wasser.',
+    instructions: 'Bewege die Maus oder streiche über das Wasser: Sterne und Mycelium leuchten auf. Mit den Pfeiltasten kannst du dich ebenfalls umsehen.',
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
     arrival: 'Klarheit beginnt mit Zusammenhang.',
     lead: 'Aus einzelnen Spuren wird ein Ort, an dem du dich orientieren kannst. Dafür steht diese Lichtung. MÔRA hält dafür Dateien, Termine und offene Dinge im Kontext deiner Arbeit zusammen.',
@@ -24,8 +24,8 @@ const COPY = {
   },
   en: {
     waiting: 'Through MÔRA’s eyes', title: 'Clarity.', light: 'Let the light in',
-    next: 'Discover MÔRA in the OS', explore: 'Explore the clearing', hint: 'Let your gaze wander.',
-    instructions: 'Move the pointer or swipe across the clearing. You can also look around with the arrow keys.',
+    next: 'Discover MÔRA in the OS', explore: 'Explore the clearing', hint: 'Touch the stars in the water.',
+    instructions: 'Move the pointer or swipe across the water: stars and mycelium light up. You can also look around with the arrow keys.',
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
     arrival: 'Clarity begins with context.',
     lead: 'Separate traces become a place where you can find your bearings. That is what this clearing stands for. MÔRA keeps files, meetings and open work together in your working context.',
