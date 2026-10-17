@@ -1,6 +1,6 @@
 .flight{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;opacity:1;transition:opacity .4s}
 .flight svg{position:absolute;inset:0;width:100%;height:100%;mask-image:linear-gradient(120deg,transparent,#000 35%,#000)}
-.flight path{fill:none;stroke:#f2dfaa;stroke-width:1.3;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.65}
+.flight path{fill:none;stroke-width:1;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.65}
 .position{position:absolute;left:0;top:0;width:0;height:0;will-change:transform}
 .stone{display:block;position:absolute;left:-17px;top:-17px;width:34px;height:34px;animation:tilt 2.3s ease-in-out infinite alternate}
 .stone img{width:100%;height:100%}.light{position:absolute;left:-65px;top:-65px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#f6e3a533,#b4e3a614 30%,transparent 68%);mix-blend-mode:screen}

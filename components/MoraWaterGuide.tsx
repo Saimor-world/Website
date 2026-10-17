@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
 import MoraOsFace from './MoraOsFace';
 import styles from './MoraWaterGuide.module.css';
@@ -8,6 +8,8 @@ import styles from './MoraWaterGuide.module.css';
 /** MÔRA's own jade face becomes a small guiding light, leaving a fading flight trace. */
 export default function MoraWaterGuide({ chapter, still }: { chapter: number; still: boolean }) {
   const stone = useRef<HTMLSpanElement>(null), trail = useRef<SVGPathElement>(null);
+  const gradient = useRef<SVGLinearGradientElement>(null);
+  const traceId = `mora-flight-${useId().replace(/:/g, '')}`;
   const controls = useRef({ chapter, still }); controls.current = { chapter, still };
   useEffect(() => {
     let frame = 0, previous = performance.now(), time = 0, x = .5, y = .85;
@@ -37,17 +39,30 @@ export default function MoraWaterGuide({ chapter, still }: { chapter: number; st
           const lag = 1 - Math.exp(-dt * 22);
           tail[i].x += (tail[i - 1].x - tail[i].x) * lag;
           tail[i].y += (tail[i - 1].y - tail[i].y) * lag;
+          const dx = (tail[i].x - x) * innerWidth, dy = (tail[i].y - y) * innerHeight;
+          const distance = Math.hypot(dx, dy), limit = mobile ? 70 : 130;
+          if (distance > limit) {
+            tail[i].x = x + dx / distance * limit / innerWidth;
+            tail[i].y = y + dy / distance * limit / innerHeight;
+          }
         }
       }
       previousChapter = c.chapter;
       stone.current?.style.setProperty('transform', `translate3d(${x * innerWidth}px,${y * innerHeight}px,0)`);
       trail.current?.setAttribute('d', tail.map((point, i) => `${i ? 'L' : 'M'}${(point.x * 1000).toFixed(1)} ${(point.y * 1000).toFixed(1)}`).join(' '));
+      gradient.current?.setAttribute('x1', String(tail[tail.length - 1].x * 1000));
+      gradient.current?.setAttribute('y1', String(tail[tail.length - 1].y * 1000));
+      gradient.current?.setAttribute('x2', String(x * 1000));
+      gradient.current?.setAttribute('y2', String(y * 1000));
     };
     frame = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frame);
   }, []);
   return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} aria-hidden="true">
-    <svg viewBox="0 0 1000 1000" preserveAspectRatio="none"><path ref={trail} /></svg>
+    <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+      <defs><linearGradient id={traceId} ref={gradient} gradientUnits="userSpaceOnUse"><stop stopColor="#f2dfaa" stopOpacity="0" /><stop offset="1" stopColor="#f2dfaa" stopOpacity=".7" /></linearGradient></defs>
+      <path ref={trail} stroke={`url(#${traceId})`} />
+    </svg>
     <span ref={stone} className={styles.position}><span className={styles.light} />
       <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} unoptimized />
         <MoraOsFace size={34} state="rest" />
