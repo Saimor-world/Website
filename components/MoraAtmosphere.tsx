@@ -140,15 +140,17 @@ export default function MoraAtmosphere(props: Props) {
       const dt = Math.max((now - previous) / 1000, 0); previous = now;
       const c = controls.current;
       const running = !c.paused && !c.reduced && !document.hidden;
-      if (running) clock += dt * (1 - (c.settling?.current ?? 0) * .9);
+      if (running && (!c.dawn || progress < 1)) clock += dt * (1 - (c.settling?.current ?? 0) * .9);
       if (!c.dawn) { progress = 0; arrived = false; }
       else if (c.reduced || (c.paused && c.hurry)) progress = 1;
       else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 8));
       if (progress !== lastProgress) surface.style.setProperty('--dawn', String(progress));
       if (c.progress) c.progress.current = progress;
-      surface.dataset.still = String(!running);
+      const still = String(!running);
+      if (surface.dataset.still !== still) surface.dataset.still = still;
       const canRender = renderer && !gpuLost && !renderer.isContextLost();
-      surface.dataset.rendered = canRender ? 'true' : 'false';
+      const rendered = canRender ? 'true' : 'false';
+      if (surface.dataset.rendered !== rendered) surface.dataset.rendered = rendered;
       if (lastClock === clock && lastProgress === progress && lastWidth === element.width &&
           lastHeight === element.height) return;
       lastClock = clock; lastProgress = progress;
@@ -159,7 +161,8 @@ export default function MoraAtmosphere(props: Props) {
         renderer.uniform1f(time, clock); renderer.uniform1f(dawn, progress);
         renderer.drawArrays(renderer.TRIANGLE_STRIP, 0, 4);
       }
-      surface.dataset.dawn = progress === 1 ? 'morning' : 'mist';
+      const phase = progress === 1 ? 'morning' : 'mist';
+      if (surface.dataset.dawn !== phase) surface.dataset.dawn = phase;
       // The title arrives only after both the fallback and GPU have the morning.
       if (progress === 1 && !arrived) { arrived = true; c.onArrival(); }
     };

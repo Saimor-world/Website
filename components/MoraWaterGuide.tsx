@@ -49,21 +49,23 @@ export default function MoraWaterGuide({ chapter, still }: { chapter: number; st
       }
       previousChapter = c.chapter;
       stone.current?.style.setProperty('transform', `translate3d(${x * innerWidth}px,${y * innerHeight}px,0)`);
-      trail.current?.setAttribute('d', tail.map((point, i) => `${i ? 'L' : 'M'}${(point.x * 1000).toFixed(1)} ${(point.y * 1000).toFixed(1)}`).join(' '));
-      gradient.current?.setAttribute('x1', String(tail[tail.length - 1].x * 1000));
-      gradient.current?.setAttribute('y1', String(tail[tail.length - 1].y * 1000));
-      gradient.current?.setAttribute('x2', String(x * 1000));
-      gradient.current?.setAttribute('y2', String(y * 1000));
+      // Rasterize only the bounded trace, not a viewport-sized SVG every frame.
+      const localX = (value: number) => 140 + (value - x) * innerWidth;
+      const localY = (value: number) => 140 + (value - y) * innerHeight;
+      trail.current?.setAttribute('d', tail.map((point, i) => `${i ? 'L' : 'M'}${localX(point.x).toFixed(1)} ${localY(point.y).toFixed(1)}`).join(' '));
+      gradient.current?.setAttribute('x1', String(localX(tail[tail.length - 1].x)));
+      gradient.current?.setAttribute('y1', String(localY(tail[tail.length - 1].y)));
     };
     frame = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frame);
   }, []);
   return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} aria-hidden="true">
-    <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
-      <defs><linearGradient id={traceId} ref={gradient} gradientUnits="userSpaceOnUse"><stop stopColor="#f2dfaa" stopOpacity="0" /><stop offset="1" stopColor="#f2dfaa" stopOpacity=".7" /></linearGradient></defs>
+    <span ref={stone} className={styles.position}>
+    <svg className={styles.trace} viewBox="0 0 280 280">
+      <defs><linearGradient id={traceId} ref={gradient} gradientUnits="userSpaceOnUse" x2="140" y2="140"><stop stopColor="#f2dfaa" stopOpacity="0" /><stop offset="1" stopColor="#f2dfaa" stopOpacity=".7" /></linearGradient></defs>
       <path ref={trail} stroke={`url(#${traceId})`} />
     </svg>
-    <span ref={stone} className={styles.position}><span className={styles.light} />
+    <span className={styles.light} />
       <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} unoptimized />
         <MoraOsFace size={34} state="rest" />
       </span>

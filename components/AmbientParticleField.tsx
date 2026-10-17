@@ -82,8 +82,10 @@ export default function AmbientParticleField(props: Props) {
       const w = el.width, h = el.height, f = ambient ? 0 : c.focus?.current ?? 0, p = c.pointer?.current ?? { x: 0, y: 0 };
       const water = ease(.06, .72, d);
       const project = waterProjection(viewWidth, viewHeight, d, p.x, p.y);
-      el.dataset.phase = ambient ? 'ambient' : d >= 1 ? 'water-memory' : c.scene === 'clearing' ? 'water' : 'field';
-      el.dataset.fade = fade.toFixed(3);
+      const phase = ambient ? 'ambient' : d >= 1 ? 'water-memory' : c.scene === 'clearing' ? 'water' : 'field';
+      if (el.dataset.phase !== phase) el.dataset.phase = phase;
+      const opacity = fade.toFixed(3);
+      if (el.dataset.fade !== opacity) el.dataset.fade = opacity;
       context.clearRect(0, 0, w, h);
       context.save();
       if (water > .99) {
@@ -119,8 +121,9 @@ export default function AmbientParticleField(props: Props) {
         point.light = still ? 0 : Math.max(Math.max(0, 1 - distance / (.2 + pulse * .2)), chapterLight) * water;
         interaction = Math.max(interaction, point.light);
       }
-      el.dataset.interaction = interaction.toFixed(3);
-      el.dataset.chapter = String(targetChapter);
+      const strength = interaction.toFixed(3), chapterName = String(targetChapter);
+      if (el.dataset.interaction !== strength) el.dataset.interaction = strength;
+      if (el.dataset.chapter !== chapterName) el.dataset.chapter = chapterName;
       for (let i = 0; i < count; i++) {
         const a = points[i], sky = points[(i + 11) % count], root = points[(i + (targetChapter === 1 ? 5 : 3)) % count];
         const bx = sky.x * (1 - water) + root.x * water, by = sky.y * (1 - water) + root.y * water;
