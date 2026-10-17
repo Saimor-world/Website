@@ -227,7 +227,8 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await expect.poll(() => page.locator('[data-dawn]').evaluate(element => Number(getComputedStyle(element).getPropertyValue('--dawn')))).toBeGreaterThan(.25);
   await expect.poll(() => starfield.getAttribute('data-fade').then(value => Number(value))).toBeGreaterThan(0);
   await shot(page, info, 'after-first-light-stars');
-  await page.getByRole('button', { name: 'Licht hereinlassen', exact: true }).click();
+  // Let the dawn finish naturally. Capturing first light may already span its
+  // remaining duration on software WebKit; the optional skip then disappears.
   await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
   await expect(starfield).toHaveAttribute('data-phase', 'water-memory');
@@ -325,7 +326,7 @@ test('reduced motion has no timer, zoom or forced transition; short viewport sta
   await next.scrollIntoViewIfNeeded();
   await expect(next).toBeVisible();
   // Expanded content must not reveal the top/bottom edges of a section-sized veil.
-  const veil = page.getByTestId('deep-clarity').locator(':scope > [aria-hidden="true"]');
+  const veil = page.getByTestId('clearing-veil');
   const coverage = await veil.evaluate(element => ({ top: element.getBoundingClientRect().top,
     bottom: element.getBoundingClientRect().bottom, viewport: innerHeight }));
   expect(Math.abs(coverage.top)).toBeLessThan(1);

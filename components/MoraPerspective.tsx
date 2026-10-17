@@ -95,7 +95,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
           if (direction) { event.preventDefault(); look(gaze.current.x + direction[0], gaze.current.y + direction[1]); }
           if (event.key === 'Home') { event.preventDefault(); gaze.current = { x: 0, y: 0 }; onLook(0, 0); }
         }} />
-      <div className={styles.veil} aria-hidden="true" />
+      <div className={styles.veil} data-testid="clearing-veil" aria-hidden="true" />
       {!morning && <p className={styles.emerging}>{c.emerging}</p>}
       {morning && infoVisible ? <article className={styles.story} aria-labelledby="clearing-mora-title">
         <p className={styles.eyebrow}>{c.eyebrow}</p>
