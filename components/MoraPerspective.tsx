@@ -102,7 +102,11 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
       {morning && !infoVisible && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
       {!morning || !infoVisible ? <div className={styles.action}>
         {morning ? <button ref={reopen} type="button" className={styles.guide} onClick={() => showInfo(true)}>{guide}<span>{c.reopen}</span><ArrowUpRight size={15} aria-hidden="true" /></button>
-          : <button type="button" className={styles.quiet} onClick={onLight}>{c.light}</button>}
+          : <button type="button" className={styles.quiet}
+            // The automatic dawn can remove this button between pointer down and up.
+            // Keep focus on the scene rather than a control that is about to disappear.
+            onPointerDown={event => event.preventDefault()}
+            onClick={() => { onLight(); heading.current?.focus({ preventScroll: true }); }}>{c.light}</button>}
       </div> : null}
     </div>
   );
