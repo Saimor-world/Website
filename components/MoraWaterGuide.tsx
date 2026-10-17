@@ -49,7 +49,7 @@ export default function MoraWaterGuide({ chapter, still }: { chapter: number; st
   return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} aria-hidden="true">
     <svg viewBox="0 0 1000 1000" preserveAspectRatio="none"><path ref={trail} /></svg>
     <span ref={stone} className={styles.position}><span className={styles.light} />
-      <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} />
+      <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} unoptimized />
         <MoraOsFace size={34} state="rest" />
       </span>
       <i /><i /><i />

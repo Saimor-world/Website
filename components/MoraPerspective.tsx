@@ -75,7 +75,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
     setExplored(true);
   };
   const guide = <span className={styles.stone} data-guide-ready={guideReady}>
-    <Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} loading="eager" onLoad={() => setGuideReady(true)} />
+    <Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} unoptimized loading="eager" onLoad={() => setGuideReady(true)} />
     {guideReady && <MoraOsFace size={72} state="rest" />}
   </span>;
   return (
