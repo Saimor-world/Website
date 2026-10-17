@@ -49,7 +49,6 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   const reopen = useRef<HTMLButtonElement>(null);
   const focusRequested = useRef(false);
   const gaze = useRef({ x: 0, y: 0 });
-  const [explored, setExplored] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const [chapter, setChapter] = useState(-1);
   const activate = (index: number) => { setChapter(index); onChapter?.(index); };
@@ -69,7 +68,6 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
     if (still) return;
     gaze.current = { x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) };
     onLook(gaze.current.x, gaze.current.y);
-    setExplored(true);
   };
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
@@ -106,7 +104,6 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
         </Link>
         <button type="button" className={styles.rest} onClick={() => showInfo(false)}>{c.rest}<MoveHorizontal size={14} aria-hidden="true" /></button>
       </article> : null}
-      {morning && !infoVisible && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
       {!morning ? <div className={styles.action}>
         {<button type="button" className={styles.quiet}
             // The automatic dawn can remove this button between pointer down and up.
