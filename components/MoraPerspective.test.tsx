@@ -2,8 +2,21 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import MoraPerspective from './MoraPerspective';
 
+vi.mock('next/image', () => ({
+  default: ({ alt = '', ...props }: any) => <img alt={alt} {...props} />,
+}));
 afterEach(cleanup);
 describe('the clearing', () => {
+  it('reveals the guide eyes only once the stone image has loaded', () => {
+    const { container } = render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
+    const image = container.querySelector('img')!;
+    expect(container.querySelector('[data-face-state]')).toBeNull();
+    fireEvent.error(image);
+    expect(container.querySelector('[data-face-state]')).toBeNull();
+    expect(screen.getByRole('link', { name: 'Mit MÔRA weiter' })).toHaveAttribute('href', '/mora');
+    fireEvent.load(image);
+    expect(container.querySelector('[data-guide-ready="true"] [data-face-state="rest"]')).not.toBeNull();
+  });
   it('supports bounded keyboard exploration and a deliberate return to centre', () => {
     const onLook = vi.fn();
     render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={onLook} still={false} />);

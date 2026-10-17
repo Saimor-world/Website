@@ -21,6 +21,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   const heading = useRef<HTMLHeadingElement>(null);
   const gaze = useRef({ x: 0, y: 0 });
   const [explored, setExplored] = useState(false);
+  const [guideReady, setGuideReady] = useState(false);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [morning]);
   const look = (x: number, y: number) => {
     if (still) return;
@@ -49,7 +50,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
       <div className={styles.action}>
         {morning ? (
           <Link className={styles.guide} href={locale === 'de' ? '/mora' : '/en/mora'}>
-            <span className={styles.stone}><Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} /><MoraOsFace size={72} state="rest" /></span>
+            <span className={styles.stone} data-guide-ready={guideReady}><Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} loading="eager" onLoad={() => setGuideReady(true)} />{guideReady && <MoraOsFace size={72} state="rest" />}</span>
             <span>{c.next}</span><ArrowUpRight size={15} />
           </Link>
         ) : <button type="button" className={styles.quiet} onClick={onLight}>{c.light}</button>}

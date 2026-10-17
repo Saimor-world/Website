@@ -105,7 +105,8 @@ test('homepage: wordless door, cinematic passage, escape, focus return, product 
   await expect(page.locator('#studio-title')).toBeVisible();
 });
 
-test('cinematic: deliberate passage, real face alignment, history, replay and localization', async ({ page }, info) => {
+test('cinematic: deliberate passage, real face alignment, history and replay', async ({ page }, info) => {
+  test.setTimeout(90000); // Includes seven full-resolution optical/scene captures on software WebKit.
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
   // Hold the opening while the test takes control; a slow software renderer
@@ -134,7 +135,17 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
     }
   });
   await expect(page.locator('[data-face-state] svg filter')).toHaveCount(0);
-  await shot(page, info, 'after-closed-blink');
+  const lidScales = await page.locator('[data-face-state="rest"] [class*="eye_"]').evaluateAll(eyes => eyes.map(eye => new DOMMatrix(getComputedStyle(eye).transform).d));
+  expect(lidScales).toHaveLength(2);
+  lidScales.forEach(scale => expect(scale).toBeCloseTo(.065, 3));
+  // The shared screenshot helper disables animation, which resets the held lid.
+  // Preserve this deliberately paused CSS animation to capture the actual blink.
+  await page.screenshot({ path: info.outputPath('after-closed-blink.png'), animations: 'allow' });
+  await page.locator('[data-face-state="rest"]').evaluate(element => {
+    for (const animation of element.getAnimations({ subtree: true })) {
+      if ('animationName' in animation && String(animation.animationName).includes('blink')) animation.play();
+    }
+  });
   await page.getByRole('button', { name: 'Durch ihre Augen sehen' }).click();
   await expect(page.getByTestId('deep-clarity')).toBeVisible();
   await expect(page).toHaveURL(/\/mora\/deep-view#clarity$/);
@@ -147,6 +158,7 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
   await noOverflow(page);
+  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-clarity');
   // The morning is a place to explore, not a heading pasted on a still card.
   const clearing = page.getByRole('region', { name: 'Die Lichtung erkunden' });
@@ -166,12 +178,20 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Noch einmal' }).click();
   await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
+  expect(exceptions).toEqual([]);
+});
+
+test('English cinematic passage opens the living clearing using normal motion', async ({ page }, info) => {
+  test.setTimeout(90000);
+  const exceptions: string[] = [];
+  page.on('pageerror', error => exceptions.push(error.message));
   await visit(page, '/en/mora/deep-view#mora');
   await page.getByRole('button', { name: 'See through her eyes' }).click();
   await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
   await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
   await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
   await expect(page.getByRole('link', { name: 'Continue with MÔRA' })).toHaveAttribute('href', '/en/mora');
+  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-morning-english');
   expect(exceptions).toEqual([]);
 });
