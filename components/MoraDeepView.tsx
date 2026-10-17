@@ -31,6 +31,11 @@ const COPY = {
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
+  const world = useRef<HTMLDivElement>(null);
+  const look = (x: number, y: number) => {
+    world.current?.style.setProperty('--look-x', String(x));
+    world.current?.style.setProperty('--look-y', String(y));
+  };
   const [scene, setScene] = useState<Scene>('uncertainty');
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -43,6 +48,7 @@ export default function MoraDeepView({ locale }: Props) {
   const focusRequested = useRef(false);
 
   const go = (next: Scene) => {
+    look(0, 0);
     setMorning(false);
     setHurry(false);
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname : `#${next}`);
@@ -108,7 +114,7 @@ export default function MoraDeepView({ locale }: Props) {
   };
 
   return (
-    <div className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing}>
+    <div ref={world} className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing}>
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
           reduced={reduced} onArrival={arrive} />
@@ -133,7 +139,7 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} /> : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} still={paused || reduced} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <div className={styles.stoneStage}>

@@ -23,7 +23,12 @@ describe('MÔRA official OS A4 face', () => {
     expect(face).not.toBeNull();
     // JSDOM lowercases SVG clipPath selectors; assert the exact jade radius instead.
     expect(face?.querySelectorAll('svg circle[r="43"]')).toHaveLength(1);
-    expect(face?.querySelectorAll('svg filter')).toHaveLength(3);
+    expect(face?.querySelectorAll('svg filter')).toHaveLength(0);
+    expect(face?.querySelectorAll('svg radialGradient')).toHaveLength(2);
+    // Highlights must close with the optical eye, never remain floating outside it.
+    const eyes = face?.querySelectorAll('[class*=eye_]');
+    expect(eyes).toHaveLength(2);
+    eyes?.forEach(eye => expect(eye.querySelectorAll('ellipse')).toHaveLength(4));
     expect(face?.querySelectorAll('svg ellipse').length).toBeGreaterThanOrEqual(4);
     expect(container.querySelector('[class*="pupil"]')).toBeNull();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();

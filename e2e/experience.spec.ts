@@ -125,6 +125,16 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   expect(face).not.toBeNull(); expect(stone).not.toBeNull();
   for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(face![key] - stone![key])).toBeLessThan(1);
   await shot(page, info, 'after-encounter');
+  // Inspect the actual closed blink, including its highlights, on both engines.
+  await page.locator('[data-face-state="rest"]').evaluate(element => {
+    for (const animation of element.getAnimations({ subtree: true })) {
+      if ('animationName' in animation && String(animation.animationName).includes('blink')) {
+        animation.pause(); animation.currentTime = 5320;
+      }
+    }
+  });
+  await expect(page.locator('[data-face-state] svg filter')).toHaveCount(0);
+  await shot(page, info, 'after-closed-blink');
   await page.getByRole('button', { name: 'Durch ihre Augen sehen' }).click();
   await expect(page.getByTestId('deep-clarity')).toBeVisible();
   await expect(page).toHaveURL(/\/mora\/deep-view#clarity$/);
@@ -138,6 +148,19 @@ test('cinematic: deliberate passage, real face alignment, history, replay and lo
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
   await noOverflow(page);
   await shot(page, info, 'after-clarity');
+  // The morning is a place to explore, not a heading pasted on a still card.
+  const clearing = page.getByRole('region', { name: 'Die Lichtung erkunden' });
+  await expect(page.getByTestId('deep-clearing')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Klarheit.' })).toHaveCSS('width', '1px');
+  await clearing.press('ArrowRight');
+  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', '0.35');
+  await clearing.press('ArrowUp');
+  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-y', '-0.35');
+  await shot(page, info, 'after-exploring');
+  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  await clearing.press('ArrowRight');
+  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', '0.35');
+  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await page.goBack();
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Noch einmal' }).click();

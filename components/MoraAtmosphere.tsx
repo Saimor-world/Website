@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import styles from './MoraAtmosphere.module.css';
+import MoraClearing from './MoraClearing';
 
 type Props = {
   dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void;
@@ -177,6 +178,7 @@ export default function MoraAtmosphere(props: Props) {
   }, []);
 
   return <div ref={layer} className={styles.atmosphere} aria-hidden="true">
+    <MoraClearing />
     <div className={styles.fallback}><i /><i /><i /></div>
     <canvas ref={canvas} className={styles.canvas} />
   </div>;

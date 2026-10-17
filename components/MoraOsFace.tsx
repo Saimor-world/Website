@@ -37,18 +37,24 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
   const warm = state === 'need' ? '255,219,140' : '204,255,224';
   const jade = state === 'need' ? '255,196,110' : '64,242,140';
   const id = React.useId().replace(/:/g, '');
-  const b = (u: number) => Math.max(u, tiny ? .6 : .3);
-
-  const eye = (sx: number, key: string) => arcs
-    ? <path key={key} d={`M ${C + sx * ex - rx} ${ey + ry * .25} Q ${C + sx * ex} ${ey - ry * 1.15} ${C + sx * ex + rx} ${ey + ry * .25}`} strokeLinecap="round" strokeWidth={rx * .62} fill="none" />
-    : <ellipse key={key} cx={C + sx * ex} cy={ey} rx={rx} ry={ry} />;
-
-  const eyes = (color: string) => (
-    <g className={styles.eyes} fill={arcs ? 'none' : color} stroke={arcs ? color : 'none'}>
-      {eye(-1, 'left')}
-      {eye(1, 'right')}
-    </g>
-  );
+  // Every optical layer, including highlights, lives in the same blink group.
+  // Unfiltered gradients avoid SVG filter-buffer edges when Safari scales a blink.
+  const eye = (sx: number, key: string) => {
+    const x = C + sx * ex;
+    const arc = `M ${x - rx} ${ey + ry * .25} Q ${x} ${ey - ry * 1.15} ${x + rx} ${ey + ry * .25}`;
+    return <g key={key} className={styles.eye} style={{ transformOrigin: `${x}px ${ey}px` }}>
+      {arcs ? <>
+        <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * 1.8} opacity=".08" />
+        <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * .95} opacity=".22" />
+        <path d={arc} stroke={`rgb(${warm})`} strokeWidth={rx * .54} opacity=".95" />
+      </> : <>
+        <ellipse cx={x} cy={ey} rx={rx * 2.5} ry={ry * 2.2} fill={`url(#halo${id})`} />
+        <ellipse cx={x} cy={ey} rx={rx * 1.12} ry={ry * 1.1} fill={`url(#eye${id})`} />
+        <ellipse cx={x} cy={ey} rx={rx * .83} ry={ry * .88} fill={`rgb(${warm})`} opacity=".8" />
+        <ellipse cx={x - rx * .28} cy={ey - ry * .37} rx={rx * .24} ry={ry * .16} fill="#fff5d7" opacity=".7" />
+      </>}
+    </g>;
+  };
   const smileY = C + .44 * R - .1 * R;
   const smile = `M ${C - .11 * R} ${smileY} Q ${C} ${smileY + .13 * R} ${C + .11 * R} ${smileY}`;
 
@@ -56,28 +62,15 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
     <span className={styles.face} data-face-state={state} aria-hidden="true">
       <svg className={styles.svg} viewBox="0 0 100 100" focusable="false">
         <defs>
-          <filter id={`w${id}`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={b(.16 * R * .45)} /></filter>
-          <filter id={`m${id}`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={b(.05 * R * .6)} /></filter>
-          <filter id={`c${id}`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={b(tiny ? .9 : .011 * R * 1.4)} /></filter>
+          <radialGradient id={`halo${id}`}><stop stopColor={`rgb(${jade})`} stopOpacity=".45" /><stop offset=".45" stopColor={`rgb(${jade})`} stopOpacity=".12" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
+          <radialGradient id={`eye${id}`}><stop offset=".5" stopColor={`rgb(${warm})`} /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
           <clipPath id={`j${id}`}><circle cx={C} cy={C} r={R} /></clipPath>
         </defs>
         <g clipPath={`url(#j${id})`}>
-          <g className={styles.veins}>
-            <g filter={`url(#w${id})`} opacity={tiny ? .55 : .75}>{eyes(`rgb(${jade})`)}</g>
-            <g filter={`url(#m${id})`} opacity={.8}>{eyes(`rgb(${jade})`)}</g>
-            {!tiny && <g filter={`url(#w${id})`} opacity={state === 'work' ? .1 : .22} fill="rgb(255,120,110)">
-              <ellipse cx={C - .52 * R} cy={C + .38 * R} rx={.15 * R} ry={.1 * R} />
-              <ellipse cx={C + .52 * R} cy={C + .38 * R} rx={.15 * R} ry={.1 * R} />
-            </g>}
+          <g className={styles.gaze} fill="none" strokeLinecap="round">
+            {eye(-1, 'left')}{eye(1, 'right')}
           </g>
-          <g filter={`url(#c${id})`} opacity={.95}>{eyes(`rgb(${warm})`)}</g>
-          {!arcs && <g fill="rgb(255,236,200)" filter={`url(#c${id})`}>
-            <circle cx={C - ex - .05 * R} cy={ey - .08 * R} r={tiny ? .07 * R : .045 * R} />
-            <circle cx={C + ex - .05 * R} cy={ey - .08 * R} r={tiny ? .07 * R : .045 * R} />
-          </g>}
-          {SMILE[state] && !tiny && (
-            <path d={smile} fill="none" stroke={`rgba(${warm},.85)`} strokeWidth={.032 * R} strokeLinecap="round" filter={`url(#c${id})`} />
-          )}
+          {SMILE[state] && !tiny && <path d={smile} fill="none" stroke={`rgba(${warm},.8)`} strokeWidth={.032 * R} strokeLinecap="round" />}
         </g>
       </svg>
       <span className={styles.leak} />
