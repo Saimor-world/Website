@@ -42,17 +42,21 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
   const eye = (sx: number, key: string) => {
     const x = C + sx * ex;
     const arc = `M ${x - rx} ${ey + ry * .25} Q ${x} ${ey - ry * 1.15} ${x + rx} ${ey + ry * .25}`;
-    return <g key={key} className={styles.eye} style={{ transformOrigin: `${x}px ${ey}px` }}>
-      {arcs ? <>
-        <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * 1.8} opacity=".08" />
-        <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * .95} opacity=".22" />
-        <path d={arc} stroke={`rgb(${warm})`} strokeWidth={rx * .54} opacity=".95" />
-      </> : <>
-        <ellipse cx={x} cy={ey} rx={rx * 2.5} ry={ry * 2.2} fill={`url(#halo${id})`} />
-        <ellipse cx={x} cy={ey} rx={rx * 1.12} ry={ry * 1.1} fill={`url(#eye${id})`} />
-        <ellipse cx={x} cy={ey} rx={rx * .83} ry={ry * .88} fill={`rgb(${warm})`} opacity=".8" />
-        <ellipse cx={x - rx * .28} cy={ey - ry * .37} rx={rx * .24} ry={ry * .16} fill="#fff5d7" opacity=".7" />
-      </>}
+    return <g key={key}>
+      <g className={styles.eye} style={{ transformOrigin: `${x}px ${ey}px` }}>
+        {arcs ? <>
+          <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * 1.8} opacity=".06" />
+          <path d={arc} stroke={`rgb(${jade})`} strokeWidth={rx * .95} opacity=".18" />
+          <path d={arc} stroke={`rgb(${warm})`} strokeWidth={rx * .54} opacity=".9" />
+        </> : <>
+          <ellipse cx={x} cy={ey} rx={rx * 2.3} ry={ry * 2.1} fill={`url(#halo${id})`} />
+          <ellipse cx={x} cy={ey} rx={rx * 1.12} ry={ry * 1.1} fill={`url(#eye${id})`} />
+          <ellipse cx={x} cy={ey} rx={rx * .92} ry={ry * .96} fill={`url(#jade${id})`} opacity=".18" style={{ mixBlendMode: 'multiply' }} />
+          <ellipse cx={x - rx * .27} cy={ey - ry * .39} rx={rx * .14} ry={ry * .105} fill="#fff5df" opacity=".68" />
+          <circle cx={x + rx * .24} cy={ey + ry * .32} r={rx * .055} fill="#e7ffe8" opacity=".32" />
+        </>}
+      </g>
+      {!arcs && <path className={styles.lid} d={`M ${x - rx * .72} ${ey} Q ${x} ${ey + ry * .22} ${x + rx * .72} ${ey}`} stroke={`rgb(${warm})`} strokeWidth={rx * .15} fill="none" />}
     </g>;
   };
   const smileY = C + .44 * R - .1 * R;
@@ -62,8 +66,9 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
     <span className={styles.face} data-face-state={state} aria-hidden="true">
       <svg className={styles.svg} viewBox="0 0 100 100" focusable="false">
         <defs>
-          <radialGradient id={`halo${id}`}><stop stopColor={`rgb(${jade})`} stopOpacity=".45" /><stop offset=".45" stopColor={`rgb(${jade})`} stopOpacity=".12" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
-          <radialGradient id={`eye${id}`}><stop offset=".5" stopColor={`rgb(${warm})`} /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
+          <radialGradient id={`halo${id}`}><stop stopColor={`rgb(${jade})`} stopOpacity=".28" /><stop offset=".45" stopColor={`rgb(${jade})`} stopOpacity=".09" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
+          <radialGradient id={`eye${id}`} cx="43%" cy="40%" r="60%" fx="35%" fy="28%"><stop stopColor="#f1ffe8" stopOpacity=".93" /><stop offset=".36" stopColor={`rgb(${warm})`} stopOpacity=".88" /><stop offset=".7" stopColor="#8cddb0" stopOpacity=".65" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
+          <pattern id={`jade${id}`} patternUnits="userSpaceOnUse" width="100" height="100"><image href="/brand/mora-stone-v1.png" width="100" height="100" /></pattern>
           <clipPath id={`j${id}`}><circle cx={C} cy={C} r={R} /></clipPath>
         </defs>
         <g clipPath={`url(#j${id})`}>

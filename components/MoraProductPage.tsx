@@ -44,7 +44,7 @@ const COPY = {
     outcome: 'Freigabe prüfen und das aktuelle Angebot vor dem Termin bereitstellen.',
     deepEyebrow: 'DEEP VIEW',
     deepTitle: 'Die Welt durch MÔRAs Augen.',
-    deepText: 'Eine filmische Begegnung statt eines Dashboards. Erst das Rauschen, dann MÔRA – und schließlich die Frage, was wirklich bleibt. Die technische Prinzipdarstellung ist separat erreichbar.',
+    deepText: 'Vom Nebel in eine Lichtung. Begegne MÔRA, sieh durch ihre Augen und entdecke, wie aus vorhandenem Kontext Orientierung für die Arbeit werden kann.',
     deepCta: 'MÔRA begegnen',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA gehört in den Arbeitsraum.',
@@ -89,7 +89,7 @@ const COPY = {
     outcome: 'Check the approval and have the current proposal ready before the meeting.',
     deepEyebrow: 'DEEP VIEW',
     deepTitle: 'The world through MÔRA’s eyes.',
-    deepText: 'A cinematic encounter, not a dashboard. First the noise, then MÔRA – and finally the question of what can be trusted. The technical concept remains available separately.',
+    deepText: 'From mist into a clearing. Meet MÔRA, see through her eyes and discover how existing context can become orientation for your work.',
     deepCta: 'Meet MÔRA',
     osEyebrow: 'SAIMÔR OS',
     osTitle: 'MÔRA belongs inside the workspace.',
@@ -104,7 +104,7 @@ const COPY = {
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
   const [orbState, setOrbState] = useState<MoraOrbState>('dream');
-  const deepHref = locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view';
+  const deepHref = `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=mora`;
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
@@ -216,7 +216,7 @@ export default function MoraProductPage({ locale }: Props) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
+      <section id="deep-view" className="relative scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.82fr_1.18fr] md:items-center">
           <div>
@@ -239,7 +239,7 @@ export default function MoraProductPage({ locale }: Props) {
         </div>
       </section>
 
-      <section className="border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      <section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
           <div><p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>

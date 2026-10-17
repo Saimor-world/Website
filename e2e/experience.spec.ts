@@ -72,22 +72,41 @@ test('public routes render, contain one headline, load images and fit the viewpo
   expect(exceptions).toEqual([]);
 });
 
-test('homepage: wordless door, cinematic passage, escape, focus return, product and studio paths', async ({ page }, info) => {
-  await visit(page, '/de');
-  await consent(page);
-  const door = page.getByRole('button', { name: 'Schwelle betreten' });
-  await door.scrollIntoViewIfNeeded();
-  await shot(page, info, 'after-forest');
-  await door.click();
-  const dialog = page.getByRole('dialog');
-  await expect(dialog).toBeVisible();
-  await expect(page.locator('body')).toHaveCSS('overflow-y', 'hidden');
-  await expect(page.getByRole('heading', { name: 'Was bleibt, kommt mit.' })).toBeVisible();
-  await shot(page, info, 'after-portal');
-  await page.keyboard.press('Escape');
-  await expect(dialog).not.toBeVisible();
-  await expect(door).toBeFocused();
-  await expect(page.locator('body')).not.toHaveCSS('overflow-y', 'hidden');
+test('homepage portal leads through MÔRA into the OS product and back in DE/EN', async ({ page }, info) => {
+  test.setTimeout(120000);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const locale of ['de', 'en'] as const) {
+    const german = locale === 'de';
+    const home = german ? '/de' : '/en';
+    await visit(page, home); await consent(page);
+    const door = page.getByRole('link', { name: german ? 'Schwelle betreten' : 'Cross the threshold' });
+    await door.scrollIntoViewIfNeeded();
+    await shot(page, info, `after-forest-${locale}`);
+    await door.click();
+    await expect(page).toHaveURL(/\/mora\/deep-view\?from=portal$/);
+    const back = page.getByRole('link', { name: german ? 'Zurück zum Portal' : 'Back to the portal' });
+    await expect(back).toHaveAttribute('href', `${home}#system`);
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await page.getByRole('button', { name: german ? 'MÔRA begegnen' : 'Meet MÔRA', exact: true }).click();
+    await page.getByRole('button', { name: german ? 'Durch ihre Augen sehen' : 'See through her eyes', exact: true }).click();
+    await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
+    await page.getByRole('button', { name: german ? 'MÔRA kennenlernen' : 'Get to know MÔRA', exact: true }).click();
+    await expect(page.getByRole('heading', { name: german ? 'Klarheit beginnt mit Zusammenhang.' : 'Clarity begins with context.' })).toBeVisible();
+    await page.locator('article details summary').first().click();
+    await expect(page.getByText(german ? /Eigene Daten kommen über Quellen/ : /Your own data comes through sources/)).toBeVisible();
+    await noOverflow(page);
+    await shot(page, info, `after-mora-information-${locale}`);
+    const product = page.getByRole('link', { name: german ? 'MÔRA im OS entdecken' : 'Discover MÔRA in the OS', exact: true });
+    await product.click();
+    await expect(page).toHaveURL(new RegExp(`${german ? '/mora' : '/en/mora'}#im-os$`));
+    await expect(page.getByRole('button', { name: german ? 'MÔRA im OS erleben' : 'Experience MÔRA in the OS', exact: true }).last()).toBeVisible();
+    await page.goBack();
+    await back.click();
+    await expect(page).toHaveURL(new RegExp(`${home}#system$`));
+    await expect(door).toBeVisible();
+    await expect(page.locator('body')).not.toHaveCSS('overflow-y', 'hidden');
+  }
+  await visit(page, '/de#system');
   await page.getByRole('link', { name: 'Produkte entdecken', exact: true }).click();
   await expect(page).toHaveURL(/#products$/);
   await page.getByRole('link', { name: 'MÔRA im Detail entdecken' }).click();
@@ -110,7 +129,7 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
   // Hold the opening while the test takes control; a slow software renderer
-  // must not let the legitimate 4.8 s intro advance race the first pause click.
+  // must not let the legitimate 7.2 s intro advance race the first pause click.
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await visit(page, '/mora/deep-view');
   await consent(page);
@@ -137,7 +156,7 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   // Inspect the actual closed blink, including its highlights, on both engines.
   await page.locator('[data-face-state="rest"]').evaluate(element => {
     for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && String(animation.animationName).includes('blink')) {
+      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) {
         animation.pause(); animation.currentTime = 5320;
       }
     }
@@ -151,14 +170,18 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await page.screenshot({ path: info.outputPath('after-closed-blink.png'), animations: 'allow' });
   await page.locator('[data-face-state="rest"]').evaluate(element => {
     for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && String(animation.animationName).includes('blink')) animation.play();
+      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) animation.play();
     }
   });
-  await page.getByRole('button', { name: 'Durch ihre Augen sehen' }).click();
+  const stablePoint = await page.getByRole('button', { name: 'MÔRA halten', exact: true }).boundingBox();
+  expect(stablePoint).not.toBeNull();
+  await page.mouse.move(stablePoint!.x + stablePoint!.width / 2, stablePoint!.y + stablePoint!.height / 2);
+  await page.mouse.down();
   await expect(page.getByTestId('deep-clarity')).toBeVisible();
+  await page.mouse.up();
   await expect(page).toHaveURL(/\/mora\/deep-view#clarity$/);
   await expect(page.getByRole('heading', { name: 'Durch MÔRAs Augen' })).toBeFocused();
-  await expect(page.getByRole('link', { name: 'Mit MÔRA weiter' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveCount(0);
   await expect(page.getByText(/PROJEKTCHAT|Wir starten morgen|Was belegt ist/)).toHaveCount(0);
   await noOverflow(page);
   await shot(page, info, 'after-mist');
@@ -168,6 +191,11 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await noOverflow(page);
   await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-clarity');
+  await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).toBeFocused();
+  await shot(page, info, 'after-mora-context');
+  await page.getByRole('button', { name: 'Lichtung genießen', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true })).toBeFocused();
   // The morning is a place to explore, not a heading pasted on a still card.
   const clearing = page.getByRole('region', { name: 'Die Lichtung erkunden' });
   await expect(page.getByTestId('deep-clearing')).toBeVisible();
@@ -198,7 +226,8 @@ test('English cinematic passage opens the living clearing using normal motion', 
   await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
   await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
   await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
-  await expect(page.getByRole('link', { name: 'Continue with MÔRA' })).toHaveAttribute('href', '/en/mora');
+  await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
   await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
   await shot(page, info, 'after-morning-english');
   expect(exceptions).toEqual([]);
@@ -218,6 +247,13 @@ test('reduced motion has no timer, zoom or forced transition; short viewport sta
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeVisible();
   await noOverflow(page);
   await shot(page, info, 'after-short-morning');
+  await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
+  for (const chapter of await page.locator('article details summary').all()) await chapter.click();
+  const next = page.getByRole('link', { name: 'MÔRA im OS entdecken', exact: true });
+  await next.scrollIntoViewIfNeeded();
+  await expect(next).toBeVisible();
+  await noOverflow(page);
+  await shot(page, info, 'after-short-mora-context', true);
   await page.getByRole('button', { name: 'Noch einmal' }).click();
   await noOverflow(page);
   await shot(page, info, 'after-short-reduced');

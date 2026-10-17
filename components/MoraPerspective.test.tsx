@@ -9,13 +9,24 @@ afterEach(cleanup);
 describe('the clearing', () => {
   it('reveals the guide eyes only once the stone image has loaded', () => {
     const { container } = render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
+    fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
     const image = container.querySelector('img')!;
     expect(container.querySelector('[data-face-state]')).toBeNull();
     fireEvent.error(image);
     expect(container.querySelector('[data-face-state]')).toBeNull();
-    expect(screen.getByRole('link', { name: 'Mit MÔRA weiter' })).toHaveAttribute('href', '/mora');
+    expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
     fireEvent.load(image);
     expect(container.querySelector('[data-guide-ready="true"] [data-face-state="rest"]')).not.toBeNull();
+  });
+  it('offers an optional explanation, returning focus when the visitor enjoys the clearing', () => {
+    render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
+    expect(screen.queryByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
+    expect(screen.getByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).toHaveFocus();
+    expect(screen.getByText(/Dafür steht diese Lichtung/)).toBeInTheDocument();
+    expect(screen.getByText('Du entscheidest, was passiert')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Lichtung genießen' }));
+    expect(screen.getByRole('button', { name: 'MÔRA kennenlernen' })).toHaveFocus();
   });
   it('supports bounded keyboard exploration and a deliberate return to centre', () => {
     const onLook = vi.fn();
@@ -37,6 +48,7 @@ describe('the clearing', () => {
     fireEvent.keyDown(clearing, { key: 'Home' });
     fireEvent.pointerLeave(clearing);
     expect(onLook).not.toHaveBeenCalled();
-    expect(screen.getByRole('link', { name: 'Continue with MÔRA' })).toHaveAttribute('href', '/en/mora');
+    fireEvent.click(screen.getByRole('button', { name: 'Get to know MÔRA' }));
+    expect(screen.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
   });
 });

@@ -14,7 +14,7 @@
 .language,.motion{display:grid;place-items:center;min-width:44px;min-height:44px;color:#c4cbb8;font:500 10px ui-monospace,monospace;background:transparent;border:0;cursor:pointer}
 .stage{position:relative;flex:1;display:grid;place-items:center;width:100%;padding:40px 24px 60px;min-height:560px}
 .intro,.encounter{width:100%;max-width:1100px;display:flex;align-items:center;flex-direction:column;text-align:center}
-.intro{padding-block:65px;animation:arrive 1.6s ease both}
+.intro{position:relative;isolation:isolate;padding-block:65px;animation:arrive 1.6s ease both}
 .eyebrow{margin:0;font:400 9px/1.8 ui-monospace,monospace;letter-spacing:.22em;color:#c4b68b}
 .intro h1{margin:27px 0 0;font:400 clamp(64px,8.2vw,118px)/1.04 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;text-wrap:balance;max-width:940px;color:#f4f0e5;outline:none}
 .doubt{margin:28px 0 0;font-size:clamp(15px,2vw,19px);line-height:1.7;color:#bbc6b3}
@@ -35,11 +35,11 @@
 .world a:focus-visible,.world button:focus-visible{outline:2px solid #e6c98d;outline-offset:4px}
 .world[data-paused="true"] *{animation-play-state:paused!important;transition:none!important}
 @keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes stone-reveal{from{opacity:.05;filter:brightness(.3)}to{opacity:1;filter:brightness(1)}}
+@keyframes stone-reveal{from{opacity:.05}to{opacity:1}}
 @keyframes cross-light{0%{opacity:0;transform:scale(.2)}70%{opacity:.65}100%{opacity:0;transform:scale(3)}}
 @keyframes through{0%{transform:scale(1);opacity:1}70%{opacity:.65}100%{transform:scale(7);opacity:0}}
 @media(max-width:700px){
- .topbar{min-height:76px}.mark{font-size:8px;letter-spacing:.08em}.mark span{margin:0 3px}.back{font-size:11px;gap:6px}.controls{gap:0}.language,.motion{min-width:35px}
+ .topbar{min-height:76px}.mark{display:none}.back{font-size:11px;gap:6px}.controls{gap:0}.language,.motion{min-width:35px}
  .stage{min-height:0;padding:30px 24px 45px}.intro{padding:120px 0}.intro h1{font-size:clamp(58px,14.5vw,77px)}
  .eyebrow{font-size:8px;letter-spacing:.15em}.presence{width:240px;height:240px}.encounter{gap:27px}.encounterText h1{font-size:36px}.lead{font-size:13px;max-width:280px}
  .footer{min-height:72px;align-items:center}.disclosure{font-size:8px;max-width:185px}.replay{font-size:10px}
@@ -56,3 +56,16 @@
 
 .world[data-scene="clarity"] .stage{padding:0;min-height:0}
 .world[data-paused="true"] .stage *{animation:none!important}
+
+.intro>p,.intro>h1,.intro>button{position:relative;z-index:1}
+.world[data-scene="mora"] .presence::before{content:"";position:absolute;inset:-25%;border-radius:50%;background:radial-gradient(circle,#88bd7130,transparent 65%);animation:arrive 3s ease both;pointer-events:none}
+
+.stoneControl{border-radius:50%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent;appearance:none}
+.stoneControl .stone{filter:brightness(calc(1 + var(--focus,0)*.13));transition:filter .3s}
+.holdHint{position:absolute;left:-20%;right:-20%;bottom:-20px;text-align:center;font-size:10px;letter-spacing:.04em;color:#cfdbc4;opacity:.65;pointer-events:none}
+.focusTrace{position:absolute;bottom:1%;left:38%;width:24%;height:1px;background:#e9d7a5;transform:scaleX(var(--focus,0));transform-origin:center;opacity:.65;pointer-events:none}
+.world[data-focusing="true"] .lead{opacity:.45;transition:opacity 1.2s}
+.intro{min-height:calc(100svh - 264px);justify-content:space-between;padding:26px 0 20px}
+.intro h1,.intro .doubt{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.intro .quietAction{margin-top:auto}
+@media(max-width:700px){.intro{min-height:calc(100svh - 223px);padding:20px 0}.holdHint{font-size:9px}}

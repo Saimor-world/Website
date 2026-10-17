@@ -94,14 +94,14 @@ describe('SystemWorldHome', () => {
     expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
   });
 
-  it('leaves the forest as a teaser, while real product and Studio links stay discoverable', () => {
+  it('connects the forest to Deep View, while product and Studio links stay discoverable', () => {
     for (const locale of ['de', 'en'] as const) {
       const { container } = render(<SystemWorldHome locale={locale} />);
       const section = container.querySelector('#system');
       expect(section).not.toBeNull();
       const portal = section?.querySelector('[class*="portalCanvas"]');
       expect(portal).not.toBeNull();
-      expect(portal?.querySelector('button[aria-haspopup="dialog"]')).not.toBeNull();
+      expect(portal?.querySelector('a')).toHaveAttribute('href', `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=portal`);
       expect(section?.querySelector('ul[aria-label*="Arbeitsraum"],ul[aria-label*="workspace"]')).toBeNull();
       expect(container.querySelectorAll('img[src="/images/saimor-forest-threshold.webp"]')).toHaveLength(1);
       expect(screen.getAllByRole('link', { name: locale === 'de' ? 'Studio entdecken' : 'Explore Studio' }).some(link => link.getAttribute('href') === (locale === 'de' ? '/studio' : '/en/studio'))).toBe(true);

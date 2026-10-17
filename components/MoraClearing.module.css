@@ -14,3 +14,5 @@
 @keyframes water{to{background-position:40px 24px}}
 @media(max-width:700px){.landscape{background-position:64% center;inset:-4% -16%}.rays{inset:-30% -100%}.sun{inset:-10% -55%}.water{left:0;right:0;top:61%}.motes i:nth-child(2n){display:none}}
 @media(prefers-reduced-motion:reduce){.clearing *{animation:none!important;transition:none!important;transform:none!important}.motes i{opacity:.3}}
+
+.connections{position:absolute;inset:-5%;width:110%;height:110%;opacity:calc(var(--dawn)*(1 - var(--dawn))*2.1);mix-blend-mode:screen;pointer-events:none}

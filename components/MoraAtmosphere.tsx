@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import styles from './MoraAtmosphere.module.css';
 import MoraClearing from './MoraClearing';
 
 type Props = {
-  dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void;
+  dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void; settling?: RefObject<number>;
 };
 
 const VERTEX = `attribute vec2 a_position;
@@ -140,7 +140,7 @@ export default function MoraAtmosphere(props: Props) {
       const dt = Math.max((now - previous) / 1000, 0); previous = now;
       const c = controls.current;
       const running = !c.paused && !c.reduced && !document.hidden;
-      if (running) clock += dt;
+      if (running) clock += dt * (1 - (c.settling?.current ?? 0) * .9);
       if (!c.dawn) { progress = 0; arrived = false; }
       else if (c.reduced || (c.paused && c.hurry)) progress = 1;
       else if (running) progress = Math.min(1, progress + dt / (c.hurry ? 1.4 : 11));

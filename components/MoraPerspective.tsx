@@ -3,34 +3,74 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, MoveHorizontal } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, MoveHorizontal } from 'lucide-react';
 import MoraOsFace from './MoraOsFace';
 import styles from './MoraPerspective.module.css';
 
 const COPY = {
-  de: { waiting: 'Durch MÔRAs Augen', title: 'Klarheit.', light: 'Licht hereinlassen', next: 'Mit MÔRA weiter', explore: 'Die Lichtung erkunden', hint: 'Bewege deinen Blick.', instructions: 'Bewege die Maus oder streiche über die Lichtung. Mit den Pfeiltasten kannst du dich ebenfalls umsehen.', arrival: 'Ein neuer Blick.' },
-  en: { waiting: 'Through MÔRA’s eyes', title: 'Clarity.', light: 'Let the light in', next: 'Continue with MÔRA', explore: 'Explore the clearing', hint: 'Let your gaze wander.', instructions: 'Move the pointer or swipe across the clearing. You can also look around with the arrow keys.', arrival: 'A new perspective.' },
+  de: {
+    waiting: 'Durch MÔRAs Augen', title: 'Klarheit.', light: 'Licht hereinlassen',
+    next: 'MÔRA im OS entdecken', explore: 'Die Lichtung erkunden', hint: 'Bewege deinen Blick.',
+    instructions: 'Bewege die Maus oder streiche über die Lichtung. Mit den Pfeiltasten kannst du dich ebenfalls umsehen.',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
+    arrival: 'Klarheit beginnt mit Zusammenhang.',
+    lead: 'Aus einzelnen Spuren wird ein Ort, an dem du dich orientieren kannst. Dafür steht diese Lichtung. MÔRA hält dafür Dateien, Termine und offene Dinge im Kontext deiner Arbeit zusammen.',
+    chapters: [
+      ['Dateien, Termine, offene Dinge', 'MÔRA arbeitet mit dem Stand, der im OS vorhanden ist. Eigene Daten kommen über Quellen hinzu, die du ausdrücklich verbindest.'],
+      ['Veränderungen einordnen', 'Was ist neu, was hängt zusammen? MÔRA kann neue Informationen aus verbundenen Quellen in den bisherigen Arbeitskontext einordnen.'],
+      ['Du entscheidest, was passiert', 'Aus dem Zusammenhang kann MÔRA nächste Schritte vorbereiten. Aktionen brauchen die passenden Freigaben.'],
+    ],
+    emerging: 'Was zusammengehört, wird sichtbar.', rest: 'Lichtung genießen', reopen: 'MÔRA kennenlernen',
+  },
+  en: {
+    waiting: 'Through MÔRA’s eyes', title: 'Clarity.', light: 'Let the light in',
+    next: 'Discover MÔRA in the OS', explore: 'Explore the clearing', hint: 'Let your gaze wander.',
+    instructions: 'Move the pointer or swipe across the clearing. You can also look around with the arrow keys.',
+    eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
+    arrival: 'Clarity begins with context.',
+    lead: 'Separate traces become a place where you can find your bearings. That is what this clearing stands for. MÔRA keeps files, meetings and open work together in your working context.',
+    chapters: [
+      ['Files, meetings and open work', 'MÔRA works with the state available in the OS. Your own data comes through sources you explicitly connect.'],
+      ['Making sense of change', 'What is new, and what belongs together? MÔRA can relate new information from connected sources to the existing working context.'],
+      ['You decide what happens', 'From that context MÔRA can prepare next steps. Actions require the appropriate permissions.'],
+    ],
+    emerging: 'What belongs together comes into view.', rest: 'Enjoy the clearing', reopen: 'Get to know MÔRA',
+  },
 } as const;
 
-/** An open place to explore, with an optional next step rather than an end card. */
+/** The atmosphere leads into an honest introduction and a concrete product path. */
 export default function MoraPerspective({ locale, morning, onLight, onLook, still }: {
   locale: 'de' | 'en'; morning: boolean; onLight: () => void;
   onLook: (x: number, y: number) => void; still: boolean;
 }) {
   const c = COPY[locale];
   const heading = useRef<HTMLHeadingElement>(null);
+  const infoHeading = useRef<HTMLHeadingElement>(null);
+  const reopen = useRef<HTMLButtonElement>(null);
+  const focusRequested = useRef(false);
   const gaze = useRef({ x: 0, y: 0 });
   const [explored, setExplored] = useState(false);
   const [guideReady, setGuideReady] = useState(false);
+  const [infoVisible, setInfoVisible] = useState(false);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [morning]);
+  useEffect(() => {
+    if (!focusRequested.current) return;
+    (infoVisible ? infoHeading.current : reopen.current)?.focus({ preventScroll: true });
+    focusRequested.current = false;
+  }, [infoVisible]);
+  const showInfo = (show: boolean) => { focusRequested.current = true; setInfoVisible(show); };
   const look = (x: number, y: number) => {
     if (still) return;
     gaze.current = { x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) };
     onLook(gaze.current.x, gaze.current.y);
     setExplored(true);
   };
+  const guide = <span className={styles.stone} data-guide-ready={guideReady}>
+    <Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} loading="eager" onLoad={() => setGuideReady(true)} />
+    {guideReady && <MoraOsFace size={72} state="rest" />}
+  </span>;
   return (
-    <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning}>
+    <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>
       <div className={styles.explore} role="region" tabIndex={0} aria-label={c.explore} aria-describedby="clearing-instructions"
@@ -38,23 +78,32 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
           const bounds = event.currentTarget.getBoundingClientRect();
           look((event.clientX - bounds.left) / bounds.width * 2 - 1, (event.clientY - bounds.top) / bounds.height * 2 - 1);
         }}
-        onPointerLeave={() => { if (!still) onLook(0, 0); }}
+        onPointerLeave={() => { if (!still) { gaze.current = { x: 0, y: 0 }; onLook(0, 0); } }}
         onKeyDown={event => {
           if (still) return;
           const direction = { ArrowLeft: [-.35, 0], ArrowRight: [.35, 0], ArrowUp: [0, -.35], ArrowDown: [0, .35] }[event.key];
           if (direction) { event.preventDefault(); look(gaze.current.x + direction[0], gaze.current.y + direction[1]); }
           if (event.key === 'Home') { event.preventDefault(); gaze.current = { x: 0, y: 0 }; onLook(0, 0); }
         }} />
-      {morning && <div className={styles.arrival} aria-hidden="true"><span />{c.arrival}</div>}
-      {morning && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
-      <div className={styles.action}>
-        {morning ? (
-          <Link className={styles.guide} href={locale === 'de' ? '/mora' : '/en/mora'}>
-            <span className={styles.stone} data-guide-ready={guideReady}><Image src="/brand/mora-stone-v1.png" alt="" width={72} height={72} loading="eager" onLoad={() => setGuideReady(true)} />{guideReady && <MoraOsFace size={72} state="rest" />}</span>
-            <span>{c.next}</span><ArrowUpRight size={15} />
-          </Link>
-        ) : <button type="button" className={styles.quiet} onClick={onLight}>{c.light}</button>}
-      </div>
+      <div className={styles.veil} aria-hidden="true" />
+      {!morning && <p className={styles.emerging}>{c.emerging}</p>}
+      {morning && infoVisible ? <article className={styles.story} aria-labelledby="clearing-mora-title">
+        <p className={styles.eyebrow}>{c.eyebrow}</p>
+        <h2 id="clearing-mora-title" ref={infoHeading} tabIndex={-1}>{c.arrival}</h2>
+        <p className={styles.lead}>{c.lead}</p>
+        <div className={styles.chapters}>{c.chapters.map(([title, text]) => <details key={title}>
+          <summary>{title}<ChevronDown size={14} aria-hidden="true" /></summary><p>{text}</p>
+        </details>)}</div>
+        <Link className={styles.guide} href={`${locale === 'de' ? '/mora' : '/en/mora'}#im-os`}>
+          {guide}<span>{c.next}</span><ArrowUpRight size={15} aria-hidden="true" />
+        </Link>
+        <button type="button" className={styles.rest} onClick={() => showInfo(false)}>{c.rest}<MoveHorizontal size={14} aria-hidden="true" /></button>
+      </article> : null}
+      {morning && !infoVisible && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
+      {!morning || !infoVisible ? <div className={styles.action}>
+        {morning ? <button ref={reopen} type="button" className={styles.guide} onClick={() => showInfo(true)}>{guide}<span>{c.reopen}</span><ArrowUpRight size={15} aria-hidden="true" /></button>
+          : <button type="button" className={styles.quiet} onClick={onLight}>{c.light}</button>}
+      </div> : null}
     </div>
   );
 }
