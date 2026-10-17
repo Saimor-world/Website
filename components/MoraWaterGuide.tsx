@@ -6,13 +6,13 @@ import MoraOsFace from './MoraOsFace';
 import styles from './MoraWaterGuide.module.css';
 
 /** MÔRA's own jade face becomes a small guiding light, leaving a fading flight trace. */
-export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef }: {
-  chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>;
+export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef, interactive = true }: {
+  chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>; interactive?: boolean;
 }) {
   const stone = useRef<HTMLSpanElement>(null), trail = useRef<SVGPathElement>(null);
   const gradient = useRef<SVGLinearGradientElement>(null);
   const traceId = `mora-flight-${useId().replace(/:/g, '')}`;
-  const controls = useRef({ chapter, still }); controls.current = { chapter, still };
+  const controls = useRef({ chapter, still, interactive }); controls.current = { chapter, still, interactive };
   const engaged = useRef({ pointer: false, focus: false });
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
         if (previousChapter === c.chapter) return;
         x = tx; y = ty;
         tail.forEach(point => { point.x = x; point.y = y; });
-      } else if (!engaged.current.pointer && !engaged.current.focus) {
+      } else if (!c.interactive || (!engaged.current.pointer && !engaged.current.focus)) {
         time += dt;
         const follow = 1 - Math.exp(-dt * 3.4);
         const flying = c.chapter < 0 && time % 9 < 2.5;
@@ -71,14 +71,14 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
     frame = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frame);
   }, []);
-  return <div className={styles.flight} data-guide-chapter={chapter} data-still={still}>
+  return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} data-passive={!interactive}>
     <span ref={stone} className={styles.position}>
     <svg className={styles.trace} viewBox="0 0 280 280" aria-hidden="true">
       <defs><linearGradient id={traceId} ref={gradient} gradientUnits="userSpaceOnUse" x2="140" y2="140"><stop stopColor="#f2dfaa" stopOpacity="0" /><stop offset="1" stopColor="#f2dfaa" stopOpacity=".7" /></linearGradient></defs>
       <path ref={trail} stroke={`url(#${traceId})`} />
     </svg>
     <span className={styles.light} aria-hidden="true" />
-      <button ref={buttonRef} className={styles.companion} type="button" onClick={onActivate}
+      <button ref={buttonRef} className={styles.companion} type="button" onClick={onActivate} disabled={!interactive} aria-hidden={!interactive}
         onPointerEnter={() => { engaged.current.pointer = true; }} onPointerLeave={() => { engaged.current.pointer = false; }}
         onFocus={() => { engaged.current.focus = true; }} onBlur={() => { engaged.current.focus = false; }}>
         <span className={styles.stone} data-guide-ready={ready}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} unoptimized loading="eager" onLoad={() => setReady(true)} />

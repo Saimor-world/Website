@@ -73,8 +73,8 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   };
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
-      {morning && <MoraWaterGuide chapter={chapter} still={still} label={infoVisible ? c.rest : c.reopen}
-        onActivate={() => showInfo(!infoVisible)} buttonRef={reopen} />}
+      {morning && <MoraWaterGuide chapter={chapter} still={still} label={infoVisible ? 'MÔRA' : c.reopen}
+        onActivate={() => showInfo(true)} buttonRef={reopen} interactive={!infoVisible} />}
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>
       <div className={styles.explore} role="region" tabIndex={0} aria-label={c.explore} aria-describedby="clearing-instructions"
@@ -104,6 +104,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
         <Link className={styles.guide} href={`${locale === 'de' ? '/mora' : '/en/mora'}#im-os`}>
           <span>{c.next}</span><ArrowUpRight size={15} aria-hidden="true" />
         </Link>
+        <button type="button" className={styles.rest} onClick={() => showInfo(false)}>{c.rest}<MoveHorizontal size={14} aria-hidden="true" /></button>
       </article> : null}
       {morning && !infoVisible && !still && !explored && <p className={styles.hint}><MoveHorizontal size={14} />{c.hint}</p>}
       {!morning ? <div className={styles.action}>
