@@ -11,3 +11,4 @@
 
 .fallback{opacity:calc(1 - var(--dawn)*.9)}
 .atmosphere[data-still="true"] *{animation-play-state:paused!important}
+.fallback i{background-repeat:no-repeat;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 72%)}

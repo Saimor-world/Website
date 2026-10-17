@@ -258,6 +258,15 @@ test('reduced motion has no timer, zoom or forced transition; short viewport sta
   const next = page.getByRole('link', { name: 'MÔRA im OS entdecken', exact: true });
   await next.scrollIntoViewIfNeeded();
   await expect(next).toBeVisible();
+  // Expanded content must not reveal the top/bottom edges of a section-sized veil.
+  const veil = page.getByTestId('deep-clarity').locator(':scope > [aria-hidden="true"]');
+  const coverage = await veil.evaluate(element => ({ top: element.getBoundingClientRect().top,
+    bottom: element.getBoundingClientRect().bottom, viewport: innerHeight }));
+  expect(Math.abs(coverage.top)).toBeLessThan(1);
+  expect(Math.abs(coverage.bottom - coverage.viewport)).toBeLessThan(1);
+  const fogRepeats = await page.locator('[data-dawn] > div > i').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundRepeat));
+  expect(fogRepeats).toHaveLength(3);
+  expect(fogRepeats.every(repeat => repeat === 'no-repeat')).toBe(true);
   await noOverflow(page);
   await shot(page, info, 'after-short-mora-context', true);
   await page.getByRole('button', { name: 'Noch einmal' }).click();

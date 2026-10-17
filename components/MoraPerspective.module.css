@@ -4,7 +4,7 @@
 .explore{position:absolute;inset:0;touch-action:none;cursor:grab;outline:none}
 .explore:active{cursor:grabbing}
 .explore:focus-visible::after{content:"↔";position:absolute;right:24px;bottom:32px;width:36px;height:36px;display:grid;place-items:center;border:1px solid #e6c98d99;border-radius:50%;color:#f6e8bd;background:#06130d80;font-size:18px}
-.veil{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,#03100cec 0%,#03100cd9 28%,#03100c66 50%,transparent 76%);transition:opacity 1.8s}
+.veil{position:fixed;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,#03100cec 0%,#03100cd9 28%,#03100c66 50%,transparent 76%);transition:opacity 1.8s}
 .perspective[data-info="true"] .veil{opacity:1}
 .story{position:relative;z-index:1;width:min(100%,440px);text-shadow:0 1px 12px #03110c66;animation:arrival 2s ease both}
 .eyebrow{margin:0 0 18px;font:400 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#d8c59f}
