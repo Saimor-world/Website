@@ -74,4 +74,3 @@ it('reports unsupported audio and lets the user retry', async () => {
   await screen.findByRole('button', { name: 'Ambient-Klang ausschalten' });
   expect(screen.queryByRole('status')).not.toBeInTheDocument();
 });
-
