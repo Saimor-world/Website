@@ -36,12 +36,17 @@
  [data-earth-features]{margin-top:36px!important;gap:12px!important}
  [data-earth-features] article{padding:23px!important}
  [data-earth-features] h2{margin-top:16px!important;font-size:28px!important}
- [data-scan-page]{padding:112px 22px 76px!important}
- [data-scan-page] [data-scan-entry]{display:grid;gap:24px!important}
- [data-scan-page] [data-scan-entry] header h1{font-size:42px!important;line-height:1.08}
- [data-scan-page] [data-scan-entry] form{gap:14px}
- [data-scan-page] [data-scan-optional]{border-top:1px solid #d1dbb52b;margin-top:6px}
- [data-scan-optional] summary{min-height:48px;color:#c9d6bd;font-size:12px}
+ [data-scan-page]{padding:88px 22px 64px!important}
+ [data-scan-page] [data-scan-entry]{display:grid;gap:14px!important}
+ [data-scan-page] [data-scan-entry]>*{margin-top:0!important}
+ [data-scan-page] [data-scan-entry] header>*+*{margin-top:8px!important}
+ [data-scan-page] [data-scan-entry] header h1{font-size:36px!important;line-height:1.04}
+ [data-scan-page] [data-scan-entry] header p:last-child{font-size:13px;line-height:1.45}
+ [data-scan-page] [data-scan-entry] form{gap:12px}
+ [data-scan-page] [data-scan-entry] form>div:first-child{padding:12px!important}
+ [data-scan-page] [data-scan-entry] form input{padding-top:10px!important;padding-bottom:10px!important}
+ [data-scan-page] [data-scan-optional]{border-top:1px solid #d1dbb52b;margin-top:2px}
+ [data-scan-optional] summary{min-height:42px;color:#c9d6bd;font-size:12px}
  [data-scan-optional]>details>div{padding-top:12px}
  [data-yori-public]{padding-bottom:70px}
  [data-yori-public] header>a{min-height:44px;display:flex;align-items:center}
