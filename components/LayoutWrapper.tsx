@@ -8,6 +8,7 @@ import CommandPalette from './CommandPalette';
 import ScrollProgress from './ScrollProgress';
 import DesktopDiscoveries from './DesktopDiscoveries';
 import ScrollAmbient from './ScrollAmbient';
+import './PublicMobile.css';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -35,7 +36,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   // Immersive surfaces render without public-site chrome.
   return (
-    <><ScrollAmbient locale={locale} />{isImmersive ? isEncounter ? <div data-public-site>{children}</div> : children : <div data-public-site>
+    <><ScrollAmbient locale={locale} />{isImmersive ? isEncounter || isYori ? <div data-public-site>{children}</div> : children : <div data-public-site>
       <DesktopDiscoveries />
       <CommandPalette />
       <ScrollProgress />

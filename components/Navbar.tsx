@@ -121,7 +121,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
+      <header data-public-header data-scrolled={scrolled} data-light={isLightPage} className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-6 sm:pt-4">
           <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${scrolled || isLightPage
             ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
@@ -170,10 +170,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
           <div className="relative mx-auto flex h-full max-w-lg flex-col">
             <div className="font-mono text-[9px] tracking-[.25em] text-[#d9eadf]/68">SAIMÔR / NAVIGATION</div>
 
-            <nav className="mt-12 border-t border-[#cce0d2]/22">
+            <nav className="mt-7 border-t border-[#cce0d2]/22">
               {navItems.map((item, index) => (
                 <Link key={item.href} href={item.href} onClick={() => { setMenuOpen(false); track(item.label); }} className="flex items-center justify-between border-b border-[#cce0d2]/20 py-4">
-                  <span className="font-serif text-4xl font-light tracking-[-.03em] text-[#fbfbf4]">{item.label}</span>
+                  <span className="font-serif text-[32px] font-light tracking-[-.03em] text-[#fbfbf4]">{item.label}</span>
                   <span className="font-mono text-[9px] tracking-[.18em] text-[#d5e4d9]/62">0{index + 1}</span>
                 </Link>
               ))}
@@ -182,7 +182,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
             <div className="mt-auto grid gap-2">
               <Link href={securityHref} onClick={() => track(copy.entry)} className="flex min-h-14 items-center justify-center gap-2 bg-[#eef1df] px-5 text-sm font-bold text-[#102019]">
                 <ShieldCheck className="h-4 w-4" />
-                {locale === 'de' ? 'Security Check / System betreten' : 'Security Check / Enter system'}
+                {locale === 'de' ? 'Security Check starten' : 'Start Security Check'}
               </Link>
               <div className="grid grid-cols-2 gap-2">
                 <a href={loginHref} className="flex min-h-12 items-center justify-center gap-2 border border-[#c7dfcf]/24 bg-[#204636]/72 text-xs font-semibold text-[#eef5ef]/86">

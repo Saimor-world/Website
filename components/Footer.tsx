@@ -3,6 +3,7 @@
 import BrandSigil from './BrandSigil';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import ResponsiveDetails from './ResponsiveDetails';
 import ShareButton from '@/components/ShareButton';
 
 type Locale = 'de' | 'en';
@@ -79,12 +80,12 @@ export default function Footer({ locale }: { locale: Locale }) {
       : 'bg-white/30';
 
   return (
-    <footer className="relative border-t border-white/[0.08] bg-[#050706] px-5 py-10 text-white sm:px-8 lg:px-10">
+    <footer data-public-footer className="relative border-t border-white/[0.08] bg-[#050706] px-5 py-10 text-white sm:px-8 lg:px-10">
       <div className="pointer-events-none absolute inset-0 opacity-[.16] [background-image:linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] [background-size:44px_44px]" />
 
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
-          <div>
+        <div data-footer-grid className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
+          <div data-footer-brand>
             <Link href={homeHref} className="inline-flex items-center gap-3">
               <span className="block h-11 w-11 shrink-0"><BrandSigil /></span>
               <span>
@@ -94,8 +95,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             <p className="mt-5 max-w-sm text-sm leading-6 text-white/60">{c.tagline}</p>
           </div>
 
-          <div>
-            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-[#d6a848]/52">System</div>
+          <ResponsiveDetails title={c.system}>
             <div className="mt-4 grid gap-3 text-sm text-white/65">
               <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</Link>
               <Link className="transition hover:text-white/82" href={moraHref}>Môra</Link>
@@ -103,10 +103,9 @@ export default function Footer({ locale }: { locale: Locale }) {
               <Link className="transition hover:text-white/82" href={securityHref}>{c.entry}</Link>
               <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
             </div>
-          </div>
+          </ResponsiveDetails>
 
-          <div>
-            <div className="font-mono text-[9px] uppercase tracking-[.22em] text-white/48">{c.legal}</div>
+          <ResponsiveDetails title={c.legal}>
             <div className="mt-4 grid gap-3 text-sm text-white/60">
               <Link className="transition hover:text-white/72" href={legal.trust}>{c.trust}</Link>
               <Link className="transition hover:text-white/72" href={legal.imprint}>{c.imprint}</Link>
@@ -114,7 +113,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               <Link className="transition hover:text-white/72" href={legal.terms}>{c.terms}</Link>
               <Link className="transition hover:text-white/72" href={legal.refund}>{c.refund}</Link>
             </div>
-          </div>
+          </ResponsiveDetails>
         </div>
 
         <div className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">

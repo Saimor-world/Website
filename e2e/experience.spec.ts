@@ -363,8 +363,49 @@ test('mobile navigation: escape, keyboard focus and readable entry', async ({ pa
   await expect(menu).toBeFocused();
 });
 
+test('mobile priorities: first scroll, optional fields and direct contact stay usable', async ({ page }, info) => {
+  test.skip((info.project.use.viewport?.width || 390) >= 768, 'Phone priorities');
+  for (const locale of ['de', 'en']) {
+    const de = locale === 'de';
+    await visit(page, `/${locale}`); await consent(page);
+    const ways = page.locator('section[aria-labelledby="world-title"] details');
+    await expect(ways).not.toHaveAttribute('open', '');
+    await ways.locator('summary').click();
+    await expect(ways.getByRole('link', { name: de ? 'Einloggen' : 'Log in', exact: true })).toBeVisible();
+    await ways.locator('summary').click();
+    await page.mouse.wheel(0, 480);
+    await expect(page.getByTestId('mobile-threshold-entry')).toBeInViewport();
+    await expect(page.getByTestId('mobile-threshold-entry')).toHaveAttribute('href', `${de ? '' : '/en'}/mora/deep-view?from=portal`);
+    await shot(page, info, `after-first-scroll-${locale}`);
+    await visit(page, de ? '/de/kontakt' : '/en/contact');
+    await expect(page.getByRole('link', { name: de ? 'E-Mail schreiben' : 'Send an email', exact: true })).toBeInViewport();
+    await visit(page, de ? '/de/einstieg/security-check' : '/en/entry/security-check');
+    const optional = page.locator('[data-scan-optional] details');
+    await expect(optional).not.toHaveAttribute('open', '');
+    const company = page.getByPlaceholder(de ? 'Firmenname' : 'Company name', { exact: true });
+    await expect(company).not.toBeVisible();
+    await expect(page.getByRole('button', { name: de ? 'Scan starten' : 'Start scan', exact: true })).toBeInViewport();
+    await optional.locator('summary').click();
+    await company.fill('QA example');
+    await optional.locator('summary').click();
+    await optional.locator('summary').click();
+    await expect(company).toHaveValue('QA example');
+  }
+});
+
 test('product states, workshop details and YORI example rooms respond', async ({ page }, info) => {
   await visit(page, '/mora'); await consent(page);
+  await expect(page.locator('[data-mora-character]').first().locator('[data-face-state="rest"] svg ellipse').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Termine', exact: true }).click();
+  await expect(page.getByTestId('mora-context-preview')).toContainText('Mit Kontext in den Termin.');
+  const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
+  await companion.click();
+  await expect(page.getByRole('dialog', { name: 'MÔRA an deiner Seite' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(companion).toBeFocused();
+  await page.getByRole('button', { name: 'Bewegung pausieren', exact: true }).click();
+  await expect(page.getByTestId('mora-companion')).toHaveAttribute('data-paused', 'true');
+  await page.getByRole('button', { name: 'Bewegung fortsetzen', exact: true }).click();
   for (const name of ['Ruht', 'Träumt', 'Spricht']) {
     const state = page.getByRole('button', { name, exact: true });
     await state.click();

@@ -1,20 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CalendarDays, CircleCheck, FileText, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarDays, CircleCheck, FileText, Pause, Play, ShieldCheck, Sparkles } from 'lucide-react';
 import { DemoLaunchButton } from '@/components/DemoLaunchButton';
 import AmbientParticleField from './AmbientParticleField';
-import MoraOrb, { type MoraOrbState } from '@/components/MoraOrb';
+import MoraCharacter, { type MoraMood } from './MoraCharacter';
+import MoraCompanion from './MoraCompanion';
+import styles from './MoraProductPage.module.css';
 
 type Props = { locale: 'de' | 'en' };
 
 const COPY = {
   de: {
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
-    title: 'Du musst nicht jedes Mal von vorn anfangen.',
+    title: 'Sie hält den Faden.',
     lead: 'Dateien, Termine und offene Dinge bleiben zusammen. MÔRA kennt den Stand und kann dort weitermachen.',
-    note: 'MÔRA ist die Intelligenzschicht im Saimôr OS – kein zweiter Chat neben deiner Arbeit.',
+    mobileLead: 'Wissen, Termine und nächste Schritte. Ich halte den Zusammenhang.',
+    note: 'Aufmerksam, wenn du sie brauchst. Zurückhaltend, wenn du im Fluss bist.',
     demo: 'MÔRA im OS erleben',
     deep: 'Deep View öffnen',
     mapLabel: 'ARBEITSKONTEXT',
@@ -22,14 +25,24 @@ const COPY = {
     calendar: 'Termine',
     open: 'Offene Dinge',
     personaEyebrow: 'WER MÔRA IST',
-    personaTitle: 'Der Jadestein im Zeichen.',
-    personaText: 'Im Saimôr-Zeichen kreist ein Jadestein auf seiner Bahn um das goldene S. Das ist MÔRA: das Gedächtnis, das um die Arbeit einer Firma kreist. Die Adern im Stein sind das Myzel – die Verbindungen zwischen Dateien, Mails, Terminen und Entscheidungen.',
+    personaTitle: 'Eine eigene Art, an deiner Seite zu sein.',
+    personaText: 'MÔRA ist der Jadestein im Saimôr-Zeichen. Ihre Adern stehen für die Verbindungen zwischen Wissen und Arbeit. Ihr Blick zeigt, ob sie zuhört, nachdenkt oder etwas mitteilen möchte. Du gibst die Richtung vor.',
     statesLabel: 'Zustand wählen',
     states: [
       ['rest', 'Ruht', 'Nichts Neues. MÔRA hält den Stand und bleibt still.'],
       ['dream', 'Träumt', 'MÔRA ordnet, was passiert ist: verbindet nur mit Grund und verwirft Rauschen.'],
-      ['speak', 'Spricht', 'Wenn etwas wirklich wichtig ist, meldet sich MÔRA – im OS, per Stimme oder über Telegram.'],
-    ] as [MoraOrbState, string, string][],
+      ['speak', 'Spricht', 'MÔRA bringt einen Gedanken auf den Punkt und macht den nächsten Schritt nachvollziehbar.'],
+      ['listen', 'Hört zu', 'Du gibst den Gedanken vor. MÔRA bleibt aufmerksam und hält den Zusammenhang.'],
+    ] as [MoraMood, string, string][],
+    greeting: 'Hallo. Ich bin MÔRA.',
+    characterLine: 'Ich behalte den Zusammenhang im Blick.',
+    sample: 'EIN BEISPIEL · KEINE LIVE-DATEN',
+    contextHint: 'Wähle einen Zusammenhang.',
+    contexts: [
+      ['Die aktuelle Fassung.', 'Die Rückfrage gehört zum Angebot. Beides bleibt zusammen, bevor du weiterarbeitest.'],
+      ['Mit Kontext in den Termin.', 'Zum Gespräch am Freitag gehören das Angebot und die noch offene Rückfrage.'],
+      ['Ein klarer nächster Schritt.', 'Die Freigabe fehlt noch. Erst prüfen, dann das Angebot vor dem Termin bereitstellen.'],
+    ],
     sectionEyebrow: 'WAS MÔRA HÄLT',
     sectionTitle: 'Der Zusammenhang bleibt bestehen.',
     roles: [
@@ -57,9 +70,10 @@ const COPY = {
   },
   en: {
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
-    title: 'You do not have to start from scratch every time.',
+    title: 'She keeps the thread.',
     lead: 'Files, meetings and open work stay together. MÔRA keeps the state and can continue from there.',
-    note: 'MÔRA is the intelligence layer inside Saimôr OS – not another chat sitting next to your work.',
+    mobileLead: 'Knowledge, meetings and next steps. I keep the context together.',
+    note: 'Attentive when you need her. Quiet when you are in your flow.',
     demo: 'Experience MÔRA in the OS',
     deep: 'Open Deep View',
     mapLabel: 'WORK CONTEXT',
@@ -67,14 +81,24 @@ const COPY = {
     calendar: 'Meetings',
     open: 'Open work',
     personaEyebrow: 'WHO MÔRA IS',
-    personaTitle: 'The jade stone in the sign.',
-    personaText: 'In the Saimôr sign a jade stone circles the golden S on its orbit. That is MÔRA: the memory that keeps circling a company’s work. The veins inside the stone are the mycelium – the connections between files, mail, meetings and decisions.',
+    personaTitle: 'Her own way of being by your side.',
+    personaText: 'MÔRA is the jade stone in the Saimôr sign. Her veins represent the connections between knowledge and work. Her expression shows when she is listening, thinking or sharing something. You set the direction.',
     statesLabel: 'Choose a state',
     states: [
       ['rest', 'Resting', 'Nothing new. MÔRA keeps the state and stays quiet.'],
       ['dream', 'Dreaming', 'MÔRA sorts what happened: connects only with a reason and drops noise.'],
-      ['speak', 'Speaking', 'When something truly matters, MÔRA speaks up – in the OS, by voice or via Telegram.'],
-    ] as [MoraOrbState, string, string][],
+      ['speak', 'Speaking', 'MÔRA puts a thought into words and makes the next step understandable.'],
+      ['listen', 'Listening', 'You bring the thought. MÔRA stays attentive and keeps the context together.'],
+    ] as [MoraMood, string, string][],
+    greeting: 'Hello. I’m MÔRA.',
+    characterLine: 'I keep an eye on the whole picture.',
+    sample: 'AN EXAMPLE · NO LIVE DATA',
+    contextHint: 'Choose a connection.',
+    contexts: [
+      ['The current version.', 'The question belongs with the proposal. Both stay together before you continue.'],
+      ['Context for the meeting.', 'Friday’s conversation connects to the proposal and the remaining question.'],
+      ['A clear next step.', 'Approval is still pending. Check it first, then prepare the proposal before the meeting.'],
+    ],
     sectionEyebrow: 'WHAT MÔRA KEEPS',
     sectionTitle: 'The relationship between things stays intact.',
     roles: [
@@ -104,76 +128,79 @@ const COPY = {
 
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
-  const [orbState, setOrbState] = useState<MoraOrbState>('dream');
+  const [orbState, setOrbState] = useState<MoraMood>('rest');
+  const [context, setContext] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const visibility = () => setHidden(document.hidden);
+    visibility(); document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
+  const still = paused || hidden;
   const deepHref = `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=mora`;
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
   return (
-    <div className="overflow-hidden bg-[#07110d] text-[#f6f4eb]">
-      <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[.07] px-5 pb-16 pt-28 sm:px-8 sm:pt-36 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_32%,rgba(113,201,165,.18),transparent_27%),radial-gradient(circle_at_60%_68%,rgba(211,171,79,.10),transparent_26%),linear-gradient(145deg,#17382b_0%,#0b1913_48%,#050807_100%)]" aria-hidden="true" />
-        <AmbientParticleField />
-
-        <div className="relative z-10 mx-auto grid min-h-[70svh] max-w-7xl items-center gap-8 lg:grid-cols-[.93fr_1.07fr] lg:gap-16">
-          <div className="min-w-0 max-w-2xl">
-            <p className="font-mono text-[9px] font-semibold tracking-[.29em] text-[#e2c576]/82 sm:text-[10px]">{c.eyebrow}</p>
-            <h1 className="mt-6 font-serif text-[clamp(3rem,7.3vw,7.2rem)] [overflow-wrap:break-word] font-light leading-[.89] tracking-[-.052em] text-[#fbfaf3]">{c.title}</h1>
-            <p className="mt-7 max-w-xl text-base leading-7 text-[#dbe8df]/72 sm:text-lg sm:leading-8">{c.lead}</p>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/60">{c.note}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-7 py-3.5 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" />
-              <Link href={deepHref} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-[#d8c27d]/24 bg-white/[.025] px-7 py-3.5 text-sm font-semibold text-[#f0e7cc] transition hover:border-[#d8c27d]/42 hover:bg-white/[.05]">
-                <Sparkles className="h-4 w-4" />{c.deep}
-              </Link>
+    <div className={styles.page} data-testid="mora-product" data-paused={still}>
+      <section className={styles.hero} aria-labelledby="mora-title">
+        <div className={styles.heroAtmosphere} aria-hidden="true" />
+        <AmbientParticleField paused={still} />
+        <div className={styles.heroGrid}>
+          <div className={styles.intro}>
+            <p className={styles.eyebrow}>{c.eyebrow}</p>
+            <h1 id="mora-title">{c.title}</h1>
+            <p className={styles.lead}><span className={styles.desktopLead}>{c.lead}</span><span className={styles.mobileLead}>{c.mobileLead}</span></p>
+            <p className={styles.note}>{c.note}</p>
+            <div className={styles.actions}>
+              <DemoLaunchButton locale={locale} label={c.demo} className={styles.primary} />
+              <Link href={deepHref} className={styles.secondary}><Sparkles size={16} />{c.deep}</Link>
             </div>
+            <button type="button" className={styles.motion} aria-pressed={paused} onClick={() => setPaused(value => !value)}>
+              {paused ? <Play size={13} /> : <Pause size={13} />}
+              {locale === 'de' ? paused ? 'Bewegung fortsetzen' : 'Bewegung pausieren' : paused ? 'Resume motion' : 'Pause motion'}
+            </button>
           </div>
-
-          <div className="relative mx-auto h-[350px] w-full max-w-[620px] sm:h-[520px]" aria-label={c.mapLabel}>
-            <div className="absolute inset-[8%] rounded-full border border-[#a6d7c2]/10" />
-            <svg viewBox="0 0 600 500" className="absolute inset-0 h-full w-full" aria-hidden="true">
-              <defs>
-                <linearGradient id="moraLine" x1="0" x2="1">
-                  <stop offset="0" stopColor="#8ed4b8" stopOpacity=".16" />
-                  <stop offset=".5" stopColor="#e6cd82" stopOpacity=".66" />
-                  <stop offset="1" stopColor="#8ed4b8" stopOpacity=".12" />
-                </linearGradient>
-              </defs>
-              <path d="M300 250 C240 215 190 165 132 112" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
-              <path d="M300 250 C370 205 430 165 492 128" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
-              <path d="M300 250 C326 320 357 365 408 408" fill="none" stroke="url(#moraLine)" strokeWidth="1.2" />
-            </svg>
-
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <MoraOrb size={220} state="dream" priority className="h-[180px] w-[180px] sm:h-[260px] sm:w-[260px]" />
+          <div className={styles.presence}>
+            <p className={styles.hello}>{c.greeting}</p>
+            <div className={styles.contextMap} role="group" aria-label={c.contextHint}>
+              <div className={styles.orbit} aria-hidden="true" />
+              <div className={styles.characterStage}>
+                <MoraCharacter size={300} state={orbState} paused={still} priority className={styles.heroCharacter} />
+              </div>
+              <ContextNode active={context === 0} onClick={() => { setContext(0); setOrbState('dream'); }} className={styles.files} icon={<FileText size={15} />} label={c.file} />
+              <ContextNode active={context === 1} onClick={() => { setContext(1); setOrbState('listen'); }} className={styles.calendar} icon={<CalendarDays size={15} />} label={c.calendar} />
+              <ContextNode active={context === 2} onClick={() => { setContext(2); setOrbState('speak'); }} className={styles.openWork} icon={<CircleCheck size={15} />} label={c.open} />
             </div>
-
-            <ContextNode className="left-[3%] top-[14%]" icon={<FileText className="h-4 w-4" />} label={c.file} />
-            <ContextNode className="right-[1%] top-[27%] sm:top-[20%]" icon={<CalendarDays className="h-4 w-4" />} label={c.calendar} />
-            <ContextNode className="bottom-[6%] right-[13%]" icon={<CircleCheck className="h-4 w-4" />} label={c.open} />
-            <div className="absolute bottom-[3%] left-[5%] font-mono text-[8px] tracking-[.22em] text-white/24">{c.mapLabel}</div>
+            <p className={styles.characterLine}>{c.characterLine}</p>
+            <div className={styles.contextReadout} aria-live="polite" data-testid="mora-context-preview">
+              <span>{c.sample}</span>
+              <h2>{c.contexts[context][0]}</h2>
+              <p>{c.contexts[context][1]}</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-b border-white/[.07] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      <section id="persona" className="relative scroll-mt-24 overflow-hidden border-b border-white/[.07] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(79,169,131,.12),transparent_32%)]" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.9fr_1.1fr]">
           <div className="grid place-items-center">
-            <MoraOrb size={260} state={orbState} className="h-auto w-[240px] sm:w-[320px]" />
+            <MoraCharacter size={280} state={orbState} paused={still} className={styles.personaCharacter} />
           </div>
           <div>
             <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.personaEyebrow}</p>
             <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.personaTitle}</h2>
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/62 sm:text-base">{c.personaText}</p>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.personaText}</p>
             <div className="mt-9 flex flex-wrap gap-2" role="group" aria-label={c.statesLabel}>
               {c.states.map(([key, label]) => (
-                <button key={key} type="button" aria-pressed={orbState === key} onClick={() => setOrbState(key)} className={`inline-flex min-h-[44px] items-center rounded-full border px-5 text-sm font-semibold transition ${orbState === key ? 'border-[#e0c878]/60 bg-[#e0c878]/10 text-[#f5e6b8]' : 'border-white/12 text-white/55 hover:border-white/26 hover:text-white'}`}>
+                <button key={key} type="button" aria-pressed={orbState === key} onClick={() => setOrbState(key)} className={`inline-flex min-h-[44px] items-center rounded-full border px-5 text-sm font-semibold transition ${orbState === key ? 'border-[#e0c878]/60 bg-[#e0c878]/10 text-[#f5e6b8]' : 'border-white/12 text-white/75 hover:border-white/26 hover:text-white'}`}>
                   {label}
                 </button>
               ))}
             </div>
-            <p className="mt-5 max-w-xl border-l border-[#dfc775]/45 pl-5 text-sm leading-6 text-white/60" aria-live="polite">{activeState[2]}</p>
+            <p className="mt-5 max-w-xl border-l border-[#dfc775]/45 pl-5 text-sm leading-6 text-white/75" aria-live="polite">{activeState[2]}</p>
           </div>
         </div>
       </section>
@@ -187,7 +214,7 @@ export default function MoraProductPage({ locale }: Props) {
               <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.72fr_1.28fr] sm:items-start sm:gap-8">
                 <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/48">0{index + 1}</div>
                 <h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3>
-                <p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{body}</p>
+                <p className="max-w-2xl text-sm leading-7 text-white/80 sm:text-base">{body}</p>
               </article>
             ))}
           </div>
@@ -199,7 +226,7 @@ export default function MoraProductPage({ locale }: Props) {
           <div>
             <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.exampleEyebrow}</p>
             <h2 className="mt-5 font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.exampleTitle}</h2>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.exampleBody}</p>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.exampleBody}</p>
           </div>
           <div className="relative overflow-hidden rounded-[2rem] border border-[#b8d4c5]/12 bg-[#07130e]/78 p-6 shadow-[0_28px_90px_rgba(0,0,0,.22)] sm:p-8">
             <div className="absolute -right-16 -top-20 h-52 w-52 rounded-full bg-[#4d9676]/10 blur-3xl" aria-hidden="true" />
@@ -207,7 +234,7 @@ export default function MoraProductPage({ locale }: Props) {
               {c.chips.map((chip, index) => <div key={chip} className="border-b border-white/[.08] px-1 py-4 text-sm text-white/62"><span className="mr-3 font-mono text-[8px] tracking-[.16em] text-[#d8c27d]/50">0{index + 1}</span>{chip}</div>)}
             </div>
             <div className="mt-7 flex items-start gap-4 border-l border-[#dfc775]/45 pl-5">
-              <MoraOrb size={40} state="speak" className="mt-1 h-10 w-10 shrink-0" />
+              <MoraCharacter size={40} state="speak" paused={still} className="mt-1 shrink-0" />
               <div>
                 <div className="font-mono text-[8px] tracking-[.22em] text-[#dfc775]/70">{c.outcomeLabel}</div>
                 <p className="mt-3 max-w-xl font-serif text-2xl leading-tight text-[#f5f1e4] sm:text-3xl">{c.outcome}</p>
@@ -223,12 +250,12 @@ export default function MoraProductPage({ locale }: Props) {
           <div>
             <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.deepEyebrow}</p>
             <h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/58 sm:text-base">{c.deepText}</p>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.deepText}</p>
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
           </div>
           <Link href={deepHref} className="relative grid h-[330px] place-items-center overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] transition hover:border-[#d8c27d]/30 sm:h-[430px]" aria-label={c.deepCta}>
-            <AmbientParticleField />
-            <MoraOrb size={120} state="dream" className="relative h-28 w-28 sm:h-32 sm:w-32" />
+            <AmbientParticleField paused={still} />
+            <MoraCharacter size={120} state="listen" paused={still} />
           </Link>
         </div>
       </section>
@@ -236,22 +263,23 @@ export default function MoraProductPage({ locale }: Props) {
       <section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
-          <div><p className="max-w-2xl text-sm leading-7 text-white/65 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
+          <div><p className="max-w-2xl text-sm leading-7 text-white/80 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
       </section>
 
       <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/55">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
-          <p className="max-w-3xl text-sm leading-7 text-white/65 sm:text-base">{c.realityText}</p>
+          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/75">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
+          <p className="max-w-3xl text-sm leading-7 text-white/80 sm:text-base">{c.realityText}</p>
         </div>
       </section>
+      <MoraCompanion locale={locale} paused={still} />
     </div>
   );
 }
 
-function ContextNode({ className, icon, label }: { className: string; icon: React.ReactNode; label: string }) {
-  return <div className={`absolute ${className} z-10 flex items-center gap-3 rounded-full border border-white/[.10] bg-[#0b1c15]/90 px-4 py-3 text-[#dce9e0]/72 shadow-[0_12px_38px_rgba(0,0,0,.18)] backdrop-blur-md`}>
-    <span className="text-[#e0c878]">{icon}</span><span className="text-xs font-medium sm:text-sm">{label}</span>
-  </div>;
+function ContextNode({ className, icon, label, active, onClick }: { className: string; icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
+  return <button type="button" className={`${styles.contextNode} ${className}`} aria-pressed={active} onClick={onClick}>
+    {icon}<span>{label}</span>
+  </button>;
 }

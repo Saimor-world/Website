@@ -13,18 +13,18 @@ const steps = [
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-[#f4f1e8] px-6 pb-24 pt-28 text-[#193a2b] sm:pt-36">
+    <div data-contact-page className="min-h-screen bg-[#f4f1e8] px-6 pb-24 pt-28 text-[#193a2b] sm:pt-36">
       <div className="mx-auto max-w-6xl">
         <p className="font-mono text-[11px] font-semibold tracking-[.22em] text-[#53735c]">SAIMÔR / KONTAKT</p>
         <h1 className="mt-5 max-w-4xl font-serif text-5xl font-normal leading-[1.02] tracking-[-.04em] sm:text-7xl">
-          Aus einer offenen Frage kann etwas Konkretes werden.
+          <span data-contact-desktop>Aus einer offenen Frage kann etwas Konkretes werden.</span><span data-contact-mobile className="hidden">Was beschäftigt dich?</span>
         </h1>
-        <p className="mt-7 max-w-2xl text-base leading-8 text-[#496250] sm:text-lg">
+        <p data-contact-intro className="mt-7 max-w-2xl text-base leading-8 text-[#496250] sm:text-lg"><span data-contact-desktop>
           Vielleicht geht in deinem Arbeitsalltag zu viel Kontext verloren. Vielleicht soll ein Werkzeug mit dem anderen sprechen. Oder du hast eine Idee und suchst jemanden, der sie mit dir durchdenkt und umsetzt.
-        </p>
+        </span><span data-contact-mobile className="hidden">Eine Idee, ein Problem oder ein nächster Schritt. Erzähl uns kurz davon.</span></p>
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-[1fr_.9fr] lg:gap-20">
-          <section aria-labelledby="contact-process">
+        <div data-contact-layout className="mt-16 grid gap-10 lg:grid-cols-[1fr_.9fr] lg:gap-20">
+          <section data-contact-process aria-labelledby="contact-process">
             <h2 id="contact-process" className="font-serif text-4xl tracking-[-.025em]">So beginnen wir.</h2>
             <ol className="mt-6 border-t border-[#8fa493]/60">
               {steps.map(([number, title, description]) => (
@@ -38,9 +38,9 @@ export default function Page() {
               ))}
             </ol>
           </section>
-          <section aria-labelledby="contact-direct" className="self-start rounded-[28px] bg-[#173b2b] p-7 text-[#fbf5e9] shadow-[0_22px_60px_rgba(25,58,43,.14)] sm:p-10">
+          <section data-contact-direct aria-labelledby="contact-direct" className="self-start rounded-[28px] bg-[#173b2b] p-7 text-[#fbf5e9] shadow-[0_22px_60px_rgba(25,58,43,.14)] sm:p-10">
             <p className="font-mono text-[10px] tracking-[.2em] text-[#d6c18a]">DIREKTER KONTAKT</p>
-            <h2 id="contact-direct" className="mb-5 mt-4 font-serif text-4xl font-normal leading-tight">Ein Gespräch beginnt mit einer Nachricht.</h2>
+            <h2 id="contact-direct" className="mb-5 mt-4 font-serif text-4xl font-normal leading-tight"><span data-contact-desktop>Ein Gespräch beginnt mit einer Nachricht.</span><span data-contact-mobile className="hidden">Schreib uns.</span></h2>
             <ContactForm locale="de" />
           </section>
         </div>

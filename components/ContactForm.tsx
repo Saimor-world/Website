@@ -7,10 +7,10 @@ export default function ContactForm({ locale = 'de' as 'de' | 'en' }) {
 
   return (
     <div className="grid gap-5">
-      <p className="text-sm leading-7 text-[#e0eade]">
-        {de
+      <p data-contact-guidance className="text-sm leading-7 text-[#e0eade]">
+        <span data-contact-desktop>{de
           ? 'Erzähl kurz, woran du arbeitest oder was in deinen Abläufen nicht zusammenpasst. Wir klären gemeinsam den nächsten sinnvollen Schritt.'
-          : 'Tell us what you are working on or which parts of your workflow are disconnected. We can explore a useful next step together.'}
+          : 'Tell us what you are working on or which parts of your workflow are disconnected. We can explore a useful next step together.'}</span><span data-contact-mobile className="hidden">{de ? 'Beschreibe kurz, was du vorhast.' : 'Briefly describe what you have in mind.'}</span>
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <a
