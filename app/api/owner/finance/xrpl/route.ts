@@ -255,6 +255,7 @@ export async function GET() {
     trades_today: number | null;
     pnl: number | null;
     ts: string | null;
+    ext?: Record<string, unknown> | null;
   } | null = null;
   try {
     const { readBotStatus } = await import('@/lib/finance/bot-store');
@@ -400,6 +401,13 @@ export async function GET() {
         label: `${tradesToday}/${OBS.max_trades_per_day}`,
       },
       hard_stop,
+      bot: botStatus
+        ? {
+            ts: botStatus.ts,
+            age_s: botStatus.ts ? Math.max(0, Math.round((Date.now() - Date.parse(botStatus.ts)) / 1000)) : null,
+            ext: botStatus.ext ?? null,
+          }
+        : null,
       fetched_at: new Date().toISOString(),
     });
   } catch (e: any) {
