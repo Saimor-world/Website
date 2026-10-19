@@ -3,7 +3,7 @@ import styles from './OrbitalScene.module.css';
 
 /** Real browser-rendered orbits and moons; the landscape contains none of these. */
 export default function OrbitalScene() {
-  return <div className={styles.scene} aria-hidden="true">
+  return <div className={styles.scene} aria-hidden="true" data-testid="hero-orbits">
     <div className={styles.aura} />
     <div className={`${styles.orbit} ${styles.outer}`}><span className={styles.moon} /></div>
     <div className={`${styles.orbit} ${styles.middle}`}><span className={`${styles.moon} ${styles.emerald}`} /></div>

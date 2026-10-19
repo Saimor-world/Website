@@ -127,12 +127,12 @@ export default function Navbar({ locale }: { locale: Locale }) {
             ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
             : 'md:border-transparent md:bg-transparent'
           }`}>
-            <a href={homeHref} className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#c4dfca]/25 bg-[#0d3024]/90 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl md:h-auto md:w-auto md:justify-start md:gap-3 md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-blur-none" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
+            <Link href={homeHref} className="group flex h-12 w-12 items-center justify-center rounded-full border border-[#c4dfca]/25 bg-[#0d3024]/90 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl md:h-auto md:w-auto md:justify-start md:gap-3 md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-blur-none" aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
               <span className="block h-9 w-9 shrink-0"><BrandSigil priority /></span>
               <span className="hidden sm:block">
                 <span className="block font-serif text-lg font-light leading-none tracking-[.02em] text-[#f5f3e9]">Saimôr</span>
               </span>
-            </a>
+            </Link>
 
             <nav className="hidden items-center gap-1 md:flex" aria-label={locale === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
               {navItems.map((item) => (
@@ -143,15 +143,15 @@ export default function Navbar({ locale }: { locale: Locale }) {
             </nav>
 
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <a href={getSwitchHref()} className="hidden h-9 min-w-9 items-center justify-center border border-[#a8cdb5]/20 bg-[#18382b]/62 px-2 font-mono text-[9px] font-semibold tracking-[.14em] text-[#e4eee7]/68 transition hover:border-[#b6d9c3]/34 hover:text-white sm:flex" aria-label={`Switch language to ${otherLocale.toUpperCase()}`}>{otherLocale.toUpperCase()}</a>
+              <Link href={getSwitchHref()} className="hidden h-9 min-w-9 items-center justify-center border border-[#a8cdb5]/20 bg-[#18382b]/62 px-2 font-mono text-[9px] font-semibold tracking-[.14em] text-[#e4eee7]/68 transition hover:border-[#b6d9c3]/34 hover:text-white sm:flex" aria-label={`Switch language to ${otherLocale.toUpperCase()}`}>{otherLocale.toUpperCase()}</Link>
 
               <a href={loginHref} className="hidden h-9 items-center gap-2 border border-[#a8cdb5]/20 bg-[#18382b]/62 px-3 font-mono text-[9px] font-semibold uppercase tracking-[.14em] text-[#e4eee7]/70 transition hover:border-[#b6d9c3]/34 hover:text-white lg:flex" onClick={() => track(copy.login)}>
                 <LogIn className="h-3.5 w-3.5" />{copy.login}
               </a>
 
-              <a href={securityHref} className="hidden h-9 items-center gap-2 bg-[#eef1df] px-3.5 font-mono text-[9px] font-bold uppercase tracking-[.14em] text-[#102019] shadow-[0_6px_18px_rgba(55,103,73,.14)] transition hover:bg-white md:flex" onClick={() => track(copy.entry)}>
+              <Link href={securityHref} className="hidden h-9 items-center gap-2 bg-[#eef1df] px-3.5 font-mono text-[9px] font-bold uppercase tracking-[.14em] text-[#102019] shadow-[0_6px_18px_rgba(55,103,73,.14)] transition hover:bg-white md:flex" onClick={() => track(copy.entry)}>
                 <ShieldCheck className="h-3.5 w-3.5" />{copy.entry}
-              </a>
+              </Link>
 
               <button ref={toggleRef} type="button" onClick={() => setMenuOpen((value) => !value)} className="grid h-12 w-12 place-items-center rounded-full border border-[#c7dfcf]/28 bg-[#0d3024]/90 text-[#f2f7f3]/92 shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl transition hover:border-[#e5e6bf]/60 hover:text-white md:hidden" aria-expanded={menuOpen} aria-controls="saimor-mobile-menu" aria-label={locale === 'de' ? (menuOpen ? 'Menü schließen' : 'Menü öffnen') : (menuOpen ? 'Close menu' : 'Open menu')}>
                 {menuOpen ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
@@ -180,15 +180,15 @@ export default function Navbar({ locale }: { locale: Locale }) {
             </nav>
 
             <div className="mt-auto grid gap-2">
-              <a href={securityHref} onClick={() => track(copy.entry)} className="flex min-h-14 items-center justify-center gap-2 bg-[#eef1df] px-5 text-sm font-bold text-[#102019]">
+              <Link href={securityHref} onClick={() => track(copy.entry)} className="flex min-h-14 items-center justify-center gap-2 bg-[#eef1df] px-5 text-sm font-bold text-[#102019]">
                 <ShieldCheck className="h-4 w-4" />
                 {locale === 'de' ? 'Security Check / System betreten' : 'Security Check / Enter system'}
-              </a>
+              </Link>
               <div className="grid grid-cols-2 gap-2">
                 <a href={loginHref} className="flex min-h-12 items-center justify-center gap-2 border border-[#c7dfcf]/24 bg-[#204636]/72 text-xs font-semibold text-[#eef5ef]/86">
                   <LogIn className="h-3.5 w-3.5" />{copy.login}
                 </a>
-                <a href={getSwitchHref()} className="flex min-h-12 items-center justify-center border border-[#c7dfcf]/24 bg-[#204636]/72 font-mono text-[10px] font-semibold tracking-[.18em] text-[#eef5ef]/82">{otherLocale.toUpperCase()}</a>
+                <Link href={getSwitchHref()} className="flex min-h-12 items-center justify-center border border-[#c7dfcf]/24 bg-[#204636]/72 font-mono text-[10px] font-semibold tracking-[.18em] text-[#eef5ef]/82">{otherLocale.toUpperCase()}</Link>
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@
 @media(max-width:700px){
  /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
     never to the text grid below the eyebrow. */
- .scene{right:18px;top:clamp(105px,29vw,126px);width:min(43vw,158px)}
+ .scene{right:21px;top:98px;width:clamp(90px,27vw,112px)}
  .moon{width:13px}
  .emerald{width:10px}
  .star{width:4px;height:4px}
