@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ExtOrbit, { type FinanceExt } from './ExtOrbit';
 
 type Trade = {
   kind: string;
@@ -71,6 +72,7 @@ type Snapshot = {
         distance_xrp: number;
         label: null;
       };
+  bot?: { ts: string | null; age_s: number | null; ext: FinanceExt | null } | null;
   fetched_at: string;
   error?: string;
   message?: string;
@@ -732,6 +734,8 @@ export default function FinanceLiveClient({
           </aside>
         )}
       </section>
+
+      <ExtOrbit ext={data?.bot?.ext} ts={data?.bot?.ts ?? null} ageS={data?.bot?.age_s ?? null} />
 
       <div className="grid gap-8 px-[5vw] py-10 lg:grid-cols-3">
         <section className="space-y-4 border-t border-white/10 pt-5">
