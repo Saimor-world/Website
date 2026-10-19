@@ -373,7 +373,10 @@ test('mobile priorities: first scroll, optional fields and direct contact stay u
     await ways.locator('summary').click();
     await expect(ways.getByRole('link', { name: de ? 'Einloggen' : 'Log in', exact: true })).toBeVisible();
     await ways.locator('summary').click();
-    await page.mouse.wheel(0, 480);
+    await page.evaluate(() => {
+      const scrollport = document.body.scrollHeight > document.documentElement.scrollHeight ? document.body : document.scrollingElement!;
+      scrollport.scrollBy({ top: 480, left: 0, behavior: 'instant' });
+    });
     await expect(page.getByTestId('mobile-threshold-entry')).toBeInViewport();
     await expect(page.getByTestId('mobile-threshold-entry')).toHaveAttribute('href', `${de ? '' : '/en'}/mora/deep-view?from=portal`);
     await shot(page, info, `after-first-scroll-${locale}`);
