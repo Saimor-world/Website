@@ -1,9 +1,9 @@
-.page{overflow:hidden;background:#07140f;color:#f6f4eb}
+.page{overflow:hidden;background:#0e2419;color:#f6f4eb}
 .hero{position:relative;overflow:hidden;border-bottom:1px solid #e2e9dc19;padding:150px 32px 70px}
-.heroAtmosphere{position:absolute;inset:0;background:radial-gradient(ellipse at 77% 34%,#609a6940,transparent 45%),radial-gradient(ellipse at 17% 0%,#28625080,transparent 56%),linear-gradient(140deg,#0f2b20,#07140f 67%,#050c09)}
+.heroAtmosphere{position:absolute;inset:0;background:radial-gradient(ellipse at 77% 34%,#70a87950,transparent 50%),radial-gradient(ellipse at 17% 0%,#3a756290,transparent 58%),linear-gradient(140deg,#1a4030,#0e2419 65%,#0a1a13)}
 .heroGrid{position:relative;z-index:1;display:grid;grid-template-columns:1.04fr .96fr;align-items:center;gap:70px;max-width:1240px;min-height:640px;margin:auto}
 .intro{min-width:0;max-width:590px}
-.eyebrow{font:600 10px/1.7 "JetBrains Mono",monospace;letter-spacing:.2em;color:#ddcd9c}
+.eyebrow{font:600 12px/1.7 "JetBrains Mono",monospace;letter-spacing:.16em;color:#e8dbb0}
 .intro h1{font:400 clamp(64px,6.5vw,100px)/.98 "Cormorant Garamond",Georgia,serif;letter-spacing:-.055em;max-width:8.5ch;margin:28px 0;color:#fff9e9;text-wrap:balance}
 .mobileLead{display:none}
 .lead{max-width:490px;font-size:19px;line-height:1.65;color:#e4eee1}
@@ -27,9 +27,9 @@
 .contextNode:hover{background:#244536;border-color:#c0cf9e}
 .contextNode[aria-pressed="true"]{border-color:#d2bc78;background:#283e2c;color:#fff5d9}
 .files{top:10%;left:0}.calendar{top:32%;right:0}.openWork{bottom:5%;right:10%}
-.characterLine{font-size:12px;line-height:1.7;letter-spacing:.02em;color:#bcd0b5;margin:4px 0 20px}
+.characterLine{font-size:13px;line-height:1.7;letter-spacing:.02em;color:#d0e4c9;margin:4px 0 20px}
 .contextReadout{max-width:430px;min-height:150px;text-align:left;margin:auto;border-top:1px solid #b3c39766;padding:20px 0 0}
-.contextReadout>span{font:600 8px/1.7 "JetBrains Mono",monospace;letter-spacing:.16em;color:#c6c79a}
+.contextReadout>span{font:600 10px/1.7 "JetBrains Mono",monospace;letter-spacing:.14em;color:#d4d5a8}
 .contextReadout h2{font:400 25px/1.2 "Cormorant Garamond",Georgia,serif;color:#fff1d6;margin:9px 0}
 .contextReadout p{color:#cfdfcc;font-size:13px;line-height:1.75;max-width:390px;margin:0}
 .page[data-paused="true"] *,.page[data-paused="true"] *::before,.page[data-paused="true"] *::after{animation-play-state:paused!important}

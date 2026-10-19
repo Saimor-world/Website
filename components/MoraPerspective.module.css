@@ -7,7 +7,7 @@
 .veil{position:fixed;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,#03100cec 0%,#03100cd9 28%,#03100c66 50%,transparent 76%);transition:opacity 1.8s}
 .perspective[data-info="true"] .veil{opacity:1}
 .story{position:relative;z-index:1;width:min(100%,440px);text-shadow:0 1px 12px #03110c66;animation:arrival 2s ease both}
-.eyebrow{margin:0 0 18px;font:400 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#d8c59f}
+.eyebrow{margin:0 0 18px;font:500 10px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#e8d5af}
 .story h2{font:400 clamp(34px,3.7vw,52px)/1.05 "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em;color:#fff0cf;margin:0;max-width:440px;outline:none;text-wrap:balance}
 .lead{font-size:13px;line-height:1.8;color:#e0e5d8;margin:20px 0 22px;max-width:400px}
 .chapters{border-top:1px solid #ded4ad38;margin-bottom:16px}

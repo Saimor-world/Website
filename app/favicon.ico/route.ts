@@ -5,7 +5,7 @@ import path from 'path';
 export const runtime = 'nodejs';
 
 export async function GET() {
-  const file = await readFile(path.join(process.cwd(), 'public', 'brand', 'saimor-sigil-restored-v1.png'));
+  const file = await readFile(path.join(process.cwd(), 'public', 'brand', 'saimor-sigil-512.png'));
   return new NextResponse(file, {
     headers: {
       'Content-Type': 'image/png',

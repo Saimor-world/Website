@@ -1,4 +1,5 @@
-.companion{position:fixed;right:max(22px,env(safe-area-inset-right));bottom:calc(100px + env(safe-area-inset-bottom));z-index:45;pointer-events:none}
+.companion{position:fixed;right:max(22px,env(safe-area-inset-right));bottom:calc(100px + env(safe-area-inset-bottom));z-index:45;pointer-events:none;transition:opacity .3s,visibility .3s}
+.companion[data-hero-visible="true"]{opacity:0;visibility:hidden;pointer-events:none}
 .flight{animation:companionFlight 28s ease-in-out infinite;will-change:transform;pointer-events:auto;width:64px;height:64px}
 .trigger{display:grid;place-items:center;width:64px;height:64px;background:transparent;border:0;border-radius:50%;cursor:pointer;touch-action:manipulation}
 .trigger:focus-visible{outline:2px solid #efd48b;outline-offset:5px}

@@ -8,9 +8,22 @@ import styles from './MoraCompanion.module.css';
 
 export default function MoraCompanion({ locale, paused }: { locale: 'de' | 'en'; paused: boolean }) {
   const [open, setOpen] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const de = locale === 'de';
+
+  useEffect(() => {
+    const hero = document.querySelector('[data-testid="mora-product"] section');
+    if (!hero) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroVisible(entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const close = (event: KeyboardEvent) => {
@@ -23,7 +36,8 @@ export default function MoraCompanion({ locale, paused }: { locale: 'de' | 'en';
     document.addEventListener('pointerdown', outside);
     return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', outside); };
   }, [open]);
-  return <div ref={root} className={styles.companion} data-testid="mora-companion" data-open={open} data-paused={paused}>
+
+  return <div ref={root} className={styles.companion} data-testid="mora-companion" data-open={open} data-paused={paused} data-hero-visible={heroVisible}>
     <div className={styles.flight}>
       <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls="mora-companion-panel"
         aria-label={de ? 'Kleine MÔRA kennenlernen' : 'Meet little MÔRA'} onClick={() => setOpen(value => !value)}>

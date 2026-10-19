@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   },
   description: SYSTEM_DESCRIPTION,
   icons: {
-    icon: [{ url: '/brand/saimor-sigil-restored-v1.png', type: 'image/png' }],
-    shortcut: '/brand/saimor-sigil-restored-v1.png',
-    apple: '/brand/saimor-sigil-restored-v1.png',
+    icon: [{ url: '/brand/saimor-sigil-512.png', type: 'image/png' }],
+    shortcut: '/brand/saimor-sigil-512.png',
+    apple: '/brand/saimor-sigil-512.png',
   },
   keywords: [
     'Saimôr',
@@ -111,7 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@type': 'Organization',
               name: 'Saimôr',
               url: 'https://saimor.world',
-              logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.png',
+              logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.webp',
               description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie Beratung, Workshops und Umsetzung rund um praktische KI-Arbeit.',
               foundingDate: '2024',
               contactPoint: {

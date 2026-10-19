@@ -17,9 +17,9 @@
   ],
   "icons": [
     {
-      "src": "/brand/saimor-sigil-restored-v1.png",
-      "sizes": "1254x1254",
-      "type": "image/png",
+      "src": "/brand/saimor-sigil-restored-v1.webp",
+      "sizes": "1024x1024",
+      "type": "image/webp",
       "purpose": "any"
     }
   ],
@@ -31,9 +31,9 @@
       "url": "/mora",
       "icons": [
         {
-          "src": "/brand/saimor-sigil-restored-v1.png",
-          "sizes": "1254x1254",
-          "type": "image/png",
+          "src": "/brand/saimor-sigil-restored-v1.webp",
+          "sizes": "1024x1024",
+          "type": "image/webp",
           "purpose": "any"
         }
       ]
@@ -45,9 +45,9 @@
       "url": "/de#kontakt",
       "icons": [
         {
-          "src": "/brand/saimor-sigil-restored-v1.png",
-          "sizes": "1254x1254",
-          "type": "image/png",
+          "src": "/brand/saimor-sigil-restored-v1.webp",
+          "sizes": "1024x1024",
+          "type": "image/webp",
           "purpose": "any"
         }
       ]

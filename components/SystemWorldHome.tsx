@@ -34,7 +34,7 @@ const COPY = {
     intelligenceMora: 'MÔRA hält den Zusammenhang',
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
-    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'SCROLL / MEHR ERFAHREN',
+    finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'WEITERSCROLLEN',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
@@ -114,7 +114,7 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
         </div>
         <div className={styles.moraIntroduction}>
-          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / REALITY CHECK' : 'THE WORLD OF AI / REALITY CHECK'}</p>
+          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / REALITÄTSPRÜFUNG' : 'THE WORLD OF AI / REALITY CHECK'}</p>
             <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
             <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
           </div>

@@ -11,7 +11,7 @@ describe('AiRealityTeaser', () => {
     expect(screen.getByText('Ist es auch belegt?')).toBeInTheDocument();
     expect(screen.getByText('Gehört es wirklich zusammen?')).toBeInTheDocument();
     expect(screen.getByText('Wer gibt es frei?')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Reality Check öffnen' })).toHaveAttribute('href', '/mora/deep-view');
+    expect(screen.getByRole('link', { name: 'Realitätsprüfung öffnen' })).toHaveAttribute('href', '/mora/deep-view');
     expect(screen.queryByRole('button', { name: /Öffentliche Signale laden/ })).not.toBeInTheDocument();
   });
 

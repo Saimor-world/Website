@@ -12,5 +12,5 @@
 .flight[data-guide-chapter="-1"]{opacity:1}.flight[data-still="true"] *{animation:none!important;transition:none!important}.flight[data-still="true"] .trace,.flight[data-still="true"] i{display:none}
 @keyframes tilt{from{rotate:-8deg;scale:.96}to{rotate:9deg;scale:1.04}}
 @keyframes dust{from{transform:translate(0,0);opacity:.9}to{transform:translate(-36px,20px);opacity:0}}
-@media(max-width:700px){.stone{width:27px;height:27px}.companion{flex-direction:column;gap:5px;left:-70px;width:140px;white-space:normal;text-align:center}.caption{font-size:10px}.flight[data-guide-chapter="-1"]{opacity:.9}}
+@media(max-width:700px){.stone{width:27px;height:27px}.companion{flex-direction:column;gap:5px;left:-70px;width:140px;white-space:normal;text-align:center}.caption{font-size:10px;background:#03100ccc;padding:4px 10px;border-radius:12px;backdrop-filter:blur(6px)}.flight[data-guide-chapter="-1"]{opacity:.9}.flight[data-guide-chapter="0"] .companion,.flight[data-guide-chapter="1"] .companion,.flight[data-guide-chapter="2"] .companion{left:auto;right:-60px}}
 @media(prefers-reduced-motion:reduce){.flight *{animation:none!important}.trace,.position i{display:none}}

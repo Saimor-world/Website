@@ -31,7 +31,7 @@ describe('Navbar logo treatment', () => {
 
     const seal = screen.getByAltText('Saimôr');
 
-    expect(seal.getAttribute('src')).toBe('/brand/saimor-sigil-restored-v1.png');
+    expect(seal.getAttribute('src')).toBe('/brand/saimor-sigil-restored-v1.webp');
     expect(seal.className).not.toMatch(/mix-blend-screen/);
   });
 });

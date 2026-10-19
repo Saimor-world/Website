@@ -3,38 +3,38 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown, Eye, EyeOff, Shield } from 'lucide-react';
+import { Check, ChevronDown, Eye, EyeOff, Shield, X } from 'lucide-react';
 
 const COPY = {
   de: {
     title: 'Datenschutz',
     subtitle: 'EU-Hosting · keine Werbe-Tracker',
     body: 'Anonyme Nutzungsstatistik mit Matomo – nur mit deiner Einwilligung.',
-    essential: 'Nur Essenziell',
-    acceptAll: 'Alle akzeptieren',
+    essential: 'Essenziell',
+    acceptAll: 'Akzeptieren',
     settings: 'Einstellungen',
-    less: 'Weniger anzeigen',
+    less: 'Weniger',
     essentialTitle: 'Essenziell',
     essentialBody: 'Für Sitzung, Sprache und deine Cookie-Auswahl.',
     analyticsTitle: 'Analytics',
     analyticsBody: 'Anonyme Statistik mit Matomo auf EU-Servern.',
-    save: 'Auswahl speichern',
-    privacy: 'Datenschutzerklärung',
+    save: 'Speichern',
+    privacy: 'Datenschutz',
   },
   en: {
     title: 'Privacy',
     subtitle: 'EU hosting · no ad trackers',
     body: 'Anonymous Matomo analytics – only with your consent.',
-    essential: 'Essential only',
-    acceptAll: 'Accept all',
+    essential: 'Essential',
+    acceptAll: 'Accept',
     settings: 'Settings',
-    less: 'Show less',
+    less: 'Less',
     essentialTitle: 'Essential',
     essentialBody: 'Required for session, language and your cookie choice.',
     analyticsTitle: 'Analytics',
     analyticsBody: 'Anonymous Matomo statistics on EU servers.',
-    save: 'Save selection',
-    privacy: 'Privacy policy',
+    save: 'Save',
+    privacy: 'Privacy',
   },
 } as const;
 
@@ -125,118 +125,106 @@ export default function CookieBanner() {
           ref={asideRef}
           role="dialog"
           aria-modal={false}
-          initial={{ y: 30, opacity: 0 }}
+          initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 30, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+          exit={{ y: 20, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           aria-label={copy.title}
-          className="fixed bottom-2 left-2 right-2 z-[10000] sm:bottom-5 sm:left-5 sm:right-auto sm:w-[min(430px,calc(100vw-2.5rem))]"
+          className="fixed bottom-3 left-3 z-[10000] sm:bottom-4 sm:left-4"
         >
-          <div className="max-h-[min(78dvh,640px)] overflow-y-auto overscroll-contain rounded-[1.3rem] border border-[#d8c69c]/25 bg-[#0b291e]/[0.96] shadow-[0_14px_48px_rgba(2,18,10,.42)] backdrop-blur-xl">
-            <div className="h-px bg-gradient-to-r from-[#d6a848]/70 via-[#7fd4c1]/55 to-transparent" />
+          <div className="overflow-hidden rounded-2xl border border-[#d8c69c]/20 bg-[#0b291e]/95 shadow-[0_8px_32px_rgba(2,18,10,.35)] backdrop-blur-xl">
+            <div className="h-px bg-gradient-to-r from-[#d6a848]/60 via-[#7fd4c1]/40 to-transparent" />
 
-            <div className="p-3.5 sm:p-5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#a9d3b6]/30 bg-[#a9d3b6]/[0.07] text-[#b8dec3] sm:h-9 sm:w-9">
-                  <Shield className="h-4 w-4" />
+            <div className="p-3">
+              {!showDetails ? (
+                <div className="flex items-center gap-3">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#a9d3b6]/25 bg-[#a9d3b6]/[0.06] text-[#b8dec3]">
+                    <Shield className="h-3.5 w-3.5" />
+                  </div>
+                  <span className="text-[12px] text-white/75">{copy.body}</span>
+                  <div className="ml-auto flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={rejectAll}
+                      className="min-h-8 rounded-full border border-white/40 px-3 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10"
+                    >
+                      {copy.essential}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={acceptAll}
+                      className="min-h-8 rounded-full bg-[#f4efde] px-3 py-1.5 text-[11px] font-semibold text-[#102b1d] transition hover:bg-white"
+                    >
+                      {copy.acceptAll}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowDetails(true)}
+                      aria-expanded={showDetails}
+                      className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                      aria-label={copy.settings}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h2 className="text-sm font-semibold text-white/92">{copy.title}</h2>
-                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[.12em] text-white/60">{copy.subtitle}</p>
-                </div>
-              </div>
-
-              <p className="mt-2 text-[12px] leading-[1.5] text-white/78 sm:mt-3 sm:text-[13px]">{copy.body}</p>
-
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={rejectAll}
-                  className="min-h-11 rounded-full border border-white/50 px-2 py-2.5 text-xs font-semibold text-white transition hover:border-white/80 hover:bg-white/10"
-                >
-                  {copy.essential}
-                </button>
-                <button
-                  type="button"
-                  onClick={acceptAll}
-                  className="min-h-11 rounded-full bg-[#f4efde] px-2 py-2.5 text-xs font-semibold text-[#102b1d] transition hover:bg-white"
-                >
-                  {copy.acceptAll}
-                </button>
-              </div>
-
-              <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                <button
-                  type="button"
-                  onClick={() => setShowDetails((value) => !value)}
-                  aria-expanded={showDetails}
-                  className="inline-flex min-h-9 items-center gap-1.5 text-[11px] font-medium text-white/80 underline-offset-4 transition hover:text-white hover:underline"
-                >
-                  <motion.span animate={{ rotate: showDetails ? 180 : 0 }} transition={{ duration: 0.18 }}>
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  </motion.span>
-                  {showDetails ? copy.less : copy.settings}
-                </button>
-                <a href={privacyHref} className="inline-flex min-h-9 items-center text-[11px] text-white/70 underline-offset-4 transition hover:text-white hover:underline">
-                  {copy.privacy}
-                </a>
-              </div>
-
-              <AnimatePresence initial={false}>
-                {showDetails && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.18 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="mt-3 space-y-2 border-t border-white/[0.08] pt-3">
-                      <div className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-3">
-                        <div className="flex min-w-0 items-center gap-2.5">
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#7fd4c1]/10 text-[#7fd4c1]">
-                            <Check className="h-3.5 w-3.5" />
-                          </div>
-                          <div>
-                            <div className="text-xs font-semibold text-white/82">{copy.essentialTitle}</div>
-                            <div className="mt-0.5 text-[10px] leading-4 text-white/36">{copy.essentialBody}</div>
-                          </div>
-                        </div>
-                        <span className="font-mono text-[9px] uppercase tracking-[.12em] text-[#7fd4c1]/65">ON</span>
+              ) : (
+                <div className="w-[min(340px,calc(100vw-2rem))]">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#a9d3b6]/25 bg-[#a9d3b6]/[0.06] text-[#b8dec3]">
+                        <Shield className="h-3.5 w-3.5" />
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => setAnalyticsEnabled((value) => !value)}
-                        className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-3 text-left transition hover:bg-white/[0.04]"
-                      >
-                        <div className="flex min-w-0 items-center gap-2.5">
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#d6a848]/10 text-[#e7cd8c]">
-                            {analyticsEnabled ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-                          </div>
-                          <div>
-                            <div className="text-xs font-semibold text-white/82">{copy.analyticsTitle}</div>
-                            <div className="mt-0.5 text-[10px] leading-4 text-white/36">{copy.analyticsBody}</div>
-                          </div>
-                        </div>
-                        <span className={`font-mono text-[9px] uppercase tracking-[.12em] ${analyticsEnabled ? 'text-[#e7cd8c]' : 'text-white/28'}`}>
-                          {analyticsEnabled ? 'ON' : 'OFF'}
-                        </span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={acceptSelected}
-                        className="mt-1 min-h-10 w-full rounded-full border border-[#d6a848]/22 px-4 py-2 text-xs font-semibold text-[#e7cd8c] transition hover:border-[#d6a848]/45 hover:text-[#f3dda4]"
-                      >
-                        {copy.save}
-                      </button>
+                      <h2 className="text-[13px] font-semibold text-white/90">{copy.title}</h2>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    <button
+                      type="button"
+                      onClick={() => setShowDetails(false)}
+                      className="flex h-7 w-7 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                      aria-label={copy.less}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
 
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <Check className="h-3.5 w-3.5 text-[#7fd4c1]" />
+                        <span className="text-[11px] text-white/75">{copy.essentialTitle}</span>
+                      </div>
+                      <span className="font-mono text-[8px] uppercase tracking-[.1em] text-[#7fd4c1]/60">ON</span>
+                    </div>
 
+                    <button
+                      type="button"
+                      onClick={() => setAnalyticsEnabled((value) => !value)}
+                      className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-left transition hover:bg-white/[0.04]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {analyticsEnabled ? <Eye className="h-3.5 w-3.5 text-[#e7cd8c]" /> : <EyeOff className="h-3.5 w-3.5 text-white/40" />}
+                        <span className="text-[11px] text-white/75">{copy.analyticsTitle}</span>
+                      </div>
+                      <span className={`font-mono text-[8px] uppercase tracking-[.1em] ${analyticsEnabled ? 'text-[#e7cd8c]' : 'text-white/25'}`}>
+                        {analyticsEnabled ? 'ON' : 'OFF'}
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-between gap-2">
+                    <a href={privacyHref} className="text-[10px] text-white/50 underline-offset-2 transition hover:text-white/80 hover:underline">
+                      {copy.privacy}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={acceptSelected}
+                      className="min-h-8 rounded-full border border-[#d6a848]/25 px-4 py-1.5 text-[11px] font-semibold text-[#e7cd8c] transition hover:border-[#d6a848]/50 hover:bg-[#d6a848]/10"
+                    >
+                      {copy.save}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </motion.aside>
