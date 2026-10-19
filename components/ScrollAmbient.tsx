@@ -1,126 +1,115 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { SlidersHorizontal, Volume2, VolumeX } from 'lucide-react';
+import { publicAmbientRoute, routeAmbientScene, type AmbientScene } from '@/lib/ambientScene';
+import type { AmbientAudio } from '@/lib/ambientAudio';
+import styles from './ScrollAmbient.module.css';
 
-type Locale = 'de' | 'en';
-
-const CHORDS = [
-  [130.81, 164.81, 196.00, 246.94], // Cmaj7
-  [174.61, 220.00, 261.63, 329.63], // Fmaj7
-  [146.83, 174.61, 220.00, 261.63], // Dm7
-  [146.83, 196.00, 246.94, 293.66], // G6
-] as const;
-
-type AmbientEngine = {
-  context: AudioContext;
-  master: GainNode;
-  oscillators: OscillatorNode[];
-};
-
-export default function ScrollAmbient({ locale }: { locale: Locale }) {
+/** One persistent soundscape; audio starts only with the listener's gesture. */
+export default function ScrollAmbient({ locale }: { locale: 'de' | 'en' }) {
+  const pathname = usePathname() || '/';
+  const available = publicAmbientRoute(pathname);
+  const encounter = /\/mora\/deep-view$/.test(pathname);
   const [enabled, setEnabled] = useState(false);
-  const engineRef = useRef<AmbientEngine | null>(null);
-  const fadeTimerRef = useRef<number | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const lastChordRef = useRef(-1);
+  const [pending, setPending] = useState(false);
+  const [volume, setVolume] = useState(35);
+  const [error, setError] = useState(false);
+  const engine = useRef<AmbientAudio | null>(null);
+  const opening = useRef<AudioContext | null>(null);
+  const operation = useRef(0);
+  const scene = useRef<AmbientScene>('cosmos');
+  const volumeRef = useRef(volume); volumeRef.current = volume;
+  const de = locale === 'de';
 
   useEffect(() => {
-    const onScroll = () => {
-      const engine = engineRef.current;
-      if (!engine || frameRef.current !== null) return;
+    try {
+      const saved = localStorage.getItem('saimor.ambient.volume.v1');
+      if (saved !== null && Number.isFinite(Number(saved))) setVolume(Math.max(0, Math.min(100, Number(saved))));
+    } catch { /* optional preference */ }
+    // Capture the ref containers, not their values: cleanup must cancel the
+    // latest pending start, including one created after this mount effect.
+    const epoch = operation, active = engine, starting = opening;
+    return () => { epoch.current++; void active.current?.dispose(); void starting.current?.close().catch(() => {}); };
+  }, []);
 
-      frameRef.current = window.requestAnimationFrame(() => {
-        frameRef.current = null;
-        const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
-        const chordIndex = Math.min(CHORDS.length - 1, Math.floor(progress * CHORDS.length));
-        const now = engine.context.currentTime;
-
-        if (chordIndex !== lastChordRef.current) {
-          CHORDS[chordIndex].forEach((frequency, index) => {
-            engine.oscillators[index].frequency.cancelScheduledValues(now);
-            engine.oscillators[index].frequency.setTargetAtTime(frequency, now, 0.55);
-          });
-          lastChordRef.current = chordIndex;
-        }
-
-        engine.master.gain.cancelScheduledValues(now);
-        engine.master.gain.setTargetAtTime(0.013, now, 0.12);
-        if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current);
-        fadeTimerRef.current = window.setTimeout(() => {
-          const activeEngine = engineRef.current;
-          if (!activeEngine) return;
-          activeEngine.master.gain.setTargetAtTime(0.0045, activeEngine.context.currentTime, 0.7);
-        }, 420);
-      });
+  useEffect(() => {
+    const update = (next?: AmbientScene) => {
+      scene.current = next ?? routeAmbientScene(pathname, window.location.hash);
+      engine.current?.setScene(scene.current);
     };
+    update();
+    const hash = () => update(); window.addEventListener('hashchange', hash);
+    const regions = Array.from(document.querySelectorAll<HTMLElement>('[aria-labelledby="world-title"],#system,#products,#studio'));
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(() => {
+      const middle = innerHeight * .5;
+      const visible = regions.find(region => { const r = region.getBoundingClientRect(); return r.top <= middle && r.bottom > middle; });
+      if (visible) update(visible.id === 'system' ? 'forest' : visible.hasAttribute('aria-labelledby') ? 'cosmos' : 'studio');
+      else update();
+    }, { rootMargin: '-25% 0px -25%', threshold: [0, .2, .5] });
+    regions.forEach(region => observer?.observe(region));
+    if (!available) {
+      operation.current++; void engine.current?.dispose(); engine.current = null;
+      void opening.current?.close().catch(() => {}); opening.current = null;
+      setEnabled(false); setPending(false);
+    }
+    return () => { window.removeEventListener('hashchange', hash); observer?.disconnect(); };
+  }, [pathname, available]);
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
-      if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current);
-      const engine = engineRef.current;
-      engineRef.current = null;
-      void engine?.context.close();
+  useEffect(() => {
+    const visibility = () => {
+      if (document.hidden) engine.current?.suspend();
+      else {
+        const active = engine.current;
+        void active?.resume().catch(() => {
+          if (engine.current !== active) return;
+          engine.current = null; void active.dispose(); setError(true); setEnabled(false);
+        });
+      }
     };
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
   }, []);
 
   const toggle = async () => {
-    const activeEngine = engineRef.current;
-    if (activeEngine) {
-      engineRef.current = null;
-      await activeEngine.context.close();
-      setEnabled(false);
+    if (pending) return;
+    const request = ++operation.current;
+    setPending(true); setError(false);
+    if (engine.current) {
+      const previous = engine.current; engine.current = null; setEnabled(false);
+      try { await previous.dispose(); } finally { if (operation.current === request) setPending(false); }
       return;
     }
-
-    const AudioContextClass = window.AudioContext
-      ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    const context = new AudioContextClass();
-    const master = context.createGain();
-    const filter = context.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 920;
-    filter.Q.value = 0.35;
-    master.gain.value = 0.0045;
-    filter.connect(master);
-    master.connect(context.destination);
-
-    const oscillators = CHORDS[0].map((frequency, index) => {
-      const oscillator = context.createOscillator();
-      oscillator.type = index === 0 ? 'sine' : 'triangle';
-      oscillator.frequency.value = frequency;
-      oscillator.detune.value = [-5, 2, -2, 5][index];
-      oscillator.connect(filter);
-      oscillator.start();
-      return oscillator;
-    });
-
-    await context.resume();
-    engineRef.current = { context, master, oscillators };
-    lastChordRef.current = 0;
-    setEnabled(true);
+    const Context = window.AudioContext ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    let context: AudioContext | null = null;
+    try {
+      if (!Context) throw new Error('Web Audio unavailable');
+      context = new Context(); opening.current = context;
+      // Resume synchronously in the click, before loading the graph (iOS).
+      const resumed = context.resume();
+      const [{ createAmbientAudio }] = await Promise.all([import('@/lib/ambientAudio'), resumed]);
+      if (request !== operation.current) { if (context.state !== 'closed') await context.close(); return; }
+      const audio = createAmbientAudio(context); opening.current = null; engine.current = audio;
+      audio.setScene(scene.current); audio.setVolume(volumeRef.current / 100);
+      if (document.hidden) audio.suspend();
+      setEnabled(true);
+    } catch {
+      if (context && context.state !== 'closed') await context.close().catch(() => {});
+      opening.current = null;
+      if (request === operation.current) { setError(true); setEnabled(false); }
+    } finally { if (request === operation.current) setPending(false); }
   };
-
-  const copy = locale === 'de'
-    ? { on: 'FAHRSTUHLMODUS AN', off: 'FAHRSTUHLMODUS', label: 'Leise Musik beim Scrollen' }
-    : { on: 'ELEVATOR MODE ON', off: 'ELEVATOR MODE', label: 'Soft music while scrolling' };
-
-  return (
-    <button
-      type="button"
-      onClick={() => void toggle()}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--world-gold)]/25 bg-black/25 px-4 py-2 font-mono text-[9px] font-bold tracking-[.15em] text-[var(--world-gold)] backdrop-blur-md transition hover:border-[var(--world-gold)]/60"
-      aria-label={copy.label}
-      aria-pressed={enabled}
-      title={copy.label}
-    >
-      {enabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5 opacity-70" />}
-      {enabled ? copy.on : copy.off}
+  if (!available) return null;
+  return <div className={styles.control} data-testid="site-ambient" data-encounter={encounter} data-enabled={enabled}>
+    <button type="button" onClick={() => void toggle()} disabled={pending} aria-pressed={enabled}
+      aria-label={de ? enabled ? 'Ambient-Klang ausschalten' : 'Ambient-Klang einschalten' : enabled ? 'Turn ambient sound off' : 'Turn ambient sound on'}>
+      {enabled ? <Volume2 size={15} /> : <VolumeX size={15} />}<span>{pending ? '…' : de ? enabled ? 'Klang an' : 'Klang aus' : enabled ? 'Sound on' : 'Sound off'}</span>
     </button>
-  );
+    <details><summary aria-label={de ? 'Lautstärke einstellen' : 'Adjust volume'}><SlidersHorizontal size={13} /></summary><div className={styles.level}><label htmlFor="site-ambient-volume">{de ? 'Lautstärke' : 'Volume'}<span>{volume}%</span></label><input id="site-ambient-volume" type="range" min="0" max="100" step="1" value={volume} onChange={event => {
+      const value = Number(event.target.value); setVolume(value); engine.current?.setVolume(value / 100);
+      try { localStorage.setItem('saimor.ambient.volume.v1', String(value)); } catch { /* optional preference */ }
+    }} /></div></details>
+    {error && <span className={styles.error} role="status">{de ? 'Ton konnte nicht starten. Bitte erneut versuchen.' : 'Sound could not start. Please try again.'}</span>}
+  </div>;
 }

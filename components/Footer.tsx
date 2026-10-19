@@ -85,12 +85,12 @@ export default function Footer({ locale }: { locale: Locale }) {
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 border-b border-white/[0.07] pb-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
-            <a href={homeHref} className="inline-flex items-center gap-3">
+            <Link href={homeHref} className="inline-flex items-center gap-3">
               <span className="block h-11 w-11 shrink-0"><BrandSigil /></span>
               <span>
                 <span className="block font-serif text-2xl font-light leading-none text-white/90">Saimôr</span>
               </span>
-            </a>
+            </Link>
             <p className="mt-5 max-w-sm text-sm leading-6 text-white/60">{c.tagline}</p>
           </div>
 
@@ -98,9 +98,9 @@ export default function Footer({ locale }: { locale: Locale }) {
             <div className="font-mono text-[9px] uppercase tracking-[.22em] text-[#d6a848]/52">System</div>
             <div className="mt-4 grid gap-3 text-sm text-white/65">
               <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</Link>
-              <a className="transition hover:text-white/82" href={moraHref}>Môra</a>
-              <a className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</a>
-              <a className="transition hover:text-white/82" href={securityHref}>{c.entry}</a>
+              <Link className="transition hover:text-white/82" href={moraHref}>Môra</Link>
+              <Link className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</Link>
+              <Link className="transition hover:text-white/82" href={securityHref}>{c.entry}</Link>
               <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
             </div>
           </div>
@@ -108,11 +108,11 @@ export default function Footer({ locale }: { locale: Locale }) {
           <div>
             <div className="font-mono text-[9px] uppercase tracking-[.22em] text-white/48">{c.legal}</div>
             <div className="mt-4 grid gap-3 text-sm text-white/60">
-              <a className="transition hover:text-white/72" href={legal.trust}>{c.trust}</a>
-              <a className="transition hover:text-white/72" href={legal.imprint}>{c.imprint}</a>
-              <a className="transition hover:text-white/72" href={legal.privacy}>{c.privacy}</a>
-              <a className="transition hover:text-white/72" href={legal.terms}>{c.terms}</a>
-              <a className="transition hover:text-white/72" href={legal.refund}>{c.refund}</a>
+              <Link className="transition hover:text-white/72" href={legal.trust}>{c.trust}</Link>
+              <Link className="transition hover:text-white/72" href={legal.imprint}>{c.imprint}</Link>
+              <Link className="transition hover:text-white/72" href={legal.privacy}>{c.privacy}</Link>
+              <Link className="transition hover:text-white/72" href={legal.terms}>{c.terms}</Link>
+              <Link className="transition hover:text-white/72" href={legal.refund}>{c.refund}</Link>
             </div>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Sparkles } from 'lucide-react';
 import AnimatedButton from '@/components/AnimatedButton';
-import ScrollAmbient from '@/components/ScrollAmbient';
 
 type Locale = 'de' | 'en';
 
@@ -248,14 +247,6 @@ export default function Hero({ locale, calUrl }: Props) {
             >
               {content.ctaSecondary}
             </AnimatedButton>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55 }}
-          >
-            <ScrollAmbient locale={locale} />
           </motion.div>
 
           {/* Stats */}

@@ -66,8 +66,8 @@ export default function SystemWorldHome({ locale }: Props) {
   return (
     <div className={styles.world}>
       <section className={styles.hero} aria-labelledby="world-title">
-        <label className={styles.motionControl}><input type="checkbox" name="world-motion" />{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</label>
-        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(max-width: 390px) 185vw, (max-width: 700px) 175vw, (min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.heroImage} />
+        <label className={styles.motionControl}><input type="checkbox" name="world-motion" aria-label={locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'} /><span className={styles.motionGlyph} aria-hidden="true">Ⅱ</span><span className={styles.motionText}>{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</span></label>
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(max-width: 700px) 160vw, (min-resolution: 2.5dppx) 557px, (max-width: 836px) 100vw, 836px" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
@@ -75,7 +75,7 @@ export default function SystemWorldHome({ locale }: Props) {
             <div className={styles.heroCopy}>
               <h1 id="world-title">Saimôr</h1>
               <p className={styles.thesis}>{c.thesis}</p>
-              <p className={styles.intro}>{c.intro}</p>
+              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen in einer gemeinsamen Arbeitswelt. MÔRA hält den Zusammenhang.' : 'Knowledge, tools and decisions in one shared workspace. MÔRA keeps the thread.'}</span></p>
               <div className={styles.actions}>
                 <Link href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
@@ -83,7 +83,7 @@ export default function SystemWorldHome({ locale }: Props) {
               <div className={styles.utilityLinks}>
                 <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
                 <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
-                <a href={locale === 'de' ? '/studio' : '/en/studio'}><Mic2 size={14} aria-hidden="true" />{c.training}</a>
+                <Link href={locale === 'de' ? '/studio' : '/en/studio'} aria-label={c.training}><Mic2 size={14} aria-hidden="true" /><span className={styles.desktopIntro}>{c.training}</span><span className={styles.mobileIntro}>Studio</span></Link>
               </div>
             </div>
             <OrbitalScene />

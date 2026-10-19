@@ -6,6 +6,7 @@ import MoraClearing from './MoraClearing';
 
 type Props = {
   dawn: boolean; hurry: boolean; paused: boolean; reduced: boolean; onArrival: () => void; settling?: RefObject<number>; progress?: MutableRefObject<number>;
+  look?: RefObject<{ x: number; y: number }>;
 };
 
 const VERTEX = `attribute vec2 a_position;
@@ -181,7 +182,7 @@ export default function MoraAtmosphere(props: Props) {
   }, []);
 
   return <div ref={layer} className={styles.atmosphere} aria-hidden="true">
-    <MoraClearing />
+    <MoraClearing look={props.look} still={props.paused || props.reduced} />
     <div className={styles.fallback}><i /><i /><i /></div>
     <canvas ref={canvas} className={styles.canvas} />
   </div>;

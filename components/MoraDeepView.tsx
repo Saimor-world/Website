@@ -36,6 +36,7 @@ export default function MoraDeepView({ locale }: Props) {
   const focusAmount = useRef(0);
   const dawnAmount = useRef(0);
   const chapter = useRef(-1);
+  const clearingLook = useRef({ x: 0, y: 0 });
   const setChapter = useCallback((index: number) => { chapter.current = index; }, []);
   const pointer = useRef({ x: 0, y: 0, energy: 0 });
   const focusControl = useRef<MoraFocusHandle>(null);
@@ -44,8 +45,7 @@ export default function MoraDeepView({ locale }: Props) {
   const focusProgress = useCallback((amount: number) => { focusAmount.current = amount; world.current?.style.setProperty('--focus', String(amount)); }, []);
   const look = (x: number, y: number) => {
     pointer.current.x = x; pointer.current.y = y;
-    world.current?.style.setProperty('--look-x', String(x));
-    world.current?.style.setProperty('--look-y', String(y));
+    clearingLook.current.x = x; clearingLook.current.y = y;
   };
   const [entry, setEntry] = useState<'portal' | 'mora' | null>(null);
   const [scene, setScene] = useState<Scene>('uncertainty');
@@ -153,7 +153,7 @@ export default function MoraDeepView({ locale }: Props) {
       }}>
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
-          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} />
+          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} look={clearingLook} />
         <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
         <div className={styles.grain} />
         <div className={styles.passage} />

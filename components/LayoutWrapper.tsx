@@ -7,6 +7,7 @@ import Footer from './Footer';
 import CommandPalette from './CommandPalette';
 import ScrollProgress from './ScrollProgress';
 import DesktopDiscoveries from './DesktopDiscoveries';
+import ScrollAmbient from './ScrollAmbient';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -33,16 +34,14 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   }, [locale, isClientWorld, isOwnerSurface]);
 
   // Immersive surfaces render without public-site chrome.
-  if (isImmersive) return isEncounter ? <div data-public-site>{children}</div> : <>{children}</>;
-
   return (
-    <div data-public-site>
+    <><ScrollAmbient locale={locale} />{isImmersive ? isEncounter ? <div data-public-site>{children}</div> : children : <div data-public-site>
       <DesktopDiscoveries />
       <CommandPalette />
       <ScrollProgress />
       <Navbar locale={locale} />
       {children}
       <Footer locale={locale} />
-    </div>
+    </div>}</>
   );
 }

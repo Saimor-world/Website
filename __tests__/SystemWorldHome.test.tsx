@@ -87,8 +87,7 @@ describe('SystemWorldHome', () => {
     const cosmos = container.querySelector('img[src="/images/saimor-cosmos-layer.webp"]');
     const forest = container.querySelector('img[src="/images/saimor-forest-threshold.webp"]');
     const section = container.querySelector('#system');
-    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 390px) 185vw'));
-    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 175vw'));
+    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 160vw'));
     expect(forest).toHaveAttribute('sizes', '100vw');
     expect(section?.querySelectorAll('img[src*="forest"]')).toHaveLength(1);
     expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
