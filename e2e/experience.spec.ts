@@ -273,15 +273,24 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   const clearing = page.getByRole('region', { name: 'Die Lichtung erkunden' });
   await expect(page.getByTestId('deep-clearing')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Klarheit.' })).toHaveCSS('width', '1px');
+  const landscape = page.locator('[data-parallax="-12"]');
+  const offset = (axis: 'x' | 'y') => landscape.evaluate((element, selected) => {
+    const value = getComputedStyle(element).transform;
+    if (value === 'none') return 0;
+    const matrix = new DOMMatrixReadOnly(value);
+    return selected === 'x' ? matrix.m41 : matrix.m42;
+  }, axis);
+  await clearing.press('Home');
+  await expect.poll(async () => Math.abs(await offset('x'))).toBeLessThan(.1);
   await clearing.press('ArrowRight');
-  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', '0.35');
+  await expect.poll(() => offset('x')).toBeLessThan(-3);
   await clearing.press('ArrowUp');
-  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-y', '-0.35');
+  await expect.poll(() => offset('y')).toBeGreaterThan(1.8);
   await shot(page, info, 'after-exploring');
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
-  const pausedX = await page.locator('[data-scene="clarity"]').evaluate(e => getComputedStyle(e).getPropertyValue('--look-x'));
+  const pausedTransform = await landscape.evaluate(element => getComputedStyle(element).transform);
   await clearing.press('ArrowRight');
-  await expect(page.locator('[data-scene="clarity"]')).toHaveCSS('--look-x', pausedX);
+  await expect(landscape).toHaveCSS('transform', pausedTransform);
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await page.goBack();
   await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
