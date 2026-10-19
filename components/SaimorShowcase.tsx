@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 import styles from './SaimorShowcase.module.css';
+import MoraCharacter from './MoraCharacter';
 
 type Locale = 'de' | 'en';
 
@@ -86,7 +87,7 @@ export default function SaimorShowcase({ locale }: { locale: Locale }) {
             <span className={styles.orbitTop}>{c.moraRingTop}</span>
             <span className={styles.orbitRight}>{c.moraRingRight}</span>
             <span className={styles.orbitBottom}>{c.moraRingBottom}</span>
-            <span className={styles.moraCore} aria-hidden="true">M<span>Ô</span>RA</span>
+            <MoraCharacter size={190} className={styles.moraIdentity} />
             <span className={styles.artworkDisclaimer}>{c.moraArtworkLabel}</span>
           </div>
         </article>

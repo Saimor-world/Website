@@ -1,0 +1,8 @@
+.disclosure{min-width:0}
+.disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;list-style:none;cursor:pointer;font-size:13px;font-weight:600;color:inherit}
+.disclosure>summary::-webkit-details-marker{display:none}
+.disclosure>summary svg{flex:none;transition:transform .2s}
+.disclosure[open]>summary svg{transform:rotate(180deg)}
+.disclosure>div{min-width:0}
+@media(min-width:768px){.disclosure>summary{cursor:default;pointer-events:none;min-height:0}.disclosure>summary svg{display:none}}
+@media(prefers-reduced-motion:reduce){.disclosure>summary svg{transition:none}}

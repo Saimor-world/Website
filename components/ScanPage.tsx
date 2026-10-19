@@ -1,5 +1,6 @@
 'use client';
 
+import ResponsiveDetails from './ResponsiveDetails';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, ExternalLink, Download, Mail, Sparkles } from 'lucide-react';
@@ -324,7 +325,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           .rounded-3xl, .rounded-2xl { border-radius: 8px !important; }
         }
       `}</style>
-      <div className="min-h-screen bg-[#060a09] text-white px-6 pb-20 pt-32 md:px-20 md:pt-40 print:bg-white print:text-black">
+      <div data-scan-page className="min-h-screen bg-[#060a09] text-white px-6 pb-20 pt-32 md:px-20 md:pt-40 print:bg-white print:text-black">
       <div className="mx-auto max-w-4xl space-y-12 print:max-w-none">
         {wallVerifyState !== 'idle' ? (
           <div className={`rounded-3xl border p-6 ${
@@ -358,7 +359,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
 
         {/* ── Step 1 · Entry ─────────────────────────────────────── */}
         {step === 1 && (
-          <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div data-scan-entry className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <header className="space-y-4">
               <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Nightwatch Quickscan</p>
               <h1 className="text-[clamp(44px,8vw,64px)] font-light leading-[1.06] tracking-[-.035em]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -374,7 +375,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Website oder Domain")}</span>
                     <input
                       type="text"
-                      placeholder={t("deine-domain.de")}
+                      placeholder={t("deine-domain.de")} inputMode="url" autoComplete="url" autoCapitalize="none" spellCheck={false}
                       value={target}
                       onChange={(e) => setTarget(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-emerald-500/50 transition-colors"
@@ -384,13 +385,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("E-Mail Adresse (erforderlich)")}</span>
                     <input
                       type="email"
-                      placeholder={t("dein@email.de")}
+                      placeholder={t("dein@email.de")} inputMode="email" autoComplete="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-emerald-500/50 transition-colors"
                       required
                     />
                   </label>
+                  <div data-scan-optional className="md:col-span-2">
+                    <ResponsiveDetails title={locale === 'de' ? 'Weitere Angaben (optional)' : 'More details (optional)'}>
+                      <div className="grid gap-3 md:grid-cols-2">
                   <label className="space-y-2">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Firma optional")}</span>
                     <input
@@ -456,6 +460,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                       className="w-full resize-none bg-black/20 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-emerald-500/50 transition-colors"
                     />
                   </label>
+                      </div>
+                    </ResponsiveDetails>
+                  </div>
                 </div>
               </div>
               {error && (

@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import ResponsiveDetails from './ResponsiveDetails';
 import AmbientParticleField from './AmbientParticleField';
 
 import { useState } from 'react';
@@ -295,7 +297,7 @@ export default function YoriLanding({ locale }: Props) {
   const loginHref = `${YORI_ORIGIN}/login`;
 
   return (
-    <main className="min-h-[100svh] overflow-hidden bg-[#0c0a08] text-[#f4ecdf]">
+    <main data-yori-public className="min-h-[100svh] overflow-hidden bg-[#0c0a08] text-[#f4ecdf]">
       {/* HERO + INTERACTIVE ROOM-FIRST HOUSE STAGE */}
       <section className="relative border-b border-[#f4ecdf]/10 pb-20 pt-6 sm:pb-28">
         <div
@@ -305,7 +307,7 @@ export default function YoriLanding({ locale }: Props) {
 
         <div className="relative z-10 mx-auto max-w-[1440px] px-5 sm:px-10 lg:px-14">
           <header className="flex items-center justify-between border-b border-[#f4ecdf]/10 pb-5">
-            <a href={homeHref} className="group flex items-center gap-3.5 text-[#f4ecdf]">
+            <Link href={homeHref} className="group flex items-center gap-3.5 text-[#f4ecdf]">
               <span className="grid h-11 w-11 place-items-center rounded-full border border-[#d6ad6d]/30 bg-[#17130f] text-[#63aba6] shadow-[0_10px_30px_rgba(0,0,0,.45)]">
                 <YoriMark className="h-6 w-6" />
               </span>
@@ -313,7 +315,7 @@ export default function YoriLanding({ locale }: Props) {
                 <div className="font-serif text-[18px] tracking-[.22em] text-[#f4ecdf]">YORI</div>
                 <div className="mt-0.5 font-mono text-[8px] tracking-[.2em] text-[#d6ad6d]/80">{c.brandSub}</div>
               </div>
-            </a>
+            </Link>
 
             <div className="flex items-center gap-5">
               <a
@@ -322,32 +324,32 @@ export default function YoriLanding({ locale }: Props) {
               >
                 {c.loginLabel}
               </a>
-              <a
+              <Link
                 href={homeHref}
                 className="font-mono text-[10px] uppercase tracking-[.2em] text-[#d6ad6d]/85 transition hover:text-[#f4ecdf]"
               >
                 {c.back}
-              </a>
+              </Link>
             </div>
           </header>
 
           {/* Top Editorial Intro */}
-          <div className="mt-12 grid items-end gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-14">
+          <div data-yori-intro className="mt-12 grid items-end gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-14">
             <div>
               <div className="inline-flex items-center gap-3 rounded-full border border-[#63aba6]/30 bg-[#132123]/80 px-3.5 py-1.5 font-mono text-[9px] uppercase tracking-[.22em] text-[#63aba6]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#65d49a]" />
                 {c.eyebrow}
               </div>
               <h1 className="mt-6 whitespace-pre-line font-serif text-[clamp(2.85rem,5.6vw,5.6rem)] font-light leading-[.92] tracking-[-.04em] text-[#f4ecdf]">
-                {c.title}
+                <span data-yori-desktop>{c.title}</span><span data-yori-mobile className="hidden">{de ? 'Ein Haus für deine Arbeit.' : 'A house for your work.'}</span>
               </h1>
             </div>
 
             <div className="lg:pb-2">
               <p className="max-w-xl text-[16px] leading-7 text-[#f4ecdf]/76 sm:text-[17px] sm:leading-8">
-                {c.lead}
+                <span data-yori-desktop>{c.lead}</span><span data-yori-mobile className="hidden">{de ? 'Schreibtisch, Werkstatt und Cash. Drei Räume für Ideen, Entscheidungen und das, was daraus wird.' : 'Desk, workshop and cash. Three rooms for ideas, decisions and what comes next.'}</span>
               </p>
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-[.18em] text-[#d6ad6d]">
+              <p data-yori-rule className="mt-4 font-mono text-[10px] uppercase tracking-[.18em] text-[#d6ad6d]">
                 {c.ruleBadge}
               </p>
 
@@ -366,6 +368,7 @@ export default function YoriLanding({ locale }: Props) {
                 </a>
               </div>
 
+              <ResponsiveDetails className="mt-4" title={de ? 'Mit öffentlichem Handle öffnen' : 'Open with a public handle'}>
               <form action={`${YORI_ORIGIN}/demo`} method="get" className="mt-6 max-w-[490px]">
                 <input type="hidden" name="platform" value="instagram" />
                 <label className="block font-mono text-[9px] uppercase tracking-[.18em] text-[#f4ecdf]/52">
@@ -392,6 +395,7 @@ export default function YoriLanding({ locale }: Props) {
                   </button>
                 </div>
               </form>
+              </ResponsiveDetails>
             </div>
           </div>
 
@@ -402,7 +406,7 @@ export default function YoriLanding({ locale }: Props) {
               <span className="text-[#d6ad6d]">{room.code}</span>
             </div>
 
-            <div className="relative overflow-hidden rounded-[26px] border border-[#f4ecdf]/16 bg-[#0d0b09] shadow-[0_40px_120px_rgba(0,0,0,.78)]">
+            <div id="yori-house-stage" data-yori-stage className="relative scroll-mt-8 overflow-hidden rounded-[26px] border border-[#f4ecdf]/16 bg-[#0d0b09] shadow-[0_40px_120px_rgba(0,0,0,.78)]">
               {/* Background Room Plate (with composited Zen garden window + lantern + teacup) */}
               <div
                 aria-hidden="true"
@@ -486,7 +490,8 @@ export default function YoriLanding({ locale }: Props) {
                   </div>
 
                   {/* DeskPapers on the wooden surface */}
-                  <div className="mt-36 sm:mt-44">
+                  <div data-yori-papers className="mt-36 sm:mt-44">
+                    <p className="hidden" data-yori-mobile>{de ? 'Drei Vorgänge · seitlich wischen' : 'Three items · swipe to explore'}</p>
                     <div className="grid gap-3.5 md:grid-cols-3">
                       {room.papers.map((paper, idx) => {
                         const rotations = ['md:-rotate-1', 'md:rotate-[0.6deg]', 'md:-rotate-[0.5deg]'];
@@ -516,7 +521,7 @@ export default function YoriLanding({ locale }: Props) {
                 </div>
 
                 {/* Right Floating Room Glass Rail (Notes & Continuity) */}
-                <div className="flex flex-col justify-between border-t border-[#f4ecdf]/10 bg-[#120e0b]/60 p-5 backdrop-blur-md lg:border-l lg:border-t-0">
+                <ResponsiveDetails title={room.noteTitle} className="flex flex-col justify-between border-t border-[#f4ecdf]/10 bg-[#120e0b]/60 p-5 backdrop-blur-md lg:border-l lg:border-t-0">
                   <div className="rounded-2xl border border-[#f4ecdf]/12 bg-[#16120e]/88 p-4 shadow-[0_20px_46px_rgba(0,0,0,.4)]">
                     <div className="flex items-center justify-between">
                       <span className="font-serif text-xs text-[#d6ad6d]">{room.noteTitle}</span>
@@ -537,7 +542,7 @@ export default function YoriLanding({ locale }: Props) {
                       {c.enterDemo} →
                     </a>
                   </div>
-                </div>
+                </ResponsiveDetails>
               </div>
             </div>
           </div>
@@ -557,12 +562,13 @@ export default function YoriLanding({ locale }: Props) {
             <p className="mt-5 text-base leading-7 text-[#f4ecdf]/70">{c.houseLead}</p>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <div data-yori-roomcards className="mt-12 grid gap-6 lg:grid-cols-3">
             {(['desk', 'workshop', 'cash'] as RoomKey[]).map((key) => {
               const item = c.rooms[key];
               return (
-                <article
+                <Link
                   key={key}
+                  href="#yori-house-stage"
                   onClick={() => setActiveRoom(key)}
                   className="group cursor-pointer overflow-hidden rounded-[22px] border border-[#f4ecdf]/12 bg-[#151c1e] transition hover:border-[#63aba6]/50"
                 >
@@ -583,7 +589,7 @@ export default function YoriLanding({ locale }: Props) {
                     </p>
                     <p className="mt-3.5 text-sm leading-6 text-[#f4ecdf]/72">{item.body}</p>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>

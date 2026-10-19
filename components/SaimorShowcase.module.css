@@ -109,6 +109,7 @@
 .moraOrbitTwo{border-color:#e9d8a85a}
 .moraOrbitThree{border-color:#bbd7be2e}
 .moraCore{color:#fff9e7;text-shadow:0 0 40px #e1d7ae53}
+.moraIdentity{position:absolute!important;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3}
 .artworkDisclaimer{color:#d4dfd0ad}
 .yori{background:#e8e2d7}
 .yoriArtwork{min-height:610px;background:#a18b70}

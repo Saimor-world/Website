@@ -7,6 +7,7 @@ import OrbitalScene from './OrbitalScene';
 import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
+import ResponsiveDetails from './ResponsiveDetails';
 import EarthEntry from './EarthEntry';
 
 type Locale = 'de' | 'en';
@@ -75,16 +76,16 @@ export default function SystemWorldHome({ locale }: Props) {
             <div className={styles.heroCopy}>
               <h1 id="world-title">Saimôr</h1>
               <p className={styles.thesis}>{c.thesis}</p>
-              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen in einer gemeinsamen Arbeitswelt. MÔRA hält den Zusammenhang.' : 'Knowledge, tools and decisions in one shared workspace. MÔRA keeps the thread.'}</span></p>
+              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen – verbunden durch MÔRA.' : 'Knowledge, tools and decisions – connected through MÔRA.'}</span></p>
               <div className={styles.actions}>
                 <Link href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
-              <div className={styles.utilityLinks}>
+              <ResponsiveDetails className={styles.utilityDisclosure} title={locale === 'de' ? 'Weitere Wege' : 'More ways in'}><div className={styles.utilityLinks}>
                 <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
                 <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
                 <Link href={locale === 'de' ? '/studio' : '/en/studio'} aria-label={c.training}><Mic2 size={14} aria-hidden="true" /><span className={styles.desktopIntro}>{c.training}</span><span className={styles.mobileIntro}>Studio</span></Link>
-              </div>
+              </div></ResponsiveDetails>
             </div>
             <OrbitalScene />
           </div>
@@ -100,8 +101,9 @@ export default function SystemWorldHome({ locale }: Props) {
           <div className={styles.thresholdInner}>
             <div className={styles.contextCopy}>
               <p className={styles.eyebrow}>{c.fieldEyebrow}</p>
-              <h2 id="inside-title">{c.fieldTitle}</h2>
-              <p className={styles.contextBody}>{c.saimorText}</p>
+              <h2 id="inside-title"><span className={styles.desktopIntro}>{c.fieldTitle}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Dein Kontext. Mit dir verbunden.' : 'Your context. Always with you.'}</span></h2>
+              <p className={styles.contextBody}><span className={styles.desktopIntro}>{c.saimorText}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Eine Welt für alles, was zusammengehört. Komm einen Schritt näher.' : 'A world for everything that belongs together. Take a step closer.'}</span></p>
+              <Link data-testid="mobile-threshold-entry" className={styles.thresholdAction} href={`${locale === 'de' ? '' : '/en'}/mora/deep-view?from=portal`}>{locale === 'de' ? 'MÔRA begegnen' : 'Meet MÔRA'}<ArrowRight size={16} aria-hidden="true" /></Link>
             </div>
             <div className={styles.contextStage}>
               <div className={styles.portalCanvas}>

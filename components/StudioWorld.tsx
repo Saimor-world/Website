@@ -9,6 +9,8 @@ const copy = {
     eyebrow: 'SAIMÔR / STUDIO',
     title: 'Gute Ideen brauchen keinen größeren Werkzeugkasten.',
     titleAccent: 'Sondern einen Anfang.',
+    mobileTitle: 'Aus einer Frage', mobileAccent: 'wird ein Anfang.',
+    mobileIntro: 'Beratung, Workshops und Umsetzung. Wir klären mit dir, was hilft – und machen den nächsten Schritt konkret.',
     intro: 'Studio ist der Raum für Zusammenarbeit: Wir ordnen das, was gerade kompliziert ist, probieren einen sinnvollen Ansatz aus und bauen erst dann, wenn klar ist, wofür.',
     explore: 'Die Möglichkeiten ansehen',
     talk: 'Über dein Vorhaben sprechen',
@@ -54,6 +56,8 @@ const copy = {
     eyebrow: 'SAIMÔR / STUDIO',
     title: 'Good ideas do not need a bigger toolbox.',
     titleAccent: 'They need a place to start.',
+    mobileTitle: 'From a question', mobileAccent: 'to a beginning.',
+    mobileIntro: 'Consulting, workshops and implementation. Together we find what helps and turn it into a useful next step.',
     intro: 'Studio is where we work together: understand what is complex, try a useful approach, and build only when we know what it is for.',
     explore: 'Explore the ways to work together',
     talk: 'Talk about your idea',
@@ -108,8 +112,8 @@ export default function StudioWorld({ locale }: { locale: Locale }) {
         <div className={styles.ambient} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
-          <h1 id="studio-title">{c.title}<span>{c.titleAccent}</span></h1>
-          <p className={styles.lead}>{c.intro}</p>
+          <h1 id="studio-title"><span className={styles.desktopCopy}>{c.title}<em>{c.titleAccent}</em></span><span className={styles.mobileCopy}>{c.mobileTitle}<em>{c.mobileAccent}</em></span></h1>
+          <p className={styles.lead}><span className={styles.desktopCopy}>{c.intro}</span><span className={styles.mobileCopy}>{c.mobileIntro}</span></p>
           <div className={styles.heroActions}>
             <Link href="#wege" className={styles.primary}>{c.explore}<ArrowDown size={17} aria-hidden="true" /></Link>
             <Link href={contactHref} className={styles.secondary}>{c.talk}<ArrowUpRight size={16} aria-hidden="true" /></Link>
@@ -136,9 +140,10 @@ export default function StudioWorld({ locale }: { locale: Locale }) {
                     <p className={styles.sectionLabel}>{topic.eyebrow}</p>
                     <h3>{topic.title}</h3>
                     <p className={styles.serviceLead}>{topic.lead}</p>
-                    <p className={styles.description}>{topic.description}</p>
+                    <p className={`${styles.description} ${styles.desktopCopy}`}>{topic.description}</p>
                     <details className={styles.details}>
                       <summary>{c.detailsLabel}<ChevronDown size={17} aria-hidden="true" /></summary>
+                      <p className={`${styles.description} ${styles.mobileCopy}`}>{topic.description}</p>
                       <div className={styles.detailBody}>
                         <div><h4>{c.casesLabel}</h4><ul>{topic.cases.map(item => <li key={item}>{item}</li>)}</ul></div>
                         <div><h4>{c.outcomeLabel}</h4><ul>{topic.outcomes.map(item => <li key={item}><CheckCircle2 size={16} aria-hidden="true" />{item}</li>)}</ul></div>

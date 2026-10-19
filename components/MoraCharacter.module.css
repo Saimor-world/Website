@@ -1,0 +1,4 @@
+.character{position:relative;display:inline-block;flex:none;width:var(--character-size);height:var(--character-size);isolation:isolate}
+.stone{width:100%!important;height:100%!important}
+.character[data-still="true"] *,.character[data-still="true"] *::before{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.character *,.character *::before{animation:none!important}}
