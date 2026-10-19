@@ -1,5 +1,8 @@
 import FinanceSection from '@/components/FinanceSection';
 
+// Pure static marketing page: no env, DB or session reads at build or request time.
+export const dynamic = 'force-static';
+
 export const metadata = {
   title: 'Saimôr Finance – Your finances, clearly in view',
   description: 'Income, expenses and account balances in one place – including XRP/RLUSD payments.',
