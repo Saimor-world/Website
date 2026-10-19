@@ -11,15 +11,15 @@ describe('AiRealityTeaser', () => {
     expect(screen.getByText('Ist es auch belegt?')).toBeInTheDocument();
     expect(screen.getByText('Gehört es wirklich zusammen?')).toBeInTheDocument();
     expect(screen.getByText('Wer gibt es frei?')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Reality Check öffnen' })).toHaveAttribute('href', '/mora/deep-view');
+    expect(screen.getByRole('link', { name: 'Deep View öffnen' })).toHaveAttribute('href', '/mora/deep-view');
     expect(screen.queryByRole('button', { name: /Öffentliche Signale laden/ })).not.toBeInTheDocument();
   });
 
-  it('preserves an honest and localized Reality Check in English', () => {
+  it('preserves an honest and localized Deep View in English', () => {
     render(<AiRealityTeaser locale="en" />);
     expect(screen.getByText('Is there evidence?')).toBeInTheDocument();
     expect(screen.getByText('Who approved it?')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Open Reality Check' })).toHaveAttribute('href', '/en/mora/deep-view');
+    expect(screen.getByRole('link', { name: 'Open Deep View' })).toHaveAttribute('href', '/en/mora/deep-view');
     expect(screen.getByText('Staged encounter · no live analysis')).toBeInTheDocument();
   });
 });

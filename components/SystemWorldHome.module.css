@@ -2,11 +2,11 @@
 .world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip}
 .world ::selection{background:var(--gold);color:var(--ink)}
 .world a:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
-.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#31503c 0%,#153a2a 35%,#071b13 76%)}
+.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#3d6048 0%,#1e4a36 35%,#0d2a1f 76%)}
 .heroImage{position:absolute!important;inset:auto 0 0 auto!important;width:min(100%,1100px)!important;height:auto!important;max-width:none;aspect-ratio:1672/941;object-fit:contain;opacity:.9;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%),linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(90deg,transparent,#000 30%),linear-gradient(180deg,transparent,#000 22%);-webkit-mask-composite:source-in;mask-composite:intersect}
 .heroShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071a12ad,transparent 75%),linear-gradient(0deg,#081e17,transparent 22%)}
 .heroInner{position:relative;z-index:2;max-width:1440px;margin:auto;padding:145px var(--gutter) 36px;min-height:850px;display:flex;flex-direction:column}
-.eyebrow{font:600 12px/1.8 ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;color:#e4d9b8}
+.eyebrow{font:600 12px/1.8 ui-monospace,SFMono-Regular,monospace;letter-spacing:.16em;color:#e8dfc0}
 .heroGrid{display:grid;grid-template-columns:1.05fr 1fr;flex:1;align-items:center;padding:65px 0 70px}
 .heroCopy{position:relative;z-index:2;max-width:620px}
 .heroCopy h1{font:400 clamp(88px,9vw,140px)/.95 "Cormorant Garamond",Georgia,serif;letter-spacing:-.06em;color:#fff8e9}
@@ -22,10 +22,10 @@
 .utilityLinks a{display:inline-flex;gap:7px;align-items:center;min-height:36px}
 .utilityDisclosure>summary{display:flex;justify-content:flex-start;gap:10px;min-height:44px;font-size:11px;color:#c9d4bf}
 @media(min-width:768px){.utilityDisclosure>summary{display:none}}
-.sceneFooter{display:flex;justify-content:space-between;gap:24px;font:9px/1.8 ui-monospace,monospace;letter-spacing:.16em;color:#c8cfb9}
+.sceneFooter{display:flex;justify-content:space-between;gap:24px;font:12px/1.8 ui-monospace,monospace;letter-spacing:.14em;color:#d0d8c5}
 .sceneFooter a{display:flex;align-items:center;gap:12px}
 .motionGlyph{display:none}
-.motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:10px;color:#c6ceb9;font-size:12px;cursor:pointer;min-height:36px;padding:6px 12px;border-radius:20px;background:#0a271d99;border:1px solid #c6ceb933;backdrop-blur:blur(8px);transition:background .2s,border-color .2s}
+.motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:10px;color:#c6ceb9;font-size:12px;cursor:pointer;min-height:36px;padding:6px 12px;border-radius:20px;background:#0a271d99;border:1px solid #c6ceb933;backdrop-filter:blur(8px);transition:background .2s,border-color .2s}
 .motionControl:hover{background:#0a271dcc;border-color:#c6ceb955}
 .motionControl input{appearance:none;-webkit-appearance:none;width:36px;height:20px;border-radius:10px;background:#1a3d2e;border:1px solid #5a7a6a;cursor:pointer;position:relative;transition:background .2s,border-color .2s}
 .motionControl input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#c6ceb9;transition:transform .2s,background .2s}
@@ -56,11 +56,11 @@
 .daylightContact{background:var(--paper);color:#173a2b}
 @media(max-width:1000px){.heroGrid{grid-template-columns:1.2fr .8fr}.intro{max-width:430px}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
 @media(max-width:700px){
- .hero{min-height:740px;background:radial-gradient(ellipse at 80% 36%,#37634d55,transparent 65%),#0b3024}
+ .hero{min-height:740px;background:radial-gradient(ellipse at 80% 36%,#4a7a5d60,transparent 60%),#143a2c}
  .hero::before{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/saimor-cosmos-layer.webp') 72% 33%/auto 100% no-repeat;opacity:.27;-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
  .heroImage{right:-18%!important;top:auto!important;bottom:0!important;width:160%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
  .heroShade{background:linear-gradient(90deg,#0b302480,transparent),linear-gradient(0deg,#081e17,transparent 60%)}
- .heroInner{min-height:740px;padding:100px 24px 64px}.heroInner>.eyebrow{font-size:9px;letter-spacing:.15em;max-width:240px}
+ .heroInner{min-height:740px;padding:100px 24px 64px}.heroInner>.eyebrow{font-size:12px;letter-spacing:.12em;max-width:280px}
  .heroGrid{display:block;padding:102px 0 22px}.desktopIntro{display:none}.mobileIntro{display:inline}
  .heroCopy h1{font-size:clamp(78px,22vw,98px);line-height:1}
  .thesis{font-size:clamp(27px,7.3vw,31px);line-height:1.16;margin-top:19px;max-width:370px}
@@ -68,7 +68,7 @@
  .actions{gap:8px 12px;margin-top:23px}
  .primary{padding:12px 18px;min-height:50px;font-size:12px;gap:12px}.actions>.textLink{gap:7px;font-size:11px}
  .utilityDisclosure{margin-top:8px;max-width:330px}.utilityDisclosure>summary{display:flex;justify-content:flex-start;gap:10px;min-height:44px;font-size:11px;color:#c9d4bf}.utilityLinks{font-size:12px;gap:0 18px;margin:0;padding:4px 0 8px}.utilityLinks a{min-height:44px}
- .sceneFooter{font-size:7px;padding-bottom:0;max-width:140px}.sceneFooter a{display:none}
+ .sceneFooter{font-size:12px;padding-bottom:0;max-width:180px}.sceneFooter a{display:none}
  .motionControl{top:151px;bottom:auto;left:24px;right:auto;width:44px;min-height:44px;justify-content:center;border:1px solid #c6ceb94a;border-radius:50%;background:#0a271d66}.motionControl input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}.motionText{display:none}.motionGlyph{display:block;font-size:16px;line-height:1}.motionControl:has(input:focus-visible){outline:2px solid #e6c98d;outline-offset:4px}
  .system{margin-top:-55px}
  .threshold{background:linear-gradient(180deg,#081e17,#071b15 45%,#06110e)}

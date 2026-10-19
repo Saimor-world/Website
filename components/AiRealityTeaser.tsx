@@ -4,7 +4,7 @@ import styles from './AiRealityTeaser.module.css';
 
 const COPY = {
   de: {
-    eyebrow: 'REALITY CHECK / KI',
+    eyebrow: 'MÔRAS BLICK / KI',
     introduction: 'Drei Fragen, die eine überzeugende Antwort offenlässt.',
     layers: [
       { number: '01', Icon: CircleHelp, question: 'Klingt sicher.', counterpoint: 'Ist es auch belegt?' },
@@ -12,10 +12,10 @@ const COPY = {
       { number: '03', Icon: ShieldAlert, question: 'Kann etwas auslösen.', counterpoint: 'Wer gibt es frei?' },
     ],
     step: 'Inszenierte Begegnung · keine Live-Analyse',
-    action: 'Reality Check öffnen',
+    action: 'Deep View öffnen',
   },
   en: {
-    eyebrow: 'REALITY CHECK / AI',
+    eyebrow: "MÔRA'S VIEW / AI",
     introduction: 'Three questions a convincing answer may leave unanswered.',
     layers: [
       { number: '01', Icon: CircleHelp, question: 'Sounds certain.', counterpoint: 'Is there evidence?' },
@@ -23,7 +23,7 @@ const COPY = {
       { number: '03', Icon: ShieldAlert, question: 'Could trigger an action.', counterpoint: 'Who approved it?' },
     ],
     step: 'Staged encounter · no live analysis',
-    action: 'Open Reality Check',
+    action: 'Open Deep View',
   },
 } as const;
 

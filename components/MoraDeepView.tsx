@@ -161,7 +161,7 @@ export default function MoraDeepView({ locale }: Props) {
 
       <header className={styles.topbar}>
         <Link href={backHref} className={styles.back}><ArrowLeft size={15} />{backLabel}</Link>
-        <span className={styles.mark}>SAIMÔR <span>/</span> {locale === 'de' ? 'REALITÄTSPRÜFUNG' : 'REALITY CHECK'}</span>
+        <span className={styles.mark}>SAIMÔR <span>/</span> {locale === 'de' ? 'MÔRAS BLICK' : "MÔRA'S VIEW"}</span>
         <div className={styles.controls}>
           <Link className={styles.language} href={languageHref} aria-label={locale === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}>{locale === 'de' ? 'EN' : 'DE'}</Link>
           <button type="button" className={styles.motion} onClick={() => setPaused(value => !value)} aria-label={c.pause} aria-pressed={paused}>{paused ? <Play size={14} /> : <Pause size={14} />}</button>

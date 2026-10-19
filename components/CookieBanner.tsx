@@ -130,30 +130,30 @@ export default function CookieBanner() {
           exit={{ y: 20, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           aria-label={copy.title}
-          className="fixed bottom-3 left-3 z-[10000] sm:bottom-4 sm:left-4"
+          className="fixed bottom-3 left-3 right-3 z-[10000] sm:bottom-4 sm:left-4 sm:right-auto"
         >
-          <div className="overflow-hidden rounded-2xl border border-[#d8c69c]/20 bg-[#0b291e]/95 shadow-[0_8px_32px_rgba(2,18,10,.35)] backdrop-blur-xl">
+          <div className="max-w-[calc(100vw-24px)] overflow-hidden rounded-2xl border border-[#d8c69c]/20 bg-[#0b291e]/95 shadow-[0_8px_32px_rgba(2,18,10,.35)] backdrop-blur-xl sm:max-w-none">
             <div className="h-px bg-gradient-to-r from-[#d6a848]/60 via-[#7fd4c1]/40 to-transparent" />
 
             <div className="p-3">
               {!showDetails ? (
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#a9d3b6]/25 bg-[#a9d3b6]/[0.06] text-[#b8dec3]">
                     <Shield className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-[12px] text-white/75">{copy.body}</span>
-                  <div className="ml-auto flex items-center gap-1.5">
+                  <span className="flex-1 min-w-[120px] text-[13px] leading-snug text-white/80">{copy.body}</span>
+                  <div className="flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={rejectAll}
-                      className="min-h-8 rounded-full border border-white/40 px-3 py-1.5 text-[11px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10"
+                      className="min-h-[44px] min-w-[44px] rounded-full border border-white/40 px-3 py-2 text-[13px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10"
                     >
                       {copy.essential}
                     </button>
                     <button
                       type="button"
                       onClick={acceptAll}
-                      className="min-h-8 rounded-full bg-[#f4efde] px-3 py-1.5 text-[11px] font-semibold text-[#102b1d] transition hover:bg-white"
+                      className="min-h-[44px] min-w-[44px] rounded-full bg-[#f4efde] px-3 py-2 text-[13px] font-semibold text-[#102b1d] transition hover:bg-white"
                     >
                       {copy.acceptAll}
                     </button>
@@ -161,12 +161,15 @@ export default function CookieBanner() {
                       type="button"
                       onClick={() => setShowDetails(true)}
                       aria-expanded={showDetails}
-                      className="ml-1 flex h-7 w-7 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                      className="ml-1 flex h-[44px] w-[44px] items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
                       aria-label={copy.settings}
                     >
                       <ChevronDown className="h-4 w-4" />
                     </button>
                   </div>
+                  <a href={privacyHref} className="mt-2 block text-[12px] text-white/50 underline-offset-2 transition hover:text-white/80 hover:underline sm:hidden">
+                    {copy.privacy}
+                  </a>
                 </div>
               ) : (
                 <div className="w-[min(340px,calc(100vw-2rem))]">
@@ -180,7 +183,7 @@ export default function CookieBanner() {
                     <button
                       type="button"
                       onClick={() => setShowDetails(false)}
-                      className="flex h-7 w-7 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                      className="flex h-[44px] w-[44px] items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
                       aria-label={copy.less}
                     >
                       <X className="h-4 w-4" />
@@ -188,37 +191,37 @@ export default function CookieBanner() {
                   </div>
 
                   <div className="mt-3 space-y-2">
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2">
+                    <div className="flex min-h-[44px] items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2">
                       <div className="flex items-center gap-2">
                         <Check className="h-3.5 w-3.5 text-[#7fd4c1]" />
-                        <span className="text-[11px] text-white/75">{copy.essentialTitle}</span>
+                        <span className="text-[13px] text-white/80">{copy.essentialTitle}</span>
                       </div>
-                      <span className="font-mono text-[8px] uppercase tracking-[.1em] text-[#7fd4c1]/60">ON</span>
+                      <span className="font-mono text-[12px] uppercase tracking-[.1em] text-[#7fd4c1]/70">ON</span>
                     </div>
 
                     <button
                       type="button"
                       onClick={() => setAnalyticsEnabled((value) => !value)}
-                      className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-left transition hover:bg-white/[0.04]"
+                      className="flex min-h-[44px] w-full items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-left transition hover:bg-white/[0.04]"
                     >
                       <div className="flex items-center gap-2">
                         {analyticsEnabled ? <Eye className="h-3.5 w-3.5 text-[#e7cd8c]" /> : <EyeOff className="h-3.5 w-3.5 text-white/40" />}
-                        <span className="text-[11px] text-white/75">{copy.analyticsTitle}</span>
+                        <span className="text-[13px] text-white/80">{copy.analyticsTitle}</span>
                       </div>
-                      <span className={`font-mono text-[8px] uppercase tracking-[.1em] ${analyticsEnabled ? 'text-[#e7cd8c]' : 'text-white/25'}`}>
+                      <span className={`font-mono text-[12px] uppercase tracking-[.1em] ${analyticsEnabled ? 'text-[#e7cd8c]' : 'text-white/35'}`}>
                         {analyticsEnabled ? 'ON' : 'OFF'}
                       </span>
                     </button>
                   </div>
 
                   <div className="mt-3 flex items-center justify-between gap-2">
-                    <a href={privacyHref} className="text-[10px] text-white/50 underline-offset-2 transition hover:text-white/80 hover:underline">
+                    <a href={privacyHref} className="text-[12px] text-white/60 underline-offset-2 transition hover:text-white/80 hover:underline">
                       {copy.privacy}
                     </a>
                     <button
                       type="button"
                       onClick={acceptSelected}
-                      className="min-h-8 rounded-full border border-[#d6a848]/25 px-4 py-1.5 text-[11px] font-semibold text-[#e7cd8c] transition hover:border-[#d6a848]/50 hover:bg-[#d6a848]/10"
+                      className="min-h-[44px] rounded-full border border-[#d6a848]/25 px-4 py-2 text-[13px] font-semibold text-[#e7cd8c] transition hover:border-[#d6a848]/50 hover:bg-[#d6a848]/10"
                     >
                       {copy.save}
                     </button>

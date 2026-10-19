@@ -29,7 +29,7 @@
 .files{top:10%;left:0}.calendar{top:32%;right:0}.openWork{bottom:5%;right:10%}
 .characterLine{font-size:13px;line-height:1.7;letter-spacing:.02em;color:#d0e4c9;margin:4px 0 20px}
 .contextReadout{max-width:430px;min-height:150px;text-align:left;margin:auto;border-top:1px solid #b3c39766;padding:20px 0 0}
-.contextReadout>span{font:600 10px/1.7 "JetBrains Mono",monospace;letter-spacing:.14em;color:#d4d5a8}
+.contextReadout>span{font:600 12px/1.7 "JetBrains Mono",monospace;letter-spacing:.12em;color:#dcddb4}
 .contextReadout h2{font:400 25px/1.2 "Cormorant Garamond",Georgia,serif;color:#fff1d6;margin:9px 0}
 .contextReadout p{color:#cfdfcc;font-size:13px;line-height:1.75;max-width:390px;margin:0}
 .page[data-paused="true"] *,.page[data-paused="true"] *::before,.page[data-paused="true"] *::after{animation-play-state:paused!important}
@@ -38,7 +38,7 @@
 @media(max-width:1050px){.hero{padding-top:130px}.heroGrid{gap:34px}.intro h1{font-size:76px}.heroCharacter{width:230px!important;height:230px!important}.contextNode{padding:10px 12px;font-size:11px}.contextMap{height:320px}.files{left:-8px}.calendar{right:-8px}}
 @media(max-width:767px){
  .hero{padding:112px 24px 56px}
- .eyebrow{font-size:8px;letter-spacing:.14em}
+ .eyebrow{font-size:12px;letter-spacing:.12em}
  .intro h1{font-size:clamp(56px,14.8vw,84px);max-width:9ch;margin:22px 0 20px}
  .primary,.secondary{font-size:12px;padding:12px 17px;min-height:48px}
  .contextNode{font-size:11px;padding:10px 12px}

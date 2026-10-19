@@ -32,7 +32,7 @@
 .moraOrbitTwo:after{right:8%;bottom:14%;width:7px;height:7px}
 .moraCore{position:relative;z-index:1;font-family:"Cormorant Garamond",Georgia,serif;font-weight:400;font-size:clamp(64px,7.4vw,123px);letter-spacing:-.08em;color:#f8f1d9;text-shadow:0 0 40px #e2dcaf50;transform:translateX(-5%)}
 .moraCore span{color:#d4c488}
-.orbitTop,.orbitRight,.orbitBottom{position:absolute;z-index:2;font:600 9px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.24em;color:#d2d6b0}
+.orbitTop,.orbitRight,.orbitBottom{position:absolute;z-index:2;font:600 12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;color:#dce0c0}
 .orbitTop{top:17%;left:24%}
 .orbitRight{right:7%;top:54%}
 .orbitBottom{bottom:17%;left:25%}
@@ -77,7 +77,7 @@
  .orbitTop{top:12%;left:16%}
  .orbitRight{right:7%;top:45%}
  .orbitBottom{bottom:14%;left:22%}
- .artworkDisclaimer,.yoriArtworkCaption{bottom:19px;right:20px;font-size:9px}
+ .artworkDisclaimer,.yoriArtworkCaption{bottom:19px;right:20px;font-size:12px}
  .yoriArtworkCaption{left:20px;right:auto}
  .studioRow{flex-direction:column;align-items:flex-start;padding:38px 5px 0;gap:25px}
  .studioRow h3{font-size:48px}
@@ -125,13 +125,11 @@
   .moraArtwork,.yoriArtwork{min-height:515px}
 }
 @media(max-width:760px){
-  .section{padding:73px 18px 86px;overflow-x:hidden}
-  .inner{overflow:hidden}
+  .section{padding:73px 18px 86px}
   .header{padding-bottom:40px}
-  .headerGrid{gap:25px}
+  .headerGrid{grid-template-columns:1fr;gap:25px}
   .headerGrid h2{font-size:clamp(44px,10.2vw,67px);line-height:1.015}
-  .headerGrid>p{max-width:100%;word-wrap:break-word}
-  .headerGrid>p{line-height:1.75}
+  .headerGrid>p{max-width:100%;word-wrap:break-word;line-height:1.75}
   .feature{min-height:0;border-radius:15px;box-shadow:0 17px 37px #1a372515}
   .featureCopy{padding:38px 28px 38px}
   .featureCopy h3{font-size:clamp(69px,17vw,85px);margin-top:20px}
