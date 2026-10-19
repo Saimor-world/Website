@@ -1,6 +1,7 @@
 import dns from 'dns/promises';
 import tls from 'tls';
 import { isPrivateIp, validateScanDomain } from './domain-safety';
+import { fetchPublicPage, resolvePublicTarget } from './public-network';
 
 export type ReconResult = {
   domain: string;
@@ -95,7 +96,7 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
       status: result.ip ? 'ok' : 'warn',
       detail: result.ip ? `Resolved ${addresses.length} IPv4 address${addresses.length === 1 ? '' : 'es'}.` : 'No public IPv4 address resolved.',
     });
-    if (addresses.length > 0 && addresses.every(isPrivateIp)) {
+    if (addresses.length > 0 && addresses.some(isPrivateIp)) {
       result.agentTrace.push({
         step: 'dns',
         target: domain,
@@ -143,8 +144,9 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
 
     // 2. Active TLS Scan (Fixed race condition and added details)
     try {
+      const tlsTarget = await resolvePublicTarget(domain);
       await new Promise<void>((resolve) => {
-        const socket = tls.connect(443, domain, { 
+        const socket = tls.connect(443, tlsTarget.address, {
           servername: domain, 
           timeout: 5000,
           rejectUnauthorized: false // We want to see the cert even if invalid
@@ -246,13 +248,9 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
         const hostCheck = validateScanDomain(currentHost);
         if (!hostCheck.ok) break;
         const currentAddresses = currentHost === domain ? addresses : await dns.resolve4(currentHost).catch(() => []);
-        if (currentAddresses.length > 0 && currentAddresses.every(isPrivateIp)) break;
+        if (currentAddresses.length > 0 && currentAddresses.some(isPrivateIp)) break;
 
-        const response = await fetch(currentUrl, { 
-          method: 'GET', // Use GET instead of HEAD for better compatibility
-          redirect: 'manual',
-          signal: AbortSignal.timeout(5000)
-        }).catch(() => null);
+        const response = await fetchPublicPage(currentUrl).catch(() => null);
 
         if (!response) break;
 
@@ -301,11 +299,7 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
       const finalOrigin = new URL(result.finalUrl).origin;
       const probes = await Promise.all(PUBLIC_FILE_PROBES.map(async (probe) => {
         try {
-          const response = await fetch(`${finalOrigin}${probe.path}`, {
-            method: 'GET',
-            redirect: 'manual',
-            signal: AbortSignal.timeout(4000),
-          });
+          const response = await fetchPublicPage(`${finalOrigin}${probe.path}`, 32_768);
           const found = response.status >= 200 && response.status < 300;
           return {
             path: probe.path,

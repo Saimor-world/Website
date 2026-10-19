@@ -52,8 +52,23 @@ export function validateScanDomain(value: string): ScanDomainValidation {
 
 export function isPrivateIp(ip: string) {
   if (net.isIP(ip) === 6) {
-    const value = ip.toLowerCase();
-    return value === '::1' || value.startsWith('fc') || value.startsWith('fd') || value.startsWith('fe80:');
+    // Only global unicast addresses are eligible. Reject mapped IPv4,
+    // local/link-local, transition, documentation and special-use networks.
+    if (ip.includes('.') || ip.includes('%')) return true;
+    const halves = ip.toLowerCase().split('::');
+    const left = halves[0] ? halves[0].split(':') : [];
+    const right = halves[1] ? halves[1].split(':') : [];
+    const words = halves.length === 2
+      ? [...left, ...Array(8 - left.length - right.length).fill('0'), ...right]
+      : left;
+    if (words.length !== 8) return true;
+    const first = parseInt(words[0], 16);
+    const second = parseInt(words[1], 16);
+    if ((first & 0xe000) !== 0x2000) return true; // 2000::/3 only
+    if (first === 0x2001 && (second < 0x0200 || second === 0x0db8)) return true;
+    if (first === 0x2002) return true; // IPv4-embedding 6to4
+    if (first === 0x3fff && second < 0x1000) return true; // documentation
+    return false;
   }
 
   if (net.isIP(ip) !== 4) return true;
@@ -68,7 +83,9 @@ export function isPrivateIp(ip: string) {
   if (a === 169 && b === 254) return true;
   if (a === 172 && b >= 16 && b <= 31) return true;
   if (a === 192 && b === 168) return true;
-  if (a === 192 && b === 0) return true;
+  if (a === 192 && (b === 0 || (b === 88 && parts[2] === 99))) return true;
+  if (a === 198 && b === 51 && parts[2] === 100) return true;
+  if (a === 203 && b === 0 && parts[2] === 113) return true;
   if (a === 198 && (b === 18 || b === 19)) return true;
   if (a >= 224) return true;
 
