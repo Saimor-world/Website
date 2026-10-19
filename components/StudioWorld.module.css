@@ -1,0 +1,57 @@
+/* SAIMÔR Studio — one serious destination rather than a homepage anchor. */
+.world{background:#f5f3e9;color:#193a2b;min-height:100vh}
+.inner{max-width:1250px;margin:0 auto}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 82% 28%,#2d6048,#153f2f 45%,#092319 100%);color:#f9f4e8;min-height:750px}
+.ambient{pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at 80% 27%,#e0c38b20,transparent 37%),radial-gradient(ellipse at 74% 79%,#89c69e2f,transparent 42%)}
+.ambient::after{content:"";position:absolute;right:-18%;top:-29%;width:67vw;max-width:900px;aspect-ratio:1;border:1px solid #e7d49e42;border-radius:50%;box-shadow:0 0 0 95px #abcdb508,0 0 0 196px #e9dba509,0 0 75px #e0c99114;transform:rotate(-24deg) scaleY(.84)}
+.heroInner{position:relative;z-index:1;max-width:1380px;margin:auto;padding:165px 64px 65px;display:flex;flex-direction:column;min-height:750px}
+.eyebrow,.sectionLabel{font:600 10px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.22em;color:#ddca9b}
+.hero h1{font:400 clamp(55px,7.25vw,116px)/.94 "Cormorant Garamond",Georgia,serif;letter-spacing:-.058em;max-width:960px;margin:23px 0 0;text-wrap:balance}
+.hero h1 span{display:block;color:#d7d4ad;font-style:italic}
+.lead{font-size:clamp(15px,1.4vw,18px);line-height:1.8;max-width:625px;color:#e4eddf;margin:29px 0 0}
+.heroActions,.endActions{display:flex;flex-wrap:wrap;gap:24px;align-items:center;margin-top:33px}
+.primary{display:inline-flex;gap:16px;align-items:center;justify-content:center;min-height:52px;padding:14px 23px;border-radius:999px;background:#f1e8d0;color:#194532;font-size:13px;font-weight:650;transition:background .2s,transform .2s}
+.primary:hover{background:#fff9ec;transform:translateY(-2px)}
+.secondary,.endBack{display:inline-flex;gap:9px;align-items:center;min-height:48px;color:#f3e4c1;font-size:13px;font-weight:600;border-bottom:1px solid #f3e4c178;transition:gap .2s}
+.secondary:hover{gap:14px}
+.process{display:flex;flex-wrap:wrap;gap:0;margin-top:auto;padding-top:80px}
+.process>div{display:flex;flex:1 1 180px;align-items:center;gap:15px;border-top:1px solid #b8d8b84d;padding-top:18px}
+.process span{color:#d6cba2;font:600 10px ui-monospace,SFMono-Regular,monospace}
+.process strong{font-size:13px;font-weight:500;color:#e6e9da}
+.paths{background:linear-gradient(180deg,#f3f3e9,#f9f7ef);padding:110px 34px 120px;scroll-margin-top:80px}
+.paths .sectionLabel{color:#53705b}
+.pathsIntro{display:grid;grid-template-columns:1.2fr .8fr;align-items:end;gap:45px;margin:16px 0 63px}
+.pathsIntro h2,.note h2,.contact h2{font:400 clamp(48px,6vw,87px)/.95 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:0}
+.pathsIntro p{font-size:16px;line-height:1.85;color:#4a6552;max-width:450px;margin:0}
+.services{border-top:1px solid #66856c72}
+.service{display:grid;grid-template-columns:minmax(150px,.38fr) minmax(0,1fr);gap:55px;border-bottom:1px solid #66856c72;padding:52px 0 62px;scroll-margin-top:110px}
+.serviceNumber{display:flex;justify-content:space-between;max-width:145px;color:#69836d;font:600 13px ui-monospace,SFMono-Regular,monospace}
+.serviceNumber svg{color:#477158}
+.serviceMain h3{font:400 clamp(51px,5.6vw,80px)/.93 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:13px 0 5px}
+.serviceLead{font:400 clamp(26px,2.6vw,35px)/1.2 "Cormorant Garamond",Georgia,serif;color:#52715b;margin:0 0 17px}
+.description{max-width:750px;font-size:15px;line-height:1.86;color:#486252;margin:0}
+.details{margin-top:25px;border-top:1px solid #a4b8a35e;border-bottom:1px solid #a4b8a35e;max-width:800px}
+.details summary{display:flex;align-items:center;justify-content:space-between;gap:15px;min-height:57px;font-size:13px;font-weight:600;cursor:pointer;list-style:none;color:#22543a}
+.details summary::-webkit-details-marker{display:none}
+.details summary svg{transition:transform .22s}
+.details[open] summary svg{transform:rotate(180deg)}
+.detailBody{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:31px;padding:16px 0 25px}
+.detailBody h4{font-size:11px;font-weight:650;color:#38634a;margin:0 0 12px}
+.detailBody ul{display:grid;gap:12px;list-style:none;padding:0;margin:0}
+.detailBody li{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.65;color:#506c57}
+.detailBody li svg{flex:none;margin-top:2px;color:#37865c}
+.serviceLink{display:inline-flex;align-items:center;gap:12px;margin-top:28px;border-bottom:1px solid #366547;padding-bottom:9px;color:#245c3c;font-size:13px;font-weight:650;transition:gap .2s}
+.serviceLink:hover{gap:19px}
+.note{background:#e5ebe0;padding:85px 34px 100px}
+.note .sectionLabel{color:#56715d}
+.note h2{max-width:900px;margin:18px 0}
+.note p:last-child{max-width:715px;font-size:15px;line-height:1.8;color:#496655}
+.contact{background:radial-gradient(ellipse at 90% 18%,#2d5c43,transparent 47%),#153a2b;color:#f8f4e7;padding:92px 34px 110px}
+.contact h2{max-width:850px}
+.contact p{color:#d8e6d6;font-size:16px;line-height:1.8;margin:23px 0 0}
+.contact .primary{background:#f0e5c8}
+.contact .endBack{color:#e9dec3}
+.world a:focus-visible,.world summary:focus-visible{outline:3px solid #d9b871;outline-offset:5px}
+@media(max-width:800px){.heroInner{padding:160px 31px 45px}.pathsIntro{grid-template-columns:1fr}.service{grid-template-columns:80px 1fr;gap:22px}.paths{padding-inline:26px}.process{padding-top:65px}}
+@media(max-width:600px){.hero{min-height:0}.heroInner{min-height:0;padding:142px 24px 36px}.hero h1{font-size:clamp(52px,12vw,72px);line-height:.97}.heroActions{gap:13px}.primary{min-height:49px}.process{margin-top:63px;padding-top:0;gap:15px}.process>div{flex:1 1 28%;align-items:flex-start;flex-direction:column;gap:8px;padding-top:13px}.process strong{font-size:11px}.paths{padding:78px 21px 85px}.pathsIntro{gap:18px;margin:14px 0 42px}.pathsIntro h2{font-size:55px}.pathsIntro p{font-size:14px}.service{grid-template-columns:1fr;gap:18px;padding:38px 0 43px}.serviceNumber{max-width:none;justify-content:flex-start;gap:15px}.serviceNumber svg{width:23px;height:23px}.serviceMain h3{font-size:64px}.detailBody{grid-template-columns:1fr;gap:28px}.note{padding:68px 24px}.note h2{font-size:51px}.contact{padding:73px 24px 87px}.contact h2{font-size:59px}.lead{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.primary,.secondary,.details summary svg,.serviceLink{transition:none}.primary:hover{transform:none}}

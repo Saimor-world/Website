@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, Printer, HelpCircle, Info, ExternalLink, Download, Mail, Sparkles } from 'lucide-react';
 import DemoHqPreview from './DemoHqPreview';
 import WallRequestCard from './WallRequestCard';
+import { SCAN_EN } from '@/lib/scan-copy';
 import { buildDemoCompanyProfile } from '@/lib/demo-company';
 import { buildContextToken } from '@/lib/entry-token';
 
@@ -93,6 +94,7 @@ export function buildHqUrl(results: any) {
 }
 
 export default function ScanPage({ locale = 'de' }: { locale: string }) {
+  const t = (text: string) => locale === 'en' ? SCAN_EN[text] ?? text : text;
   const [step, setStep]               = useState(1);
   const [target, setTarget]           = useState('');
   const [email, setEmail]             = useState('');
@@ -169,11 +171,11 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
   const startScan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!target.trim()) {
-      setError('Bitte gib eine Domain an.');
+      setError(t("Bitte gib eine Domain an."));
       return;
     }
     if (!email.trim() || !validateEmail(email.trim())) {
-      setError('Eine gültige E-Mail-Adresse ist erforderlich.');
+      setError(t("Eine gültige E-Mail-Adresse ist erforderlich."));
       return;
     }
 
@@ -273,7 +275,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       setStep(3);
     } catch (err: any) {
       clearInterval(timer);
-      setError(err.message || 'Scan fehlgeschlagen. Bitte versuche es erneut.');
+      setError(t(err.message) || 'Scan fehlgeschlagen. Bitte versuche es erneut.');
       setStep(3);
     }
   };
@@ -322,7 +324,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           .rounded-3xl, .rounded-2xl { border-radius: 8px !important; }
         }
       `}</style>
-      <main className="min-h-screen bg-[#060a09] text-white p-6 md:p-20 print:bg-white print:text-black">
+      <div className="min-h-screen bg-[#060a09] text-white px-6 pb-20 pt-32 md:px-20 md:pt-40 print:bg-white print:text-black">
       <div className="mx-auto max-w-4xl space-y-12 print:max-w-none">
         {wallVerifyState !== 'idle' ? (
           <div className={`rounded-3xl border p-6 ${
@@ -335,22 +337,20 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             <p className="text-[10px] uppercase tracking-[0.25em] text-white/42">Wall Verification</p>
             <h2 className="mt-2 text-2xl font-light">
               {wallVerifyState === 'verifying'
-                ? 'E-Mail wird bestätigt...'
+                ? t("E-Mail wird bestätigt...")
                 : wallVerifyState === 'pinned'
-                  ? 'Check ist im Supporter Universe'
-                  : 'Verifizierung nicht möglich'}
+                  ? t("Check ist im Supporter Universe")
+                  : t("Verifizierung nicht möglich")}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/56">
               {wallVerifyState === 'verifying'
-                ? 'Wir prüfen den Link und veröffentlichen erst danach.'
+                ? t("Wir prüfen den Link und veröffentlichen erst danach.")
                 : wallVerifyState === 'pinned'
-                  ? 'Die Wall wurde erst nach bestätigter E-Mail und Zustimmung beschrieben.'
+                  ? t("Die Wall wurde erst nach bestätigter E-Mail und Zustimmung beschrieben.")
                   : wallVerifyError || 'Der Link ist abgelaufen oder ungültig.'}
             </p>
             {wallVerifyState === 'pinned' ? (
-              <Link href="/wall" className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/75 hover:bg-white/[0.1]">
-                Supporter Universe ansehen
-                <ExternalLink size={14} />
+              <Link href="/wall" className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/75 hover:bg-white/[0.1]">{t("Supporter Universe ansehen")}<ExternalLink size={14} />
               </Link>
             ) : null}
           </div>
@@ -361,33 +361,30 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <header className="space-y-4">
               <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-400 font-bold">Nightwatch Quickscan</p>
-              <h1 className="text-6xl font-light leading-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                Was sieht das <span className="italic">Internet</span> über dein Unternehmen?
+              <h1 className="text-[clamp(44px,8vw,64px)] font-light leading-[1.06] tracking-[-.035em]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                {locale === 'de' ? <>Was sieht das <span className="italic">Internet</span> über dein Unternehmen?</> : <>What does the <span className="italic">internet</span> know about your business?</>}
               </h1>
-              <p className="text-white/40 max-w-lg text-sm">
-                Nightwatch prüft nur öffentliche Signale. Danach übersetzt Saimôr OS
-                die Befunde in einen isolierten HQ-Workspace.
-              </p>
+              <p className="text-white/65 max-w-lg text-sm">{t("Nightwatch prüft nur öffentliche Signale. Danach übersetzt Saimôr OS die Befunde in einen isolierten HQ-Workspace.")}</p>
             </header>
 
             <form onSubmit={startScan} className="flex flex-col gap-4">
               <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
                 <div className="grid gap-3 md:grid-cols-2">
                   <label className="space-y-2 md:col-span-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Website oder Domain</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Website oder Domain")}</span>
                     <input
                       type="text"
-                      placeholder="deine-domain.de"
+                      placeholder={t("deine-domain.de")}
                       value={target}
                       onChange={(e) => setTarget(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-emerald-500/50 transition-colors"
                     />
                   </label>
                   <label className="space-y-2 md:col-span-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">E-Mail Adresse (erforderlich)</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("E-Mail Adresse (erforderlich)")}</span>
                     <input
                       type="email"
-                      placeholder="dein@email.de"
+                      placeholder={t("dein@email.de")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-emerald-500/50 transition-colors"
@@ -395,45 +392,43 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     />
                   </label>
                   <label className="space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Firma optional</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Firma optional")}</span>
                     <input
                       type="text"
-                      placeholder="Firmenname"
+                      placeholder={t("Firmenname")}
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-3 outline-none focus:border-emerald-500/50 transition-colors"
                     />
                   </label>
                   <label className="space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Kontakt optional</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Kontakt optional")}</span>
                     <input
                       type="text"
-                      placeholder="Dein Name"
+                      placeholder={t("Dein Name")}
                       value={contactName}
                       onChange={(e) => setContactName(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-3 outline-none focus:border-emerald-500/50 transition-colors"
                     />
                   </label>
                   <label className="space-y-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Branche</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Branche")}</span>
                     <select
                       value={industry}
                       onChange={(e) => setIndustry(e.target.value)}
                       className="w-full bg-black/20 border border-white/10 rounded-2xl px-5 py-3 outline-none focus:border-emerald-500/50 transition-colors"
                     >
-                      <option value="">Nicht angeben</option>
-                      <option value="Handwerk">Handwerk</option>
-                      <option value="Beratung">Beratung</option>
+                      <option value="">{t("Nicht angeben")}</option>
+                      <option value={t("Handwerk")}>{t("Handwerk")}</option>
+                      <option value={t("Beratung")}>{t("Beratung")}</option>
                       <option value="E-Commerce">E-Commerce</option>
                       <option value="SaaS">SaaS</option>
-                      <option value="Gesundheit">Gesundheit</option>
-                      <option value="Kommunal">Kommunal</option>
+                      <option value={t("Gesundheit")}>{t("Gesundheit")}</option>
+                      <option value={t("Kommunal")}>{t("Kommunal")}</option>
                     </select>
                   </label>
                   <div className="space-y-2 md:col-span-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">
-                      Größe
-                    </span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Größe")}</span>
                     <div className="grid grid-cols-3 gap-2">
                       {['1-10', '11-50', '51+'].map((size) => (
                         <button
@@ -452,9 +447,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     </div>
                   </div>
                   <label className="space-y-2 md:col-span-2">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/32">Was soll daraus werden?</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/65">{t("Was soll daraus werden?")}</span>
                     <textarea
-                      placeholder="z.B. Website sicherer machen, Kundenvertrauen zeigen, internes Security-Board starten"
+                      placeholder={t("z.B. Website sicherer machen, Kundenvertrauen zeigen, internes Security-Board starten")}
                       value={workIntent}
                       onChange={(e) => setWorkIntent(e.target.value)}
                       rows={3}
@@ -472,15 +467,13 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               <button
                 type="submit"
                 className="bg-white text-black px-10 py-4 rounded-2xl font-bold hover:bg-emerald-300 transition-all active:scale-95 sm:self-start"
-              >
-                Scan starten
-              </button>
+              >{t("Scan starten")}</button>
             </form>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.25em] text-white/20">
-              {['Kein Login', 'Nightwatch passiv', 'HQ-Preview inklusive', 'Kostenlos'].map((badge) => (
-                <div key={badge} className="flex items-center gap-1.5">
+            <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-[0.25em] text-white/50">
+              {[t("Kein Login"), t("Nightwatch passiv"), t("HQ-Preview inklusive"), t("Kostenlos")].map((badge) => (
+                <div key={t(badge)} className="flex items-center gap-1.5">
                   <CheckCircle2 size={10} className="text-emerald-400/50" />
                   {badge}
                 </div>
@@ -493,8 +486,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
         {step === 2 && (
           <div className="space-y-12">
             <div className="space-y-2">
-              <p className="text-[10px] uppercase tracking-widest text-emerald-400 animate-pulse">Analyse läuft…</p>
-              <h2 className="text-4xl font-light italic">{LOADING_STEPS[loadingStep].label}</h2>
+              <p className="text-[10px] uppercase tracking-widest text-emerald-400 animate-pulse">{t("Analyse läuft…")}</p>
+              <h2 className="text-4xl font-light italic">{t(LOADING_STEPS[loadingStep].label)}</h2>
             </div>
             <div className="space-y-6">
               {LOADING_STEPS.map((s, i) => (
@@ -512,9 +505,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     }`}
                   />
                   <div className="space-y-1">
-                    <p className="text-sm font-medium">{s.label}</p>
+                    <p className="text-sm font-medium">{t(s.label)}</p>
                     {i === loadingStep && (
-                      <p className="text-xs text-white/40 animate-in fade-in duration-500">{s.desc}</p>
+                      <p className="text-xs text-white/65 animate-in fade-in duration-500">{t(s.desc)}</p>
                     )}
                   </div>
                 </div>
@@ -532,9 +525,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               <button
                 onClick={() => { setStep(1); setError(null); }}
                 className="text-emerald-400 text-sm underline underline-offset-2"
-              >
-                Erneut versuchen
-              </button>
+              >{t("Erneut versuchen")}</button>
             </div>
           </div>
         )}
@@ -556,9 +547,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 <button
                   onClick={() => { setStep(1); setResults(null); setHqState('idle'); }}
                   className="flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1.5 rounded-xl text-[11px] text-white/55 hover:bg-white/[0.08] transition-colors"
-                >
-                  Neuer Scan
-                </button>
+                >{t("Neuer Scan")}</button>
                 <button onClick={() => window.print()} className="flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1.5 rounded-xl text-[11px] text-white/55 hover:bg-white/[0.08] transition-colors">
                   <Printer size={13} /> PDF
                 </button>
@@ -578,7 +567,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className={`text-4xl font-light tabular-nums ${scoreColor(results.score)}`}>{results.score}</span>
-                  <span className={`text-[9px] uppercase tracking-widest mt-1 ${scoreColor(results.score)} opacity-60`}>{scoreLabel(results.score)}</span>
+                  <span className={`text-[9px] uppercase tracking-widest mt-1 ${scoreColor(results.score)} opacity-60`}>{t(scoreLabel(results.score))}</span>
                 </div>
               </div>
               <div className="space-y-3">
@@ -590,16 +579,16 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                       const warns = results.findings.filter((f: any) => f.status === 'warn').length;
                       const oks = results.findings.filter((f: any) => f.status === 'ok').length;
                       return <>
-                        {risks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 border border-red-400/20 px-3 py-1 text-[11px] text-red-300"><AlertTriangle size={11} />{risks} {risks === 1 ? 'Risiko' : 'Risiken'}</span>}
-                        {warns > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-400/20 px-3 py-1 text-[11px] text-amber-300"><AlertTriangle size={11} />{warns} {warns === 1 ? 'Warnung' : 'Warnungen'}</span>}
-                        {oks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/20 px-3 py-1 text-[11px] text-emerald-300"><CheckCircle2 size={11} />{oks} in Ordnung</span>}
+                        {risks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 border border-red-400/20 px-3 py-1 text-[11px] text-red-300"><AlertTriangle size={11} />{risks} {risks === 1 ? t("Risiko") : t("Risiken")}</span>}
+                        {warns > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-400/20 px-3 py-1 text-[11px] text-amber-300"><AlertTriangle size={11} />{warns} {warns === 1 ? t("Warnung") : t("Warnungen")}</span>}
+                        {oks > 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/20 px-3 py-1 text-[11px] text-emerald-300"><CheckCircle2 size={11} />{oks}{t("in Ordnung")}</span>}
                       </>;
                     })()}
                   </div>
                 )}
                 {results.summary
                   ? <p className="text-white/60 leading-relaxed text-sm">{results.summary}</p>
-                  : <p className="text-white/35 text-sm">Score basiert auf verfügbaren passiven Recon-Signalen.</p>}
+                  : <p className="text-white/35 text-sm">{t("Score basiert auf verfügbaren passiven Recon-Signalen.")}</p>}
               </div>
             </div>
 
@@ -615,28 +604,22 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-light text-white/90">Deine Môra-Demo ist bereit</h2>
-                  <p className="mt-1 text-sm text-white/50 leading-relaxed">
-                    Môra kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.
-                  </p>
+                  <h2 className="text-xl font-light text-white/90">{t("Deine Môra-Demo ist bereit")}</h2>
+                  <p className="mt-1 text-sm text-white/50 leading-relaxed">{t("Môra kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.")}</p>
                   {hqState === 'sent' && (
-                    <p className="mt-2 text-[11px] text-emerald-300/80">
-                      ✓ Link automatisch an <strong>{results.email}</strong> gesendet — check dein Postfach.
-                    </p>
+                    <p className="mt-2 text-[11px] text-emerald-300/80">{t("✓ Link automatisch an")}<strong>{results.email}</strong>{t("gesendet — check dein Postfach.")}</p>
                   )}
                   {hqState === 'error' && (
-                    <p className="mt-2 text-[11px] text-amber-300/80">Link-Versand fehlgeschlagen — nutze den Button unten.</p>
+                    <p className="mt-2 text-[11px] text-amber-300/80">{t("Link-Versand fehlgeschlagen — nutze den Button unten.")}</p>
                   )}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                  <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">
-                    Môra-Demo öffnen
-                    <ExternalLink size={15} />
+                  <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">{t("Môra-Demo öffnen")}<ExternalLink size={15} />
                   </a>
                   <button type="button" onClick={requestHqLink} disabled={hqState === 'sending' || hqState === 'sent'}
                     className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.05] px-5 py-3.5 text-sm text-white/65 hover:bg-white/[0.1] disabled:opacity-50 transition-colors">
                     <Mail size={14} />
-                    {hqState === 'sending' ? 'Sende...' : hqState === 'sent' ? 'Gesendet' : 'Per E-Mail'}
+                    {hqState === 'sending' ? t("Sende...") : hqState === 'sent' ? t("Gesendet") : t("Per E-Mail")}
                   </button>
                 </div>
               </div>
@@ -645,7 +628,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             {/* ── 4. FINDINGS — the meat ── */}
             {results.findings?.length > 0 && (
               <div className="space-y-4">
-                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">Was wir gefunden haben</h3>
+                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">{t("Was wir gefunden haben")}</h3>
                 <div className="grid gap-3">
                   {results.findings.map((f: any, i: number) => (
                     <div key={i} className={`flex gap-4 items-start rounded-2xl border p-5 transition-colors hover:bg-white/[0.025] ${
@@ -669,17 +652,17 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               <div className="rounded-3xl border border-rose-500/18 bg-rose-500/[0.025] p-7 space-y-3">
                 <div className="flex items-center gap-3 text-rose-400">
                   <AlertTriangle size={16} />
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Hypothetisches Angriffsszenario</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">{t("Hypothetisches Angriffsszenario")}</span>
                 </div>
                 <p className="text-white/65 text-sm leading-relaxed whitespace-pre-wrap">{results.attacker_path}</p>
-                <p className="text-[10px] text-white/20 italic">Generiert von MÔRA Intelligence auf Basis passiver Fingerabdrücke.</p>
+                <p className="text-[10px] text-white/50 italic">{t("Generiert von MÔRA Intelligence auf Basis passiver Fingerabdrücke.")}</p>
               </div>
             )}
 
             {/* ── 6. DEMO PREVIEW (OS teaser) ── */}
             {results.demoProfile && (
               <div className="space-y-3">
-                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">So sieht dein HQ aus</h3>
+                <h3 className="text-[9px] uppercase tracking-[0.35em] text-white/28">{t("So sieht dein HQ aus")}</h3>
                 <DemoHqPreview profile={results.demoProfile} osHref={results.hqUrl} onRequestAccess={requestHqLink} accessState={hqState} />
               </div>
             )}
@@ -689,7 +672,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
               <div className="rounded-2xl border border-white/6 bg-white/[0.01] p-7 space-y-4">
                 <div className="flex items-center gap-2 text-white/38">
                   <HelpCircle size={15} />
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Fragen, die du dir stellen solltest</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold">{t("Fragen, die du dir stellen solltest")}</span>
                 </div>
                 <ul className="space-y-3">
                   {results.followUpQuestions.map((q: string, i: number) => (
@@ -706,19 +689,19 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             <details className="group">
               <summary className="flex cursor-pointer items-center gap-3 select-none">
                 <div className="flex-1 h-px bg-white/6" />
-                <span className="text-[9px] uppercase tracking-[0.35em] text-white/22 group-open:text-white/40 transition-colors shrink-0">Technische Details</span>
+                <span className="text-[9px] uppercase tracking-[0.35em] text-white/22 group-open:text-white/65 transition-colors shrink-0">{t("Technische Details")}</span>
                 <div className="flex-1 h-px bg-white/6" />
               </summary>
               <div className="mt-8 space-y-8">
                 {results.categories && (
                   <div className="space-y-3">
-                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Teilnoten</p>
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">{t("Teilnoten")}</p>
                     <div className="grid gap-4 md:grid-cols-3">
                       {Object.entries(results.categories).map(([key, category]: [string, any]) => (
                         <div key={key} className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 space-y-4">
                           <div className="flex items-start justify-between gap-4">
                             <div>
-                              <p className="text-[9px] uppercase tracking-[0.25em] text-white/25">{CATEGORY_LABELS[key] ?? key}</p>
+                              <p className="text-[9px] uppercase tracking-[0.25em] text-white/25">{t(CATEGORY_LABELS[key] ?? key)}</p>
                               <p className={`mt-2 text-4xl font-light ${scoreColor(category.score)}`}>{category.grade}</p>
                             </div>
                             <p className="font-mono text-xs text-white/35">{category.score}/100</p>
@@ -742,14 +725,14 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                     <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 grid grid-cols-2 md:grid-cols-4 gap-5">
                       {results.recon.ip && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">IP</p><p className="font-mono text-xs text-emerald-400">{results.recon.ip}</p></div>}
                       {results.recon.ssl?.protocol && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">TLS</p><p className="font-mono text-xs text-emerald-400">{results.recon.ssl.protocol}</p></div>}
-                      {results.recon.ssl?.issuer && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">Zertifikat</p><p className="font-mono text-xs text-white/45 truncate">{results.recon.ssl.issuer}</p></div>}
-                      {(results.recon.subdomains?.length ?? 0) > 0 && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">Subdomains</p><p className="font-mono text-xs text-amber-400">{results.recon.subdomains.length} gefunden</p></div>}
+                      {results.recon.ssl?.issuer && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">{t("Zertifikat")}</p><p className="font-mono text-xs text-white/45 truncate">{results.recon.ssl.issuer}</p></div>}
+                      {(results.recon.subdomains?.length ?? 0) > 0 && <div><p className="text-[9px] uppercase tracking-widest text-white/25 font-mono mb-1">Subdomains</p><p className="font-mono text-xs text-amber-400">{results.recon.subdomains.length}{t("gefunden")}</p></div>}
                     </div>
                   </div>
                 )}
                 {results.pageProbe && (
                   <div className="space-y-3">
-                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Seiten-Fingerprint</p>
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">{t("Seiten-Fingerprint")}</p>
                     <div className="rounded-2xl border border-white/5 bg-white/[0.015] p-5 space-y-3">
                       <p className="text-sm text-white/60">{results.pageProbe.title || 'Kein Titel'}</p>
                       {(results.pageProbe.technologies?.length ?? 0) > 0 && (
@@ -764,7 +747,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 )}
                 {results.agentTrace?.length > 0 && (
                   <div className="space-y-3">
-                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">Agent-Protokoll</p>
+                    <p className="text-[9px] uppercase tracking-[0.35em] text-white/25">{t("Agent-Protokoll")}</p>
                     <div className="grid gap-2">
                       {results.agentTrace.map((entry: any, i: number) => (
                         <div key={`${entry.step}-${i}`} className="rounded-xl border border-white/5 bg-white/[0.01] p-4 flex items-start gap-4">
@@ -792,12 +775,9 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             />
 
             <footer className="pt-8 pb-16 flex flex-col sm:flex-row gap-4 justify-center print:hidden border-t border-white/5">
-              <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">
-                Experten-Gespräch vereinbaren
-              </Link>
+              <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">{t("Experten-Gespräch vereinbaren")}</Link>
               <button onClick={() => window.print()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-8 py-4 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]">
-                <Download size={16} /> PDF sichern
-              </button>
+                <Download size={16} />{t("PDF sichern")}</button>
             </footer>
           </div>
         )}
@@ -827,12 +807,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
 
                 <div className="space-y-2">
                   <p className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold">MORA OS — SECURED TRANSITION</p>
-                  <h1 className="text-3xl font-light tracking-wide text-white leading-snug" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                    Dossier wird geladen
-                  </h1>
-                  <p className="text-xs text-white/55 max-w-xs mx-auto leading-relaxed">
-                    Deine sichere Verbindung zum Website-HQ wird hergestellt. Die Daten werden verschlüsselt übertragen.
-                  </p>
+                  <h1 className="text-3xl font-light tracking-wide text-white leading-snug" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{t("Dossier wird geladen")}</h1>
+                  <p className="text-xs text-white/55 max-w-xs mx-auto leading-relaxed">{t("Deine sichere Verbindung zum Website-HQ wird hergestellt. Die Daten werden verschlüsselt übertragen.")}</p>
                 </div>
               </div>
 
@@ -845,8 +821,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   />
                 </div>
                 <div className="flex justify-between text-[8px] uppercase tracking-[0.15em] text-white/30">
-                  <span>Authentifizierung</span>
-                  <span>Umleitung</span>
+                  <span>{t("Authentifizierung")}</span>
+                  <span>{t("Umleitung")}</span>
                 </div>
               </div>
 
@@ -854,15 +830,13 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 <button 
                   onClick={() => { window.location.href = redirectUrl; }}
                   className="inline-flex items-center gap-1.5 text-xs text-emerald-400/80 hover:text-emerald-300 font-medium underline underline-offset-4 decoration-emerald-500/30 transition-colors"
-                >
-                  Klicke hier für eine direkte Weiterleitung
-                </button>
+                >{t("Klicke hier für eine direkte Weiterleitung")}</button>
               </div>
             </div>
           </div>
         )}
       </div>
-              </main>
+              </div>
               </>
               );
               }

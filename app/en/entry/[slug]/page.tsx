@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import EntryArticle from '@/components/EntryArticle';
+import ScanPage from '@/components/ScanPage';
 import { entryContent } from '@/lib/entry-content';
 
 type Props = {
@@ -12,6 +13,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+  if (slug === 'security-check') return { title: 'Security Check – Saimôr', description: 'Inspect publicly available domain signals and explore the findings in an isolated workspace.' };
   const article = entryContent.en.find((item) => item.slug === slug);
 
   return {
@@ -23,7 +25,8 @@ export async function generateMetadata({ params }: Props) {
 export default async function EntryArticlePageEn({ params }: Props) {
   const { slug } = await params;
 
-const article = entryContent.en.find((item) => item.slug === slug);
+  if (slug === 'security-check') return <ScanPage locale="en" />;
+  const article = entryContent.en.find((item) => item.slug === slug);
 
   if (!article) {
     notFound();

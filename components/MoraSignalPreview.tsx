@@ -42,17 +42,17 @@ export default function MoraSignalPreview({ locale }: { locale: 'de' | 'en' }) {
     }
   }
 
-  return <aside aria-label={de ? 'Vorschau mit öffentlichen Daten' : 'Public data preview'} className="rounded-2xl border border-[#ddc487]/25 bg-[#10241a]/60 p-6 sm:p-8">
-    <p className="flex items-center gap-3 font-mono text-[10px] tracking-[.15em] text-[#e6c781]"><Radio size={17} aria-hidden="true" />{de ? 'MÔRA / SIGNAL-VORSCHAU' : 'MÔRA / SIGNAL PREVIEW'}</p>
-    <p className="mt-4 text-sm leading-7 text-[#c7d0c7]">{de ? 'Ein Blick auf öffentliche Nachrichtenquellen. Lade aktuelle Meldungen mit ihrem Quellenlink. Deine Firmendaten werden hier nicht verwendet.' : 'A window into public news sources. Load current stories with their source links. Your company data is not used here.'}</p>
+  return <aside aria-label={de ? 'Vorschau mit öffentlichen Daten' : 'Public data preview'} className="rounded-[24px] border border-[#a8bbab]/65 bg-[linear-gradient(145deg,#ffffff_0%,#ebf1e8_100%)] p-7 shadow-[0_17px_55px_rgba(27,63,42,.075)] sm:p-10">
+    <p className="flex items-center gap-3 font-mono text-[10px] tracking-[.15em] text-[#315b43]"><Radio size={17} aria-hidden="true" />{de ? 'MÔRA / SIGNAL-VORSCHAU' : 'MÔRA / SIGNAL PREVIEW'}</p>
+    <p className="mt-4 text-sm leading-7 text-[#465e4e]">{de ? 'Ein Blick auf öffentliche Nachrichtenquellen. Lade aktuelle Meldungen mit ihrem Quellenlink. Deine Firmendaten werden hier nicht verwendet.' : 'A window into public news sources. Load current stories with their source links. Your company data is not used here.'}</p>
     <div aria-live="polite" aria-busy={state === 'loading'}>
-      {state === 'loading' && <p className="mt-5 text-sm text-[#e9dbb7]">{de ? 'Öffentliche Quellen werden abgefragt …' : 'Checking public sources …'}</p>}
-      {state === 'error' && <p className="mt-5 text-sm text-[#e9dbb7]">{de ? 'Die Quellen sind gerade nicht erreichbar oder liefern keine Meldungen. Bitte versuche es später erneut.' : 'The sources are unavailable or returned no stories. Please try again later.'}</p>}
+      {state === 'loading' && <p className="mt-5 text-sm text-[#3b6046]">{de ? 'Öffentliche Quellen werden abgefragt …' : 'Checking public sources …'}</p>}
+      {state === 'error' && <p className="mt-5 text-sm text-[#3b6046]">{de ? 'Die Quellen sind gerade nicht erreichbar oder liefern keine Meldungen. Bitte versuche es später erneut.' : 'The sources are unavailable or returned no stories. Please try again later.'}</p>}
       {feed && <>
-        <ul className="mt-5 divide-y divide-[#ddc487]/15">{feed.items.map(item => <li key={item.url} className="py-4"><a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-start justify-between gap-4 text-sm leading-6 text-[#f3ead4] hover:underline">{item.title}<ArrowUpRight size={16} className="mt-1 shrink-0" aria-hidden="true" /></a></li>)}</ul>
-        <p className="mt-3 text-xs leading-6 text-[#b7c5b9]">{feed.source} · {de ? 'Abgerufen' : 'Retrieved'} <time dateTime={feed.checkedAt}>{new Date(feed.checkedAt).toLocaleTimeString(de ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit' })}</time></p>
+        <ul className="mt-5 divide-y divide-[#8ca893]/35">{feed.items.map(item => <li key={item.url} className="py-4"><a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-start justify-between gap-4 text-sm leading-6 text-[#1f4932] hover:underline">{item.title}<ArrowUpRight size={16} className="mt-1 shrink-0" aria-hidden="true" /></a></li>)}</ul>
+        <p className="mt-3 text-xs leading-6 text-[#4e6b55]">{feed.source} · {de ? 'Abgerufen' : 'Retrieved'} <time dateTime={feed.checkedAt}>{new Date(feed.checkedAt).toLocaleTimeString(de ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit' })}</time></p>
       </>}
     </div>
-    <button type="button" onClick={load} disabled={state === 'loading'} className="mt-5 min-h-11 rounded-full border border-[#e6c781]/60 px-5 py-2 text-sm text-[#f0dfb1] transition hover:bg-[#e6c781]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6c781] disabled:opacity-60">{state === 'loading' ? (de ? 'Lädt …' : 'Loading …') : (de ? 'Öffentliche Signale laden' : 'Load public signals')}</button>
+    <button type="button" onClick={load} disabled={state === 'loading'} className="mt-5 min-h-11 rounded-full border border-[#306549]/55 bg-[#1c4e35] px-6 py-2.5 text-sm font-medium text-[#f9f7ee] transition hover:bg-[#163f2c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1c4e35] disabled:opacity-60">{state === 'loading' ? (de ? 'Lädt …' : 'Loading …') : (de ? 'Öffentliche Signale laden' : 'Load public signals')}</button>
   </aside>;
 }

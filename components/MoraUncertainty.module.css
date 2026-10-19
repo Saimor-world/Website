@@ -1,0 +1,6 @@
+.uncertainty{position:absolute;inset:-8%;overflow:hidden;pointer-events:none;mask-image:radial-gradient(ellipse at center,#000 35%,transparent 80%)}
+.rift{position:absolute;inset:0;background:radial-gradient(ellipse 14% 70% at 73% 45%,#3b513b19,transparent 70%),radial-gradient(ellipse 20% 80% at 20% 40%,#4c4c6122,transparent 70%);animation:unease 13s ease-in-out infinite alternate}
+.shadow{position:absolute;inset:-20%;background:radial-gradient(ellipse 25% 50% at 50% 40%,#000a,transparent 80%);animation:drift 18s ease-in-out infinite alternate}
+@keyframes unease{from{transform:translate(-2%,1%) scale(1)}to{transform:translate(3%,-2%) scale(1.13)}}
+@keyframes drift{from{transform:translate(-6%,2%)}to{transform:translate(5%,-2%)}}
+@media(prefers-reduced-motion:reduce){.uncertainty *{animation:none!important}}
