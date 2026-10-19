@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { getClientIP, rateLimit } from '@/lib/rate-limit';
 import { writeBotStatus } from '@/lib/finance/bot-store';
+import { checkExt } from '@/lib/finance/ext';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -69,6 +70,12 @@ export async function POST(req: NextRequest) {
     ts: typeof body.ts === 'string' ? body.ts : new Date().toISOString(),
   };
 
+  // Contract v2: optional ext (≤16 KB, needs v). Old fields unchanged.
+  const extCheck = checkExt(body.ext);
+  if (!extCheck.ok) {
+    return NextResponse.json({ error: extCheck.error, message: extCheck.message }, { status: extCheck.status });
+  }
+
   if (status.ref == null && status.next_buy == null && status.next_sell == null) {
     return NextResponse.json(
       { error: 'validation', message: 'need at least one of ref, next_buy, next_sell' },
@@ -77,8 +84,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await writeBotStatus(status);
-    return NextResponse.json({ ok: true, stored: status });
+    const stored = extCheck.ext ? { ...status, ext: extCheck.ext } : status;
+    await writeBotStatus(stored);
+    return NextResponse.json({ ok: true, stored });
   } catch (e: any) {
     return NextResponse.json({ error: 'store_failed', message: String(e?.message || e) }, { status: 500 });
   }
