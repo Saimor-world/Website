@@ -149,7 +149,7 @@ export default function SystemWorldHome({ locale }: Props) {
               </div>
             ))}
           </div>
-          <p className="mt-9 font-mono text-[10px] uppercase tracking-[.18em] text-[#4c694b]">
+          <p className="mt-9 font-mono text-[12px] uppercase tracking-[.18em] text-[#4c694b]">
             {locale === 'de' ? 'Die Intelligenz darf sich verändern. Der Kontext bleibt deiner.' : 'The intelligence may change. The context remains yours.'}
           </p>
         </div>

@@ -10,7 +10,7 @@ const COPY = {
     title: 'Datenschutz',
     subtitle: 'EU-Hosting · keine Werbe-Tracker',
     body: 'Anonyme Nutzungsstatistik mit Matomo – nur mit deiner Einwilligung.',
-    essential: 'Essenziell',
+    essential: 'Nur essenziell',
     acceptAll: 'Akzeptieren',
     settings: 'Einstellungen',
     less: 'Weniger',

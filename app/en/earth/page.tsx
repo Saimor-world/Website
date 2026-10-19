@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Earth connects stories, knowledge and change with real places — as a calm map and timeline rather than a social feed.',
 };
 
-const points = [{ left: '18%', top: '28%', label: 'Memory' }, { left: '56%', top: '18%', label: 'Knowledge' }, { left: '72%', top: '58%', label: 'Change' }, { left: '32%', top: '68%', label: 'Voice' }];
+const points = [{ left: '18%', top: '28%', label: 'Memory' }, { left: '56%', top: '18%', label: 'Knowledge' }, { left: '58%', top: '58%', label: 'Change' }, { left: '32%', top: '68%', label: 'Voice' }];
 
 export default function EarthPage() {
   return (

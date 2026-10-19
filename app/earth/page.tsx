@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Earth verbindet Geschichten, Wissen und Veränderung mit realen Orten — als ruhige Karte und Zeitleiste statt als Social Feed.',
 };
 
-const points = [{ left: '18%', top: '28%', label: 'Erinnerung' }, { left: '56%', top: '18%', label: 'Wissen' }, { left: '72%', top: '58%', label: 'Veränderung' }, { left: '32%', top: '68%', label: 'Stimme' }];
+const points = [{ left: '18%', top: '28%', label: 'Erinnerung' }, { left: '56%', top: '18%', label: 'Wissen' }, { left: '58%', top: '58%', label: 'Veränderung' }, { left: '32%', top: '68%', label: 'Stimme' }];
 
 export default function EarthPage() {
   return (

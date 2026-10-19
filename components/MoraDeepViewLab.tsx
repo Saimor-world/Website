@@ -300,11 +300,11 @@ export default function MoraDeepViewLab({ locale }: Props) {
       <section className="relative overflow-hidden border-b border-[#809c83]/35 bg-[#f5f3e9] px-5 pb-14 pt-24 text-[#183d2b] sm:px-8 sm:pb-20 sm:pt-28 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_79%_18%,rgba(224,203,146,.20),transparent_41%),radial-gradient(ellipse_at_12%_91%,rgba(147,187,150,.16),transparent_40%)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-7xl">
-          <Link href={moraHref} className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[.2em] text-[#43664c] transition hover:text-[#183e2b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315d40]">
+          <Link href={moraHref} className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[.2em] text-[#43664c] transition hover:text-[#183e2b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315d40]">
             <ArrowLeft className="h-3.5 w-3.5" />{c.back}
           </Link>
           <div className="mt-12 max-w-4xl sm:mt-16">
-            <p className="font-mono text-[10px] font-semibold tracking-[.23em] text-[#45664b]">{c.eyebrow}</p>
+            <p className="font-mono text-[12px] font-semibold tracking-[.23em] text-[#45664b]">{c.eyebrow}</p>
             <h1 className="mt-5 max-w-5xl font-serif text-[clamp(2.8rem,11vw,6.6rem)] font-light leading-[.95] tracking-[-.05em] text-[#173c2c]">{c.title}</h1>
             <p className="mt-6 max-w-2xl text-[15px] leading-7 text-[#3e5e48] sm:text-lg sm:leading-8">{c.lead}</p>
           </div>
@@ -319,21 +319,21 @@ export default function MoraDeepViewLab({ locale }: Props) {
               ['03', 'PERMISSION', 'Who can approve the next action?'],
             ]).map(([number, label, question]) => (
               <div key={number} className="grid grid-cols-[35px_1fr] gap-3 border-b border-[#829d83]/30 py-5 last:border-0 md:border-b-0 md:border-r md:border-[#829d83]/30 md:px-5 md:first:pl-0 md:last:border-0">
-                <span className="font-mono text-[10px] text-[#62806a]">{number}</span>
+                <span className="font-mono text-[12px] text-[#62806a]">{number}</span>
                 <div>
-                  <p className="font-mono text-[10px] font-semibold tracking-[.16em] text-[#426950]">{label}</p>
+                  <p className="font-mono text-[12px] font-semibold tracking-[.16em] text-[#426950]">{label}</p>
                   <p className="mt-2 text-sm leading-6 text-[#294933]">{question}</p>
                 </div>
               </div>
             ))}
           </div>
-          <a href="#deep-view-check" className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-[#37654a] py-2 text-sm font-semibold text-[#235439] transition hover:gap-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#235439]">{locale === 'de' ? 'Reality Check erleben' : 'Explore the Reality Check'}<ArrowRight size={17} aria-hidden="true" /></a>
+          <a href="#deep-view-check" className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-[#37654a] py-2 text-sm font-semibold text-[#235439] transition hover:gap-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#235439]">{locale === 'de' ? 'Zum Realitäts-Check' : 'Explore the Reality Check'}<ArrowRight size={17} aria-hidden="true" /></a>
         </div>
       </section>
 
       <section id="deep-view-check" className="scroll-mt-16 px-3 py-10 sm:px-8 sm:py-14 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-4 font-mono text-[8px] font-semibold tracking-[.2em] text-[#d9c77f]/70">{c.badge}</div>
+          <div className="mb-4 font-mono text-[12px] font-semibold tracking-[.2em] text-[#d9c77f]/70">{c.badge}</div>
 
           <div className="grid gap-4 lg:grid-cols-[1.4fr_.6fr]">
             {/* Star field */}
@@ -344,15 +344,15 @@ export default function MoraDeepViewLab({ locale }: Props) {
                 <div className="flex items-center gap-3">
                   <MoraOrb size={34} state={dreaming ? 'dream' : 'rest'} label="MÔRA" />
                   <div>
-                    <div className="font-mono text-[8px] tracking-[.22em] text-white/42">{c.fieldLabel} · {c.selected(selected.length)}</div>
-                    <div className="mt-0.5 text-[11px] text-[#9fe8cf]/80">{dreaming ? c.moraDreaming : c.moraResting}</div>
+                    <div className="font-mono text-[12px] tracking-[.22em] text-white/42">{c.fieldLabel} · {c.selected(selected.length)}</div>
+                    <div className="mt-0.5 text-[12px] text-[#9fe8cf]/80">{dreaming ? c.moraDreaming : c.moraResting}</div>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button type="button" onClick={play} disabled={playing} className="inline-flex h-9 items-center gap-2 rounded-full border border-white/[.14] bg-black/25 px-3 font-mono text-[8px] uppercase tracking-[.16em] text-white/75 transition hover:border-white/30 hover:text-white disabled:opacity-40">
+                  <button type="button" onClick={play} disabled={playing} className="inline-flex h-9 items-center gap-2 rounded-full border border-white/[.14] bg-black/25 px-3 font-mono text-[12px] uppercase tracking-[.16em] text-white/75 transition hover:border-white/30 hover:text-white disabled:opacity-40">
                     <Play className="h-3 w-3" />{c.play}
                   </button>
-                  <button type="button" onClick={reset} className="inline-flex h-9 items-center gap-2 rounded-full border border-white/[.14] bg-black/25 px-3 font-mono text-[8px] uppercase tracking-[.16em] text-white/60 transition hover:border-white/30 hover:text-white">
+                  <button type="button" onClick={reset} className="inline-flex h-9 items-center gap-2 rounded-full border border-white/[.14] bg-black/25 px-3 font-mono text-[12px] uppercase tracking-[.16em] text-white/60 transition hover:border-white/30 hover:text-white">
                     <RotateCcw className="h-3 w-3" /><span className="sr-only sm:not-sr-only">{c.reset}</span>
                   </button>
                 </div>
@@ -421,7 +421,7 @@ export default function MoraDeepViewLab({ locale }: Props) {
                       {/* label below the dot, never on a line anchor */}
                       <span className="pointer-events-none absolute left-1/2 top-[30px] w-max max-w-[150px] -translate-x-1/2 text-center">
                         <span className={`block text-[12px] font-medium leading-tight transition-colors ${isDropped ? 'text-white/30 line-through' : isSelected ? 'text-white/90' : 'text-white/60 group-hover:text-white/85'}`}>{signal.title}</span>
-                        {!isDropped && <span className="mt-0.5 block text-[10px] leading-tight text-white/34">{signal.meta}</span>}
+                        {!isDropped && <span className="mt-0.5 block text-[12px] leading-tight text-white/34">{signal.meta}</span>}
                       </span>
                     </button>
                   );
@@ -429,7 +429,7 @@ export default function MoraDeepViewLab({ locale }: Props) {
 
                 {stars && (
                   <div className="dv-fade absolute bottom-3 left-3 z-40 rounded-full border border-[#e5c871]/25 bg-black/45 px-3 py-1.5 backdrop-blur-md">
-                    <span className="font-mono text-[8px] tracking-[.2em] text-[#e5c871]/70">{c.constellationLabel}</span>
+                    <span className="font-mono text-[12px] tracking-[.2em] text-[#e5c871]/70">{c.constellationLabel}</span>
                     <span className="ml-2 text-[12px] text-[#f2e3b3]">{c.constellationName}</span>
                   </div>
                 )}
@@ -438,7 +438,7 @@ export default function MoraDeepViewLab({ locale }: Props) {
                 )}
               </div>
 
-              <div className="relative flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/[.07] px-4 py-2.5 font-mono text-[8px] uppercase tracking-[.16em] text-white/40">
+              <div className="relative flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/[.07] px-4 py-2.5 font-mono text-[12px] uppercase tracking-[.16em] text-white/40">
                 <span className="inline-flex items-center gap-2"><span className="inline-block h-[2px] w-5 bg-[#9fe8cf]" />{c.legendBacked}</span>
                 <span className="inline-flex items-center gap-2"><span className="inline-block h-0 w-5 border-t border-dashed border-[#b7c9c1]" />{c.legendGuessed}</span>
                 <span className="inline-flex items-center gap-2"><span className="inline-block h-0 w-5 border-t border-dotted border-[#e07a7a]/70" />{c.legendRejected}</span>
@@ -448,10 +448,10 @@ export default function MoraDeepViewLab({ locale }: Props) {
             {/* Task first, then the dream log */}
             <div className="grid content-start gap-4">
               <div className="rounded-[1.4rem] border border-white/[.09] bg-[#08130f] p-5">
-                <div className="font-mono text-[8px] tracking-[.22em] text-[#e5c871]/65">{c.taskTitle}</div>
+                <div className="font-mono text-[12px] tracking-[.22em] text-[#e5c871]/65">{c.taskTitle}</div>
                 {task ? (
                   <div className="mt-3">
-                    <div className="inline-flex items-center gap-1.5 font-mono text-[8px] tracking-[.2em] text-[#f2d891]"><Sparkles className="h-3 w-3" />{c.stages[taskStage].label}</div>
+                    <div className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-[.2em] text-[#f2d891]"><Sparkles className="h-3 w-3" />{c.stages[taskStage].label}</div>
                     <p className="mt-2 break-words font-serif text-[1.35rem] font-light leading-snug text-[#f6f2e8]">{c.tasks[task.key]}</p>
                     {task.due && <p className="mt-1 text-xs text-white/40">{c.due}</p>}
                     <p className="mt-2 text-[13px] leading-5 text-white/50">{c.stages[taskStage].text}</p>
@@ -474,7 +474,7 @@ export default function MoraDeepViewLab({ locale }: Props) {
               </div>
 
               <div className="rounded-[1.4rem] border border-white/[.09] bg-[#08130f] p-5">
-                <div className="font-mono text-[8px] tracking-[.22em] text-[#78e0bd]/60">{c.protocolTitle}</div>
+                <div className="font-mono text-[12px] tracking-[.22em] text-[#78e0bd]/60">{c.protocolTitle}</div>
                 {result.operations.length === 0 ? (
                   <p className="mt-3 text-sm leading-6 text-white/40">{c.protocolEmpty}</p>
                 ) : (
@@ -488,7 +488,7 @@ export default function MoraDeepViewLab({ locale }: Props) {
                           </span>
                           <span className={entry.ok ? 'text-white/70' : 'text-white/42'}>
                             {entry.text}
-                            {entry.tag && <span className="ml-2 whitespace-nowrap rounded-full border border-white/[.12] px-1.5 py-px font-mono text-[8px] uppercase tracking-[.12em] text-white/50">{entry.tag}</span>}
+                            {entry.tag && <span className="ml-2 whitespace-nowrap rounded-full border border-white/[.12] px-1.5 py-px font-mono text-[12px] uppercase tracking-[.12em] text-white/50">{entry.tag}</span>}
                           </span>
                         </li>
                       );
@@ -505,12 +505,12 @@ export default function MoraDeepViewLab({ locale }: Props) {
 
       <section className="border-y border-white/[.07] bg-[#08150f] px-5 py-16 pb-24 sm:px-8 md:py-24 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#7dddbd]/68">{c.whyEyebrow}</p>
+          <p className="font-mono text-[12px] font-semibold tracking-[.28em] text-[#7dddbd]/68">{c.whyEyebrow}</p>
           <h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/94 sm:text-6xl">{c.whyTitle}</h2>
           <div className="mt-10 border-t border-white/[.10]">
             {c.steps.map(([number, heading, body]) => (
               <article key={number} className="grid gap-4 border-b border-white/[.08] py-7 sm:grid-cols-[56px_.65fr_1.35fr] sm:gap-8">
-                <span className="font-mono text-[9px] tracking-[.18em] text-[#e2c474]/46">{number}</span>
+                <span className="font-mono text-[12px] tracking-[.18em] text-[#e2c474]/46">{number}</span>
                 <h3 className="text-xl font-medium text-white/86">{heading}</h3>
                 <p className="max-w-2xl text-sm leading-7 text-white/48 sm:text-base">{body}</p>
               </article>

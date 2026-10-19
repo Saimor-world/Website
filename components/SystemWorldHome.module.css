@@ -2,7 +2,7 @@
 .world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip}
 .world ::selection{background:var(--gold);color:var(--ink)}
 .world a:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
-.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#3d6048 0%,#1e4a36 35%,#0d2a1f 76%)}
+.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#4d7858 0%,#2a5a42 35%,#163a2c 76%)}
 .heroImage{position:absolute!important;inset:auto 0 0 auto!important;width:min(100%,1100px)!important;height:auto!important;max-width:none;aspect-ratio:1672/941;object-fit:contain;opacity:.9;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%),linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(90deg,transparent,#000 30%),linear-gradient(180deg,transparent,#000 22%);-webkit-mask-composite:source-in;mask-composite:intersect}
 .heroShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071a12ad,transparent 75%),linear-gradient(0deg,#081e17,transparent 22%)}
 .heroInner{position:relative;z-index:2;max-width:1440px;margin:auto;padding:145px var(--gutter) 36px;min-height:850px;display:flex;flex-direction:column}
@@ -56,11 +56,11 @@
 .daylightContact{background:var(--paper);color:#173a2b}
 @media(max-width:1000px){.heroGrid{grid-template-columns:1.2fr .8fr}.intro{max-width:430px}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
 @media(max-width:700px){
- .hero{min-height:740px;background:radial-gradient(ellipse at 80% 36%,#4a7a5d60,transparent 60%),#143a2c}
+ .hero{min-height:780px;background:radial-gradient(ellipse at 80% 36%,#5a8a6d70,transparent 55%),#1e4a38}
  .hero::before{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/saimor-cosmos-layer.webp') 72% 33%/auto 100% no-repeat;opacity:.27;-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
- .heroImage{right:-18%!important;top:auto!important;bottom:0!important;width:160%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
+ .heroImage{right:-18%!important;top:auto!important;bottom:16px!important;width:160%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
  .heroShade{background:linear-gradient(90deg,#0b302480,transparent),linear-gradient(0deg,#081e17,transparent 60%)}
- .heroInner{min-height:740px;padding:100px 24px 64px}.heroInner>.eyebrow{font-size:12px;letter-spacing:.12em;max-width:280px}
+ .heroInner{min-height:780px;padding:100px 24px 80px}.heroInner>.eyebrow{font-size:12px;letter-spacing:.12em;max-width:280px}
  .heroGrid{display:block;padding:102px 0 22px}.desktopIntro{display:none}.mobileIntro{display:inline}
  .heroCopy h1{font-size:clamp(78px,22vw,98px);line-height:1}
  .thesis{font-size:clamp(27px,7.3vw,31px);line-height:1.16;margin-top:19px;max-width:370px}
