@@ -15,7 +15,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByText('Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.')).toBeInTheDocument();
     expect(screen.getAllByText('MÔRA').length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
-    expect(screen.getByRole('link', { name: 'Realitätsprüfung öffnen' })).toHaveAttribute('href', '/mora/deep-view');
+    expect(screen.getByRole('link', { name: 'Reality Check öffnen' })).toHaveAttribute('href', '/mora/deep-view');
     expect(screen.getByText('Klingt sicher.')).toBeInTheDocument();
     expect(screen.getByText('Ist es auch belegt?')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Öffentliche Signale laden' })).not.toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('SystemWorldHome', () => {
   it('presents uncertain AI signals as a Reality Check rather than a public news feed in both languages', () => {
     for (const locale of ['de', 'en'] as const) {
       render(<SystemWorldHome locale={locale} />);
-      expect(screen.getByRole('link', { name: locale === 'de' ? 'Realitätsprüfung öffnen' : 'Open Reality Check' }))
+      expect(screen.getByRole('link', { name: locale === 'de' ? 'Reality Check öffnen' : 'Open Reality Check' }))
         .toHaveAttribute('href', locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view');
       expect(screen.queryByText(/öffentliche Nachrichtenquellen|public news sources/i)).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: /public signals|öffentliche Signale/i })).not.toBeInTheDocument();

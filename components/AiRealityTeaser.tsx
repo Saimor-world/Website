@@ -4,7 +4,7 @@ import styles from './AiRealityTeaser.module.css';
 
 const COPY = {
   de: {
-    eyebrow: 'REALITÄTSPRÜFUNG / KI',
+    eyebrow: 'REALITY CHECK / KI',
     introduction: 'Drei Fragen, die eine überzeugende Antwort offenlässt.',
     layers: [
       { number: '01', Icon: CircleHelp, question: 'Klingt sicher.', counterpoint: 'Ist es auch belegt?' },
@@ -12,7 +12,7 @@ const COPY = {
       { number: '03', Icon: ShieldAlert, question: 'Kann etwas auslösen.', counterpoint: 'Wer gibt es frei?' },
     ],
     step: 'Inszenierte Begegnung · keine Live-Analyse',
-    action: 'Realitätsprüfung öffnen',
+    action: 'Reality Check öffnen',
   },
   en: {
     eyebrow: 'REALITY CHECK / AI',
