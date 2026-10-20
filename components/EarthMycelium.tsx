@@ -207,7 +207,7 @@ const PHONE_H = 900;
 
 function phoneLimbY(x: number) {
   const t = (x - 600) / 640;
-  return 10 + t * t * 92;
+  return 2 + t * t * 96;
 }
 
 function buildPhoneStrands(): Strand[] {
