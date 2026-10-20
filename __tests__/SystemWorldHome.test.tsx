@@ -125,6 +125,8 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByRole('button', { name: /SAIMÔR Earth|Erde erkunden/ })).not.toBeInTheDocument();
     const horizon = screen.getByTestId('earth-horizon');
     expect(hero?.contains(horizon)).toBe(false);
+    expect(horizon).toHaveTextContent('Die andere Seite der Welt.');
+    expect(horizon).toHaveTextContent('Durch die Lichtung hindurch endet dieselbe Kugel.');
     expect(horizon).toHaveTextContent('Earth');
     expect(horizon).toHaveTextContent('Konzept · keine Live-Karte');
     expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
