@@ -13,6 +13,8 @@ describe('legal notice', () => {
     expect(
       screen.getByText('Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV')
     ).toBeInTheDocument();
+    expect(screen.getByText('Next Chapter')).toBeInTheDocument();
+    expect(screen.queryByText('NextChapter')).not.toBeInTheDocument();
     expect(screen.queryByText(/Online-Streitbeilegung/)).not.toBeInTheDocument();
   });
 
@@ -23,6 +25,8 @@ describe('legal notice', () => {
     expect(
       screen.getByText('Responsible for content according to § 18 Para. 2 MStV')
     ).toBeInTheDocument();
+    expect(screen.getByText('Next Chapter')).toBeInTheDocument();
+    expect(screen.queryByText('NextChapter')).not.toBeInTheDocument();
     expect(screen.queryByText(/online dispute resolution/i)).not.toBeInTheDocument();
   });
 });
