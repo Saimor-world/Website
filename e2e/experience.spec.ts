@@ -62,6 +62,8 @@ test('public routes render, contain one headline, load images and fit the viewpo
   test.setTimeout(180000);
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
+  // Earth regions come from earth.saimor.world, which only allows the production origin; keep CI hermetic.
+  await page.route('https://earth.saimor.world/**', route => route.fulfill({ status: 200, json: { regions: [] } }));
   for (const route of routes) {
     const response = await visit(page, route);
     expect(response?.status(), route).toBe(200);
