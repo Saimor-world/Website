@@ -123,6 +123,7 @@ describe('SystemWorldHome', () => {
     expect(hero?.contains(footer!)).toBe(true);
     expect(hero?.contains(earth!)).toBe(true);
     expect(footer?.contains(earth!)).toBe(false);
+    expect(earth?.textContent).toContain('Inoffizielle Produktvorschau');
   });
 
   it('keeps the public studio voice organizational rather than solo-founder led', () => {

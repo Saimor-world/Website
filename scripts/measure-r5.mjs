@@ -30,7 +30,8 @@ async function prepare(page) {
   await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' }).catch(() => {});
   const cookie = page.getByRole('button', { name: /Nur essenziell|essential only|Essenziell/i });
   if (await cookie.count()) await cookie.first().click().catch(() => {});
-  await page.waitForTimeout(250);
+  await page.evaluate(() => document.fonts.ready).catch(() => {});
+  await page.waitForTimeout(400);
 }
 
 async function shotStats(page, name, clip) {
@@ -90,19 +91,41 @@ const heroFooterStack = async (page) => page.evaluate(() => {
     && el.children.length === 0,
   );
   const earth = Array.from(document.querySelectorAll('button')).find((el) => /SAIMÔR Earth/.test(el.textContent || ''));
+  const caption = earth?.querySelector('small');
+  const wordmark = document.getElementById('world-title');
   if (!footer || !earth) return { found: false };
   const a = footer.getBoundingClientRect();
   const b = earth.getBoundingClientRect();
+  const cap = caption?.getBoundingClientRect();
   const overlapX = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
   const overlapY = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  const mark = wordmark ? getComputedStyle(wordmark) : null;
   return {
     found: true,
     footer: { x: a.x, y: a.y, w: a.width, h: a.height, bottom: a.bottom, lines: a.height > 28 ? 2 : 1, text: (footer.textContent || '').trim() },
-    earth: { x: b.x, y: b.y, w: b.width, h: b.height, top: b.top },
+    earth: { x: b.x, y: b.y, w: b.width, h: b.height, top: b.top, bottom: b.bottom },
+    caption: caption ? { text: (caption.textContent || '').trim(), bottom: cap?.bottom, height: cap?.height, visible: (cap?.height || 0) > 8 && (cap?.bottom || 0) <= innerHeight - 2 } : null,
+    clipped: b.bottom > innerHeight - 2,
     overlapX,
     overlapY,
     colliding: overlapX > 2 && overlapY > 2,
     stacked: a.bottom <= b.top + 2,
+    wordmark: mark ? { family: mark.fontFamily, size: mark.fontSize } : null,
+  };
+});
+
+const deepLabels = async (page) => page.evaluate(() => {
+  const pick = (text) => Array.from(document.querySelectorAll('p, span, a, button')).find((el) => (el.textContent || '').trim() === text);
+  const info = (el) => {
+    if (!el) return null;
+    const cs = getComputedStyle(el);
+    return { size: parseFloat(cs.fontSize), color: cs.color, text: (el.textContent || '').trim().slice(0, 48) };
+  };
+  return {
+    welt: info(pick('DIE WELT DER KI')),
+    back: info(document.querySelector('header a')),
+    footer: info(Array.from(document.querySelectorAll('span')).find((el) => /PRODUKTVORSCHAU/.test(el.textContent || ''))),
+    en: info(pick('EN')),
   };
 });
 
@@ -116,7 +139,7 @@ try {
     await page.goto(`${BASE}/de`, { waitUntil: 'networkidle', timeout: 60000 });
     await page.waitForTimeout(800);
     await prepare(page);
-    const hero = await shotStats(page, `r5-hero-${width}`, { x: 0, y: 0, width, height: Math.min(height, 780) });
+    const hero = await shotStats(page, `r5-hero-${width}`, { x: 0, y: 0, width, height });
     report[`hero-${width}`] = {
       mean: hero.mean,
       stddev: hero.stddev,
@@ -133,7 +156,7 @@ try {
     await page.waitForTimeout(1400);
     await prepare(page);
     const opening = await shotStats(page, 'r5-deep-opening-1440', { x: 0, y: 0, width: 1440, height: 900 });
-    report['deep-opening-1440'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page), sound: await overlap(page) };
+    report['deep-opening-1440'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page), sound: await overlap(page), labels: await deepLabels(page) };
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const enjoy = page.getByRole('button', { name: /Lichtung|clearing|Augen|eyes|genießen|Open/i });
@@ -163,7 +186,7 @@ try {
     await page.waitForTimeout(1400);
     await prepare(page);
     const opening = await shotStats(page, 'r5-deep-opening-390', { x: 0, y: 0, width: 390, height: 844 });
-    report['deep-opening-390'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page) };
+    report['deep-opening-390'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page), labels: await deepLabels(page) };
     await page.close();
   }
 } finally {
