@@ -2,13 +2,14 @@
 .world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip}
 .world ::selection{background:var(--gold);color:var(--ink)}
 .world a:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
-.hero{position:relative;isolation:isolate;min-height:850px;background:radial-gradient(ellipse at 78% 35%,#78a07c 0%,#4e8064 35%,#356850 76%)}
-.heroImage{position:absolute!important;inset:auto 0 0 auto!important;width:min(100%,1100px)!important;height:auto!important;max-width:none;aspect-ratio:1672/941;object-fit:contain;opacity:.9;-webkit-mask-image:radial-gradient(ellipse 82% 78% at 82% 48%,#000 18%,#000 46%,transparent 78%),linear-gradient(180deg,transparent,#000 14%,#000 90%,transparent);mask-image:radial-gradient(ellipse 82% 78% at 82% 48%,#000 18%,#000 46%,transparent 78%),linear-gradient(180deg,transparent,#000 14%,#000 90%,transparent);-webkit-mask-composite:source-in;mask-composite:intersect}
-.heroShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#1a403055,transparent 70%),linear-gradient(0deg,#1a403066,transparent 28%)}
+.hero{position:relative;isolation:isolate;min-height:850px;background:#16382c}
+.heroImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none;object-fit:cover;object-position:68% 78%;opacity:1;-webkit-mask-image:none;mask-image:none;filter:brightness(1.18) saturate(1.06) contrast(1.04)}
+.heroShade{position:absolute;inset:0;pointer-events:none;background:none}
 .heroInner{position:relative;z-index:2;max-width:1440px;margin:auto;padding:145px var(--gutter) 36px;min-height:850px;display:flex;flex-direction:column}
 .eyebrow{font:600 12px/1.8 ui-monospace,SFMono-Regular,monospace;letter-spacing:.16em;color:#e8dfc0}
 .heroGrid{display:grid;grid-template-columns:1.05fr 1fr;flex:1;align-items:center;padding:65px 0 70px}
 .heroCopy{position:relative;z-index:2;max-width:620px}
+.heroCopy::before{content:"";position:absolute;z-index:-1;inset:-56px -96px -64px -40px;pointer-events:none;background:radial-gradient(ellipse 78% 72% at 22% 40%,rgba(8,28,22,.58) 0%,rgba(8,28,22,.26) 46%,transparent 74%)}
 .heroCopy h1{font-family:"Cormorant Garamond",serif;font-weight:400;font-size:clamp(88px,9vw,140px);line-height:.95;letter-spacing:-.06em;color:#fff8e9}
 .thesis{font-size:clamp(26px,2.35vw,35px);font-weight:350;line-height:1.25;letter-spacing:-.03em;margin-top:28px;max-width:550px;text-wrap:balance}
 .mobileIntro{display:none}
@@ -58,8 +59,9 @@
 @media(max-width:700px){
  .hero{min-height:100svh;display:flex;flex-direction:column;background:radial-gradient(ellipse at 80% 36%,#6a9a7d80,transparent 55%),#356850}
  .hero::before{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/saimor-cosmos-layer.webp') 72% 33%/auto 100% no-repeat;opacity:.27;-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
- .heroImage{right:-18%!important;top:auto!important;bottom:16px!important;width:160%!important;aspect-ratio:1672/941;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
+ .heroImage{inset:auto -18% 16px auto!important;width:160%!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain;object-position:center;filter:none;-webkit-mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%);mask-image:radial-gradient(ellipse 68% 51% at 68% 51%,#000 42%,#000 67%,transparent 100%)}
  .heroShade{background:linear-gradient(90deg,#0b302480,transparent),linear-gradient(0deg,#081e17,transparent 60%)}
+ .heroCopy::before{display:none}
  .heroInner{min-height:0;flex:1;padding:100px 24px 16px}.heroInner>.eyebrow{font-size:12px;letter-spacing:.12em;max-width:280px}
  .heroGrid{display:block;padding:102px 0 22px}.desktopIntro{display:none}.mobileIntro{display:inline}
  .heroCopy h1{font-size:clamp(78px,22vw,98px);line-height:1}

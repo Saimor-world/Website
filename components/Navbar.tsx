@@ -86,6 +86,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
       '/en/studio': '/studio',
       '/yori': '/en/yori',
       '/en/yori': '/yori',
+      '/earth': '/en/earth',
+      '/en/earth': '/earth',
     };
     if (paired[pathname]) return paired[pathname];
     if (['/portal', '/demo', '/wall', '/login'].includes(pathname)) return pathname;
