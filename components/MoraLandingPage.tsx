@@ -150,7 +150,14 @@ export default function MoraLandingPage({ locale }: Props) {
             {THREADS.map((t, i) => (
               <g key={i}>
                 <path d={t.d} stroke="url(#moraThread)" strokeWidth={t.w * 1.4} fill="none" opacity=".9" className={styles.threadGlow} />
-                <path d={t.d} className={styles.spark} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
+              </g>
+            ))}
+          </svg>
+          <svg className={`${styles.threads} ${styles.sparkLayer}`} viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
+            {THREADS.map((t, i) => (
+              <g key={i}>
+                <path d={t.d} className={`${styles.spark} ${styles.sparkHalo}`} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
+                <path d={t.d} className={`${styles.spark} ${styles.sparkCore}`} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
               </g>
             ))}
           </svg>

@@ -53,7 +53,7 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
     let visible = true;
     let tex: Uint8ClampedArray | null = null;
     let frame: ImageData | null = null;
-    let lut: { idx: Int32Array; row: Int32Array; lon: Float32Array; day: Float32Array; rim: Float32Array; rimWarm: Float32Array } | null = null;
+    let lut: { idx: Int32Array; row: Int32Array; lon: Float32Array; mrg: Float32Array; mb: Float32Array; ar: Float32Array; ag: Float32Array; ab: Float32Array } | null = null;
     let S = 0;
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const roots = growRoots([[54.13, 8.86], [48.78, 9.18], [44, 24]]);
@@ -108,7 +108,16 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
         const e = Math.pow(1 - nz, 2.6);
         rim.push(e); rimWarm.push(Math.max(0, l + 0.3));
       }
-      lut = { idx: Int32Array.from(idx), row: Int32Array.from(row), lon: Float32Array.from(lon), day: Float32Array.from(day), rim: Float32Array.from(rim), rimWarm: Float32Array.from(rimWarm) };
+      const n = idx.length, mrg = new Float32Array(n), mb = new Float32Array(n), ar = new Float32Array(n), ag = new Float32Array(n), ab = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        const dy = day[i], night = 1 - dy, e = rim[i], w = rimWarm[i];
+        mrg[i] = 0.08 + 0.85 * dy; mb[i] = 0.1 + 0.85 * dy;
+        ar[i] = night * 8 + e * (255 * w * 1.1 + 60); ag[i] = night * 10 + e * (180 * w * 1.1 + 40); ab[i] = night * 12 + e * (80 * w * 1.1 + 10);
+      }
+      const ixa = Int32Array.from(idx);
+      for (let i = 0; i < n; i++) frame.data[ixa[i] + 3] = 255;
+      lut = { idx: ixa, row: Int32Array.from(row), lon: Float32Array.from(lon), mrg, mb, ar, ag, ab };
+      lastSh = NaN;
       draw(performance.now());
     };
 
@@ -122,21 +131,23 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
     };
 
     let last = 0;
+    let lastSh = NaN;
     const draw = (now: number) => {
       if (!tex || !lut || !frame) return;
       const t = now / 1000;
       const lc = 11 + 26 * Math.sin(t * 0.09); // slow rocking spin, Europe stays in view
       const shift = (lc / 360) * TEX_W;
       const px = frame.data, L = lut;
-      for (let i = 0; i < L.idx.length; i++) {
-        let u = Math.floor(L.lon[i] + shift + TEX_W * 1.5) % TEX_W;
+      const sh = Math.floor(shift + TEX_W * 1.5), n = L.idx.length, lon = L.lon, row = L.row, ix = L.idx, mrg = L.mrg, mb = L.mb, ar = L.ar, ag = L.ag, ab = L.ab;
+      // The texture only moves when the spin crosses a whole texel; reuse the last pixels otherwise.
+      if (sh !== lastSh) { lastSh = sh; for (let i = 0; i < n; i++) {
+        let u = Math.floor(lon[i] + sh) % TEX_W;
         if (u < 0) u += TEX_W;
-        const s = (L.row[i] + u) * 4, o = L.idx[i], dy = L.day[i], night = 1 - dy, e = L.rim[i], w = L.rimWarm[i];
-        px[o] = tex[s] * (0.08 + 0.85 * dy) + night * 8 + e * (255 * w * 1.1 + 60);
-        px[o + 1] = tex[s + 1] * (0.08 + 0.85 * dy) + night * 10 + e * (180 * w * 1.1 + 40);
-        px[o + 2] = tex[s + 2] * (0.1 + 0.85 * dy) + night * 12 + e * (80 * w * 1.1 + 10);
-        px[o + 3] = 255;
-      }
+        const s = (row[i] + u) << 2, o = ix[i], m = mrg[i];
+        px[o] = tex[s] * m + ar[i];
+        px[o + 1] = tex[s + 1] * m + ag[i];
+        px[o + 2] = tex[s + 2] * mb[i] + ab[i];
+      } }
       ctx.putImageData(frame, 0, 0);
 
       // Root network: thin, sparse, fading with depth; only the front hemisphere.

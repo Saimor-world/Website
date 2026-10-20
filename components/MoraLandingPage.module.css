@@ -80,3 +80,7 @@
   .cards,.trust ul{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){.page *{animation:none!important}}
+
+.sparkLayer{will-change:transform;pointer-events:none}
+.sparkLayer .sparkCore{filter:none}
+.sparkLayer .sparkHalo{filter:none;stroke:#f3c76a;stroke-width:7;stroke-opacity:.32}
