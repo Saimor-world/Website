@@ -114,17 +114,6 @@ export default function SystemWorldHome({ locale }: Props) {
             </div>
           </div>
         </div>
-        <div className={styles.moraIntroduction} id="blick">
-          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / MÔRAS BLICK' : "THE WORLD OF AI / MÔRA'S VIEW"}</p>
-            <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
-            <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
-          </div>
-          <AiRealityTeaser locale={locale} />
-        </div>
-        <div className={styles.entry}>
-          <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
-          <div><p>{c.entryText}</p><Link href={securityHref} className={styles.textLink}>{c.entryCta}<ArrowRight size={17} aria-hidden="true" /></Link></div>
-        </div>
       </section>
 
       <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-label="Earth">
@@ -139,6 +128,20 @@ export default function SystemWorldHome({ locale }: Props) {
             {c.earthCredit}{' '}
             <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
           </p>
+        </div>
+      </section>
+
+      <section className={styles.blickWorld} aria-label={locale === 'de' ? 'Môras Blick' : "MÔRA's view"}>
+        <div className={styles.moraIntroduction} id="blick">
+          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / MÔRAS BLICK' : "THE WORLD OF AI / MÔRA'S VIEW"}</p>
+            <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
+            <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
+          </div>
+          <AiRealityTeaser locale={locale} />
+        </div>
+        <div className={styles.entry}>
+          <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
+          <div><p>{c.entryText}</p><Link href={securityHref} className={styles.textLink}>{c.entryCta}<ArrowRight size={17} aria-hidden="true" /></Link></div>
         </div>
       </section>
 

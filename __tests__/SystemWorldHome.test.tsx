@@ -84,7 +84,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
     const teaser = screen.getByRole('heading', { name: 'Überzeugend. Aber wahr?' });
-    expect(forest!.contains(teaser)).toBe(true);
+    expect(earthHorizon!.compareDocumentPosition(teaser) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     expect(forest!.nextElementSibling).toBe(earthHorizon);
   });
 
