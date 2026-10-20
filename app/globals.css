@@ -289,6 +289,9 @@ body:has([data-public-site]) {
 }
 
 html:has([data-home-globe]) footer[data-public-footer] {
-  border-top-color: transparent;
+  border-top-width: 0;
   background-color: #050706;
+  /* Contact is paper; let it settle into the night instead of a hard edge. */
+  padding-top: 168px;
+  background-image: linear-gradient(180deg, #f6f4ec 0%, #dfe4d9 34px, #8e9c8f 78px, #2f3f37 122px, #101a15 160px, #050706 200px);
 }

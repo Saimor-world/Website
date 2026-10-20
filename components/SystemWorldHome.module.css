@@ -55,8 +55,8 @@
 .entry .textLink{margin-top:16px}
 .daylightIntelligence{background:var(--paper);color:#1b3b2c}
 .daylightStudio{background:#e7ece2;color:#17392a}
-.daylightContact{background:var(--paper);color:#173a2b}
-.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:0;width:100%;max-width:none;min-height:max(100svh,1080px);background:linear-gradient(180deg,#06110e 0%,#06110e 70%,#0b1813 88%,#f6f4ec 100%);color:#f7f4e9;pointer-events:auto}
+.daylightContact{background:linear-gradient(180deg,#e7ece2 0%,var(--paper) 140px);color:#173a2b}
+.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:0;width:100%;max-width:none;min-height:max(100svh,920px);background:linear-gradient(180deg,#06110e 0%,#06110e 70%,#0b1813 88%,#f6f4ec 100%);color:#f7f4e9;pointer-events:auto}
 .returnDisk{position:absolute;z-index:0;inset:-4% -4%;width:108%;height:108%;max-width:none;pointer-events:none;transform:rotate(180deg);transform-origin:center center}
 .returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:50% 74%;opacity:1;filter:brightness(1.06) saturate(.96) contrast(1.02)}
 .returnMist{position:absolute;z-index:2;left:0;right:0;top:0;height:240px;pointer-events:none;background:radial-gradient(ellipse 110% 80% at 50% 0%,rgba(12,28,20,.1) 0%,transparent 68%)}
@@ -106,5 +106,5 @@
 @media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}
 .return::before,.return::after{content:"";position:absolute;z-index:2;left:0;right:0;pointer-events:none}
 .return::before{top:0;height:220px;background:linear-gradient(180deg,#06110e 0%,rgba(6,17,14,.75) 40%,transparent 100%)}
-.return::after{bottom:0;height:240px;background:linear-gradient(180deg,transparent 0%,rgba(11,24,19,.7) 45%,#cfd8cc 85%,#f6f4ec 100%)}
+.return::after{bottom:0;height:300px;background:linear-gradient(180deg,rgba(6,17,14,0) 0%,rgba(6,17,14,.6) 22%,#0d1c16 44%,#3a4f43 62%,#9fb0a2 80%,#e4e8de 93%,#f6f4ec 100%)}
 @media (max-width:700px){.return::before{height:120px}.return::after{height:170px}}
