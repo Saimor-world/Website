@@ -27,11 +27,9 @@ async function statsFromBuffer(buffer) {
 }
 
 async function prepare(page) {
-  await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' }).catch(() => {});
-  const cookie = page.getByRole('button', { name: /Nur essenziell|essential only|Essenziell/i });
-  if (await cookie.count()) await cookie.first().click().catch(() => {});
+  await page.addStyleTag({ content: 'nextjs-portal,[class*="z-[10000]"]{display:none!important}' }).catch(() => {});
   await page.evaluate(() => document.fonts.ready).catch(() => {});
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(500);
 }
 
 async function shotStats(page, name, clip) {
