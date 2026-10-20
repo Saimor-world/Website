@@ -52,6 +52,7 @@ function grow(
   wiggle: number,
   pull: Point | null,
   stopAtMora = false,
+  avoidCredit = true,
 ) {
   const points: Point[] = [start];
   let x = start.x;
@@ -74,18 +75,21 @@ function grow(
     let ny = y + Math.sin(angle) * len;
     if (ny > VIEW_H - 16) break;
     ny = Math.max(ny, limbY(nx) - 8);
-    const dx = (nx - CREDIT.x) / CREDIT.rx;
-    const dy = (ny - CREDIT.y) / CREDIT.ry;
-    if (dx * dx + dy * dy < 1) {
-      nx += nx < CREDIT.x ? -36 : 36;
-      if (((nx - CREDIT.x) / CREDIT.rx) ** 2 + ((ny - CREDIT.y) / CREDIT.ry) ** 2 < 1) break;
+    if (avoidCredit) {
+      const dx = (nx - CREDIT.x) / CREDIT.rx;
+      const dy = (ny - CREDIT.y) / CREDIT.ry;
+      if (dx * dx + dy * dy < 1) {
+        nx += nx < CREDIT.x ? -36 : 36;
+        if (((nx - CREDIT.x) / CREDIT.rx) ** 2 + ((ny - CREDIT.y) / CREDIT.ry) ** 2 < 1) break;
+      }
     }
     if (nx < -30 || nx > VIEW_W + 30) break;
     x = nx;
     y = ny;
     points.push({ x, y });
-    if (stopAtMora && Math.hypot(x - MORA.x, y - MORA.y) < 18) {
-      points.push({ ...MORA });
+    const hub = pull && stopAtMora ? pull : MORA;
+    if (stopAtMora && Math.hypot(x - hub.x, y - hub.y) < 18) {
+      points.push({ ...hub });
       break;
     }
   }
@@ -198,7 +202,65 @@ function buildStrands(): Strand[] {
   return strands;
 }
 
+const PHONE_MORA = { x: 600, y: 548 };
+
+function buildPhoneStrands(): Strand[] {
+  const rng = mulberry32(0x51a07e);
+  const strands: Strand[] = [];
+  const origins = [78, 230, 372, 520, 690, 848, 1060].map((x) => ({
+    x: x + (rng() - 0.5) * 22,
+    y: limbY(x) + 6 + rng() * 8,
+  }));
+
+  origins.forEach((origin, index) => {
+    const heading = Math.atan2(PHONE_MORA.y - origin.y, PHONE_MORA.x - origin.x) + (rng() - 0.5) * 0.28;
+    const trunk = grow(rng, origin, heading, 30, 16, 0.28, PHONE_MORA, true, false);
+    if (trunk.points.length) trunk.points[trunk.points.length - 1] = { ...PHONE_MORA };
+    const width = mix(1.55, 2.15, 1 - Math.abs(origin.x - PHONE_MORA.x) / 640);
+    const d = pathThrough(trunk.points);
+    if (d.length > 12) {
+      strands.push({ d, w: width, tone: index % 2 === 0 ? 'jade' : 'gold', pulse: true });
+    }
+
+    if (index === 1 || index === 2 || index === 4 || index === 5) {
+      const node = trunk.points[Math.max(4, Math.floor(trunk.points.length * 0.32))];
+      if (!node) return;
+      const fork = grow(
+        rng,
+        node,
+        trunk.heading + (index % 2 === 0 ? 0.62 : -0.62),
+        12,
+        14,
+        0.34,
+        PHONE_MORA,
+        true,
+        false,
+      );
+      if (fork.points.length > 3) {
+        fork.points[fork.points.length - 1] = { ...PHONE_MORA };
+        const forkPath = pathThrough(fork.points);
+        if (forkPath.length > 12) {
+          strands.push({ d: forkPath, w: width * 0.48, tone: 'hair', pulse: index === 2 || index === 5 });
+        }
+      }
+    }
+  });
+
+  return strands;
+}
+
 const STRANDS = buildStrands();
+const PHONE_STRANDS = buildPhoneStrands();
+const SPORES = Array.from({ length: 16 }, (_, index) => {
+  const rng = mulberry32(0x404 + index * 19);
+  return {
+    left: `${(8 + rng() * 84).toFixed(1)}%`,
+    top: `${(12 + rng() * 76).toFixed(1)}%`,
+    delay: `${(-rng() * 16).toFixed(1)}s`,
+    duration: `${(11 + rng() * 9).toFixed(1)}s`,
+    size: rng() > 0.72 ? 3 : 2,
+  };
+});
 
 export default function EarthMycelium() {
   const orbRef = useRef<HTMLDivElement>(null);
@@ -216,7 +278,8 @@ export default function EarthMycelium() {
       if (!orb || !field) return;
       if (document.querySelector('input[name="world-motion"]:checked')) return;
       const rect = field.getBoundingClientRect();
-      const hub = rect.top + rect.height * 0.25;
+      const phone = window.matchMedia?.('(max-width: 700px)')?.matches;
+      const hub = rect.top + rect.height * (phone ? 0.52 : 0.25);
       const drift = Math.max(-9, Math.min(9, (window.innerHeight * 0.48 - hub) * 0.05));
       orb.style.setProperty('--mora-drift', `${drift.toFixed(2)}px`);
     };
@@ -280,6 +343,67 @@ export default function EarthMycelium() {
             ))}
           </g>
         </svg>
+
+        <svg className={styles.phoneNetwork} viewBox={`0 0 ${VIEW_W} 900`} preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="earthPhoneFade" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#fff" stopOpacity="0.08" />
+              <stop offset="8%" stopColor="#fff" stopOpacity="1" />
+              <stop offset="78%" stopColor="#fff" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#fff" stopOpacity="0.12" />
+            </linearGradient>
+            <mask id="earthPhoneMask">
+              <rect width={VIEW_W} height="900" fill="url(#earthPhoneFade)" />
+            </mask>
+          </defs>
+          <g mask="url(#earthPhoneMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            {PHONE_STRANDS.map((strand, index) => (
+              <path
+                key={`pg-${index}`}
+                className={styles.phoneGlow}
+                d={strand.d}
+                stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
+                strokeWidth={strand.w * 4.2}
+              />
+            ))}
+            {PHONE_STRANDS.map((strand, index) => (
+              <path
+                key={`ps-${index}`}
+                className={`${styles.strand} ${styles[strand.tone]}`}
+                d={strand.d}
+                strokeWidth={strand.w}
+              />
+            ))}
+            {PHONE_STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
+              <path
+                key={`pp-${index}`}
+                className={styles.phonePulse}
+                d={strand.d}
+                strokeWidth={Math.max(1.15, strand.w * 0.7)}
+                pathLength={160}
+                style={{ animationDelay: `${-index * 1.7}s`, animationDuration: `${7.5 + (index % 3) * 1.4}s` }}
+              />
+            ))}
+          </g>
+        </svg>
+
+        <span className={styles.spores} aria-hidden="true">
+          {SPORES.map((spore, index) => (
+            <i
+              key={index}
+              style={{
+                left: spore.left,
+                top: spore.top,
+                width: spore.size,
+                height: spore.size,
+                minWidth: spore.size,
+                minHeight: spore.size,
+                animationDelay: spore.delay,
+                animationDuration: spore.duration,
+              }}
+            />
+          ))}
+        </span>
 
         <div className={styles.moraOrb} ref={orbRef} role="img" aria-label="MÔRA">
           <span className={styles.moraHalo} aria-hidden="true" />
