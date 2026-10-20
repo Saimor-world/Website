@@ -75,8 +75,8 @@ describe('SystemWorldHome', () => {
     const studio = container.querySelector('#studio');
     const contact = container.querySelector('#contact');
     const earthHorizon = container.querySelector('#earth-horizon');
-    expect([hero, forest, products, intelligence, studio, contact, earthHorizon].every(Boolean)).toBe(true);
-    const positions = [hero, forest, products, intelligence, studio, contact, earthHorizon].map(section => sections.indexOf(section!));
+    expect([hero, forest, earthHorizon, products, intelligence, studio, contact].every(Boolean)).toBe(true);
+    const positions = [hero, forest, earthHorizon, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
@@ -114,6 +114,7 @@ describe('SystemWorldHome', () => {
   it('keeps Earth unnamed in the hero and reveals it only after the scroll', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const hero = container.querySelector('#world-title')?.closest('section');
+    const forest = container.querySelector('#system');
     const footer = Array.from(hero?.querySelectorAll('div') ?? []).find((node) =>
       node.textContent?.includes('EIN ORT · ALLES IM KONTEXT') && node.children.length <= 2,
     );
@@ -124,9 +125,11 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByRole('button', { name: /SAIMÔR Earth|Erde erkunden/ })).not.toBeInTheDocument();
     const horizon = screen.getByTestId('earth-horizon');
     expect(hero?.contains(horizon)).toBe(false);
-    expect(horizon).toHaveTextContent('Die Oberfläche, die du gesehen hast.');
+    expect(horizon).toHaveTextContent('Earth');
+    expect(horizon).toHaveTextContent('Konzept · keine Live-Karte');
     expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
     expect(horizon.querySelector('a')?.textContent).toBe('Earth');
+    expect(forest?.contains(horizon)).toBe(true);
     const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
     expect(cosmos).toHaveLength(2);
     expect(hero?.contains(cosmos[0])).toBe(true);

@@ -86,8 +86,9 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(page.getByRole('button', { name: /SAIMÔR Earth/ })).toHaveCount(0);
     const horizon = page.getByTestId('earth-horizon');
     await horizon.scrollIntoViewIfNeeded();
-    await expect(horizon.getByRole('heading', { name: german ? 'Die Oberfläche, die du gesehen hast.' : 'The surface you already saw.' })).toBeVisible();
+    await expect(horizon.getByRole('heading', { name: 'Earth' })).toBeVisible();
     await expect(horizon.getByRole('link', { name: 'Earth', exact: true })).toHaveAttribute('href', german ? '/earth' : '/en/earth');
+    await expect(horizon.getByText(german ? 'Konzept · keine Live-Karte' : 'Concept · not a live map')).toBeVisible();
     await shot(page, info, `after-earth-horizon-${locale}`);
     const door = page.getByRole('link', { name: german ? 'Schwelle betreten' : 'Cross the threshold' });
     await door.scrollIntoViewIfNeeded();
