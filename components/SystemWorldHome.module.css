@@ -1,5 +1,5 @@
 /* SAIMÔR — one art direction. Night, threshold, reality, daylight. */
-.world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip}
+.world{--ink:#06110e;--paper:#f6f4ec;--gold:#e6c98d;--gutter:clamp(24px,4.5vw,72px);background:var(--ink);color:#f7f4e9;overflow:clip;width:100%;max-width:100%}
 .world ::selection{background:var(--gold);color:var(--ink)}
 .world a:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
 .hero{position:relative;isolation:isolate;min-height:max(850px,100svh);background:#16382c}
@@ -55,11 +55,11 @@
 .daylightIntelligence{background:var(--paper);color:#1b3b2c}
 .daylightStudio{background:#e7ece2;color:#17392a}
 .daylightContact{background:var(--paper);color:#173a2b}
-.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:-300px;min-height:1080px;background:#0b1a14;color:#f7f4e9;pointer-events:auto}
-.returnDisk{position:absolute;z-index:0;inset:0;pointer-events:none;transform:rotate(180deg);transform-origin:center center}
-.returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none;object-fit:cover;object-position:68% 78%;opacity:1;filter:brightness(1.18) saturate(1.06) contrast(1.04)}
+.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:-300px;width:100%;max-width:none;min-height:max(100svh,1080px);background:#06110e;color:#f7f4e9;pointer-events:auto}
+.returnDisk{position:absolute;z-index:0;inset:-4% -4%;width:108%;height:108%;max-width:none;pointer-events:none;transform:rotate(180deg);transform-origin:center center}
+.returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:50% 74%;opacity:1;filter:brightness(1.06) saturate(.96) contrast(1.02)}
 .returnMist{position:absolute;z-index:2;left:0;right:0;top:0;height:240px;pointer-events:none;background:radial-gradient(ellipse 110% 80% at 50% 0%,rgba(12,28,20,.1) 0%,transparent 68%)}
-.returnShade{position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 0%,transparent 36%,rgba(6,17,14,.12) 52%,rgba(6,17,14,.38) 72%,rgba(6,17,14,.72) 100%)}
+.returnShade{position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,#06110ecc 0%,transparent 18%,transparent 82%,#06110ecc 100%),linear-gradient(180deg,rgba(6,17,14,.4) 0%,rgba(6,17,14,.14) 16%,transparent 30%,transparent 48%,rgba(6,17,14,.18) 64%,rgba(6,17,14,.62) 100%)}
 .returnInner{position:absolute;z-index:3;left:0;right:0;top:55.6%;transform:translateY(-50%);display:flex;justify-content:center;padding:0 var(--gutter);pointer-events:none}
 .returnCredit{margin:0;font:600 12px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;color:#e8dfc0;text-align:center;text-shadow:0 1px 18px rgba(3,14,10,.85),0 0 18px rgba(3,14,10,.45);pointer-events:auto}
 .returnCredit a{color:inherit;text-decoration:none;border:0;padding:12px 4px;margin:-12px -4px}
@@ -95,10 +95,11 @@
  .moraIntroduction h3{font-size:clamp(52px,13vw,68px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:40px 22px 60px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:36px}
- .return{margin-top:-200px;min-height:100svh;background:#0b1a14}
- .returnInner{top:54.5%;padding:0 22px;min-height:0;transform:translateY(-50%)}
- .returnMist{height:160px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
- .returnShade{background:linear-gradient(180deg,transparent 0%,transparent 38%,rgba(6,17,14,.16) 56%,rgba(6,17,14,.42) 76%,rgba(6,17,14,.78) 100%)}
+ .return{margin-top:-200px;height:auto;padding-bottom:56px;min-height:78svh;background:#06110e}
+ .returnInner{top:auto;bottom:28px;padding:0 22px;min-height:0;transform:none}
+ .returnMist{height:120px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
+ .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.32) 0%,transparent 24%,transparent 52%,rgba(6,17,14,.28) 78%,rgba(6,17,14,.55) 100%)}
+ .returnImage{object-position:50% 70%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
 }
 @media(max-width:360px){.heroInner{padding-inline:18px}.heroGrid{padding-top:8px}.heroCopy h1{font-size:64px}.eyebrow{letter-spacing:.1em}.sceneFooter{letter-spacing:.06em}.thesis{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}

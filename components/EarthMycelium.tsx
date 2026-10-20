@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import styles from './EarthMycelium.module.css';
 
 type Point = { x: number; y: number };
@@ -22,20 +25,9 @@ function mix(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
-}
-
 function limbY(x: number) {
-  const t = (x - 600) / 560;
-  return 6 + t * t * 28;
-}
-
-function limbClip() {
-  let d = `M0 ${limbY(0).toFixed(1)}`;
-  for (let x = 24; x <= VIEW_W; x += 24) d += `L${x} ${limbY(x).toFixed(1)}`;
-  d += `L${VIEW_W} ${VIEW_H} L0 ${VIEW_H} Z`;
-  return d;
+  const t = (x - 600) / 620;
+  return 18 + t * t * 64;
 }
 
 function pathThrough(points: Point[]) {
@@ -73,23 +65,22 @@ function grow(
       while (delta > Math.PI) delta -= Math.PI * 2;
       while (delta < -Math.PI) delta += Math.PI * 2;
       const dist = Math.hypot(pull.x - x, pull.y - y);
-      const strength = dist < 90 ? 0.55 : mix(0.12, 0.32, i / steps);
-      angle += delta * strength;
+      angle += delta * (dist < 90 ? 0.55 : mix(0.1, 0.3, i / steps));
     } else {
-      angle += (Math.PI / 2 - angle) * 0.045;
+      angle += (Math.PI / 2 - angle) * 0.04;
     }
     const len = stepLen * mix(0.7, 1.22, rng());
     let nx = x + Math.cos(angle) * len;
     let ny = y + Math.sin(angle) * len;
     if (ny > VIEW_H - 16) break;
-    ny = Math.max(ny, limbY(nx) + 1);
+    ny = Math.max(ny, limbY(nx) - 8);
     const dx = (nx - CREDIT.x) / CREDIT.rx;
     const dy = (ny - CREDIT.y) / CREDIT.ry;
     if (dx * dx + dy * dy < 1) {
       nx += nx < CREDIT.x ? -36 : 36;
       if (((nx - CREDIT.x) / CREDIT.rx) ** 2 + ((ny - CREDIT.y) / CREDIT.ry) ** 2 < 1) break;
     }
-    nx = clamp(nx, 12, VIEW_W - 12);
+    if (nx < -30 || nx > VIEW_W + 30) break;
     x = nx;
     y = ny;
     points.push({ x, y });
@@ -111,9 +102,9 @@ function buildStrands(): Strand[] {
     if (d.length > 12) strands.push({ d, w, tone, pulse });
   };
 
-  const limbPoints = Array.from({ length: 64 }, (_, i) => {
-    const x = 18 + i * (1164 / 63) + (rng() - 0.5) * 10;
-    return { x, y: limbY(x) + rng() * 5 };
+  const limbPoints = Array.from({ length: 72 }, (_, i) => {
+    const x = mix(-8, VIEW_W + 8, i / 71) + (rng() - 0.5) * 10;
+    return { x, y: limbY(x) + rng() * 6 };
   });
 
   limbPoints.forEach((origin, index) => {
@@ -123,10 +114,10 @@ function buildStrands(): Strand[] {
     const along = grow(
       rng,
       origin,
-      (index % 2 === 0 ? 0.22 : Math.PI - 0.22) + (rng() - 0.5) * 0.35,
-      7,
-      11,
-      0.4,
+      (index % 2 === 0 ? 0.28 : Math.PI - 0.28) + (rng() - 0.5) * 0.4,
+      8,
+      12,
+      0.42,
       null,
     );
     push(along.points, mix(0.22, 0.55, rng()), index % 5 === 0 ? 'gold' : 'hair');
@@ -137,7 +128,7 @@ function buildStrands(): Strand[] {
     });
   });
 
-  const trunks = [14, 18, 22, 26, 30, 34, 38, 42, 46, 50].map((index) => limbPoints[index]);
+  const trunks = [8, 14, 20, 26, 32, 36, 40, 46, 52, 58, 64].map((index) => limbPoints[index]);
   trunks.forEach((origin, index) => {
     const heading = Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.7;
     const trunk = grow(rng, origin, heading, 24, 12, 0.58, MORA, true);
@@ -150,7 +141,7 @@ function buildStrands(): Strand[] {
       const join = grow(rng, last, Math.atan2(MORA.y - last.y, MORA.x - last.x), 8, 12, 0.2, MORA, true);
       if (join.points.length) {
         join.points[join.points.length - 1] = { ...MORA };
-        push(join.points, mix(0.9, 1.4, rng()), tone, index === 7);
+        push(join.points, mix(0.9, 1.4, rng()), tone, index === 5);
       }
     }
 
@@ -159,10 +150,17 @@ function buildStrands(): Strand[] {
       if (rng() > 0.38) return;
       const dir = rng() > 0.5 ? 1 : -1;
       const forkHeading = trunk.heading + dir * mix(0.55, 1.2, rng());
-      const depth = 5 + Math.floor(rng() * 5);
-      const fork = grow(rng, node, forkHeading, depth, 11, 0.62, rng() > 0.7 ? MORA : null, rng() > 0.75);
+      const fork = grow(
+        rng,
+        node,
+        forkHeading,
+        5 + Math.floor(rng() * 5),
+        11,
+        0.62,
+        rng() > 0.7 ? MORA : null,
+        rng() > 0.75,
+      );
       push(fork.points, mix(0.28, 0.7, 1 - nodeIndex / trunk.points.length), rng() > 0.65 ? 'gold' : 'hair');
-
       fork.points.slice(1, -1).forEach((side) => {
         if (rng() > 0.6) return;
         const twig = grow(rng, side, forkHeading + dir * mix(0.4, 0.9, rng()), 3 + Math.floor(rng() * 3), 9, 0.78, null);
@@ -171,11 +169,11 @@ function buildStrands(): Strand[] {
     });
   });
 
-  const wanderers = [3, 8, 12, 16, 20, 24, 28, 33, 37, 41, 45, 49, 53, 57, 61].map((index) => limbPoints[index]);
+  const wanderers = [2, 6, 10, 16, 22, 28, 34, 42, 48, 54, 60, 66, 70].map((index) => limbPoints[index]);
   wanderers.forEach((origin, index) => {
-    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.35, 1.05, rng());
-    const root = grow(rng, origin, heading, 14, 14, 0.58, null);
-    push(root.points, mix(0.4, 0.85, rng()), index % 4 === 0 ? 'gold' : 'jade');
+    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.35, 1.15, rng());
+    const root = grow(rng, origin, heading, 16, 14, 0.58, null);
+    push(root.points, mix(0.4, 0.9, rng()), index % 4 === 0 ? 'gold' : 'jade');
     root.points.slice(2, -2).forEach((node) => {
       if (rng() > 0.5) return;
       const dir = rng() > 0.5 ? 1 : -1;
@@ -186,10 +184,7 @@ function buildStrands(): Strand[] {
 
   for (let i = 0; i < 9; i += 1) {
     const spread = mix(-0.95, 0.95, i / 8);
-    const start = {
-      x: MORA.x + Math.sin(spread) * 10,
-      y: MORA.y + 12,
-    };
+    const start = { x: MORA.x + Math.sin(spread) * 10, y: MORA.y + 12 };
     const root = grow(rng, start, Math.PI / 2 + spread * 0.7, 9, 16, 0.4, null);
     push(root.points, mix(0.45, 1.05, 1 - Math.abs(spread)), i === 4 ? 'gold' : 'jade', i === 3);
     root.points.slice(2, -1).forEach((node) => {
@@ -204,66 +199,95 @@ function buildStrands(): Strand[] {
 }
 
 const STRANDS = buildStrands();
-const LIMB_CLIP = limbClip();
 
 export default function EarthMycelium() {
+  const orbRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (media?.matches) return undefined;
+    const scroller = document.scrollingElement || document.body;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const orb = orbRef.current;
+      const field = fieldRef.current;
+      if (!orb || !field) return;
+      if (document.querySelector('input[name="world-motion"]:checked')) return;
+      const rect = field.getBoundingClientRect();
+      const hub = rect.top + rect.height * 0.25;
+      const drift = Math.max(-9, Math.min(9, (window.innerHeight * 0.48 - hub) * 0.05));
+      orb.style.setProperty('--mora-drift', `${drift.toFixed(2)}px`);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+    update();
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      scroller.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <div className={styles.field} data-testid="earth-mycelium">
-      <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <radialGradient id="earthMoraHalo" cx="50%" cy="48%" r="50%">
-            <stop offset="0%" stopColor="#e7f6ea" stopOpacity="0.22" />
-            <stop offset="40%" stopColor="#c6e2b8" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#6fa888" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="earthHyphaFade" x1="0" y1="0" x2="0" y2={VIEW_H} gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#fff" stopOpacity="1" />
-            <stop offset="58%" stopColor="#fff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#fff" stopOpacity="0.05" />
-          </linearGradient>
-          <clipPath id="earthHyphaClip">
-            <path d={LIMB_CLIP} />
-          </clipPath>
-          <mask id="earthHyphaMask">
-            <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
-            <ellipse cx={CREDIT.x} cy={CREDIT.y} rx={CREDIT.rx} ry={CREDIT.ry} fill="#000" />
-          </mask>
-        </defs>
+    <div className={styles.field} data-testid="earth-mycelium" ref={fieldRef}>
+      <div className={styles.canvas}>
+        <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="earthHyphaFade" x1="0" y1="0" x2="0" y2={VIEW_H} gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#fff" stopOpacity="0.12" />
+              <stop offset="9%" stopColor="#fff" stopOpacity="1" />
+              <stop offset="58%" stopColor="#fff" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#fff" stopOpacity="0.05" />
+            </linearGradient>
+            <mask id="earthHyphaMask">
+              <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
+              <ellipse cx={CREDIT.x} cy={CREDIT.y} rx={CREDIT.rx} ry={CREDIT.ry} fill="#000" />
+            </mask>
+          </defs>
 
-        <g clipPath="url(#earthHyphaClip)" mask="url(#earthHyphaMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-          {STRANDS.map((strand, index) => (
-            <path
-              key={`g-${index}`}
-              className={styles.glow}
-              d={strand.d}
-              stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-              strokeWidth={strand.w * 3.4}
-            />
-          ))}
-          {STRANDS.map((strand, index) => (
-            <path
-              key={`s-${index}`}
-              className={`${styles.strand} ${styles[strand.tone]}`}
-              d={strand.d}
-              strokeWidth={strand.w}
-            />
-          ))}
-          {STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
-            <path
-              key={`p-${index}`}
-              className={styles.pulse}
-              d={strand.d}
-              strokeWidth={Math.max(1.05, strand.w * 0.65)}
-              pathLength={140}
-            />
-          ))}
-        </g>
+          <g mask="url(#earthHyphaMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            {STRANDS.map((strand, index) => (
+              <path
+                key={`g-${index}`}
+                className={styles.glow}
+                d={strand.d}
+                stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
+                strokeWidth={strand.w * 3.4}
+              />
+            ))}
+            {STRANDS.map((strand, index) => (
+              <path
+                key={`s-${index}`}
+                className={`${styles.strand} ${styles[strand.tone]}`}
+                d={strand.d}
+                strokeWidth={strand.w}
+              />
+            ))}
+            {STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
+              <path
+                key={`p-${index}`}
+                className={styles.pulse}
+                d={strand.d}
+                strokeWidth={Math.max(1.05, strand.w * 0.65)}
+                pathLength={140}
+              />
+            ))}
+          </g>
+        </svg>
 
-        <g className={styles.mora} role="img" aria-label="MÔRA">
-          <circle cx={MORA.x} cy={MORA.y} r="108" fill="url(#earthMoraHalo)" />
-          <image href="/brand/mora-stone-v1.png" x={MORA.x - 28} y={MORA.y - 28} width="56" height="56" />
-        </g>
-      </svg>
+        <div className={styles.moraOrb} ref={orbRef} role="img" aria-label="MÔRA">
+          <span className={styles.moraHalo} aria-hidden="true" />
+          <span className={styles.moraGlow} aria-hidden="true" />
+          <img className={styles.moraStone} src="/brand/mora-stone-v1.png" alt="" width={58} height={58} />
+          <span className={styles.moraSheen} aria-hidden="true" />
+        </div>
+      </div>
     </div>
   );
 }

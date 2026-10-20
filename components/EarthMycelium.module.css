@@ -1,6 +1,7 @@
-.field{position:absolute;z-index:2;inset:0;top:30%;pointer-events:none}
-.field::before{content:"";position:absolute;left:6%;right:6%;top:-3%;height:14%;background:radial-gradient(ellipse 85% 90% at 50% 35%,rgba(230,201,141,.2) 0%,rgba(143,205,176,.08) 40%,transparent 74%);pointer-events:none}
-.network{display:block;width:100%;height:100%}
+.field{position:absolute;z-index:2;inset:0;top:28%;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 78%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 78%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
+.field::before{content:"";position:absolute;left:4%;right:4%;top:-2%;height:16%;background:radial-gradient(ellipse 90% 90% at 50% 40%,rgba(230,201,141,.18) 0%,rgba(143,205,176,.07) 42%,transparent 74%);pointer-events:none}
+.canvas{position:relative;width:100%;height:100%}
+.network{display:block;width:100%;height:100%;overflow:visible}
 .glow{stroke-opacity:.16;filter:blur(.35px)}
 .strand{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .jade{stroke:#9fd4b4;stroke-opacity:.72}
@@ -8,16 +9,35 @@
 .hair{stroke:#cfe8c8;stroke-opacity:.42}
 .pulse{fill:none;stroke:#e7f6ea;stroke-linecap:round;stroke-opacity:.9;stroke-dasharray:9 131;animation:sap 8.5s linear infinite}
 .pulse:nth-of-type(2){stroke:#e6c98d;animation-duration:11s;animation-delay:-4s}
-.pulse:nth-of-type(3){animation-duration:9.5s;animation-delay:-6s}
-.mora{filter:drop-shadow(0 0 18px rgba(180,220,190,.22))}
+.pulse:nth-of-type(3){animation-duration:9.5s;animation-delay:-6.2s}
+.moraOrb{--mora-drift:0px;position:absolute;left:50%;top:25%;width:58px;height:58px;transform:translate(-50%,calc(-50% + var(--mora-drift)));animation:moraBob 5.8s ease-in-out infinite;transform-origin:center center}
+.moraHalo,.moraGlow,.moraSheen{position:absolute;border-radius:50%;pointer-events:none}
+.moraHalo{inset:-48px;background:radial-gradient(circle,rgba(231,246,234,.2) 0%,rgba(198,226,184,.08) 38%,transparent 70%)}
+.moraGlow{inset:-18px;background:radial-gradient(circle,rgba(232,246,228,.55) 0%,rgba(143,205,176,.18) 42%,transparent 72%);opacity:.28;animation:moraArrive 8.5s ease-in-out infinite}
+.moraStone{position:relative;z-index:1;display:block;width:58px!important;height:58px!important;max-width:none!important;aspect-ratio:1;object-fit:contain;border-radius:50%;animation:moraBreathe 5.6s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(180,220,190,.28))}
+.moraSheen{inset:0;z-index:2;background:conic-gradient(from 0deg,transparent 0 38%,rgba(255,248,230,.32) 48%,transparent 58%);mix-blend-mode:soft-light;animation:moraSheen 9s linear infinite}
 @keyframes sap{to{stroke-dashoffset:-140}}
-@media(max-width:1024px){.field{top:29%}}
+@keyframes moraBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes moraBob{0%,100%{transform:translate(-50%,calc(-50% + var(--mora-drift)))}50%{transform:translate(-50%,calc(-50% + var(--mora-drift) - 5px))}}
+@keyframes moraSheen{to{transform:rotate(360deg)}}
+@keyframes moraArrive{0%,74%,100%{opacity:.22}82%{opacity:.8}90%{opacity:.35}}
+@media(max-width:1024px){.field{top:27%}}
 @media(max-width:700px){
- .field{top:26.5%}
- .field::before{top:-4%;height:12%}
- .glow{stroke-opacity:.13}
- .hair{stroke-opacity:.36}
+ .field{top:27%;bottom:auto;height:58vw;overflow:hidden}
+ .canvas{height:calc(100vw * .92);width:118%;margin-left:-9%}
+ .network{width:100%;height:100%}
+ .moraOrb{width:52px;height:52px;top:27%}
+ .moraStone{width:52px!important;height:52px!important}
+ .glow{stroke-opacity:.2}
+ .jade,.gold,.hair,.glow,.pulse{vector-effect:non-scaling-stroke}
+ .jade{stroke-width:1.55px}
+ .gold{stroke-width:1.4px}
+ .hair{stroke-width:.7px}
+ .glow{stroke-width:5px}
+ .pulse{stroke-width:1.3px}
 }
 @media(prefers-reduced-motion:reduce){
  .pulse{animation:none;stroke-dasharray:none;stroke-opacity:.45}
+ .moraOrb,.moraStone,.moraSheen{animation:none}
+ .moraGlow{animation:none;opacity:.42}
 }
