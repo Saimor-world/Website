@@ -24,6 +24,7 @@ export default function EarthMycelium() {
         <path className={styles.filament} d="M792 4C742 98 676 158 632 256S608 408 676 528 758 648 824 720" />
         <path className={styles.filament} d="M938 0C886 86 812 148 748 246S718 392 792 508 878 632 948 720" />
         <path className={styles.filament} d="M40 220C120 250 188 228 248 208M748 246C820 210 900 188 980 170" />
+        <path className={styles.filament} d="M300 0C318 88 286 150 248 208M560 0C548 84 522 168 498 286M680 0C660 90 648 170 632 256" />
 
         <path className={styles.hypha} d="M248 208C322 246 412 258 498 286M372 236C438 258 470 274 498 286M632 256C572 272 532 280 498 286" />
         <path className={styles.hypha} d="M498 286C428 352 372 438 348 528M498 286C582 358 648 438 676 528" />
