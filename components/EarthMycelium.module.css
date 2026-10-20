@@ -13,8 +13,8 @@
 @keyframes sap{to{stroke-dashoffset:-140}}
 @media(max-width:1024px){.field{top:29%}}
 @media(max-width:700px){
- .field{top:30%}
- .field::before{top:-5%;height:12%}
+ .field{top:26.5%}
+ .field::before{top:-4%;height:12%}
  .glow{stroke-opacity:.13}
  .hair{stroke-opacity:.36}
 }

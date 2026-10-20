@@ -117,18 +117,33 @@ function buildStrands(): Strand[] {
   });
 
   limbPoints.forEach((origin, index) => {
-    const heading = Math.PI / 2 + (rng() - 0.5) * 1.25;
-    const hair = grow(rng, origin, heading, 3 + Math.floor(rng() * 4), 9, 0.82, null);
-    push(hair.points, mix(0.18, 0.4, rng()), index % 8 === 0 ? 'gold' : 'hair');
+    const heading = Math.PI / 2 + (rng() - 0.5) * 1.35;
+    const hair = grow(rng, origin, heading, 4 + Math.floor(rng() * 4), 8, 0.88, null);
+    push(hair.points, mix(0.18, 0.42, rng()), index % 8 === 0 ? 'gold' : 'hair');
+    const along = grow(
+      rng,
+      origin,
+      (index % 2 === 0 ? 0.22 : Math.PI - 0.22) + (rng() - 0.5) * 0.35,
+      7,
+      11,
+      0.4,
+      null,
+    );
+    push(along.points, mix(0.22, 0.55, rng()), index % 5 === 0 ? 'gold' : 'hair');
+    along.points.slice(1).forEach((node) => {
+      if (rng() > 0.55) return;
+      const drop = grow(rng, node, Math.PI / 2 + (rng() - 0.5) * 0.8, 4, 9, 0.7, null);
+      push(drop.points, mix(0.16, 0.32, rng()), 'hair');
+    });
   });
 
-  const trunks = [6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58].map((index) => limbPoints[index]);
+  const trunks = [14, 18, 22, 26, 30, 34, 38, 42, 46, 50].map((index) => limbPoints[index]);
   trunks.forEach((origin, index) => {
-    const heading = Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.42;
-    const trunk = grow(rng, origin, heading, 22, 13, 0.46, MORA, true);
+    const heading = Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.7;
+    const trunk = grow(rng, origin, heading, 24, 12, 0.58, MORA, true);
     const tone: Strand['tone'] = index % 3 === 0 ? 'gold' : 'jade';
-    const width = mix(1.35, 2.2, 1 - Math.abs(origin.x - MORA.x) / 640);
-    push(trunk.points, width, tone, index === 6 || index === 7 || index === 8);
+    const width = mix(1.25, 2.05, 1 - Math.abs(origin.x - MORA.x) / 640);
+    push(trunk.points, width, tone, index === 4 || index === 5 || index === 6);
 
     const last = trunk.points[trunk.points.length - 1];
     if (last && Math.hypot(last.x - MORA.x, last.y - MORA.y) > 20) {
