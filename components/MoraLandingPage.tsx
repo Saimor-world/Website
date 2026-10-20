@@ -35,6 +35,8 @@ const COPY = {
     osTitle: 'MÔRA lebt im Arbeitsraum.',
     osText: 'Im Demo-Raum siehst du, wie MÔRA Kontext behält und nächste Schritte vorbereitet. Der Demo-Tenant bleibt getrennt von echten Daten.',
     note: 'Produktvorschau · keine Live-Daten',
+    glanceTitle: 'MÔRA, heute früh',
+    glance: ['Zwei Dateien gehören zum Angebot Nordsee.', 'Um 14:00 wartet das Teamgespräch, alles liegt bereit.', 'Eine Nachricht braucht nur ein Ja.'],
   },
   en: {
     eyebrow: 'MÔRA · SAIMÔR OS',
@@ -61,6 +63,8 @@ const COPY = {
     osTitle: 'MÔRA lives in the workspace.',
     osText: 'In the demo workspace you see how MÔRA keeps context and prepares next steps. The demo tenant stays separate from real data.',
     note: 'Product preview · no live data',
+    glanceTitle: 'MÔRA, this morning',
+    glance: ['Two files belong to the North Sea offer.', 'Your 2 pm team call is prepared.', 'One message only needs a yes.'],
   },
 } as const;
 
@@ -73,6 +77,16 @@ const THREADS = Array.from({ length: 18 }, (_, i) => {
   const bend = ((i * 53) % 90) - 45;
   return { d: `M 20 ${sy} C 180 ${sy + bend}, 330 ${ty - bend}, 560 ${ty}`, delay: (i * 0.37) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
 });
+// Phone: threads fall from the stone (top centre) to three signals in a row (bottom), 360x200 box.
+const THREADS_MOBILE = Array.from({ length: 12 }, (_, i) => {
+  const tx = 60 + (i % 3) * 120;
+  const sx = 165 + ((i * 29) % 30);
+  const bend = ((i * 41) % 70) - 35;
+  return { d: `M ${sx} 0 C ${sx + bend} 70, ${tx - bend} 120, ${tx} 190`, delay: (i * 0.41) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
+});
+const PARTICLES = Array.from({ length: 22 }, (_, i) => ({
+  left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, size: 1.5 + ((i * 7) % 4), delay: `${(i * 0.7) % 9}s`, dur: `${9 + ((i * 5) % 8)}s`, gold: i % 3 !== 0,
+}));
 
 export default function MoraLandingPage({ locale }: Props) {
   const c = COPY[locale];
@@ -95,6 +109,9 @@ export default function MoraLandingPage({ locale }: Props) {
         <div className={styles.stars} />
         <div className={styles.nebula} />
         <div className={styles.dust} />
+        {PARTICLES.map((p, i) => (
+          <span key={i} className={styles.particle} data-gold={p.gold} style={{ left: p.left, top: p.top, width: p.size, height: p.size, animationDelay: p.delay, animationDuration: p.dur }} />
+        ))}
       </div>
 
       <section className={styles.hero} aria-labelledby="mora-hero-title">
@@ -106,9 +123,21 @@ export default function MoraLandingPage({ locale }: Props) {
           </h1>
           <p className={styles.sub}>{c.heroSub}</p>
           <DemoLaunchButton locale={locale} label={`${c.cta} →`} className={styles.cta} />
+          <aside className={styles.glance} aria-label={c.glanceTitle}>
+            <p>{c.glanceTitle}</p>
+            <ul>{c.glance.map((g, i) => { const Icon = ICONS[i]; return <li key={g}><Icon size={15} aria-hidden="true" />{g}</li>; })}</ul>
+          </aside>
         </div>
 
         <div className={styles.stage}>
+          <svg className={styles.threadsMobile} viewBox="0 0 360 200" preserveAspectRatio="none" aria-hidden="true">
+            {THREADS_MOBILE.map((t, i) => (
+              <g key={i}>
+                <path d={t.d} stroke="#e9c46a" strokeOpacity=".45" strokeWidth={t.w} fill="none" />
+                <path d={t.d} className={styles.spark} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
+              </g>
+            ))}
+          </svg>
           <svg className={styles.threads} viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id="moraThread" x1="0" x2="1">
