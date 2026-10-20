@@ -127,6 +127,10 @@ describe('SystemWorldHome', () => {
     expect(horizon).toHaveTextContent('Die Oberfläche, die du gesehen hast.');
     expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
     expect(horizon.querySelector('a')?.textContent).toBe('Earth');
+    const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
+    expect(cosmos).toHaveLength(2);
+    expect(hero?.contains(cosmos[0])).toBe(true);
+    expect(horizon.contains(cosmos[1])).toBe(true);
   });
 
   it('keeps the public studio voice organizational rather than solo-founder led', () => {

@@ -166,13 +166,15 @@ export default function SystemWorldHome({ locale }: Props) {
         <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={90} sizes="100vw" className={styles.returnImage} />
         <div className={styles.returnShade} aria-hidden="true" />
         <div className={styles.returnInner}>
-          <p className={styles.eyebrow}>{c.earthEyebrow}</p>
-          <h2 id="earth-horizon-title">{c.earthTitle}</h2>
-          <p className={styles.returnLead}>{c.earthText}</p>
-          <p className={styles.returnName}>
-            <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
-            <small>{c.earthNote}</small>
-          </p>
+          <div className={styles.returnCopy}>
+            <p className={styles.eyebrow}>{c.earthEyebrow}</p>
+            <h2 id="earth-horizon-title">{c.earthTitle}</h2>
+            <p className={styles.returnLead}>{c.earthText}</p>
+            <p className={styles.returnName}>
+              <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
+              <small>{c.earthNote}</small>
+            </p>
+          </div>
         </div>
       </section>
     </div>
