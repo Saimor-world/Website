@@ -48,7 +48,8 @@
 .moraIntroduction{position:relative;isolation:isolate;max-width:1440px;margin:-56px auto 0;padding:120px var(--gutter) 100px;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:clamp(35px,7vw,110px);background:radial-gradient(ellipse at 85% 50%,#203b302e,transparent 60%)}
 .moraIntroduction h3{font:400 clamp(54px,6.3vw,94px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 26px;max-width:580px;text-wrap:balance}
 .moraIntroduction p:not(.eyebrow){font-size:15px;line-height:1.85;color:#b8c8bc;max-width:440px}
-.entry{max-width:1440px;margin:auto;padding:62px var(--gutter) 88px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:65px;border-top:1px solid #d4dbc51c}
+.entry{position:relative;max-width:1440px;margin:auto;padding:62px var(--gutter) 128px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:65px;border-top:1px solid #d4dbc51c}
+.entry::after{content:"";position:absolute;left:50%;bottom:-1px;width:100vw;height:110px;transform:translateX(-50%);background:linear-gradient(180deg,transparent,#e7ece3 86%);pointer-events:none}
 .entry h3{font:400 clamp(37px,3.6vw,51px)/1.08 "Cormorant Garamond",Georgia,serif;letter-spacing:-.03em;margin:18px 0;text-wrap:balance;max-width:560px}
 .entry p:not(.eyebrow){font-size:14px;line-height:1.85;color:#b8c8bc;max-width:470px}
 .entry .textLink{margin-top:16px}
@@ -94,7 +95,7 @@
  .moraIntroduction{margin-top:-36px;padding:64px 22px 52px;grid-template-columns:1fr;gap:28px}
  .moraIntroduction h3{font-size:clamp(52px,13vw,68px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
- .entry{padding:40px 22px 60px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:36px}
+ .entry{padding:40px 22px 96px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:36px}
  .return{margin-top:-200px;height:auto;padding-bottom:0;min-height:100svh;background:linear-gradient(180deg,#06110e 0%,#06110e 72%,#050706 100%)}
  .returnInner{top:58%;bottom:auto;padding:0 22px;min-height:0;transform:translateY(-50%)}
  .returnMist{height:120px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
