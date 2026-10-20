@@ -26,6 +26,13 @@ async function statsFromBuffer(buffer) {
   return { mean, stddev: Math.sqrt(varsum / pixels), w: info.width, h: info.height };
 }
 
+async function prepare(page) {
+  await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' }).catch(() => {});
+  const cookie = page.getByRole('button', { name: /Nur essenziell|essential only|Essenziell/i });
+  if (await cookie.count()) await cookie.first().click().catch(() => {});
+  await page.waitForTimeout(250);
+}
+
 async function shotStats(page, name, clip) {
   const path = `${OUT}/${name}.png`;
   const buffer = clip
@@ -108,6 +115,7 @@ try {
     const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: width <= 430 ? 2 : 1 });
     await page.goto(`${BASE}/de`, { waitUntil: 'networkidle', timeout: 60000 });
     await page.waitForTimeout(800);
+    await prepare(page);
     const hero = await shotStats(page, `r5-hero-${width}`, { x: 0, y: 0, width, height: Math.min(height, 780) });
     report[`hero-${width}`] = {
       mean: hero.mean,
@@ -123,6 +131,7 @@ try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(`${BASE}/mora/deep-view`, { waitUntil: 'networkidle', timeout: 60000 });
     await page.waitForTimeout(1400);
+    await prepare(page);
     const opening = await shotStats(page, 'r5-deep-opening-1440', { x: 0, y: 0, width: 1440, height: 900 });
     report['deep-opening-1440'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page), sound: await overlap(page) };
 
@@ -152,6 +161,7 @@ try {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
     await page.goto(`${BASE}/mora/deep-view`, { waitUntil: 'networkidle', timeout: 60000 });
     await page.waitForTimeout(1400);
+    await prepare(page);
     const opening = await shotStats(page, 'r5-deep-opening-390', { x: 0, y: 0, width: 390, height: 844 });
     report['deep-opening-390'] = { mean: opening.mean, stddev: opening.stddev, fonts: await smallFonts(page) };
     await page.close();
