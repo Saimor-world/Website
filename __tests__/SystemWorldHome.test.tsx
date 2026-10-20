@@ -50,7 +50,8 @@ describe('SystemWorldHome', () => {
       const promptBox = locale === 'de' ? /leeren Promptbox/g : /empty prompt box/g;
       expect(copy.match(promptBox)?.length ?? 0).toBe(1);
       expect(screen.getByRole('link', { name: 'YORI' })).toHaveAttribute('href', locale === 'de' ? '/yori' : '/en/yori');
-      expect(screen.getByRole('link', { name: 'Saimôr Earth' })).toHaveAttribute('href', '/earth');
+      expect(screen.queryByRole('link', { name: 'Saimôr Earth' })).not.toBeInTheDocument();
+      expect(screen.getByTestId('earth-horizon').querySelector('a')).toHaveAttribute('href', locale === 'de' ? '/earth' : '/en/earth');
       cleanup();
     }
   });
@@ -66,6 +67,7 @@ describe('SystemWorldHome', () => {
 
   it('keeps the cosmic hero, forest, product worlds and contact in one readable sequence', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
+    const world = container.querySelector('[data-home-globe]');
     const sections: Element[] = [...container.querySelectorAll('section')];
     const hero = container.querySelector('#world-title')?.closest('section');
     const forest = container.querySelector('#system');
@@ -73,13 +75,18 @@ describe('SystemWorldHome', () => {
     const intelligence = container.querySelector('#intelligence-title')?.closest('section');
     const studio = container.querySelector('#studio');
     const contact = container.querySelector('#contact');
-    expect([hero, forest, products, intelligence, studio, contact].every(Boolean)).toBe(true);
-    const positions = [hero, forest, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
+    const earthHorizon = container.querySelector('#earth-horizon');
+    expect([hero, forest, earthHorizon, products, intelligence, studio, contact].every(Boolean)).toBe(true);
+    const positions = [hero, products, intelligence, studio, contact, forest, earthHorizon].map(section => sections.indexOf(section!));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
+    const teaser = screen.getByRole('heading', { name: 'Überzeugend. Aber wahr?' });
+    expect(teaser.compareDocumentPosition(forest!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    const lastInWorld = [...(world?.querySelectorAll('section') ?? [])].at(-1);
+    expect(lastInWorld).toBe(earthHorizon);
   });
 
   it('uses one scenic photograph throughout the entire forest chapter', () => {
@@ -87,7 +94,7 @@ describe('SystemWorldHome', () => {
     const cosmos = container.querySelector('img[src="/images/saimor-cosmos-layer.webp"]');
     const forest = container.querySelector('img[src="/images/saimor-forest-threshold.webp"]');
     const section = container.querySelector('#system');
-    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 160vw'));
+    expect(cosmos).toHaveAttribute('sizes', '100vw');
     expect(forest).toHaveAttribute('sizes', '100vw');
     expect(section?.querySelectorAll('img[src*="forest"]')).toHaveLength(1);
     expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
@@ -109,21 +116,33 @@ describe('SystemWorldHome', () => {
     }
   });
 
-  it('keeps the phone hero eyebrow and Earth entry as stacked siblings', () => {
+  it('keeps Earth unnamed in the hero and reveals it only after the scroll', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const hero = container.querySelector('#world-title')?.closest('section');
+    const forest = container.querySelector('#system');
     const footer = Array.from(hero?.querySelectorAll('div') ?? []).find((node) =>
       node.textContent?.includes('EIN ORT · ALLES IM KONTEXT') && node.children.length <= 2,
     );
-    const earth = Array.from(hero?.querySelectorAll('button') ?? []).find((node) =>
-      /SAIMÔR Earth/.test(node.textContent ?? ''),
-    );
     expect(footer).toBeTruthy();
-    expect(earth).toBeTruthy();
     expect(hero?.contains(footer!)).toBe(true);
-    expect(hero?.contains(earth!)).toBe(true);
-    expect(footer?.contains(earth!)).toBe(false);
-    expect(earth?.textContent).toContain('Inoffizielle Produktvorschau');
+    expect(hero?.textContent).not.toMatch(/SAIMÔR Earth/);
+    expect(hero?.querySelector('button')).toBeFalsy();
+    expect(screen.queryByRole('button', { name: /SAIMÔR Earth|Erde erkunden/ })).not.toBeInTheDocument();
+    const horizon = screen.getByTestId('earth-horizon');
+    expect(hero?.contains(horizon)).toBe(false);
+    expect(horizon).toHaveTextContent('powered by');
+    expect(horizon).toHaveTextContent('Earth');
+    expect(horizon).not.toHaveTextContent('Die andere Seite der Welt.');
+    expect(horizon).not.toHaveTextContent('Konzept · keine Live-Karte');
+    expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
+    expect(horizon.querySelector('a')?.textContent).toBe('Earth');
+    expect(horizon.querySelector('[data-testid="earth-mycelium"]')).not.toBeNull();
+    expect(horizon.querySelector('[aria-label="MÔRA"]')).not.toBeNull();
+    expect(forest?.contains(horizon)).toBe(true);
+    const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
+    expect(cosmos).toHaveLength(2);
+    expect(hero?.contains(cosmos[0])).toBe(true);
+    expect(horizon.contains(cosmos[1])).toBe(true);
   });
 
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
