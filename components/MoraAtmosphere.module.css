@@ -1,4 +1,4 @@
-.atmosphere{--dawn:0;position:fixed;inset:0;overflow:hidden;pointer-events:none;background:#1a3529}
+.atmosphere{--dawn:0;position:fixed;inset:0;overflow:hidden;pointer-events:none;background:#3a5648}
 .canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.5s}
 .atmosphere[data-rendered="true"] .canvas{opacity:calc(1 - var(--dawn)*1.05)}
 .fallback{position:absolute;inset:-12%;background:radial-gradient(ellipse 12% 18% at 58% 42%,#fff8dc,#f5d99580 35%,transparent 100%),radial-gradient(ellipse 60% 70% at 58% 42%,#c9b580,#5d7a65 50%,#1a3529 100%);filter:brightness(calc(.45 + var(--dawn)*.6))}

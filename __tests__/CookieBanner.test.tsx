@@ -38,14 +38,14 @@ describe('CookieBanner — genuine consent choices', () => {
   it('shows equally available essential and accept-all actions plus privacy information', () => {
     showBanner();
     expect(screen.getByRole('dialog', { name: 'Datenschutz' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Essenziell' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Nur essenziell' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Akzeptieren' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Einstellungen' })).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('does not turn on analytics when visitors choose essential only', () => {
     showBanner();
-    fireEvent.click(screen.getByRole('button', { name: 'Essenziell' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Nur essenziell' }));
     expect(localStorage.getItem('cookie_consent')).toBe('essential');
     expect(localStorage.getItem('analytics_enabled')).toBe('false');
   });

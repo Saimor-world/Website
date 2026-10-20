@@ -50,6 +50,7 @@ export default function MoraClearing({ look, still = false }: { look?: RefObject
       '--size': `${i % 5 === 0 ? 7 : i % 3 === 0 ? 4 : 2}px`,
     } as CSSProperties} />)}</div>
     <div className={styles.nearMist} data-parallax="18" />
+    <div className={styles.leftLight} />
     <div className={styles.shade} />
   </div>;
 }

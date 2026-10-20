@@ -15,7 +15,7 @@
 .secondary{background:#10241c;border:1px solid #b7c7a86b;color:#eee6cd}
 .secondary:hover{background:#1b3627;border-color:#dcc58b}
 .page a:focus-visible,.page button:focus-visible{outline:2px solid #f1d38b;outline-offset:5px}
-.motion{display:flex;align-items:center;gap:8px;min-height:44px;margin-top:20px;border:0;background:transparent;color:#b7c8b5;font-size:11px;cursor:pointer}
+.motion{display:flex;align-items:center;gap:8px;min-height:44px;margin-top:20px;border:0;background:transparent;color:#b7c8b5;font-size:12px;cursor:pointer}
 .presence{text-align:center;min-width:0;position:relative}
 .hello{font:400 24px/1.3 "Cormorant Garamond",Georgia,serif;color:#eddfb6;margin:0 0 6px;letter-spacing:-.02em}
 .contextMap{position:relative;isolation:isolate;width:100%;max-width:500px;height:350px;margin:auto}
@@ -35,13 +35,13 @@
 .page[data-paused="true"] *,.page[data-paused="true"] *::before,.page[data-paused="true"] *::after{animation-play-state:paused!important}
 .personaCharacter{width:280px!important;height:280px!important}
 @media(min-width:1700px){.hero{padding-top:170px;padding-bottom:90px}.heroGrid{min-height:680px}}
-@media(max-width:1050px){.hero{padding-top:130px}.heroGrid{gap:34px}.intro h1{font-size:76px}.heroCharacter{width:230px!important;height:230px!important}.contextNode{padding:10px 12px;font-size:11px}.contextMap{height:320px}.files{left:-8px}.calendar{right:-8px}}
+@media(max-width:1050px){.hero{padding-top:130px}.heroGrid{gap:34px}.intro h1{font-size:76px}.heroCharacter{width:230px!important;height:230px!important}.contextNode{padding:10px 12px;font-size:12px}.contextMap{height:320px}.files{left:-8px}.calendar{right:-8px}}
 @media(max-width:767px){
  .hero{padding:112px 24px 56px}
  .eyebrow{font-size:12px;letter-spacing:.12em}
  .intro h1{font-size:clamp(56px,14.8vw,84px);max-width:9ch;margin:22px 0 20px}
  .primary,.secondary{font-size:12px;padding:12px 17px;min-height:48px}
- .contextNode{font-size:11px;padding:10px 12px}
+ .contextNode{font-size:12px;padding:10px 12px}
  .files{left:0}.calendar{right:0}
  .personaCharacter{width:240px!important;height:240px!important}
  .heroGrid{display:flex;flex-direction:column;align-items:stretch;gap:0}
@@ -50,7 +50,7 @@
  .hello{order:2;text-align:center;margin-top:0;margin-bottom:0;font-size:21px}
  .contextMap{order:3;height:260px;flex:none;margin-top:4px}
  .heroCharacter{width:206px!important;height:206px!important}
- .characterLine{order:4;text-align:center;margin:0 0 18px;font-size:11px}
+ .characterLine{order:4;text-align:center;margin:0 0 18px;font-size:12px}
  .lead{order:5;margin:0;font-size:15px;line-height:1.6;text-align:center;max-width:360px;align-self:center}
  .desktopLead,.note{display:none}.mobileLead{display:inline}
  .actions{order:6;justify-content:center;margin-top:20px}
@@ -58,6 +58,6 @@
  .contextReadout{order:8;width:100%;margin-top:20px}
  .files{top:8%}.calendar{top:35%}.openWork{bottom:2%}
 }
-@media(max-width:360px){.hero{padding-inline:20px}.intro h1{font-size:57px}.actions{flex-direction:column;align-items:stretch}.contextNode{font-size:10px;padding:9px 11px}.contextMap{height:240px}.heroCharacter{width:190px!important;height:190px!important}.primary,.secondary{min-height:44px}.actions{gap:8px}.characterLine{font-size:10px}}
+@media(max-width:360px){.hero{padding-inline:20px}.intro h1{font-size:57px}.actions{flex-direction:column;align-items:stretch}.contextNode{font-size:12px;padding:9px 11px}.contextMap{height:240px}.heroCharacter{width:190px!important;height:190px!important}.primary,.secondary{min-height:44px}.actions{gap:8px}.characterLine{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.page *,.page *::before,.page *::after{animation:none!important;scroll-behavior:auto!important}}
 

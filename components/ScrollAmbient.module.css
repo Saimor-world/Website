@@ -1,10 +1,16 @@
-.control{position:fixed;z-index:60;right:max(18px,env(safe-area-inset-right));bottom:max(80px,calc(env(safe-area-inset-bottom) + 62px));display:flex;align-items:center;border:1px solid #c8d5bd40;border-radius:30px;background:#10271f;color:#e7e6d3;box-shadow:0 3px 16px #020a0733;font:400 11px/1.5 Inter,sans-serif}
-.control>button{display:flex;align-items:center;gap:9px;min-height:44px;padding:10px 14px;border:0;border-radius:30px;background:transparent;color:inherit;cursor:pointer}.control>button:disabled{opacity:.6}
+.control{position:fixed;z-index:60;top:max(14px,env(safe-area-inset-top));right:max(72px,calc(env(safe-area-inset-right) + 60px));display:flex;align-items:center;border:1px solid #c8d5bd40;border-radius:30px;background:#10271f;color:#e7e6d3;box-shadow:0 3px 16px #020a0733;font:400 12px/1.5 Inter,sans-serif}
+.control>button{display:flex;align-items:center;gap:9px;min-height:44px;min-width:44px;justify-content:center;padding:10px 12px;border:0;border-radius:30px;background:transparent;color:inherit;cursor:pointer}.control>button:disabled{opacity:.6}
 .control[data-enabled="true"]{border-color:#d7ce9d88}.control[data-enabled="true"]>button>svg{color:#dfd2a1}
-.control summary{display:grid;place-items:center;width:36px;min-height:44px;cursor:pointer;list-style:none;border-left:1px solid #c8d5bd24}.control summary::-webkit-details-marker{display:none}
-.control details{position:relative}.level{position:absolute;right:0;bottom:55px;width:190px;padding:17px;background:#17372b;color:#eee8d2;border:1px solid #b9c99f66;border-radius:14px;box-shadow:0 8px 24px #020a0744}
-.level label{display:flex;justify-content:space-between;gap:15px;margin-bottom:12px}.level input{display:block;width:100%;height:28px;accent-color:#e6d19b;cursor:pointer}.control :is(button,summary,input):focus-visible{outline:2px solid #ead39c;outline-offset:4px}
-.error{position:absolute;bottom:55px;left:0;width:240px;padding:13px;border:1px solid #d5bd8d66;border-radius:12px;background:#17372b;color:#f5e5c2}
-.control[data-encounter="true"]{bottom:max(144px,calc(env(safe-area-inset-bottom) + 132px));right:clamp(22px,4.5vw,72px);z-index:8;background:#0a211be8}
-@media(max-width:700px){.control{right:16px;bottom:max(80px,calc(env(safe-area-inset-bottom) + 62px));font-size:10px}.control>button{gap:7px;padding-inline:12px}.control[data-encounter="true"]{right:22px;bottom:max(142px,calc(env(safe-area-inset-bottom) + 132px))}}
-@media(max-width:767px){.control>button{min-width:44px;justify-content:center;padding:10px}.control>button>span{display:none}.control summary{width:44px}.control[data-enabled="false"]:not(:focus-within)>details{display:none}.level{right:0;width:190px}.control[data-enabled="true"]>button{border-radius:50%}}
+.control summary{display:grid;place-items:center;width:44px;min-height:44px;cursor:pointer;list-style:none;border-left:1px solid #c8d5bd24}.control summary::-webkit-details-marker{display:none}
+.control details{position:relative}.level{position:absolute;right:0;bottom:auto;top:52px;width:190px;padding:17px;background:#17372b;color:#eee8d2;border:1px solid #b9c99f66;border-radius:14px;box-shadow:0 8px 24px #020a0744;font-size:12px}
+.level label{display:flex;justify-content:space-between;gap:15px;margin-bottom:12px;font-size:12px}.level input{display:block;width:100%;height:28px;accent-color:#e6d19b;cursor:pointer}.control :is(button,summary,input):focus-visible{outline:2px solid #ead39c;outline-offset:4px}
+.error{position:absolute;top:52px;right:0;width:240px;padding:13px;border:1px solid #d5bd8d66;border-radius:12px;background:#17372b;color:#f5e5c2;font-size:12px}
+.control>button>span{display:none}
+.control[data-enabled="false"]:not(:focus-within)>details{display:none}
+.control[data-encounter="true"]{top:max(18px,calc(env(safe-area-inset-top) + 8px));right:max(110px,calc(env(safe-area-inset-right) + 96px));bottom:auto;left:auto;z-index:8;background:#0a211be8}
+.control[data-embedded="true"]{position:static;inset:auto;z-index:auto;box-shadow:none;flex-shrink:0}
+.control[data-embedded="true"] .level,.control[data-embedded="true"] .error{top:auto;bottom:auto;right:0}
+@media(min-width:768px){
+  .control:not([data-embedded="true"]):not([data-encounter="true"]){right:max(24px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top))}
+}
+@media(prefers-reduced-motion:reduce){.control{transition:none}}

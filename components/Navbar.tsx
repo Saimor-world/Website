@@ -7,6 +7,7 @@ import { LogIn, Menu, ShieldCheck, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { MatomoEvents } from '@/lib/matomo';
 import { localizedLegalHref } from '@/lib/legal-routes';
+import ScrollAmbient from './ScrollAmbient';
 
 type Locale = 'de' | 'en';
 
@@ -123,9 +124,13 @@ export default function Navbar({ locale }: { locale: Locale }) {
     <>
       <header data-public-header data-scrolled={scrolled} data-light={isLightPage} className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-6 sm:pt-4">
-          <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${scrolled || isLightPage
-            ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
-            : 'md:border-transparent md:bg-transparent'
+          <div className={`flex h-[50px] items-center justify-between bg-transparent px-1 transition-colors duration-200 md:h-[58px] md:border md:px-4 md:backdrop-blur-lg ${isLightPage
+            ? (scrolled
+              ? 'md:border-[#3a5e46]/25 md:bg-[#f6f4ec]/95 md:shadow-[0_8px_24px_rgba(23,57,42,.10)]'
+              : 'md:border-[#3a5e46]/20 md:bg-[#f6f4ec]/90 md:shadow-[0_8px_24px_rgba(23,57,42,.08)]')
+            : (scrolled
+              ? 'md:border-[#b8dbc5]/[0.18] md:bg-[#10251c]/[.92] md:shadow-[0_8px_24px_rgba(3,15,10,.16)]'
+              : 'md:border-transparent md:bg-transparent')
           }`}>
             <Link href={homeHref} className={`group flex h-12 w-12 items-center justify-center rounded-full border shadow-[0_7px_22px_rgba(3,21,12,.34)] backdrop-blur-xl md:h-auto md:w-auto md:justify-start md:gap-3 md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-blur-none ${isLightPage ? 'border-[#17392a]/15 bg-[#17392a]/90' : 'border-[#c4dfca]/25 bg-[#0d3024]/90'}`} aria-label={locale === 'de' ? 'Saimôr Startseite' : 'Saimôr home'} onClick={() => track('Saimôr')}>
               <span className="block h-9 w-9 shrink-0"><BrandSigil priority /></span>
@@ -143,6 +148,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
             </nav>
 
             <div className="flex items-center gap-1.5 sm:gap-2">
+              <ScrollAmbient locale={locale} embedded />
               <Link href={getSwitchHref()} className={`hidden h-9 min-w-9 items-center justify-center border px-2 font-mono text-[12px] font-semibold tracking-[.1em] transition sm:flex ${isLightPage ? 'border-[#17392a]/20 bg-[#17392a]/8 text-[#17392a]/70 hover:border-[#17392a]/40 hover:text-[#17392a]' : 'border-[#a8cdb5]/20 bg-[#18382b]/62 text-[#e4eee7]/70 hover:border-[#b6d9c3]/34 hover:text-white'}`} aria-label={`Switch language to ${otherLocale.toUpperCase()}`}>{otherLocale.toUpperCase()}</Link>
 
               <a href={loginHref} className={`hidden h-9 items-center gap-2 border px-3 font-mono text-[12px] font-semibold uppercase tracking-[.1em] transition lg:flex ${isLightPage ? 'border-[#17392a]/20 bg-[#17392a]/8 text-[#17392a]/70 hover:border-[#17392a]/40 hover:text-[#17392a]' : 'border-[#a8cdb5]/20 bg-[#18382b]/62 text-[#e4eee7]/70 hover:border-[#b6d9c3]/34 hover:text-white'}`} onClick={() => track(copy.login)}>

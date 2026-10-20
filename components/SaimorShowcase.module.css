@@ -36,7 +36,7 @@
 .orbitTop{top:17%;left:24%}
 .orbitRight{right:7%;top:54%}
 .orbitBottom{bottom:17%;left:25%}
-.artworkDisclaimer,.yoriArtworkCaption{position:absolute;bottom:24px;right:30px;font:500 10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;color:#e0e9d4ab;z-index:3}
+.artworkDisclaimer,.yoriArtworkCaption{position:absolute;bottom:24px;right:30px;font:500 12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;color:#e0e9d4ab;z-index:3}
 .yori{grid-template-columns:1.03fr .97fr;background:#e5dfd1;color:#26372b}
 .yori .featureNumber{color:#69745a}
 .yori .featureStatement{color:#5c6955}

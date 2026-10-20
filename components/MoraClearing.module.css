@@ -1,6 +1,6 @@
 .clearing{position:absolute;inset:0;overflow:hidden;opacity:clamp(0,calc((var(--dawn) - .12)*1.5),1);background:#1a3529}
 .landscapeMotion{position:absolute;inset:-6%;will-change:transform}
-.landscape{position:absolute;inset:0;background:url('/images/saimor-forest-layer.webp') 60% 46%/cover no-repeat;transform:scale(calc(1.14 - var(--dawn)*.12));filter:brightness(calc(.85 + var(--dawn)*.35)) contrast(1.05) saturate(.92);will-change:transform}
+.landscape{position:absolute;inset:0;background:url('/images/saimor-forest-layer.webp') 52% 46%/cover no-repeat;transform:scale(calc(1.14 - var(--dawn)*.12));filter:brightness(calc(1.05 + var(--dawn)*.22)) contrast(1.02) saturate(.95);will-change:transform}
 .sun{position:absolute;inset:0;background:radial-gradient(ellipse 26% 38% at 68% 24%,#fffadc70,#f5d08030 45%,transparent 75%);mix-blend-mode:soft-light;will-change:transform}
 .rays{position:absolute;inset:0;background:conic-gradient(from 120deg at 62% 26%,transparent 0deg,#fff5c825 5deg,transparent 9deg,#ffefb51a 16deg,transparent 19deg,#ffe8b818 30deg,transparent 38deg);mask-image:radial-gradient(ellipse at 62% 26%,#000,transparent 65%);animation:light 19s ease-in-out infinite alternate;will-change:transform,opacity}
 .water{position:absolute;left:25%;right:10%;top:63%;bottom:0;overflow:hidden;mask-image:radial-gradient(ellipse 42% 50% at 50% 45%,#0008,transparent);transform:perspective(260px) rotateX(35deg);mix-blend-mode:normal}
@@ -9,7 +9,8 @@
 .motes{position:absolute;inset:-5%;will-change:transform}
 .motes i{position:absolute;left:var(--x);top:var(--y);width:calc(var(--size)*5);height:calc(var(--size)*5);margin:calc(var(--size)*-2);border-radius:50%;background:radial-gradient(circle,#e8e4bd 0%,#e8e4bdb0 5%,#d9dfbb20 24%,transparent 65%);animation:float var(--duration) ease-in-out var(--delay) infinite;opacity:0;will-change:transform,opacity}
 .nearMist{position:absolute;left:12%;right:5%;height:42%;bottom:-3%;background:radial-gradient(ellipse 48% 65% at 50% 75%,#a7c6a626,transparent 75%);animation:breath 32s ease-in-out -11s infinite alternate;will-change:transform}
-.shade{position:absolute;inset:0;background:linear-gradient(#0b1f1830,transparent 20%,transparent 65%,#0b1f1850),radial-gradient(ellipse 90% 90% at 63% 43%,transparent 40%,#0b1f1835);pointer-events:none}
+.shade{position:absolute;inset:0;background:linear-gradient(#0b1f1818,transparent 22%,transparent 70%,#0b1f1828),radial-gradient(ellipse 90% 90% at 52% 40%,transparent 48%,#0b1f1818);pointer-events:none}
+.leftLight{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(186,210,150,.38) 0%,rgba(160,190,130,.16) 34%,transparent 58%);mix-blend-mode:screen}
 @keyframes light{from{opacity:.45}to{opacity:1}}
 @keyframes breath{from{translate:-3% 1%}to{translate:4% -2%}}
 @keyframes float{0%,100%{opacity:0;transform:translate3d(0,16px,0)}30%{opacity:.48}60%{opacity:.25}85%{opacity:0;transform:translate3d(25px,-45px,0)}}
