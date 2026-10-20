@@ -1,9 +1,10 @@
-import MoraProductPage from '@/components/MoraProductPage';
+import type { Metadata } from 'next';
+import MoraLandingPage from '@/components/MoraLandingPage';
 
-export const metadata = {
-  title: 'MÔRA: proaktive Assistenz',
+export const metadata: Metadata = {
+  title: 'MÔRA: Klarheit im Wandel',
   description:
-    'MÔRA arbeitet im Saimôr OS mit Dateien, Terminen, Aufgaben und Kontext. Sie behält den Stand im Blick, erkennt Veränderungen und kann nächste Schritte vorbereiten.',
+    'MÔRA ist dein ruhender Begleiter für Fokus und Orientierung. Sie arbeitet im Saimôr OS mit Dateien, Terminen und Kontext.',
   alternates: {
     canonical: '/mora',
     languages: {
@@ -14,5 +15,5 @@ export const metadata = {
 };
 
 export default function MoraPage() {
-  return <MoraProductPage locale="de" />;
+  return <MoraLandingPage locale="de" />;
 }

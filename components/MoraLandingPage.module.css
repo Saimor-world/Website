@@ -1,0 +1,535 @@
+/* MÔRA Landing — phone-first, dark cosmic, Cormorant + Inter */
+.page {
+  --ink: #0b1520;
+  --navy: #1B2B4F;
+  --gold: #D4AF37;
+  --jade: #8fcdb0;
+  --teal: #62bfc0;
+  --progress: 0;
+  position: relative;
+  min-height: 400svh;
+  background: var(--ink);
+  color: #f5f3e9;
+  overflow-x: clip;
+}
+
+/* Atmosphere layers */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 50% 35%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 70% 10%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1.5px 1.5px at 80% 80%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 95% 45%, rgba(255,255,255,0.3), transparent);
+  opacity: 0.7;
+}
+
+.fog {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 120% 80% at 50% 30%, rgba(27, 43, 79, 0.6), transparent 60%);
+  opacity: calc(1 - var(--progress) * 1.2);
+  transition: opacity 0.8s ease-out;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 35%, rgba(212, 175, 55, 0.12), transparent 50%);
+  opacity: calc(var(--progress) * 1.5);
+  transition: opacity 0.8s ease-out;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 60px;
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(48px, 12vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #fff8e9;
+  margin: 0;
+}
+
+.heroSub {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(14px, 3.5vw, 18px);
+  line-height: 1.7;
+  color: rgba(245, 243, 233, 0.75);
+  margin: 24px 0 0;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 14px 28px;
+  margin-top: 36px;
+  border-radius: 40px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+  color: #f0dfb6;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+}
+
+.heroCta:hover {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.12));
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: translateY(-2px);
+}
+
+/* MÔRA floating stage */
+.moraStage {
+  --mora-y: 0px;
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, calc(-50% + var(--mora-y)));
+  pointer-events: none;
+  transition: transform 0.15s ease-out;
+}
+
+.moraContainer {
+  position: relative;
+  width: clamp(180px, 40vw, 280px);
+  height: clamp(180px, 40vw, 280px);
+}
+
+.moraHalo {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(143, 205, 176, 0.35) 0%, rgba(143, 205, 176, 0.1) 40%, transparent 65%);
+  animation: moraHaloPulse 6s ease-in-out infinite;
+}
+
+.moraStone {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.5));
+  animation: moraBreathe 5.5s ease-in-out infinite;
+}
+
+.moraSheen {
+  position: absolute;
+  inset: 5%;
+  z-index: 2;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 38%, rgba(255, 248, 230, 0.25) 48%, transparent 58%);
+  mix-blend-mode: soft-light;
+  animation: moraSheen 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moraHaloPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes moraBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes moraSheen {
+  to { transform: rotate(360deg); }
+}
+
+/* Threads section */
+.threads {
+  position: relative;
+  z-index: 5;
+  min-height: 150svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.threadsSvg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.threadsSvg[data-visible="true"] {
+  opacity: 1;
+}
+
+.thread {
+  fill: none;
+  stroke: url(#threadGradientJade);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  opacity: 0;
+  transition: stroke-width 0.5s;
+}
+
+.thread[data-type="1"] { stroke: url(#threadGradientGold); }
+.thread[data-type="2"] { stroke: url(#threadGradientTeal); }
+
+.threadsSvg[data-visible="true"] .thread {
+  animation: threadDraw 2.2s ease-out forwards;
+}
+
+.threadsSvg[data-bright="true"] .thread {
+  stroke-width: 1.8;
+  filter: drop-shadow(0 0 6px rgba(143, 205, 176, 0.35));
+}
+
+.threadsSvg[data-still="true"] .thread {
+  animation: none;
+  stroke-dashoffset: 0;
+  opacity: 0.7;
+}
+
+@keyframes threadDraw {
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.threadSources {
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 6vw, 48px);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  z-index: 15;
+}
+
+.threadSources[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.threadSource {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(245, 243, 233, 0.6);
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: sourceFloat 4s ease-in-out infinite;
+}
+
+.threadSource[data-type="0"] { color: rgba(143, 205, 176, 0.8); }
+.threadSource[data-type="1"] { color: rgba(212, 175, 55, 0.8); }
+.threadSource[data-type="2"] { color: rgba(98, 191, 192, 0.8); }
+
+@keyframes sourceFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.phaseLabel {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(212, 175, 55, 0.7);
+  text-align: center;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Lichtung */
+.lichtung {
+  position: relative;
+  z-index: 8;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+}
+
+.lichtungGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 80% at 50% 40%, rgba(212, 175, 55, 0.18), transparent 50%);
+  pointer-events: none;
+}
+
+.lichtungContent {
+  position: relative;
+  text-align: center;
+  max-width: 540px;
+}
+
+.lichtungContent h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(36px, 9vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #fff8e9;
+  margin: 0;
+}
+
+.lichtungContent p {
+  font-size: clamp(14px, 3.5vw, 17px);
+  line-height: 1.8;
+  color: rgba(245, 243, 233, 0.8);
+  margin: 24px 0 0;
+}
+
+/* OS Section */
+.osSection {
+  position: relative;
+  z-index: 8;
+  min-height: 80svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  background: linear-gradient(180deg, transparent, rgba(11, 21, 32, 0.9));
+}
+
+.osContent {
+  text-align: center;
+  max-width: 560px;
+}
+
+.osContent h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(32px, 8vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #fff8e9;
+  margin: 0;
+}
+
+.osContent p {
+  font-size: clamp(13px, 3.2vw, 15px);
+  line-height: 1.8;
+  color: rgba(245, 243, 233, 0.75);
+  margin: 20px 0 0;
+}
+
+.osCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 15px 32px;
+  margin-top: 32px;
+  border-radius: 40px;
+  border: none;
+  background: #f0dfb6;
+  color: #15291e;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.osCta:hover {
+  background: #fff0cd;
+  transform: translateY(-2px);
+}
+
+/* Trust section */
+.trust {
+  position: relative;
+  z-index: 8;
+  padding: 60px 24px 80px;
+  background: #070d14;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trust h3 {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.8);
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.trust ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 480px;
+  display: grid;
+  gap: 12px;
+}
+
+.trust li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(245, 243, 233, 0.7);
+  padding-left: 20px;
+  position: relative;
+}
+
+.trust li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--jade);
+  opacity: 0.6;
+}
+
+.trustNote {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 233, 0.4);
+  text-align: center;
+  margin: 32px 0 0;
+}
+
+/* Motion toggle */
+.motionToggle {
+  position: fixed;
+  z-index: 50;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(11, 21, 32, 0.8);
+  backdrop-filter: blur(8px);
+  color: rgba(245, 243, 233, 0.7);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.motionToggle:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.motionToggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* Phase-based animations */
+.page[data-phase="fog"] .moraStage { opacity: 0.3; }
+.page[data-phase="arriving"] .moraStage { opacity: 0.7; }
+.page[data-phase="gathering"] .moraStage,
+.page[data-phase="clearing"] .moraStage,
+.page[data-phase="os"] .moraStage { opacity: 1; }
+
+.page[data-still="true"] .moraHalo,
+.page[data-still="true"] .moraStone,
+.page[data-still="true"] .moraSheen {
+  animation: none;
+}
+
+/* Phone breakpoints */
+@media (max-width: 430px) {
+  .hero { padding: 90px 20px 50px; }
+  .heroTitle { font-size: 48px; }
+  .heroSub { font-size: 14px; margin-top: 20px; }
+  .heroCta { padding: 12px 24px; font-size: 12px; min-height: 48px; margin-top: 28px; }
+  .moraContainer { width: 180px; height: 180px; }
+  .lichtung { padding: 60px 20px; }
+  .lichtungContent h2 { font-size: 36px; }
+  .osSection { padding: 60px 20px; }
+  .osContent h2 { font-size: 32px; }
+  .trust { padding: 48px 20px 60px; }
+  .trust li { font-size: 12px; }
+  .motionToggle { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+  .phaseLabel { bottom: 16px; font-size: 10px; }
+}
+
+@media (max-width: 390px) {
+  .hero { padding: 85px 18px 45px; }
+  .heroTitle { font-size: 44px; }
+  .heroSub { font-size: 13px; max-width: 300px; }
+  .heroCta { padding: 11px 22px; font-size: 11px; gap: 10px; }
+  .moraContainer { width: 160px; height: 160px; }
+  .lichtungContent h2 { font-size: 32px; }
+  .osContent h2 { font-size: 28px; }
+  .trust h3 { font-size: 10px; }
+  .trust li { font-size: 11px; padding-left: 16px; }
+  .trust li::before { width: 5px; height: 5px; top: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moraHalo, .moraStone, .moraSheen, .thread { animation: none !important; }
+  .fog, .glow { transition: none; }
+  .threadsSvg .thread { stroke-dashoffset: 0; opacity: 0.7; }
+  .motionToggle { display: none; }
+}
