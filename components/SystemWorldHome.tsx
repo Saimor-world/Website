@@ -95,17 +95,37 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <div className={styles.moraIntroduction} id="blick">
-        <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / MÔRAS BLICK' : "THE WORLD OF AI / MÔRA'S VIEW"}</p>
-          <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
-          <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
+      <section id="system" className={styles.system} aria-labelledby="inside-title">
+        <div className={styles.threshold}>
+          <Image src="/images/saimor-forest-threshold.webp" alt="" fill quality={90} sizes="100vw" className={styles.forestImage} />
+          <div className={styles.forestShade} aria-hidden="true" />
+          <div className={styles.thresholdMist} aria-hidden="true" />
+          <div className={styles.thresholdInner}>
+            <div className={styles.contextCopy}>
+              <p className={styles.eyebrow}>{c.fieldEyebrow}</p>
+              <h2 id="inside-title"><span className={styles.desktopIntro}>{c.fieldTitle}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Dein Kontext. Mit dir verbunden.' : 'Your context. Always with you.'}</span></h2>
+              <p className={styles.contextBody}><span className={styles.desktopIntro}>{c.saimorText}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Eine Welt für alles, was zusammengehört. Komm einen Schritt näher.' : 'A world for everything that belongs together. Take a step closer.'}</span></p>
+              <Link data-testid="mobile-threshold-entry" className={styles.thresholdAction} href={`${locale === 'de' ? '' : '/en'}/mora/deep-view?from=portal`}>{locale === 'de' ? 'MÔRA begegnen' : 'Meet MÔRA'}<ArrowRight size={16} aria-hidden="true" /></Link>
+            </div>
+            <div className={styles.contextStage}>
+              <div className={styles.portalCanvas}>
+                <PortalExperience locale={locale} />
+              </div>
+            </div>
+          </div>
         </div>
-        <AiRealityTeaser locale={locale} />
-      </div>
-      <div className={styles.entry}>
-        <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
-        <div><p>{c.entryText}</p><Link href={securityHref} className={styles.textLink}>{c.entryCta}<ArrowRight size={17} aria-hidden="true" /></Link></div>
-      </div>
+        <div className={styles.moraIntroduction} id="blick">
+          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / MÔRAS BLICK' : "THE WORLD OF AI / MÔRA'S VIEW"}</p>
+            <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
+            <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
+          </div>
+          <AiRealityTeaser locale={locale} />
+        </div>
+        <div className={styles.entry}>
+          <div><p className={styles.eyebrow}>{c.entryLabel}</p><h3>{c.entryTitle}</h3></div>
+          <div><p>{c.entryText}</p><Link href={securityHref} className={styles.textLink}>{c.entryCta}<ArrowRight size={17} aria-hidden="true" /></Link></div>
+        </div>
+      </section>
 
       <SaimorShowcase locale={locale} />
 
@@ -139,39 +159,19 @@ export default function SystemWorldHome({ locale }: Props) {
       <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#7a9470]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={locale === 'de' ? '/studio' : '/en/studio'} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{locale === 'de' ? 'Studio entdecken' : 'Explore Studio'}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="group grid gap-3 border-b border-[#3a5e46]/20 py-7 transition-colors hover:bg-[#b8d5b4]/10 sm:grid-cols-[42px_.8fr_1.2fr_auto] sm:items-start sm:gap-6"><div className="font-mono text-[12px] tracking-[.14em] text-[#8a9f85]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p><Link href={`${locale === 'de' ? '/studio' : '/en/studio'}#${index === 0 ? 'beratung' : index === 1 ? 'workshops' : 'umsetzung'}`} className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-[#225e42] underline-offset-4 transition group-hover:gap-2 hover:underline" aria-label={`${name} ${locale === 'de' ? 'entdecken' : 'explore'}`}>{locale === 'de' ? 'Ansehen' : 'Explore'}<ArrowUpRight size={15} aria-hidden="true" /></Link></div>)}<div className="pt-7"><div className="font-mono text-[12px] uppercase tracking-[.16em] text-[#7a9570]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · {c.experimentsText}</p></div></div></div></section>
       <section id="contact" className={`${styles.daylightContact} px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto max-w-7xl"><div className="grid gap-10 border-t border-[#3a5e46]/25 pt-10 md:grid-cols-[1fr_auto] md:items-end"><div><p className="font-mono text-[12px] font-semibold tracking-[.18em] text-[#5a8568]">{c.finalEyebrow}</p><h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#173a2b] sm:text-6xl md:text-7xl">{c.finalTitle}</h2><p className="mt-6 max-w-2xl text-sm leading-7 text-[#405c49] sm:text-base">{c.finalText}</p></div><Link href={contactHref} className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#225c40] bg-[#225c40] px-6 py-3.5 text-sm font-semibold text-[#fff9ed] transition hover:border-[#17462f] hover:bg-[#17462f]">{c.finalCta}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div></div></section>
 
-      <section id="system" className={styles.system} aria-labelledby="inside-title">
-        <div className={styles.threshold}>
-          <Image src="/images/saimor-forest-threshold.webp" alt="" fill quality={90} sizes="100vw" className={styles.forestImage} />
-          <div className={styles.forestShade} aria-hidden="true" />
-          <div className={styles.thresholdMist} aria-hidden="true" />
-          <div className={styles.thresholdInner}>
-            <div className={styles.contextCopy}>
-              <p className={styles.eyebrow}>{c.fieldEyebrow}</p>
-              <h2 id="inside-title"><span className={styles.desktopIntro}>{c.fieldTitle}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Dein Kontext. Mit dir verbunden.' : 'Your context. Always with you.'}</span></h2>
-              <p className={styles.contextBody}><span className={styles.desktopIntro}>{c.saimorText}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Eine Welt für alles, was zusammengehört. Komm einen Schritt näher.' : 'A world for everything that belongs together. Take a step closer.'}</span></p>
-              <Link data-testid="mobile-threshold-entry" className={styles.thresholdAction} href={`${locale === 'de' ? '' : '/en'}/mora/deep-view?from=portal`}>{locale === 'de' ? 'MÔRA begegnen' : 'Meet MÔRA'}<ArrowRight size={16} aria-hidden="true" /></Link>
-            </div>
-            <div className={styles.contextStage}>
-              <div className={styles.portalCanvas}>
-                <PortalExperience locale={locale} />
-              </div>
-            </div>
-          </div>
+      <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-label="Earth">
+        <div className={styles.returnDisk} aria-hidden="true">
+          <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={95} sizes="100vw" className={styles.returnImage} />
         </div>
-        <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-label="Earth">
-          <div className={styles.returnDisk} aria-hidden="true">
-            <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={95} sizes="100vw" className={styles.returnImage} />
-          </div>
-          <div className={styles.returnMist} aria-hidden="true" />
-          <div className={styles.returnShade} aria-hidden="true" />
-          <EarthMycelium />
-          <div className={styles.returnInner}>
-            <p className={styles.returnCredit}>
-              {c.earthCredit}{' '}
-              <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
-            </p>
-          </div>
-        </section>
+        <div className={styles.returnMist} aria-hidden="true" />
+        <div className={styles.returnShade} aria-hidden="true" />
+        <EarthMycelium />
+        <div className={styles.returnInner}>
+          <p className={styles.returnCredit}>
+            {c.earthCredit}{' '}
+            <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
+          </p>
+        </div>
       </section>
     </div>
   );

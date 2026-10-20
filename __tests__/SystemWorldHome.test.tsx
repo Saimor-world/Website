@@ -77,14 +77,14 @@ describe('SystemWorldHome', () => {
     const contact = container.querySelector('#contact');
     const earthHorizon = container.querySelector('#earth-horizon');
     expect([hero, forest, earthHorizon, products, intelligence, studio, contact].every(Boolean)).toBe(true);
-    const positions = [hero, products, intelligence, studio, contact, forest, earthHorizon].map(section => sections.indexOf(section!));
+    const positions = [hero, forest, products, intelligence, studio, contact, earthHorizon].map(section => sections.indexOf(section!));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
     const teaser = screen.getByRole('heading', { name: 'Überzeugend. Aber wahr?' });
-    expect(teaser.compareDocumentPosition(forest!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(forest!.contains(teaser)).toBe(true);
     const lastInWorld = [...(world?.querySelectorAll('section') ?? [])].at(-1);
     expect(lastInWorld).toBe(earthHorizon);
   });
@@ -138,7 +138,7 @@ describe('SystemWorldHome', () => {
     expect(horizon.querySelector('a')?.textContent).toBe('Earth');
     expect(horizon.querySelector('[data-testid="earth-mycelium"]')).not.toBeNull();
     expect(horizon.querySelector('[aria-label="MÔRA"]')).not.toBeNull();
-    expect(forest?.contains(horizon)).toBe(true);
+    expect(forest?.contains(horizon)).toBe(false);
     const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
     expect(cosmos).toHaveLength(2);
     expect(hero?.contains(cosmos[0])).toBe(true);
