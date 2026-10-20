@@ -32,12 +32,13 @@
  .moraOrb{width:54px;height:54px;top:61%;animation-name:moraBobPhone;animation-duration:5.4s}
  .moraStone{width:54px!important;height:54px!important;animation-name:moraBreathePhone}
  .moraSheen{animation-duration:8s}
- .phoneGlow{stroke-opacity:.34;filter:blur(.6px)}
- .jade,.gold,.hair,.phoneGlow,.phonePulse{vector-effect:non-scaling-stroke}
- .jade{stroke-width:1.5px;stroke-opacity:.86}
- .gold{stroke-width:1.4px;stroke-opacity:.82}
- .hair{stroke-width:.9px;stroke-opacity:.55}
- .phonePulse{stroke:#f4fbe8;stroke-opacity:.95;stroke-dasharray:22 138;animation:phoneSap 7.2s linear infinite}
+ .phoneGlow{stroke-opacity:.22;filter:blur(.7px)}
+ .phoneBack{stroke-opacity:.3;filter:blur(1.15px)}
+ .jade,.gold,.hair,.phoneGlow,.phonePulse,.phoneBack{vector-effect:non-scaling-stroke}
+ .jade{stroke-opacity:.82}
+ .gold{stroke-opacity:.76}
+ .hair{stroke-opacity:.48}
+ .phonePulse{stroke:#f4fbe8;stroke-opacity:.88;stroke-dasharray:14 146;animation:phoneSap 7.6s linear infinite}
  .spores{display:block;position:absolute;inset:0;overflow:hidden;pointer-events:none}
  .spores i{position:absolute;border-radius:50%;background:rgba(232,246,228,.7);box-shadow:0 0 8px rgba(198,226,184,.5);animation:sporeDrift 14s linear infinite}
  .spores i:nth-child(3n){background:rgba(230,201,141,.62);box-shadow:0 0 9px rgba(230,201,141,.4)}

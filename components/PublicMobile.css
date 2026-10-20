@@ -2,13 +2,14 @@
 @media(max-width:767px){
  html[data-public-ready="true"]{scroll-padding-top:88px}
  [data-public-site]{--mobile-gutter:22px}
- [data-public-header][data-scrolled="true"]{background:linear-gradient(#0b261ff5,#0b261fd9 78%,#0b261f00)}
- [data-public-header][data-scrolled="true"][data-light="true"]{background:linear-gradient(#f4f1e8,#f4f1e8ed 78%,#f4f1e800)}
+ [data-public-header][data-scrolled="true"]{background:linear-gradient(180deg,#071910f7 0%,#0b261ff0 46%,#0b261fbb 74%,#0b261f00 100%);-webkit-backdrop-filter:blur(16px) saturate(1.08);backdrop-filter:blur(16px) saturate(1.08);padding-bottom:22px}
+ [data-public-header][data-scrolled="true"][data-light="true"]{background:linear-gradient(#f4f1e8,#f4f1e8ed 78%,#f4f1e800);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
  [data-public-site] :is(h1,h2,h3){text-wrap:balance;overflow-wrap:break-word}
  [data-public-site] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),select,textarea){font-size:16px;min-width:0;max-width:100%}
  [data-public-site] :is(button,summary){touch-action:manipulation}
  [data-public-site] :is(button,a,summary,input,textarea,select):focus-visible{outline:2px solid #cfb46c;outline-offset:4px}
- html:has([data-home-globe]) [data-public-footer]{position:relative;z-index:6;margin-top:-20vh;padding-top:40px;padding-bottom:96px;border-top-color:transparent;background:linear-gradient(180deg,transparent 0%,#050706 48px)}
+ html:has([data-home-globe]) footer[data-public-footer]{position:relative;z-index:6;margin-top:-30vh;padding-top:140px;padding-bottom:96px;border-top-color:transparent;background-color:transparent!important;background-image:linear-gradient(180deg,transparent 0%,rgba(5,7,6,.22) 90px,rgba(5,7,6,.62) 168px,#050706 240px)!important}
+ html:has([data-home-globe]) footer[data-public-footer]>div:first-child{-webkit-mask-image:linear-gradient(transparent 0%,#000 240px);mask-image:linear-gradient(transparent 0%,#000 240px)}
  [data-public-footer]{padding-bottom:96px}
  [data-public-footer] [data-footer-grid]{gap:12px}
  [data-public-footer] [data-footer-brand]{margin-bottom:14px}

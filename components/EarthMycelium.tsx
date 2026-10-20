@@ -4,7 +4,15 @@ import { useEffect, useRef } from 'react';
 import styles from './EarthMycelium.module.css';
 
 type Point = { x: number; y: number };
-type Strand = { d: string; w: number; tone: 'jade' | 'gold' | 'hair'; pulse?: boolean; edge?: boolean };
+type Strand = {
+  d: string;
+  w: number;
+  tone: 'jade' | 'gold' | 'hair';
+  pulse?: boolean;
+  edge?: boolean;
+  depth?: 'back' | 'mid' | 'front';
+  opacity?: number;
+};
 
 const MORA = { x: 600, y: 250 };
 const VIEW_W = 1200;
@@ -210,52 +218,149 @@ function phoneLimbY(x: number) {
   return 2 + t * t * 96;
 }
 
+function pathOrganic(points: Point[]) {
+  if (points.length < 2) return '';
+  let d = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+  for (let i = 1; i < points.length; i += 1) {
+    const prev = points[i - 1];
+    const point = points[i];
+    if (i === points.length - 1 || i % 4 === 0) {
+      d += `L${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+      continue;
+    }
+    const cx = mix(prev.x, point.x, 0.52) + (i % 2 === 0 ? 4.2 : -4.2);
+    const cy = mix(prev.y, point.y, 0.48);
+    d += `Q${cx.toFixed(1)} ${cy.toFixed(1)} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+  }
+  return d;
+}
+
+function growPhone(
+  rng: () => number,
+  start: Point,
+  heading: number,
+  steps: number,
+  stepLen: number,
+  wiggle: number,
+  pull: Point | null,
+  stopAtMora = false,
+) {
+  const points: Point[] = [start];
+  let x = start.x;
+  let y = start.y;
+  let angle = heading;
+  for (let i = 0; i < steps; i += 1) {
+    angle += (rng() - 0.5) * wiggle;
+    if (rng() > 0.83) angle += (rng() > 0.5 ? 1 : -1) * mix(0.4, 1.05, rng());
+    if (pull) {
+      const desired = Math.atan2(pull.y - y, pull.x - x);
+      let delta = desired - angle;
+      while (delta > Math.PI) delta -= Math.PI * 2;
+      while (delta < -Math.PI) delta += Math.PI * 2;
+      const dist = Math.hypot(pull.x - x, pull.y - y);
+      angle += delta * (dist < 70 ? 0.48 : mix(0.05, 0.2, i / steps));
+    }
+    const len = stepLen * mix(0.42, 1.38, rng());
+    x += Math.cos(angle) * len;
+    y += Math.sin(angle) * len;
+    if (y > PHONE_H - 18 || x < -48 || x > VIEW_W + 48) break;
+    points.push({ x, y });
+    if (stopAtMora && pull && Math.hypot(x - pull.x, y - pull.y) < 16) {
+      points.push({ ...pull });
+      break;
+    }
+  }
+  return { points, heading: angle };
+}
+
+function slicePoints(points: Point[], from: number, to: number) {
+  const last = points.length - 1;
+  const a = Math.max(0, Math.floor(last * from));
+  const b = Math.min(last, Math.max(a + 2, Math.ceil(last * to)));
+  return points.slice(a, b + 1);
+}
+
 function buildPhoneStrands(): Strand[] {
-  const rng = mulberry32(0x51a07e);
+  const rng = mulberry32(0x7c3e21);
   const strands: Strand[] = [];
-  const origins = [72, 228, 368, 520, 688, 848, 1070].map((x) => {
-    const px = x + (rng() - 0.5) * 16;
+
+  const push = (
+    points: Point[],
+    w: number,
+    tone: Strand['tone'],
+    depth: NonNullable<Strand['depth']>,
+    extra?: Pick<Strand, 'pulse' | 'opacity'>,
+  ) => {
+    if (points.length < 2) return;
+    const d = pathOrganic(points);
+    if (d.length > 12) strands.push({ d, w, tone, depth, ...extra });
+  };
+
+  const taperTowardMora = (
+    points: Point[],
+    baseW: number,
+    tone: Strand['tone'],
+    pulse: boolean,
+  ) => {
+    push(points, Math.max(0.28, baseW * 0.16), 'hair', 'front', { opacity: 0.58, pulse });
+    push(slicePoints(points, 0, 0.78), baseW * 0.48, tone, 'mid', { opacity: 0.78 });
+    push(slicePoints(points, 0, 0.4), baseW, tone, 'mid', { opacity: 0.9 });
+  };
+
+  const backOrigins = [40, 160, 310, 470, 650, 810, 960, 1120];
+  backOrigins.forEach((x, index) => {
+    const origin = { x: x + (rng() - 0.5) * 28, y: phoneLimbY(x) + rng() * 10 };
+    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.15, 0.7, rng());
+    const root = growPhone(rng, origin, heading, 9 + Math.floor(rng() * 5), 15, 0.92, null);
+    push(root.points, mix(0.22, 0.48, rng()), rng() > 0.55 ? 'gold' : 'hair', 'back', { opacity: 0.34 });
+    root.points.slice(2, -1).forEach((node) => {
+      if (rng() > 0.62) return;
+      const twig = growPhone(rng, node, heading + (rng() > 0.5 ? 0.8 : -0.8), 4, 11, 1.05, null);
+      push(twig.points, mix(0.16, 0.3, rng()), 'hair', 'back', { opacity: 0.26 });
+    });
+  });
+
+  const origins = [86, 270, 430, 600, 770, 990].map((x) => {
+    const px = x + (rng() - 0.5) * 18;
     return { x: px, y: phoneLimbY(px) };
   });
 
   origins.forEach((origin, index) => {
-    const along = (index < 3 ? 1 : -1) * mix(18, 42, rng());
-    const sit = {
-      x: origin.x + along * 0.45,
-      y: phoneLimbY(origin.x + along * 0.45) + 2,
-    };
-    const heading = Math.atan2(PHONE_MORA.y - sit.y, PHONE_MORA.x - sit.x) + (rng() - 0.5) * 0.28;
-    const trunk = grow(rng, sit, heading, 30, 16, 0.42, PHONE_MORA, true, false);
-    const points = [{ x: origin.x, y: origin.y }, sit, ...trunk.points.slice(1)];
-    points[points.length - 1] = { ...PHONE_MORA };
-    const width = mix(1.6, 2.2, 1 - Math.abs(origin.x - PHONE_MORA.x) / 640);
-    const d = pathThrough(points);
-    if (d.length > 12) {
-      strands.push({ d, w: width, tone: index % 2 === 0 ? 'jade' : 'gold', pulse: true });
+    const along = (index < 3 ? 1 : -1) * mix(14, 36, rng());
+    const sit = { x: origin.x + along * 0.4, y: phoneLimbY(origin.x + along * 0.4) + 3 };
+    const heading = Math.atan2(PHONE_MORA.y - sit.y, PHONE_MORA.x - sit.x) + (rng() - 0.5) * 0.38;
+    const trunk = growPhone(rng, sit, heading, 26, 15, 0.78, PHONE_MORA, true);
+    const points = [{ ...origin }, sit, ...trunk.points.slice(1)];
+    if (Math.hypot(points[points.length - 1].x - PHONE_MORA.x, points[points.length - 1].y - PHONE_MORA.y) < 36) {
+      points[points.length - 1] = { ...PHONE_MORA };
     }
+    const width = mix(1.7, 2.55, 1 - Math.abs(origin.x - PHONE_MORA.x) / 700);
+    const tone: Strand['tone'] = index % 3 === 0 ? 'gold' : 'jade';
+    taperTowardMora(points, width, tone, index === 1 || index === 4);
 
-    if (index === 1 || index === 2 || index === 4 || index === 5) {
-      const node = points[Math.max(5, Math.floor(points.length * 0.38))];
-      if (!node) return;
-      const fork = grow(
+    points.forEach((node, nodeIndex) => {
+      if (nodeIndex < 3 || nodeIndex > points.length - 4) return;
+      if (rng() > 0.46) return;
+      const dir = rng() > 0.5 ? 1 : -1;
+      const fork = growPhone(
         rng,
         node,
-        heading + (index % 2 === 0 ? 0.62 : -0.62),
-        12,
-        14,
-        0.46,
-        PHONE_MORA,
-        true,
-        false,
+        trunk.heading + dir * mix(0.55, 1.25, rng()),
+        5 + Math.floor(rng() * 5),
+        11,
+        0.95,
+        rng() > 0.82 ? PHONE_MORA : null,
+        rng() > 0.88,
       );
-      if (fork.points.length > 3) {
-        fork.points[fork.points.length - 1] = { ...PHONE_MORA };
-        const forkPath = pathThrough(fork.points);
-        if (forkPath.length > 12) {
-          strands.push({ d: forkPath, w: width * 0.5, tone: 'hair', pulse: true });
-        }
-      }
-    }
+      push(fork.points, mix(0.28, 0.7, 1 - nodeIndex / points.length), rng() > 0.7 ? 'gold' : 'hair', 'front', {
+        opacity: mix(0.35, 0.7, rng()),
+      });
+      fork.points.slice(1, -1).forEach((side) => {
+        if (rng() > 0.55) return;
+        const twig = growPhone(rng, side, trunk.heading + dir * mix(0.7, 1.3, rng()), 3, 9, 1.1, null);
+        push(twig.points, mix(0.16, 0.32, rng()), 'hair', rng() > 0.5 ? 'back' : 'front', { opacity: 0.4 });
+      });
+    });
   });
 
   return strands;
@@ -376,21 +481,31 @@ export default function EarthMycelium() {
             </mask>
           </defs>
           <g mask="url(#earthPhoneMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            {PHONE_STRANDS.map((strand, index) => (
+            {PHONE_STRANDS.filter((strand) => strand.depth === 'back').map((strand, index) => (
+              <path
+                key={`pb-${index}`}
+                className={`${styles.strand} ${styles[strand.tone]} ${styles.phoneBack}`}
+                d={strand.d}
+                strokeWidth={strand.w}
+                strokeOpacity={strand.opacity}
+              />
+            ))}
+            {PHONE_STRANDS.filter((strand) => strand.depth !== 'back' && strand.w >= 1.15).map((strand, index) => (
               <path
                 key={`pg-${index}`}
                 className={styles.phoneGlow}
                 d={strand.d}
                 stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-                strokeWidth={strand.w * 4.6}
+                strokeWidth={strand.w * 2.4}
               />
             ))}
-            {PHONE_STRANDS.map((strand, index) => (
+            {PHONE_STRANDS.filter((strand) => strand.depth !== 'back').map((strand, index) => (
               <path
                 key={`ps-${index}`}
                 className={`${styles.strand} ${styles[strand.tone]}`}
                 d={strand.d}
                 strokeWidth={strand.w}
+                strokeOpacity={strand.opacity}
               />
             ))}
             {PHONE_STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
@@ -398,10 +513,10 @@ export default function EarthMycelium() {
                 key={`pp-${index}`}
                 className={styles.phonePulse}
                 d={strand.d}
-                strokeWidth={Math.max(1.4, strand.w * 0.85)}
+                strokeWidth={Math.max(0.7, strand.w * 0.7)}
                 pathLength={160}
                 filter="url(#earthPhonePulseGlow)"
-                style={{ animationDelay: `${-index * 1.35}s`, animationDuration: `${6.8 + (index % 3) * 1.2}s` }}
+                style={{ animationDelay: `${-index * 1.8}s`, animationDuration: `${7.4 + (index % 3) * 1.3}s` }}
               />
             ))}
           </g>
