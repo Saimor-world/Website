@@ -8,7 +8,6 @@ import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
 import ResponsiveDetails from './ResponsiveDetails';
-import EarthEntry from './EarthEntry';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -35,6 +34,9 @@ const COPY = {
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
     finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'WEITERSCROLLEN',
+    earthEyebrow: 'EIN ORT', earthTitle: 'Die Oberfläche, die du gesehen hast.',
+    earthText: 'Was oben als Horizont erschien, ist ein Ort. Geschichten könnten dort bleiben — nicht in einem Feed, sondern an ihrer Stelle.',
+    earthName: 'Earth', earthNote: 'Konzept · keine Live-Karte',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
@@ -56,6 +58,9 @@ const COPY = {
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
     finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Better systems start with a better question.', finalText: 'What should become easier? What gets lost between people and tools? That is where we can begin.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
+    earthEyebrow: 'ONE PLACE', earthTitle: 'The surface you already saw.',
+    earthText: 'The horizon from the opening is a place. Stories could stay with it — not in a feed, but where they belong.',
+    earthName: 'Earth', earthNote: 'Concept · not a live map',
   },
 } as const;
 
@@ -91,7 +96,6 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
           <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><Link href="#system">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
-        <EarthEntry locale={locale} />
       </section>
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">
@@ -155,10 +159,22 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
       </section>
 
-      <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#7a9470]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={locale === 'de' ? '/studio' : '/en/studio'} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{locale === 'de' ? 'Studio entdecken' : 'Explore Studio'}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="group grid gap-3 border-b border-[#3a5e46]/20 py-7 transition-colors hover:bg-[#b8d5b4]/10 sm:grid-cols-[42px_.8fr_1.2fr_auto] sm:items-start sm:gap-6"><div className="font-mono text-[12px] tracking-[.14em] text-[#8a9f85]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p><Link href={`${locale === 'de' ? '/studio' : '/en/studio'}#${index === 0 ? 'beratung' : index === 1 ? 'workshops' : 'umsetzung'}`} className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-[#225e42] underline-offset-4 transition group-hover:gap-2 hover:underline" aria-label={`${name} ${locale === 'de' ? 'entdecken' : 'explore'}`}>{locale === 'de' ? 'Ansehen' : 'Explore'}<ArrowUpRight size={15} aria-hidden="true" /></Link></div>)}<div className="pt-7"><div className="font-mono text-[12px] uppercase tracking-[.16em] text-[#7a9570]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · <Link href="/earth" className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">Saimôr Earth</Link> · {c.experimentsText}</p></div></div></div></section>
+      <section id="studio" className={`${styles.daylightStudio} relative px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.88fr_1.12fr] lg:gap-20"><div><p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#7a9470]">{c.studioEyebrow}</p><h2 className="mt-5 max-w-xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#163b2a] sm:text-6xl">{c.studioTitle}</h2><p className="mt-7 max-w-xl text-sm leading-7 text-[#425d4a] sm:text-base">{c.studioText}</p><Link href={locale === 'de' ? '/studio' : '/en/studio'} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#276447] transition hover:text-[#123c28]"><Mic2 className="h-4 w-4" />{locale === 'de' ? 'Studio entdecken' : 'Explore Studio'}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div><div className="border-t border-[#3a5e46]/25">{c.offers.map(([name,text],index)=><div key={name} className="group grid gap-3 border-b border-[#3a5e46]/20 py-7 transition-colors hover:bg-[#b8d5b4]/10 sm:grid-cols-[42px_.8fr_1.2fr_auto] sm:items-start sm:gap-6"><div className="font-mono text-[12px] tracking-[.14em] text-[#8a9f85]">0{index+1}</div><div className="text-lg font-medium text-[#1b422f] sm:text-xl">{name}</div><p className="text-sm leading-6 text-[#405c48]">{text}</p><Link href={`${locale === 'de' ? '/studio' : '/en/studio'}#${index === 0 ? 'beratung' : index === 1 ? 'workshops' : 'umsetzung'}`} className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold text-[#225e42] underline-offset-4 transition group-hover:gap-2 hover:underline" aria-label={`${name} ${locale === 'de' ? 'entdecken' : 'explore'}`}>{locale === 'de' ? 'Ansehen' : 'Explore'}<ArrowUpRight size={15} aria-hidden="true" /></Link></div>)}<div className="pt-7"><div className="font-mono text-[12px] uppercase tracking-[.16em] text-[#7a9570]">{c.experiments}</div><p className="mt-2 text-sm text-[#536b58]"><Link href={locale === 'de' ? '/yori' : '/en/yori'} className="text-[#2b6344] underline decoration-[#2b6344]/30 underline-offset-4 transition hover:text-[#123c28] hover:decoration-[#123c28]/60">YORI</Link> · {c.experimentsText}</p></div></div></div></section>
       <section id="contact" className={`${styles.daylightContact} px-5 py-20 sm:px-8 md:py-28 lg:px-10`}><div className="mx-auto max-w-7xl"><div className="grid gap-10 border-t border-[#3a5e46]/25 pt-10 md:grid-cols-[1fr_auto] md:items-end"><div><p className="font-mono text-[12px] font-semibold tracking-[.18em] text-[#5a8568]">{c.finalEyebrow}</p><h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.98] tracking-[-.035em] text-[#173a2b] sm:text-6xl md:text-7xl">{c.finalTitle}</h2><p className="mt-6 max-w-2xl text-sm leading-7 text-[#405c49] sm:text-base">{c.finalText}</p></div><Link href={contactHref} className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-[#225c40] bg-[#225c40] px-6 py-3.5 text-sm font-semibold text-[#fff9ed] transition hover:border-[#17462f] hover:bg-[#17462f]">{c.finalCta}<ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link></div></div></section>
 
-
+      <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-labelledby="earth-horizon-title">
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={90} sizes="100vw" className={styles.returnImage} />
+        <div className={styles.returnShade} aria-hidden="true" />
+        <div className={styles.returnInner}>
+          <p className={styles.eyebrow}>{c.earthEyebrow}</p>
+          <h2 id="earth-horizon-title">{c.earthTitle}</h2>
+          <p className={styles.returnLead}>{c.earthText}</p>
+          <p className={styles.returnName}>
+            <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
+            <small>{c.earthNote}</small>
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
