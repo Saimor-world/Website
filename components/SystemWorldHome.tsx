@@ -8,6 +8,7 @@ import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
 import ResponsiveDetails from './ResponsiveDetails';
+import EarthMycelium from './EarthMycelium';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -69,7 +70,7 @@ export default function SystemWorldHome({ locale }: Props) {
     <div className={styles.world}>
       <section className={styles.hero} aria-labelledby="world-title">
         <label className={styles.motionControl}><input type="checkbox" name="world-motion" aria-label={locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'} /><span className={styles.motionGlyph} aria-hidden="true">Ⅱ</span><span className={styles.motionText}>{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</span></label>
-        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="(max-width: 700px) 160vw, 100vw" className={styles.heroImage} />
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="100vw" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
@@ -120,6 +121,7 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
           <div className={styles.returnMist} aria-hidden="true" />
           <div className={styles.returnShade} aria-hidden="true" />
+          <EarthMycelium />
           <div className={styles.returnInner}>
             <p className={styles.returnCredit}>
               {c.earthCredit}{' '}

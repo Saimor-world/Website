@@ -89,7 +89,7 @@ describe('SystemWorldHome', () => {
     const cosmos = container.querySelector('img[src="/images/saimor-cosmos-layer.webp"]');
     const forest = container.querySelector('img[src="/images/saimor-forest-threshold.webp"]');
     const section = container.querySelector('#system');
-    expect(cosmos).toHaveAttribute('sizes', expect.stringContaining('(max-width: 700px) 160vw'));
+    expect(cosmos).toHaveAttribute('sizes', '100vw');
     expect(forest).toHaveAttribute('sizes', '100vw');
     expect(section?.querySelectorAll('img[src*="forest"]')).toHaveLength(1);
     expect(section?.querySelector('img[src="/images/saimor-forest-layer.webp"]')).toBeNull();
@@ -131,6 +131,8 @@ describe('SystemWorldHome', () => {
     expect(horizon).not.toHaveTextContent('Konzept · keine Live-Karte');
     expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
     expect(horizon.querySelector('a')?.textContent).toBe('Earth');
+    expect(horizon.querySelector('[data-testid="earth-mycelium"]')).not.toBeNull();
+    expect(horizon.querySelector('[aria-label="MÔRA"]')).not.toBeNull();
     expect(forest?.contains(horizon)).toBe(true);
     const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
     expect(cosmos).toHaveLength(2);

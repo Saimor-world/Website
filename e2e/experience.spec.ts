@@ -89,6 +89,8 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(horizon.getByText('powered by')).toBeVisible();
     await expect(horizon.getByRole('link', { name: 'Earth', exact: true })).toHaveAttribute('href', german ? '/earth' : '/en/earth');
     await expect(horizon.getByRole('heading')).toHaveCount(0);
+    await expect(horizon.getByTestId('earth-mycelium')).toBeAttached();
+    await expect(horizon.getByRole('img', { name: 'MÔRA' })).toBeAttached();
     await shot(page, info, `after-earth-horizon-${locale}`);
     const door = page.getByRole('link', { name: german ? 'Schwelle betreten' : 'Cross the threshold' });
     await door.scrollIntoViewIfNeeded();
