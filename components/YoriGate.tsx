@@ -60,7 +60,7 @@ export default function YoriGate({ locale }: { locale: 'de' | 'en' }) {
         @keyframes yoriBloom { from{filter:brightness(.48) saturate(.7)} to{filter:brightness(1.02) saturate(1.05)} }
         @keyframes yoriDoorL { to{transform:translateX(-99%)} }
         @keyframes yoriDoorR { to{transform:translateX(99%)} }
-        @media(max-width:639px){.yori-edge{top:69%;left:12px;height:104px;width:44px}.yori-edge>span:nth-child(6){display:none}}
+        @media(max-width:700px){.yori-edge{display:none!important}}
         @media(prefers-reduced-motion:reduce){.yori-edge,.yori-dot,.yori-bloom,.yori-door-l,.yori-door-r{animation:none!important}}
       `}</style>
     </>
