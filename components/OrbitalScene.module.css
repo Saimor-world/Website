@@ -14,6 +14,12 @@
 @media(max-width:1280px){.scene{right:2%;top:16%;width:40%}}
 @media(max-width:1000px){.scene{right:0;top:16%;width:38%}}
 @media(max-width:700px){
- .scene{display:none}
+ /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
+    never to the text grid below the eyebrow. */
+ .scene{right:21px;top:98px;width:clamp(90px,27vw,112px)}
+ .moon{width:13px}
+ .emerald{width:10px}
+ .star{width:4px;height:4px}
+ .sigil{width:43%}
 }
 @media(prefers-reduced-motion:reduce){.orbit{animation:none;will-change:auto}}
