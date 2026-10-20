@@ -65,6 +65,7 @@ const nextConfig = {
       { source: '/en/wall', destination: '/wall', permanent: false },
       { source: '/de/mora', destination: '/mora', permanent: false },
       { source: '/de/yori', destination: '/yori', permanent: false },
+      { source: '/de/earth', destination: '/earth', permanent: false },
     ]
   },
 };

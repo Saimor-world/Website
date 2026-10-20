@@ -178,7 +178,7 @@ export default function Hero({ locale, calUrl }: Props) {
             <div className="absolute inset-0 overflow-hidden rounded-full">
             <Image src="/saimor-seal-256.webp" alt="Saimôr World Siegel" fill sizes="128px" className="object-contain opacity-95 mix-blend-screen drop-shadow-[0_0_24px_rgba(214,168,72,.7)]" priority />
             </div>
-            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#D6A848]/55 bg-[#03050A]/90 px-2 py-1 font-mono text-[7px] font-bold tracking-[.32em] text-[#D6A848] backdrop-blur">WORLD</span>
+            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-[#D6A848]/55 bg-[#03050A]/90 px-2 py-1 font-mono text-[12px] font-bold tracking-[.32em] text-[#D6A848] backdrop-blur">WORLD</span>
           </div>
           
           {/* Badge */}
@@ -188,7 +188,7 @@ export default function Hero({ locale, calUrl }: Props) {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--world-violet)]/5 border border-[var(--world-gold)]/25 backdrop-blur-xl"
           >
             <Sparkles className="w-3.5 h-3.5 text-[var(--world-cyan)]" />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-black text-[var(--world-cyan)]">{content.badge}</span>
+            <span className="text-[12px] uppercase tracking-[0.4em] font-black text-[var(--world-cyan)]">{content.badge}</span>
           </motion.div>
 
           {/* Main Headline */}
@@ -261,7 +261,7 @@ export default function Hero({ locale, calUrl }: Props) {
                 <div className="text-sm sm:text-base font-mono font-bold tracking-[.08em] text-white mb-2 group-hover:text-[var(--world-cyan)] transition-colors">
                   {stat.value}
                 </div>
-                <div className="text-[9px] uppercase tracking-[0.3em] font-black text-white/20">
+                <div className="text-[12px] uppercase tracking-[0.3em] font-black text-white/20">
                   {stat.label}
                 </div>
               </div>
@@ -277,7 +277,7 @@ export default function Hero({ locale, calUrl }: Props) {
         transition={{ delay: 1 }}
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-4 sm:flex"
       >
-        <span className="text-[10px] uppercase tracking-[0.5em] font-black text-white/20 whitespace-nowrap">{content.scrollHint}</span>
+        <span className="text-[12px] uppercase tracking-[0.5em] font-black text-white/20 whitespace-nowrap">{content.scrollHint}</span>
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}

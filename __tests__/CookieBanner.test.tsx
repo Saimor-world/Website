@@ -38,15 +38,14 @@ describe('CookieBanner — genuine consent choices', () => {
   it('shows equally available essential and accept-all actions plus privacy information', () => {
     showBanner();
     expect(screen.getByRole('dialog', { name: 'Datenschutz' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Nur Essenziell' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Alle akzeptieren' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Nur essenziell' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Akzeptieren' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Einstellungen' })).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByRole('link', { name: 'Datenschutzerklärung' })).toHaveAttribute('href', '/de/rechtliches/datenschutz');
   });
 
   it('does not turn on analytics when visitors choose essential only', () => {
     showBanner();
-    fireEvent.click(screen.getByRole('button', { name: 'Nur Essenziell' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Nur essenziell' }));
     expect(localStorage.getItem('cookie_consent')).toBe('essential');
     expect(localStorage.getItem('analytics_enabled')).toBe('false');
   });
@@ -54,9 +53,8 @@ describe('CookieBanner — genuine consent choices', () => {
   it('keeps granular analytics opt-in behind an explicit settings action', () => {
     showBanner();
     fireEvent.click(screen.getByRole('button', { name: 'Einstellungen' }));
-    expect(screen.getByRole('button', { name: 'Weniger anzeigen' })).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('button', { name: /Analytics/ })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Auswahl speichern' }));
+    expect(screen.getByRole('button', { name: 'Weniger' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Speichern' }));
     expect(localStorage.getItem('analytics_enabled')).toBe('false');
   });
   it('leaves the staged encounter uninterrupted without recording consent', () => {

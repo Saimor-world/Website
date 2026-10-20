@@ -8,12 +8,14 @@ interface ShareButtonProps {
   title?: string;
   description?: string;
   url?: string;
+  locale?: 'de' | 'en';
 }
 
 export default function ShareButton({
   title = 'Saimôr – OS, Môra und souveräne KI-Systeme',
   description = 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält.',
   url,
+  locale = 'de',
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -66,7 +68,7 @@ export default function ShareButton({
 
   const shareLinks = [
     {
-      name: 'Link kopieren',
+      name: locale === 'de' ? 'Link kopieren' : 'Copy link',
       icon: copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Link2 className="w-4 h-4" />,
       action: copyToClipboard,
       highlight: copied,
@@ -111,7 +113,7 @@ export default function ShareButton({
         whileTap={{ scale: 0.98 }}
       >
         <Share2 className="w-4 h-4" />
-        <span className="text-sm font-medium">Teilen</span>
+        <span className="text-sm font-medium">{locale === 'de' ? 'Teilen' : 'Share'}</span>
       </motion.button>
 
       <AnimatePresence>
@@ -136,7 +138,7 @@ export default function ShareButton({
                   key={link.name}
                   onClick={() => {
                     link.action();
-                    if (link.name !== 'Link kopieren') {
+                    if (link.name !== (locale === 'de' ? 'Link kopieren' : 'Copy link')) {
                       setIsOpen(false);
                     }
                   }}

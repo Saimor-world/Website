@@ -2,8 +2,10 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Navbar from '@/components/Navbar';
 
+const navigation = vi.hoisted(() => ({ path: '/de' }));
+
 vi.mock('next/navigation', () => ({
-  usePathname: () => '/de',
+  usePathname: () => navigation.path,
 }));
 
 vi.mock('next/image', () => ({
@@ -14,7 +16,10 @@ vi.mock('next-auth/react', () => ({
   useSession: () => ({ data: null, status: 'unauthenticated' }),
 }));
 
-afterEach(cleanup);
+afterEach(() => {
+  navigation.path = '/de';
+  cleanup();
+});
 
 describe('Navbar logo treatment', () => {
   it('does not box the seal in a flat white tile', () => {
@@ -31,7 +36,14 @@ describe('Navbar logo treatment', () => {
 
     const seal = screen.getByAltText('Saimôr');
 
-    expect(seal.getAttribute('src')).toBe('/brand/saimor-sigil-restored-v1.png');
+    expect(seal.getAttribute('src')).toBe('/brand/saimor-sigil-restored-v1.webp');
     expect(seal.className).not.toMatch(/mix-blend-screen/);
+  });
+
+  it('switches English Earth to /earth instead of the missing /de/earth route', () => {
+    navigation.path = '/en/earth';
+    render(<Navbar locale="en" />);
+
+    expect(screen.getAllByRole('link', { name: 'Switch language to DE' })[0]).toHaveAttribute('href', '/earth');
   });
 });

@@ -35,14 +35,19 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   }, [locale, isClientWorld, isOwnerSurface]);
 
   // Immersive surfaces render without public-site chrome.
+  // Sound lives in the navbar on public pages so it never overlays content.
+  // Deep View / YORI keep a compact header-band control instead.
   return (
-    <><ScrollAmbient locale={locale} />{isImmersive ? isEncounter || isYori ? <div data-public-site>{children}</div> : children : <div data-public-site>
+    <>
+      {(isEncounter || isYori) ? <ScrollAmbient locale={locale} /> : null}
+      {isImmersive ? isEncounter || isYori ? <div data-public-site>{children}</div> : children : <div data-public-site>
       <DesktopDiscoveries />
       <CommandPalette />
       <ScrollProgress />
       <Navbar locale={locale} />
       {children}
       <Footer locale={locale} />
-    </div>}</>
+    </div>}
+    </>
   );
 }

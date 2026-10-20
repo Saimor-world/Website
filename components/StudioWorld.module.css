@@ -5,7 +5,7 @@
 .ambient{pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse at 80% 27%,#e0c38b20,transparent 37%),radial-gradient(ellipse at 74% 79%,#89c69e2f,transparent 42%)}
 .ambient::after{content:"";position:absolute;right:-18%;top:-29%;width:67vw;max-width:900px;aspect-ratio:1;border:1px solid #e7d49e42;border-radius:50%;box-shadow:0 0 0 95px #abcdb508,0 0 0 196px #e9dba509,0 0 75px #e0c99114;transform:rotate(-24deg) scaleY(.84)}
 .heroInner{position:relative;z-index:1;max-width:1380px;margin:auto;padding:165px 64px 65px;display:flex;flex-direction:column;min-height:750px}
-.eyebrow,.sectionLabel{font:600 10px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.22em;color:#ddca9b}
+.eyebrow,.sectionLabel{font:600 12px/1.6 ui-monospace,SFMono-Regular,monospace;letter-spacing:.22em;color:#ddca9b}
 .hero h1{font:400 clamp(55px,7.25vw,116px)/.94 "Cormorant Garamond",Georgia,serif;letter-spacing:-.058em;max-width:960px;margin:23px 0 0;text-wrap:balance}
 .hero h1 em{display:block;color:#d7d4ad;font-style:italic}
 .mobileCopy{display:none}

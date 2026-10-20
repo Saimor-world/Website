@@ -8,7 +8,7 @@ import type { AmbientAudio } from '@/lib/ambientAudio';
 import styles from './ScrollAmbient.module.css';
 
 /** One persistent soundscape; audio starts only with the listener's gesture. */
-export default function ScrollAmbient({ locale }: { locale: 'de' | 'en' }) {
+export default function ScrollAmbient({ locale, embedded = false }: { locale: 'de' | 'en'; embedded?: boolean }) {
   const pathname = usePathname() || '/';
   const available = publicAmbientRoute(pathname);
   const encounter = /\/mora\/deep-view$/.test(pathname);
@@ -101,7 +101,7 @@ export default function ScrollAmbient({ locale }: { locale: 'de' | 'en' }) {
     } finally { if (request === operation.current) setPending(false); }
   };
   if (!available) return null;
-  return <div className={styles.control} data-testid="site-ambient" data-encounter={encounter} data-enabled={enabled}>
+  return <div className={styles.control} data-testid="site-ambient" data-encounter={encounter} data-enabled={enabled} data-embedded={embedded || undefined}>
     <button type="button" onClick={() => void toggle()} disabled={pending} aria-pressed={enabled}
       aria-label={de ? enabled ? 'Ambient-Klang ausschalten' : 'Ambient-Klang einschalten' : enabled ? 'Turn ambient sound off' : 'Turn ambient sound on'}>
       {enabled ? <Volume2 size={15} /> : <VolumeX size={15} />}<span>{pending ? '…' : de ? enabled ? 'Klang an' : 'Klang aus' : enabled ? 'Sound on' : 'Sound off'}</span>

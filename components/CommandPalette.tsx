@@ -183,6 +183,10 @@ export default function CommandPalette() {
           router.push(currentPath.replace('/en/entry', '/de/einstieg'));
           return;
         }
+        if (currentPath === '/earth' || currentPath === '/en/earth') {
+          router.push(currentPath === '/earth' ? '/en/earth' : '/earth');
+          return;
+        }
         if (locale === 'de') {
           router.push(currentPath.replace(/^\/de/, '/en').replace(/^\/mora/, '/en/mora') || '/en');
           return;

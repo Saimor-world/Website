@@ -117,13 +117,13 @@ export default function Footer({ locale }: { locale: Locale }) {
         </div>
 
         <div className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.2em] text-white/45">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] uppercase tracking-[.14em] text-white/55">
             <span>© {year} SAIMÔR</span>
             <span>EU / REMOTE</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <ShareButton />
+            <ShareButton locale={locale} />
             <div
               role="status"
               aria-live="polite"
@@ -131,7 +131,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               className="flex items-center gap-2 border border-white/[0.08] px-3 py-2"
             >
               <span className={`h-1.5 w-1.5 rounded-full ${dotClass} ${systemStatus === 'checking' ? 'animate-pulse' : ''}`} />
-              <span className="font-mono text-[8px] uppercase tracking-[.16em] text-white/55">{c.status[systemStatus]}</span>
+              <span className="font-mono text-[12px] uppercase tracking-[.1em] text-white/60">{c.status[systemStatus]}</span>
             </div>
           </div>
         </div>

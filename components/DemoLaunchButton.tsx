@@ -52,23 +52,34 @@ export function DemoLaunchButton({
   }
 
   return (
-    <><button
-      type="button"
-      onClick={handleClick}
-      disabled={loading}
-      className={
-        className ??
-        'inline-flex items-center gap-2 rounded-xl border border-violet-400/30 bg-violet-600/20 px-6 py-3 text-sm font-semibold text-violet-100 transition-all hover:bg-violet-600/35 disabled:opacity-60'
-      }
-    >
-      {loading ? (
-        <Loader2 size={16} className="animate-spin" />
-      ) : (
-        <ExternalLink size={16} />
-      )}
-      {loading ? (locale === 'de' ? 'Workspace wird vorbereitet…' : 'Preparing workspace…') : label}
-    </button>
-    {error ? <span role="alert" className="self-center text-sm leading-6 text-[#e9cfa7]">{locale === 'de' ? 'Die Demo ist gerade nicht erreichbar. Bitte versuche es erneut.' : 'The demo is currently unavailable. Please try again.'}</span> : null}
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={loading}
+        className={
+          className ??
+          'inline-flex items-center gap-2 rounded-xl border border-violet-400/30 bg-violet-600/20 px-6 py-3 text-sm font-semibold text-violet-100 transition-all hover:bg-violet-600/35 disabled:opacity-60'
+        }
+      >
+        {loading ? (
+          <Loader2 size={16} className="animate-spin" />
+        ) : (
+          <ExternalLink size={16} />
+        )}
+        {loading
+          ? locale === 'de'
+            ? 'Workspace wird vorbereitet…'
+            : 'Preparing workspace…'
+          : label}
+      </button>
+      {error ? (
+        <span role="alert" className="self-center text-sm leading-6 text-[#e9cfa7]">
+          {locale === 'de'
+            ? 'Die Demo ist gerade nicht erreichbar. Bitte versuche es erneut.'
+            : 'The demo is currently unavailable. Please try again.'}
+        </span>
+      ) : null}
     </>
   );
 }

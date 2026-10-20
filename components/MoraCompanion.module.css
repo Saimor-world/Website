@@ -1,10 +1,11 @@
-.companion{position:fixed;right:max(22px,env(safe-area-inset-right));bottom:calc(100px + env(safe-area-inset-bottom));z-index:45;pointer-events:none}
+.companion{position:fixed;right:max(22px,env(safe-area-inset-right));bottom:calc(100px + env(safe-area-inset-bottom));z-index:45;pointer-events:none;transition:opacity .3s,visibility .3s}
+.companion[data-hero-visible="true"]{opacity:0;visibility:hidden;pointer-events:none}
 .flight{animation:companionFlight 28s ease-in-out infinite;will-change:transform;pointer-events:auto;width:64px;height:64px}
 .trigger{display:grid;place-items:center;width:64px;height:64px;background:transparent;border:0;border-radius:50%;cursor:pointer;touch-action:manipulation}
 .trigger:focus-visible{outline:2px solid #efd48b;outline-offset:5px}
 .companion:hover .flight,.companion:focus-within .flight,.companion[data-open="true"] .flight,.companion[data-paused="true"] .flight{animation-play-state:paused}
 .panel{position:absolute;right:0;bottom:76px;pointer-events:auto;width:min(310px,calc(100vw - 40px));padding:28px 24px 22px;border:1px solid #718a69;border-radius:24px;background:#12291f;box-shadow:0 18px 65px #0007;color:#dbe6dc;font-size:14px;line-height:1.65}
-.panel .eyebrow{font:600 9px/1.5 "JetBrains Mono",monospace;letter-spacing:.16em;color:#e8ce8e;margin:0 20px 14px 0}
+.panel .eyebrow{font:600 12px/1.5 "JetBrains Mono",monospace;letter-spacing:.16em;color:#e8ce8e;margin:0 20px 14px 0}
 .panel .title{font:400 26px/1.12 "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em;color:#fff8e9;margin:0 0 16px}
 .panel a{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:44px;border-top:1px solid #dbe6dc24;margin-top:12px;padding-top:10px;color:#f4e4b8;font-size:13px;font-weight:600}
 .close{position:absolute;right:10px;top:8px;display:grid;place-items:center;width:40px;height:40px;border:0;background:transparent;color:#e6e9dc;cursor:pointer;border-radius:50%}

@@ -1,5 +1,12 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
+import '@fontsource/cormorant-garamond/latin-300.css';
+import '@fontsource/cormorant-garamond/latin-400.css';
+import '@fontsource/cormorant-garamond/latin-ext-400.css';
+import '@fontsource/cormorant-garamond/latin-500.css';
+import '@fontsource/cormorant-garamond/latin-600.css';
+import '@fontsource/cormorant-garamond/latin-700.css';
+import '@fontsource/cormorant-garamond/latin-400-italic.css';
 import './globals.css';
 import './brand.css';
 import ClientProviders from '../components/ClientProviders';
@@ -21,9 +28,9 @@ export const metadata: Metadata = {
   },
   description: SYSTEM_DESCRIPTION,
   icons: {
-    icon: [{ url: '/brand/saimor-sigil-restored-v1.png', type: 'image/png' }],
-    shortcut: '/brand/saimor-sigil-restored-v1.png',
-    apple: '/brand/saimor-sigil-restored-v1.png',
+    icon: [{ url: '/brand/saimor-sigil-512.png', type: 'image/png' }],
+    shortcut: '/brand/saimor-sigil-512.png',
+    apple: '/brand/saimor-sigil-512.png',
   },
   keywords: [
     'Saimôr',
@@ -100,8 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#050706" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" />
 
         <script
           type="application/ld+json"
@@ -111,7 +117,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@type': 'Organization',
               name: 'Saimôr',
               url: 'https://saimor.world',
-              logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.png',
+              logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.webp',
               description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie Beratung, Workshops und Umsetzung rund um praktische KI-Arbeit.',
               foundingDate: '2024',
               contactPoint: {

@@ -190,7 +190,7 @@ export default function MoraProductPage({ locale }: Props) {
             <MoraCharacter size={280} state={orbState} paused={still} className={styles.personaCharacter} />
           </div>
           <div>
-            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.personaEyebrow}</p>
+            <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.personaEyebrow}</p>
             <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.personaTitle}</h2>
             <p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.personaText}</p>
             <div className="mt-9 flex flex-wrap gap-2" role="group" aria-label={c.statesLabel}>
@@ -207,12 +207,12 @@ export default function MoraProductPage({ locale }: Props) {
 
       <section className="px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.sectionEyebrow}</p>
+          <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#91dcc4]/80">{c.sectionEyebrow}</p>
           <h2 className="mt-5 max-w-4xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl md:text-7xl">{c.sectionTitle}</h2>
           <div className="mt-12 border-t border-white/[.11]">
             {c.roles.map(([title, body], index) => (
               <article key={title} className="grid gap-4 border-b border-white/[.09] py-7 sm:grid-cols-[48px_.72fr_1.28fr] sm:items-start sm:gap-8">
-                <div className="font-mono text-[9px] tracking-[.18em] text-[#d8c27d]/48">0{index + 1}</div>
+                <div className="font-mono text-[12px] tracking-[.14em] text-[#d8c27d]/60">0{index + 1}</div>
                 <h3 className="text-xl font-medium text-white/90 sm:text-2xl">{title}</h3>
                 <p className="max-w-2xl text-sm leading-7 text-white/80 sm:text-base">{body}</p>
               </article>
@@ -224,19 +224,19 @@ export default function MoraProductPage({ locale }: Props) {
       <section className="border-y border-white/[.08] bg-[#0b1c15] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.78fr_1.22fr] lg:items-center">
           <div>
-            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.exampleEyebrow}</p>
+            <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.exampleEyebrow}</p>
             <h2 className="mt-5 font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.exampleTitle}</h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.exampleBody}</p>
           </div>
           <div className="relative overflow-hidden rounded-[2rem] border border-[#b8d4c5]/12 bg-[#07130e]/78 p-6 shadow-[0_28px_90px_rgba(0,0,0,.22)] sm:p-8">
             <div className="absolute -right-16 -top-20 h-52 w-52 rounded-full bg-[#4d9676]/10 blur-3xl" aria-hidden="true" />
             <div className="grid gap-3 sm:grid-cols-2">
-              {c.chips.map((chip, index) => <div key={chip} className="border-b border-white/[.08] px-1 py-4 text-sm text-white/62"><span className="mr-3 font-mono text-[8px] tracking-[.16em] text-[#d8c27d]/50">0{index + 1}</span>{chip}</div>)}
+              {c.chips.map((chip, index) => <div key={chip} className="border-b border-white/[.08] px-1 py-4 text-sm text-white/70"><span className="mr-3 font-mono text-[12px] tracking-[.12em] text-[#d8c27d]/65">0{index + 1}</span>{chip}</div>)}
             </div>
             <div className="mt-7 flex items-start gap-4 border-l border-[#dfc775]/45 pl-5">
               <MoraCharacter size={40} state="speak" paused={still} className="mt-1 shrink-0" />
               <div>
-                <div className="font-mono text-[8px] tracking-[.22em] text-[#dfc775]/70">{c.outcomeLabel}</div>
+                <div className="font-mono text-[12px] tracking-[.16em] text-[#dfc775]/80">{c.outcomeLabel}</div>
                 <p className="mt-3 max-w-xl font-serif text-2xl leading-tight text-[#f5f1e4] sm:text-3xl">{c.outcome}</p>
               </div>
             </div>
@@ -248,7 +248,7 @@ export default function MoraProductPage({ locale }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.82fr_1.18fr] md:items-center">
           <div>
-            <p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#e0bd67]/78">{c.deepEyebrow}</p>
+            <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.deepEyebrow}</p>
             <h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.deepText}</p>
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
@@ -262,14 +262,14 @@ export default function MoraProductPage({ locale }: Props) {
 
       <section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.28em] text-[#91dcc4]/72">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
+          <div><p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#91dcc4]/80">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
           <div><p className="max-w-2xl text-sm leading-7 text-white/80 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
       </section>
 
       <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">
-          <div><p className="font-mono text-[9px] font-semibold tracking-[.26em] text-white/75">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
+          <div><p className="font-mono text-[12px] font-semibold tracking-[.18em] text-white/80">{c.realityEyebrow}</p><h2 className="mt-4 font-serif text-3xl font-light text-white/90 sm:text-4xl">{c.realityTitle}</h2></div>
           <p className="max-w-3xl text-sm leading-7 text-white/80 sm:text-base">{c.realityText}</p>
         </div>
       </section>
