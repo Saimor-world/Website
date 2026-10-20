@@ -1,5 +1,5 @@
 /* Mist, encounter, morning. */
-.world{position:relative;isolation:isolate;display:flex;flex-direction:column;width:100%;min-height:100svh;overflow:clip;color:#f4f0e5;background:#2a4538}
+.world{position:relative;isolation:isolate;display:flex;flex-direction:column;width:100%;min-height:100svh;overflow:clip;color:#f4f0e5;background:#0a1814}
 .atmosphere{position:absolute;z-index:-1;inset:0;pointer-events:none;overflow:hidden}
 .grain{position:absolute;inset:0;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23g)' opacity='.28' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px}
 .passage{position:absolute;inset:-50%;background:radial-gradient(ellipse at center,#9fcb9559,transparent 42%);opacity:0;transform:scale(.2);pointer-events:none}
@@ -15,10 +15,10 @@
 .stage{position:relative;flex:1;display:grid;place-items:center;width:100%;padding:40px 24px 60px;min-height:560px}
 .intro,.encounter{width:100%;max-width:1100px;display:flex;align-items:center;flex-direction:column;text-align:center}
 .intro{position:relative;isolation:isolate;padding-block:65px;animation:arrive 1.6s ease both}
-.eyebrow{margin:0;font:500 12px/1.8 ui-monospace,monospace;letter-spacing:.18em;color:#d4c89d}
+.eyebrow{margin:0;font:500 12px/1.8 ui-monospace,monospace;letter-spacing:.18em;color:#e8d7a4;text-shadow:0 1px 14px #04120ecc}
 .intro h1{margin:27px 0 0;font:400 clamp(64px,8.2vw,118px)/1.04 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;text-wrap:balance;max-width:940px;color:#f4f0e5;outline:none}
 .doubt{margin:28px 0 0;font-size:clamp(15px,2vw,19px);line-height:1.7;color:#bbc6b3}
-.quietAction{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:48px;margin-top:35px;padding:10px 0;border:0;background:transparent;color:#ecd7a6;cursor:pointer;font-size:12px;transition:gap .3s}
+.quietAction{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:48px;margin-top:35px;padding:10px 0;border:0;background:transparent;color:#f0dfb0;cursor:pointer;font-size:12px;text-shadow:0 1px 14px #04120ecc;transition:gap .3s}
 .quietAction:hover{gap:23px}
 .encounter{gap:23px;animation:arrive 1.5s ease both}
 .presence{position:relative;isolation:isolate;display:grid;place-items:center;flex-shrink:0;width:320px;height:320px;transform-origin:50% 57%;transition:width 1.5s,height 1.5s}

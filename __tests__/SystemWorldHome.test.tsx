@@ -109,6 +109,22 @@ describe('SystemWorldHome', () => {
     }
   });
 
+  it('keeps the phone hero eyebrow and Earth entry as stacked siblings', () => {
+    const { container } = render(<SystemWorldHome locale="de" />);
+    const hero = container.querySelector('#world-title')?.closest('section');
+    const footer = Array.from(hero?.querySelectorAll('div') ?? []).find((node) =>
+      node.textContent?.includes('EIN ORT · ALLES IM KONTEXT') && node.children.length <= 2,
+    );
+    const earth = Array.from(hero?.querySelectorAll('button') ?? []).find((node) =>
+      /SAIMÔR Earth/.test(node.textContent ?? ''),
+    );
+    expect(footer).toBeTruthy();
+    expect(earth).toBeTruthy();
+    expect(hero?.contains(footer!)).toBe(true);
+    expect(hero?.contains(earth!)).toBe(true);
+    expect(footer?.contains(earth!)).toBe(false);
+  });
+
   it('keeps the public studio voice organizational rather than solo-founder led', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
     const publicCopy = container.textContent ?? '';

@@ -12,5 +12,8 @@
 .control[data-embedded="true"] .level,.control[data-embedded="true"] .error{top:auto;bottom:auto;right:0}
 @media(min-width:768px){
   .control:not([data-embedded="true"]):not([data-encounter="true"]){right:max(24px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top))}
+  .control[data-embedded="true"]{height:36px;border-radius:0;background:#18382b9e;border-color:#a8cdb533;color:#e4eee7}
+  .control[data-embedded="true"]>button{min-height:36px;min-width:36px;height:36px;padding:0 8px;border-radius:0}
+  .control[data-embedded="true"] summary{width:36px;min-height:36px;height:36px}
 }
 @media(prefers-reduced-motion:reduce){.control{transition:none}}

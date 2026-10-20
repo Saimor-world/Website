@@ -41,8 +41,8 @@ export default function AmbientParticleField(props: Props) {
     const brush = sprite.getContext('2d');
     if (!brush) return;
     const glow = brush.createRadialGradient(32, 32, 0, 32, 32, 32);
-    glow.addColorStop(0, 'rgba(237,229,185,.9)');
-    glow.addColorStop(.22, 'rgba(181,213,191,.42)');
+    glow.addColorStop(0, 'rgba(255,244,196,.98)');
+    glow.addColorStop(.22, 'rgba(214,232,196,.58)');
     glow.addColorStop(1, 'rgba(100,130,120,0)');
     brush.fillStyle = glow; brush.fillRect(0, 0, 64, 64);
     const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -140,11 +140,11 @@ export default function AmbientParticleField(props: Props) {
           context.beginPath(); context.moveTo(a.x, a.y);
           context.quadraticCurveTo((a.x + bx) / 2 + Math.sin(clock * .3 + i) * (10 + water * 20), (a.y + by) / 2 - water * 6, bx, by);
           const traveling = .65 + Math.sin(clock * 5 - i * .65) * .35;
-          context.strokeStyle = `rgba(213,230,181,${(.045 + f * .12) * fade + a.light * .6 * traveling})`;
-          context.lineWidth = .6 + a.light * .7; context.stroke();
+          context.strokeStyle = `rgba(230,242,198,${(.09 + f * .16) * fade + a.light * .7 * traveling})`;
+          context.lineWidth = .7 + a.light * .8; context.stroke();
         }
         const radius = (ambient ? 9 : 6) + f * 4 + a.light * 7;
-        context.globalAlpha = (.42 + f * .2) * fade + a.light * .6;
+        context.globalAlpha = (.62 + f * .22) * fade + a.light * .65;
         context.drawImage(sprite, a.x - radius, a.y - radius, radius * 2, radius * 2);
         context.globalAlpha = 1;
       }
