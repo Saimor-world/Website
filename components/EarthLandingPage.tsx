@@ -1,25 +1,36 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowRight, MapPin, Clock, Sparkles, History, BookOpen, Eye, Pause, Play } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, MapPin, History, BookOpen, Eye, Pause, Play, ExternalLink } from 'lucide-react';
 import styles from './EarthLandingPage.module.css';
 
 type Props = { locale: 'de' | 'en' };
 
+type Region = {
+  key: string;
+  name: string;
+  eyebrow: string;
+  summary: string;
+  lat: number;
+  lng: number;
+  placeCount: number;
+};
+
 const COPY = {
   de: {
     eyebrow: 'SAIMÔR EARTH',
-    hero: 'Orte erinnern sich.',
-    heroSub: 'Earth ist ein Ort des Erinnerns. Deine Geschichten. Deine Orte. Für immer.',
-    cta: 'Deinen Ort entdecken',
+    hero: 'Die Welt ist die Oberfläche.',
+    heroSub: 'Drehe den Globus, fliege in eine Region und öffne einen real verorteten Ort. Gelände, Gebäude, Belege und Entwicklung bleiben eine zusammenhängende Welt.',
+    cta: 'Earth öffnen',
+    earthUrl: 'https://earth.saimor.world',
     sliderPast: 'damals',
     sliderNow: 'heute',
-    placeName: 'Büsum',
-    placeRegion: 'Nordsee, Deutschland',
+    regionsLabel: 'REGIONEN',
     networkLabel: 'LEBENDIGES NETZWERK',
-    storiesLabel: 'BEISPIEL-GESCHICHTEN',
-    storiesNote: 'Illustrative Beispiele · keine echten Daten',
+    storiesLabel: 'BEISPIEL-GESCHICHTEN · BÜSUM',
+    storiesNote: 'Illustrative Beispiele · Büsum hat noch keine veröffentlichten Orte',
+    noPlacesNote: 'Noch keine veröffentlichten Orte in dieser Region.',
     stories: [
       { type: 'Erinnerung', title: 'Der alte Leuchtturm', text: 'Eine Familie erzählt, wie der Leuchtturm über Generationen zum Treffpunkt wurde.', icon: History },
       { type: 'Wissen', title: 'Gezeiten und Schlick', text: 'Fischer teilen ihr Wissen über die Rhythmen des Wattenmeers.', icon: BookOpen },
@@ -28,22 +39,24 @@ const COPY = {
     ctaTitle: 'Für Kommunen und Archive',
     ctaText: 'Earth verbindet lokales Wissen mit der Karte. Für Orte, die ihre Geschichte bewahren und zugänglich machen wollen.',
     ctaButton: 'Kontakt aufnehmen',
-    trustNote: 'Konzeptvorschau · Produkt in Entwicklung',
+    openEarth: 'Earth öffnen',
+    trustNote: 'Dokumentierte Veränderungen an realen Orten · Jede Aussage ist als belegt, eingeschätzt oder geplant gekennzeichnet',
     pause: 'Bewegung pausieren',
     resume: 'Bewegung fortsetzen',
   },
   en: {
     eyebrow: 'SAIMÔR EARTH',
-    hero: 'Places remember.',
-    heroSub: 'Earth is a place of remembering. Your stories. Your places. Forever.',
-    cta: 'Discover your place',
+    hero: 'The world is the surface.',
+    heroSub: 'Spin the globe, fly into a region and open a real located place. Terrain, buildings, evidence and development remain one connected world.',
+    cta: 'Open Earth',
+    earthUrl: 'https://earth.saimor.world',
     sliderPast: 'then',
     sliderNow: 'now',
-    placeName: 'Büsum',
-    placeRegion: 'North Sea, Germany',
+    regionsLabel: 'REGIONS',
     networkLabel: 'LIVING NETWORK',
-    storiesLabel: 'EXAMPLE STORIES',
-    storiesNote: 'Illustrative examples · no real data',
+    storiesLabel: 'EXAMPLE STORIES · BÜSUM',
+    storiesNote: 'Illustrative examples · Büsum has no published places yet',
+    noPlacesNote: 'No published places in this region yet.',
     stories: [
       { type: 'Memory', title: 'The old lighthouse', text: 'A family tells how the lighthouse became a meeting point across generations.', icon: History },
       { type: 'Knowledge', title: 'Tides and mudflats', text: 'Fishermen share their knowledge about the rhythms of the Wadden Sea.', icon: BookOpen },
@@ -52,26 +65,35 @@ const COPY = {
     ctaTitle: 'For municipalities and archives',
     ctaText: 'Earth connects local knowledge to the map. For places that want to preserve and share their history.',
     ctaButton: 'Get in touch',
-    trustNote: 'Concept preview · product in development',
+    openEarth: 'Open Earth',
+    trustNote: 'Documented changes at real places · Every statement is marked as evidenced, estimated or planned',
     pause: 'Pause motion',
     resume: 'Resume motion',
   },
 } as const;
 
-const PLACES = [
-  { id: 'busum', name: 'Büsum', x: 52, y: 38 },
-  { id: 'husum', name: 'Husum', x: 48, y: 32 },
-  { id: 'st-peter', name: 'St. Peter-Ording', x: 44, y: 42 },
-  { id: 'helgoland', name: 'Helgoland', x: 38, y: 28 },
+const STATIC_REGIONS: Region[] = [
+  { key: 'buesum', name: 'Büsum', eyebrow: 'Pilotkandidat an der Nordsee', summary: 'Küstenschutz, Artenvielfalt und Alltag werden als Ortsbiografie lesbar.', lat: 54.1333, lng: 8.8556, placeCount: 0 },
+  { key: 'stuttgart', name: 'Stuttgart', eyebrow: 'Entwicklungs- und Testregion', summary: 'Stadtgrün zwischen Hängen, Quartieren und gemeinsam gepflegten Flächen.', lat: 48.7758, lng: 9.1829, placeCount: 0 },
 ];
 
 export default function EarthLandingPage({ locale }: Props) {
   const c = COPY[locale];
+  const [regions, setRegions] = useState<Region[]>(STATIC_REGIONS);
+  const [activeRegion, setActiveRegion] = useState(0);
   const [sliderValue, setSliderValue] = useState(100);
-  const [activePlace, setActivePlace] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    fetch('https://earth.saimor.world/api/public/v1/regions')
+      .then(res => res.json())
+      .then((data: { regions: Region[] }) => {
+        if (data.regions?.length) setRegions(data.regions);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -89,6 +111,7 @@ export default function EarthLandingPage({ locale }: Props) {
   }, []);
 
   const still = paused || reduced || hidden;
+  const currentRegion = regions[activeRegion] || regions[0];
 
   return (
     <div className={styles.page} data-still={still}>
@@ -102,19 +125,43 @@ export default function EarthLandingPage({ locale }: Props) {
           <p className={styles.eyebrow}>{c.eyebrow}</p>
           <h1 id="earth-hero-title">{c.hero}</h1>
           <p className={styles.heroSub}>{c.heroSub}</p>
-          <button type="button" className={styles.heroCta}>
+          <a href={c.earthUrl} target="_blank" rel="noopener noreferrer" className={styles.heroCta}>
             {c.cta}
-            <ArrowRight size={16} />
-          </button>
+            <ExternalLink size={15} />
+          </a>
         </div>
 
         <div className={styles.globeStage}>
-          <GlobeVisualization places={PLACES} activePlace={activePlace} still={still} />
+          <GlobeVisualization regions={regions} activeRegion={activeRegion} still={still} />
           <EarthIntelligence still={still} />
           <div className={styles.placeLabel}>
             <MapPin size={14} />
-            <span>{PLACES[activePlace].name}</span>
+            <span>{currentRegion.name}</span>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.regions} aria-labelledby="regions-title">
+        <p id="regions-title" className={styles.regionsEyebrow}>{c.regionsLabel}</p>
+        <div className={styles.regionCards}>
+          {regions.map((region, i) => (
+            <button
+              key={region.key}
+              type="button"
+              className={styles.regionCard}
+              aria-pressed={activeRegion === i}
+              onClick={() => setActiveRegion(i)}
+            >
+              <span className={styles.regionEyebrow}>{region.eyebrow}</span>
+              <span className={styles.regionName}>{region.name}</span>
+              <span className={styles.regionSummary}>{region.summary}</span>
+              <span className={styles.regionPlaces}>
+                {region.placeCount === 0 
+                  ? c.noPlacesNote 
+                  : `${region.placeCount} ${locale === 'de' ? 'Orte' : 'places'}`}
+              </span>
+            </button>
+          ))}
         </div>
       </section>
 
@@ -140,19 +187,6 @@ export default function EarthLandingPage({ locale }: Props) {
                 <span key={pos} className={styles.sliderMarker} style={{ left: `${pos}%` }} />
               ))}
             </div>
-          </div>
-          <div className={styles.placeSelector}>
-            {PLACES.map((place, i) => (
-              <button
-                key={place.id}
-                type="button"
-                className={styles.placeButton}
-                aria-pressed={activePlace === i}
-                onClick={() => setActivePlace(i)}
-              >
-                {place.name}
-              </button>
-            ))}
           </div>
         </div>
       </section>
@@ -181,15 +215,25 @@ export default function EarthLandingPage({ locale }: Props) {
         <div className={styles.closingContent}>
           <h2 id="closing-title">{c.ctaTitle}</h2>
           <p>{c.ctaText}</p>
-          <Link href={locale === 'de' ? '/de/kontakt' : '/en/contact'} className={styles.closingCta}>
-            {c.ctaButton}
-            <ArrowRight size={16} />
-          </Link>
+          <div className={styles.closingActions}>
+            <a href={c.earthUrl} target="_blank" rel="noopener noreferrer" className={styles.closingCtaPrimary}>
+              {c.openEarth}
+              <ExternalLink size={15} />
+            </a>
+            <Link href={locale === 'de' ? '/de/kontakt' : '/en/contact'} className={styles.closingCtaSecondary}>
+              {c.ctaButton}
+              <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </section>
 
       <footer className={styles.trust}>
         <p>{c.trustNote}</p>
+        <a href={c.earthUrl} target="_blank" rel="noopener noreferrer" className={styles.trustLink}>
+          earth.saimor.world
+          <ArrowUpRight size={12} />
+        </a>
       </footer>
 
       <button
@@ -205,17 +249,24 @@ export default function EarthLandingPage({ locale }: Props) {
   );
 }
 
-function GlobeVisualization({ places, activePlace, still }: { places: typeof PLACES; activePlace: number; still: boolean }) {
+function latLngToXY(lat: number, lng: number): { x: number; y: number } {
+  const x = 50 + ((lng - 9) / 3) * 20;
+  const y = 50 - ((lat - 51) / 5) * 25;
+  return { x: Math.max(15, Math.min(85, x)), y: Math.max(15, Math.min(85, y)) };
+}
+
+function GlobeVisualization({ regions, activeRegion, still }: { regions: Region[]; activeRegion: number; still: boolean }) {
   const [paths, setPaths] = useState<string[]>([]);
+  const positions = regions.map(r => latLngToXY(r.lat, r.lng));
 
   useEffect(() => {
     const rng = mulberry32(0x62bfc0);
     const generated: string[] = [];
 
-    for (let i = 0; i < places.length; i++) {
-      for (let j = i + 1; j < places.length; j++) {
-        const start = places[i];
-        const end = places[j];
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const start = positions[i];
+        const end = positions[j];
         const midX = (start.x + end.x) / 2 + (rng() - 0.5) * 8;
         const midY = (start.y + end.y) / 2 + (rng() - 0.5) * 8;
         generated.push(`M ${start.x} ${start.y} Q ${midX} ${midY}, ${end.x} ${end.y}`);
@@ -223,8 +274,8 @@ function GlobeVisualization({ places, activePlace, still }: { places: typeof PLA
     }
 
     for (let i = 0; i < 12; i++) {
-      const startIdx = Math.floor(rng() * places.length);
-      const start = places[startIdx];
+      const startIdx = Math.floor(rng() * positions.length);
+      const start = positions[startIdx];
       const endX = start.x + (rng() - 0.5) * 30;
       const endY = start.y + (rng() - 0.5) * 30;
       const cpX = (start.x + endX) / 2 + (rng() - 0.5) * 15;
@@ -233,7 +284,7 @@ function GlobeVisualization({ places, activePlace, still }: { places: typeof PLA
     }
 
     setPaths(generated);
-  }, [places]);
+  }, [positions]);
 
   return (
     <div className={styles.globe}>
@@ -262,10 +313,10 @@ function GlobeVisualization({ places, activePlace, still }: { places: typeof PLA
             />
           ))}
         </g>
-        {places.map((place, i) => (
-          <g key={place.id} className={styles.placeNode} data-active={i === activePlace}>
-            <circle cx={place.x} cy={place.y} r="3" className={styles.placeOuter} />
-            <circle cx={place.x} cy={place.y} r="1.5" className={styles.placeInner} />
+        {positions.map((pos, i) => (
+          <g key={regions[i]?.key || i} className={styles.placeNode} data-active={i === activeRegion}>
+            <circle cx={pos.x} cy={pos.y} r="3" className={styles.placeOuter} />
+            <circle cx={pos.x} cy={pos.y} r="1.5" className={styles.placeInner} />
           </g>
         ))}
       </svg>
