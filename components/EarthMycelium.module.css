@@ -1,31 +1,23 @@
-/* Roots of the Lichtung, continuing under the globe. Dark, sparse, quiet. */
-.field{position:absolute;z-index:2;left:0;right:0;top:34%;bottom:0;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 84%,transparent 100%)}
-.field::before{content:"";position:absolute;left:18%;right:18%;top:-10%;height:32%;background:radial-gradient(ellipse at 50% 0%,rgba(230,201,141,.18) 0%,rgba(110,174,138,.08) 42%,transparent 72%);pointer-events:none}
+.field{position:absolute;z-index:2;inset:0;top:22%;pointer-events:none}
+.field::before{content:"";position:absolute;left:8%;right:8%;top:-4%;height:18%;background:radial-gradient(ellipse 80% 90% at 50% 40%,rgba(230,201,141,.22) 0%,rgba(143,205,176,.1) 38%,transparent 74%);pointer-events:none}
 .network{display:block;width:100%;height:100%}
-.filament,.hypha,.gold{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.filament{stroke:#6fa888;stroke-width:1;stroke-opacity:.22;animation:breathe 11s ease-in-out infinite}
-.hypha{stroke:#b7ddc0;stroke-width:1.15;stroke-opacity:.38;animation:breathe 8.5s ease-in-out infinite}
-.gold{stroke:#e6c98d;stroke-width:1.05;stroke-opacity:.32;animation:breathe 10s ease-in-out infinite}
-.filament:nth-of-type(2),.hypha:nth-of-type(2){animation-delay:-3s}
-.filament:nth-of-type(3),.gold{animation-delay:-6.5s}
-.hypha:nth-of-type(3){animation-delay:-2s}
-.node{fill:#e7edc5;animation:ember 7.5s ease-in-out infinite}
-.node:nth-of-type(odd){animation-delay:-2.4s}
-.node:nth-of-type(3n){animation-delay:-5.1s}
-.halo{fill:url(#earthMyceliumHalo);opacity:.7;animation:ember 9s ease-in-out infinite}
-.mora{position:absolute;left:61%;top:31%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 16px rgba(126,196,150,.28))}
-@keyframes breathe{0%,100%{stroke-opacity:.16}45%{stroke-opacity:.42}70%{stroke-opacity:.28}}
-@keyframes ember{0%,100%{opacity:.4}50%{opacity:1}}
+.glow{stroke-opacity:.16;filter:blur(.35px)}
+.strand{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.jade{stroke:#9fd4b4;stroke-opacity:.72}
+.gold{stroke:#e6c98d;stroke-opacity:.64}
+.hair{stroke:#cfe8c8;stroke-opacity:.42}
+.pulse{fill:none;stroke:#e7f6ea;stroke-linecap:round;stroke-opacity:.9;stroke-dasharray:9 131;animation:sap 8.5s linear infinite}
+.pulse:nth-of-type(2){stroke:#e6c98d;animation-duration:11s;animation-delay:-4s}
+.pulse:nth-of-type(3){animation-duration:9.5s;animation-delay:-6s}
+.mora{filter:drop-shadow(0 0 18px rgba(180,220,190,.22))}
+@keyframes sap{to{stroke-dashoffset:-140}}
+@media(max-width:1024px){.field{top:20%}}
 @media(max-width:700px){
- .field{top:28%}
- .mora{left:64%;top:36%}
- .filament{stroke-width:.9}
- .hypha,.gold{stroke-width:1}
+ .field{top:34%}
+ .field::before{top:-6%;height:16%}
+ .glow{stroke-opacity:.13}
+ .hair{stroke-opacity:.36}
 }
 @media(prefers-reduced-motion:reduce){
- .filament,.hypha,.gold,.node,.halo{animation:none}
- .filament{stroke-opacity:.24}
- .hypha{stroke-opacity:.36}
- .gold{stroke-opacity:.3}
- .node,.halo{opacity:.8;transform:none}
+ .pulse{animation:none;stroke-dasharray:none;stroke-opacity:.45}
 }
