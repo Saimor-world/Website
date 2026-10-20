@@ -3,10 +3,10 @@ import styles from './EarthMycelium.module.css';
 type Point = { x: number; y: number };
 type Strand = { d: string; w: number; tone: 'jade' | 'gold' | 'hair'; pulse?: boolean };
 
-const MORA = { x: 608, y: 328 };
+const MORA = { x: 600, y: 250 };
 const VIEW_W = 1200;
 const VIEW_H = 1000;
-const CREDIT = { x: 600, y: 548, rx: 196, ry: 58 };
+const CREDIT = { x: 600, y: 368, rx: 240, ry: 46 };
 
 function mulberry32(seed: number) {
   return () => {
@@ -26,19 +26,16 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
 
-function inCreditVoid(x: number, y: number) {
-  const dx = (x - CREDIT.x) / CREDIT.rx;
-  const dy = (y - CREDIT.y) / CREDIT.ry;
-  return dx * dx + dy * dy < 1;
-}
-
-function nearMora(x: number, y: number) {
-  return Math.hypot(x - MORA.x, y - MORA.y) < 26;
-}
-
 function limbY(x: number) {
   const t = (x - 600) / 560;
-  return 22 + t * t * 36;
+  return 6 + t * t * 28;
+}
+
+function limbClip() {
+  let d = `M0 ${limbY(0).toFixed(1)}`;
+  for (let x = 24; x <= VIEW_W; x += 24) d += `L${x} ${limbY(x).toFixed(1)}`;
+  d += `L${VIEW_W} ${VIEW_H} L0 ${VIEW_H} Z`;
+  return d;
 }
 
 function pathThrough(points: Point[]) {
@@ -62,35 +59,41 @@ function grow(
   stepLen: number,
   wiggle: number,
   pull: Point | null,
+  stopAtMora = false,
 ) {
   const points: Point[] = [start];
   let x = start.x;
   let y = start.y;
   let angle = heading;
   for (let i = 0; i < steps; i += 1) {
-    angle += (rng() - 0.48) * wiggle;
+    angle += (rng() - 0.5) * wiggle;
     if (pull) {
       const desired = Math.atan2(pull.y - y, pull.x - x);
       let delta = desired - angle;
       while (delta > Math.PI) delta -= Math.PI * 2;
       while (delta < -Math.PI) delta += Math.PI * 2;
-      angle += delta * mix(0.08, 0.28, i / steps);
+      const dist = Math.hypot(pull.x - x, pull.y - y);
+      const strength = dist < 90 ? 0.55 : mix(0.12, 0.32, i / steps);
+      angle += delta * strength;
     } else {
-      angle += (Math.PI / 2 - angle) * 0.07;
+      angle += (Math.PI / 2 - angle) * 0.045;
     }
-    const len = stepLen * mix(0.72, 1.18, rng());
+    const len = stepLen * mix(0.7, 1.22, rng());
     let nx = x + Math.cos(angle) * len;
     let ny = y + Math.sin(angle) * len;
-    if (ny > VIEW_H - 18) break;
-    if (inCreditVoid(nx, ny)) {
-      nx += nx < CREDIT.x ? -mix(18, 42, rng()) : mix(18, 42, rng());
-      if (inCreditVoid(nx, ny)) break;
+    if (ny > VIEW_H - 16) break;
+    ny = Math.max(ny, limbY(nx) + 1);
+    const dx = (nx - CREDIT.x) / CREDIT.rx;
+    const dy = (ny - CREDIT.y) / CREDIT.ry;
+    if (dx * dx + dy * dy < 1) {
+      nx += nx < CREDIT.x ? -36 : 36;
+      if (((nx - CREDIT.x) / CREDIT.rx) ** 2 + ((ny - CREDIT.y) / CREDIT.ry) ** 2 < 1) break;
     }
-    nx = clamp(nx, 14, VIEW_W - 14);
+    nx = clamp(nx, 12, VIEW_W - 12);
     x = nx;
     y = ny;
     points.push({ x, y });
-    if (pull && nearMora(x, y)) {
+    if (stopAtMora && Math.hypot(x - MORA.x, y - MORA.y) < 18) {
       points.push({ ...MORA });
       break;
     }
@@ -99,7 +102,7 @@ function grow(
 }
 
 function buildStrands(): Strand[] {
-  const rng = mulberry32(0x7c3e91);
+  const rng = mulberry32(0x9d2c18);
   const strands: Strand[] = [];
 
   const push = (points: Point[], w: number, tone: Strand['tone'], pulse?: boolean) => {
@@ -108,85 +111,77 @@ function buildStrands(): Strand[] {
     if (d.length > 12) strands.push({ d, w, tone, pulse });
   };
 
-  const origins = Array.from({ length: 46 }, (_, i) => {
-    const x = 16 + i * (1168 / 45) + (rng() - 0.5) * 14;
-    return { x, y: limbY(x) + rng() * 10 };
+  const limbPoints = Array.from({ length: 64 }, (_, i) => {
+    const x = 18 + i * (1164 / 63) + (rng() - 0.5) * 10;
+    return { x, y: limbY(x) + rng() * 5 };
   });
 
-  origins.forEach((origin, index) => {
-    const towardMora = Math.abs(origin.x - MORA.x) < 380 || index % 4 === 0;
-    const heading = towardMora
-      ? Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.55
-      : Math.PI / 2 + (rng() - 0.5) * 0.9;
-    const trunk = grow(
-      rng,
-      origin,
-      heading,
-      towardMora ? 9 : 11,
-      towardMora ? 18 : 16,
-      towardMora ? 0.38 : 0.52,
-      towardMora ? MORA : null,
-    );
-    const trunkTone: Strand['tone'] = index % 5 === 0 ? 'gold' : index % 7 === 0 ? 'hair' : 'jade';
-    const trunkWidth = towardMora
-      ? mix(1.45, 2.35, 1 - Math.abs(origin.x - MORA.x) / 520)
-      : mix(0.55, 1.05, rng());
-    push(trunk.points, trunkWidth, trunkTone, towardMora && (index === 18 || index === 23 || index === 27));
+  limbPoints.forEach((origin, index) => {
+    const heading = Math.PI / 2 + (rng() - 0.5) * 1.25;
+    const hair = grow(rng, origin, heading, 3 + Math.floor(rng() * 4), 9, 0.82, null);
+    push(hair.points, mix(0.18, 0.4, rng()), index % 8 === 0 ? 'gold' : 'hair');
+  });
 
-    if (towardMora) {
-      const last = trunk.points[trunk.points.length - 1];
-      if (last && !nearMora(last.x, last.y)) {
-        const join = grow(rng, last, Math.atan2(MORA.y - last.y, MORA.x - last.x), 5, 14, 0.22, MORA);
-        push(join.points, mix(0.9, 1.45, rng()), index % 2 === 0 ? 'gold' : 'jade', index === 23);
+  const trunks = [6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58].map((index) => limbPoints[index]);
+  trunks.forEach((origin, index) => {
+    const heading = Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.42;
+    const trunk = grow(rng, origin, heading, 22, 13, 0.46, MORA, true);
+    const tone: Strand['tone'] = index % 3 === 0 ? 'gold' : 'jade';
+    const width = mix(1.35, 2.2, 1 - Math.abs(origin.x - MORA.x) / 640);
+    push(trunk.points, width, tone, index === 6 || index === 7 || index === 8);
+
+    const last = trunk.points[trunk.points.length - 1];
+    if (last && Math.hypot(last.x - MORA.x, last.y - MORA.y) > 20) {
+      const join = grow(rng, last, Math.atan2(MORA.y - last.y, MORA.x - last.x), 8, 12, 0.2, MORA, true);
+      if (join.points.length) {
+        join.points[join.points.length - 1] = { ...MORA };
+        push(join.points, mix(0.9, 1.4, rng()), tone, index === 7);
       }
     }
 
-    trunk.points.slice(1, -1).forEach((node, forkIndex) => {
-      if (rng() > (forkIndex < 2 ? 0.42 : 0.62)) return;
+    trunk.points.forEach((node, nodeIndex) => {
+      if (nodeIndex < 2 || nodeIndex > trunk.points.length - 3) return;
+      if (rng() > 0.38) return;
       const dir = rng() > 0.5 ? 1 : -1;
-      const forkHeading = trunk.heading + dir * mix(0.45, 1.05, rng());
-      const fork = grow(rng, node, forkHeading, 4 + Math.floor(rng() * 4), 13, 0.55, null);
-      const forkWidth = mix(0.28, 0.72, 1 - forkIndex / Math.max(1, trunk.points.length));
-      push(fork.points, forkWidth, rng() > 0.68 ? 'gold' : 'hair');
+      const forkHeading = trunk.heading + dir * mix(0.55, 1.2, rng());
+      const depth = 5 + Math.floor(rng() * 5);
+      const fork = grow(rng, node, forkHeading, depth, 11, 0.62, rng() > 0.7 ? MORA : null, rng() > 0.75);
+      push(fork.points, mix(0.28, 0.7, 1 - nodeIndex / trunk.points.length), rng() > 0.65 ? 'gold' : 'hair');
 
-      if (rng() > 0.48 && fork.points.length > 2) {
-        const tip = fork.points[Math.max(1, Math.floor(fork.points.length * mix(0.35, 0.7, rng())))];
-        const hair = grow(rng, tip, forkHeading + dir * mix(0.3, 0.8, rng()), 3 + Math.floor(rng() * 3), 11, 0.7, null);
-        push(hair.points, mix(0.18, 0.4, rng()), 'hair');
-      }
+      fork.points.slice(1, -1).forEach((side) => {
+        if (rng() > 0.6) return;
+        const twig = grow(rng, side, forkHeading + dir * mix(0.4, 0.9, rng()), 3 + Math.floor(rng() * 3), 9, 0.78, null);
+        push(twig.points, mix(0.16, 0.34, rng()), 'hair');
+      });
     });
   });
 
-  origins.forEach((origin, index) => {
-    if (index % 2 === 1) return;
-    const sprout = grow(
-      rng,
-      origin,
-      Math.PI / 2 + (rng() - 0.5) * 1.15,
-      3 + Math.floor(rng() * 3),
-      9,
-      0.72,
-      null,
-    );
-    push(sprout.points, mix(0.2, 0.48, rng()), index % 6 === 0 ? 'gold' : 'hair');
+  const wanderers = [3, 8, 12, 16, 20, 24, 28, 33, 37, 41, 45, 49, 53, 57, 61].map((index) => limbPoints[index]);
+  wanderers.forEach((origin, index) => {
+    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.35, 1.05, rng());
+    const root = grow(rng, origin, heading, 14, 14, 0.58, null);
+    push(root.points, mix(0.4, 0.85, rng()), index % 4 === 0 ? 'gold' : 'jade');
+    root.points.slice(2, -2).forEach((node) => {
+      if (rng() > 0.5) return;
+      const dir = rng() > 0.5 ? 1 : -1;
+      const fork = grow(rng, node, heading + dir * mix(0.5, 1.15, rng()), 5, 11, 0.7, null);
+      push(fork.points, mix(0.2, 0.45, rng()), 'hair');
+    });
   });
 
-  const around = 11;
-  for (let i = 0; i < around; i += 1) {
-    const spread = mix(-1.15, 1.15, i / (around - 1));
+  for (let i = 0; i < 9; i += 1) {
+    const spread = mix(-0.95, 0.95, i / 8);
     const start = {
-      x: MORA.x + Math.sin(spread) * mix(6, 14, rng()),
-      y: MORA.y + Math.cos(spread) * 4 + 8,
+      x: MORA.x + Math.sin(spread) * 10,
+      y: MORA.y + 12,
     };
-    const aimAngle = Math.PI / 2 + spread * 0.85;
-    const root = grow(rng, start, aimAngle, 8, 17, 0.42, null);
-    push(root.points, mix(0.55, 1.15, 1 - Math.abs(spread)), i === 5 ? 'gold' : 'jade', i === 4);
-
+    const root = grow(rng, start, Math.PI / 2 + spread * 0.7, 9, 16, 0.4, null);
+    push(root.points, mix(0.45, 1.05, 1 - Math.abs(spread)), i === 4 ? 'gold' : 'jade', i === 3);
     root.points.slice(2, -1).forEach((node) => {
-      if (rng() > 0.55) return;
+      if (rng() > 0.58) return;
       const dir = rng() > 0.5 ? 1 : -1;
-      const side = grow(rng, node, aimAngle + dir * mix(0.5, 1.1, rng()), 4, 12, 0.6, null);
-      push(side.points, mix(0.22, 0.5, rng()), rng() > 0.6 ? 'gold' : 'hair');
+      const side = grow(rng, node, Math.PI / 2 + spread + dir * mix(0.45, 1, rng()), 4, 11, 0.65, null);
+      push(side.points, mix(0.18, 0.4, rng()), rng() > 0.7 ? 'gold' : 'hair');
     });
   }
 
@@ -194,6 +189,7 @@ function buildStrands(): Strand[] {
 }
 
 const STRANDS = buildStrands();
+const LIMB_CLIP = limbClip();
 
 export default function EarthMycelium() {
   return (
@@ -201,28 +197,32 @@ export default function EarthMycelium() {
       <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <radialGradient id="earthMoraHalo" cx="50%" cy="48%" r="50%">
-            <stop offset="0%" stopColor="#e7f6ea" stopOpacity="0.2" />
-            <stop offset="38%" stopColor="#c6e2b8" stopOpacity="0.08" />
+            <stop offset="0%" stopColor="#e7f6ea" stopOpacity="0.22" />
+            <stop offset="40%" stopColor="#c6e2b8" stopOpacity="0.08" />
             <stop offset="100%" stopColor="#6fa888" stopOpacity="0" />
           </radialGradient>
           <linearGradient id="earthHyphaFade" x1="0" y1="0" x2="0" y2={VIEW_H} gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#fff" stopOpacity="1" />
-            <stop offset="62%" stopColor="#fff" stopOpacity="0.82" />
-            <stop offset="100%" stopColor="#fff" stopOpacity="0.06" />
+            <stop offset="58%" stopColor="#fff" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#fff" stopOpacity="0.05" />
           </linearGradient>
+          <clipPath id="earthHyphaClip">
+            <path d={LIMB_CLIP} />
+          </clipPath>
           <mask id="earthHyphaMask">
             <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
+            <ellipse cx={CREDIT.x} cy={CREDIT.y} rx={CREDIT.rx} ry={CREDIT.ry} fill="#000" />
           </mask>
         </defs>
 
-        <g mask="url(#earthHyphaMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <g clipPath="url(#earthHyphaClip)" mask="url(#earthHyphaMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
           {STRANDS.map((strand, index) => (
             <path
               key={`g-${index}`}
               className={styles.glow}
               d={strand.d}
               stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-              strokeWidth={strand.w * 4.8}
+              strokeWidth={strand.w * 3.4}
             />
           ))}
           {STRANDS.map((strand, index) => (
@@ -238,15 +238,15 @@ export default function EarthMycelium() {
               key={`p-${index}`}
               className={styles.pulse}
               d={strand.d}
-              strokeWidth={Math.max(1.1, strand.w * 0.7)}
+              strokeWidth={Math.max(1.05, strand.w * 0.65)}
               pathLength={140}
             />
           ))}
         </g>
 
         <g className={styles.mora} role="img" aria-label="MÔRA">
-          <circle cx={MORA.x} cy={MORA.y} r="86" fill="url(#earthMoraHalo)" />
-          <image href="/brand/mora-stone-v1.png" x={MORA.x - 21} y={MORA.y - 21} width="42" height="42" />
+          <circle cx={MORA.x} cy={MORA.y} r="108" fill="url(#earthMoraHalo)" />
+          <image href="/brand/mora-stone-v1.png" x={MORA.x - 28} y={MORA.y - 28} width="56" height="56" />
         </g>
       </svg>
     </div>
