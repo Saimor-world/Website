@@ -119,11 +119,9 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
         </div>
         <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-labelledby="earth-horizon-title">
-          <div className={styles.returnSky} aria-hidden="true" />
           <div className={styles.returnDisk} aria-hidden="true">
-            <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={90} sizes="100vw" className={styles.returnImage} />
+            <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={95} sizes="100vw" className={styles.returnImage} />
           </div>
-          <div className={styles.returnLimb} aria-hidden="true" />
           <div className={styles.returnMist} aria-hidden="true" />
           <div className={styles.returnShade} aria-hidden="true" />
           <div className={styles.returnInner}>
