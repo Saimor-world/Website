@@ -77,7 +77,7 @@ describe('SystemWorldHome', () => {
     const contact = container.querySelector('#contact');
     const earthHorizon = container.querySelector('#earth-horizon');
     expect([hero, forest, earthHorizon, products, intelligence, studio, contact].every(Boolean)).toBe(true);
-    const positions = [hero, forest, products, intelligence, studio, contact, earthHorizon].map(section => sections.indexOf(section!));
+    const positions = [hero, forest, earthHorizon, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
@@ -85,8 +85,7 @@ describe('SystemWorldHome', () => {
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
     const teaser = screen.getByRole('heading', { name: 'Überzeugend. Aber wahr?' });
     expect(forest!.contains(teaser)).toBe(true);
-    const lastInWorld = [...(world?.querySelectorAll('section') ?? [])].at(-1);
-    expect(lastInWorld).toBe(earthHorizon);
+    expect(forest!.nextElementSibling).toBe(earthHorizon);
   });
 
   it('uses one scenic photograph throughout the entire forest chapter', () => {
