@@ -287,3 +287,8 @@ body:has([data-public-site]) {
 [data-public-site] main {
   overflow-x: clip !important;
 }
+
+html:has([data-home-globe]) footer[data-public-footer] {
+  border-top-color: transparent;
+  background-color: #050706;
+}

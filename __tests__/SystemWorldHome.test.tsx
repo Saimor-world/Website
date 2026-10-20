@@ -67,6 +67,7 @@ describe('SystemWorldHome', () => {
 
   it('keeps the cosmic hero, forest, product worlds and contact in one readable sequence', () => {
     const { container } = render(<SystemWorldHome locale="de" />);
+    const world = container.querySelector('[data-home-globe]');
     const sections: Element[] = [...container.querySelectorAll('section')];
     const hero = container.querySelector('#world-title')?.closest('section');
     const forest = container.querySelector('#system');
@@ -76,12 +77,16 @@ describe('SystemWorldHome', () => {
     const contact = container.querySelector('#contact');
     const earthHorizon = container.querySelector('#earth-horizon');
     expect([hero, forest, earthHorizon, products, intelligence, studio, contact].every(Boolean)).toBe(true);
-    const positions = [hero, forest, earthHorizon, products, intelligence, studio, contact].map(section => sections.indexOf(section!));
+    const positions = [hero, products, intelligence, studio, contact, forest, earthHorizon].map(section => sections.indexOf(section!));
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
     expect(positions.every((index) => index >= 0)).toBe(true);
     expect(container.querySelectorAll('h1')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'Produkte entdecken' })).toHaveAttribute('href', '#products');
     expect(screen.getByRole('link', { name: 'MÔRA im Detail entdecken' })).toHaveAttribute('href', '/mora');
+    const teaser = screen.getByRole('heading', { name: 'Überzeugend. Aber wahr?' });
+    expect(teaser.compareDocumentPosition(forest!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    const lastInWorld = [...(world?.querySelectorAll('section') ?? [])].at(-1);
+    expect(lastInWorld).toBe(earthHorizon);
   });
 
   it('uses one scenic photograph throughout the entire forest chapter', () => {

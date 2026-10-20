@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import styles from './EarthMycelium.module.css';
 
 type Point = { x: number; y: number };
-type Strand = { d: string; w: number; tone: 'jade' | 'gold' | 'hair'; pulse?: boolean };
+type Strand = { d: string; w: number; tone: 'jade' | 'gold' | 'hair'; pulse?: boolean; edge?: boolean };
 
 const MORA = { x: 600, y: 250 };
 const VIEW_W = 1200;
@@ -96,10 +96,10 @@ function buildStrands(): Strand[] {
   const rng = mulberry32(0x9d2c18);
   const strands: Strand[] = [];
 
-  const push = (points: Point[], w: number, tone: Strand['tone'], pulse?: boolean) => {
+  const push = (points: Point[], w: number, tone: Strand['tone'], pulse?: boolean, edge?: boolean) => {
     if (points.length < 2) return;
     const d = pathThrough(points);
-    if (d.length > 12) strands.push({ d, w, tone, pulse });
+    if (d.length > 12) strands.push({ d, w, tone, pulse, edge });
   };
 
   const limbPoints = Array.from({ length: 72 }, (_, i) => {
@@ -110,7 +110,7 @@ function buildStrands(): Strand[] {
   limbPoints.forEach((origin, index) => {
     const heading = Math.PI / 2 + (rng() - 0.5) * 1.35;
     const hair = grow(rng, origin, heading, 4 + Math.floor(rng() * 4), 8, 0.88, null);
-    push(hair.points, mix(0.18, 0.42, rng()), index % 8 === 0 ? 'gold' : 'hair');
+    push(hair.points, mix(0.18, 0.42, rng()), index % 8 === 0 ? 'gold' : 'hair', false, true);
     const along = grow(
       rng,
       origin,
@@ -120,11 +120,11 @@ function buildStrands(): Strand[] {
       0.42,
       null,
     );
-    push(along.points, mix(0.22, 0.55, rng()), index % 5 === 0 ? 'gold' : 'hair');
+    push(along.points, mix(0.22, 0.55, rng()), index % 5 === 0 ? 'gold' : 'hair', false, true);
     along.points.slice(1).forEach((node) => {
       if (rng() > 0.55) return;
       const drop = grow(rng, node, Math.PI / 2 + (rng() - 0.5) * 0.8, 4, 9, 0.7, null);
-      push(drop.points, mix(0.16, 0.32, rng()), 'hair');
+      push(drop.points, mix(0.16, 0.32, rng()), 'hair', false, true);
     });
   });
 
@@ -173,12 +173,12 @@ function buildStrands(): Strand[] {
   wanderers.forEach((origin, index) => {
     const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.35, 1.15, rng());
     const root = grow(rng, origin, heading, 16, 14, 0.58, null);
-    push(root.points, mix(0.4, 0.9, rng()), index % 4 === 0 ? 'gold' : 'jade');
+    push(root.points, mix(0.4, 0.9, rng()), index % 4 === 0 ? 'gold' : 'jade', false, true);
     root.points.slice(2, -2).forEach((node) => {
       if (rng() > 0.5) return;
       const dir = rng() > 0.5 ? 1 : -1;
       const fork = grow(rng, node, heading + dir * mix(0.5, 1.15, rng()), 5, 11, 0.7, null);
-      push(fork.points, mix(0.2, 0.45, rng()), 'hair');
+      push(fork.points, mix(0.2, 0.45, rng()), 'hair', false, true);
     });
   });
 
@@ -255,7 +255,7 @@ export default function EarthMycelium() {
             {STRANDS.map((strand, index) => (
               <path
                 key={`g-${index}`}
-                className={styles.glow}
+                className={`${styles.glow} ${strand.edge ? styles.edge : ''}`}
                 d={strand.d}
                 stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
                 strokeWidth={strand.w * 3.4}
@@ -264,7 +264,7 @@ export default function EarthMycelium() {
             {STRANDS.map((strand, index) => (
               <path
                 key={`s-${index}`}
-                className={`${styles.strand} ${styles[strand.tone]}`}
+                className={`${styles.strand} ${styles[strand.tone]} ${strand.edge ? styles.edge : ''}`}
                 d={strand.d}
                 strokeWidth={strand.w}
               />
