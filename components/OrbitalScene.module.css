@@ -11,7 +11,8 @@
 .star{position:absolute;left:50%;top:0;width:5px;height:5px;border-radius:50%;background:#fff0c7;box-shadow:0 0 12px #f4d99e;transform:translate(-50%,-50%)}
 .sigil{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(42%,260px);filter:drop-shadow(0 0 28px #e3c98a20)}
 @keyframes orbit{to{rotate:360deg}}
-@media(max-width:1000px){.scene{right:1%;top:20%;width:45%}}
+@media(max-width:1280px){.scene{right:2%;top:16%;width:40%}}
+@media(max-width:1000px){.scene{right:0;top:16%;width:38%}}
 @media(max-width:700px){
  /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
     never to the text grid below the eyebrow. */

@@ -34,9 +34,7 @@ const COPY = {
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
     finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'WEITERSCROLLEN',
-    earthEyebrow: 'EIN ORT', earthTitle: 'Die andere Seite der Welt.',
-    earthText: 'Durch Wasser und Wurzeln hindurch endet dieselbe Kugel. Darunter bleibt nur der Raum.',
-    earthName: 'Earth', earthNote: 'Konzept · keine Live-Karte',
+    earthCredit: 'powered by', earthName: 'Earth',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
@@ -58,9 +56,7 @@ const COPY = {
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
     finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Better systems start with a better question.', finalText: 'What should become easier? What gets lost between people and tools? That is where we can begin.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
-    earthEyebrow: 'ONE PLACE', earthTitle: 'The other side of the world.',
-    earthText: 'Through water and roots the same globe closes. Below it, only space remains.',
-    earthName: 'Earth', earthNote: 'Concept · not a live map',
+    earthCredit: 'powered by', earthName: 'Earth',
   },
 } as const;
 
@@ -118,22 +114,17 @@ export default function SystemWorldHome({ locale }: Props) {
             </div>
           </div>
         </div>
-        <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-labelledby="earth-horizon-title">
+        <section id="earth-horizon" className={styles.return} data-testid="earth-horizon" aria-label="Earth">
           <div className={styles.returnDisk} aria-hidden="true">
             <Image src="/images/saimor-cosmos-layer.webp" alt="" fill quality={95} sizes="100vw" className={styles.returnImage} />
           </div>
           <div className={styles.returnMist} aria-hidden="true" />
           <div className={styles.returnShade} aria-hidden="true" />
           <div className={styles.returnInner}>
-            <div className={styles.returnCopy}>
-              <p className={styles.eyebrow}>{c.earthEyebrow}</p>
-              <h2 id="earth-horizon-title">{c.earthTitle}</h2>
-              <p className={styles.returnLead}>{c.earthText}</p>
-              <p className={styles.returnName}>
-                <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
-              </p>
-              <p className={styles.returnNote}>{c.earthNote}</p>
-            </div>
+            <p className={styles.returnCredit}>
+              {c.earthCredit}{' '}
+              <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
+            </p>
           </div>
         </section>
         <div className={styles.moraIntroduction}>
