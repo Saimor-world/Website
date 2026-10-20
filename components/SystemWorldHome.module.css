@@ -35,8 +35,8 @@
 .world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
 .system{position:relative;margin-top:-140px;background:transparent;scroll-margin-top:75px;pointer-events:none}
 .threshold{position:relative;isolation:isolate;background:transparent;overflow:hidden;pointer-events:none}
-.forestImage{object-fit:cover;object-position:60% center;opacity:1;mask-image:linear-gradient(180deg,transparent,#000 32%,#000 78%,transparent)}
-.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#16382c77,transparent 26%,transparent 70%,rgba(6,17,14,.2));mask-image:linear-gradient(180deg,transparent,#000 30%)}
+.forestImage{object-fit:cover;object-position:60% center;opacity:1;mask-image:linear-gradient(180deg,transparent,#000 32%,#000 62%,transparent)}
+.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#16382c77,transparent 26%,transparent 58%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%)}
 .thresholdInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:105px var(--gutter);min-height:720px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
 .contextCopy{max-width:500px;pointer-events:auto}
 .moraIntroduction,.entry{pointer-events:auto}
@@ -55,9 +55,9 @@
 .daylightIntelligence{background:var(--paper);color:#1b3b2c}
 .daylightStudio{background:#e7ece2;color:#17392a}
 .daylightContact{background:var(--paper);color:#173a2b}
-.return{position:relative;isolation:isolate;margin-top:-120px;min-height:880px;background:#050706;color:#f7f4e9;pointer-events:auto}
-.returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;object-position:68% 78%;opacity:1;filter:brightness(1.18) saturate(1.06) contrast(1.04);transform:scaleY(-1);transform-origin:center center}
-.returnShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(6,17,14,.42) 0%,transparent 22%,transparent 62%,#050706 100%)}
+.return{position:relative;isolation:isolate;margin-top:-180px;min-height:880px;background:#050706;color:#f7f4e9;pointer-events:auto}
+.returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;object-position:68% 78%;opacity:1;filter:brightness(1.18) saturate(1.06) contrast(1.04);transform:scaleY(-1);transform-origin:center center;-webkit-mask-image:linear-gradient(180deg,transparent,#000 24%,#000 100%);mask-image:linear-gradient(180deg,transparent,#000 24%,#000 100%)}
+.returnShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(6,17,14,.28) 0%,transparent 24%,transparent 62%,#050706 100%)}
 .returnInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:96px var(--gutter) 88px;min-height:880px;display:flex;align-items:flex-end}
 .returnCopy{position:relative;z-index:2;max-width:420px}
 .returnCopy::before{content:"";position:absolute;z-index:-1;inset:-40px -72px -48px -36px;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 22% 70%,rgba(5,7,6,.55) 0%,rgba(5,7,6,.2) 52%,transparent 76%)}
@@ -90,13 +90,13 @@
  .contextBody{font-size:14px;line-height:1.75;max-width:350px}
  .thresholdAction{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:13px;color:#efdaa7;margin-top:12px;border-bottom:1px solid #b5c5a25e}
  .contextStage{height:310px;width:calc(100% + 48px);margin:14px -24px 0}
- .forestImage{top:auto!important;bottom:0!important;height:450px!important;object-fit:cover;object-position:73% center;-webkit-mask-image:linear-gradient(transparent,#000 16%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 16%,#000 78%,transparent)}
- .forestShade{background:linear-gradient(180deg,#081e17 0%,#081e17 45%,transparent 66%,transparent 92%,transparent)}
+ .forestImage{top:auto!important;bottom:0!important;height:450px!important;object-fit:cover;object-position:73% center;-webkit-mask-image:linear-gradient(transparent,#000 16%,#000 68%,transparent);mask-image:linear-gradient(transparent,#000 16%,#000 68%,transparent)}
+ .forestShade{background:linear-gradient(180deg,#081e17 0%,#081e17 40%,transparent 62%,transparent)}
  .moraIntroduction{padding:78px 24px 58px;grid-template-columns:1fr;gap:30px}
  .moraIntroduction h3{font-size:clamp(57px,14vw,72px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:44px 24px 66px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:39px}
- .return{margin-top:-48px;min-height:100svh}
+ .return{margin-top:-72px;min-height:100svh}
  .returnInner{display:flex;align-items:flex-end;min-height:100svh;padding:72px 24px 80px}
  .returnCopy::before{display:none}
  .returnName a{font-size:28px}
