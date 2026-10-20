@@ -40,7 +40,7 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://cal.com https://api.cal.com https://saimorworld.matomo.cloud https://vitals.vercel-insights.com https://api.saimor.world https://hcaptcha.com https://api.anthropic.com https://vercel.live wss://vercel.live https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io",
+    "connect-src 'self' https://cal.com https://api.cal.com https://saimorworld.matomo.cloud https://vitals.vercel-insights.com https://api.saimor.world https://earth.saimor.world https://hcaptcha.com https://api.anthropic.com https://vercel.live wss://vercel.live https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io",
     "frame-src https://cal.com https://embed.cal.com https://newassets.hcaptcha.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
