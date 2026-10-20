@@ -84,3 +84,5 @@
 .sparkLayer{will-change:transform;pointer-events:none}
 .sparkLayer .sparkCore{filter:none}
 .sparkLayer .sparkHalo{filter:none;stroke:#f3c76a;stroke-width:7;stroke-opacity:.32}
+.cta::after{content:"→";margin-left:-.35rem}
+.os{scroll-margin-top:6rem}

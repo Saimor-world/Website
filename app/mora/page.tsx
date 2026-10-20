@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import MoraLandingPage from '@/components/MoraLandingPage';
+import MoraProductPage from '@/components/MoraProductPage';
 
 export const metadata: Metadata = {
   title: 'MÔRA: Klarheit im Wandel',
@@ -15,5 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default function MoraPage() {
-  return <MoraLandingPage locale="de" />;
+  return (
+    <>
+      <MoraLandingPage locale="de" />
+      <MoraProductPage locale="de" embedded />
+    </>
+  );
 }
