@@ -57,16 +57,16 @@
 .daylightContact{background:var(--paper);color:#173a2b}
 .return{position:relative;isolation:isolate;min-height:850px;background:#16382c;color:#f7f4e9}
 .returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;object-position:68% 78%;opacity:1;filter:brightness(1.18) saturate(1.06) contrast(1.04)}
-.returnShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#f6f4ec 0%,transparent 8%,transparent 88%,#050706)}
+.returnShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#f6f4ec 0%,transparent 6%,transparent 88%,#050706)}
 .returnInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:145px var(--gutter) 96px;min-height:850px;display:grid;grid-template-columns:1.05fr 1fr;align-items:center}
 .returnCopy{position:relative;z-index:2;max-width:620px}
-.returnCopy::before{content:"";position:absolute;z-index:-1;inset:-56px -96px -64px -40px;pointer-events:none;background:radial-gradient(ellipse 78% 72% at 22% 40%,rgba(8,28,22,.58) 0%,rgba(8,28,22,.26) 46%,transparent 74%)}
+.returnCopy::before{content:"";position:absolute;z-index:-1;inset:-56px -96px -80px -40px;pointer-events:none;background:radial-gradient(ellipse 90% 88% at 18% 46%,rgba(8,28,22,.62) 0%,rgba(8,28,22,.28) 54%,transparent 78%)}
 .returnInner h2{font:400 clamp(40px,5.2vw,72px)/1.04 "Cormorant Garamond",serif;letter-spacing:-.04em;max-width:14ch;margin:20px 0 22px;color:#fff8e9;text-wrap:balance}
 .returnLead{max-width:440px;font-size:15px;line-height:1.8;color:#d7e2d6}
 .returnName{margin-top:40px}
-.returnName a{display:inline-flex;align-items:center;min-height:44px;font:400 32px/1.15 "Cormorant Garamond",serif;color:#f3e6bf;letter-spacing:-.02em;border-bottom:1px solid #f3e6bf55;text-decoration:none}
+.returnName a{display:inline-flex;align-items:center;min-height:44px;font:400 32px/1.15 "Cormorant Garamond",serif;color:#f3e6bf;letter-spacing:-.02em;border-bottom:1px solid #f3e6bf55;text-decoration:none;text-shadow:0 2px 18px rgba(6,17,14,.72)}
 .returnName a:hover{color:#fff6dc;border-bottom-color:#fff6dc}
-.returnName small{display:block;margin-top:10px;font:12px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#b9c8ba}
+.returnName small{display:block;margin-top:10px;font:12px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#c9d6c8;text-shadow:0 1px 12px rgba(6,17,14,.85)}
 @media(max-width:1000px){.heroGrid{grid-template-columns:1.2fr .8fr}.intro{max-width:430px}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
 @media(max-width:700px){
  .hero{min-height:100svh;display:flex;flex-direction:column;padding-bottom:24px;background:radial-gradient(ellipse at 80% 36%,#6a9a7d80,transparent 55%),#356850}
