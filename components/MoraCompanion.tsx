@@ -13,6 +13,8 @@ export default function MoraCompanion({ locale, paused }: { locale: 'de' | 'en';
   const trigger = useRef<HTMLButtonElement>(null);
   const de = locale === 'de';
 
+  // Once someone has opened little MÔRA, she stays reachable instead of hiding behind the hero.
+  const [engaged, setEngaged] = useState(false);
   useEffect(() => {
     const hero = document.querySelector('[data-testid="mora-product"] section');
     if (!hero) return;
@@ -37,10 +39,10 @@ export default function MoraCompanion({ locale, paused }: { locale: 'de' | 'en';
     return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', outside); };
   }, [open]);
 
-  return <div ref={root} className={styles.companion} data-testid="mora-companion" data-open={open} data-paused={paused} data-hero-visible={heroVisible}>
+  return <div ref={root} className={styles.companion} data-testid="mora-companion" data-open={open} data-paused={paused} data-hero-visible={heroVisible && !engaged}>
     <div className={styles.flight}>
       <button ref={trigger} type="button" className={styles.trigger} aria-expanded={open} aria-controls="mora-companion-panel"
-        aria-label={de ? 'Kleine MÔRA kennenlernen' : 'Meet little MÔRA'} onClick={() => setOpen(value => !value)}>
+        aria-label={de ? 'Kleine MÔRA kennenlernen' : 'Meet little MÔRA'} onClick={() => { setEngaged(true); setOpen(value => !value); }}>
         <MoraCharacter size={60} state={open ? 'listen' : 'rest'} paused={paused} />
       </button>
     </div>

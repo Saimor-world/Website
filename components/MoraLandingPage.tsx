@@ -17,8 +17,8 @@ const COPY = {
     cta: 'MÔRA im OS erleben',
     threads: ['Dateien', 'Termine', 'Nachrichten'],
     stone: 'MÔRA, der Jadestein mit Gesicht',
-    pause: 'Bewegung pausieren',
-    resume: 'Bewegung fortsetzen',
+    pause: 'Hintergrundbewegung pausieren',
+    resume: 'Hintergrundbewegung fortsetzen',
     featuresTitle: 'Aus Fragmenten wird Klarheit.',
     features: [
       { title: 'Sie hält den Zusammenhang', text: 'Dateien, Termine und Nachrichten finden zusammen. MÔRA weiß, worum es gerade geht.' },
@@ -45,8 +45,8 @@ const COPY = {
     cta: 'Experience MÔRA in the OS',
     threads: ['Files', 'Meetings', 'Messages'],
     stone: 'MÔRA, the jade stone with a face',
-    pause: 'Pause motion',
-    resume: 'Resume motion',
+    pause: 'Pause background motion',
+    resume: 'Resume background motion',
     featuresTitle: 'From fragments to clarity.',
     features: [
       { title: 'She keeps the context', text: 'Files, meetings and messages come together. MÔRA knows what matters right now.' },
@@ -123,7 +123,7 @@ export default function MoraLandingPage({ locale }: Props) {
             <span>{c.hero[1]}</span>
           </h1>
           <p className={styles.sub}>{c.heroSub}</p>
-          <DemoLaunchButton locale={locale} label={`${c.cta} →`} className={styles.cta} />
+          <DemoLaunchButton locale={locale} label={c.cta} className={styles.cta} />
           <aside className={styles.glance} aria-label={c.glanceTitle}>
             <p>{c.glanceTitle}</p>
             <ul>{c.glance.map((g, i) => { const Icon = ICONS[i]; return <li key={g}><Icon size={15} aria-hidden="true" />{g}</li>; })}</ul>
@@ -210,10 +210,10 @@ export default function MoraLandingPage({ locale }: Props) {
         <ul>{c.trust.map(t => <li key={t}>{t}</li>)}</ul>
       </section>
 
-      <section className={styles.os} aria-labelledby="mora-os">
+      <section id="im-os" className={styles.os} aria-labelledby="mora-os">
         <h2 id="mora-os">{c.osTitle}</h2>
         <p>{c.osText}</p>
-        <DemoLaunchButton locale={locale} label={`${c.cta} →`} className={styles.cta} />
+        <DemoLaunchButton locale={locale} label={c.cta} className={styles.cta} />
         <small>{c.note}</small>
       </section>
     </div>
