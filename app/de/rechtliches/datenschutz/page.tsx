@@ -17,7 +17,7 @@ export default function Page() {
         <div className="prose prose-lg max-w-none">
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Verantwortlicher</h2>
           <p className="mb-6 text-slate-700">
-            Saimôr / NextChapter<br />
+            Saimôr / Next Chapter<br />
             Wallmerstraße 30<br />
             70327 Stuttgart<br />
             E-Mail: contact@saimor.world
