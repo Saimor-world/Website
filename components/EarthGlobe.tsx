@@ -20,7 +20,7 @@ function growRoots(origins: [number, number][]): { segs: Seg[]; tips: [number, n
   const segs: Seg[] = [];
   const tips: [number, number][] = [];
   const grow = (p: [number, number], dir: number, len: number, depth: number) => {
-    if (depth > 4 || len < 1.2) { tips.push(p); return; }
+    if (depth > 5 || len < 1.2) { tips.push(p); return; }
     const steps = 3;
     let cur = p;
     for (let i = 0; i < steps; i++) {
@@ -29,10 +29,10 @@ function growRoots(origins: [number, number][]): { segs: Seg[]; tips: [number, n
       segs.push({ a: cur, b: nxt, depth });
       cur = nxt;
     }
-    const n = depth < 1 ? 2 : r() < 0.4 ? 2 : 1;
+    const n = depth < 2 ? 2 : r() < 0.45 ? 2 : 1;
     for (let k = 0; k < n; k++) grow(cur, dir + (k === 0 ? -1 : 1) * (0.35 + r() * 0.45), len * (0.62 + r() * 0.12), depth + 1);
   };
-  origins.forEach(o => { const arms = 3; for (let i = 0; i < arms; i++) grow(o, (i / arms) * Math.PI * 2 + r() * 0.8, 8.5, 0); });
+  origins.forEach(o => { const arms = 4; for (let i = 0; i < arms; i++) grow(o, (i / arms) * Math.PI * 2 + r() * 0.8, 13, 0); });
   return { segs, tips };
 }
 
@@ -56,7 +56,7 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
     let lut: { idx: Int32Array; row: Int32Array; lon: Float32Array; day: Float32Array; rim: Float32Array; rimWarm: Float32Array } | null = null;
     let S = 0;
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const roots = growRoots([[54.13, 8.86], [48.78, 9.18]]);
+    const roots = growRoots([[54.13, 8.86], [48.78, 9.18], [44, 24]]);
 
     const img = new Image();
     img.decoding = 'async';
@@ -76,7 +76,10 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
         const k = Math.min(1, warm * 1.6);
         r = r * (1 - k) + (lum * 0.78 + 18) * k; g = g * (1 - k) + (lum * 0.74 + 16) * k; b = b * (1 - k) + (lum * 0.52 + 10) * k;
         if (b > r && b > g) { r *= 0.45; g = g * 0.62 + 6; b = b * 0.62 + 4; }
-        d[i] = r * 0.92; d[i + 1] = g * 0.95; d[i + 2] = b * 0.95;
+        // Warm golden night grade; clamp bright ice so it never turns harsh white.
+        const l2 = 0.3 * r + 0.59 * g + 0.11 * b;
+        if (l2 > 170) { const f = 170 / l2; r *= f; g *= f; b *= f; }
+        d[i] = Math.min(255, r * 0.78 + l2 * 0.22 + 10); d[i + 1] = g * 0.7 + l2 * 0.12 + 4; d[i + 2] = b * 0.55 + 2;
       }
       tex = d;
       resize();
@@ -129,9 +132,9 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
         let u = Math.floor(L.lon[i] + shift + TEX_W * 1.5) % TEX_W;
         if (u < 0) u += TEX_W;
         const s = (L.row[i] + u) * 4, o = L.idx[i], dy = L.day[i], night = 1 - dy, e = L.rim[i], w = L.rimWarm[i];
-        px[o] = tex[s] * (0.1 + 0.95 * dy) + night * 6 + e * (255 * w * 0.9 + 40);
-        px[o + 1] = tex[s + 1] * (0.12 + 0.95 * dy) + night * 14 + e * (190 * w * 0.9 + 120);
-        px[o + 2] = tex[s + 2] * (0.16 + 0.95 * dy) + night * 26 + e * (110 * w * 0.9 + 120);
+        px[o] = tex[s] * (0.08 + 0.85 * dy) + night * 8 + e * (255 * w * 1.1 + 60);
+        px[o + 1] = tex[s + 1] * (0.08 + 0.85 * dy) + night * 10 + e * (180 * w * 1.1 + 40);
+        px[o + 2] = tex[s + 2] * (0.1 + 0.85 * dy) + night * 12 + e * (80 * w * 1.1 + 10);
         px[o + 3] = 255;
       }
       ctx.putImageData(frame, 0, 0);
@@ -147,19 +150,19 @@ export default function EarthGlobe({ pins, still, label, className }: Props) {
           if (a.z < 0.08 || b.z < 0.08) continue;
           ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
         }
-        ctx.strokeStyle = pass ? 'rgba(200,255,225,.55)' : 'rgba(110,230,170,.16)';
-        ctx.lineWidth = (pass ? 1.1 : 4) * k;
+        ctx.strokeStyle = pass ? 'rgba(215,255,230,.85)' : 'rgba(120,240,180,.28)';
+        ctx.lineWidth = (pass ? 1.4 : 6) * k;
         ctx.stroke();
       }
       // Gold sparks at a subset of tips, breathing.
       roots.tips.forEach((p, i) => {
-        if (i % 5) return;
+        if (i % 2) return;
         const q = project(p[0], p[1], lc);
         if (q.z < 0.15) return;
         const a = 0.5 + 0.5 * Math.sin(t * 1.6 + i);
-        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14 * k);
+        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 18 * k);
         g.addColorStop(0, `rgba(255,236,190,${0.55 + 0.45 * a})`); g.addColorStop(0.35, `rgba(255,190,90,${0.35 * a + 0.15})`); g.addColorStop(1, 'rgba(255,170,60,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, 14 * k, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, 18 * k, 0, Math.PI * 2); ctx.fill();
       });
       ctx.globalCompositeOperation = 'source-over';
       // Real region pins from the Earth API.

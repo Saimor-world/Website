@@ -70,7 +70,7 @@ const COPY = {
 
 const ICONS = [FileText, CalendarDays, MessageSquare];
 // Gold threads from the stone (left) to the three signals (right), in a 600x400 box.
-const THREADS = Array.from({ length: 18 }, (_, i) => {
+const THREADS = Array.from({ length: 30 }, (_, i) => {
   const target = i % 3;
   const ty = 70 + target * 130;
   const sy = 190 + ((i * 37) % 40) - 20;
@@ -82,10 +82,11 @@ const THREADS_MOBILE = Array.from({ length: 12 }, (_, i) => {
   const tx = 60 + (i % 3) * 120;
   const sx = 165 + ((i * 29) % 30);
   const bend = ((i * 41) % 70) - 35;
-  return { d: `M ${sx} 0 C ${sx + bend} 70, ${tx - bend} 120, ${tx} 190`, delay: (i * 0.41) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
+  const sway = ((i * 67) % 90) - 45;
+  return { d: `M ${sx} 0 C ${sx + sway} 40, ${sx - bend * 1.6} 90, ${(sx + tx) / 2 + bend} 120 S ${tx + sway * 0.5} 170, ${tx} 190`, delay: (i * 0.41) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
 });
-const PARTICLES = Array.from({ length: 22 }, (_, i) => ({
-  left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, size: 1.5 + ((i * 7) % 4), delay: `${(i * 0.7) % 9}s`, dur: `${9 + ((i * 5) % 8)}s`, gold: i % 3 !== 0,
+const PARTICLES = Array.from({ length: 40 }, (_, i) => ({
+  left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, size: 2.5 + ((i * 7) % 4) * 1.2, delay: `${(i * 0.7) % 9}s`, dur: `${9 + ((i * 5) % 8)}s`, gold: i % 3 !== 0,
 }));
 
 export default function MoraLandingPage({ locale }: Props) {
@@ -148,7 +149,7 @@ export default function MoraLandingPage({ locale }: Props) {
             </defs>
             {THREADS.map((t, i) => (
               <g key={i}>
-                <path d={t.d} stroke="url(#moraThread)" strokeWidth={t.w} fill="none" opacity=".55" />
+                <path d={t.d} stroke="url(#moraThread)" strokeWidth={t.w * 1.4} fill="none" opacity=".9" className={styles.threadGlow} />
                 <path d={t.d} className={styles.spark} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
               </g>
             ))}
