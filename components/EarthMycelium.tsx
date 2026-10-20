@@ -203,35 +203,47 @@ function buildStrands(): Strand[] {
 }
 
 const PHONE_MORA = { x: 600, y: 548 };
+const PHONE_H = 900;
+
+function phoneLimbY(x: number) {
+  const t = (x - 600) / 640;
+  return 10 + t * t * 92;
+}
 
 function buildPhoneStrands(): Strand[] {
   const rng = mulberry32(0x51a07e);
   const strands: Strand[] = [];
-  const origins = [78, 230, 372, 520, 690, 848, 1060].map((x) => ({
-    x: x + (rng() - 0.5) * 22,
-    y: limbY(x) + 6 + rng() * 8,
-  }));
+  const origins = [72, 228, 368, 520, 688, 848, 1070].map((x) => {
+    const px = x + (rng() - 0.5) * 16;
+    return { x: px, y: phoneLimbY(px) };
+  });
 
   origins.forEach((origin, index) => {
-    const heading = Math.atan2(PHONE_MORA.y - origin.y, PHONE_MORA.x - origin.x) + (rng() - 0.5) * 0.42;
-    const trunk = grow(rng, origin, heading, 28, 17, 0.48, PHONE_MORA, true, false);
-    if (trunk.points.length) trunk.points[trunk.points.length - 1] = { ...PHONE_MORA };
-    const width = mix(1.55, 2.15, 1 - Math.abs(origin.x - PHONE_MORA.x) / 640);
-    const d = pathThrough(trunk.points);
+    const along = (index < 3 ? 1 : -1) * mix(18, 42, rng());
+    const sit = {
+      x: origin.x + along * 0.45,
+      y: phoneLimbY(origin.x + along * 0.45) + 2,
+    };
+    const heading = Math.atan2(PHONE_MORA.y - sit.y, PHONE_MORA.x - sit.x) + (rng() - 0.5) * 0.28;
+    const trunk = grow(rng, sit, heading, 30, 16, 0.42, PHONE_MORA, true, false);
+    const points = [{ x: origin.x, y: origin.y }, sit, ...trunk.points.slice(1)];
+    points[points.length - 1] = { ...PHONE_MORA };
+    const width = mix(1.6, 2.2, 1 - Math.abs(origin.x - PHONE_MORA.x) / 640);
+    const d = pathThrough(points);
     if (d.length > 12) {
       strands.push({ d, w: width, tone: index % 2 === 0 ? 'jade' : 'gold', pulse: true });
     }
 
     if (index === 1 || index === 2 || index === 4 || index === 5) {
-      const node = trunk.points[Math.max(4, Math.floor(trunk.points.length * 0.32))];
+      const node = points[Math.max(5, Math.floor(points.length * 0.38))];
       if (!node) return;
       const fork = grow(
         rng,
         node,
-        trunk.heading + (index % 2 === 0 ? 0.78 : -0.78),
-        11,
-        15,
-        0.5,
+        heading + (index % 2 === 0 ? 0.62 : -0.62),
+        12,
+        14,
+        0.46,
         PHONE_MORA,
         true,
         false,
@@ -240,7 +252,7 @@ function buildPhoneStrands(): Strand[] {
         fork.points[fork.points.length - 1] = { ...PHONE_MORA };
         const forkPath = pathThrough(fork.points);
         if (forkPath.length > 12) {
-          strands.push({ d: forkPath, w: width * 0.48, tone: 'hair', pulse: index === 2 || index === 5 });
+          strands.push({ d: forkPath, w: width * 0.5, tone: 'hair', pulse: true });
         }
       }
     }
@@ -251,14 +263,14 @@ function buildPhoneStrands(): Strand[] {
 
 const STRANDS = buildStrands();
 const PHONE_STRANDS = buildPhoneStrands();
-const SPORES = Array.from({ length: 16 }, (_, index) => {
+const SPORES = Array.from({ length: 22 }, (_, index) => {
   const rng = mulberry32(0x404 + index * 19);
   return {
-    left: `${(8 + rng() * 84).toFixed(1)}%`,
-    top: `${(12 + rng() * 76).toFixed(1)}%`,
-    delay: `${(-rng() * 16).toFixed(1)}s`,
-    duration: `${(11 + rng() * 9).toFixed(1)}s`,
-    size: rng() > 0.72 ? 3 : 2,
+    left: `${(6 + rng() * 88).toFixed(1)}%`,
+    top: `${(18 + rng() * 70).toFixed(1)}%`,
+    delay: `${(-rng() * 18).toFixed(1)}s`,
+    duration: `${(12 + rng() * 10).toFixed(1)}s`,
+    size: rng() > 0.68 ? 3 : 2,
   };
 });
 
@@ -344,16 +356,23 @@ export default function EarthMycelium() {
           </g>
         </svg>
 
-        <svg className={styles.phoneNetwork} viewBox={`0 0 ${VIEW_W} 900`} preserveAspectRatio="none" aria-hidden="true">
+        <svg className={styles.phoneNetwork} viewBox={`0 0 ${VIEW_W} ${PHONE_H}`} preserveAspectRatio="none" aria-hidden="true">
           <defs>
-            <linearGradient id="earthPhoneFade" x1="0" y1="0" x2="0" y2="900" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0.08" />
-              <stop offset="8%" stopColor="#fff" stopOpacity="1" />
-              <stop offset="78%" stopColor="#fff" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#fff" stopOpacity="0.12" />
+            <linearGradient id="earthPhoneFade" x1="0" y1="0" x2="0" y2={PHONE_H} gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#fff" stopOpacity="0.72" />
+              <stop offset="4%" stopColor="#fff" stopOpacity="1" />
+              <stop offset="82%" stopColor="#fff" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#fff" stopOpacity="0.18" />
             </linearGradient>
+            <filter id="earthPhonePulseGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
             <mask id="earthPhoneMask">
-              <rect width={VIEW_W} height="900" fill="url(#earthPhoneFade)" />
+              <rect width={VIEW_W} height={PHONE_H} fill="url(#earthPhoneFade)" />
             </mask>
           </defs>
           <g mask="url(#earthPhoneMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -363,7 +382,7 @@ export default function EarthMycelium() {
                 className={styles.phoneGlow}
                 d={strand.d}
                 stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-                strokeWidth={strand.w * 4.2}
+                strokeWidth={strand.w * 4.6}
               />
             ))}
             {PHONE_STRANDS.map((strand, index) => (
@@ -379,9 +398,10 @@ export default function EarthMycelium() {
                 key={`pp-${index}`}
                 className={styles.phonePulse}
                 d={strand.d}
-                strokeWidth={Math.max(1.15, strand.w * 0.7)}
+                strokeWidth={Math.max(1.4, strand.w * 0.85)}
                 pathLength={160}
-                style={{ animationDelay: `${-index * 1.7}s`, animationDuration: `${7.5 + (index % 3) * 1.4}s` }}
+                filter="url(#earthPhonePulseGlow)"
+                style={{ animationDelay: `${-index * 1.35}s`, animationDuration: `${6.8 + (index % 3) * 1.2}s` }}
               />
             ))}
           </g>
