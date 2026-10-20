@@ -9,7 +9,7 @@ import MoraCharacter, { type MoraMood } from './MoraCharacter';
 import MoraCompanion from './MoraCompanion';
 import styles from './MoraProductPage.module.css';
 
-type Props = { locale: 'de' | 'en' };
+type Props = { locale: 'de' | 'en'; embedded?: boolean };
 
 const COPY = {
   de: {
@@ -126,7 +126,8 @@ const COPY = {
   },
 };
 
-export default function MoraProductPage({ locale }: Props) {
+export default function MoraProductPage({ locale, embedded = false }: Props) {
+  const Title = embedded ? 'h2' : 'h1';
   const c = COPY[locale];
   const [orbState, setOrbState] = useState<MoraMood>('rest');
   const [context, setContext] = useState(0);
@@ -150,7 +151,7 @@ export default function MoraProductPage({ locale }: Props) {
         <div className={styles.heroGrid}>
           <div className={styles.intro}>
             <p className={styles.eyebrow}>{c.eyebrow}</p>
-            <h1 id="mora-title">{c.title}</h1>
+            <Title id="mora-title">{c.title}</Title>
             <p className={styles.lead}><span className={styles.desktopLead}>{c.lead}</span><span className={styles.mobileLead}>{c.mobileLead}</span></p>
             <p className={styles.note}>{c.note}</p>
             <div className={styles.actions}>
@@ -260,12 +261,12 @@ export default function MoraProductPage({ locale }: Props) {
         </div>
       </section>
 
-      <section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
+      {!embedded && (<section id="im-os" className="scroll-mt-24 border-t border-white/[.08] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#91dcc4]/80">{c.osEyebrow}</p><h2 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] sm:text-6xl">{c.osTitle}</h2></div>
           <div><p className="max-w-2xl text-sm leading-7 text-white/80 sm:text-base">{c.osText}</p><div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"><DemoLaunchButton locale={locale} label={c.demo} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#eef1e4] px-6 py-3 text-sm font-bold text-[#102219] transition hover:bg-white disabled:opacity-60" /><Link href={securityHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/28 hover:text-white"><ShieldCheck className="h-4 w-4" />{c.security}</Link></div></div>
         </div>
-      </section>
+      </section>)}
 
       <section className="border-t border-white/[.08] bg-[#040806] px-5 py-16 sm:px-8 md:py-20 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.65fr_1.35fr]">

@@ -393,7 +393,8 @@ test('product states, workshop details and YORI example rooms respond', async ({
   await page.getByRole('button', { name: 'Termine', exact: true }).click();
   await expect(page.getByTestId('mora-context-preview')).toContainText('Mit Kontext in den Termin.');
   const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
-  await companion.click();
+  // Little MÔRA flies on purpose; software WebKit never sees her "stable" mid-flight, so tap her where she is.
+  await companion.click({ force: info.project.name.startsWith('webkit') });
   await expect(page.getByRole('dialog', { name: 'MÔRA an deiner Seite' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(companion).toBeFocused();
