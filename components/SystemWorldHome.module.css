@@ -34,11 +34,11 @@
 .motionControl input:checked::after{transform:translateX(16px);background:#fff}
 .world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
 .system{position:relative;margin-top:-140px;background:transparent;scroll-margin-top:75px;pointer-events:none}
-.threshold{position:relative;isolation:isolate;background:transparent;overflow:visible;pointer-events:none}
-.forestImage{object-fit:cover;object-position:60% center;opacity:1;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28%,#000 48%,transparent 92%);mask-image:linear-gradient(180deg,transparent,#000 28%,#000 48%,transparent 92%)}
-.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#16382c77,transparent 26%,transparent 52%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%)}
-.thresholdMist{position:absolute;z-index:2;left:0;right:0;bottom:0;height:300px;pointer-events:none;background:linear-gradient(180deg,transparent 0%,rgba(8,18,14,.28) 32%,rgba(6,12,10,.62) 68%,#050706 100%)}
-.thresholdInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:105px var(--gutter) 280px;min-height:780px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
+.threshold{position:relative;z-index:2;isolation:isolate;background:transparent;overflow:visible;pointer-events:none}
+.forestImage{object-fit:cover;object-position:60% 58%;opacity:1;-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000 40%,rgba(0,0,0,.82) 58%,rgba(0,0,0,.42) 74%,rgba(0,0,0,.12) 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 22%,#000 40%,rgba(0,0,0,.82) 58%,rgba(0,0,0,.42) 74%,rgba(0,0,0,.12) 88%,transparent)}
+.forestShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#071b15dc,transparent 69%),linear-gradient(180deg,#16382c77,transparent 26%,transparent 52%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 62%,transparent 92%)}
+.thresholdMist{position:absolute;z-index:2;left:0;right:0;bottom:0;height:320px;pointer-events:none;background:radial-gradient(ellipse 130% 85% at 50% 100%,rgba(6,12,10,.42) 0%,rgba(6,12,10,.18) 46%,transparent 74%),linear-gradient(180deg,transparent 0%,rgba(8,20,16,.1) 24%,rgba(6,14,12,.28) 62%,rgba(5,8,8,.4) 100%)}
+.thresholdInner{position:relative;z-index:1;max-width:1440px;margin:auto;padding:105px var(--gutter) 300px;min-height:780px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px}
 .contextCopy{max-width:500px;pointer-events:auto}
 .moraIntroduction,.entry{pointer-events:auto}
 .contextCopy h2{font:400 clamp(48px,5.3vw,78px)/1.04 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em;margin:22px 0 25px;text-wrap:balance;color:#fff8e7}
@@ -56,19 +56,21 @@
 .daylightIntelligence{background:var(--paper);color:#1b3b2c}
 .daylightStudio{background:#e7ece2;color:#17392a}
 .daylightContact{background:var(--paper);color:#173a2b}
-.return{position:relative;isolation:isolate;margin-top:-280px;min-height:720px;background:#050706;color:#f7f4e9;pointer-events:auto}
-.returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;object-position:58% 92%;opacity:1;filter:brightness(.46) saturate(.52) contrast(1.12);-webkit-mask-image:radial-gradient(ellipse 150% 108% at 50% -12%,#000 36%,#000 52%,transparent 66%);mask-image:radial-gradient(ellipse 150% 108% at 50% -12%,#000 36%,#000 52%,transparent 66%)}
-.returnLimb{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 150% 108% at 50% -12%,transparent 50%,rgba(196,158,82,.5) 56%,rgba(232,196,120,.18) 61%,transparent 68%)}
-.returnMist{position:absolute;z-index:2;left:0;right:0;top:0;height:280px;pointer-events:none;background:linear-gradient(180deg,#050706 0%,rgba(6,14,12,.7) 36%,rgba(6,14,12,.22) 72%,transparent 100%)}
-.returnShade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 150% 108% at 50% -12%,rgba(4,10,8,.35) 0%,rgba(4,10,8,.18) 48%,transparent 66%),linear-gradient(180deg,transparent 58%,#050706 82%)}
-.returnInner{position:relative;z-index:3;max-width:1440px;margin:auto;padding:390px var(--gutter) 72px}
-.returnCopy{position:relative;z-index:2;max-width:520px}
-.returnInner h2{font:400 clamp(36px,4.8vw,58px)/1.06 "Cormorant Garamond",serif;letter-spacing:-.04em;max-width:14ch;margin:18px 0 0;color:#fff8e9;text-wrap:balance}
-.returnLead{max-width:440px;margin-top:18px;font-size:15px;line-height:1.8;color:#d7e2d6}
-.returnName{margin-top:28px}
+.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:-300px;min-height:0;background:#050706;color:#f7f4e9;pointer-events:auto}
+.returnSky{position:absolute;inset:0;pointer-events:none;background:#050706 url('/images/saimor-cosmos-layer.webp') 82% 2%/130% auto no-repeat;filter:brightness(.42) saturate(.55) contrast(1.05);-webkit-mask-image:linear-gradient(180deg,transparent 0 18%,#000 46%,#000 78%,#000 100%);mask-image:linear-gradient(180deg,transparent 0 18%,#000 46%,#000 78%,#000 100%)}
+.returnDisk{position:absolute;inset:0;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 168% 96% at 50% -6%,#000 0 52%,rgba(0,0,0,.82) 58%,rgba(0,0,0,.28) 66%,transparent 74%);mask-image:radial-gradient(ellipse 168% 96% at 50% -6%,#000 0 52%,rgba(0,0,0,.82) 58%,rgba(0,0,0,.28) 66%,transparent 74%)}
+.returnImage{position:absolute!important;inset:-18% -28% 8% -28%!important;width:156%!important;height:140%!important;object-fit:cover;object-position:76% 100%;opacity:1;filter:brightness(.3) saturate(.34) contrast(1.22) hue-rotate(12deg) blur(.7px)}
+.returnLimb{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 168% 96% at 50% -6%,transparent 54%,rgba(196,158,82,.08) 58%,rgba(232,196,120,.48) 63%,rgba(255,226,170,.16) 67%,transparent 74%);mix-blend-mode:screen}
+.returnMist{position:absolute;z-index:2;left:0;right:0;top:0;height:300px;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(8,18,14,.22) 0%,transparent 72%),linear-gradient(180deg,rgba(6,14,12,.18) 0%,rgba(6,14,12,.08) 48%,transparent 100%)}
+.returnShade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 168% 96% at 50% -6%,rgba(3,8,14,.5) 0%,rgba(4,10,16,.28) 48%,transparent 70%),linear-gradient(180deg,transparent 58%,#050706 76%)}
+.returnInner{position:relative;z-index:3;max-width:1440px;margin:auto;padding:348px var(--gutter) 64px}
+.returnCopy{position:relative;z-index:2;max-width:34rem}
+.returnInner h2{font:400 clamp(36px,4.8vw,58px)/1.06 "Cormorant Garamond",serif;letter-spacing:-.04em;max-width:14ch;margin:14px 0 0;color:#fff8e9;text-wrap:balance}
+.returnLead{max-width:440px;margin-top:16px;font-size:15px;line-height:1.8;color:#d7e2d6}
+.returnName{margin-top:22px}
 .returnName a{display:inline-flex;align-items:center;min-height:44px;font:400 28px/1.15 "Cormorant Garamond",serif;color:#f3e6bf;letter-spacing:-.02em;border-bottom:1px solid #f3e6bf55;text-decoration:none}
 .returnName a:hover{color:#fff6dc;border-bottom-color:#fff6dc}
-.returnNote{margin-top:10px;font:600 12px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#e8dfc0}
+.returnNote{margin-top:8px;font:600 12px/1.6 ui-monospace,monospace;letter-spacing:.12em;color:#e8dfc0}
 @media(max-width:1000px){.heroGrid{grid-template-columns:1.2fr .8fr}.intro{max-width:430px}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
 @media(max-width:700px){
  .hero{min-height:100svh;display:flex;flex-direction:column;padding-bottom:24px;background:radial-gradient(ellipse at 80% 36%,#6a9a7d80,transparent 55%),#356850}
@@ -87,26 +89,29 @@
  .sceneFooter{font-size:12px;padding-bottom:0;max-width:none;width:100%;flex-shrink:0;letter-spacing:.08em;justify-content:flex-start}.sceneFooter a{display:none}.sceneFooter span{display:block;white-space:nowrap}
  .motionControl{top:151px;bottom:auto;left:24px;right:auto;width:44px;min-height:44px;justify-content:center;border:1px solid #c6ceb94a;border-radius:50%;background:#0a271d66}.motionControl input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}.motionText{display:none}.motionGlyph{display:block;font-size:16px;line-height:1}.motionControl:has(input:focus-visible){outline:2px solid #e6c98d;outline-offset:4px}
  .system{margin-top:0}
- .threshold{background:linear-gradient(180deg,#081e17,#071b15 45%,#06110e)}
- .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:64px 24px 200px}
+ .threshold{background:linear-gradient(180deg,#081e17 0%,#071b15 38%,rgba(6,17,14,.55) 68%,transparent 100%)}
+ .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:64px 24px 240px}
  .contextCopy{max-width:480px;align-self:flex-start}
  .contextCopy h2{font-size:clamp(43px,11vw,53px);line-height:1.06;margin:15px 0 16px;max-width:310px}
  .contextBody{font-size:14px;line-height:1.75;max-width:350px}
  .thresholdAction{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:13px;color:#efdaa7;margin-top:12px;border-bottom:1px solid #b5c5a25e}
  .contextStage{height:310px;width:calc(100% + 48px);margin:14px -24px 0}
- .forestImage{top:auto!important;bottom:0!important;height:520px!important;object-fit:cover;object-position:73% center;-webkit-mask-image:linear-gradient(transparent,#000 14%,#000 48%,transparent 88%);mask-image:linear-gradient(transparent,#000 14%,#000 48%,transparent 88%)}
- .forestShade{background:linear-gradient(180deg,#081e17 0%,#081e17 36%,transparent 58%,transparent)}
- .thresholdMist{height:240px}
+ .forestImage{top:auto!important;bottom:0!important;height:560px!important;object-fit:cover;object-position:73% 62%;-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 38%,rgba(0,0,0,.7) 62%,rgba(0,0,0,.28) 80%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 38%,rgba(0,0,0,.7) 62%,rgba(0,0,0,.28) 80%,transparent)}
+ .forestShade{background:linear-gradient(180deg,#081e17 0%,#081e17 36%,transparent 58%,transparent);mask-image:linear-gradient(180deg,#000 0 42%,transparent 88%)}
+ .thresholdMist{height:260px}
  .moraIntroduction{padding:78px 24px 58px;grid-template-columns:1fr;gap:30px}
  .moraIntroduction h3{font-size:clamp(57px,14vw,72px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:44px 24px 66px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:39px}
- .return{margin-top:-220px;min-height:0}
- .returnInner{padding:300px 24px 64px}
+ .return{margin-top:-240px}
+ .returnInner{padding:268px 24px 56px}
  .returnInner h2{font-size:clamp(34px,10vw,48px);max-width:12ch}
  .returnLead{font-size:14px;line-height:1.75;max-width:390px}
  .returnName a{font-size:26px}
- .returnMist{height:220px}
+ .returnMist{height:240px}
+ .returnDisk{-webkit-mask-image:radial-gradient(ellipse 190% 88% at 50% -8%,#000 0 48%,rgba(0,0,0,.75) 56%,transparent 70%);mask-image:radial-gradient(ellipse 190% 88% at 50% -8%,#000 0 48%,rgba(0,0,0,.75) 56%,transparent 70%)}
+ .returnLimb{background:radial-gradient(ellipse 190% 88% at 50% -8%,transparent 50%,rgba(232,196,120,.4) 58%,rgba(255,226,170,.12) 64%,transparent 72%)}
+ .returnShade{background:radial-gradient(ellipse 190% 88% at 50% -8%,rgba(3,8,14,.48) 0%,transparent 66%),linear-gradient(180deg,transparent 52%,#050706 74%)}
 }
 @media(max-width:360px){.heroInner{padding-inline:20px}.heroGrid{padding-top:105px}.heroCopy h1{font-size:78px}.eyebrow{letter-spacing:.1em}.sceneFooter{letter-spacing:.06em}.thesis{font-size:27px}}
 @media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}
