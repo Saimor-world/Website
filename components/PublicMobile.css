@@ -8,7 +8,7 @@
  [data-public-site] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),select,textarea){font-size:16px;min-width:0;max-width:100%}
  [data-public-site] :is(button,summary){touch-action:manipulation}
  [data-public-site] :is(button,a,summary,input,textarea,select):focus-visible{outline:2px solid #cfb46c;outline-offset:4px}
- html:has([data-home-globe]) [data-public-footer]{margin-top:-24vh;padding-top:56px;padding-bottom:96px;border-top-color:transparent;background:linear-gradient(180deg,transparent 0%,#050706 72px)}
+ html:has([data-home-globe]) [data-public-footer]{position:relative;z-index:6;margin-top:-20vh;padding-top:40px;padding-bottom:96px;border-top-color:transparent;background:linear-gradient(180deg,transparent 0%,#050706 48px)}
  [data-public-footer]{padding-bottom:96px}
  [data-public-footer] [data-footer-grid]{gap:12px}
  [data-public-footer] [data-footer-brand]{margin-bottom:14px}

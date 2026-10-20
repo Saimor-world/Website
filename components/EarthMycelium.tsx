@@ -213,8 +213,8 @@ function buildPhoneStrands(): Strand[] {
   }));
 
   origins.forEach((origin, index) => {
-    const heading = Math.atan2(PHONE_MORA.y - origin.y, PHONE_MORA.x - origin.x) + (rng() - 0.5) * 0.28;
-    const trunk = grow(rng, origin, heading, 30, 16, 0.28, PHONE_MORA, true, false);
+    const heading = Math.atan2(PHONE_MORA.y - origin.y, PHONE_MORA.x - origin.x) + (rng() - 0.5) * 0.42;
+    const trunk = grow(rng, origin, heading, 28, 17, 0.48, PHONE_MORA, true, false);
     if (trunk.points.length) trunk.points[trunk.points.length - 1] = { ...PHONE_MORA };
     const width = mix(1.55, 2.15, 1 - Math.abs(origin.x - PHONE_MORA.x) / 640);
     const d = pathThrough(trunk.points);
@@ -228,10 +228,10 @@ function buildPhoneStrands(): Strand[] {
       const fork = grow(
         rng,
         node,
-        trunk.heading + (index % 2 === 0 ? 0.62 : -0.62),
-        12,
-        14,
-        0.34,
+        trunk.heading + (index % 2 === 0 ? 0.78 : -0.78),
+        11,
+        15,
+        0.5,
         PHONE_MORA,
         true,
         false,
@@ -279,7 +279,7 @@ export default function EarthMycelium() {
       if (document.querySelector('input[name="world-motion"]:checked')) return;
       const rect = field.getBoundingClientRect();
       const phone = window.matchMedia?.('(max-width: 700px)')?.matches;
-      const hub = rect.top + rect.height * (phone ? 0.52 : 0.25);
+      const hub = rect.top + rect.height * (phone ? 0.61 : 0.25);
       const drift = Math.max(-9, Math.min(9, (window.innerHeight * 0.48 - hub) * 0.05));
       orb.style.setProperty('--mora-drift', `${drift.toFixed(2)}px`);
     };

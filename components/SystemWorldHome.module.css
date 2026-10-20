@@ -97,10 +97,10 @@
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:40px 22px 96px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:36px}
  .return{margin-top:-180px;height:100svh;max-height:100svh;padding-bottom:0;min-height:100svh;background:linear-gradient(180deg,#06110e 0%,#06110e 62%,#050706 100%)}
- .returnInner{top:72%;bottom:auto;padding:0 22px;min-height:0;transform:translateY(-50%)}
+ .returnInner{top:78%;bottom:auto;padding:0 22px;min-height:0;transform:translateY(-50%)}
  .returnMist{height:100px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
- .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.28) 0%,transparent 22%,transparent 48%,rgba(6,17,14,.2) 64%,#050706 100%)}
- .returnImage{object-position:50% 78%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
+ .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.22) 0%,transparent 20%,transparent 52%,rgba(6,17,14,.16) 70%,#050706 100%)}
+ .returnImage{object-position:50% 70%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
 }
 @media(max-width:360px){.heroInner{padding-inline:18px}.heroGrid{padding-top:8px}.heroCopy h1{font-size:64px}.eyebrow{letter-spacing:.1em}.sceneFooter{letter-spacing:.06em}.thesis{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}
