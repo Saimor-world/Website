@@ -95,8 +95,8 @@
  .moraIntroduction h3{font-size:clamp(52px,13vw,68px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:40px 22px 60px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:36px}
- .return{margin-top:-200px;height:auto;padding-bottom:56px;min-height:78svh;background:#06110e}
- .returnInner{top:auto;bottom:28px;padding:0 22px;min-height:0;transform:none}
+ .return{margin-top:-200px;height:auto;padding-bottom:40px;min-height:62svh;background:#06110e}
+ .returnInner{top:58%;bottom:auto;padding:0 22px;min-height:0;transform:translateY(-50%)}
  .returnMist{height:120px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
  .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.32) 0%,transparent 24%,transparent 52%,rgba(6,17,14,.28) 78%,rgba(6,17,14,.55) 100%)}
  .returnImage{object-position:50% 70%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
