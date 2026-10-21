@@ -88,8 +88,8 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(page.getByRole('button', { name: /SAIMÔR Earth/ })).toHaveCount(0);
     const horizon = page.getByTestId('earth-horizon');
     await horizon.scrollIntoViewIfNeeded();
-    await expect(horizon.getByText('powered by')).toBeVisible();
-    await expect(horizon.getByRole('link', { name: 'Earth', exact: true })).toHaveAttribute('href', german ? '/earth' : '/en/earth');
+    await expect(horizon.getByText('powered by')).toHaveCount(0);
+    await expect(horizon.getByRole('button', { name: german ? 'Ein anderer Weg: zu YORI' : 'Another path: to YORI' })).toBeVisible();
     await expect(horizon.getByRole('heading')).toHaveCount(0);
     await expect(horizon.getByTestId('earth-mycelium')).toBeAttached();
     await expect(horizon.getByRole('img', { name: 'MÔRA' })).toBeAttached();
@@ -391,25 +391,14 @@ test('mobile priorities: first scroll, optional fields and direct contact stay u
 
 test('product states, workshop details and YORI example rooms respond', async ({ page }, info) => {
   await visit(page, '/mora'); await consent(page);
-  await expect(page.locator('[data-mora-character]').first().locator('[data-face-state="rest"] svg ellipse').first()).toBeVisible();
+  // MÔRA appears exactly once on /mora: the hero stone. No companion, no further figures.
+  await expect(page.locator('[data-mora-presence]')).toHaveCount(1);
+  await expect(page.locator('[data-mora-character]')).toHaveCount(0);
+  await expect(page.getByTestId('mora-companion')).toHaveCount(0);
   await page.getByRole('button', { name: 'Termine', exact: true }).click();
   await expect(page.getByTestId('mora-context-preview')).toContainText('Mit Kontext in den Termin.');
-  const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
-  // Little MÔRA flies on purpose; she is never "stable" mid-flight, so tap her where she is.
-  const companionDialog = page.getByRole('dialog', { name: 'MÔRA an deiner Seite' });
-  // Dispatch the click on the element itself so her flight path cannot make the pointer miss.
-  await companion.dispatchEvent('click');
-  await expect(companionDialog).toBeVisible({ timeout: 15000 });
-  await page.keyboard.press('Escape');
-  await expect(companion).toBeFocused();
   await page.getByRole('button', { name: 'Bewegung pausieren', exact: true }).click();
-  await expect(page.getByTestId('mora-companion')).toHaveAttribute('data-paused', 'true');
-  await page.getByRole('button', { name: 'Bewegung fortsetzen', exact: true }).click();
-  for (const name of ['Ruht', 'Träumt', 'Spricht']) {
-    const state = page.getByRole('button', { name, exact: true });
-    await state.click();
-    await expect(state).toHaveAttribute('aria-pressed', 'true');
-  }
+  await expect(page.getByTestId('mora-product')).toHaveAttribute('data-paused', 'true');
   await visit(page, '/studio');
   await page.locator('#workshops summary').click();
   await expect(page.locator('#workshops details')).toHaveAttribute('open', '');

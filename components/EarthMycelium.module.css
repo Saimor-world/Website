@@ -53,3 +53,9 @@
  .moraGlow{animation:none;opacity:.42}
  .spores{display:none}
 }
+
+/* Roots grow from the Earth edge (strokes use pathLength=1). */
+.field[data-grow="armed"] .strand,.field[data-grow="armed"] .glow,.field[data-grow="armed"] .phoneGlow{stroke-dasharray:1 1;stroke-dashoffset:1}
+.field[data-grow="armed"] .pulse,.field[data-grow="armed"] .phonePulse{opacity:0}
+.field[data-grow="on"] .strand,.field[data-grow="on"] .glow,.field[data-grow="on"] .phoneGlow{stroke-dasharray:1 1;stroke-dashoffset:0;transition:stroke-dashoffset 3.4s cubic-bezier(.3,.6,.2,1) var(--grow-delay,0s)}
+.field[data-grow="on"] .pulse,.field[data-grow="on"] .phonePulse{opacity:1;transition:opacity 1.2s ease 4s}

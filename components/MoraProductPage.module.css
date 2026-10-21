@@ -30,7 +30,7 @@
 .characterLine{font-size:13px;line-height:1.7;letter-spacing:.02em;color:#d0e4c9;margin:4px 0 20px}
 .contextReadout{max-width:430px;min-height:150px;text-align:left;margin:auto;border-top:1px solid #b3c39766;padding:20px 0 0}
 .contextReadout>span{font:600 12px/1.7 "JetBrains Mono",monospace;letter-spacing:.12em;color:#dcddb4}
-.contextReadout h2{font:400 25px/1.2 "Cormorant Garamond",Georgia,serif;color:#fff1d6;margin:9px 0}
+.contextReadout h2,.contextReadout h3{font:400 25px/1.2 "Cormorant Garamond",Georgia,serif;color:#fff1d6;margin:9px 0}
 .contextReadout p{color:#cfdfcc;font-size:13px;line-height:1.75;max-width:390px;margin:0}
 .page[data-paused="true"] *,.page[data-paused="true"] *::before,.page[data-paused="true"] *::after{animation-play-state:paused!important}
 .personaCharacter{width:280px!important;height:280px!important}
@@ -61,3 +61,8 @@
 @media(max-width:360px){.hero{padding-inline:20px}.intro h1{font-size:57px}.actions{flex-direction:column;align-items:stretch}.contextNode{font-size:12px;padding:9px 11px}.contextMap{height:240px}.heroCharacter{width:190px!important;height:190px!important}.primary,.secondary{min-height:44px}.actions{gap:8px}.characterLine{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.page *,.page *::before,.page *::after{animation:none!important;scroll-behavior:auto!important}}
 
+.contextBlock{position:relative;text-align:center;min-width:0}
+.contextBlock .contextReadout{margin-top:18px;text-align:left}
+.contextBlock .motion{margin:14px auto 0}
+@media(max-width:700px){.contextBlock .contextMap{height:280px}.contextBlock .heroCharacter{width:200px!important;height:200px!important}}
+.core{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff3cf 0%,#e6c98d 45%,transparent 72%);box-shadow:0 0 36px 10px rgba(230,201,141,.18)}

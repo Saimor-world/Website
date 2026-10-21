@@ -17,9 +17,8 @@ export const metadata: Metadata = {
 
 export default function MoraPage() {
   return (
-    <>
-      <MoraLandingPage locale="en" />
-      <MoraProductPage locale="en" embedded />
-    </>
+    <MoraLandingPage locale="en">
+      <MoraProductPage locale="en" />
+    </MoraLandingPage>
   );
 }
