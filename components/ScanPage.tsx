@@ -276,7 +276,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
       setStep(3);
     } catch (err: any) {
       clearInterval(timer);
-      setError(t(err.message) || 'Scan fehlgeschlagen. Bitte versuche es erneut.');
+      setError(t(err.message) || t('Scan fehlgeschlagen. Bitte versuche es erneut.'));
       setStep(3);
     }
   };
@@ -348,7 +348,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 ? t("Wir prüfen den Link und veröffentlichen erst danach.")
                 : wallVerifyState === 'pinned'
                   ? t("Die Wall wurde erst nach bestätigter E-Mail und Zustimmung beschrieben.")
-                  : wallVerifyError || 'Der Link ist abgelaufen oder ungültig.'}
+                  : wallVerifyError || t('Der Link ist abgelaufen oder ungültig.')}
             </p>
             {wallVerifyState === 'pinned' ? (
               <Link href="/wall" className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-xs text-white/75 hover:bg-white/[0.1]">{t("Supporter Universe ansehen")}<ExternalLink size={14} />
@@ -782,7 +782,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
             />
 
             <footer className="pt-8 pb-16 flex flex-col sm:flex-row gap-4 justify-center print:hidden border-t border-white/5">
-              <Link href="/de/kontakt" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">{t("Experten-Gespräch vereinbaren")}</Link>
+              <Link href={locale === 'de' ? '/de/kontakt' : '/en/contact'} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-all">{t("Experten-Gespräch vereinbaren")}</Link>
               <button onClick={() => window.print()} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-8 py-4 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_20px_rgba(52,211,153,0.3)]">
                 <Download size={16} />{t("PDF sichern")}</button>
             </footer>
