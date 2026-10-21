@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import styles from './EarthMycelium.module.css';
 
 type Point = { x: number; y: number };
@@ -379,7 +379,7 @@ const SPORES = Array.from({ length: 22 }, (_, index) => {
   };
 });
 
-export default function EarthMycelium() {
+export default function EarthMycelium({ children }: { children?: ReactNode } = {}) {
   const orbRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
 
@@ -546,6 +546,7 @@ export default function EarthMycelium() {
           <img className={styles.moraStone} src="/brand/mora-stone-v1.png" alt="" width={58} height={58} />
           <span className={styles.moraSheen} aria-hidden="true" />
         </div>
+        {children}
       </div>
     </div>
   );

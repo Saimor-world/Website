@@ -123,14 +123,13 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
         <div className={styles.returnMist} aria-hidden="true" />
         <div className={styles.returnShade} aria-hidden="true" />
-        <EarthMycelium />
+        <EarthMycelium><YoriPath locale={locale} /></EarthMycelium>
         <div className={styles.returnInner}>
           <p className={styles.returnCredit}>
             {c.earthCredit}{' '}
             <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
           </p>
         </div>
-        <YoriPath locale={locale} />
       </section>
 
       <section className={styles.blickWorld} aria-label={locale === 'de' ? 'Môras Blick' : "MÔRA's view"}>
