@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, Eye, EyeOff, Shield, X } from 'lucide-react';
+import styles from './CookieBanner.module.css';
 
 const COPY = {
   de: {
@@ -95,11 +96,17 @@ export default function CookieBanner() {
       return;
     }
 
+    root.classList.add(styles.clearance);
+    document.body.classList.add(styles.clearance);
+
     const publish = () => {
       const node = asideRef.current;
       if (!node) return;
-      // bottom-3 / sm:bottom-5 plus etwas Luft, damit der Inhalt nicht klebt
-      root.style.setProperty('--consent-banner-height', `${Math.round(node.offsetHeight) + 32}px`);
+      const style = getComputedStyle(node);
+      const bottom = parseFloat(style.bottom) || 0;
+      const safeArea = parseFloat(style.marginBottom) || 0;
+      const height = Math.max(node.offsetHeight, node.getBoundingClientRect().height);
+      root.style.setProperty('--consent-banner-height', `${Math.ceil(height + bottom + safeArea + 16)}px`);
     };
 
     publish();
@@ -110,6 +117,8 @@ export default function CookieBanner() {
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', publish);
+      root.classList.remove(styles.clearance);
+      document.body.classList.remove(styles.clearance);
       root.style.setProperty('--consent-banner-height', '0px');
     };
   }, [isVisible, showDetails, isEncounter]);
@@ -130,7 +139,7 @@ export default function CookieBanner() {
           exit={{ y: 20, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           aria-label={copy.title}
-          className="fixed bottom-3 left-3 right-3 z-[10000] sm:bottom-4 sm:left-4 sm:right-auto"
+          className={`${styles.banner} fixed bottom-3 left-3 right-3 z-[10000] sm:bottom-4 sm:left-4 sm:right-auto`}
         >
           <div className="max-w-[calc(100vw-24px)] overflow-hidden rounded-2xl border border-[#d8c69c]/20 bg-[#0b291e]/95 shadow-[0_8px_32px_rgba(2,18,10,.35)] backdrop-blur-xl sm:max-w-none">
             <div className="h-px bg-gradient-to-r from-[#d6a848]/60 via-[#7fd4c1]/40 to-transparent" />

@@ -1,4 +1,5 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { forwardRef } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import CookieBanner from '@/components/CookieBanner';
 
@@ -7,7 +8,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => route.path }));
 vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   motion: {
-    aside: ({ children, initial: _initial, animate: _animate, exit: _exit, transition: _transition, ...props }: any) => <aside {...props}>{children}</aside>,
+    aside: forwardRef<HTMLElement, any>(function MotionAside({ children, initial: _initial, animate: _animate, exit: _exit, transition: _transition, ...props }, ref) { return <aside ref={ref} {...props}>{children}</aside>; }),
     span: ({ children, animate: _animate, transition: _transition, ...props }: any) => <span {...props}>{children}</span>,
     div: ({ children, initial: _initial, animate: _animate, exit: _exit, transition: _transition, ...props }: any) => <div {...props}>{children}</div>,
   },
@@ -48,6 +49,15 @@ describe('CookieBanner — genuine consent choices', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Nur essenziell' }));
     expect(localStorage.getItem('cookie_consent')).toBe('essential');
     expect(localStorage.getItem('analytics_enabled')).toBe('false');
+  });
+
+  it('reserves scroll clearance while visible and removes it after a choice', () => {
+    const height = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(180);
+    showBanner();
+    expect(parseFloat(document.documentElement.style.getPropertyValue('--consent-banner-height'))).toBeGreaterThanOrEqual(196);
+    fireEvent.click(screen.getByRole('button', { name: 'Nur essenziell' }));
+    expect(document.documentElement.style.getPropertyValue('--consent-banner-height')).toBe('0px');
+    height.mockRestore();
   });
 
   it('keeps granular analytics opt-in behind an explicit settings action', () => {
