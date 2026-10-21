@@ -98,7 +98,7 @@ export default function Footer({ locale }: { locale: Locale }) {
           <ResponsiveDetails title={c.system}>
             <div className="mt-4 grid gap-3 text-sm text-white/65">
               <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</Link>
-              <Link className="transition hover:text-white/82" href={moraHref}>Môra</Link>
+              <Link className="transition hover:text-white/82" href={moraHref}>MÔRA</Link>
               <Link className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</Link>
               <Link className="transition hover:text-white/82" href={securityHref}>{c.entry}</Link>
               <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
