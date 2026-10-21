@@ -419,6 +419,16 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
   const orbRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const [grow, setGrow] = useState<'idle' | 'armed' | 'on'>('idle');
+  const [active, setActive] = useState(true);
+
+  // Pause every loop (sap pulses, spores, MÔRA breathing) while the underside is offscreen.
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), { rootMargin: '120px 0px' });
+    observer.observe(field);
+    return () => observer.disconnect();
+  }, []);
 
   // The roots grow out of the Earth edge the first time the underside comes into view.
   useEffect(() => {
@@ -447,10 +457,12 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
       if (!orb || !field) return;
       if (document.querySelector('input[name="world-motion"]:checked')) return;
       const rect = field.getBoundingClientRect();
+      if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
       const phone = window.matchMedia?.('(max-width: 700px)')?.matches;
       const hub = rect.top + rect.height * (phone ? 0.61 : 0.25);
       const drift = Math.max(-9, Math.min(9, (window.innerHeight * 0.48 - hub) * 0.05));
-      orb.style.setProperty('--mora-drift', `${drift.toFixed(2)}px`);
+      // Individual `translate` composes with the keyframed transform, so the bob stays on the compositor.
+      orb.style.translate = `0 ${drift.toFixed(1)}px`;
     };
     const onScroll = () => {
       if (frame) return;
@@ -467,7 +479,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
   }, []);
 
   return (
-    <div className={styles.field} data-testid="earth-mycelium" data-grow={grow} ref={fieldRef}>
+    <div className={styles.field} data-testid="earth-mycelium" data-grow={grow} data-active={active ? 'on' : 'off'} ref={fieldRef}>
       <div className={styles.canvas}>
         <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
           <defs>
@@ -504,6 +516,16 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 style={growDelay(index, STRANDS.length)}
               />
             ))}
+          </g>
+        </svg>
+
+        <svg className={`${styles.network} ${styles.pulseLayer}`} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <mask id="earthHyphaMaskPulse">
+              <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
+            </mask>
+          </defs>
+          <g mask="url(#earthHyphaMaskPulse)" fill="none" strokeLinecap="round" strokeLinejoin="round">
             {STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
               <path
                 key={`p-${index}`}
@@ -569,6 +591,16 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 style={growDelay(index, PHONE_STRANDS.length)}
               />
             ))}
+          </g>
+        </svg>
+
+        <svg className={`${styles.phoneNetwork} ${styles.pulseLayer}`} viewBox={`0 0 ${VIEW_W} ${PHONE_H}`} preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <mask id="earthPhoneMaskPulse">
+              <rect width={VIEW_W} height={PHONE_H} fill="url(#earthPhoneFade)" />
+            </mask>
+          </defs>
+          <g mask="url(#earthPhoneMaskPulse)" fill="none" strokeLinecap="round" strokeLinejoin="round">
             {PHONE_STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
               <path
                 key={`pp-${index}`}

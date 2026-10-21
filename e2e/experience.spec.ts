@@ -89,7 +89,7 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     const horizon = page.getByTestId('earth-horizon');
     await horizon.scrollIntoViewIfNeeded();
     await expect(horizon.getByText('powered by')).toHaveCount(0);
-    await expect(horizon.getByRole('button', { name: german ? 'Ein anderer Weg: zu YORI' : 'Another path: to YORI' })).toBeVisible();
+    await expect(horizon.getByRole('link', { name: german ? 'Ein anderer Weg: YORI' : 'Another path: YORI' })).toBeAttached();
     await expect(horizon.getByRole('heading')).toHaveCount(0);
     await expect(horizon.getByTestId('earth-mycelium')).toBeAttached();
     await expect(horizon.getByRole('img', { name: 'MÔRA' })).toBeAttached();
