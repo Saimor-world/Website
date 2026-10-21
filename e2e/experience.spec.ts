@@ -1,5 +1,11 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+// The QA browser renders in software (SwiftShader), which would switch on the automatic lite mode.
+// The journeys below check the full experience, so lite is opted out here (see lib/lite-mode-script.ts).
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { try { localStorage.setItem('saimor-lite', 'off'); } catch {} });
+});
+
 const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/earth', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
 async function visit(page: Page, route: string) {
   const response = await page.goto(route);

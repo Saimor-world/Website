@@ -317,7 +317,6 @@ html.lite [class*="blur"],
 html.lite [class*="Blur"] {
   filter: none !important;
 }
-html.lite canvas,
 html.lite [class*="particle"],
 html.lite [class*="Particle"],
 html.lite [class*="spores"],
