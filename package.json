@@ -16,7 +16,7 @@
     "start": "next start",
     "clean:next": "node -e \"try{require('fs').rmSync('.next',{recursive:true,force:true})}catch(e){}\"",
     "kill:3001": "node scripts/kill-port.js 3001",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run --config ./vitest.config.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -57,6 +57,7 @@
     "resend": "^6.12.2"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
     "@playwright/test": "^1.64.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
