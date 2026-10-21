@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import YoriGate from '@/components/YoriGate';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
 const PAGE_TITLE = 'Saimôr – Klarheit im Wandel';
@@ -29,7 +28,6 @@ export default function Page() {
   return (
     <>
       <LivingForestWorld locale="de" />
-      <YoriGate locale="de" />
     </>
   );
 }
