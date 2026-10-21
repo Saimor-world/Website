@@ -18,7 +18,7 @@ export const demoPreviewCopy: Record<
 > = {
   de: {
     title: "Demo",
-    hint: "Sieh dir Môra direkt an – mit Beispieldaten.",
+    hint: "Sieh dir MÔRA direkt an – mit Beispieldaten.",
     badge: "Demo",
     pulse: "Home Pulse",
     field: "Feld - Myzel",

@@ -18,7 +18,7 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">2. Leistungsbeschreibung</h2>
           <p className="mb-6 text-slate-700">
             SAIMÔR stellt ein semantisches Betriebssystem sowie zugehörige Dienste (u. a. Security-Check,
-            Arbeitsbereich/OS, Môra) bereit. Der Funktionsumfang befindet sich in aktiver Entwicklung
+            Arbeitsbereich/OS, MÔRA) bereit. Der Funktionsumfang befindet sich in aktiver Entwicklung
             (Early Access) und kann sich weiterentwickeln. Eine bestimmte Beschaffenheit oder ununterbrochene
             Verfügbarkeit wird nur zugesichert, soweit dies ausdrücklich vereinbart ist.
           </p>

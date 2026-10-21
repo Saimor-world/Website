@@ -22,7 +22,7 @@ describe('WaitlistForm brand alignment', () => {
   it('marks a selected interest chip with the gold token, not green', () => {
     render(<WaitlistForm locale="de" />);
 
-    const chip = screen.getByText('Môra Semantic AI').closest('button');
+    const chip = screen.getByText('MÔRA Semantic AI').closest('button');
     if (chip) fireEvent.click(chip);
 
     expect(chip?.className ?? '').toMatch(/world-gold/);

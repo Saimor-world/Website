@@ -5,7 +5,7 @@
  * Adapted from SAIMÔR Universe OS for Website
  * 
  * Features:
- * - 6 Planets in 150° arc above Môra Orb
+ * - 6 Planets in 150° arc above MÔRA Orb
  * - Hover effects with planet details
  * - Click navigation to metric details
  * - Smooth orbital animations

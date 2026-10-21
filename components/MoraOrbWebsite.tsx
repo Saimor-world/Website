@@ -182,7 +182,7 @@ export function MoraOrbWebsite({
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)'
         }}
       >
-        <p className="text-sm font-medium text-white">Môra Intelligence</p>
+        <p className="text-sm font-medium text-white">MÔRA Intelligence</p>
         <p className="text-xs text-white/60">Click for Dashboard</p>
       </motion.div>
     </motion.div>

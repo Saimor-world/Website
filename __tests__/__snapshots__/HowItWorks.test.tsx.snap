@@ -24,7 +24,7 @@ exports[`HowItWorks > renders German steps and snapshot 1`] = `
         class="text-3xl sm:text-4xl font-semibold"
         style="font-family: "Cormorant Garamond", serif;"
       >
-        So arbeitet Môra
+        So arbeitet MÔRA
       </h2>
       <p
         class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"

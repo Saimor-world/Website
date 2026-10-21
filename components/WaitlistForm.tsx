@@ -45,7 +45,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
       emailPlaceholder: 'geschaeftlich@email.de',
       interestTitle: 'Interessensgebiete (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra Semantic AI', emoji: '✨' },
+        { id: 'mora-ai', label: 'MÔRA Semantic AI', emoji: '✨' },
         { id: 'dashboards', label: 'Analytics & Dashboards', emoji: '📊' },
         { id: 'workshops', label: 'Corporate Transformation', emoji: '🎤' },
         { id: 'orbit', label: 'Systems Coaching', emoji: '🌍' }
@@ -67,7 +67,7 @@ export default function WaitlistForm({ locale }: WaitlistFormProps) {
       emailPlaceholder: 'business@email.com',
       interestTitle: 'Areas of Interest (optional)',
       interests: [
-        { id: 'mora-ai', label: 'Môra Semantic AI', emoji: '✨' },
+        { id: 'mora-ai', label: 'MÔRA Semantic AI', emoji: '✨' },
         { id: 'dashboards', label: 'Analytics & Dashboards', emoji: '📊' },
         { id: 'workshops', label: 'Corporate Transformation', emoji: '🎤' },
         { id: 'orbit', label: 'Systems Coaching', emoji: '🌍' }

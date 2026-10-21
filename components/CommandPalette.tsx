@@ -61,9 +61,9 @@ export default function CommandPalette() {
     },
     {
       id: 'mora',
-      title: 'Môra Dashboard',
-      description: 'Môra kennenlernen und ausprobieren',
-      descriptionEN: 'Discover and try Môra',
+      title: 'MÔRA Dashboard',
+      description: 'MÔRA kennenlernen und ausprobieren',
+      descriptionEN: 'Discover and try MÔRA',
       icon: <Sparkles className="w-4 h-4" />,
       action: () => {
         window.location.href = locale === 'de' ? '/mora' : '/en/mora';

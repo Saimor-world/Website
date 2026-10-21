@@ -10,7 +10,7 @@ const COPY = {
     body: 'Saimôr ist ein unabhängiges Produktstudio für souveräne KI-Systeme, digitale Arbeitsräume und ausgewählte Webprojekte. Wir verbinden Produktentwicklung mit praktischer Vermittlung und arbeiten an Systemen, die nachvollziehbar und im Alltag tatsächlich nutzbar sind.',
     studio: 'Neben der Produktarbeit bieten wir Vorträge, Workshops und Schulungen zu praktischer KI an – verständlich, konkret und ohne Buzzword-Show.',
     cta: 'Unverbindlich sprechen',
-    labels: ['Saimôr OS & Môra', 'Vorträge & Schulungen', 'Webprojekte & Prototypen'],
+    labels: ['Saimôr OS & MÔRA', 'Vorträge & Schulungen', 'Webprojekte & Prototypen'],
   },
   en: {
     eyebrow: 'SAIMÔR · PRODUCT STUDIO',
@@ -18,7 +18,7 @@ const COPY = {
     body: 'Saimôr is an independent product studio for sovereign AI systems, digital workspaces and selected web projects. We combine hands-on product development with practical communication and build systems that are traceable and genuinely useful in everyday work.',
     studio: 'Alongside product work, we offer talks, workshops and practical AI training – clear, concrete and without buzzword theatre.',
     cta: 'Start a conversation',
-    labels: ['Saimôr OS & Môra', 'Talks & training', 'Web projects & prototypes'],
+    labels: ['Saimôr OS & MÔRA', 'Talks & training', 'Web projects & prototypes'],
   },
 } as const;
 

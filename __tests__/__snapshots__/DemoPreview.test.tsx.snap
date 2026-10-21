@@ -564,7 +564,7 @@ exports[`DemoPreview > shows German demo hint and badge 1`] = `
         <p
           class="text-base sm:text-lg text-white/80 leading-relaxed"
         >
-          Sieh dir Môra direkt an – mit Beispieldaten.
+          Sieh dir MÔRA direkt an – mit Beispieldaten.
         </p>
       </div>
       <div

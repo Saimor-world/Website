@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       score: 68,
       level: 'mittel',
       summary: 'Öffentliche Demo — erkunde Saimôr OS ohne Account.',
-      actions: ['OS erkunden', 'Dokumente ansehen', 'Mit Môra sprechen'],
+      actions: ['OS erkunden', 'Dokumente ansehen', 'Mit MÔRA sprechen'],
     });
 
     const osBase = process.env.NEXT_PUBLIC_OS_HOME_URL || 'https://hq.saimor.world';

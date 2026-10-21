@@ -16,7 +16,7 @@ const content: Record<Locale, {
 }> = {
   de: {
     eyebrow: 'Demo-Datenfluss',
-    title: 'Wie Môra aktuell versorgt wird',
+    title: 'Wie MÔRA aktuell versorgt wird',
     intro: 'Alles läuft mit simulierten Unternehmensdaten innerhalb der Saimôr-Umgebung. Keine externen Clouds, keine Produktivsysteme – aber der komplette Stack wird bereits wie später live getestet.',
     steps: [
       {
@@ -30,12 +30,12 @@ const content: Record<Locale, {
         accent: 'gold'
       },
       {
-        label: 'Core API / Môra OS',
+        label: 'Core API / MÔRA OS',
         description: 'API-Endpunkte laufen mit Auth, Logging und Audit-Hooks – nur gefüttert aus dem Adapter.',
         accent: 'green'
       },
       {
-        label: 'Môra UI Widgets',
+        label: 'MÔRA UI Widgets',
         description: 'Dashboard, Chat und Orb greifen ausschließlich auf die Core-API zu (Demo-Modus).',
         accent: 'green'
       },
@@ -49,7 +49,7 @@ const content: Record<Locale, {
   },
   en: {
     eyebrow: 'Demo Data Flow',
-    title: 'How Môra is powered today',
+    title: 'How MÔRA is powered today',
     intro: 'Everything runs with simulated company data inside the Saimôr environment. No external clouds, no production backends – yet the full stack behaves exactly like the live setup.',
     steps: [
       {
@@ -63,12 +63,12 @@ const content: Record<Locale, {
         accent: 'gold'
       },
       {
-        label: 'Core API / Môra OS',
+        label: 'Core API / MÔRA OS',
         description: 'API endpoints run with auth, logging and audit hooks – only the inputs are simulated.',
         accent: 'green'
       },
       {
-        label: 'Môra UI Widgets',
+        label: 'MÔRA UI Widgets',
         description: 'Dashboard, chat + orb only talk to the Core API (demo mode).',
         accent: 'green'
       },

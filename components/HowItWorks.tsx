@@ -46,13 +46,13 @@ const steps = {
 const copy = {
   de: {
     kicker: "Drei Schritte",
-    title: "So arbeitet Môra",
+    title: "So arbeitet MÔRA",
     intro: "Signale sammeln, Muster erkennen, Kontext zeigen.",
     badge: "Ruhig · Klar"
   },
   en: {
     kicker: "Three steps",
-    title: "How Môra works",
+    title: "How MÔRA works",
     intro: "Collect signals, spot patterns, show context.",
     badge: "Calm · Clear"
   }

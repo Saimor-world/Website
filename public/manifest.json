@@ -25,9 +25,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Môra Dashboard",
-      "short_name": "Môra",
-      "description": "Zum Môra Dashboard",
+      "name": "MÔRA Dashboard",
+      "short_name": "MÔRA",
+      "description": "Zum MÔRA Dashboard",
       "url": "/mora",
       "icons": [
         {

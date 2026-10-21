@@ -51,7 +51,7 @@ export default function MoraChat() {
       setMessages([{
         id: 'welcome',
         role: 'assistant',
-        content: 'Hallo! Ich bin Môra, deine KI-Begleiterin für Klarheit im Wandel. Wie kann ich dir heute helfen?',
+        content: 'Hallo! Ich bin MÔRA, deine KI-Begleiterin für Klarheit im Wandel. Wie kann ich dir heute helfen?',
         timestamp: Date.now()
       }]);
       setSuggestions([
@@ -97,7 +97,7 @@ export default function MoraChat() {
 
       if (!response.ok) {
         const errorPayload = await response.json().catch(() => ({}));
-        throw new Error(errorPayload?.error || 'Môra ist gerade nicht erreichbar');
+        throw new Error(errorPayload?.error || 'MÔRA ist gerade nicht erreichbar');
       }
 
       const data = await response.json();
@@ -178,7 +178,7 @@ export default function MoraChat() {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  Môra
+                  MÔRA
                 </h3>
                 <p className="text-xs text-white/80">
                   KI-Begleiterin für Klarheit
