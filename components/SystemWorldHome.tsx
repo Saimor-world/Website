@@ -9,6 +9,7 @@ import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
 import ResponsiveDetails from './ResponsiveDetails';
 import EarthMycelium from './EarthMycelium';
+import YoriPath from './YoriPath';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -122,7 +123,7 @@ export default function SystemWorldHome({ locale }: Props) {
         </div>
         <div className={styles.returnMist} aria-hidden="true" />
         <div className={styles.returnShade} aria-hidden="true" />
-        <EarthMycelium />
+        <EarthMycelium><YoriPath locale={locale} /></EarthMycelium>
         <div className={styles.returnInner}>
           <p className={styles.returnCredit}>
             {c.earthCredit}{' '}
