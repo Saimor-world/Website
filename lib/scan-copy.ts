@@ -20,7 +20,7 @@ export const SCAN_EN: Record<string, string> = {
   "Score basiert auf verfügbaren passiven Recon-Signalen.": "Score based on the passive signals available at the time of the scan.",
   "Nightwatch prüft nur öffentliche Signale. Danach übersetzt Saimôr OS die Befunde in einen isolierten HQ-Workspace.": "Nightwatch checks publicly available signals. The findings can then be explored in an isolated HQ workspace.",
   "Deine MÔRA-Demo ist bereit": "Your MÔRA demo is ready",
-  "MÔRA kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.": "MÔRA knows your website — the scan findings are ready in an isolated demo dossier. No customer account is created.",
+  "MÔRA kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.": "The scan findings are available in an isolated demo dossier. No customer account is created.",
   "✓ Link automatisch an": "✓ Link sent to",
   "gesendet — check dein Postfach.": "— check your inbox.",
   "Link-Versand fehlgeschlagen — nutze den Button unten.": "The email could not be sent. Use the button below.",
