@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type React from 'react';
 import styles from './EarthMycelium.module.css';
+import { isLiteMode } from '@/lib/lite-mode-script';
 
 type Point = { x: number; y: number };
 type Strand = {
@@ -434,7 +435,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
   useEffect(() => {
     const field = fieldRef.current;
     if (!field || typeof IntersectionObserver === 'undefined') return undefined;
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || isLiteMode()) return undefined;
     setGrow('armed');
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
@@ -447,7 +448,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
 
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    if (media?.matches) return undefined;
+    if (media?.matches || isLiteMode()) return undefined;
     const scroller = document.scrollingElement || document.body;
     let frame = 0;
     const update = () => {
@@ -455,6 +456,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
       const orb = orbRef.current;
       const field = fieldRef.current;
       if (!orb || !field) return;
+      if (isLiteMode()) return;
       if (document.querySelector('input[name="world-motion"]:checked')) return;
       const rect = field.getBoundingClientRect();
       if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
@@ -636,7 +638,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
         <div className={styles.moraOrb} ref={orbRef} role="img" aria-label="MÔRA">
           <span className={styles.moraHalo} aria-hidden="true" />
           <span className={styles.moraGlow} aria-hidden="true" />
-          <img className={styles.moraStone} src="/brand/mora-stone-v1.png" alt="" width={58} height={58} />
+          <img className={styles.moraStone} src="/brand/mora-stone-200.webp" alt="" width={58} height={58} />
           <span className={styles.moraSheen} aria-hidden="true" />
         </div>
         {children}

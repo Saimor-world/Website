@@ -16,6 +16,7 @@ import CookieBanner from '@/components/CookieBanner';
 import PWARegistration from '@/components/PWARegistration';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SkipLink from '@/components/SkipLink';
+import { LITE_MODE_SCRIPT } from '@/lib/lite-mode-script';
 
 const SYSTEM_TITLE = 'Saimôr – Arbeitsräume, die Kontext behalten';
 const SYSTEM_DESCRIPTION = 'Saimôr verbindet Arbeit, Daten und KI zu einem System, das Kontext behält. MÔRA hält den Zusammenhang; Saimôr OS und YORI machen ihn in unterschiedlichen Arbeitsräumen nutzbar.';
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de" data-saimor="pb-1.2" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
+        <script dangerouslySetInnerHTML={{ __html: LITE_MODE_SCRIPT }} />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#050706" />

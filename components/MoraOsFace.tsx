@@ -68,7 +68,7 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
         <defs>
           <radialGradient id={`halo${id}`}><stop stopColor={`rgb(${jade})`} stopOpacity=".28" /><stop offset=".45" stopColor={`rgb(${jade})`} stopOpacity=".09" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
           <radialGradient id={`eye${id}`} cx="43%" cy="40%" r="60%" fx="35%" fy="28%"><stop stopColor="#f1ffe8" stopOpacity=".93" /><stop offset=".36" stopColor={`rgb(${warm})`} stopOpacity=".88" /><stop offset=".7" stopColor="#8cddb0" stopOpacity=".65" /><stop offset="1" stopColor={`rgb(${jade})`} stopOpacity="0" /></radialGradient>
-          <pattern id={`jade${id}`} patternUnits="userSpaceOnUse" width="100" height="100"><image href="/brand/mora-stone-v1.png" width="100" height="100" /></pattern>
+          <pattern id={`jade${id}`} patternUnits="userSpaceOnUse" width="100" height="100"><image href="/brand/mora-stone-200.webp" width="100" height="100" /></pattern>
           <clipPath id={`j${id}`}><circle cx={C} cy={C} r={R} /></clipPath>
         </defs>
         <g clipPath={`url(#j${id})`}>

@@ -81,7 +81,7 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
       <button ref={buttonRef} className={styles.companion} type="button" onClick={onActivate} disabled={!interactive} aria-hidden={!interactive}
         onPointerEnter={() => { engaged.current.pointer = true; }} onPointerLeave={() => { engaged.current.pointer = false; }}
         onFocus={() => { engaged.current.focus = true; }} onBlur={() => { engaged.current.focus = false; }}>
-        <span className={styles.stone} data-guide-ready={ready}><Image src="/brand/mora-stone-v1.png" alt="" width={44} height={44} unoptimized loading="eager" onLoad={() => setReady(true)} />
+        <span className={styles.stone} data-guide-ready={ready}><Image src="/brand/mora-stone-200.webp" alt="" width={44} height={44} unoptimized loading="eager" onLoad={() => setReady(true)} />
           {ready && <MoraOsFace size={34} state="rest" />}
         </span><span className={styles.caption}>{label}</span>
       </button>
