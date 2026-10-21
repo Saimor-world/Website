@@ -8,9 +8,12 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('framer-motion', () => {
   const strip = ({ initial, animate, exit, transition, whileHover, whileTap, ...rest }: Record<string, unknown>) => rest;
-  const passthrough = (tag: string) =>
-    React.forwardRef<HTMLElement, Record<string, unknown>>(({ children, ...props }, ref) =>
+  const passthrough = (tag: string) => {
+    const Component = React.forwardRef<HTMLElement, Record<string, unknown>>(({ children, ...props }, ref) =>
       React.createElement(tag, { ref, ...strip(props) }, children as React.ReactNode));
+    Component.displayName = `motion.${tag}`;
+    return Component;
+  };
   return {
     motion: { div: passthrough('div'), button: passthrough('button'), span: passthrough('span'), aside: passthrough('aside') },
     AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
