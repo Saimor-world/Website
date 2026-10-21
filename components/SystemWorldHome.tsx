@@ -56,7 +56,7 @@ const COPY = {
     intelligenceMora: 'MÔRA keeps the thread',
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
-    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Good systems start with a good question.', finalText: 'What should become easier? What gets lost today between people and tools? From there, we can shape something concrete.', finalCta: 'Open contact', scroll: 'SCROLL ON',
+    finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Good systems start with a good question.', finalText: 'What should become easier? What gets lost today between people and tools? From there, we can shape something concrete.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
     earthCredit: 'powered by', earthName: 'Earth',
   },
 } as const;
