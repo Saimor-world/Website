@@ -94,8 +94,6 @@ export async function POST(request: NextRequest) {
 // GET for health check
 export async function GET() {
   return NextResponse.json({
-    status: 'ok',
-    service: 'Mora Chat API',
-    version: '1.0.0'
+    status: 'ok'
   });
 }
