@@ -397,10 +397,9 @@ test('product states, workshop details and YORI example rooms respond', async ({
   const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
   // Little MÔRA flies on purpose; she is never "stable" mid-flight, so tap her where she is.
   const companionDialog = page.getByRole('dialog', { name: 'MÔRA an deiner Seite' });
-  await expect(async () => {
-    if (!(await companionDialog.isVisible())) await companion.click({ force: true });
-    await expect(companionDialog).toBeVisible({ timeout: 3000 });
-  }).toPass({ timeout: 20000 });
+  // Dispatch the click on the element itself so her flight path cannot make the pointer miss.
+  await companion.dispatchEvent('click');
+  await expect(companionDialog).toBeVisible({ timeout: 15000 });
   await page.keyboard.press('Escape');
   await expect(companion).toBeFocused();
   await page.getByRole('button', { name: 'Bewegung pausieren', exact: true }).click();
