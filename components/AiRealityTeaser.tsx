@@ -4,7 +4,7 @@ import styles from './AiRealityTeaser.module.css';
 
 const COPY = {
   de: {
-    eyebrow: 'Môras Blick / KI',
+    eyebrow: 'MÔRAs Blick / KI',
     introduction: 'Drei Fragen, die eine überzeugende Antwort offenlässt.',
     layers: [
       { number: '01', Icon: CircleHelp, question: 'Klingt sicher.', counterpoint: 'Ist es auch belegt?' },
@@ -15,7 +15,7 @@ const COPY = {
     action: 'Deep View öffnen',
   },
   en: {
-    eyebrow: "Môra's View / AI",
+    eyebrow: "MÔRA's View / AI",
     introduction: 'Three questions a convincing answer may leave unanswered.',
     layers: [
       { number: '01', Icon: CircleHelp, question: 'Sounds certain.', counterpoint: 'Is there evidence?' },
