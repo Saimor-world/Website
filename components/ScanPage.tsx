@@ -611,8 +611,8 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-light text-white/90">{t("Deine Môra-Demo ist bereit")}</h2>
-                  <p className="mt-1 text-sm text-white/50 leading-relaxed">{t("Môra kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.")}</p>
+                  <h2 className="text-xl font-light text-white/90">{t("Deine MÔRA-Demo ist bereit")}</h2>
+                  <p className="mt-1 text-sm text-white/50 leading-relaxed">{t("MÔRA kennt deine Website — die Befunde liegen bereits in einem isolierten Demo-Dossier. Es wird kein Kundenkonto erstellt.")}</p>
                   {hqState === 'sent' && (
                     <p className="mt-2 text-[11px] text-emerald-300/80">{t("✓ Link automatisch an")}<strong>{results.email}</strong>{t("gesendet — check dein Postfach.")}</p>
                   )}
@@ -621,7 +621,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                   )}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                  <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">{t("Môra-Demo öffnen")}<ExternalLink size={15} />
+                  <a href={results.hqUrl} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 py-3.5 text-sm font-bold text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_24px_rgba(52,211,153,0.3)] active:scale-95">{t("MÔRA-Demo öffnen")}<ExternalLink size={15} />
                   </a>
                   <button type="button" onClick={requestHqLink} disabled={hqState === 'sending' || hqState === 'sent'}
                     className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.05] px-5 py-3.5 text-sm text-white/65 hover:bg-white/[0.1] disabled:opacity-50 transition-colors">
@@ -813,7 +813,7 @@ export default function ScanPage({ locale = 'de' }: { locale: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold">MORA OS — SECURED TRANSITION</p>
+                  <p className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold">SAIMÔR OS — SECURED TRANSITION</p>
                   <h1 className="text-3xl font-light tracking-wide text-white leading-snug" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{t("Dossier wird geladen")}</h1>
                   <p className="text-xs text-white/55 max-w-xs mx-auto leading-relaxed">{t("Deine sichere Verbindung zum Website-HQ wird hergestellt. Die Daten werden verschlüsselt übertragen.")}</p>
                 </div>

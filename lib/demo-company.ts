@@ -37,18 +37,18 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
   const domain = audit.targetDomain || audit.domain || emailDomain(audit.email);
   const companyName = deriveCompanyName(audit.name, audit.email, domain);
   const industry = audit.industry || inferIndustry(domain) || 'Lokales Unternehmen';
-  const sizeLabel = audit.companySize || 'Teamgroesse noch unbekannt';
+  const sizeLabel = audit.companySize || 'Teamgröße noch unbekannt';
   const recommendations = normalizeRecommendations(audit.recommendations);
   const highPriority = recommendations.filter((item) => item.priority === 'high');
   const tasks = recommendations.slice(0, 5).map((item) => ({
-    title: item.title || 'Massnahme pruefen',
+    title: item.title || 'Maßnahme prüfen',
     priority: normalizePriority(item.priority),
     source: item.text || 'Aus dem Digital Risk Check abgeleitet.',
   }));
 
   if (tasks.length === 0) {
     tasks.push({
-      title: 'Digitalen Basis-Check abschliessen',
+      title: 'Digitalen Basis-Check abschließen',
       priority: audit.score < 60 ? 'high' : 'medium',
       source: 'Aus dem ersten Audit vorbereitet.',
     });
@@ -63,7 +63,7 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
     rooms: [
       {
         name: 'Security',
-        purpose: `${highPriority.length || tasks.length} priorisierte Massnahmen aus dem Check.`,
+        purpose: `${highPriority.length || tasks.length} priorisierte Maßnahmen aus dem Check.`,
         signal: audit.score < 70 ? 'risk' : 'setup',
       },
       {
@@ -73,7 +73,7 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
       },
       {
         name: 'Wachstum',
-        purpose: 'Naechste Automationen und Kundenkontakt-Flaechen ableiten.',
+        purpose: 'Nächste Automationen und Kundenkontakt-Flächen ableiten.',
         signal: 'growth',
       },
     ],
@@ -84,21 +84,21 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
         summary: audit.analysis,
       },
       {
-        title: 'Massnahmenplan 14 Tage',
+        title: 'Maßnahmenplan 14 Tage',
         type: 'Plan',
         summary: tasks.slice(0, 3).map((task) => task.title).join(' / '),
       },
       {
         title: 'Simulierte Betriebsmappe',
         type: 'Workspace',
-        summary: `${industry}, ${sizeLabel}, ${domain || 'ohne Domain'} - vorbereitet fuer HQ-Demo.`,
+        summary: `${industry}, ${sizeLabel}, ${domain || 'ohne Domain'} - vorbereitet für HQ-Demo.`,
       },
     ],
     tasks,
     nightwatchSignals: [
       { label: 'Domain', value: domain || 'Noch offen' },
       { label: 'Risiko', value: `${audit.score}/100 - ${audit.level}` },
-      { label: 'Quelle', value: 'Oeffentliche Web-Signale' },
+      { label: 'Quelle', value: 'Öffentliche Web-Signale' },
     ],
     dashboardMemory: [
       { label: 'Firma', value: companyName },
@@ -106,8 +106,8 @@ export function buildDemoCompanyProfile(audit: AuditLike): DemoCompanyProfile {
       { label: 'Absicht', value: tasks[0]?.title || 'Ersten Check fortsetzen' },
     ],
     moraBriefing:
-      `Nightwatch hat aus oeffentlichen Signalen ein erstes Dossier fuer ${companyName} gebaut. ` +
-      `Das Dashboard merkt den Check; Mora OS macht daraus Raeume, Aufgaben und Finder-Kontext, bis echte Tools verbunden werden.`,
+      `Nightwatch hat aus öffentlichen Signalen ein erstes Dossier für ${companyName} gebaut. ` +
+      `Das Dashboard merkt den Check; Saimôr OS macht daraus Räume, Aufgaben und Finder-Kontext, bis echte Tools verbunden werden.`,
   };
 }
 

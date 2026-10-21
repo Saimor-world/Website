@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Sparkles, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
@@ -61,7 +61,7 @@ export default function ContactSection({ locale }: Props) {
                 {t('Woran arbeitest du?', 'What are you working on?')}
               </h2>
               <p className="text-lg text-white/48 leading-relaxed max-w-md">
-                {t('Beschreib kurz, was du bauen willst oder wo es gerade hängt. Du bekommst eine direkte Antwort.', 'Tell me what you want to build or where things are stuck. You will get a direct reply.')}
+                {t('Beschreib kurz, was du bauen willst oder wo es gerade hängt. Du bekommst eine direkte Antwort.', 'Tell us what you want to build or where things are stuck. You will get a direct reply.')}
               </p>
             </div>
 
