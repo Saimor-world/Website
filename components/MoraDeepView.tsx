@@ -161,14 +161,14 @@ export default function MoraDeepView({ locale }: Props) {
 
       <header className={styles.topbar}>
         <Link href={backHref} className={styles.back}><ArrowLeft size={15} />{backLabel}</Link>
-        <span className={styles.mark}>SAIMÔR <span>/</span> {locale === 'de' ? 'Môras Blick' : "Môra's View"}</span>
+        <span className={styles.mark}>SAIMÔR <span>/</span> {locale === 'de' ? 'MÔRAs Blick' : "MÔRA's View"}</span>
         <div className={styles.controls}>
           <Link className={styles.language} href={languageHref} aria-label={locale === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}>{locale === 'de' ? 'EN' : 'DE'}</Link>
           <button type="button" className={styles.motion} onClick={() => setPaused(value => !value)} aria-label={c.pause} aria-pressed={paused}>{paused ? <Play size={14} /> : <Pause size={14} />}</button>
         </div>
       </header>
 
-      <section className={styles.stage} aria-label={locale === 'de' ? 'Deep View Experience' : 'Deep View experience'} aria-busy={crossing || focusing}>
+      <section className={styles.stage} aria-label={locale === 'de' ? 'Deep View – Inszenierte Begegnung' : 'Deep View – Staged encounter'} aria-busy={crossing || focusing}>
         {scene === 'uncertainty' ? (
           <div key="opening" className={styles.intro} data-testid="deep-uncertainty">
             <MoraUncertainty />

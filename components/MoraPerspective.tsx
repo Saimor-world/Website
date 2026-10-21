@@ -13,7 +13,7 @@ const COPY = {
     instructions: 'Bewege die Maus oder streiche über das Wasser: Sterne und Mycelium leuchten auf. Mit den Pfeiltasten kannst du dich ebenfalls umsehen.',
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUKTVORSCHAU',
     arrival: 'Klarheit beginnt mit Zusammenhang.',
-    lead: 'Aus einzelnen Spuren wird ein Ort, an dem du dich orientieren kannst. Dafür steht diese Lichtung. MÔRA hält dafür Dateien, Termine und offene Dinge im Kontext deiner Arbeit zusammen.',
+    lead: 'Aus einzelnen Spuren wird ein Ort, an dem du dich orientieren kannst. Dafür steht diese Lichtung als Vorschau: Im Saimôr OS hält MÔRA Dateien, Termine und offene Dinge im Kontext deiner Arbeit zusammen.',
     chapters: [
       ['Dateien, Termine, offene Dinge', 'MÔRA arbeitet mit dem Stand, der im OS vorhanden ist. Eigene Daten kommen über Quellen hinzu, die du ausdrücklich verbindest.'],
       ['Veränderungen einordnen', 'Was ist neu, was hängt zusammen? MÔRA kann neue Informationen aus verbundenen Quellen in den bisherigen Arbeitskontext einordnen.'],
@@ -27,7 +27,7 @@ const COPY = {
     instructions: 'Move the pointer or swipe across the water: stars and mycelium light up. You can also look around with the arrow keys.',
     eyebrow: 'MÔRA / SAIMÔR OS · PRODUCT PREVIEW',
     arrival: 'Clarity begins with context.',
-    lead: 'Separate traces become a place where you can find your bearings. That is what this clearing stands for. MÔRA keeps files, meetings and open work together in your working context.',
+    lead: 'Separate traces become a place where you can find your bearings. That is what this clearing stands for as a preview: in Saimôr OS, MÔRA keeps files, meetings and open work together in your working context.',
     chapters: [
       ['Files, meetings and open work', 'MÔRA works with the state available in the OS. Your own data comes through sources you explicitly connect.'],
       ['Making sense of change', 'What is new, and what belongs together? MÔRA can relate new information from connected sources to the existing working context.'],

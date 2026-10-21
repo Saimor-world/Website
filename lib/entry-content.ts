@@ -27,17 +27,17 @@ const deArticles: EntryArticle[] = [
     pillar: 'security',
     category: 'Sicherheit',
     readTime: '2 min',
-    title: 'Was Angreifer in 30 Sekunden über dich herausfinden',
+    title: 'Security Check: Was das Internet über deine Domain weiß',
     excerpt:
-      'Bevor du irgendwas investierst: Sieh erst, was wirklich offen steht. Kostenloser Scan — keine Anmeldung, 60 Sekunden, ehrliche Ergebnisse.',
+      'Bevor wir über Werkzeuge sprechen, schauen wir auf das, was öffentlich sichtbar ist. Kostenloser passiver Check — ohne Anmeldung, in 60 Sekunden, mit klaren Befunden.',
     intro:
-      'Kein Unternehmen ist zu klein für einen Angriff. Die meisten Lücken sind bekannt und in wenigen Minuten zu schließen — wenn man weiß, wo sie sind.',
+      'Viele technische Signale einer Website sind öffentlich abrufbar. Der Check ordnet sie übersichtlich ein, damit du weißt, was solide ist und wo Handlungsbedarf besteht.',
     tags: ['Kostenlos', '60 Sekunden', 'Kein Login'],
     sections: [
       {
         title: 'Was der Scan prüft',
         body:
-          'Deine Domain, dein SSL-Zertifikat, deine öffentlichen Dateien und die wichtigsten Schutz-Header. Alles, was ein Angreifer in der ersten Minute sieht — wir zeigen es dir übersichtlich.',
+          'Deine Domain, dein TLS-Zertifikat, öffentlich erreichbare Pfade und die wichtigsten Sicherheits-Header. Nightwatch liest ausschließlich öffentliche Signale — ohne Eingriff in deine Systeme.',
       },
       {
         title: 'Ehrliche Ergebnisse',
@@ -47,7 +47,7 @@ const deArticles: EntryArticle[] = [
       {
         title: 'Was danach passiert',
         body:
-          'Du bekommst deinen persönlichen HQ-Link — ein Workspace mit deinen Befunden. Kein Passwort nötig. Einfach öffnen und mit Môra arbeiten.',
+          'Aus den Befunden entsteht ein isolierter HQ-Workspace im Saimôr OS. Kein Passwort nötig: Du kannst die Ergebnisse direkt öffnen und mit MÔRA strukturiert durchgehen.',
       },
     ],
     ctaLabel: 'Kostenlos prüfen',
@@ -150,14 +150,14 @@ const enArticles: EntryArticle[] = [
     pillar: 'security',
     category: 'Security',
     readTime: '2 min',
-    title: 'Security Check: What the internet knows about you',
-    excerpt: 'An honest status report in 60 seconds. We check your domain for common vulnerabilities.',
-    intro: 'Before buying expensive software, know where the door is open. Our scan shows you exactly that – no jargon, straight to the point.',
+    title: 'Security Check: What the internet knows about your domain',
+    excerpt: 'Before talking about tools, look at what is publicly visible. Free passive check — no sign-up, 60 seconds, clear findings.',
+    intro: 'Many technical signals of a website are publicly accessible. Our check organizes them clearly so you know what is solid and what needs attention.',
     tags: ['Security', 'Transparency', 'Check'],
     sections: [
-      { title: 'Understand Visibility', body: 'Many technical details of your website are public. We summarize this data so you understand what an attacker sees.' },
-      { title: 'Honest Feedback', body: 'No marketing fluff. If your SSL certificate is outdated, we tell you directly.' },
-      { title: 'Immediate Steps', body: 'After the scan, you know exactly what to do. Most things can be fixed in minutes.' },
+      { title: 'What the Scan Checks', body: 'Your domain, TLS certificate, publicly reachable paths and essential security headers. Nightwatch only reads public signals — without touching your systems.' },
+      { title: 'Honest Results', body: 'No jargon, no sales pressure. You receive a 0–100 score with concrete explanations of what is in order and what should be improved.' },
+      { title: 'What Happens Next', body: 'Your findings open in an isolated HQ workspace inside Saimôr OS. No password required — open your dossier directly and review next steps with MÔRA.' },
     ],
     ctaLabel: 'Start Free Scan',
     ctaHref: '/en/entry/security-check',
