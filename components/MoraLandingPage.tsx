@@ -13,7 +13,7 @@ const COPY = {
   de: {
     eyebrow: 'MÔRA · SAIMÔR OS',
     hero: ['Klarheit', 'im Wandel.'],
-    heroSub: 'Dein ruhender Begleiter für Fokus, Orientierung und innere Klarheit.',
+    heroSub: 'Deine ruhige Begleitung für Fokus, Orientierung und innere Klarheit.',
     cta: 'MÔRA im OS erleben',
     threads: ['Dateien', 'Termine', 'Nachrichten'],
     stone: 'MÔRA, der Jadestein mit Gesicht',
