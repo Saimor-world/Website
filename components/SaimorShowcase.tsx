@@ -38,7 +38,7 @@ const copy = {
     intro: 'Not another screen full of functions. Places where thought, work and decisions can come together.',
     moraCategory: '01 / MÔRA IN SAIMÔR OS · PRODUCT PREVIEW',
     moraTitle: 'MÔRA',
-    moraStatement: 'Keep the thought moving.',
+    moraStatement: 'A thought carries on.',
     moraBody: 'Context often gets lost between messages, projects and meetings. MÔRA helps keep it visible – with sources, boundaries and your approval before actions.',
     moraCta: 'Explore MÔRA',
     moraArtworkLabel: 'Concept illustration · no live data',
