@@ -9,6 +9,7 @@ import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
 import ResponsiveDetails from './ResponsiveDetails';
 import EarthMycelium from './EarthMycelium';
+import YoriPath from './YoriPath';
 
 type Locale = 'de' | 'en';
 type Props = { locale: Locale };
@@ -129,6 +130,7 @@ export default function SystemWorldHome({ locale }: Props) {
             <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
           </p>
         </div>
+        <YoriPath locale={locale} />
       </section>
 
       <section className={styles.blickWorld} aria-label={locale === 'de' ? 'Môras Blick' : "MÔRA's view"}>
