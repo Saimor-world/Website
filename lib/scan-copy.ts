@@ -45,7 +45,7 @@ export const SCAN_EN: Record<string, string> = {
   "Klicke hier für eine direkte Weiterleitung": "Continue directly",
   "Supporter Universe ansehen": "View Supporter Universe",
   "Kein Login": "No login",
-  "Nightwatch passiv": "Nightwatch passive",
+  "Nightwatch passiv": "Passive checks",
   "HQ-Preview inklusive": "HQ preview included",
   "Kostenlos": "Free",
   "Sende...": "Sending…",
