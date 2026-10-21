@@ -56,15 +56,11 @@
 .daylightIntelligence{background:var(--paper);color:#1b3b2c}
 .daylightStudio{background:#e7ece2;color:#17392a}
 .daylightContact{background:linear-gradient(180deg,#e7ece2 0%,var(--paper) 140px);color:#173a2b}
-.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:-280px;width:100%;max-width:none;min-height:max(100svh,920px);background:linear-gradient(180deg,transparent 0%,#06110e 260px);color:#f7f4e9;pointer-events:auto}
+.return{position:relative;z-index:1;isolation:isolate;overflow:hidden;margin-top:-280px;width:100%;max-width:none;height:clamp(540px,62svh,640px);background:linear-gradient(180deg,transparent 0%,#06110e 260px);color:#f7f4e9;pointer-events:auto}
 .returnDisk{position:absolute;z-index:0;inset:-4% -4%;width:108%;height:108%;max-width:none;pointer-events:none;transform:rotate(180deg);transform-origin:center center}
 .returnImage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:50% 74%;opacity:1;filter:brightness(1.06) saturate(.96) contrast(1.02)}
 .returnMist{position:absolute;z-index:2;left:0;right:0;top:0;height:240px;pointer-events:none;background:radial-gradient(ellipse 110% 80% at 50% 0%,rgba(12,28,20,.1) 0%,transparent 68%)}
-.returnShade{position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,#06110ecc 0%,transparent 18%,transparent 82%,#06110ecc 100%),linear-gradient(180deg,rgba(6,17,14,.4) 0%,rgba(6,17,14,.14) 16%,transparent 30%,transparent 48%,rgba(6,17,14,.18) 64%,rgba(6,17,14,.62) 86%,#050706 100%)}
-.returnInner{position:absolute;z-index:3;left:0;right:0;top:55.6%;transform:translateY(-50%);display:flex;justify-content:center;padding:0 var(--gutter);pointer-events:none}
-.returnCredit{margin:0;font:600 12px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;color:#e8dfc0;text-align:center;text-shadow:0 1px 18px rgba(3,14,10,.85),0 0 18px rgba(3,14,10,.45);pointer-events:auto}
-.returnCredit a{color:inherit;text-decoration:none;border:0;padding:12px 4px;margin:-12px -4px}
-.returnCredit a:hover{color:#fff6dc}
+.returnShade{position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,#06110ecc 0%,transparent 18%,transparent 82%,#06110ecc 100%),linear-gradient(180deg,rgba(6,17,14,.4) 0%,rgba(6,17,14,.14) 16%,transparent 30%,transparent 48%,rgba(6,17,14,.18) 64%,rgba(6,17,14,.62) 86%,#06110e 100%)}
 @media(max-width:1280px){.heroGrid{grid-template-columns:minmax(0,25rem) minmax(0,1fr)}.heroCopy,.thesis,.intro{max-width:25rem}.heroCopy h1{font-size:clamp(64px,6.6vw,88px)}.thesis{font-size:21px}.primary{padding:12px 18px;min-height:48px;gap:10px;font-size:12px}.textLink{font-size:12px;gap:8px;padding:8px 0}.actions{gap:12px}.sceneFooter{letter-spacing:.1em}}
 @media(max-width:1000px){.heroGrid{grid-template-columns:minmax(0,23rem) minmax(0,1fr)}.heroCopy,.intro,.thesis{max-width:23rem}.thresholdInner{gap:20px}.contextCopy h2{font-size:57px}.contextStage{height:440px}}
 @media(max-width:700px){
@@ -96,10 +92,9 @@
  .moraIntroduction h3{font-size:clamp(57px,14vw,72px);max-width:420px}
  .moraIntroduction p:not(.eyebrow){font-size:14px;line-height:1.8}
  .entry{padding:44px 24px 66px;grid-template-columns:1fr;gap:8px}.entry h3{font-size:39px}
- .return{margin-top:-170px;height:100svh;max-height:100svh;padding-bottom:0;min-height:100svh;background:linear-gradient(180deg,transparent 0%,#06110e 150px)}
- .returnInner{top:78%;bottom:auto;padding:0 22px;min-height:0;transform:translateY(-50%)}
+ .return{margin-top:-170px;height:clamp(470px,60svh,540px);max-height:none;padding-bottom:0;min-height:0;background:linear-gradient(180deg,transparent 0%,#06110e 150px)}
  .returnMist{height:100px;background:radial-gradient(ellipse 120% 80% at 50% 0%,rgba(12,28,20,.08) 0%,transparent 70%)}
- .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.22) 0%,transparent 18%,transparent 46%,rgba(6,17,14,.1) 64%,rgba(5,7,6,.45) 84%,#050706 100%)}
+ .returnShade{background:linear-gradient(90deg,#06110ed9 0%,transparent 16%,transparent 84%,#06110ed9 100%),linear-gradient(180deg,rgba(6,17,14,.22) 0%,transparent 18%,transparent 46%,rgba(6,17,14,.1) 64%,rgba(5,7,6,.45) 84%,#06110e 100%)}
  .returnImage{object-position:50% 70%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
 }
 @media(max-width:360px){.heroInner{padding-inline:18px}.heroGrid{padding-top:8px}.heroCopy h1{font-size:64px}.eyebrow{letter-spacing:.1em}.sceneFooter{letter-spacing:.06em}.thesis{font-size:22px}}

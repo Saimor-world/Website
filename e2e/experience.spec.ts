@@ -88,8 +88,8 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(page.getByRole('button', { name: /SAIMÔR Earth/ })).toHaveCount(0);
     const horizon = page.getByTestId('earth-horizon');
     await horizon.scrollIntoViewIfNeeded();
-    await expect(horizon.getByText('powered by')).toBeVisible();
-    await expect(horizon.getByRole('link', { name: 'Earth', exact: true })).toHaveAttribute('href', german ? '/earth' : '/en/earth');
+    await expect(horizon.getByText('powered by')).toHaveCount(0);
+    await expect(horizon.getByRole('button', { name: german ? 'Ein anderer Weg: zu YORI' : 'Another path: to YORI' })).toBeVisible();
     await expect(horizon.getByRole('heading')).toHaveCount(0);
     await expect(horizon.getByTestId('earth-mycelium')).toBeAttached();
     await expect(horizon.getByRole('img', { name: 'MÔRA' })).toBeAttached();
@@ -395,11 +395,13 @@ test('product states, workshop details and YORI example rooms respond', async ({
   await page.getByRole('button', { name: 'Termine', exact: true }).click();
   await expect(page.getByTestId('mora-context-preview')).toContainText('Mit Kontext in den Termin.');
   const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
-  // Little MÔRA flies on purpose; she is never "stable" mid-flight, so tap her where she is.
+  // Little MÔRA docks quietly (no flight). While another MÔRA is on screen she is only a trace,
+  // but the dock stays tappable and summons her.
   const companionDialog = page.getByRole('dialog', { name: 'MÔRA an deiner Seite' });
-  // Dispatch the click on the element itself so her flight path cannot make the pointer miss.
-  await companion.dispatchEvent('click');
+  await expect(companion).toBeAttached();
+  await companion.click({ force: true });
   await expect(companionDialog).toBeVisible({ timeout: 15000 });
+  await expect(page.getByTestId('mora-companion')).toHaveAttribute('data-presence', 'present');
   await page.keyboard.press('Escape');
   await expect(companion).toBeFocused();
   await page.getByRole('button', { name: 'Bewegung pausieren', exact: true }).click();

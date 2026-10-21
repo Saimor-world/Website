@@ -9,7 +9,7 @@ afterEach(cleanup);
 describe('MÔRA product character and companion', () => {
   it('shows the original stone with visible A4 eyes and a connected, labelled example', () => {
     const { container } = render(<MoraProductPage locale="de" />);
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Sie hält den Faden.');
+    expect(screen.queryByRole('heading', { level: 1 })).toBeNull();
     const hero = container.querySelector('[data-mora-character]');
     expect(hero?.querySelector('[data-face-state="rest"] svg ellipse')).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Termine' }));

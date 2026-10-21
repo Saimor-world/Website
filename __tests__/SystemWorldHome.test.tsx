@@ -52,7 +52,7 @@ describe('SystemWorldHome', () => {
       expect(copy.match(promptBox)?.length ?? 0).toBe(1);
       expect(screen.getByRole('link', { name: 'YORI' })).toHaveAttribute('href', locale === 'de' ? '/yori' : '/en/yori');
       expect(screen.queryByRole('link', { name: 'Saimôr Earth' })).not.toBeInTheDocument();
-      expect(screen.getByTestId('earth-horizon').querySelector('a')).toHaveAttribute('href', locale === 'de' ? '/earth' : '/en/earth');
+      expect(screen.getByTestId('earth-horizon')).not.toHaveTextContent('powered by');
       cleanup();
     }
   });
@@ -130,12 +130,11 @@ describe('SystemWorldHome', () => {
     expect(screen.queryByRole('button', { name: /SAIMÔR Earth|Erde erkunden/ })).not.toBeInTheDocument();
     const horizon = screen.getByTestId('earth-horizon');
     expect(hero?.contains(horizon)).toBe(false);
-    expect(horizon).toHaveTextContent('powered by');
-    expect(horizon).toHaveTextContent('Earth');
+    expect(horizon).not.toHaveTextContent('powered by');
+    expect(horizon).toHaveAttribute('aria-label', 'Earth');
     expect(horizon).not.toHaveTextContent('Die andere Seite der Welt.');
     expect(horizon).not.toHaveTextContent('Konzept · keine Live-Karte');
-    expect(horizon.querySelector('a')).toHaveAttribute('href', '/earth');
-    expect(horizon.querySelector('a')?.textContent).toBe('Earth');
+    expect(horizon.querySelector('a[href="/earth"]')).toBeNull();
     expect(horizon.querySelector('[data-testid="earth-mycelium"]')).not.toBeNull();
     expect(horizon.querySelector('[aria-label="MÔRA"]')).not.toBeNull();
     expect(forest?.contains(horizon)).toBe(false);

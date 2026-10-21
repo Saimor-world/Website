@@ -44,6 +44,7 @@
 .card p{color:rgba(239,233,220,.7);line-height:1.6;margin:0}
 .trust ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
 .trust li{padding:1.1rem 1.3rem;border-left:2px solid #d8b46a;background:rgba(255,255,255,.03);border-radius:0 12px 12px 0;color:rgba(239,233,220,.82)}
+.trustNote{margin:1.4rem 0 0;max-width:62rem;font-size:.9rem;line-height:1.7;color:rgba(239,233,220,.62)}
 .os{text-align:center;padding-bottom:7rem}
 .os p{max-width:36rem;margin:0 auto 2rem;color:rgba(239,233,220,.72);line-height:1.6}
 .os small{display:block;margin-top:1.4rem;color:rgba(239,233,220,.45);letter-spacing:.08em}
@@ -84,5 +85,5 @@
 .sparkLayer{will-change:transform;pointer-events:none}
 .sparkLayer .sparkCore{filter:none}
 .sparkLayer .sparkHalo{filter:none;stroke:#f3c76a;stroke-width:7;stroke-opacity:.32}
-.cta::after{content:"→";margin-left:-.35rem}
+.cta::after{content:"→" / "";margin-left:-.35rem}
 .os{scroll-margin-top:6rem}

@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import { FileText, CalendarDays, MessageSquare, Pause, Play } from 'lucide-react';
 import { DemoLaunchButton } from './DemoLaunchButton';
 import MoraOsFace from './MoraOsFace';
 import styles from './MoraLandingPage.module.css';
 
-type Props = { locale: 'de' | 'en' };
+type Props = { locale: 'de' | 'en'; children?: ReactNode };
 
 const COPY = {
   de: {
@@ -26,6 +26,7 @@ const COPY = {
       { title: 'Sie bleibt ruhig', text: 'Keine Flut an Hinweisen. MÔRA meldet sich, wenn etwas wirklich zählt.' },
     ],
     trustTitle: 'Klare Grenzen',
+    trustNote: 'MÔRA kann nur mit Kontext arbeiten, der im System vorhanden oder verbunden ist. Für Sprach- und Denkaufgaben können unterschiedliche externe Modellanbieter genutzt werden; MÔRA selbst ist nicht das Modell. Aktionen laufen über freigegebene Fähigkeiten und sollen sichtbar bleiben.',
     trust: [
       'MÔRA arbeitet nur mit Kontext, den du verbindest.',
       'MÔRA ist nicht das Modell, sie orchestriert.',
@@ -54,6 +55,7 @@ const COPY = {
       { title: 'She stays calm', text: 'No flood of notifications. MÔRA speaks up when something really counts.' },
     ],
     trustTitle: 'Clear boundaries',
+    trustNote: 'MÔRA can only work with context that exists in the system or is connected to it. Different external model providers may be used for language and reasoning; MÔRA itself is not the model. Actions run through approved capabilities and are intended to remain visible.',
     trust: [
       'MÔRA only works with context you connect.',
       'MÔRA is not the model, she orchestrates.',
@@ -89,7 +91,7 @@ const PARTICLES = Array.from({ length: 40 }, (_, i) => ({
   left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, size: 2.5 + ((i * 7) % 4) * 1.2, delay: `${(i * 0.7) % 9}s`, dur: `${9 + ((i * 5) % 8)}s`, gold: i % 3 !== 0,
 }));
 
-export default function MoraLandingPage({ locale }: Props) {
+export default function MoraLandingPage({ locale, children }: Props) {
   const c = COPY[locale];
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -175,7 +177,7 @@ export default function MoraLandingPage({ locale }: Props) {
 
           <div className={styles.orbit} aria-hidden="true"><span /></div>
           <div className={styles.float}>
-            <div className={styles.stone} role="img" aria-label={c.stone}>
+            <div className={styles.stone} role="img" aria-label={c.stone} data-mora-presence>
               <span className={styles.halo} aria-hidden="true" />
               <Image src="/brand/mora-stone-v1.png" alt="" width={504} height={504} priority draggable={false} className={styles.stoneImg} />
               <MoraOsFace size={420} />
@@ -205,9 +207,12 @@ export default function MoraLandingPage({ locale }: Props) {
         </div>
       </section>
 
+      {children}
+
       <section className={styles.trust} aria-labelledby="mora-trust">
         <h2 id="mora-trust">{c.trustTitle}</h2>
         <ul>{c.trust.map(t => <li key={t}>{t}</li>)}</ul>
+        <p className={styles.trustNote}>{c.trustNote}</p>
       </section>
 
       <section id="im-os" className={styles.os} aria-labelledby="mora-os">

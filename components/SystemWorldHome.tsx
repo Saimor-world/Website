@@ -36,7 +36,6 @@ const COPY = {
     intelligenceCore: 'CORE hält Wahrheit, Identität und Grenzen',
     intelligenceWorkers: 'Modelle, Agents und Tools bleiben austauschbar',
     finalEyebrow: 'KONTAKT / NÄCHSTER SCHRITT', finalTitle: 'Gute Systeme beginnen mit einer guten Frage.', finalText: 'Was sollte einfacher werden? Was geht heute zwischen Menschen und Werkzeugen verloren? Daraus lässt sich etwas Konkretes machen.', finalCta: 'Kontakt öffnen', scroll: 'WEITERSCROLLEN',
-    earthCredit: 'powered by', earthName: 'Earth',
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
@@ -58,7 +57,6 @@ const COPY = {
     intelligenceCore: 'CORE keeps truth, identity and boundaries',
     intelligenceWorkers: 'Models, agents and tools stay replaceable',
     finalEyebrow: 'CONTACT / NEXT STEP', finalTitle: 'Good systems start with a good question.', finalText: 'What should become easier? What gets lost today between people and tools? From there, we can shape something concrete.', finalCta: 'Open contact', scroll: 'SCROLL / LEARN MORE',
-    earthCredit: 'powered by', earthName: 'Earth',
   },
 } as const;
 
@@ -124,12 +122,6 @@ export default function SystemWorldHome({ locale }: Props) {
         <div className={styles.returnMist} aria-hidden="true" />
         <div className={styles.returnShade} aria-hidden="true" />
         <EarthMycelium><YoriPath locale={locale} /></EarthMycelium>
-        <div className={styles.returnInner}>
-          <p className={styles.returnCredit}>
-            {c.earthCredit}{' '}
-            <Link href={locale === 'de' ? '/earth' : '/en/earth'}>{c.earthName}</Link>
-          </p>
-        </div>
       </section>
 
       <section className={styles.blickWorld} aria-label={locale === 'de' ? 'MÔRAs Blick' : "MÔRA's View"}>
