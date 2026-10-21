@@ -2,6 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import SystemWorldHome from '@/components/SystemWorldHome';
 
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: () => {}, prefetch: () => {} }), usePathname: () => '/de' }));
 vi.mock('next/image', () => ({
   default: ({ alt = '', ...props }: any) => <img alt={alt} {...props} />,
 }));

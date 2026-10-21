@@ -1,0 +1,29 @@
+.layer{position:absolute;z-index:3;inset:0;top:28%;pointer-events:none}
+.thread{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:.85;animation:threadIn 1.6s ease-out both}
+.thread path{fill:none;stroke:rgba(230,196,120,.78);stroke-width:1.2;stroke-linecap:round}
+.threadPhone{display:none}
+.orb{--x:66%;--y:53%;position:absolute;left:var(--x);top:var(--y);width:34px;height:34px;transform:translate(-50%,-50%);pointer-events:auto;border-radius:50%;display:grid;place-items:center;-webkit-tap-highlight-color:transparent;outline:none}
+.orb:focus-visible{box-shadow:0 0 0 2px rgba(240,214,150,.6)}
+.halo{position:absolute;inset:-22px;border-radius:50%;background:radial-gradient(circle,rgba(240,205,130,.34) 0%,rgba(240,205,130,.12) 42%,transparent 70%);animation:breathe 4.8s ease-in-out infinite;transition:transform .9s cubic-bezier(.2,.7,.2,1),opacity .9s ease}
+.core{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff1c8 0%,#e8c27a 38%,#b4863e 72%,rgba(140,100,40,.6) 100%);box-shadow:0 0 14px rgba(236,196,110,.45);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.kanji{position:relative;font-family:"Noto Serif JP","Hiragino Mincho ProN",serif;font-size:16px;line-height:1;color:rgba(70,45,12,.82)}
+.label{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);white-space:nowrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.14em;color:rgba(236,214,170,.58);transition:opacity .4s ease}
+.sparks i{position:absolute;width:3px;height:3px;border-radius:50%;background:#f3d690;opacity:0;animation:spark 3.6s ease-in-out infinite}
+.sparks i:nth-child(1){left:-12px;top:-6px}
+.sparks i:nth-child(2){right:-14px;top:4px;animation-delay:1.2s}
+.sparks i:nth-child(3){left:6px;bottom:-14px;animation-delay:2.4s}
+@media(hover:hover){.orb:hover .halo{transform:scale(1.25);opacity:1}.orb:hover .label{opacity:.9}}
+.opening .halo{transform:scale(3.2);opacity:0;animation:none}
+.opening .core{transform:scale(1.35)}
+.opening .label{opacity:0}
+.passage{position:fixed;inset:0;z-index:80;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,236,190,.96) 0%,rgba(236,200,130,.75) 45%,rgba(20,32,24,.9) 100%);animation:passage .9s ease-in both}
+@keyframes threadIn{from{opacity:0}to{opacity:.85}}
+@keyframes breathe{0%,100%{transform:scale(.92);opacity:.75}50%{transform:scale(1.08);opacity:1}}
+@keyframes spark{0%,100%{opacity:0;transform:translateY(0)}40%{opacity:.9}70%{opacity:0;transform:translateY(-8px)}}
+@keyframes passage{from{opacity:0}to{opacity:1}}
+@media(max-width:1024px){.layer{top:27%}}
+@media(max-width:700px){
+ .threadWide{display:none}.threadPhone{display:block}
+ .orb{--x:80%;--y:52.5%}
+}
+@media(prefers-reduced-motion:reduce){.thread,.halo,.sparks i,.passage{animation:none}.halo,.core{transition:none}}
