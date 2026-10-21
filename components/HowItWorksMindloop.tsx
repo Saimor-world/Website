@@ -10,7 +10,7 @@ const copy = {
   de: {
     kicker: "Überblick",
     title: "Klarheit statt Chaos",
-    intro: "Môra bringt Ordnung in deine Daten.",
+    intro: "MÔRA bringt Ordnung in deine Daten.",
     steps: [
       {
         title: "Signale sammeln",
@@ -29,7 +29,7 @@ const copy = {
   en: {
     kicker: "Overview",
     title: "Clarity, not chaos",
-    intro: "Môra brings order to your data.",
+    intro: "MÔRA brings order to your data.",
     steps: [
       {
         title: "Collect signals",

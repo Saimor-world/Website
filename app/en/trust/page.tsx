@@ -5,7 +5,7 @@ const demoLink = '/en/entry';
 
 const techItems = [
   'Demo data: locally generated mock/simulation',
-  'Flow: Saimôr Core (EU) → Môra UI; AI answers via external models (Google/Anthropic)',
+  'Flow: Saimôr Core (EU) → MÔRA UI; AI answers via external models (Google/Anthropic)',
   'Analytics: anonymous Matomo on EU servers – opt-out anytime',
   'Hosting: EU (Hetzner, Germany), built on GDPR principles'
 ];

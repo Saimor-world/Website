@@ -160,7 +160,7 @@ export function DemoCTA() {
   return (
     <BusinessCTA
       variant="hero"
-      title="Môra live erleben"
+      title="MÔRA live erleben"
       subtitle="Entdecke das semantische Dashboard in Aktion. Voll funktionsfähig, sicher & kostenlos."
       primaryAction={{
         text: "Demo starten",

@@ -18,10 +18,10 @@ export default function FAQ({ locale }: Props) {
       ),
     },
     {
-      q: t('Was ist Môra?', 'What is Môra?'),
+      q: t('Was ist MÔRA?', 'What is MÔRA?'),
       a: t(
-        'Môra ist die KI-Begleiterin im Saimôr-Ökosystem. Im Prototyp zeigt sie Dashboard-Beispiele und reagiert im Chat – aktuell mit simulierten Daten, ohne externe Clouds.',
-        'Môra is the AI companion inside the Saimôr ecosystem. In the prototype she shows dashboard examples and responds in chat – currently with simulated data and no external clouds.'
+        'MÔRA ist die KI-Begleiterin im Saimôr-Ökosystem. Im Prototyp zeigt sie Dashboard-Beispiele und reagiert im Chat – aktuell mit simulierten Daten, ohne externe Clouds.',
+        'MÔRA is the AI companion inside the Saimôr ecosystem. In the prototype she shows dashboard examples and responds in chat – currently with simulated data and no external clouds.'
       ),
     },
     {

@@ -27,7 +27,7 @@ const COPY: Record<Props["locale"], ProductSectionCopy> = {
     trust: "Zielbild: eigener Datenraum, nachvollziehbare Verbindungen und frei wählbare KI-Anbindung statt eines undurchsichtigen Sammelkontos.",
     primary: "Konzept ansehen",
     primaryHref: "/demo?track=ai-business",
-    secondary: "Was Môra hier tut",
+    secondary: "Was MÔRA hier tut",
     sceneLabel: "MORGENS · 08:12",
     cards: [
       ["01 / MAIL", "Was Antwort braucht, steht oben. Was warten kann, wartet."],
@@ -45,7 +45,7 @@ const COPY: Record<Props["locale"], ProductSectionCopy> = {
     trust: "The goal: a dedicated data space, traceable connections and a freely chosen AI connection instead of an opaque shared account.",
     primary: "View concept",
     primaryHref: "/demo?track=ai-business",
-    secondary: "What Môra does here",
+    secondary: "What MÔRA does here",
     sceneLabel: "MORNING · 08:12",
     cards: [
       ["01 / MAIL", "What needs an answer is on top. What can wait, waits."],

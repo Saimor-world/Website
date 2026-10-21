@@ -18,7 +18,7 @@ export default function MoraTypingIndicator({ isTyping = false, message }: Props
       exit={{ opacity: 0, y: 10, scale: 0.95 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Môra mini avatar */}
+      {/* MÔRA mini avatar */}
       <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
         {/* Eyes */}
         <div className="flex gap-1.5">
@@ -59,7 +59,7 @@ export default function MoraTypingIndicator({ isTyping = false, message }: Props
             transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
           />
           <span className="ml-2 text-xs text-emerald-400/60 font-medium">
-            Môra denkt...
+            MÔRA denkt...
           </span>
         </div>
       )}

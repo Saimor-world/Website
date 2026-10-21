@@ -29,7 +29,7 @@ exports[`MyceliumSection > renders German forest and mycelium copy 1`] = `
       <p
         class="text-base sm:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
       >
-        Môra bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.
+        MÔRA bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.
       </p>
       <div
         class="flex flex-wrap justify-center gap-3 text-[10px] uppercase tracking-[0.4em] text-white/65"

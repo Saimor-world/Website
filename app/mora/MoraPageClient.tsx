@@ -79,7 +79,7 @@ export default function MoraPageClient() {
             </h1>
 
             <p className="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto font-light leading-relaxed mb-12">
-              Môra ist das erste semantische Betriebssystem, das <span className="text-white/80">Bedeutung</span> über Daten stellt.
+              MÔRA ist das erste semantische Betriebssystem, das <span className="text-white/80">Bedeutung</span> über Daten stellt.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -182,7 +182,7 @@ export default function MoraPageClient() {
               </div>
               <h3 className="text-2xl font-light italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Semantische Tiefe</h3>
               <p className="text-sm text-white/40 leading-relaxed">
-                Nicht nur Begriffe, sondern Bedeutungen. Môra versteht den Kontext deiner Daten und verknüpft sie organisch.
+                Nicht nur Begriffe, sondern Bedeutungen. MÔRA versteht den Kontext deiner Daten und verknüpft sie organisch.
               </p>
             </div>
             <div className="space-y-6">
@@ -200,7 +200,7 @@ export default function MoraPageClient() {
               </div>
               <h3 className="text-2xl font-light italic" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Aktive Begleitung</h3>
               <p className="text-sm text-white/40 leading-relaxed">
-                Môra ist kein Werkzeug, sondern ein Partner. Sie liefert Insights, bevor du die Frage überhaupt formuliert hast.
+                MÔRA ist kein Werkzeug, sondern ein Partner. Sie liefert Insights, bevor du die Frage überhaupt formuliert hast.
               </p>
             </div>
           </div>

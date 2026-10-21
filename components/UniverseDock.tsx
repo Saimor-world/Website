@@ -36,7 +36,7 @@ interface UniverseDockProps {
 }
 
 const defaultItems: DockItem[] = [
-  { id: 'chat', label: 'Môra Chat', icon: MessageSquare },
+  { id: 'chat', label: 'MÔRA Chat', icon: MessageSquare },
   { id: 'apps', label: 'Dashboard', icon: Grid3x3 },
   { id: 'recent', label: 'Activity', icon: Clock },
   { id: 'user', label: 'Account', icon: User },
@@ -176,7 +176,7 @@ export function UniverseDock({
           })}
         </div>
 
-        {/* Môra Indicator (optional pulsing dot) */}
+        {/* MÔRA Indicator (optional pulsing dot) */}
         <div className="w-px h-6 bg-white/10 mx-1" />
         <motion.div
           className="w-2 h-2 rounded-full"

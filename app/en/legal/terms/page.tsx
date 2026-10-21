@@ -17,7 +17,7 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">2. Service Description</h2>
           <p className="mb-6 text-slate-700">
             SAIMÔR provides a semantic operating system and related services (including a security check,
-            workspace/OS, and Môra). The feature set is in active development (early access) and may evolve.
+            workspace/OS, and MÔRA). The feature set is in active development (early access) and may evolve.
             Specific characteristics or uninterrupted availability are only warranted where expressly agreed.
           </p>
 

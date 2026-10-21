@@ -12,7 +12,7 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton({
-  title = 'Saimôr – OS, Môra und souveräne KI-Systeme',
+  title = 'Saimôr – OS, MÔRA und souveräne KI-Systeme',
   description = 'Saimôr verbindet digitalen Arbeitsraum, Daten und KI zu einem System, das Kontext behält.',
   url,
   locale = 'de',

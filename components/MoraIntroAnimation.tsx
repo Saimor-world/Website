@@ -263,7 +263,7 @@ export default function MoraIntroAnimation({ locale = 'de' }: Props) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
           role="dialog"
-          aria-label="Môra Intro Animation"
+          aria-label="MÔRA Intro Animation"
         >
           {/* Deep space background */}
           <motion.div

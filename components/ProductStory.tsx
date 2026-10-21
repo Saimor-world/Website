@@ -2,7 +2,7 @@ type Locale = 'de' | 'en';
 
 const content = {
   de: {
-    kicker: 'Saimôr Core · Môra UI · Môra OS',
+    kicker: 'Saimôr Core · MÔRA UI · MÔRA OS',
     title: 'Produktstory in drei Schichten',
     subtitle: 'Ruhig, souverän, auditbereit – heute als Demo mit simulierten Daten.',
     cards: [
@@ -12,19 +12,19 @@ const content = {
         bullets: ['Datenadapter & Logging', 'Rollen & Audit vorbereitet', 'Keine echten Kundendaten im Demo-Modus']
       },
       {
-        title: 'Môra UI',
+        title: 'MÔRA UI',
         body: 'Resonanz-Dashboard mit Folder/Feld, Insights und Chat. Läuft heute auf Demo-Daten, simuliert aber den späteren Workflow 1:1.',
         bullets: ['Field: Myzel sichtbar machen', 'Insights: Kontext statt Lärm', 'Chat: Dialog mit demselben Datenstrom']
       },
       {
-        title: 'Môra OS',
+        title: 'MÔRA OS',
         body: 'Wachsende Plattform, die später Räume/Organisationen verbindet – ohne Buzzwords, ohne übertriebene Versprechen.',
         bullets: ['Modular, erweiterbar', 'Interne Nutzung zuerst', 'Vision klar, Umsetzung schrittweise']
       }
     ]
   },
   en: {
-    kicker: 'Saimôr Core · Môra UI · Môra OS',
+    kicker: 'Saimôr Core · MÔRA UI · MÔRA OS',
     title: 'Product story in three layers',
     subtitle: 'Calm, sovereign, audit-ready – today as a demo with simulated data.',
     cards: [
@@ -34,12 +34,12 @@ const content = {
         bullets: ['Data adapters & logging', 'Roles & audit prepared', 'No real customer data in demo mode']
       },
       {
-        title: 'Môra UI',
+        title: 'MÔRA UI',
         body: 'Resonance dashboard with folder/field, insights, and chat. Runs on demo data today but simulates the later workflow exactly.',
         bullets: ['Field: exposing the mycelium', 'Insights: context over noise', 'Chat: dialogue on the same stream']
       },
       {
-        title: 'Môra OS',
+        title: 'MÔRA OS',
         body: 'Growing platform that will connect spaces/organisations over time – no buzzwords, no overpromising.',
         bullets: ['Modular, extensible', 'Internal-first usage', 'Vision clear, steps deliberate']
       }

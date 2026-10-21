@@ -64,8 +64,8 @@ export default function MoraTeaser({ locale }: Props) {
 
             <p className="max-w-lg text-xl leading-relaxed text-white/58">
               {t(
-                'Môra ist die semantische Intelligenz-Ebene des Systems. Sie erkennt Zusammenhänge, hört auf Signale und bringt Ordnung in Entscheidungen, ohne deine privaten Daten aus der Hand zu geben.',
-                'Môra is the semantic intelligence layer of the system. It reads context, listens for signals and brings order to decisions without taking private data out of your hands.'
+                'MÔRA ist die semantische Intelligenz-Ebene des Systems. Sie erkennt Zusammenhänge, hört auf Signale und bringt Ordnung in Entscheidungen, ohne deine privaten Daten aus der Hand zu geben.',
+                'MÔRA is the semantic intelligence layer of the system. It reads context, listens for signals and brings order to decisions without taking private data out of your hands.'
               )}
             </p>
 
@@ -99,7 +99,7 @@ export default function MoraTeaser({ locale }: Props) {
                 className="group flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-black shadow-[0_20px_60px_rgba(214,168,72,0.22)] transition-all hover:scale-[1.02]"
                 style={{ background: 'linear-gradient(135deg, #E7C46A 0%, #B8892C 100%)' }}
               >
-                <span>{t('Môra öffnen', 'Open Mora')}</span>
+                <span>{t('MÔRA öffnen', 'Open MÔRA')}</span>
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
               <Link
@@ -134,7 +134,7 @@ export default function MoraTeaser({ locale }: Props) {
               <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,168,72,.58),transparent)]" />
               <Image
                 src="/images/mora_showcase.png"
-                alt="Môra semantic intelligence showcase"
+                alt="MÔRA semantic intelligence showcase"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover opacity-78 transition-all duration-700 group-hover:scale-105 group-hover:opacity-95"
@@ -144,7 +144,7 @@ export default function MoraTeaser({ locale }: Props) {
                 <div className="inline-flex items-center gap-2 rounded-xl border border-[var(--world-gold)]/20 bg-[#081410]/85 px-3 py-2 backdrop-blur-xl">
                   <span className="h-2 w-2 rounded-full bg-[var(--world-mora-mist)] shadow-[0_0_18px_rgba(214,168,72,.6)]" />
                   <span className="text-xs font-medium tracking-wide text-[var(--world-gold)]">
-                    {t('Môra Analyse läuft', 'Môra analysis running')}
+                    {t('MÔRA Analyse läuft', 'MÔRA analysis running')}
                   </span>
                 </div>
               </div>

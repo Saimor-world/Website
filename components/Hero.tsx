@@ -68,8 +68,8 @@ export default function Hero({ locale, calUrl }: Props) {
       // kein Angebot - und der Absatz darunter nannte vier Produkte in einem
       // Atemzug. Niemand haelt vier.
       subheadline: 'Souveräne KI-Systeme für Arbeit, Wissen und Ideen.',
-      description: 'Saimôr verbindet eigene Arbeitsräume mit Môra, einer Kontext- und Agentenschicht. Datenhaltung und Verknüpfung bleiben auf deinem eigenen Server oder in deiner Instanz; verwendete KI-Modelle werden transparent angebunden.',
-      ctaPrimary: 'Môra kennenlernen',
+      description: 'Saimôr verbindet eigene Arbeitsräume mit MÔRA, einer Kontext- und Agentenschicht. Datenhaltung und Verknüpfung bleiben auf deinem eigenen Server oder in deiner Instanz; verwendete KI-Modelle werden transparent angebunden.',
+      ctaPrimary: 'MÔRA kennenlernen',
       ctaSecondary: 'Gespräch buchen',
       // Nach dem Portfolio vom 24.08.2026: Desk und Earth laufen oeffentlich und
       // fehlten hier, Vicini stand hier und ist bewusst noch nicht im Portfolio.
@@ -77,7 +77,7 @@ export default function Hero({ locale, calUrl }: Props) {
         { value: 'MÔRA', label: 'Kontext & Handlung' },
         { value: 'DAS OS', label: 'Die Firma als Ort' },
         { value: 'YORI', label: 'Creator OS' },
-        { value: 'DESK', label: 'Môra für Selbständige' }
+        { value: 'DESK', label: 'MÔRA für Selbständige' }
       ],
       scrollHint: 'Entdecken'
     },
@@ -85,14 +85,14 @@ export default function Hero({ locale, calUrl }: Props) {
       badge: 'SAIMÔR ECOSYSTEM · SOVEREIGN AI',
       headline: 'Saimôr',
       subheadline: 'Sovereign AI systems for work, knowledge and ideas.',
-      description: 'Saimôr combines dedicated workspaces with Môra, a context and agent layer. Data storage and connections stay on your own server or dedicated instance; any AI models used are connected transparently.',
-      ctaPrimary: 'Meet Môra',
+      description: 'Saimôr combines dedicated workspaces with MÔRA, a context and agent layer. Data storage and connections stay on your own server or dedicated instance; any AI models used are connected transparently.',
+      ctaPrimary: 'Meet MÔRA',
       ctaSecondary: 'Book a call',
       stats: [
         { value: 'MÔRA', label: 'Context & action' },
         { value: 'THE OS', label: 'Your company as a place' },
         { value: 'YORI', label: 'Creator OS' },
-        { value: 'DESK', label: 'Môra for freelancers' }
+        { value: 'DESK', label: 'MÔRA for freelancers' }
       ],
       scrollHint: 'Explore'
     }

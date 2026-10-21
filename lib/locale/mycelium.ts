@@ -32,7 +32,7 @@ export const myceliumCopy: Record<
     kicker: "So funktioniert's",
     title: "Oben der Wald, unten das Myzel",
     intro:
-      "Môra bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.",
+      "MÔRA bündelt Signale aus deinen Systemen und zeigt dir, was zusammengehört.",
     badges: ["Ruhig", "Klar"],
     forest: {
       title: "Der Wald",

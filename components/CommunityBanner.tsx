@@ -18,7 +18,7 @@ const content = {
       {
         icon: Zap,
         title: 'Frühzugang',
-        text: 'Teste Môra und alle Features bevor sie öffentlich werden.',
+        text: 'Teste MÔRA und alle Features bevor sie öffentlich werden.',
       },
       {
         icon: MessageSquare,
@@ -49,7 +49,7 @@ const content = {
       {
         icon: Zap,
         title: 'First Access',
-        text: 'Use Môra and all features before they go public.',
+        text: 'Use MÔRA and all features before they go public.',
       },
       {
         icon: MessageSquare,

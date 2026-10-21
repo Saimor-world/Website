@@ -147,7 +147,7 @@ export default function DemoHqPreview({ profile, osHref, onRequestAccess, access
           initial="hidden"
           animate="show"
         >
-          {/* Môra greeting — first beat */}
+          {/* MÔRA greeting — first beat */}
           <motion.div variants={fadeUp}>
             <MoraGreeting companyName={profile.companyName} />
           </motion.div>
