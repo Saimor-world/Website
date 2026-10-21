@@ -110,8 +110,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
 
   const copy = locale === 'de'
-    ? { system: 'Produkte', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
-    : { system: 'Products', mora: 'Môra', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
+    ? { system: 'Produkte', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
+    : { system: 'Products', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
 
   const navItems = [
     { href: anchorHref('products'), label: copy.system },

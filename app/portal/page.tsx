@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Portal – Dein Arbeitsbereich',
   description:
-    'Eine Tür in deinen SAIMÔR-Arbeitsbereich: Môra, Analysen und Dashboards im echten OS. Ehrlich, EU-gehostet, ohne zweiten Login.',
+    'Eine Tür in deinen SAIMÔR-Arbeitsbereich: MÔRA, Analysen und Dashboards im Saimôr OS. Ehrlich, EU-gehostet, ohne zweiten Login.',
   robots: { index: false, follow: false },
 };
 
@@ -19,7 +19,7 @@ const T = {
   de: {
     eyebrow: 'Portal',
     title: 'Dein Arbeitsbereich',
-    lead: 'Ein Ort für deine Daten, deine Analysen und dein Môra – im echten OS. Kein zweites Dashboard, keine Attrappe.',
+    lead: 'Ein Ort für deine Daten, deine Analysen und MÔRA – im Saimôr OS. Kein zweites Dashboard, keine Attrappe.',
     backTitle: (name: string) => `Willkommen zurück, ${name}.`,
     backLead: 'Dein Arbeitsbereich ist bereit. Du wirst ohne zweiten Login direkt ins OS geführt.',
     enterOs: 'In deinen Arbeitsbereich',
@@ -40,7 +40,7 @@ const T = {
         icon: 'play',
         tag: 'Ohne Anmeldung',
         title: 'Live-Demo',
-        body: 'Das Mora Lab direkt ausprobieren – ohne Konto, ohne Verpflichtung. Sieh, wie Signale zu Klarheit werden.',
+        body: 'Das MÔRA Lab direkt ausprobieren – ohne Konto, ohne Verpflichtung. Sieh, wie Signale zu Klarheit werden.',
         cta: 'Demo ansehen',
         href: '/demo',
       },
@@ -56,7 +56,7 @@ const T = {
     insideTitle: 'Was dich im Arbeitsbereich erwartet',
     insideLead: 'Das echte OS – nichts Erfundenes. Wir befinden uns in aktivem Aufbau (Early Access).',
     inside: [
-      { icon: 'spark', title: 'Môra', body: 'Die semantische Ebene: erkennt Zusammenhänge in deinen Daten, statt sie nur zu speichern.' },
+      { icon: 'spark', title: 'MÔRA', body: 'Die semantische Ebene: erkennt Zusammenhänge in deinen Daten, statt sie nur zu speichern.' },
       { icon: 'net', title: 'Kontext-Netz', body: 'Dokumente, Analysen und Signale werden vernetzt – im Finder navigierbar.' },
       { icon: 'dash', title: 'Dashboards', body: 'Deine Lage auf einen Blick: Befunde aus dem Check, Status, nächste Schritte.' },
       { icon: 'lock', title: 'Souverän', body: 'EU-gehostet (Hetzner, DE), DSGVO by Design, keine Werbe-Tracker.' },
@@ -67,7 +67,7 @@ const T = {
   en: {
     eyebrow: 'Portal',
     title: 'Your workspace',
-    lead: 'One place for your data, your analyses and your Môra – inside the real OS. No second dashboard, no mock-up.',
+    lead: 'One place for your data, your analyses and MÔRA – inside Saimôr OS. No second dashboard, no mock-up.',
     backTitle: (name: string) => `Welcome back, ${name}.`,
     backLead: 'Your workspace is ready. You are taken straight into the OS – no second login.',
     enterOs: 'Enter your workspace',
@@ -88,7 +88,7 @@ const T = {
         icon: 'play',
         tag: 'No sign-up',
         title: 'Live demo',
-        body: 'Try the Mora Lab right away – no account, no commitment. See how signals turn into clarity.',
+        body: 'Try the MÔRA Lab right away – no account, no commitment. See how signals turn into clarity.',
         cta: 'View demo',
         href: '/demo',
       },
@@ -104,7 +104,7 @@ const T = {
     insideTitle: 'What awaits you in the workspace',
     insideLead: 'The real OS – nothing invented. We are in active development (early access).',
     inside: [
-      { icon: 'spark', title: 'Môra', body: 'The semantic layer: it understands connections in your data instead of just storing it.' },
+      { icon: 'spark', title: 'MÔRA', body: 'The semantic layer: it understands connections in your data instead of just storing it.' },
       { icon: 'net', title: 'Context web', body: 'Documents, analyses and signals are linked – navigable in the Finder.' },
       { icon: 'dash', title: 'Dashboards', body: 'Your situation at a glance: findings from the check, status, next steps.' },
       { icon: 'lock', title: 'Sovereign', body: 'EU-hosted (Hetzner, DE), GDPR by design, no ad trackers.' },

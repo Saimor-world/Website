@@ -55,7 +55,7 @@ function MoraGreeting({ companyName }: { companyName: string }) {
       </motion.div>
 
       <div className="min-w-0">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-cyan-200/60">Môra</p>
+        <p className="text-[10px] uppercase tracking-[0.22em] text-cyan-200/60">MÔRA</p>
         <p className="mt-0.5 text-sm leading-relaxed text-white/80">
           Ich habe das Dossier für{' '}
           <span className="font-semibold text-cyan-100">{companyName}</span>{' '}

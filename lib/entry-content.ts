@@ -47,7 +47,7 @@ const deArticles: EntryArticle[] = [
       {
         title: 'Was danach passiert',
         body:
-          'Du bekommst deinen persönlichen HQ-Link — ein Workspace mit deinen Befunden. Kein Passwort nötig. Einfach öffnen und mit Môra arbeiten.',
+          'Du bekommst deinen persönlichen HQ-Link — ein Workspace mit deinen Befunden. Kein Passwort nötig. Einfach öffnen und mit MÔRA arbeiten.',
       },
     ],
     ctaLabel: 'Kostenlos prüfen',
@@ -113,11 +113,11 @@ const deArticles: EntryArticle[] = [
     readTime: '2 min',
     title: 'Adaptive Intelligence: Ein OS, das dich versteht',
     excerpt: 'Saimôr OS passt sich deiner Firma an – visuell, inhaltlich und funktional. Erlebe die Symbiose ab der ersten Sekunde.',
-    intro: 'Ein Betriebssystem sollte kein starres Gitter sein. Mora transformiert das HQ basierend auf deiner Identität.',
+    intro: 'Ein Betriebssystem sollte kein starres Gitter sein. MÔRA gestaltet das HQ im Saimôr OS passend zu deinem Arbeitskontext.',
     tags: ['Personalisiert', 'Dynamisch', 'High-Fidelity'],
     sections: [
       { title: 'Deine Identität zählt', body: 'Sobald du deinen Check startest, beginnt die Transformation. Farben, Fokusbereiche und Prioritäten passen sich deinem Unternehmen an.' },
-      { title: 'Visuelle Symbiose', body: 'Keine Standard-Themes. Die Atmosphäre des HQ spiegelt die Energie deiner Marke wider – von der Hintergrund-Aura bis zum Puls von Mora.' },
+      { title: 'Visuelle Symbiose', body: 'Keine Standard-Themes. Die Atmosphäre des HQ spiegelt die Energie deiner Marke wider – von der Hintergrund-Aura bis zum Puls von MÔRA.' },
       { title: 'Nahtloser Einstieg', body: 'Vom Web-Scan direkt ins personalisierte Cockpit. Deine Daten sind bereits da, dein Team ist vorbereitet.' },
     ],
     ctaLabel: 'Jetzt erleben',
@@ -134,11 +134,11 @@ const enArticles: EntryArticle[] = [
     readTime: '2 min',
     title: 'Adaptive Intelligence: An OS that understands you',
     excerpt: 'Saimôr OS adapts to your company – visually, contextually, and functionally. Experience symbiosis from second one.',
-    intro: 'An operating system should not be a rigid grid. Mora transforms the HQ based on your identity.',
+    intro: 'An operating system should not be a rigid grid. MÔRA shapes the HQ inside Saimôr OS around your working context.',
     tags: ['Personalized', 'Dynamic', 'High-Fidelity'],
     sections: [
       { title: 'Your Identity Matters', body: 'As soon as you start your check, the transformation begins. Colors, focus areas, and priorities adapt to your business.' },
-      { title: 'Visual Symbiosis', body: 'No generic themes. The atmosphere of the HQ reflects the energy of your brand – from the background aura to Mora\'s pulse.' },
+      { title: 'Visual Symbiosis', body: 'No generic themes. The atmosphere of the HQ reflects the energy of your brand – from the background aura to MÔRA\'s pulse.' },
       { title: 'Seamless Entry', body: 'From web scan directly to your personalized cockpit. Your data is already there, your team is prepared.' },
     ],
     ctaLabel: 'Experience Now',
