@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, CircleCheck, FileText, Pause, Play } from 'lucide-react';
-import AmbientParticleField from './AmbientParticleField';
-import MoraCharacter, { type MoraMood } from './MoraCharacter';
-import MoraCompanion from './MoraCompanion';
+import type { MoraMood } from './MoraCharacter';
 import styles from './MoraProductPage.module.css';
 
 type Props = { locale: 'de' | 'en' };
@@ -73,7 +71,6 @@ const COPY = {
 
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
-  const [orbState, setOrbState] = useState<MoraMood>('rest');
   const [context, setContext] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -85,32 +82,9 @@ export default function MoraProductPage({ locale }: Props) {
   const still = paused || hidden;
   const deepHref = `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=mora`;
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
-  const activeState = c.states.find(([key]) => key === orbState) ?? c.states[0];
 
   return (
     <div className={styles.page} data-testid="mora-product" data-paused={still}>
-      <section id="persona" className="relative scroll-mt-24 overflow-hidden border-b border-white/[.07] bg-[#06100c] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(79,169,131,.12),transparent_32%)]" aria-hidden="true" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.9fr_1.1fr]">
-          <div className="grid place-items-center">
-            <MoraCharacter size={280} state={orbState} paused={still} className={styles.personaCharacter} />
-          </div>
-          <div>
-            <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.personaEyebrow}</p>
-            <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[.96] tracking-[-.04em] text-white/95 sm:text-6xl">{c.personaTitle}</h2>
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.personaText}</p>
-            <div className="mt-9 flex flex-wrap gap-2" role="group" aria-label={c.statesLabel}>
-              {c.states.map(([key, label]) => (
-                <button key={key} type="button" aria-pressed={orbState === key} onClick={() => setOrbState(key)} className={`inline-flex min-h-[44px] items-center rounded-full border px-5 text-sm font-semibold transition ${orbState === key ? 'border-[#e0c878]/60 bg-[#e0c878]/10 text-[#f5e6b8]' : 'border-white/12 text-white/75 hover:border-white/26 hover:text-white'}`}>
-                  {label}
-                </button>
-              ))}
-            </div>
-            <p className="mt-5 max-w-xl border-l border-[#dfc775]/45 pl-5 text-sm leading-6 text-white/75" aria-live="polite">{activeState[2]}</p>
-          </div>
-        </div>
-      </section>
-
       <section className="border-y border-white/[.08] bg-[#0b1c15] px-5 py-20 sm:px-8 md:py-28 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.78fr_1.22fr] lg:items-center">
           <div>
@@ -121,12 +95,10 @@ export default function MoraProductPage({ locale }: Props) {
           <div className={styles.contextBlock}>
             <div className={styles.contextMap} role="group" aria-label={c.contextHint}>
               <div className={styles.orbit} aria-hidden="true" />
-              <div className={styles.characterStage}>
-                <MoraCharacter size={300} state={orbState} paused={still} className={styles.heroCharacter} />
-              </div>
-              <ContextNode active={context === 0} onClick={() => { setContext(0); setOrbState('dream'); }} className={styles.files} icon={<FileText size={15} />} label={c.file} />
-              <ContextNode active={context === 1} onClick={() => { setContext(1); setOrbState('listen'); }} className={styles.calendar} icon={<CalendarDays size={15} />} label={c.calendar} />
-              <ContextNode active={context === 2} onClick={() => { setContext(2); setOrbState('speak'); }} className={styles.openWork} icon={<CircleCheck size={15} />} label={c.open} />
+              <div className={styles.characterStage} aria-hidden="true"><span className={styles.core} /></div>
+              <ContextNode active={context === 0} onClick={() => { setContext(0); }} className={styles.files} icon={<FileText size={15} />} label={c.file} />
+              <ContextNode active={context === 1} onClick={() => { setContext(1); }} className={styles.calendar} icon={<CalendarDays size={15} />} label={c.calendar} />
+              <ContextNode active={context === 2} onClick={() => { setContext(2); }} className={styles.openWork} icon={<CircleCheck size={15} />} label={c.open} />
             </div>
             <div className={styles.contextReadout} aria-live="polite" data-testid="mora-context-preview">
               <span>{c.sample}</span>
@@ -143,21 +115,16 @@ export default function MoraProductPage({ locale }: Props) {
 
       <section id="deep-view" className="relative scroll-mt-24 overflow-hidden px-5 py-24 sm:px-8 md:py-32 lg:px-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.82fr_1.18fr] md:items-center">
+        <div className="relative mx-auto max-w-3xl text-center [&_p]:mx-auto">
           <div>
             <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.deepEyebrow}</p>
             <h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.deepText}</p>
             <Link href={deepHref} className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#f0d38c] transition hover:text-[#ffe3a0]">{c.deepCta}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link>
           </div>
-          <Link href={deepHref} className="relative grid h-[330px] place-items-center overflow-hidden rounded-[2rem] border border-white/[.08] bg-[#0a1812] transition hover:border-[#d8c27d]/30 sm:h-[430px]" aria-label={c.deepCta}>
-            <AmbientParticleField paused={still} />
-            <MoraCharacter size={120} state="listen" paused={still} />
-          </Link>
         </div>
       </section>
 
-      <MoraCompanion locale={locale} paused={still} />
     </div>
   );
 }

@@ -126,10 +126,6 @@ export default function MoraLandingPage({ locale, children }: Props) {
           </h1>
           <p className={styles.sub}>{c.heroSub}</p>
           <DemoLaunchButton locale={locale} label={c.cta} className={styles.cta} />
-          <aside className={styles.glance} aria-label={c.glanceTitle}>
-            <p>{c.glanceTitle}</p>
-            <ul>{c.glance.map((g, i) => { const Icon = ICONS[i]; return <li key={g}><Icon size={15} aria-hidden="true" />{g}</li>; })}</ul>
-          </aside>
         </div>
 
         <div className={styles.stage}>

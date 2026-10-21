@@ -391,27 +391,14 @@ test('mobile priorities: first scroll, optional fields and direct contact stay u
 
 test('product states, workshop details and YORI example rooms respond', async ({ page }, info) => {
   await visit(page, '/mora'); await consent(page);
-  await expect(page.locator('[data-mora-character]').first().locator('[data-face-state="rest"] svg ellipse').first()).toBeVisible();
+  // MÔRA appears exactly once on /mora: the hero stone. No companion, no further figures.
+  await expect(page.locator('[data-mora-presence]')).toHaveCount(1);
+  await expect(page.locator('[data-mora-character]')).toHaveCount(0);
+  await expect(page.getByTestId('mora-companion')).toHaveCount(0);
   await page.getByRole('button', { name: 'Termine', exact: true }).click();
   await expect(page.getByTestId('mora-context-preview')).toContainText('Mit Kontext in den Termin.');
-  const companion = page.getByRole('button', { name: 'Kleine MÔRA kennenlernen', exact: true });
-  // Little MÔRA docks quietly (no flight). While another MÔRA is on screen she is only a trace,
-  // but the dock stays tappable and summons her.
-  const companionDialog = page.getByRole('dialog', { name: 'MÔRA an deiner Seite' });
-  await expect(companion).toBeAttached();
-  await companion.click({ force: true });
-  await expect(companionDialog).toBeVisible({ timeout: 15000 });
-  await expect(page.getByTestId('mora-companion')).toHaveAttribute('data-presence', 'present');
-  await page.keyboard.press('Escape');
-  await expect(companion).toBeFocused();
   await page.getByRole('button', { name: 'Bewegung pausieren', exact: true }).click();
-  await expect(page.getByTestId('mora-companion')).toHaveAttribute('data-paused', 'true');
-  await page.getByRole('button', { name: 'Bewegung fortsetzen', exact: true }).click();
-  for (const name of ['Ruht', 'Träumt', 'Spricht']) {
-    const state = page.getByRole('button', { name, exact: true });
-    await state.click();
-    await expect(state).toHaveAttribute('aria-pressed', 'true');
-  }
+  await expect(page.getByTestId('mora-product')).toHaveAttribute('data-paused', 'true');
   await visit(page, '/studio');
   await page.locator('#workshops summary').click();
   await expect(page.locator('#workshops details')).toHaveAttribute('open', '');

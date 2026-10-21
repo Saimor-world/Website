@@ -65,3 +65,4 @@
 .contextBlock .contextReadout{margin-top:18px;text-align:left}
 .contextBlock .motion{margin:14px auto 0}
 @media(max-width:700px){.contextBlock .contextMap{height:280px}.contextBlock .heroCharacter{width:200px!important;height:200px!important}}
+.core{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff3cf 0%,#e6c98d 45%,transparent 72%);box-shadow:0 0 36px 10px rgba(230,201,141,.18)}

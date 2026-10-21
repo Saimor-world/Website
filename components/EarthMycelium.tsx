@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import type React from 'react';
 import styles from './EarthMycelium.module.css';
 
 type Point = { x: number; y: number };
@@ -15,6 +16,9 @@ type Strand = {
 };
 
 const MORA = { x: 600, y: 250 };
+// Where the hidden YORI light sits among the roots (keep in sync with YoriPath.module.css).
+const YORI_SPOT = { x: 816, y: 430 };
+const PHONE_YORI = { x: 360, y: 666 };
 const VIEW_W = 1200;
 const VIEW_H = 1000;
 const CREDIT = { x: 600, y: 368, rx: 240, ry: 46 };
@@ -207,6 +211,18 @@ function buildStrands(): Strand[] {
     });
   }
 
+  // A few fine golden roots that wander down to the hidden YORI light.
+  [44, 49, 53].forEach((index, n) => {
+    const origin = limbPoints[index];
+    const root = grow(rng, origin, Math.PI / 2 + (n - 1) * 0.35, 60, 12, 0.5, YORI_SPOT, true, false);
+    push(root.points, 0.9 - n * 0.15, 'gold', false, true);
+    root.points.slice(2, -3).forEach((node) => {
+      if (rng() > 0.4) return;
+      const twig = grow(rng, node, Math.PI / 2 + (rng() - 0.5) * 1.6, 4, 9, 0.8, null);
+      push(twig.points, 0.2, 'hair', false, true);
+    });
+  });
+
   return strands;
 }
 
@@ -363,10 +379,30 @@ function buildPhoneStrands(): Strand[] {
     });
   });
 
+  // One fine golden root wandering down to the hidden YORI light.
+  [{ x: 230, bend: -38 }, { x: 430, bend: 30 }].forEach(({ x, bend }, n) => {
+    const a = { x, y: phoneLimbY(x) + 2 };
+    const pts: Point[] = [];
+    for (let i = 0; i <= 26; i += 1) {
+      const t = i / 26;
+      const lx = mix(a.x, PHONE_YORI.x, t) + Math.sin(t * Math.PI) * bend + (rng() - 0.5) * 14 * (1 - t);
+      const ly = mix(a.y, PHONE_YORI.y, t) + (rng() - 0.5) * 6;
+      pts.push({ x: lx, y: ly });
+    }
+    pts[pts.length - 1] = { ...PHONE_YORI };
+    push(pts, 0.8 - n * 0.25, 'gold', 'front', { opacity: 0.7 - n * 0.15 });
+    pts.slice(4, -4).forEach((node) => {
+      if (rng() > 0.3) return;
+      const twig = growPhone(rng, node, Math.PI / 2 + (rng() - 0.5) * 1.8, 3, 9, 1, null);
+      push(twig.points, 0.2, 'hair', 'front', { opacity: 0.4 });
+    });
+  });
+
   return strands;
 }
 
 const STRANDS = buildStrands();
+const growDelay = (i: number, n: number) => ({ '--grow-delay': `${((i / n) * 1.6).toFixed(2)}s` }) as React.CSSProperties;
 const PHONE_STRANDS = buildPhoneStrands();
 const SPORES = Array.from({ length: 22 }, (_, index) => {
   const rng = mulberry32(0x404 + index * 19);
@@ -382,6 +418,22 @@ const SPORES = Array.from({ length: 22 }, (_, index) => {
 export default function EarthMycelium({ children }: { children?: ReactNode } = {}) {
   const orbRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+  const [grow, setGrow] = useState<'idle' | 'armed' | 'on'>('idle');
+
+  // The roots grow out of the Earth edge the first time the underside comes into view.
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field || typeof IntersectionObserver === 'undefined') return undefined;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    setGrow('armed');
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      window.requestAnimationFrame(() => setGrow('on'));
+      observer.disconnect();
+    }, { threshold: 0.15 });
+    observer.observe(field);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -415,7 +467,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
   }, []);
 
   return (
-    <div className={styles.field} data-testid="earth-mycelium" ref={fieldRef}>
+    <div className={styles.field} data-testid="earth-mycelium" data-grow={grow} ref={fieldRef}>
       <div className={styles.canvas}>
         <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
           <defs>
@@ -427,7 +479,6 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
             </linearGradient>
             <mask id="earthHyphaMask">
               <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
-              <ellipse cx={CREDIT.x} cy={CREDIT.y} rx={CREDIT.rx} ry={CREDIT.ry} fill="#000" />
             </mask>
           </defs>
 
@@ -439,6 +490,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 d={strand.d}
                 stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
                 strokeWidth={strand.w * 3.4}
+                pathLength={1}
+                style={growDelay(index, STRANDS.length)}
               />
             ))}
             {STRANDS.map((strand, index) => (
@@ -447,6 +500,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 className={`${styles.strand} ${styles[strand.tone]} ${strand.edge ? styles.edge : ''}`}
                 d={strand.d}
                 strokeWidth={strand.w}
+                pathLength={1}
+                style={growDelay(index, STRANDS.length)}
               />
             ))}
             {STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
@@ -488,6 +543,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 d={strand.d}
                 strokeWidth={strand.w}
                 strokeOpacity={strand.opacity}
+                pathLength={1}
+                style={growDelay(index, PHONE_STRANDS.length)}
               />
             ))}
             {PHONE_STRANDS.filter((strand) => strand.depth !== 'back' && strand.w >= 1.15).map((strand, index) => (
@@ -497,6 +554,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 d={strand.d}
                 stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
                 strokeWidth={strand.w * 2.4}
+                pathLength={1}
+                style={growDelay(index, PHONE_STRANDS.length)}
               />
             ))}
             {PHONE_STRANDS.filter((strand) => strand.depth !== 'back').map((strand, index) => (
@@ -506,6 +565,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 d={strand.d}
                 strokeWidth={strand.w}
                 strokeOpacity={strand.opacity}
+                pathLength={1}
+                style={growDelay(index, PHONE_STRANDS.length)}
               />
             ))}
             {PHONE_STRANDS.filter((strand) => strand.pulse).map((strand, index) => (

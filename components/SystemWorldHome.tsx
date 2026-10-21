@@ -18,10 +18,10 @@ const COPY = {
   de: {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
-    intro: 'Deine Arbeit lebt in vielen Apps. Dein Zusammenhang sollte das nicht müssen. SAIMÔR bringt Wissen, Werkzeuge und Entscheidungen in eine gemeinsame Arbeitswelt – mit MÔRA als Begleitung.',
+    intro: 'Deine Arbeit lebt in vielen Apps. Dein Zusammenhang sollte das nicht müssen. SAIMÔR bringt Wissen, Werkzeuge und Entscheidungen in eine gemeinsame Arbeitswelt.',
     enter: 'Produkte entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
-    fieldEyebrow: 'MÔRA / KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
+    fieldEyebrow: 'KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
     saimor: 'SAIMÔR', saimorText: 'Manches sollte nicht verloren gehen, nur weil der Tag weiterzieht.', mora: 'MÔRA', moraText: 'merkt, was sich verändert',
     entryLabel: 'EINSTIEG / SECURITY CHECK', entryTitle: 'Mit etwas Echtem statt mit einer leeren Promptbox starten.',
     entryText: 'Du startest mit deiner Domain. Der Security Report wird zum ersten echten Objekt im OS. Damit beginnt der Raum bereits mit realem Kontext.', entryCta: 'Security Check starten',
@@ -39,10 +39,10 @@ const COPY = {
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
-    intro: 'Your work lives across many apps. Your context should not have to. SAIMÔR brings knowledge, tools and decisions into a connected workspace – with MÔRA alongside you.',
+    intro: 'Your work lives across many apps. Your context should not have to. SAIMÔR brings knowledge, tools and decisions into a connected workspace.',
     enter: 'Explore products', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
-    fieldEyebrow: 'MÔRA / CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
+    fieldEyebrow: 'CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
     saimor: 'SAIMÔR', saimorText: 'Some things should not get lost just because the day moves on.', mora: 'MÔRA', moraText: 'notices when something changes',
     entryLabel: 'ENTRY / SECURITY CHECK', entryTitle: 'Start with something real instead of an empty prompt box.',
     entryText: 'You start with your domain. The Security Report becomes the first real object inside the OS, so the space begins with real context.', entryCta: 'Start Security Check',
@@ -77,7 +77,7 @@ export default function SystemWorldHome({ locale }: Props) {
             <div className={styles.heroCopy}>
               <h1 id="world-title">Saimôr</h1>
               <p className={styles.thesis}>{c.thesis}</p>
-              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen – verbunden durch MÔRA.' : 'Knowledge, tools and decisions – connected through MÔRA.'}</span></p>
+              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen. Verbunden.' : 'Knowledge, tools and decisions. Connected.'}</span></p>
               <div className={styles.actions}>
                 <Link href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
@@ -124,9 +124,9 @@ export default function SystemWorldHome({ locale }: Props) {
         <EarthMycelium><YoriPath locale={locale} /></EarthMycelium>
       </section>
 
-      <section className={styles.blickWorld} aria-label={locale === 'de' ? 'MÔRAs Blick' : "MÔRA's View"}>
+      <section className={styles.blickWorld} aria-label={locale === 'de' ? 'Die Welt der KI' : 'The world of AI'}>
         <div className={styles.moraIntroduction} id="blick">
-          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI / MÔRAS BLICK' : "THE WORLD OF AI / MÔRA'S VIEW"}</p>
+          <div><p className={styles.eyebrow}>{locale === 'de' ? 'DIE WELT DER KI' : 'THE WORLD OF AI'}</p>
             <h3>{locale === 'de' ? 'Überzeugend. Aber wahr?' : 'Convincing. But true?'}</h3>
             <p>{locale === 'de' ? 'Zwischen dem, was KI möglich macht, und dem, worauf du dich verlassen kannst, liegt ein entscheidender Unterschied.' : 'There is a meaningful distance between what AI makes possible and what you can rely on.'}</p>
           </div>
