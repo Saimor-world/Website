@@ -295,3 +295,32 @@ html:has([data-home-globe]) footer[data-public-footer] {
   padding-top: 168px;
   background-image: linear-gradient(180deg, #f6f4ec 0%, #dfe4d9 34px, #8e9c8f 78px, #2f3f37 122px, #101a15 160px, #050706 200px);
 }
+
+/* ── Lite mode: set by lib/lite-mode-script.ts on weak hardware (software GPU, ≤4 cores, …).
+   Same look, but no blur, no endless motion, no parallax, lighter shadows. ── */
+html.lite *,
+html.lite *::before,
+html.lite *::after {
+  animation-iteration-count: 1 !important;
+  animation-duration: 0.001s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0.12s !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  scroll-behavior: auto !important;
+  will-change: auto !important;
+}
+html.lite *:not(img):not(svg):not(svg *) {
+  filter: none !important;
+}
+html.lite [class*="blur"],
+html.lite [class*="Blur"] {
+  filter: none !important;
+}
+html.lite [class*="particle"],
+html.lite [class*="Particle"],
+html.lite [class*="spores"],
+html.lite [class*="_mote"],
+html.lite [class*="pulseLayer"] {
+  display: none !important;
+}
