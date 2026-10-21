@@ -1,6 +1,7 @@
 import dns from 'dns/promises';
 import tls from 'tls';
-import { isPrivateIp, validateScanDomain } from './domain-safety';
+import { validateScanDomain } from './domain-safety';
+import { pinnedGet, resolvePublicHost } from './safe-fetch';
 
 export type ReconResult = {
   domain: string;
@@ -87,20 +88,21 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
 
   try {
     // 1. DNS & IP
-    const addresses = await dns.resolve4(domain).catch(() => []);
-    result.ip = addresses[0] || null;
+    const resolution = await resolvePublicHost(domain);
+    const addresses = resolution.addresses;
+    result.ip = resolution.ok ? resolution.address : addresses[0] || null;
     result.agentTrace.push({
       step: 'dns',
       target: domain,
       status: result.ip ? 'ok' : 'warn',
       detail: result.ip ? `Resolved ${addresses.length} IPv4 address${addresses.length === 1 ? '' : 'es'}.` : 'No public IPv4 address resolved.',
     });
-    if (addresses.length > 0 && addresses.every(isPrivateIp)) {
+    if (!resolution.ok && resolution.reason !== 'unresolved') {
       result.agentTrace.push({
         step: 'dns',
         target: domain,
         status: 'blocked',
-        detail: 'Scan stopped because the resolved address is private or reserved.',
+        detail: 'Scan stopped because a resolved address is private or reserved.',
       });
       return result;
     }
@@ -142,9 +144,9 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
     }
 
     // 2. Active TLS Scan (Fixed race condition and added details)
-    try {
+    if (resolution.ok) try {
       await new Promise<void>((resolve) => {
-        const socket = tls.connect(443, domain, { 
+        const socket = tls.connect(443, resolution.address, { 
           servername: domain, 
           timeout: 5000,
           rejectUnauthorized: false // We want to see the cert even if invalid
@@ -245,14 +247,8 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
         const currentHost = new URL(currentUrl).hostname;
         const hostCheck = validateScanDomain(currentHost);
         if (!hostCheck.ok) break;
-        const currentAddresses = currentHost === domain ? addresses : await dns.resolve4(currentHost).catch(() => []);
-        if (currentAddresses.length > 0 && currentAddresses.every(isPrivateIp)) break;
-
-        const response = await fetch(currentUrl, { 
-          method: 'GET', // Use GET instead of HEAD for better compatibility
-          redirect: 'manual',
-          signal: AbortSignal.timeout(5000)
-        }).catch(() => null);
+        // pinnedGet re-resolves, rejects if ANY address is private and connects to the validated IP.
+        const response = await pinnedGet(currentUrl, { timeoutMs: 5000 }).catch(() => null);
 
         if (!response) break;
 
@@ -301,11 +297,7 @@ export async function performPassiveRecon(domain: string): Promise<ReconResult> 
       const finalOrigin = new URL(result.finalUrl).origin;
       const probes = await Promise.all(PUBLIC_FILE_PROBES.map(async (probe) => {
         try {
-          const response = await fetch(`${finalOrigin}${probe.path}`, {
-            method: 'GET',
-            redirect: 'manual',
-            signal: AbortSignal.timeout(4000),
-          });
+          const response = await pinnedGet(`${finalOrigin}${probe.path}`, { timeoutMs: 4000, maxBytes: 64 * 1024 });
           const found = response.status >= 200 && response.status < 300;
           return {
             path: probe.path,

@@ -26,3 +26,13 @@ describe('domain safety', () => {
     expect(isPrivateIp('8.8.8.8')).toBe(false);
   });
 });
+
+describe('isPrivateIp hardening', () => {
+  it('blocks metadata, IPv6 loopback/link-local/ULA and mapped addresses', () => {
+    for (const ip of ['169.254.169.254', '::1', '::', 'fe80::1', 'fd00::1', 'fc00::1', '::ffff:127.0.0.1', '::ffff:10.0.0.1', '64:ff9b::a00:1', 'ff02::1', '0.0.0.0']) {
+      expect(isPrivateIp(ip)).toBe(true);
+    }
+    expect(isPrivateIp('2606:4700:4700::1111')).toBe(false);
+    expect(isPrivateIp('1.1.1.1')).toBe(false);
+  });
+});

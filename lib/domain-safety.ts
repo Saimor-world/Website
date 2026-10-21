@@ -52,8 +52,20 @@ export function validateScanDomain(value: string): ScanDomainValidation {
 
 export function isPrivateIp(ip: string) {
   if (net.isIP(ip) === 6) {
-    const value = ip.toLowerCase();
-    return value === '::1' || value.startsWith('fc') || value.startsWith('fd') || value.startsWith('fe80:');
+    const value = ip.toLowerCase().split('%')[0];
+    const mapped = /^(?:0{0,4}:){0,5}(?:0{0,4}:)?ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(value) || /^::ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(value);
+    if (mapped) return isPrivateIp(mapped[1]);
+    if (value === '::' || value === '::1') return true;
+    if (/^::(\d+\.){3}\d+$/.test(value)) return true; // IPv4-compatible
+    if (/^::ffff:[0-9a-f]{1,4}:[0-9a-f]{1,4}$/.test(value)) return true; // mapped, hex form
+    if (value.startsWith('64:ff9b:')) return true; // NAT64
+    if (/^f[cd]/.test(value)) return true; // unique local
+    if (/^fe[89ab]/.test(value)) return true; // link-local
+    if (/^fe[c-f]/.test(value)) return true; // site-local (deprecated)
+    if (value.startsWith('ff')) return true; // multicast
+    if (value.startsWith('2001:db8') || value.startsWith('2001:0db8')) return true; // documentation
+    if (value.startsWith('fd00:ec2::254')) return true; // AWS metadata
+    return false;
   }
 
   if (net.isIP(ip) !== 4) return true;
@@ -70,6 +82,8 @@ export function isPrivateIp(ip: string) {
   if (a === 192 && b === 168) return true;
   if (a === 192 && b === 0) return true;
   if (a === 198 && (b === 18 || b === 19)) return true;
+  if (a === 198 && b === 51 && parts[2] === 100) return true;
+  if (a === 203 && b === 0 && parts[2] === 113) return true;
   if (a >= 224) return true;
 
   return false;
