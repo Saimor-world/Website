@@ -1,3 +1,17 @@
-.banner{max-height:calc(100vh - 96px);max-height:calc(100dvh - 96px);margin-bottom:env(safe-area-inset-bottom,0px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
-.clearance{scroll-padding-bottom:var(--consent-banner-height,0px)}
-body.clearance{padding-bottom:var(--consent-banner-height,0px)}
+.banner {
+  max-height: calc(100vh - 96px);
+  max-height: calc(100dvh - 96px);
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* Both document scrollports occur across the public layouts and browsers. */
+.clearance {
+  scroll-padding-bottom: var(--consent-banner-height, 0px);
+}
+
+body.clearance {
+  padding-bottom: var(--consent-banner-height, 0px);
+}
