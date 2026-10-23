@@ -1,5 +1,6 @@
 // Runs inline in <head> before first paint. Adds `html.lite` on weak hardware so
 // heavy effects (blur, infinite animations, particles, parallax) are switched off.
+// iOS Safari caps hardwareConcurrency (often 2–4) on every iPhone, so the CPU check is skipped there.
 // Override: ?lite=1 / ?lite=0 (remembered). Runtime fps probe remembers a slow device.
 export const LITE_MODE_SCRIPT = `(function(){try{
 var d=document.documentElement,K='saimor-lite',ls=window.localStorage,q=/[?&]lite=([01])/.exec(location.search);
@@ -7,8 +8,8 @@ if(q){ls.setItem(K,q[1]==='1'?'force':'off')}
 var st=ls.getItem(K);if(st==='off')return;
 var on=function(r){if(d.classList.contains('lite'))return;d.classList.add('lite');d.setAttribute('data-lite',r);try{window.dispatchEvent(new Event('saimor-lite'))}catch(e){}};
 if(st==='force'||st==='slow'){on(st);return}
-var n=navigator,c=n.connection;
-if(n.hardwareConcurrency&&n.hardwareConcurrency<=4){on('cpu');return}
+var n=navigator,c=n.connection,ios=/iP(hone|ad|od)/.test(n.userAgent)||(n.platform==='MacIntel'&&n.maxTouchPoints>1);
+if(!ios&&n.hardwareConcurrency&&n.hardwareConcurrency<=4){on('cpu');return}
 if(n.deviceMemory&&n.deviceMemory<=4){on('mem');return}
 if(c&&c.saveData){on('save');return}
 if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){on('motion');return}
