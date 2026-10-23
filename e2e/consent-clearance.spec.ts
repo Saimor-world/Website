@@ -4,6 +4,7 @@ test('fresh consent leaves page actions reachable without recording a choice', a
   await page.goto('/de');
   const banner = page.getByRole('dialog', { name: 'Datenschutz', exact: true });
   await expect(banner).toBeVisible();
+  await expect(banner).toHaveCSS('opacity', '1');
   // Even the final footer action must scroll clear of the fixed banner.
   const footerAction = page.locator('footer[data-public-footer]').getByRole('button').first();
   await footerAction.evaluate(element => element.scrollIntoView({ block: 'end', behavior: 'instant' }));
@@ -35,6 +36,7 @@ test('expanded consent remains usable on a short screen and releases its space a
   await page.setViewportSize({ width: info.project.name.endsWith('390') ? 390 : 1440, height: 390 });
   await page.goto('/de');
   const banner = page.getByRole('dialog', { name: 'Datenschutz', exact: true });
+  await expect(banner).toHaveCSS('opacity', '1');
   await banner.getByRole('button', { name: 'Einstellungen', exact: true }).click();
   const save = banner.getByRole('button', { name: 'Speichern', exact: true });
   await save.scrollIntoViewIfNeeded();
