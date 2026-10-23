@@ -23,3 +23,5 @@
  .sigil{width:43%}
 }
 @media(prefers-reduced-motion:reduce){.orbit{animation:none;will-change:auto}}
+/* Phone: sit beside the wordmark, below the eyebrow, so the orb and its moons never cross text. */
+@media(max-width:700px){.scene{top:120px;right:18px;width:clamp(70px,18.5vw,80px)}}

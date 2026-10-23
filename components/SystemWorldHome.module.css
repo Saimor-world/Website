@@ -116,3 +116,9 @@
 /* More air (Abschluss v2) */
 @media(min-width:701px){.moraIntroduction{padding-top:168px;padding-bottom:140px}.entry{padding-top:96px;padding-bottom:132px}}
 @media(max-width:700px){.moraIntroduction{padding-top:104px;padding-bottom:80px}.entry{padding-top:56px;padding-bottom:96px}}
+/* Phone: soft dark scrim behind the context copy so it stays readable over the bright portal. */
+@media(max-width:700px){
+ .contextCopy{position:relative;isolation:isolate}
+ .contextCopy::before{content:"";position:absolute;z-index:-1;inset:-48px -40px -40px -22px;pointer-events:none;background:linear-gradient(90deg,rgba(5,17,13,.9) 0%,rgba(5,17,13,.8) 55%,rgba(5,17,13,.45) 82%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%)}
+ .contextCopy h2,.contextBody{text-shadow:0 1px 12px rgba(4,12,9,.7)}
+}
