@@ -100,7 +100,7 @@ export default function HeroDemo({ locale }: Props) {
             </Link>
 
             <Link
-              href="/login?callbackUrl=%2Faccount%2Fbridge"
+              href={`/login?callbackUrl=%2Faccount%2Fbridge${locale === "en" ? "&lang=en" : ""}`}
               className="inline-flex min-h-14 items-center justify-center gap-3 rounded-2xl border border-white/18 bg-black/18 px-6 py-4 text-sm font-semibold text-white/82 backdrop-blur-xl transition hover:border-white/30 hover:bg-black/32"
             >
               <LogIn className="h-4 w-4" />

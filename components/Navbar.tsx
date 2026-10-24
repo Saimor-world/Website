@@ -107,7 +107,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const anchorHref = (id: string) => (isHome ? `#${id}` : `${homeHref}#${id}`);
   const securityHref = locale === 'de' ? '/de/einstieg/security-check' : '/en/entry/security-check';
   const moraHref = locale === 'de' ? '/mora' : '/en/mora';
-  const loginHref = '/login?callbackUrl=%2Faccount%2Fbridge';
+  const loginHref = `/login?callbackUrl=%2Faccount%2Fbridge${locale === 'en' ? '&lang=en' : ''}`;
 
   const copy = locale === 'de'
     ? { system: 'Produkte', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }

@@ -234,7 +234,7 @@ function SecurityCheckInline({ locale }: { locale: EntryLocale }) {
         {session ? (
           <p className="text-white/60">{locale === 'de' ? `Eingeloggt als ${session.user?.email}. Ergebnis wird gespeichert.` : `Logged in as ${session.user?.email}. Result will be saved.`}</p>
         ) : (
-          <p className="text-white/40">{locale === 'de' ? 'Nicht eingeloggt. Ergebnis wird nur angezeigt. ' : 'Not logged in. Result is shown only. '}<Link href="/login" className="text-emerald-400 hover:underline">{locale === 'de' ? 'Jetzt anmelden' : 'Login now'}</Link></p>
+          <p className="text-white/40">{locale === 'de' ? 'Nicht eingeloggt. Ergebnis wird nur angezeigt. ' : 'Not logged in. Result is shown only. '}<Link href={locale === 'de' ? '/login' : '/login?lang=en'} className="text-emerald-400 hover:underline">{locale === 'de' ? 'Jetzt anmelden' : 'Login now'}</Link></p>
         )}
       </div>
 
@@ -519,7 +519,7 @@ function DigitalSelfInline({ locale }: { locale: EntryLocale }) {
         {session ? (
           <p className="text-white/60">{locale === 'de' ? `Eingeloggt als ${session.user?.email}. Blueprint wird gespeichert.` : `Logged in as ${session.user?.email}. Blueprint will be saved.`}</p>
         ) : (
-          <p className="text-white/40">{locale === 'de' ? 'Nicht eingeloggt. Ergebnis wird nur angezeigt. ' : 'Not logged in. Result is shown only. '}<Link href="/login" className="text-emerald-400 hover:underline">{locale === 'de' ? 'Jetzt anmelden' : 'Login now'}</Link></p>
+          <p className="text-white/40">{locale === 'de' ? 'Nicht eingeloggt. Ergebnis wird nur angezeigt. ' : 'Not logged in. Result is shown only. '}<Link href={locale === 'de' ? '/login' : '/login?lang=en'} className="text-emerald-400 hover:underline">{locale === 'de' ? 'Jetzt anmelden' : 'Login now'}</Link></p>
         )}
       </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CommandPalette from './CommandPalette';
@@ -12,7 +12,12 @@ import './PublicMobile.css';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isEn = pathname?.startsWith('/en/') || pathname === '/en';
+  // Unprefixed shared pages (/login) take ?lang=en from English entry points.
+  const [langParamEn, setLangParamEn] = useState(false);
+  useEffect(() => {
+    setLangParamEn(new URLSearchParams(window.location.search).get('lang') === 'en');
+  }, [pathname]);
+  const isEn = pathname?.startsWith('/en/') || pathname === '/en' || (pathname === '/login' && langParamEn);
   const locale = isEn ? 'en' : 'de';
   const isYori = pathname === '/yori' || pathname === '/en/yori';
   const isClientWorld = pathname?.startsWith('/world/');
