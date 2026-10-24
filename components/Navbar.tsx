@@ -17,7 +17,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const isLightPage = pathname === '/de/kontakt' || pathname === '/en/contact' || pathname === '/earth' || pathname === '/en/earth';
+  const isLightPage = pathname === '/de/kontakt' || pathname === '/en/contact' || pathname === '/de/ueber' || pathname === '/en/about' || pathname === '/earth' || pathname === '/en/earth';
   const otherLocale = locale === 'de' ? 'en' : 'de';
 
   // globals.css gibt html UND body height:100% plus overflow-x:hidden - dadurch
@@ -79,6 +79,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
       '/mora/deep-view/lab': '/en/mora/deep-view/lab',
       '/en/mora/deep-view/lab': '/mora/deep-view/lab',
       '/de/kontakt': '/en/contact',
+      '/de/ueber': '/en/about',
+      '/en/about': '/de/ueber',
       '/en/contact': '/de/kontakt',
       '/mora/analog-affect': '/en/mora/deep-view',
       '/en/mora/analog-affect': '/mora/deep-view',
@@ -110,14 +112,15 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const loginHref = `/login?callbackUrl=%2Faccount%2Fbridge${locale === 'en' ? '&lang=en' : ''}`;
 
   const copy = locale === 'de'
-    ? { system: 'Produkte', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
-    : { system: 'Products', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', entry: 'Security Check', login: 'Access', menu: 'Menu' };
+    ? { system: 'Produkte', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', about: 'Über uns', entry: 'Security Check', login: 'Zugang', menu: 'Menü' }
+    : { system: 'Products', mora: 'MÔRA', yori: 'YORI', studio: 'Studio', about: 'About', entry: 'Security Check', login: 'Access', menu: 'Menu' };
 
   const navItems = [
     { href: anchorHref('products'), label: copy.system },
     { href: moraHref, label: copy.mora },
     { href: locale === 'de' ? '/yori' : '/en/yori', label: copy.yori },
     { href: locale === 'de' ? '/studio' : '/en/studio', label: copy.studio },
+    { href: locale === 'de' ? '/de/ueber' : '/en/about', label: copy.about },
   ];
 
   const track = (label: string) => MatomoEvents.navClick(label);

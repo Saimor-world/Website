@@ -40,7 +40,7 @@ export default function Footer({ locale }: { locale: Locale }) {
 
   const c = locale === 'de'
     ? {
-        system: 'System', studio: 'Studio', entry: 'Entry', access: 'Zugang', legal: 'Rechtliches',
+        system: 'System', overview: 'Übersicht', about: 'Über uns', studio: 'Studio', entry: 'Entry', access: 'Zugang', legal: 'Rechtliches',
         trust: 'Sicherheit', imprint: 'Impressum', privacy: 'Datenschutz', terms: 'AGB', refund: 'Widerruf',
         tagline: 'Arbeitsraum, Kontext und KI in einem System.',
         status: {
@@ -51,7 +51,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         },
       }
     : {
-        system: 'System', studio: 'Studio', entry: 'Entry', access: 'Access', legal: 'Legal',
+        system: 'System', overview: 'Overview', about: 'About', studio: 'Studio', entry: 'Entry', access: 'Access', legal: 'Legal',
         trust: 'Security', imprint: 'Imprint', privacy: 'Privacy', terms: 'Terms', refund: 'Refund',
         tagline: 'Workspace, context and AI in one system.',
         status: {
@@ -97,11 +97,12 @@ export default function Footer({ locale }: { locale: Locale }) {
 
           <ResponsiveDetails title={c.system}>
             <div className="mt-4 grid gap-3 text-sm text-white/65">
-              <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.system}</Link>
+              <Link className="transition hover:text-white/82" href={`${homeHref}#system`}>{c.overview}</Link>
+              <Link className="transition hover:text-white/82" href={locale === 'de' ? '/de/ueber' : '/en/about'}>{c.about}</Link>
               <Link className="transition hover:text-white/82" href={moraHref}>MÔRA</Link>
               <Link className="transition hover:text-white/82" href={locale === 'de' ? '/studio' : '/en/studio'}>{c.studio}</Link>
               <Link className="transition hover:text-white/82" href={securityHref}>{c.entry}</Link>
-              <a className="transition hover:text-white/82" href="/login?callbackUrl=%2Faccount%2Fbridge">{c.access}</a>
+              <a className="transition hover:text-white/82" href={`/login?callbackUrl=%2Faccount%2Fbridge${locale === 'en' ? '&lang=en' : ''}`}>{c.access}</a>
             </div>
           </ResponsiveDetails>
 

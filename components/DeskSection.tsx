@@ -44,7 +44,7 @@ const COPY: Record<Props["locale"], ProductSectionCopy> = {
     body: "Mail, calendar, invoices and open work are meant to meet in one calm daily view. Desk is Saimôr’s compact interface for freelancers and small teams — currently in development.",
     trust: "The goal: a dedicated data space, traceable connections and a freely chosen AI connection instead of an opaque shared account.",
     primary: "View concept",
-    primaryHref: "/demo?track=ai-business",
+    primaryHref: "/demo?lang=en&track=ai-business",
     secondary: "What MÔRA does here",
     sceneLabel: "MORNING · 08:12",
     cards: [

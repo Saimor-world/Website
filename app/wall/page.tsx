@@ -58,6 +58,12 @@ const KIND_LABELS: Record<string, string> = {
   'security-check': 'Security Signal',
 };
 
+const KIND_LABELS_EN: Record<string, string> = {
+  ...KIND_LABELS,
+  customer: 'Customer',
+  pilot: 'Pilot customer',
+};
+
 // Each kind owns a polaroid photo gradient + the matching thumbtack and ink
 // color. Warmer/softer pastel range than the original cold dark accents,
 // while still being category-distinctive on the dark wall.
@@ -84,8 +90,8 @@ function styleFor(entry: WallEntry): KindStyle {
   return KIND_STYLES[entry.kind || 'supporter'] || KIND_STYLES.supporter;
 }
 
-function roleFor(entry: WallEntry) {
-  return KIND_LABELS[entry.kind || 'supporter'] || 'Supporter';
+function roleFor(entry: WallEntry, en: boolean) {
+  return (en ? KIND_LABELS_EN : KIND_LABELS)[entry.kind || 'supporter'] || 'Supporter';
 }
 
 function initials(entry: WallEntry) {
@@ -99,15 +105,17 @@ function initials(entry: WallEntry) {
   );
 }
 
-function formatDate(value: string) {
+function formatDate(value: string, en: boolean) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString('de-DE', { day: 'numeric', month: 'short', year: 'numeric' });
+  return date.toLocaleDateString(en ? 'en-GB' : 'de-DE', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 // ─── Page ───────────────────────────────────────────────────────────────────
 
-export default async function WallPage() {
+export default async function WallPage({ searchParams }: { searchParams: Promise<{ lang?: string }> }) {
+  const en = (await searchParams)?.lang === 'en';
+  const L = (de: string, enText: string) => (en ? enText : de);
   const entries = await getEntries();
   const sorted = [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
@@ -153,25 +161,24 @@ export default async function WallPage() {
               className="mt-6 max-w-3xl text-5xl font-light leading-[0.98] text-[#fff7e9] drop-shadow-[0_3px_30px_rgba(0,0,0,.42)] sm:text-6xl md:text-8xl"
               style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
             >
-              Komm rein. Was bleibt, bekommt{' '}
+              {L('Komm rein. Was bleibt, bekommt', 'Come in. What lasts gets')}{' '}
               <em className="italic" style={{ color: '#FCE0BC' }}>
-                einen Platz.
+                {L('einen Platz.', 'a place.')}
               </em>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed md:text-xl" style={{ color: 'rgba(255, 244, 226, 0.72)' }}>
-              Menschen, Projekte und Begegnungen rund um Saimôr. Keine Rangliste. Kein Feed.
-              Nur Dinge, an die wir uns erinnern wollen.
+              {L('Menschen, Projekte und Begegnungen rund um Saimôr. Keine Rangliste. Kein Feed. Nur Dinge, an die wir uns erinnern wollen.', 'People, projects and encounters around Saimôr. No ranking. No feed. Only things we want to remember.')}
             </p>
           </div>
 
           <Link
-            href="/de#kontakt"
+            href={en ? "/en/contact" : "/de/kontakt"}
             className="inline-flex min-h-12 items-center justify-center gap-2 self-start rounded-full border border-[#fce0bc]/35 bg-[#1b110b]/35 px-6 py-3 text-base font-medium text-[#fff3df] backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-[#fce0bc] hover:text-[#2c2018] md:self-auto"
             style={{
               fontFamily: 'system-ui, sans-serif',
             }}
           >
-            Einen Platz anfragen
+            {L('Einen Platz anfragen', 'Request a place')}
             <ArrowRight size={15} />
           </Link>
         </div>
@@ -183,14 +190,14 @@ export default async function WallPage() {
           <div className="mb-10 flex items-center gap-5 border-t border-[#fce0bc]/15 pt-5 md:mb-14">
             <p className="text-xs uppercase tracking-[0.22em]" style={{ color: 'rgba(255, 240, 218, 0.56)', fontFamily: 'system-ui, sans-serif' }}>
               {sorted.length === 0
-                ? 'Noch keine freigegebenen Polaroids'
-                : `${sorted.length} ${sorted.length === 1 ? 'freigegebenes Polaroid' : 'freigegebene Polaroids'}`}
+                ? L('Noch keine freigegebenen Polaroids', 'No approved polaroids yet')
+                : `${sorted.length} ${sorted.length === 1 ? L('freigegebenes Polaroid', 'approved polaroid') : L('freigegebene Polaroids', 'approved polaroids')}`}
             </p>
             <span className="h-px flex-1 bg-[#fce0bc]/10" aria-hidden />
-            <span className="hidden text-sm italic text-[#fce0bc]/55 sm:inline">Mach es dir gemütlich.</span>
+            <span className="hidden text-sm italic text-[#fce0bc]/55 sm:inline">{L('Mach es dir gemütlich.', 'Make yourself at home.')}</span>
           </div>
 
-          {sorted.length === 0 ? <EmptyWall /> : <WallGrid entries={sorted} />}
+          {sorted.length === 0 ? <EmptyWall en={en} /> : <WallGrid entries={sorted} en={en} />}
         </div>
       </section>
 
@@ -198,7 +205,7 @@ export default async function WallPage() {
         <section className="relative z-10 px-5 pb-24 pt-4 md:px-8">
           <div className="mx-auto flex max-w-6xl justify-end">
             <p className="max-w-sm text-right text-base italic text-[#fce0bc]/60">
-              Nichts erscheint hier automatisch. Jedes Polaroid braucht eine persönliche Freigabe.
+              {L('Nichts erscheint hier automatisch. Jedes Polaroid braucht eine persönliche Freigabe.', 'Nothing appears here automatically. Every polaroid needs personal approval.')}
             </p>
           </div>
         </section>
@@ -209,11 +216,11 @@ export default async function WallPage() {
 
 // ─── Wall grid ──────────────────────────────────────────────────────────────
 
-function WallGrid({ entries }: { entries: WallEntry[] }) {
+function WallGrid({ entries, en }: { entries: WallEntry[]; en: boolean }) {
   return (
     <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-y-20">
       {entries.map((entry, index) => (
-        <Polaroid key={entry.id} entry={entry} index={index} />
+        <Polaroid key={entry.id} entry={entry} index={index} en={en} />
       ))}
     </div>
   );
@@ -221,7 +228,7 @@ function WallGrid({ entries }: { entries: WallEntry[] }) {
 
 // ─── Polaroid card ──────────────────────────────────────────────────────────
 
-function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
+function Polaroid({ entry, index, en }: { entry: WallEntry; index: number; en: boolean }) {
   const style = styleFor(entry);
   const Icon = style.icon;
   const rotation = ((index * 11) % 5) - 2;
@@ -359,7 +366,7 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
                   fontFamily: '"Cormorant Garamond", serif',
                 }}
               >
-                aus dem {entry.tag}
+                {en ? 'from' : 'aus dem'} {entry.tag}
               </p>
             )}
           </div>
@@ -372,7 +379,7 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
               className="text-[10px] uppercase tracking-[0.22em] mb-1"
               style={{ color: style.caption, fontFamily: 'system-ui, sans-serif' }}
             >
-              {roleFor(entry)}
+              {roleFor(entry, en)}
             </p>
             {entry.note ? (
               <p
@@ -390,7 +397,7 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
                 className="text-[12px] italic"
                 style={{ color: '#8B6E55', fontFamily: '"Cormorant Garamond", serif' }}
               >
-                Seit {formatDate(entry.createdAt)} an dieser Wand
+                {en ? `On this wall since ${formatDate(entry.createdAt, en)}` : `Seit ${formatDate(entry.createdAt, en)} an dieser Wand`}
               </p>
             )}
           </div>
@@ -403,25 +410,26 @@ function Polaroid({ entry, index }: { entry: WallEntry; index: number }) {
 
 // ─── Empty state ────────────────────────────────────────────────────────────
 
-function EmptyWall() {
+function EmptyWall({ en }: { en: boolean }) {
+  const L = (de: string, enText: string) => (en ? enText : de);
   return (
     <div className="flex min-h-[42svh] items-center py-12 md:py-20">
       <div className="max-w-xl border-l border-[#fce0bc]/25 pl-6 md:pl-9">
         <p className="text-xs uppercase tracking-[0.24em] text-[#fce0bc]/55" style={{ fontFamily: 'system-ui, sans-serif' }}>
-          Die Wand ist still
+          {L('Die Wand ist still', 'The wall is quiet')}
         </p>
         <h2 className="mt-4 text-4xl font-light text-[#fff5e5] md:text-5xl">
-          Die ersten Plätze bleiben bewusst leer.
+          {L('Die ersten Plätze bleiben bewusst leer.', 'The first places are deliberately left empty.')}
         </h2>
         <p className="mt-5 max-w-lg text-lg leading-relaxed text-[#f7efdf]/65">
-          Hier hängt erst etwas, wenn eine echte Begegnung, ein Projekt oder eine Zusammenarbeit dazugehört — und die Person zugestimmt hat.
+          {L('Hier hängt erst etwas, wenn eine echte Begegnung, ein Projekt oder eine Zusammenarbeit dazugehört — und die Person zugestimmt hat.', 'Something only goes up here when there is a real encounter, project or collaboration behind it — and the person has agreed.')}
         </p>
       <Link
         href="/de#kontakt"
         className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#fce0bc] px-6 py-3 text-base font-medium text-[#2c2018] transition hover:-translate-y-0.5 hover:bg-[#fff0d4]"
         style={{ fontFamily: 'system-ui, sans-serif' }}
       >
-        Eine Begegnung vorschlagen
+        {L('Eine Begegnung vorschlagen', 'Suggest an encounter')}
         <ArrowRight size={15} />
       </Link>
       </div>

@@ -18,7 +18,7 @@ const COPY = {
   de: {
     eyebrow: 'SAIMÔR · KLARHEIT IM WANDEL',
     thesis: 'Arbeitsräume, die Kontext behalten.',
-    intro: 'Deine Arbeit lebt in vielen Apps. Dein Zusammenhang sollte das nicht müssen. SAIMÔR bringt Wissen, Werkzeuge und Entscheidungen in eine gemeinsame Arbeitswelt.',
+    intro: 'Kein weiterer Chatbot. SAIMÔR ist eine Arbeitsumgebung, in der Intelligenz, Kontext, Infrastruktur und echte Umsetzung zusammenkommen – damit nichts zwischen Apps verloren geht.',
     enter: 'Produkte entdecken', learn: 'Security Check', login: 'Einloggen', training: 'Beratung · Workshops · Umsetzung', yori: 'YORI für Creator',
     orbit: [['DATEIEN', 'im Zusammenhang'], ['MÔRA', 'proaktive Assistenz'], ['ARBEIT', 'Kalender · Inbox · Board'], ['AGENTS', 'Ausführung im Hintergrund']],
     fieldEyebrow: 'KONTEXT', fieldTitle: 'Kontext soll mitkommen, nicht jedes Mal neu erklärt werden.',
@@ -39,7 +39,7 @@ const COPY = {
   },
   en: {
     eyebrow: 'SAIMÔR · CLARITY THROUGH CHANGE', thesis: 'Workspaces that keep context.',
-    intro: 'Your work lives across many apps. Your context should not have to. SAIMÔR brings knowledge, tools and decisions into a connected workspace.',
+    intro: 'Not another chatbot. SAIMÔR is an operating environment where intelligence, context, infrastructure and real-world execution come together – so nothing gets lost between apps.',
     enter: 'Explore products', learn: 'Security Check', login: 'Log in', training: 'Consulting · Workshops · Implementation', yori: 'YORI for creators',
     orbit: [['FILES', 'kept in context'], ['MÔRA', 'proactive assistant'], ['WORK', 'calendar · inbox · board'], ['AGENTS', 'background execution']],
     fieldEyebrow: 'CONTEXT', fieldTitle: 'Context should come with you instead of being explained again every time.',
@@ -77,7 +77,7 @@ export default function SystemWorldHome({ locale }: Props) {
             <div className={styles.heroCopy}>
               <h1 id="world-title">Saimôr</h1>
               <p className={styles.thesis}>{c.thesis}</p>
-              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Wissen, Werkzeuge und Entscheidungen. Verbunden.' : 'Knowledge, tools and decisions. Connected.'}</span></p>
+              <p className={styles.intro}><span className={styles.desktopIntro}>{c.intro}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Kein weiterer Chatbot. Intelligenz, Kontext und Umsetzung. Verbunden.' : 'Not another chatbot. Intelligence, context and execution. Connected.'}</span></p>
               <div className={styles.actions}>
                 <Link href="#products" className={styles.primary}>{c.enter}<ArrowRight size={19} aria-hidden="true" /></Link>
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>

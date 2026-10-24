@@ -196,7 +196,7 @@ const enArticles: EntryArticle[] = [
       { title: 'Experience Live', body: 'Watch our demo tracks to see how it works in practice – no risk involved.' },
     ],
     ctaLabel: 'Start Demo',
-    ctaHref: '/demo?track=ai-business',
+    ctaHref: '/demo?lang=en&track=ai-business',
     actionKind: 'demo-track',
   },
 ];

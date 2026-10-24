@@ -1,15 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePublicLocale } from '@/lib/use-public-locale';
 
 /**
  * Skip Link for Accessibility
  * Allows keyboard users to skip to main content
  */
 export default function SkipLink() {
-  const pathname = usePathname();
-  const label = pathname?.startsWith('/en') ? 'Skip to main content' : 'Zum Hauptinhalt springen';
+  const label = usePublicLocale() === 'en' ? 'Skip to main content' : 'Zum Hauptinhalt springen';
   return (
     <Link
       href="#main-content"

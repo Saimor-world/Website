@@ -184,7 +184,7 @@ export default function EntryHub({ locale }: { locale: EntryLocale }) {
               {locale === 'de' ? 'OS-Demo starten' : 'Start OS demo'}
             </Link>
             <Link
-              href="/wall"
+              href={locale === "de" ? "/wall" : "/wall?lang=en"}
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-transparent px-5 py-3 text-sm text-white/50 hover:text-white/70 hover:bg-white/5 transition-all duration-200"
             >
               {locale === 'de' ? 'Ergebnisse anderer sehen' : 'See others\' results'}

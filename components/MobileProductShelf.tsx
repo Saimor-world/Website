@@ -38,7 +38,7 @@ const COPY = {
       {
         name: 'DESK',
         line: 'A compact daily view for mail, calendar, invoices and open work.',
-        href: '/demo?track=ai-business',
+        href: '/demo?lang=en&track=ai-business',
         status: 'In active development',
         icon: PanelsTopLeft,
       },
