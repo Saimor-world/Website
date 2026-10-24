@@ -1,4 +1,5 @@
 'use client';
+import { usePublicLocale } from '@/lib/use-public-locale';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
@@ -43,7 +44,7 @@ export default function CookieBanner() {
   // The staged encounter has no data-dependent features or analytics opt-in.
   // Keep the existing preference; visitors can choose on the public pages.
   const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
-  const locale = pathname?.startsWith('/en') ? 'en' : 'de';
+  const locale = usePublicLocale();
   const copy = COPY[locale];
 
   const [mounted, setMounted] = useState(false);

@@ -653,9 +653,9 @@ function DigitalSelfInline({ locale }: { locale: EntryLocale }) {
 
 function DemoTrackInline({ locale }: { locale: EntryLocale }) {
   const links = [
-    { label: locale === 'de' ? 'Security Softwarepfad' : 'Security software track', href: '/demo?track=security' },
-    { label: locale === 'de' ? 'Digital Self Softwarepfad' : 'Digital Self software track', href: '/demo?track=digital-self' },
-    { label: locale === 'de' ? 'AI Business Softwarepfad' : 'AI Business software track', href: '/demo?track=ai-business' },
+    { label: locale === 'de' ? 'Security Softwarepfad' : 'Security software track', href: locale === 'de' ? '/demo?track=security' : '/demo?lang=en&track=security' },
+    { label: locale === 'de' ? 'Digital Self Softwarepfad' : 'Digital Self software track', href: locale === 'de' ? '/demo?track=digital-self' : '/demo?lang=en&track=digital-self' },
+    { label: locale === 'de' ? 'AI Business Softwarepfad' : 'AI Business software track', href: locale === 'de' ? '/demo?track=ai-business' : '/demo?lang=en&track=ai-business' },
   ];
 
   return (
