@@ -67,7 +67,8 @@ export default function AmbientParticleField(props: Props) {
       const c = controls.current;
       const dt = Math.min(.05, Math.max(0, (now - previous) / 1000)); previous = now;
       if (document.hidden || !visible) return;
-      const still = c.paused || c.reduced || systemReduced;
+      // Lite mode keeps the stars visible but still (one quiet frame, no motion).
+      const still = c.paused || c.reduced || systemReduced || document.documentElement.classList.contains('lite');
       if (!still) clock += dt;
       const ambient = !c.scene || c.scene === 'ambient';
       const d = c.scene === 'clearing' ? c.dawn?.current ?? 0 : 0;

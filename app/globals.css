@@ -317,8 +317,8 @@ html.lite [class*="blur"],
 html.lite [class*="Blur"] {
   filter: none !important;
 }
-html.lite [class*="particle"],
-html.lite [class*="Particle"],
+html.lite [class*="particle"]:not(canvas[data-scene]),
+html.lite [class*="Particle"]:not(canvas[data-scene]),
 html.lite [class*="spores"],
 html.lite [class*="_mote"],
 html.lite [class*="pulseLayer"] {
