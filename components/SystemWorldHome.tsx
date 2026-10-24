@@ -83,7 +83,7 @@ export default function SystemWorldHome({ locale }: Props) {
                 <Link href={securityHref} className={styles.textLink}><ShieldCheck size={16} aria-hidden="true" />{c.learn}<ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
               <ResponsiveDetails className={styles.utilityDisclosure} title={locale === 'de' ? 'Weitere Wege' : 'More ways in'}><div className={styles.utilityLinks}>
-                <Link href="/login?callbackUrl=%2Faccount%2Fbridge"><LogIn size={14} aria-hidden="true" />{c.login}</Link>
+                <Link href={`/login?callbackUrl=%2Faccount%2Fbridge${locale === "en" ? "&lang=en" : ""}`}><LogIn size={14} aria-hidden="true" />{c.login}</Link>
                 <Link href={locale === 'de' ? '/yori' : '/en/yori'}><Sparkles size={14} aria-hidden="true" />{c.yori}</Link>
                 <Link href={locale === 'de' ? '/studio' : '/en/studio'} aria-label={c.training}><Mic2 size={14} aria-hidden="true" /><span className={styles.desktopIntro}>{c.training}</span><span className={styles.mobileIntro}>Studio</span></Link>
               </div></ResponsiveDetails>

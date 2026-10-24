@@ -14,11 +14,17 @@ export default function LoginPage() {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageKind, setMessageKind] = useState<'success' | 'error' | ''>('');
+  const [isEn, setIsEn] = useState(false);
+  const L = (de: string, en: string) => (isEn ? en : de);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const next = new URLSearchParams(window.location.search).get('callbackUrl');
     setCallbackUrl(safeInternalPath(next, '/account/bridge'));
+    const lang = new URLSearchParams(window.location.search).get('lang');
+    const en = lang === 'en' || (!lang && /\/en(\/|$)/.test(document.referrer ? new URL(document.referrer).pathname : ''));
+    setIsEn(en);
+    document.documentElement.lang = en ? 'en' : 'de';
   }, []);
 
   const requestMagicLink = async (e: React.FormEvent) => {
@@ -26,7 +32,7 @@ export default function LoginPage() {
 
     if (!email) {
       setMessageKind('error');
-      setMessage('Bitte gib deine E-Mail-Adresse ein.');
+      setMessage(L('Bitte gib deine E-Mail-Adresse ein.', 'Please enter your email address.'));
       return;
     }
 
@@ -41,7 +47,7 @@ export default function LoginPage() {
         body: JSON.stringify({
           email,
           callbackUrl,
-          locale: 'de',
+          locale: isEn ? 'en' : 'de',
         }),
       });
 
@@ -49,11 +55,11 @@ export default function LoginPage() {
       if (!response.ok) {
         setMessageKind('error');
         if (response.status === 429) {
-          setMessage('Zu viele Versuche. Bitte warte kurz und versuche es erneut.');
+          setMessage(L('Zu viele Versuche. Bitte warte kurz und versuche es erneut.', 'Too many attempts. Please wait a moment and try again.'));
         } else if (response.status === 503) {
-          setMessage('Der E-Mail-Versand ist gerade nicht verfügbar.');
+          setMessage(L('Der E-Mail-Versand ist gerade nicht verfügbar.', 'Email delivery is currently unavailable.'));
         } else {
-          setMessage(payload?.error || 'Der Anmeldelink konnte nicht versendet werden.');
+          setMessage(payload?.error || L('Der Anmeldelink konnte nicht versendet werden.', 'The sign-in link could not be sent.'));
         }
         return;
       }
@@ -64,10 +70,10 @@ export default function LoginPage() {
       }
 
       setMessageKind('success');
-      setMessage('Wenn zu dieser E-Mail ein Saimôr-Zugang oder ein frischer Security Check gehört, ist dein Anmeldelink jetzt unterwegs.');
+      setMessage(L('Wenn zu dieser E-Mail ein Saimôr-Zugang oder ein frischer Security Check gehört, ist dein Anmeldelink jetzt unterwegs.', 'If this email belongs to a Saimôr account or a recent Security Check, your sign-in link is on its way.'));
     } catch {
       setMessageKind('error');
-      setMessage('Ein unerwarteter Fehler ist aufgetreten.');
+      setMessage(L('Ein unerwarteter Fehler ist aufgetreten.', 'An unexpected error occurred.'));
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +97,7 @@ export default function LoginPage() {
 
       if (result?.error) {
         setMessageKind('error');
-        setMessage('Interner Login fehlgeschlagen.');
+        setMessage(L('Interner Login fehlgeschlagen.', 'Internal sign-in failed.'));
       } else if (result?.url) {
         window.location.href = result.url;
       } else {
@@ -99,7 +105,7 @@ export default function LoginPage() {
       }
     } catch {
       setMessageKind('error');
-      setMessage('Interner Login fehlgeschlagen.');
+      setMessage(L('Interner Login fehlgeschlagen.', 'Internal sign-in failed.'));
     } finally {
       setPasswordLoading(false);
     }
@@ -109,41 +115,41 @@ export default function LoginPage() {
     <main className="min-h-screen bg-[#050b09] text-white px-5 py-10 sm:px-8 flex items-center">
       <div className="mx-auto w-full max-w-5xl grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <section className="space-y-7 max-w-xl">
-          <Link href="/de" className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors">
+          <Link href={isEn ? "/en" : "/de"} className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Zurück zu Saimôr
+            {L('Zurück zu Saimôr', 'Back to Saimôr')}
           </Link>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-emerald-100/60">
             <ShieldCheck className="w-3.5 h-3.5" />
-            Persönlicher Zugang
+            {L('Persönlicher Zugang', 'Personal access')}
           </div>
 
           <div className="space-y-4">
             <h1 className="text-5xl sm:text-6xl font-light tracking-[-0.035em] leading-[0.95]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Dein Saimôr Zugang.
+              {L('Dein Saimôr Zugang.', 'Your Saimôr access.')}
             </h1>
             <p className="max-w-lg text-base sm:text-lg leading-7 text-white/55">
-              Kein Passwort für die Demo. Gib dieselbe E-Mail ein, die du beim Security Check verwendet hast. Du bekommst einen einmaligen Link direkt in deinen Workspace.
+              {L('Kein Passwort für die Demo. Gib dieselbe E-Mail ein, die du beim Security Check verwendet hast. Du bekommst einen einmaligen Link direkt in deinen Workspace.', 'No password needed for the demo. Enter the same email you used for the Security Check and you will receive a one-time link straight into your workspace.')}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
-              <p className="text-white/85 font-medium">30 Tage</p>
-              <p className="mt-1 text-xs leading-5 text-white/38">Dein Demo-Zeitraum bleibt mit deinem Report verbunden.</p>
+              <p className="text-white/85 font-medium">{L('30 Tage', '30 days')}</p>
+              <p className="mt-1 text-xs leading-5 text-white/38">{L('Dein Demo-Zeitraum bleibt mit deinem Report verbunden.', 'Your demo period stays linked to your report.')}</p>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
               <p className="text-white/85 font-medium">Magic Link</p>
-              <p className="mt-1 text-xs leading-5 text-white/38">Kurz gültig, einmalig verwendbar, kein Demo-Passwort.</p>
+              <p className="mt-1 text-xs leading-5 text-white/38">{L('Kurz gültig, einmalig verwendbar, kein Demo-Passwort.', 'Short-lived, single-use, no demo password.')}</p>
             </div>
           </div>
 
           <Link
-            href="/de/einstieg/security-check"
+            href={isEn ? "/en/entry/security-check" : "/de/einstieg/security-check"}
             className="group inline-flex items-center gap-2 text-sm font-semibold text-emerald-200/80 hover:text-emerald-100 transition-colors"
           >
-            Noch keinen Zugang? Security Check starten
+            {L('Noch keinen Zugang? Security Check starten', 'No access yet? Start the Security Check')}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </section>
@@ -154,14 +160,14 @@ export default function LoginPage() {
               <Mail className="w-5 h-5 text-emerald-200" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white/90">Anmeldelink anfordern</p>
-              <p className="text-xs text-white/35">Für Demo- und bestehende Konten</p>
+              <p className="text-sm font-semibold text-white/90">{L('Anmeldelink anfordern', 'Request a sign-in link')}</p>
+              <p className="text-xs text-white/35">{L('Für Demo- und bestehende Konten', 'For demo and existing accounts')}</p>
             </div>
           </div>
 
           <form onSubmit={requestMagicLink} className="space-y-5">
             <label className="block space-y-2" htmlFor="email">
-              <span className="block text-[10px] uppercase tracking-[0.22em] text-white/35">E-Mail-Adresse</span>
+              <span className="block text-[10px] uppercase tracking-[0.22em] text-white/35">{L('E-Mail-Adresse', 'Email address')}</span>
               <input
                 id="email"
                 type="email"
@@ -169,7 +175,7 @@ export default function LoginPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="du@beispiel.de"
+                placeholder={L('du@beispiel.de', 'you@example.com')}
                 className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-white outline-none transition focus:border-emerald-300/45 focus:ring-2 focus:ring-emerald-300/10"
               />
             </label>
@@ -179,7 +185,7 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full rounded-2xl bg-[#d8f5e8] px-5 py-4 font-bold text-[#062019] transition hover:bg-white disabled:opacity-50"
             >
-              {isLoading ? 'Link wird vorbereitet…' : 'Magic Link senden'}
+              {isLoading ? L('Link wird vorbereitet…', 'Preparing link…') : L('Magic Link senden', 'Send magic link')}
             </button>
 
             {message && (
@@ -196,16 +202,16 @@ export default function LoginPage() {
           <details className="mt-7 border-t border-white/8 pt-5 group">
             <summary className="cursor-pointer list-none inline-flex items-center gap-2 text-xs text-white/28 hover:text-white/50 transition-colors">
               <KeyRound className="w-3.5 h-3.5" />
-              Interner Zugang
+              {L('Interner Zugang', 'Internal access')}
             </summary>
             <form onSubmit={passwordLogin} className="mt-4 space-y-3">
-              <p className="text-xs leading-5 text-white/28">Nur für interne Konten mit gesetztem Passwort.</p>
+              <p className="text-xs leading-5 text-white/28">{L('Nur für interne Konten mit gesetztem Passwort.', 'Only for internal accounts with a password.')}</p>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Passwort"
+                placeholder={L('Passwort', 'Password')}
                 autoComplete="current-password"
                 className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none focus:border-white/25"
               />
@@ -214,7 +220,7 @@ export default function LoginPage() {
                 disabled={passwordLoading || !email}
                 className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-xs font-semibold text-white/60 hover:bg-white/[0.08] disabled:opacity-40 transition-colors"
               >
-                {passwordLoading ? 'Prüfe…' : 'Intern anmelden'}
+                {passwordLoading ? L('Prüfe…', 'Checking…') : L('Intern anmelden', 'Internal sign-in')}
               </button>
             </form>
           </details>
