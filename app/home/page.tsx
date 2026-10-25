@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
+import { getOsBaseUrl } from '@/lib/os-links';
 
-export default function HomeAliasPage() {
-  redirect('/account/bridge');
+/** Canonical character navigation points to /home; the Website forwards to the existing OS. */
+export default function OsHomeRedirect() {
+  redirect(new URL('/home', getOsBaseUrl()).toString());
 }
-
