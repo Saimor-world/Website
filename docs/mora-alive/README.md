@@ -19,10 +19,12 @@ No React upgrade or React Three Fiber dependency is required.
 
 The existing Vercel migration script now skips only the `feat/mora-alive-v1` Preview branch.
 This visual-only preview must not apply any database migration. Production migration behavior
-is unchanged. The route has `noindex`; primary navigation and domains are unchanged. The existing language switch resolves `/en/mora/alive` to the same first preview. The shared renderer’s `/home` link reuses the existing account bridge without changing authentication or navigation behavior.
+is unchanged. The route has `noindex`; primary navigation and domains are unchanged. The existing language switch resolves `/en/mora/alive` and `/de/mora/alive` to the same first preview. The shared renderer’s `/home` link reuses the existing account bridge without changing authentication or navigation behavior.
 
 Risk A: optional preview presentation; no forms, accounts, billing or data changes.
 Rollback: revert this feature commit. Merge and production deployment require Marius's approval.
 Local typecheck and focused lint PASS (one existing unused-disable warning). Canonical source and preview migration-skip checks PASS. OS renderer browser matrix: 6/6 PASS, including iPhone WebKit. Website build/CI results are linked on draft PR #122. Physical iPhone performance and authenticated CORE character journeys are not claimed.
 
 The existing ambient-particle test uses the canvas getContext return type for its mock, accommodating the added WebGPU overload supplied by Three.js types; runtime behavior is unchanged.
+
+A focused browser workflow runs `npx playwright test --config=playwright.alive.config.ts` on Desktop Chromium and iPhone Chromium/WebKit. It verifies the actual canvas inside the Website layout, essential-only consent, preview provenance, pause and both language-switch destinations without the unrelated historic before/after benchmark.
