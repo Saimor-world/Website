@@ -1,6 +1,6 @@
-# Website integration — MÔRA Alive v01
+# Website integration — MÔRA Alive v03
 
-Status: PREPARED, draft only, no production publication.
+Status: PREPARED, draft only, no production publication. Visual fidelity remains work in progress; this is not a claimed 1:1 finished character asset.
 
 `/mora/alive` mounts the **same** mesh body, state vocabulary, controls and accessibility behavior
 as the OS. It is explicitly a public character preview; it does not load OS authentication,
@@ -13,6 +13,8 @@ CSS, state engine and derived approved sigil are exported from that commit, not 
 implemented. Run `node scripts/verify-mora-alive-source.mjs` to detect downstream changes.
 To update, run the upstream `scripts/export-mora-alive.mjs` against this checkout at a new
 reviewed immutable commit. Do not modify mirrored character sources here.
+
+V03 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `85938590b08345538b1fb8363869fada33ac55a8`. The same engine and body serve both previews. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
 
 Added dependencies: exact Three.js 0.181.0 and matching type definitions, as already used by OS.
 No React upgrade or React Three Fiber dependency is required.
