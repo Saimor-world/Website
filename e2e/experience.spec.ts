@@ -397,7 +397,7 @@ test('mobile priorities: first scroll, optional fields and direct contact stay u
 
 test('product states, workshop details and YORI example rooms respond', async ({ page }, info) => {
   await visit(page, '/mora'); await consent(page);
-  // MÔRA appears exactly once on /mora: the hero stone. No companion, no further figures.
+  // MÔRA appears exactly once on /mora: the integrated hero light body. No duplicate companion or further figures.
   await expect(page.locator('[data-mora-presence]')).toHaveCount(1);
   await expect(page.locator('[data-mora-character]')).toHaveCount(0);
   await expect(page.getByTestId('mora-companion')).toHaveCount(0);

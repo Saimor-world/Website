@@ -30,3 +30,20 @@ Local typecheck and focused lint PASS (one existing unused-disable warning). Can
 The existing ambient-particle test uses the canvas getContext return type for its mock, accommodating the added WebGPU overload supplied by Three.js types; runtime behavior is unchanged.
 
 A focused browser workflow runs `npx playwright test --config=playwright.alive.config.ts` on Desktop Chromium and iPhone Chromium/WebKit. It verifies the actual canvas inside the Website layout, essential-only consent, preview provenance, pause and both language-switch destinations without the unrelated historic before/after benchmark.
+
+## Existing MÔRA product page
+
+The draft now integrates the canonical 3D body into the real `/mora` and `/en/mora` landing
+hero. `MoraHeroPresence` is a thin Website lifecycle/input adapter around the same exported
+`CharacterScene`, not another renderer or character engine. It replaces the old hero stone
+image and face overlay. Exactly one MÔRA presence remains on the page.
+
+The original product headline, OS demo launch, context examples, trust section and Deep View
+links remain part of the page. The hero pause controls both the body and the decorative
+background; system reduced motion, offscreen/background suspension, keyboard invitation,
+touch and localized WebGL fallback are supported. Mobile places the headline, character and
+OS entry in one scrollable flow. The feature section uses a brighter cream/jade surface.
+
+The hero is a public development preview in idle, with local gaze/invitation reactions.
+It does not represent an authenticated CORE session or execute agent work. `/mora/alive`
+remains the separate character inspection route. Focused browser checks cover both purposes.

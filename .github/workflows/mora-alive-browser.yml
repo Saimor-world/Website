@@ -4,6 +4,10 @@ on:
     paths:
       - 'components/mora/alive/**'
       - 'components/MoraAliveWebsite.tsx'
+      - 'components/MoraHeroPresence*'
+      - 'components/MoraLanding*'
+      - 'app/mora/page.tsx'
+      - 'app/en/mora/page.tsx'
       - 'app/**/mora/alive/**'
       - 'app/mora/alive/**'
       - 'e2e/mora-alive.spec.ts'
