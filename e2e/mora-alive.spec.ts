@@ -1,5 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { try { localStorage.setItem('saimor-lite', 'off'); } catch {} });
+});
+
 async function switchLanguage(page: Page, language: 'EN' | 'DE') {
   const desktop = page.getByRole('link', { name: `Switch language to ${language}` });
   if (await desktop.isVisible()) await desktop.click();
@@ -34,6 +38,7 @@ test('Website reuses the OS body with explicit preview provenance', async ({ pag
 });
 
 test('the actual MÔRA product page has one interactive body and a working shared pause', async ({ page }, info) => {
+  test.setTimeout(60000);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
@@ -77,6 +82,15 @@ test('the actual MÔRA product page has one interactive body and a working share
   await expect(page.getByTestId('mora-hero-presence').locator('canvas')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Invite MÔRA closer' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Clarity');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(page.getByTestId('mora-hero-presence')).toHaveAttribute('data-still', 'false');
+  await page.evaluate(() => {
+    document.documentElement.classList.add('lite');window.dispatchEvent(new Event('saimor-lite'));
+  });
+  await expect(page.getByTestId('mora-hero-presence')).toHaveAttribute('data-still', 'true');
+  const liteCanvas = page.getByTestId('mora-hero-presence').locator('canvas');
+  const lite = await liteCanvas.screenshot();await page.waitForTimeout(250);
+  expect(await liteCanvas.screenshot()).toEqual(lite);
   expect(errors).toEqual([]);
 });
 

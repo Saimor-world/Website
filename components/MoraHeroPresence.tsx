@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import styles from './MoraHeroPresence.module.css';
+import { isLiteMode } from '@/lib/lite-mode-script';
 
 const Scene = dynamic(() => import('./mora/alive/CharacterScene'), {
   ssr: false, loading: () => <span className={styles.loading} aria-hidden="true">MÔRA</span>,
@@ -25,13 +26,20 @@ export default function MoraHeroPresence({ paused, locale }: {
   const [visible, setVisible] = useState(true);
   const [pageVisible, setPageVisible] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [lite, setLite] = useState(true);
+  const still = paused || lite;
   useEffect(() => {
     const sync = () => setPageVisible(document.visibilityState === 'visible');
     sync(); document.addEventListener('visibilitychange', sync);
+    const syncLite = () => setLite(isLiteMode());syncLite();
+    window.addEventListener('saimor-lite', syncLite);
     const observer = typeof IntersectionObserver === 'undefined' ? null
       : new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
     if (root.current) observer?.observe(root.current);
-    return () => { observer?.disconnect(); document.removeEventListener('visibilitychange', sync); };
+    return () => {
+      observer?.disconnect(); document.removeEventListener('visibilitychange', sync);
+      window.removeEventListener('saimor-lite', syncLite);
+    };
   }, []);
   const de = locale === 'de';
   const invite = () => {
@@ -42,7 +50,7 @@ export default function MoraHeroPresence({ paused, locale }: {
       : 'The interactive view is unavailable in this browser.'}
   </span>;
   return <div ref={root} className={styles.presence} data-mora-presence
-    data-testid="mora-hero-presence" data-character-source="preview" data-still={paused}
+    data-testid="mora-hero-presence" data-character-source="preview" data-still={still}
     role={failed ? 'img' : 'button'} tabIndex={failed ? -1 : 0}
     aria-label={failed ? (de ? 'MÔRA: interaktive Ansicht nicht verfügbar'
       : 'MÔRA: interactive view unavailable') : (de ? 'MÔRA zu dir einladen' : 'Invite MÔRA closer')}
@@ -59,7 +67,7 @@ export default function MoraHeroPresence({ paused, locale }: {
     }} onClick={event => { if (event.detail === 0) invite(); }}>
     <div className={styles.canvas} aria-hidden="true">
       <PresenceBoundary fallback={fallback} onFailure={() => setFailed(true)}>{failed ? fallback
-        : <Scene state="idle" still={paused} active={visible && pageVisible}
+        : <Scene state="idle" still={still} active={visible && pageVisible}
           interaction={interaction} onFailure={() => setFailed(true)} />}
       </PresenceBoundary>
     </div>

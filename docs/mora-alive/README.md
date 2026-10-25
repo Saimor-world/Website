@@ -40,10 +40,18 @@ image and face overlay. Exactly one MÔRA presence remains on the page.
 
 The original product headline, OS demo launch, context examples, trust section and Deep View
 links remain part of the page. The hero pause controls both the body and the decorative
-background; system reduced motion, offscreen/background suspension, keyboard invitation,
+background; existing site Lite mode, system reduced motion, offscreen/background suspension,
+keyboard invitation,
 touch and localized WebGL fallback are supported. Mobile places the headline, character and
 OS entry in one scrollable flow. The feature section uses a brighter cream/jade surface.
 
 The hero is a public development preview in idle, with local gaze/invitation reactions.
 It does not represent an authenticated CORE session or execute agent work. `/mora/alive`
 remains the separate character inspection route. Focused browser checks cover both purposes.
+
+The first actual-page integration (`2e66b6bb`) passed all nine focused browser checks in
+run 40237124914. Actual desktop and iPhone WebKit hero frames were reviewed. The checks
+cover one character, keyboard/touch, shared pause with stable canvas pixels, reduced motion,
+DE/EN product routes, context interaction, OS/Deep View destinations and WebGL fallback.
+The follow-up uses the existing `isLiteMode` / `saimor-lite` signal to stop the body on weak
+hardware and adds a direct frozen-canvas assertion for that transition.
