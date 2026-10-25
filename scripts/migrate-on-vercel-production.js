@@ -1,6 +1,14 @@
 /* eslint-disable no-console */
 const { spawnSync } = require('child_process');
 
+// This character-only feature preview needs no database schema changes.
+// Never run database migration commands while reviewing this isolated branch.
+if (process.env.VERCEL_ENV === 'preview' &&
+    process.env.VERCEL_GIT_COMMIT_REF === 'feat/mora-alive-v1') {
+  console.log('[migrate] skipped: MORA Alive visual preview');
+  process.exit(0);
+}
+
 const isVercel = process.env.VERCEL === '1';
 const isDatabaseDeployment =
   isVercel && (process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'preview');

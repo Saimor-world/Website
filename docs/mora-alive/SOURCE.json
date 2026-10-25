@@ -1,0 +1,12 @@
+{
+  "canonicalRepository": "Saimor-world/mora-ui",
+  "sourceCommit": "43ba455a2a379de4a66ced713696dc75fb5700b3",
+  "files": {
+    "components/mora/alive/CharacterScene.tsx": "e6414eafb4b504165b0bae76e6e7ff61265e8a53560f741e94c317a877cf6dca",
+    "components/mora/alive/MoraAliveView.tsx": "d23b28e72280d189bd956dcb8383919e534d7b297a8f2ae0bd7f2ac6d03b1bf5",
+    "components/mora/alive/MoraAlive.module.css": "de2f094dab21e887cb6d3a8fda68c8e42dc37876fd36c0b76d8512aff43547ea",
+    "lib/mora/alive/engine.ts": "384addb29847821797107965bcdbae012d9ce19333e2644be60b665e96d77618",
+    "public/brand/saimor-sigil-alive-256.png": "ec7b688fff8a0caa1b3aeb4794fb11ce87350ac434c24df1b39e457e1e6ac772"
+  },
+  "note": "Generated from immutable canonical source. Do not edit mirrored files; change upstream and re-export."
+}
