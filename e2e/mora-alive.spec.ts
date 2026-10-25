@@ -1,4 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+async function switchLanguage(page: Page, language: 'EN' | 'DE') {
+  const desktop = page.getByRole('link', { name: `Switch language to ${language}` });
+  if (await desktop.isVisible()) await desktop.click();
+  else {
+    await page.getByRole('button', { name: /Menü öffnen|Open menu/ }).click();
+    await page.getByRole('dialog', { name: /^(Menü|Menu)$/ }).getByRole('link', { name: language, exact: true }).click();
+  }
+}
 
 test('Website reuses the OS body with explicit preview provenance', async ({ page }) => {
   await page.goto('/mora/alive');
@@ -12,10 +21,10 @@ test('Website reuses the OS body with explicit preview provenance', async ({ pag
   await expect(region.getByRole('status')).toHaveText('Braucht deine Freigabe');
   await region.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await expect(region.getByRole('button', { name: 'Bewegung fortsetzen' })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('link', { name: 'Switch language to EN' }).click();
+  await switchLanguage(page, 'EN');
   await expect(region).toBeVisible();
   await expect(page).toHaveURL(/\/en\/mora\/alive$/);
-  await page.getByRole('link', { name: 'Switch language to DE' }).click();
+  await switchLanguage(page, 'DE');
   await expect(page).toHaveURL(/\/de\/mora\/alive$/);
   await expect(region).toBeVisible();
 });

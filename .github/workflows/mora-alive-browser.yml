@@ -34,7 +34,15 @@ jobs:
       - run: npm ci
       - run: npx next build
       - run: npx playwright install --with-deps chromium webkit
+      - name: Prepare existing trusted HTTPS test transport
+        run: |
+          mkdir -p .qa
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout .qa/localhost.key -out .qa/localhost.crt -subj "/CN=SAIMOR ephemeral CI" -addext "subjectAltName=IP:127.0.0.1,DNS:localhost" -addext "basicConstraints=critical,CA:TRUE" > /dev/null 2>&1
+          sudo cp .qa/localhost.crt /usr/local/share/ca-certificates/saimor-ci-qa.crt
+          sudo update-ca-certificates
       - run: npx playwright test --config=playwright.alive.config.ts
+        env:
+          NODE_EXTRA_CA_CERTS: ${{ github.workspace }}/.qa/localhost.crt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
