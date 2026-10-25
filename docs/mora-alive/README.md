@@ -19,7 +19,7 @@ No React upgrade or React Three Fiber dependency is required.
 
 The existing Vercel migration script now skips only the `feat/mora-alive-v1` Preview branch.
 This visual-only preview must not apply any database migration. Production migration behavior
-is unchanged. The route has `noindex`; primary navigation and domains are unchanged. The existing language switch resolves `/en/mora/alive` to the same first preview. `/home` forwards the shared renderer’s OS link through the existing server-side `getOsBaseUrl()` configuration; no user data is forwarded.
+is unchanged. The route has `noindex`; primary navigation and domains are unchanged. The existing language switch resolves `/en/mora/alive` to the same first preview. The shared renderer’s `/home` link reuses the existing account bridge without changing authentication or navigation behavior.
 
 Risk A: optional preview presentation; no forms, accounts, billing or data changes.
 Rollback: revert this feature commit. Merge and production deployment require Marius's approval.
