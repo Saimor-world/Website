@@ -15,7 +15,7 @@ const advance = (ms = 50) => act(() => { now += ms; frame?.(now); });
 beforeEach(() => {
   now = 0; vi.clearAllMocks();
   vi.spyOn(performance, 'now').mockReturnValue(0);
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context as unknown as CanvasRenderingContext2D);
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context as unknown as ReturnType<HTMLCanvasElement['getContext']>);
   vi.spyOn(HTMLCanvasElement.prototype, 'getBoundingClientRect').mockReturnValue({ width: 600, height: 700 } as DOMRect);
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
   vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frame = callback; return 1; });

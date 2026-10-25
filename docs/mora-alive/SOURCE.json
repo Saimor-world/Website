@@ -1,8 +1,8 @@
 {
   "canonicalRepository": "Saimor-world/mora-ui",
-  "sourceCommit": "43ba455a2a379de4a66ced713696dc75fb5700b3",
+  "sourceCommit": "e3a393122dd3dea7886700780880cb2ec4aabb37",
   "files": {
-    "components/mora/alive/CharacterScene.tsx": "e6414eafb4b504165b0bae76e6e7ff61265e8a53560f741e94c317a877cf6dca",
+    "components/mora/alive/CharacterScene.tsx": "71ac9a618da680011d2b344c7c66eff55d73a273b5e87f2010e294607e759cde",
     "components/mora/alive/MoraAliveView.tsx": "d23b28e72280d189bd956dcb8383919e534d7b297a8f2ae0bd7f2ac6d03b1bf5",
     "components/mora/alive/MoraAlive.module.css": "de2f094dab21e887cb6d3a8fda68c8e42dc37876fd36c0b76d8512aff43547ea",
     "lib/mora/alive/engine.ts": "384addb29847821797107965bcdbae012d9ce19333e2644be60b665e96d77618",

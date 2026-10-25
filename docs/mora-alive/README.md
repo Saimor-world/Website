@@ -23,4 +23,6 @@ is unchanged. The route has `noindex`; no navigation or domain is added.
 
 Risk A: optional preview presentation; no forms, accounts, billing or data changes.
 Rollback: revert this feature commit. Merge and production deployment require Marius's approval.
-Physical iPhone performance and authenticated CORE character journeys are not claimed.
+Local typecheck and focused lint PASS (one existing unused-disable warning). Canonical source and preview migration-skip checks PASS. OS renderer browser matrix: 6/6 PASS, including iPhone WebKit. Website build/CI results are linked on draft PR #122. Physical iPhone performance and authenticated CORE character journeys are not claimed.
+
+The existing ambient-particle test uses the canvas getContext return type for its mock, accommodating the added WebGPU overload supplied by Three.js types; runtime behavior is unchanged.
