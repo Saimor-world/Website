@@ -15,6 +15,10 @@ test('Website reuses the OS body with explicit preview provenance', async ({ pag
   await essential.waitFor({ state: 'visible', timeout: 5000 }).catch(() => undefined);
   if (await essential.isVisible()) await essential.click();
   const region = page.getByRole('region', { name: 'MÔRA Alive Vorschau' });
+  const banner = await page.getByRole('banner').boundingBox();
+  const title = await region.getByText('SAIMÔR / MÔRA ALIVE · V01', { exact: true }).boundingBox();
+  expect(banner).not.toBeNull(); expect(title).not.toBeNull();
+  expect(title!.y).toBeGreaterThanOrEqual(banner!.y + banner!.height);
   await expect(region.locator('canvas')).toBeVisible({ timeout: 20000 });
   await expect(region).toHaveAttribute('data-character-source', 'preview');
   await region.getByRole('combobox', { name: 'Character-Vorschau' }).selectOption('approval');
