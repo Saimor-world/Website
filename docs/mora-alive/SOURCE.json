@@ -1,13 +1,13 @@
 {
   "canonicalRepository": "Saimor-world/mora-ui",
-  "sourceCommit": "85938590b08345538b1fb8363869fada33ac55a8",
+  "sourceCommit": "8949a5c587934561f0fcbeb956cac7c35e2e63f9",
   "files": {
-    "components/mora/alive/CharacterScene.tsx": "cce7f8ad9d4ec29a8d47adc8334d57b4f537f9578a8cda76d1b570a249b816cd",
-    "components/mora/alive/characterForm.ts": "db0e9e8a2999dd8a877b96bfc5c96193021594a8139e8dbcbc5e32ae90781028",
-    "components/mora/alive/characterMaterials.ts": "4ade249ae29779436687a7b216258ff39116453e7ae95fcc3a17fc117397a510",
+    "components/mora/alive/CharacterScene.tsx": "35089c38c7bccbba5c72762e24782688fd17c1a61e87a0d557956bff59bfb103",
+    "components/mora/alive/characterForm.ts": "e30a59249335d8a0c54b8f770f53ba04b94fdeac31a88c70832bdcab2c61bb3d",
+    "components/mora/alive/characterMaterials.ts": "845c66346ed055ec0b066119031ce9ee755de3c7a4eb78710ee7960db6efc402",
     "components/mora/alive/characterGlow.ts": "503336d5049a22ccd04d6cf43a4dc3d62e552b04e0a9f44d138a56fa0f9a67f7",
     "components/mora/alive/characterMembranes.ts": "653553672ba78c36dfe5ce1668271e9ef062c8a053006286376d7c90be288b7a",
-    "components/mora/alive/MoraAliveView.tsx": "05177d08218d60f54e19b4eef8356f970fc6042499f42e77bdbf596b15869bf7",
+    "components/mora/alive/MoraAliveView.tsx": "95f8a3090385d0ff4e251ad5780b5734220ef57691fdce512d739c1d097313d6",
     "components/mora/alive/MoraAlive.module.css": "de2f094dab21e887cb6d3a8fda68c8e42dc37876fd36c0b76d8512aff43547ea",
     "lib/mora/alive/engine.ts": "384addb29847821797107965bcdbae012d9ce19333e2644be60b665e96d77618",
     "public/brand/saimor-sigil-alive-256.png": "ec7b688fff8a0caa1b3aeb4794fb11ce87350ac434c24df1b39e457e1e6ac772"

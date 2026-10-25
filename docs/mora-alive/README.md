@@ -1,4 +1,4 @@
-# Website integration — MÔRA Alive v03
+# Website integration — MÔRA Alive v04
 
 Status: PREPARED, draft only, no production publication. Visual fidelity remains work in progress; this is not a claimed 1:1 finished character asset.
 
@@ -14,7 +14,7 @@ implemented. Run `node scripts/verify-mora-alive-source.mjs` to detect downstrea
 To update, run the upstream `scripts/export-mora-alive.mjs` against this checkout at a new
 reviewed immutable commit. Do not modify mirrored character sources here.
 
-V03 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `85938590b08345538b1fb8363869fada33ac55a8`. The same engine and body serve both previews. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
+V04 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `8949a5c587934561f0fcbeb956cac7c35e2e63f9`. The same engine and body serve both previews. V04 divides the continuous head mesh into face/crest draw groups: the face keeps orbit occlusion, while the translucent crest reveals the surrounding membranes. Its shader uses a broad internal cream light source and a separate gold crest response rather than the previous shell-like directional highlight. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
 
 Added dependencies: exact Three.js 0.181.0 and matching type definitions, as already used by OS.
 No React upgrade or React Three Fiber dependency is required.
