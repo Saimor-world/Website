@@ -121,3 +121,10 @@ so both the full Website matrix and the focused character workflow run it. The f
 workflow therefore covers 15 cases (five journeys across three browser/device projects),
 including the exact previously timed-out path, without waiting for the historic baseline
 comparison. It retains normal motion, real focus/Enter activation and all product assertions.
+
+The new material/source passed all 15 focused Website checks (40344025701). Actual mobile
+captures exposed a remaining presentation issue in the expanded product story: the larger
+guide's caption could overlap the footer. The guide now parks beside the story, hides its
+decorative passive caption, and reserves room above the footer. Mode changes update the
+position even under reduced motion. Both reduced-motion and English normal-motion browser
+journeys assert that the body stays above the footer; the body is not duplicated or removed.

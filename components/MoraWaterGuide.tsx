@@ -17,7 +17,7 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
   useEffect(() => {
     let frame = 0, previous = performance.now(), time = 0, x = .5, y = .85;
     const tail = Array.from({ length: 18 }, () => ({ x, y }));
-    let previousChapter = -2;
+    let previousChapter = -2, previousInteractive: boolean | null = null;
     const draw = (now: number) => {
       frame = requestAnimationFrame(draw);
       const dt = Math.min(.05, Math.max(0, (now - previous) / 1000)); previous = now;
@@ -25,19 +25,22 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
       if (document.hidden) return;
       // Autonomous, bounded wandering; contextual chapters gently attract her.
       const perches = [[.5,.78],[.63,.67],[.43,.72],[.65,.79]];
-      const anchor = [[.58,.70],[.72,.76],[.81,.61]][c.chapter] ?? perches[Math.floor(time / 9) % perches.length];
       const mobile = innerWidth <= 700;
-      const desiredX = mobile && c.chapter >= 0 ? .82 : anchor[0];
+      const modeChanged = previousInteractive !== c.interactive;
+      const anchor = !c.interactive ? [.85,1] :
+        [[.58,.70],[.72,.76],[.81,.61]][c.chapter] ?? perches[Math.floor(time / 9) % perches.length];
+      const desiredX = mobile && c.interactive && c.chapter >= 0 ? .82 : anchor[0];
       const tx = Math.max(76 / innerWidth, Math.min((innerWidth - (mobile ? 76 : 195)) / innerWidth, desiredX));
-      const ty = mobile && c.chapter >= 0 ? .36 + c.chapter * .085 : anchor[1];
-      if (c.still) {
-        if (previousChapter === c.chapter) return;
+      const desiredY = mobile && c.interactive && c.chapter >= 0 ? .36 + c.chapter * .085 : anchor[1];
+      const ty = Math.min(desiredY, Math.max(.25, 1 - (mobile ? 195 : 170) / innerHeight));
+      if (c.still || modeChanged) {
+        if (previousChapter === c.chapter && !modeChanged) return;
         x = tx; y = ty;
         tail.forEach(point => { point.x = x; point.y = y; });
       } else if (!c.interactive || (!engaged.current.pointer && !engaged.current.focus)) {
         time += dt;
         const follow = 1 - Math.exp(-dt * 3.4);
-        const flying = c.chapter < 0 && time % 9 < 2.5;
+        const flying = c.interactive && c.chapter < 0 && time % 9 < 2.5;
         const goalX = tx + (flying ? Math.sin(time * 1.9) * .018 : 0);
         const goalY = ty + (flying ? Math.cos(time * 2.5) * .012 : 0);
         x += (goalX - x) * follow;
@@ -58,7 +61,7 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
           }
         }
       }
-      previousChapter = c.chapter;
+      previousChapter = c.chapter;previousInteractive = c.interactive;
       stone.current?.style.setProperty('transform', `translate3d(${x * innerWidth}px,${y * innerHeight}px,0)`);
       // Rasterize only the bounded trace, not a viewport-sized SVG every frame.
       const localX = (value: number) => 140 + (value - x) * innerWidth;

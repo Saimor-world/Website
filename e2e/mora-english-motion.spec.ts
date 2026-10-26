@@ -19,6 +19,13 @@ test('English keyboard passage opens the living clearing using normal motion', a
   await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).press('Enter');
   await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
   await expect(page.locator('[data-guide-chapter] [data-mora-body] canvas')).toBeVisible();
+  const guide = page.locator('[data-guide-chapter]');
+  await expect(guide).toHaveAttribute('data-passive', 'true');
+  await expect.poll(async () => {
+    const figure = await guide.locator('[data-mora-body]').boundingBox();
+    const footer = await page.locator('footer').boundingBox();
+    return Boolean(figure && footer && figure.y + figure.height < footer.y - 8);
+  }).toBe(true);
   await page.screenshot({ path: info.outputPath('after-morning-english.png'), animations: 'disabled' });
   expect(exceptions).toEqual([]);
 });

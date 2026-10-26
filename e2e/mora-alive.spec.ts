@@ -169,6 +169,11 @@ test('Deep View carries one canonical body from encounter into the star river', 
   await page.locator('article details summary').first().click();
   await expect(guide).toHaveAttribute('data-guide-chapter', '0');
   await expect(body).toHaveAttribute('data-character-state', 'listening');
+  await expect.poll(async () => {
+    const figure = await body.boundingBox(), footer = await page.locator('footer').boundingBox();
+    return Boolean(figure && footer && figure.y + figure.height < footer.y - 8);
+  }).toBe(true);
+  await expect(guide.locator('button span').filter({ hasText: /^MÔRA$/ })).toBeHidden();
   await expect(page.locator('[data-mora-body]')).toHaveCount(1);
   await page.getByRole('button', { name: 'Lichtung genießen', exact: true }).click();
   await page.screenshot({ path: info.outputPath('deep-alive-river.png') });
