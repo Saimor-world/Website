@@ -14,6 +14,9 @@ async function switchLanguage(page: Page, language: 'EN' | 'DE') {
 }
 
 test('Website reuses the OS body with explicit preview provenance', async ({ page }) => {
+  // Provenance and navigation do not require continuous software-GPU animation.
+  // The product-page journey below separately verifies normal motion and pause.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/mora/alive');
   const essential = page.getByRole('button', { name: /^Nur essenziell$/i });
   await essential.waitFor({ state: 'visible', timeout: 5000 }).catch(() => undefined);
@@ -25,16 +28,28 @@ test('Website reuses the OS body with explicit preview provenance', async ({ pag
   expect(title!.y).toBeGreaterThanOrEqual(banner!.y + banner!.height);
   await expect(region.locator('canvas')).toBeVisible({ timeout: 20000 });
   await expect(region).toHaveAttribute('data-character-source', 'preview');
+  await expect(region).toHaveAttribute('data-still', 'true');
   await region.getByRole('combobox', { name: 'Character-Vorschau' }).selectOption('approval');
   await expect(region.getByRole('status')).toHaveText('Braucht deine Freigabe');
   await region.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await expect(region.getByRole('button', { name: 'Bewegung fortsetzen' })).toHaveAttribute('aria-pressed', 'true');
+  await region.getByRole('button', { name: 'Bewegung fortsetzen' }).click();
+  await expect(region).toHaveAttribute('data-still', 'true');
   await switchLanguage(page, 'EN');
   await expect(region).toBeVisible();
   await expect(page).toHaveURL(/\/en\/mora\/alive$/);
   await switchLanguage(page, 'DE');
   await expect(page).toHaveURL(/\/de\/mora\/alive$/);
   await expect(region).toBeVisible();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(region).toHaveAttribute('data-still', 'false');
+  await page.evaluate(() => {
+    document.documentElement.classList.add('lite');window.dispatchEvent(new Event('saimor-lite'));
+  });
+  await expect(region).toHaveAttribute('data-still', 'true');
+  const canvas = region.locator('canvas');
+  const stillFrame = await canvas.screenshot();await page.waitForTimeout(250);
+  expect(await canvas.screenshot()).toEqual(stillFrame);
 });
 
 test('the actual MÔRA product page has one interactive body and a working shared pause', async ({ page }, info) => {

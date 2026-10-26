@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
 import styles from './MoraHeroPresence.module.css';
-import { isLiteMode } from '@/lib/lite-mode-script';
+import { useSiteLiteMode } from '@/lib/use-site-lite-mode';
 
 const Scene = dynamic(() => import('./mora/alive/CharacterScene'), {
   ssr: false, loading: () => <span className={styles.loading} aria-hidden="true">MÔRA</span>,
@@ -26,19 +26,16 @@ export default function MoraHeroPresence({ paused, locale }: {
   const [visible, setVisible] = useState(true);
   const [pageVisible, setPageVisible] = useState(true);
   const [failed, setFailed] = useState(false);
-  const [lite, setLite] = useState(true);
+  const lite = useSiteLiteMode();
   const still = paused || lite;
   useEffect(() => {
     const sync = () => setPageVisible(document.visibilityState === 'visible');
     sync(); document.addEventListener('visibilitychange', sync);
-    const syncLite = () => setLite(isLiteMode());syncLite();
-    window.addEventListener('saimor-lite', syncLite);
     const observer = typeof IntersectionObserver === 'undefined' ? null
       : new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
     if (root.current) observer?.observe(root.current);
     return () => {
       observer?.disconnect(); document.removeEventListener('visibilitychange', sync);
-      window.removeEventListener('saimor-lite', syncLite);
     };
   }, []);
   const de = locale === 'de';

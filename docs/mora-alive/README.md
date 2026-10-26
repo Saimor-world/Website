@@ -4,8 +4,8 @@ Status: PREPARED, draft only, no production publication. Visual fidelity remains
 
 `/mora/alive` mounts the **same** mesh body, state vocabulary, controls and accessibility behavior
 as the OS. It is explicitly a public character preview; it does not load OS authentication,
-subscribe to CORE, call agents or report real work. Existing `/mora`, portal, landing page and
-production character remain intact until a separate release is approved.
+subscribe to CORE, call agents or report real work. The draft also integrates it into the existing `/mora` product page, described below.
+Production remains unchanged until a separate release is approved.
 
 ## Canonical source
 `SOURCE.json` pins the exact `Saimor-world/mora-ui` commit and SHA-256 hashes. Renderer, View,
@@ -14,7 +14,7 @@ implemented. Run `node scripts/verify-mora-alive-source.mjs` to detect downstrea
 To update, run the upstream `scripts/export-mora-alive.mjs` against this checkout at a new
 reviewed immutable commit. Do not modify mirrored character sources here.
 
-V04 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `8949a5c587934561f0fcbeb956cac7c35e2e63f9`. The same engine and body serve both previews. V04 divides the continuous head mesh into face/crest draw groups: the face keeps orbit occlusion, while the translucent crest reveals the surrounding membranes. Its shader uses a broad internal cream light source and a separate gold crest response rather than the previous shell-like directional highlight. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
+V04 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `93fec95c25c79b494897ac771343c4a208789ad6`. The same engine and body serve both previews. V04 divides the continuous head mesh into face/crest draw groups: the face keeps orbit occlusion, while the translucent crest reveals the surrounding membranes. Its shader uses a broad internal cream light source and a separate gold crest response rather than the previous shell-like directional highlight. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
 
 Added dependencies: exact Three.js 0.181.0 and matching type definitions, as already used by OS.
 No React upgrade or React Three Fiber dependency is required.
@@ -55,3 +55,17 @@ cover one character, keyboard/touch, shared pause with stable canvas pixels, red
 DE/EN product routes, context interaction, OS/Deep View destinations and WebGL fallback.
 The follow-up uses the existing `isLiteMode` / `saimor-lite` signal to stop the body on weak
 hardware and adds a direct frozen-canvas assertion for that transition.
+
+## Motion preference consistency (2026-10-26)
+
+Both Website adapters now use `useSiteLiteMode`, which subscribes to the existing site
+preference with a still server snapshot. The inspection view receives this as an additional
+motion limit; manual pause and system reduced motion continue to take precedence.
+No new setting, storage key, engine or renderer is introduced.
+
+The prior broad CI 40237703242 passed build, typecheck and 229 unit tests, but four Chromium
+inspection journeys exceeded their total 60-second budget. Trace review showed multi-second
+DOM actions while several continuous software-GPU scenes ran in parallel. The provenance
+and locale journey now uses reduced motion, retains both actual language-switch clicks,
+and checks the live Lite transition with identical canvas frames. The separate product-page
+journey still exercises normal motion, manual pause, reduced motion and Lite mode.
