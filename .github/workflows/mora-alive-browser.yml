@@ -45,6 +45,22 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx next build
+      - name: Use Ubuntu archive for browser dependencies
+        # The Azure mirror transferred 119 MB too slowly to reach the browser tests.
+        run: |
+          sudo python3 - <<'PYCI'
+          from pathlib import Path
+          paths = list(Path('/etc/apt').glob('apt-mirrors*.txt'))
+          paths += list(Path('/etc/apt/sources.list.d').glob('*.sources'))
+          paths += [Path('/etc/apt/sources.list')]
+          for path in paths:
+              if path.is_file():
+                  before = path.read_text()
+                  after = before.replace('azure.archive.ubuntu.com', 'archive.ubuntu.com')
+                  if before != after:
+                      path.write_text(after)
+          PYCI
+
       - run: npx playwright install --with-deps chromium webkit
       - name: Prepare existing trusted HTTPS test transport
         run: |

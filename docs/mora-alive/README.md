@@ -133,3 +133,9 @@ The expanded story reserves an actual layout dock: beside the copy on desktop an
 it on mobile. The existing guide moves to that measured dock, including during scrolling
 and reduced motion. It is the same mounted canvas, with no second decorative portrait.
 Browser checks verify containment inside this slot as well as separation from the footer.
+
+The first dock-source focused run (40346669889) hit its 15-minute limit before browser
+execution. Logs show the Azure Ubuntu mirror downloading the 119 MB dependency set at
+roughly tens of kB/s, not a test assertion failure. Both Website workflows now replace that
+mirror hostname with Ubuntu's official archive host before installing the same signed
+packages. Browser engines, assertions and the 15-minute focused budget are unchanged.
