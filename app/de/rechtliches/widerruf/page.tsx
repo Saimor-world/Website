@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'Widerruf & Erstattung – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/de/rechtliches/widerruf'), title: { absolute: 'Widerruf & Erstattung – Saimôr' } };
 
 export default function Page() {
   return (

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import EntryArticle from '@/components/EntryArticle';
 import ScanPage from '@/components/ScanPage';
 import { entryContent } from '@/lib/entry-content';
+import { entryAlternates } from '@/lib/seo/alternates';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -13,10 +14,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  if (slug === 'security-check') return { title: 'Security Check – Saimôr', description: 'Inspect publicly available domain signals and explore the findings in an isolated workspace.' };
+  if (slug === 'security-check') return { alternates: entryAlternates('en', slug), title: 'Security Check – Saimôr', description: 'Inspect publicly available domain signals and explore the findings in an isolated workspace.' };
   const article = entryContent.en.find((item) => item.slug === slug);
 
   return {
+    alternates: entryAlternates('en', slug),
     title: article ? `${article.title} – Saimôr` : 'Article not found – Saimôr',
     description: article?.excerpt ?? 'Article from Saimor entry layer',
   };

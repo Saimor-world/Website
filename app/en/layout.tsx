@@ -25,10 +25,7 @@ export const metadata: Metadata = {
     description,
     images: ['/og'],
   },
-  alternates: {
-    canonical: '/en',
-    languages: { de: '/de', en: '/en', 'x-default': '/de' },
-  },
+  // No alternates here: subpages inherited '/en' as canonical. Each page sets its own (lib/seo/alternates).
 };
 
 export const viewport: Viewport = {

@@ -1,6 +1,8 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import ContactForm from '@/components/ContactForm';
 
 export const metadata = {
+  alternates: localeAlternates('/de/kontakt'),
   title: 'Kontakt & Zusammenarbeit – Saimôr',
   description: 'Sprich mit SAIMÔR über Arbeitsprozesse, verknüpfte Werkzeuge, KI-Workshops und digitale Arbeitsräume. Ein direkter Weg von der Idee zum nächsten Schritt.',
 };

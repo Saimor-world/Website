@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'AGB – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/de/rechtliches/agb'), title: { absolute: 'AGB – Saimôr' } };
 
 export default function Page() {
   return (

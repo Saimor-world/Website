@@ -1,3 +1,4 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import type { Metadata } from 'next';
 import LivingForestWorld from '@/components/LivingForestWorld';
 
@@ -5,6 +6,7 @@ const PAGE_TITLE = 'Saimôr – Clarity through change';
 const PAGE_DESCRIPTION = 'Saimôr connects work, data and intelligence into a system that keeps context across apps, models and chats. With MÔRA, Saimôr OS, YORI plus consulting, workshops and implementation.';
 
 export const metadata: Metadata = {
+  alternates: localeAlternates('/en'),
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   openGraph: {

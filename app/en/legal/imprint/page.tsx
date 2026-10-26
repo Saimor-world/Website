@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'Imprint – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/en/legal/imprint'), title: { absolute: 'Imprint – Saimôr' } };
 
 export default function Page() {
   return (
@@ -12,7 +13,7 @@ export default function Page() {
           </h2>
           <div className="mb-8 p-6 bg-slate-50 rounded-xl">
             <p className="text-slate-700 mb-2">
-              <strong>NextChapter</strong><br />
+              <strong>Next Chapter</strong><br />
               Brand: Saimôr<br />
               Owner: Marius Fahrländer<br />
               Wallmerstraße 30<br />

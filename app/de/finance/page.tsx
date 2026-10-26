@@ -1,3 +1,4 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import FinanceSection from '@/components/FinanceSection';
 
 // Pure static marketing page: no env, DB or session reads at build or request time.
@@ -6,7 +7,7 @@ export const dynamic = 'force-static';
 export const metadata = {
   title: 'Saimôr Finance – Finanzen klar im Blick',
   description: 'Einnahmen, Ausgaben und Kontostände an einem Ort – auch mit XRP/RLUSD-Zahlungen.',
-  alternates: { canonical: '/de/finance', languages: { de: '/de/finance', en: '/en/finance' } },
+  alternates: localeAlternates('/de/finance'),
 };
 
 export default function FinancePageDE() {

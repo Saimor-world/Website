@@ -1,6 +1,8 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import ContactForm from '@/components/ContactForm';
 
 export const metadata = {
+  alternates: localeAlternates('/en/contact'),
   title: 'Contact & Collaboration – Saimôr',
   description: 'Talk to SAIMÔR about workflows, disconnected tools, AI workshops and connected digital workspaces.',
 };

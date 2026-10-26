@@ -1,4 +1,5 @@
-﻿import Link from 'next/link';
+import { localeAlternates } from '@/lib/seo/alternates';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 const demoLink = '/en/entry';
@@ -11,6 +12,7 @@ const techItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: localeAlternates('/en/trust'),
   title: 'Trust & Safety – Saimôr',
   description: 'Transparent demo data handling, local processing, GDPR baseline.'
 };

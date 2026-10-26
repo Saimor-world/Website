@@ -1,6 +1,8 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import TrustContent from '@/components/TrustContent';
 
 export const metadata = {
+  alternates: localeAlternates('/de/trust'),
   title: 'Trust & Sicherheit – Saimôr',
   description: 'Unsere Standards für Datenschutz, Sicherheit und Transparenz. EU-Hosting, anonyme Analytics und transparente KI-Verarbeitung.',
 };

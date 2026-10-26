@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'Privacy – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/en/legal/privacy'), title: { absolute: 'Privacy – Saimôr' } };
 
 export default function Page() {
   return (

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import EntryArticle from '@/components/EntryArticle';
 import ScanPage from '@/components/ScanPage';
 import { entryContent } from '@/lib/entry-content';
+import { entryAlternates } from '@/lib/seo/alternates';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   if (slug === 'security-check') {
     return {
+      alternates: entryAlternates('de', slug),
       title: 'Security Check – Saimôr',
       description:
         'Was sieht man über dein Unternehmen von außen? Kostenloser Domain-Audit in Sekunden.',
@@ -25,6 +27,7 @@ export async function generateMetadata({ params }: Props) {
   }
   const article = entryContent.de.find((item) => item.slug === slug);
   return {
+    alternates: entryAlternates('de', slug),
     title: article ? `${article.title} – Saimôr` : 'Artikel nicht gefunden – Saimôr',
     description: article?.excerpt ?? 'Artikel aus dem Saimor Einstieg',
   };

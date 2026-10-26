@@ -90,14 +90,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: '/de',
-    languages: {
-      de: '/de',
-      en: '/en',
-      'x-default': '/de',
-    },
-  },
+  // No site-wide canonical: every page inherited '/de'. Pages set their own (lib/seo/alternates).
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -117,7 +110,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'Saimôr',
+              '@id': 'https://saimor.world/#organization',
+              name: 'SAIMÔR',
+              alternateName: ['Saimôr', 'Saimor'],
+              legalName: 'Next Chapter',
               url: 'https://saimor.world',
               logo: 'https://saimor.world/brand/saimor-sigil-restored-v1.webp',
               description: 'Produktstudio hinter Saimôr OS, YORI und MÔRA sowie Beratung, Workshops und Umsetzung rund um praktische KI-Arbeit.',
@@ -149,10 +145,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 'Dateien, Kalender und Aufgaben',
                 'Security Check als Einstieg',
               ],
-              author: {
-                '@type': 'Organization',
-                name: 'Saimôr',
-              },
+              author: { '@id': 'https://saimor.world/#organization' },
             }),
           }}
         />

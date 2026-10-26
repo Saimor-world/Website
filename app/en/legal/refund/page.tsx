@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'Refund & Cancellation – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/en/legal/refund'), title: { absolute: 'Refund & Cancellation – Saimôr' } };
 
 export default function Page() {
   return (

@@ -1,4 +1,5 @@
-export const metadata = { title: { absolute: 'Terms of Service – Saimôr' } };
+import { localeAlternates } from '@/lib/seo/alternates';
+export const metadata = { alternates: localeAlternates('/en/legal/terms'), title: { absolute: 'Terms of Service – Saimôr' } };
 
 export default function Page() {
   return (
