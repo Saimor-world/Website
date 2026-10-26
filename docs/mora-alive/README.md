@@ -90,3 +90,9 @@ expression, replay/unmount and no-WebGL navigation. The broader cinematic journe
 checks the actual canonical canvas instead of obsolete SVG-eye/image alignment assertions.
 Physical-device thermal/performance measurements and final 1:1 sculpt/material fidelity
 remain open. No production release or merge.
+
+The first Deep View source `74fd1ba7` passed 12 focused browser checks (40296105717),
+but actual mobile captures exposed intrinsic canvas width expanding the encounter grid.
+The follow-up uses explicit zero-minimum grid tracks and button minimum sizes, and adds
+browser assertions that canvas/button/frame widths and centers agree. Functional tests
+alone are not treated as visual acceptance.

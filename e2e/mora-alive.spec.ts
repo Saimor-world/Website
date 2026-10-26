@@ -142,6 +142,18 @@ test('Deep View carries one canonical body from encounter into the star river', 
   await expect(page.locator('[data-mora-body]')).toHaveCount(1);
   await expect(page.locator('img[src*="mora-stone"], [data-face-state]')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Zurück zu MÔRA' })).toHaveAttribute('href', '/mora#deep-view');
+  // A canvas's intrinsic DPR width must not expand the encounter's mobile grid track.
+  const bounds = await page.getByRole('button', { name: 'MÔRA halten', exact: true }).evaluate(button => {
+    const rect = (element: Element) => {
+      const { x, width } = element.getBoundingClientRect();return { x, width };
+    };
+    return { button: rect(button), frame: rect(button.parentElement!),
+      canvas: rect(button.querySelector('canvas')!) };
+  });
+  expect(bounds.button.width).toBeLessThanOrEqual(bounds.frame.width + .5);
+  expect(Math.abs(bounds.canvas.width - bounds.button.width)).toBeLessThan(1);
+  expect(Math.abs(bounds.button.x + bounds.button.width / 2
+    - bounds.frame.x - bounds.frame.width / 2)).toBeLessThan(1);
   await encounter.screenshot({ path: info.outputPath('deep-alive-encounter.png') });
   await page.getByRole('button', { name: 'MÔRA halten', exact: true }).press('Enter');
   await expect(page).toHaveURL(/#clarity$/);
