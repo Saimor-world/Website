@@ -29,3 +29,7 @@
 @media(max-width:700px){.perspective{min-height:calc(100svh - 148px)}.perspective[data-info="true"]{padding:26px 24px 18px}.story{width:min(100%,420px)}.story h2{font-size:36px;max-width:350px}.eyebrow{font-size:12px;letter-spacing:.08em;margin-bottom:14px}.lead{font-size:12px;margin:16px 0 18px}.chapters summary{font-size:12px}.chapters details p{font-size:12px}.veil{background:linear-gradient(90deg,#03100ce8,#03100cb3 72%,#03100c66)}.action{bottom:10px}.hint{bottom:112px}.guide{font-size:12px}.emerging{color:#fff8e6;max-width:280px;text-shadow:0 1px 1px #010c08,0 2px 14px #02100cf5,0 0 32px #03110cf0}}
 @media(max-height:650px){.perspective[data-info="true"]{padding-block:16px}.hint{bottom:100px}.action{bottom:4px}}
 @media(prefers-reduced-motion:reduce){.perspective *{animation:none!important;transition:none!important}.explore{cursor:default}}
+
+/* The same flying body docks beside the story, with reserved space above mobile copy. */
+.guideDock{position:absolute;left:calc(100% + 48px);top:0;width:160px;height:180px;pointer-events:none}
+@media(max-width:700px){.guideDock{position:relative;left:auto;top:auto;width:120px;height:140px;margin:0 auto 14px}}

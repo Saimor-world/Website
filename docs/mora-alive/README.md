@@ -128,3 +128,8 @@ guide's caption could overlap the footer. The guide now parks beside the story, 
 decorative passive caption, and reserves room above the footer. Mode changes update the
 position even under reduced motion. Both reduced-motion and English normal-motion browser
 journeys assert that the body stays above the footer; the body is not duplicated or removed.
+
+The expanded story reserves an actual layout dock: beside the copy on desktop and above
+it on mobile. The existing guide moves to that measured dock, including during scrolling
+and reduced motion. It is the same mounted canvas, with no second decorative portrait.
+Browser checks verify containment inside this slot as well as separation from the footer.

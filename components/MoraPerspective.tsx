@@ -47,6 +47,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   const heading = useRef<HTMLHeadingElement>(null);
   const infoHeading = useRef<HTMLHeadingElement>(null);
   const reopen = useRef<HTMLButtonElement>(null);
+  const guideDock = useRef<HTMLDivElement>(null);
   const focusRequested = useRef(false);
   const gaze = useRef({ x: 0, y: 0 });
   const [infoVisible, setInfoVisible] = useState(false);
@@ -72,7 +73,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
       {morning && <MoraWaterGuide locale={locale} chapter={chapter} still={still} label={infoVisible ? 'MÔRA' : c.reopen}
-        onActivate={() => showInfo(true)} buttonRef={reopen} interactive={!infoVisible} />}
+        onActivate={() => showInfo(true)} buttonRef={reopen} interactive={!infoVisible} dock={guideDock} />}
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>
       <div className={styles.explore} role="region" tabIndex={0} aria-label={c.explore} aria-describedby="clearing-instructions"
@@ -91,6 +92,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
       {!morning && <p className={styles.emerging}>{c.emerging}</p>}
       {morning && infoVisible ? <article className={styles.story} aria-labelledby="clearing-mora-title">
         <p className={styles.eyebrow}>{c.eyebrow}</p>
+        <div ref={guideDock} className={styles.guideDock} data-guide-dock aria-hidden="true" />
         <h2 id="clearing-mora-title" ref={infoHeading} tabIndex={-1}>{c.arrival}</h2>
         <p className={styles.lead}>{c.lead}</p>
         <div className={styles.chapters}>{c.chapters.map(([title, text], index) => <details key={title} data-active={chapter === index}

@@ -26,7 +26,17 @@ test('English keyboard passage opens the living clearing using normal motion', a
     const footer = await page.locator('footer').boundingBox();
     return Boolean(figure && footer && figure.y + figure.height < footer.y - 8);
   }).toBe(true);
+  await expect.poll(async () => {
+    const figure = await guide.locator('[data-mora-body]').boundingBox();
+    const dock = await page.locator('[data-guide-dock]').boundingBox();
+    return Boolean(figure && dock && figure.x >= dock.x - 1 && figure.y >= dock.y - 1
+      && figure.x + figure.width <= dock.x + dock.width + 1
+      && figure.y + figure.height <= dock.y + dock.height + 1);
+  }).toBe(true);
   await page.screenshot({ path: info.outputPath('after-morning-english.png'), animations: 'disabled' });
+  const destination = page.getByRole('link', { name: 'Discover MÔRA in the OS' });
+  await destination.scrollIntoViewIfNeeded();await expect(destination).toBeVisible();
+  await page.screenshot({ path: info.outputPath('after-morning-english-product-link.png'), animations: 'disabled' });
   expect(exceptions).toEqual([]);
 });
 

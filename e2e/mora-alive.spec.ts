@@ -173,9 +173,21 @@ test('Deep View carries one canonical body from encounter into the star river', 
     const figure = await body.boundingBox(), footer = await page.locator('footer').boundingBox();
     return Boolean(figure && footer && figure.y + figure.height < footer.y - 8);
   }).toBe(true);
+  await expect.poll(async () => {
+    const figure = await guide.locator('[data-mora-body]').boundingBox();
+    const dock = await page.locator('[data-guide-dock]').boundingBox();
+    return Boolean(figure && dock && figure.x >= dock.x - 1 && figure.y >= dock.y - 1
+      && figure.x + figure.width <= dock.x + dock.width + 1
+      && figure.y + figure.height <= dock.y + dock.height + 1);
+  }).toBe(true);
   await expect(guide.locator('button span').filter({ hasText: /^MÔRA$/ })).toBeHidden();
   await expect(page.locator('[data-mora-body]')).toHaveCount(1);
   await page.getByRole('button', { name: 'Lichtung genießen', exact: true }).click();
+  await expect(guide).toHaveAttribute('data-passive', 'false');
+  await expect.poll(async () => {
+    const figure = await body.boundingBox(), footer = await page.locator('footer').boundingBox();
+    return Boolean(figure && footer && figure.y >= 0 && figure.y + figure.height < footer.y - 8);
+  }).toBe(true);
   await page.screenshot({ path: info.outputPath('deep-alive-river.png') });
   await page.getByRole('button', { name: 'Noch einmal', exact: true }).click();
   await expect(page.getByTestId('deep-uncertainty')).toBeVisible();

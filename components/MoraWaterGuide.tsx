@@ -5,13 +5,13 @@ import MoraCharacterBody from './MoraCharacterBody';
 import styles from './MoraWaterGuide.module.css';
 
 /** The canonical light body follows the existing water flight path and fading trace. */
-export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef, interactive = true, locale = 'de' }: {
-  locale?: 'de' | 'en'; chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>; interactive?: boolean;
+export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef, interactive = true, locale = 'de', dock }: {
+  dock?: RefObject<HTMLDivElement>; locale?: 'de' | 'en'; chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>; interactive?: boolean;
 }) {
   const stone = useRef<HTMLSpanElement>(null), trail = useRef<SVGPathElement>(null);
   const gradient = useRef<SVGLinearGradientElement>(null);
   const traceId = `mora-flight-${useId().replace(/:/g, '')}`;
-  const controls = useRef({ chapter, still, interactive }); controls.current = { chapter, still, interactive };
+  const controls = useRef({ chapter, still, interactive, dock }); controls.current = { chapter, still, interactive, dock };
   const engaged = useRef({ pointer: false, focus: false });
   const interaction = useRef({ x: 0, y: 0, touchedAt: -Infinity });
   useEffect(() => {
@@ -30,11 +30,12 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
       const anchor = !c.interactive ? [.85,1] :
         [[.58,.70],[.72,.76],[.81,.61]][c.chapter] ?? perches[Math.floor(time / 9) % perches.length];
       const desiredX = mobile && c.interactive && c.chapter >= 0 ? .82 : anchor[0];
-      const tx = Math.max(76 / innerWidth, Math.min((innerWidth - (mobile ? 76 : 195)) / innerWidth, desiredX));
+      const dockBounds = !c.interactive ? c.dock?.current?.getBoundingClientRect() : null;
+      const tx = dockBounds ? (dockBounds.left + dockBounds.width / 2) / innerWidth : Math.max(76 / innerWidth, Math.min((innerWidth - (mobile ? 76 : 195)) / innerWidth, desiredX));
       const desiredY = mobile && c.interactive && c.chapter >= 0 ? .36 + c.chapter * .085 : anchor[1];
-      const ty = Math.min(desiredY, Math.max(.25, 1 - (mobile ? 195 : 170) / innerHeight));
-      if (c.still || modeChanged) {
-        if (previousChapter === c.chapter && !modeChanged) return;
+      const ty = dockBounds ? (dockBounds.top + dockBounds.height / 2) / innerHeight : Math.min(desiredY, Math.max(.25, 1 - (mobile ? 195 : 170) / innerHeight));
+      if (c.still || modeChanged || dockBounds) {
+        if (previousChapter === c.chapter && !modeChanged && x === tx && y === ty) return;
         x = tx; y = ty;
         tail.forEach(point => { point.x = x; point.y = y; });
       } else if (!c.interactive || (!engaged.current.pointer && !engaged.current.focus)) {
