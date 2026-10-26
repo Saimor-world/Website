@@ -56,7 +56,13 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   useEffect(() => () => onChapter?.(-1), [onChapter]);
   useEffect(() => {
     // Let WebKit finish the pointer-up default before restoring scene focus.
-    const frame = window.requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
+    const frame = window.requestAnimationFrame(() => {
+      // A visitor may already have focused the guide while this dawn callback was queued.
+      const active = document.activeElement;
+      if (!active || active === document.body || active === heading.current) {
+        heading.current?.focus({ preventScroll: true });
+      }
+    });
     return () => window.cancelAnimationFrame(frame);
   }, [morning]);
   useEffect(() => {

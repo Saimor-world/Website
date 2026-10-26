@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import MoraPerspective from './MoraPerspective';
 
@@ -9,7 +9,7 @@ vi.mock('./MoraCharacterBody', () => ({
 vi.mock('next/image', () => ({
   default: ({ alt = '', ...props }: any) => <img alt={alt} {...props} />,
 }));
-afterEach(cleanup);
+afterEach(() => { cleanup();vi.restoreAllMocks(); });
 describe('the clearing', () => {
   it('keeps exactly one canonical body when the product explanation opens', () => {
     const { container } = render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
@@ -55,4 +55,23 @@ describe('the clearing', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Get to know MÔRA' }));
     expect(screen.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
   });
+  it('does not steal a visitor’s guide focus when the delayed dawn focus runs', () => {
+    const frames: FrameRequestCallback[] = [];
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
+      frames.push(callback);return frames.length;
+    });
+    vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {});
+    const props = { locale: 'en' as const, onLight: vi.fn(), onLook: vi.fn(), still: false };
+    const { rerender } = render(<MoraPerspective {...props} morning={false} />);
+    act(() => frames.splice(0).forEach(callback => callback(0)));
+    expect(screen.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toHaveFocus();
+    rerender(<MoraPerspective {...props} morning />);
+    const guide = screen.getByRole('button', { name: 'Get to know MÔRA' });
+    guide.focus();
+    act(() => frames.splice(0).forEach(callback => callback(16)));
+    expect(guide).toHaveFocus();
+    fireEvent.click(guide);
+    expect(screen.getByRole('heading', { name: 'Clarity begins with context.' })).toHaveFocus();
+  });
+
 });

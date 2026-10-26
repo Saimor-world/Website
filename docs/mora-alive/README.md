@@ -139,3 +139,11 @@ execution. Logs show the Azure Ubuntu mirror downloading the 119 MB dependency s
 roughly tens of kB/s, not a test assertion failure. Both Website workflows now replace that
 mirror hostname with Ubuntu's official archive host before installing the same signed
 packages. Browser engines, assertions and the 15-minute focused budget are unchanged.
+
+After the mirror fix, run 40349780228 executed all cases: both iPhone projects and all
+placement/containment checks passed (14/15 overall). Desktop English activation exposed
+a separate focus race. The dawn reused the already-focused h1, so the heading assertion
+could pass before its queued RAF focus callback; that callback could then take focus away
+from the guide between native Enter events. A regression test reproduced this exact focus
+theft before the fix. The callback now preserves an intentionally focused control. Browser
+assertions stay unchanged; no extra timeout, forced click or retry hides the issue.
