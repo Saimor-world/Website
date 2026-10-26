@@ -162,3 +162,15 @@ the stacked decorative trails and sparkle. Flame form, jade, palette and interac
 This is a reversible visual candidate, not a claim of final brand approval or reference fidelity.
 The Konami feature is independently reviewable in Website draft PR #123; it uses this same component
 when both changes are eventually approved. Neither PR is merged or released by this work.
+
+### Simple presence — selected direction, 26 October 2026
+
+The user selected the reduced opal/pebble study after rejecting both the flame mascot and the
+humanoid design study. Canonical source `f15e08932a178cdb73ce316fb33b26ec972b94c7`
+(OS draft #177) replaces the visual candidate above. The actual Three.js body now consists of a
+single smoothly tapered volume, two small eyes and a separate jade stone. There is no image
+substitute, mouth, crest, trailing membrane, particle field, decorative orbit or floor ring.
+The existing body adapter, state engine, gaze, blink, hovering, night-rest, Lite/reduced motion,
+visibility suspension and cleanup continue to be reused by hero, Deep View and inspection routes.
+This is a new renderer revision awaiting actual screenshot review, not a claim of bitmap fidelity.
+The independently prepared Konami feature #123 also uses this adapter when both changes are approved.
