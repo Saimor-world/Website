@@ -115,3 +115,9 @@ and compared with V04: the face now has a softer inner-to-edge gradient, the cor
 more transparent, and jade veins are less contrasty. This is a measured visual iteration,
 not an accepted 1:1 match or physically traced volumetric light. No geometry, scene timings
 or event mappings were changed. The same material is exported to all Website placements.
+
+The English normal-motion keyboard journey is extracted into `mora-english-motion.spec.ts`
+so both the full Website matrix and the focused character workflow run it. The focused
+workflow therefore covers 15 cases (five journeys across three browser/device projects),
+including the exact previously timed-out path, without waiting for the historic baseline
+comparison. It retains normal motion, real focus/Enter activation and all product assertions.

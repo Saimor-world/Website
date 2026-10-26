@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
-  testDir: './e2e', testMatch: 'mora-alive.spec.ts', timeout: 45000,
+  testDir: './e2e', testMatch: ['mora-alive.spec.ts', 'mora-english-motion.spec.ts'], timeout: 45000,
   expect: { timeout: 15000 }, workers: 1, retries: 0, reporter: 'list',
   outputDir: 'test-results/mora-alive',
   use: { baseURL: 'http://127.0.0.1:3001', screenshot: 'on', trace: 'retain-on-failure' },

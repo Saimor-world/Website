@@ -270,23 +270,6 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   expect(exceptions).toEqual([]);
 });
 
-test('English keyboard passage opens the living clearing using normal motion', async ({ page }, info) => {
-  test.setTimeout(90000);
-  const exceptions: string[] = [];
-  page.on('pageerror', error => exceptions.push(error.message));
-  await visit(page, '/en/mora/deep-view#mora');
-  await page.getByRole('button', { name: 'See through her eyes' }).click();
-  await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
-  await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
-  await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
-  // Keyboard focus holds the flying guide before activation; no moving-target click race.
-  await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).press('Enter');
-  await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
-  await expect(page.locator('[data-guide-chapter] [data-mora-body] canvas')).toBeVisible();
-  await shot(page, info, 'after-morning-english');
-  expect(exceptions).toEqual([]);
-});
-
 test('reduced motion has no timer, zoom or forced transition; short viewport stays usable', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: info.project.use.viewport?.width || 390, height: 620 });

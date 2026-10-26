@@ -18,6 +18,7 @@ on:
       - 'app/**/mora/alive/**'
       - 'app/mora/alive/**'
       - 'e2e/mora-alive.spec.ts'
+      - 'e2e/mora-english-motion.spec.ts'
       - 'playwright.alive.config.ts'
       - '.github/workflows/mora-alive-browser.yml'
 permissions:
