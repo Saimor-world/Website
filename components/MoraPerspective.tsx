@@ -71,7 +71,7 @@ export default function MoraPerspective({ locale, morning, onLight, onLook, stil
   };
   return (
     <div className={styles.perspective} data-testid="deep-clarity" data-morning={morning} data-info={morning && infoVisible}>
-      {morning && <MoraWaterGuide chapter={chapter} still={still} label={infoVisible ? 'MÔRA' : c.reopen}
+      {morning && <MoraWaterGuide locale={locale} chapter={chapter} still={still} label={infoVisible ? 'MÔRA' : c.reopen}
         onActivate={() => showInfo(true)} buttonRef={reopen} interactive={!infoVisible} />}
       <h1 ref={heading} tabIndex={-1} className={styles.unspoken}>{morning ? c.title : c.waiting}</h1>
       <p id="clearing-instructions" className={styles.unspoken}>{c.instructions}</p>

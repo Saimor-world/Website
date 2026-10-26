@@ -69,3 +69,24 @@ DOM actions while several continuous software-GPU scenes ran in parallel. The pr
 and locale journey now uses reduced motion, retains both actual language-switch clicks,
 and checks the live Lite transition with identical canvas frames. The separate product-page
 journey still exercises normal motion, manual pause, reduced motion and Lite mode.
+
+## Deep View integration (2026-10-26)
+
+The same immutable `CharacterScene` now replaces both old jade portraits in `/mora/deep-view`
+and `/en/mora/deep-view`: the large hold-to-enter encounter and the small flying guide above
+the star river. The product hero, encounter and water guide share `MoraCharacterBody` for
+renderer lifecycle, reduced motion, site Lite preference, visibility and WebGL fallback.
+The guide retains its bounded flight path and fading trail; chapter interaction selects the
+local listening expression. This is a staged reaction, never a CORE job or simulated success.
+
+The existing hold controller, star/mycelium field, dawn, keyboard exploration, history,
+replay, origin-aware back links and product links remain connected. Exactly one body is
+mounted in each phase. The old face overlay and jade portrait are not layered under it.
+The guide is larger so the light body's silhouette remains legible on mobile.
+
+Unit tests cover the shared lifecycle and existing hold/scene navigation. Focused browser
+checks exercise both body placements, DE/EN, reduced-motion stable pixels, contextual
+expression, replay/unmount and no-WebGL navigation. The broader cinematic journey now
+checks the actual canonical canvas instead of obsolete SVG-eye/image alignment assertions.
+Physical-device thermal/performance measurements and final 1:1 sculpt/material fidelity
+remain open. No production release or merge.

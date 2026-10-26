@@ -2,6 +2,10 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraDeepView from './MoraDeepView';
 
+vi.mock('./MoraCharacterBody', () => ({
+  default: ({ state = 'idle', still }: { state?: string; still: boolean }) =>
+    <span data-mora-body data-character-state={state} data-still={still} />,
+}));
 vi.mock('./AmbientParticleField', () => ({ default: () => null }));
 vi.mock('./MoraAtmosphere', () => ({
   default: ({ onArrival }: { onArrival: () => void }) => <button data-testid="morning-arrival" onClick={onArrival} />,
@@ -20,8 +24,9 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.queryByText(/TRAUMPROTOKOLL|STERNENFELD|Öffentliche Signale laden/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA begegnen' }));
     expect(screen.getByRole('heading', { name: 'MÔRA.' })).toBeInTheDocument();
-    expect(screen.getByLabelText('MÔRAs leuchtende Augen')).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'MÔRA, Jadestein' })).toBeInTheDocument();
+    expect(screen.getByLabelText('MÔRA, Lichtgestalt mit Jade-Begleiter')).toBeInTheDocument();
+    expect(document.querySelectorAll('[data-mora-body]')).toHaveLength(1);
+    expect(document.querySelector('img[src*="mora-stone"]')).toBeNull();
     expect(screen.queryByText('Was belegt ist.')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
     fireEvent.click(screen.getByRole('button', { name: 'Durch ihre Augen sehen' }));
@@ -60,7 +65,7 @@ describe('MÔRA Deep View cinematic experience', () => {
     render(<MoraDeepView locale="en" />);
     expect(screen.getByRole('heading', { name: 'Everything answers.' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Meet MÔRA' }));
-    expect(screen.getByLabelText('MÔRA’s luminous eyes')).toBeInTheDocument();
+    expect(screen.getByLabelText('MÔRA, light being with jade companion')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Pause motion' }));
     fireEvent.click(screen.getByRole('button', { name: 'See through her eyes' }));
     expect(screen.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeInTheDocument();

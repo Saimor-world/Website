@@ -8,6 +8,7 @@ import AmbientParticleField from './AmbientParticleField';
 import MoraPerspective from './MoraPerspective';
 import MoraAtmosphere from './MoraAtmosphere';
 import MoraUncertainty from './MoraUncertainty';
+import { useSiteLiteMode } from '@/lib/use-site-lite-mode';
 import styles from './MoraDeepView.module.css';
 
 type Scene = 'uncertainty' | 'mora' | 'clarity';
@@ -32,6 +33,7 @@ const COPY = {
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
+  const lite = useSiteLiteMode();
   const world = useRef<HTMLDivElement>(null);
   const focusAmount = useRef(0);
   const dawnAmount = useRef(0);
@@ -51,6 +53,7 @@ export default function MoraDeepView({ locale }: Props) {
   const [scene, setScene] = useState<Scene>('uncertainty');
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const motionLimited = reduced || lite;
   const [crossing, setCrossing] = useState(false);
   const [morning, setMorning] = useState(false);
   const [hurry, setHurry] = useState(false);
@@ -106,7 +109,7 @@ export default function MoraDeepView({ locale }: Props) {
   }, [focusProgress]);
 
   useEffect(() => {
-    if (scene !== 'uncertainty' || paused || reduced) return;
+    if (scene !== 'uncertainty' || paused || motionLimited) return;
     let timer: number | undefined;
     const schedule = () => {
       window.clearTimeout(timer);
@@ -121,10 +124,10 @@ export default function MoraDeepView({ locale }: Props) {
       window.clearTimeout(timer);
       document.removeEventListener('visibilitychange', schedule);
     };
-  }, [scene, paused, reduced]);
+  }, [scene, paused, motionLimited]);
 
   const see = () => {
-    if (reduced || paused) { go('clarity'); return; }
+    if (motionLimited || paused) { go('clarity'); return; }
     setCrossing(true);
     crossingTimer.current = window.setTimeout(() => {
       setCrossing(false);
@@ -141,20 +144,20 @@ export default function MoraDeepView({ locale }: Props) {
   return (
     <div ref={world} className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing} data-focusing={focusing}
       onPointerMove={event => {
-        if (paused || reduced) return;
+        if (paused || motionLimited) return;
         const bounds = event.currentTarget.getBoundingClientRect();
         pointer.current.x = (event.clientX - bounds.left) / bounds.width * 2 - 1;
         pointer.current.y = (event.clientY - bounds.top) / bounds.height * 2 - 1;
       }}
       onPointerDown={event => {
-        if (scene !== 'clarity' || paused || reduced) return;
+        if (scene !== 'clarity' || paused || motionLimited) return;
         const bounds = event.currentTarget.getBoundingClientRect();
         pointer.current = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: (event.clientY - bounds.top) / bounds.height * 2 - 1, energy: 1 };
       }}>
       <div className={styles.atmosphere} aria-hidden="true">
         <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
-          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} look={clearingLook} />
-        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
+          reduced={motionLimited} onArrival={arrive} settling={focusAmount} progress={dawnAmount} look={clearingLook} />
+        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={motionLimited} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
         <div className={styles.grain} />
         <div className={styles.passage} />
       </div>
@@ -177,10 +180,10 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} onChapter={setChapter} still={paused || reduced} /> : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} onChapter={setChapter} still={paused || motionLimited} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
-            <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
-              <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={reduced} disabled={crossing}
+            <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRA, Lichtgestalt mit Jade-Begleiter' : 'MÔRA, light being with jade companion'}>
+              <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={motionLimited} disabled={crossing}
                 onProgress={focusProgress} onActive={setFocusing} onSettled={see} />
             </div>
             <div key={scene} className={styles.encounterText}>

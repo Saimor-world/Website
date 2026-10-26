@@ -2,6 +2,10 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraFocusStone from './MoraFocusStone';
 
+vi.mock('./MoraCharacterBody', () => ({
+  default: ({ state = 'idle', still }: { state?: string; still: boolean }) =>
+    <span data-mora-body data-character-state={state} data-still={still} />,
+}));
 vi.mock('next/image', () => ({ default: ({ priority: _priority, alt, ...props }: any) => <img alt={alt} {...props} /> }));
 let frame: FrameRequestCallback | undefined;
 let now = 0;

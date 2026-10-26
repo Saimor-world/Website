@@ -1,20 +1,19 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, type RefObject } from 'react';
-import Image from 'next/image';
-import MoraOsFace from './MoraOsFace';
+import { useEffect, useId, useRef, type RefObject } from 'react';
+import MoraCharacterBody from './MoraCharacterBody';
 import styles from './MoraWaterGuide.module.css';
 
-/** MÔRA's own jade face becomes a small guiding light, leaving a fading flight trace. */
-export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef, interactive = true }: {
-  chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>; interactive?: boolean;
+/** The canonical light body follows the existing water flight path and fading trace. */
+export default function MoraWaterGuide({ chapter, still, label, onActivate, buttonRef, interactive = true, locale = 'de' }: {
+  locale?: 'de' | 'en'; chapter: number; still: boolean; label: string; onActivate: () => void; buttonRef: RefObject<HTMLButtonElement>; interactive?: boolean;
 }) {
   const stone = useRef<HTMLSpanElement>(null), trail = useRef<SVGPathElement>(null);
   const gradient = useRef<SVGLinearGradientElement>(null);
   const traceId = `mora-flight-${useId().replace(/:/g, '')}`;
   const controls = useRef({ chapter, still, interactive }); controls.current = { chapter, still, interactive };
   const engaged = useRef({ pointer: false, focus: false });
-  const [ready, setReady] = useState(false);
+  const interaction = useRef({ x: 0, y: 0, touchedAt: -Infinity });
   useEffect(() => {
     let frame = 0, previous = performance.now(), time = 0, x = .5, y = .85;
     const tail = Array.from({ length: 18 }, () => ({ x, y }));
@@ -81,8 +80,9 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
       <button ref={buttonRef} className={styles.companion} type="button" onClick={onActivate} disabled={!interactive} aria-hidden={!interactive}
         onPointerEnter={() => { engaged.current.pointer = true; }} onPointerLeave={() => { engaged.current.pointer = false; }}
         onFocus={() => { engaged.current.focus = true; }} onBlur={() => { engaged.current.focus = false; }}>
-        <span className={styles.stone} data-guide-ready={ready}><Image src="/brand/mora-stone-200.webp" alt="" width={44} height={44} unoptimized loading="eager" onLoad={() => setReady(true)} />
-          {ready && <MoraOsFace size={34} state="rest" />}
+        <span className={styles.stone}>
+          <MoraCharacterBody locale={locale} still={still} state={chapter >= 0 ? 'listening' : 'idle'}
+            interaction={interaction} />
         </span><span className={styles.caption}>{label}</span>
       </button>
       <i /><i /><i />

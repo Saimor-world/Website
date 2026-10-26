@@ -1,8 +1,7 @@
 'use client';
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import Image from 'next/image';
-import MoraOsFace from './MoraOsFace';
+import MoraCharacterBody from './MoraCharacterBody';
 import styles from './MoraDeepView.module.css';
 
 export type MoraFocusHandle = { enter: () => void };
@@ -13,6 +12,7 @@ type Props = {
 
 /** Holding a stable point settles the surrounding field; a click is the accessible alternative. */
 const MoraFocusStone = forwardRef<MoraFocusHandle, Props>(function MoraFocusStone(props, ref) {
+  const interaction = useRef({ x: 0, y: 0, touchedAt: -Infinity });
   const current = useRef(props); current.current = props;
   const mode = useRef<'hold' | 'auto' | 'idle'>('idle');
   const amount = useRef(0);
@@ -51,12 +51,16 @@ const MoraFocusStone = forwardRef<MoraFocusHandle, Props>(function MoraFocusSton
   return <button type="button" className={`${styles.stoneStage} ${styles.stoneControl}`}
     aria-label={props.locale === 'de' ? 'MÔRA halten' : 'Hold MÔRA'} aria-busy={active}
     disabled={props.disabled} data-holding={active}
+    onPointerMove={event => {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      interaction.current.x = (event.clientX - bounds.left) / bounds.width * 2 - 1;
+      interaction.current.y = 1 - (event.clientY - bounds.top) / bounds.height * 2;
+    }}
     onPointerDown={event => { if (event.button !== 0) return; event.currentTarget.setPointerCapture(event.pointerId); begin('hold'); }}
     onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release}
     onClick={event => { if (event.detail === 0 || props.reduced || props.paused) begin('auto'); }}>
-    <Image src="/brand/mora-stone-v1.png" width={504} height={504} sizes="(max-width: 700px) 240px, 320px" priority draggable={false}
-      className={styles.stone} alt={props.locale === 'de' ? 'MÔRA, Jadestein' : 'MÔRA, jade stone'} />
-    <MoraOsFace size={320} state={active ? 'listen' : undefined} />
+    <MoraCharacterBody locale={props.locale} still={props.paused || props.reduced}
+      state={active ? 'listening' : 'idle'} interaction={interaction} />
     <span className={styles.focusTrace} aria-hidden="true" />
     <span className={styles.holdHint} aria-hidden="true">{props.locale === 'de' ? 'Halte einen Moment.' : 'Stay for a moment.'}</span>
   </button>;

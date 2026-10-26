@@ -1,21 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, useState } from 'react';
+import MoraCharacterBody from './MoraCharacterBody';
 import styles from './MoraHeroPresence.module.css';
 import { useSiteLiteMode } from '@/lib/use-site-lite-mode';
-
-const Scene = dynamic(() => import('./mora/alive/CharacterScene'), {
-  ssr: false, loading: () => <span className={styles.loading} aria-hidden="true">MÔRA</span>,
-});
-class PresenceBoundary extends Component<
-  { children: ReactNode; fallback: ReactNode; onFailure: () => void }, { failed: boolean }
-> {
-  state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  componentDidCatch() { this.props.onFailure(); }
-  render() { return this.state.failed ? this.props.fallback : this.props.children; }
-}
 
 /** Website adapter for the immutable OS body. It never subscribes to CORE or executes work. */
 export default function MoraHeroPresence({ paused, locale }: {
@@ -23,29 +11,13 @@ export default function MoraHeroPresence({ paused, locale }: {
 }) {
   const root = useRef<HTMLDivElement>(null);
   const interaction = useRef({ x: 0, y: 0, touchedAt: -Infinity });
-  const [visible, setVisible] = useState(true);
-  const [pageVisible, setPageVisible] = useState(true);
   const [failed, setFailed] = useState(false);
   const lite = useSiteLiteMode();
   const still = paused || lite;
-  useEffect(() => {
-    const sync = () => setPageVisible(document.visibilityState === 'visible');
-    sync(); document.addEventListener('visibilitychange', sync);
-    const observer = typeof IntersectionObserver === 'undefined' ? null
-      : new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
-    if (root.current) observer?.observe(root.current);
-    return () => {
-      observer?.disconnect(); document.removeEventListener('visibilitychange', sync);
-    };
-  }, []);
   const de = locale === 'de';
   const invite = () => {
     if (!failed) interaction.current = { x: .5, y: .12, touchedAt: performance.now() };
   };
-  const fallback = <span className={styles.fallback}>
-    {de ? 'Die interaktive Ansicht ist hier nicht verfügbar.'
-      : 'The interactive view is unavailable in this browser.'}
-  </span>;
   return <div ref={root} className={styles.presence} data-mora-presence
     data-testid="mora-hero-presence" data-character-source="preview" data-still={still}
     role={failed ? 'img' : 'button'} tabIndex={failed ? -1 : 0}
@@ -63,10 +35,8 @@ export default function MoraHeroPresence({ paused, locale }: {
         y: 1 - (event.clientY - rect.top) / rect.height * 2, touchedAt: performance.now() };
     }} onClick={event => { if (event.detail === 0) invite(); }}>
     <div className={styles.canvas} aria-hidden="true">
-      <PresenceBoundary fallback={fallback} onFailure={() => setFailed(true)}>{failed ? fallback
-        : <Scene state="idle" still={still} active={visible && pageVisible}
-          interaction={interaction} onFailure={() => setFailed(true)} />}
-      </PresenceBoundary>
+      <MoraCharacterBody locale={locale} still={still} interaction={interaction}
+        onFailure={() => setFailed(true)} />
     </div>
     <span className={styles.caption}>{de ? 'Interaktive Gestalt · Entwicklungsvorschau'
       : 'Interactive character · development preview'}</span>

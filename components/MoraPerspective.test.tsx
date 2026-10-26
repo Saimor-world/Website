@@ -2,23 +2,25 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import MoraPerspective from './MoraPerspective';
 
+vi.mock('./MoraCharacterBody', () => ({
+  default: ({ state = 'idle', still }: { state?: string; still: boolean }) =>
+    <span data-mora-body data-character-state={state} data-still={still} />,
+}));
 vi.mock('next/image', () => ({
   default: ({ alt = '', ...props }: any) => <img alt={alt} {...props} />,
 }));
 afterEach(cleanup);
 describe('the clearing', () => {
-  it('reveals the guide eyes only once the stone image has loaded', () => {
+  it('keeps exactly one canonical body when the product explanation opens', () => {
     const { container } = render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);
-    expect(container.querySelectorAll('img')).toHaveLength(1);
+    expect(container.querySelectorAll('[data-mora-body]')).toHaveLength(1);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('[data-face-state]')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
-    expect(container.querySelectorAll('img')).toHaveLength(1);
-    const image = container.querySelector('img')!;
-    expect(container.querySelector('[data-face-state]')).toBeNull();
-    fireEvent.error(image);
-    expect(container.querySelector('[data-face-state]')).toBeNull();
+    expect(container.querySelectorAll('[data-mora-body]')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
-    fireEvent.load(image);
-    expect(container.querySelector('[data-guide-ready="true"] [data-face-state="rest"]')).not.toBeNull();
+    fireEvent.pointerOver(screen.getByText('Dateien, Termine, offene Dinge'));
+    expect(container.querySelector('[data-mora-body]')).toHaveAttribute('data-character-state', 'listening');
   });
   it('offers an optional explanation, returning focus when the visitor enjoys the clearing', () => {
     render(<MoraPerspective locale="de" morning onLight={vi.fn()} onLook={vi.fn()} still={false} />);

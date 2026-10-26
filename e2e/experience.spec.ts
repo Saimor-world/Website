@@ -175,40 +175,12 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await shot(page, info, 'after-intro');
   await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
-  await expect(page.locator('[data-face-state="rest"]')).toBeVisible();
-  // Measure both layers in one browser frame. Separate round-trips can span
-  // the encounter's parent translate animation on slow software WebKit.
-  const { face, stone } = await page.getByTestId('deep-mora').evaluate(element => {
-    const bounds = (child: Element | null) => {
-      if (!child) return null;
-      const { x, y, width, height } = child.getBoundingClientRect();
-      return { x, y, width, height };
-    };
-    return { face: bounds(element.querySelector('[data-face-state]')), stone: bounds(element.querySelector('img')) };
-  });
-  expect(face).not.toBeNull(); expect(stone).not.toBeNull();
-  for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(face![key] - stone![key])).toBeLessThan(1);
+  const encounter = page.getByTestId('deep-mora');
+  await expect(encounter.locator('[data-mora-body] canvas')).toBeVisible();
+  await expect(encounter.locator('[data-mora-body]')).toHaveCount(1);
+  await expect(encounter.locator('[data-mora-body]')).toHaveAttribute('data-character-source', 'preview');
+  await expect(encounter.locator('img[src*="mora-stone"], [data-face-state]')).toHaveCount(0);
   await shot(page, info, 'after-encounter');
-  // Inspect the actual closed blink, including its highlights, on both engines.
-  await page.locator('[data-face-state="rest"]').evaluate(element => {
-    for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) {
-        animation.pause(); animation.currentTime = 5320;
-      }
-    }
-  });
-  await expect(page.locator('[data-face-state] svg filter')).toHaveCount(0);
-  const lidScales = await page.locator('[data-face-state="rest"] [class*="eye_"]').evaluateAll(eyes => eyes.map(eye => new DOMMatrix(getComputedStyle(eye).transform).d));
-  expect(lidScales).toHaveLength(2);
-  lidScales.forEach(scale => expect(scale).toBeCloseTo(.065, 3));
-  // The shared screenshot helper disables animation, which resets the held lid.
-  // Preserve this deliberately paused CSS animation to capture the actual blink.
-  await page.screenshot({ path: info.outputPath('after-closed-blink.png'), animations: 'allow' });
-  await page.locator('[data-face-state="rest"]').evaluate(element => {
-    for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) animation.play();
-    }
-  });
   const stablePoint = await page.getByRole('button', { name: 'MÔRA halten', exact: true }).boundingBox();
   expect(stablePoint).not.toBeNull();
   await page.mouse.move(stablePoint!.x + stablePoint!.width / 2, stablePoint!.y + stablePoint!.height / 2);
@@ -255,7 +227,7 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   await info.attach('water-frame-timing.json', { body: JSON.stringify(timing, null, 2), contentType: 'application/json' });
   expect(timing.paintedFrames / timing.callbacks).toBeGreaterThan(.8);
   await noOverflow(page);
-  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
+  await expect(page.locator('[data-guide-chapter] [data-mora-body] canvas')).toBeVisible();
   await shot(page, info, 'after-clarity');
   await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).toBeFocused();
@@ -309,7 +281,7 @@ test('English cinematic passage opens the living clearing using normal motion', 
   await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
   await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).click();
   await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
-  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
+  await expect(page.locator('[data-guide-chapter] [data-mora-body] canvas')).toBeVisible();
   await shot(page, info, 'after-morning-english');
   expect(exceptions).toEqual([]);
 });
