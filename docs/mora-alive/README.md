@@ -166,7 +166,7 @@ when both changes are eventually approved. Neither PR is merged or released by t
 ### Simple presence — selected direction, 26 October 2026
 
 The user selected the reduced opal/pebble study after rejecting both the flame mascot and the
-humanoid design study. Canonical source `f15e08932a178cdb73ce316fb33b26ec972b94c7`
+humanoid design study. Canonical source `2a89ae73d6ab2bbfec9afecf4a492cc0ec8cbadd`
 (OS draft #177) replaces the visual candidate above. The actual Three.js body now consists of a
 single smoothly tapered volume, two small eyes and a separate jade stone. There is no image
 substitute, mouth, crest, trailing membrane, particle field, decorative orbit or floor ring.
