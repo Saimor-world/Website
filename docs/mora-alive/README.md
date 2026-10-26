@@ -147,3 +147,18 @@ could pass before its queued RAF focus callback; that callback could then take f
 from the guide between native Enter events. A regression test reproduced this exact focus
 theft before the fix. The callback now preserves an intentionally focused control. Browser
 assertions stay unchanged; no extra timeout, forced click or retry hides the issue.
+
+### Corporate presence refinement — 26 October 2026
+
+The corporate revision pins canonical OS source `1bb04a81e1f419071c00eeb4f625812538a49939`
+(OS draft PR #174). It changes the shared renderer, so the product hero, Deep View encounter,
+star-river guide and isolated inspection all use the same revised body. No Website-only costume.
+
+The head is narrower and slightly smaller; eyes are smaller and attentive at idle, with a neutral
+mouth instead of a permanent closed-eye smile. A subtle smile remains for `done`. One softer orbit,
+one subdued ground ring, less bloom, fewer particles, a thinner jade rim and slower movement replace
+the stacked decorative trails and sparkle. Flame form, jade, palette and interactions remain.
+
+This is a reversible visual candidate, not a claim of final brand approval or reference fidelity.
+The Konami feature is independently reviewable in Website draft PR #123; it uses this same component
+when both changes are eventually approved. Neither PR is merged or released by this work.
