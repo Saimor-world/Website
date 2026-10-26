@@ -270,7 +270,7 @@ test('cinematic: deliberate passage, real face alignment, history and replay', a
   expect(exceptions).toEqual([]);
 });
 
-test('English cinematic passage opens the living clearing using normal motion', async ({ page }, info) => {
+test('English keyboard passage opens the living clearing using normal motion', async ({ page }, info) => {
   test.setTimeout(90000);
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
@@ -279,7 +279,8 @@ test('English cinematic passage opens the living clearing using normal motion', 
   await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
   await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
   await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
-  await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).click();
+  // Keyboard focus holds the flying guide before activation; no moving-target click race.
+  await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).press('Enter');
   await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
   await expect(page.locator('[data-guide-chapter] [data-mora-body] canvas')).toBeVisible();
   await shot(page, info, 'after-morning-english');

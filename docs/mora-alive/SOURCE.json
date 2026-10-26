@@ -1,10 +1,10 @@
 {
   "canonicalRepository": "Saimor-world/mora-ui",
-  "sourceCommit": "93fec95c25c79b494897ac771343c4a208789ad6",
+  "sourceCommit": "bdef1aced365b52ada55f907db49d8651560da77",
   "files": {
     "components/mora/alive/CharacterScene.tsx": "35089c38c7bccbba5c72762e24782688fd17c1a61e87a0d557956bff59bfb103",
     "components/mora/alive/characterForm.ts": "e30a59249335d8a0c54b8f770f53ba04b94fdeac31a88c70832bdcab2c61bb3d",
-    "components/mora/alive/characterMaterials.ts": "845c66346ed055ec0b066119031ce9ee755de3c7a4eb78710ee7960db6efc402",
+    "components/mora/alive/characterMaterials.ts": "fc24aa82b30d7a15ba26775f3af948ec626bd0488161f0443460d0489ede9207",
     "components/mora/alive/characterGlow.ts": "503336d5049a22ccd04d6cf43a4dc3d62e552b04e0a9f44d138a56fa0f9a67f7",
     "components/mora/alive/characterMembranes.ts": "653553672ba78c36dfe5ce1668271e9ef062c8a053006286376d7c90be288b7a",
     "components/mora/alive/MoraAliveView.tsx": "0d4d447fd9644f8c5877b1a1270ab5efa99ed572b4a39ca9e76cd95d6c05f971",

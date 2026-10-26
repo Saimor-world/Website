@@ -14,7 +14,7 @@ implemented. Run `node scripts/verify-mora-alive-source.mjs` to detect downstrea
 To update, run the upstream `scripts/export-mora-alive.mjs` against this checkout at a new
 reviewed immutable commit. Do not modify mirrored character sources here.
 
-V04 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `93fec95c25c79b494897ac771343c4a208789ad6`. The same engine and body serve both previews. V04 divides the continuous head mesh into face/crest draw groups: the face keeps orbit occlusion, while the translucent crest reveals the surrounding membranes. Its shader uses a broad internal cream light source and a separate gold crest response rather than the previous shell-like directional highlight. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
+V04 exports the canonical light form, cambered membranes, jade material, transparent HDR bloom and articulated night-rest pose from OS source `bdef1aced365b52ada55f907db49d8651560da77`. The same engine and body serve both previews. V04 divides the continuous head mesh into face/crest draw groups: the face keeps orbit occlusion, while the translucent crest reveals the surrounding membranes. Its shader uses a broad internal cream light source and a separate gold crest response rather than the previous shell-like directional highlight. The last captured upstream source passed all six browser checks, including GPU readback of finite HDR targets and actual night-rest images. Current source checks are linked on OS draft #163. Website check results are linked on this draft; this route never reports live CORE work.
 
 Added dependencies: exact Three.js 0.181.0 and matching type definitions, as already used by OS.
 No React upgrade or React Three Fiber dependency is required.
@@ -96,3 +96,22 @@ but actual mobile captures exposed intrinsic canvas width expanding the encounte
 The follow-up uses explicit zero-minimum grid tracks and button minimum sizes, and adds
 browser assertions that canvas/button/frame widths and centers agree. Functional tests
 alone are not treated as visual acceptance.
+
+The corrected mobile grid source `b4a904a3` passed all character journeys in the full matrix,
+including iPhone WebKit (run 40297155890). Actual corrected mobile encounter images were
+reviewed: the body is centered and the jade stays inside the frame. That broad run passed
+67 checks and timed out in the English WebKit journey. Trace inspection isolated 74 seconds
+waiting for the autonomously moving guide button to become stable before a pointer click;
+transition, dawn, heading focus and the final product destination were otherwise reached.
+The English journey now uses keyboard activation of the guide (focus already holds flight),
+while the German cinematic journey retains the real pointer/hold path. No forced click,
+retry, reduced-motion substitution or removed destination assertion is used.
+
+## Reviewed light-material refinement
+
+The new immutable body source `bdef1ace` passes full OS CI 40342567006 and all six renderer
+checks 40342566902. Actual idle and curled night-rest frames were reviewed on iPhone WebKit
+and compared with V04: the face now has a softer inner-to-edge gradient, the core tail is
+more transparent, and jade veins are less contrasty. This is a measured visual iteration,
+not an accepted 1:1 match or physically traced volumetric light. No geometry, scene timings
+or event mappings were changed. The same material is exported to all Website placements.
