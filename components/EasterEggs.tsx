@@ -1,10 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getAchievementManager, shouldAnnounceAchievement, type Achievement, type AchievementLocale } from '@/lib/achievements';
 import AchievementButton from './AchievementButton';
 import AchievementToast from './AchievementToast';
+
+const MoraKonamiEncounter = dynamic(() => import('./MoraKonamiEncounter'), { ssr: false });
 
 const LAST_VISIT_KEY = 'saimor-last-visit';
 const RETURN_CHECK_KEY = 'saimor-return-checked';
@@ -23,7 +26,9 @@ export default function EasterEggs() {
   const logoTimerRef = useRef<number | null>(null);
   const konamiIndexRef = useRef(0);
   const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
-  const [resonance, setResonance] = useState(false);
+  const [encounter, setEncounter] = useState(0);
+  const encounterTimer = useRef<number | null>(null);
+  const encounterCount = useRef(0);
 
   const unlock = useCallback((id: string) => {
     const item = managerRef.current.unlock(id);
@@ -43,9 +48,12 @@ export default function EasterEggs() {
         if (konamiIndexRef.current < KONAMI.length) return;
 
         konamiIndexRef.current = 0;
-        setResonance(true);
+        setEncounter(++encounterCount.current);
+        if (encounterTimer.current !== null) window.clearTimeout(encounterTimer.current);
         unlock('konami');
-        window.setTimeout(() => setResonance(false), 3200);
+        encounterTimer.current = window.setTimeout(() => {
+          setEncounter(0);encounterTimer.current = null;
+        }, 5000);
         return;
       }
 
@@ -53,7 +61,10 @@ export default function EasterEggs() {
     };
 
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      if (encounterTimer.current !== null) window.clearTimeout(encounterTimer.current);
+    };
   }, [unlock]);
 
   useEffect(() => {
@@ -114,15 +125,7 @@ export default function EasterEggs() {
 
   return (
     <>
-      {resonance ? (
-        <div className="pointer-events-none fixed inset-0 z-[9997] overflow-hidden" aria-hidden="true">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(209,183,111,.12),transparent_28%),radial-gradient(circle_at_20%_75%,rgba(74,125,86,.12),transparent_32%)] animate-pulse" />
-          <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-[#d9c17d]/50 to-transparent shadow-[0_0_28px_rgba(217,193,125,.35)]" />
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[.28em] text-[#eadba9]/60">
-            RESONANCE LAYER // 1986
-          </div>
-        </div>
-      ) : null}
+      {encounter ? <MoraKonamiEncounter key={encounter} locale={locale} /> : null}
       <AchievementToast achievement={newAchievement} onClose={closeToast} locale={locale} />
       <AchievementButton />
     </>
