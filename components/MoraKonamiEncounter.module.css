@@ -1,10 +1,26 @@
-.overlay{position:fixed;inset:0;z-index:9997;display:grid;place-items:center;pointer-events:none}
-.encounter{display:grid;justify-items:center;width:min(320px,85vw);animation:encounter 5s both}
-.figure{width:240px;height:300px;display:grid;place-items:center;filter:drop-shadow(0 12px 36px #071c1966)}
-.sigil{width:88px;height:88px;object-fit:contain}
-.message{margin:0;padding:12px 22px;border:1px solid #e9b96740;border-radius:4px;background:#071c19ed;color:#f7e9cb;font-family:var(--font-inter),sans-serif;font-size:15px;line-height:1.5;letter-spacing:.025em;box-shadow:0 8px 32px #0002;animation:message 5s both}
-.overlay[data-still=true] .encounter,.overlay[data-still=true] .message{animation:none}
-.overlay[data-still=true] .figure{height:120px;filter:none}
-@keyframes encounter{0%{opacity:0;transform:translateY(12px)}18%,78%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
-@keyframes message{0%,22%{opacity:0}35%,78%{opacity:1}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.encounter,.message{animation:none}.figure{filter:none}}
+.overlay{position:fixed;inset:0;z-index:9997;display:grid;place-items:center;cursor:pointer;
+  background:radial-gradient(ellipse 60% 55% at 50% 46%,#16372aee 0%,#0a1f18f7 55%,#050c09fc 100%);
+  animation:veil .45s ease-out both}
+.overlay[data-leaving=true]{animation:veilOut .45s ease-in both}
+.encounter{display:grid;justify-items:center;gap:14px;width:min(420px,88vw);cursor:default;pointer-events:none}
+.figure{position:relative;display:grid;place-items:center;padding:24px;
+  pointer-events:auto;cursor:pointer;animation:rise 1s cubic-bezier(.2,.8,.2,1) .15s both}
+.overlay[data-leaving=true] .figure{animation:sink .45s ease-in both}
+.bloom{position:absolute;left:50%;top:50%;width:60%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.4);
+  border:1px solid #e9b96766;box-shadow:0 0 60px #e9b96733;opacity:0;animation:bloom 1.6s ease-out .35s both;pointer-events:none}
+.message{margin:0;padding:12px 22px;border:1px solid #e9b96740;border-radius:999px;background:#071c19e6;color:#f7e9cb;
+  font-family:var(--font-inter),sans-serif;font-size:15px;line-height:1.5;letter-spacing:.025em;box-shadow:0 8px 32px #0003;
+  animation:fade .6s ease-out 1s both}
+.hint{margin:0;color:#c4d7c9b3;font-family:var(--font-inter),sans-serif;font-size:12px;letter-spacing:.02em;animation:fade .6s ease-out 1.8s both}
+.close{position:fixed;top:20px;right:20px;width:44px;height:44px;border-radius:50%;border:1px solid #e9b96740;background:#071c19cc;
+  color:#f7e9cb;font-size:22px;line-height:1;cursor:pointer}
+.close:focus-visible{outline:2px solid #e9b967;outline-offset:3px}
+.overlay[data-still=true],.overlay[data-still=true] .figure,.overlay[data-still=true] .message,.overlay[data-still=true] .hint{animation:none}
+.overlay[data-still=true] .bloom{display:none}
+@keyframes veil{from{opacity:0}to{opacity:1}}
+@keyframes veilOut{from{opacity:1}to{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(48px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes sink{from{opacity:1;transform:none}to{opacity:0;transform:translateY(32px) scale(.96)}}
+@keyframes bloom{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.overlay,.figure,.message,.hint{animation:none}.bloom{display:none}}

@@ -1,44 +1,47 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import MoraCharacterBody from './MoraCharacterBody';
+import { useEffect, useRef, useState } from 'react';
+import PixelMora, { PIXEL_GRID } from './PixelMora';
 import styles from './MoraHeroPresence.module.css';
 import { useSiteLiteMode } from '@/lib/use-site-lite-mode';
 
-/** Website adapter for the immutable OS body. It never subscribes to CORE or executes work. */
+/** Website hero presence: Pixel MÔRA from the final set. It never subscribes to CORE or executes work. */
 export default function MoraHeroPresence({ paused, locale }: {
   paused: boolean; locale: 'de' | 'en';
 }) {
   const root = useRef<HTMLDivElement>(null);
-  const interaction = useRef({ x: 0, y: 0, touchedAt: -Infinity });
-  const [failed, setFailed] = useState(false);
+  const [scale, setScale] = useState(5);
+  const [reduced, setReduced] = useState(true);
+  const [hop, setHop] = useState(0);
   const lite = useSiteLiteMode();
-  const still = paused || lite;
+  const still = paused || lite || reduced;
   const de = locale === 'de';
-  const invite = () => {
-    if (!failed) interaction.current = { x: .5, y: .12, touchedAt: performance.now() };
-  };
-  return <div ref={root} className={styles.presence} data-mora-presence
-    data-testid="mora-hero-presence" data-character-source="preview" data-still={still}
-    role={failed ? 'img' : 'button'} tabIndex={failed ? -1 : 0}
-    aria-label={failed ? (de ? 'MÔRA: interaktive Ansicht nicht verfügbar'
-      : 'MÔRA: interactive view unavailable') : (de ? 'MÔRA zu dir einladen' : 'Invite MÔRA closer')}
-    onKeyDown={event => {
-      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); invite(); }
-    }} onPointerMove={event => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      interaction.current.x = (event.clientX - rect.left) / rect.width * 2 - 1;
-      interaction.current.y = 1 - (event.clientY - rect.top) / rect.height * 2;
-    }} onPointerDown={event => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      interaction.current = { x: (event.clientX - rect.left) / rect.width * 2 - 1,
-        y: 1 - (event.clientY - rect.top) / rect.height * 2, touchedAt: performance.now() };
-    }} onClick={event => { if (event.detail === 0) invite(); }}>
+
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduced(media?.matches ?? true);
+    sync();media?.addEventListener('change', sync);
+    const element = root.current;
+    // Whole-number scale only: the sprite stays crisp at every size.
+    const fit = () => {
+      if (!element) return;
+      const room = Math.min(element.clientWidth, element.clientHeight) * .62;
+      setScale(Math.max(3, Math.min(8, Math.floor(room / PIXEL_GRID))));
+    };
+    fit();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(fit);
+    if (element) observer?.observe(element);
+    return () => { media?.removeEventListener('change', sync);observer?.disconnect(); };
+  }, []);
+
+  const greet = () => { if (!still) setHop((n) => n + 1); };
+  return <div ref={root} className={styles.presence} data-mora-presence data-testid="mora-hero-presence"
+    data-character-source="preview" data-still={still} role="button" tabIndex={0}
+    aria-label={de ? 'MÔRA begrüßen' : 'Greet MÔRA'}
+    onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault();greet(); } }}
+    onClick={greet}>
     <div className={styles.canvas} aria-hidden="true">
-      <MoraCharacterBody locale={locale} still={still} interaction={interaction}
-        onFailure={() => setFailed(true)} />
+      <PixelMora scale={scale} still={still} hop={hop} />
     </div>
-    <span className={styles.caption}>{de ? 'Interaktive Gestalt · Entwicklungsvorschau'
-      : 'Interactive character · development preview'}</span>
   </div>;
 }

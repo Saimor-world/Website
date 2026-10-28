@@ -2,9 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import EasterEggs from './EasterEggs';
 
-const { unlock, bodyMounted, loadBody } = vi.hoisted(() => ({
-  unlock: vi.fn(), bodyMounted: vi.fn(), loadBody: vi.fn(),
-}));
+const { unlock, loadEncounter } = vi.hoisted(() => ({ unlock: vi.fn(), loadEncounter: vi.fn() }));
 let pathname = '/mora';
 vi.mock('next/navigation', () => ({ usePathname: () => pathname }));
 vi.mock('@/lib/achievements', () => ({
@@ -12,15 +10,12 @@ vi.mock('@/lib/achievements', () => ({
 }));
 vi.mock('./AchievementButton', () => ({ default: () => null }));
 vi.mock('./AchievementToast', () => ({ default: () => null }));
-vi.mock('./MoraCharacterBody', () => ({ default: () => {
-  bodyMounted();return <canvas data-testid="konami-body" />;
-} }));
-// Keep imports genuinely lazy: rendering EasterEggs alone must not request the body.
+// Keep imports genuinely lazy: rendering EasterEggs alone must not request the encounter.
 vi.mock('next/dynamic', async () => {
   const React = await import('react');
   return { default: (load: () => Promise<{ default: React.ComponentType }>) => {
     const Lazy = React.lazy(() => {
-      if (load.toString().includes('MoraCharacterBody')) loadBody();
+      if (load.toString().includes('MoraKonamiEncounter')) loadEncounter();
       return load();
     });
     return function Dynamic(props: object) {
@@ -37,6 +32,7 @@ async function trigger() {
   await act(async () => { vi.advanceTimersByTime(300);await vi.dynamicImportSettled(); });
   await act(async () => { vi.advanceTimersByTime(300); });
 }
+const pixel = () => document.querySelector('[data-pixel-mora]');
 beforeEach(() => {
   vi.useFakeTimers();vi.clearAllMocks();pathname = '/mora';
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false,
@@ -47,39 +43,74 @@ afterEach(() => {
   document.documentElement.classList.remove('lite');
 });
 describe('Konami MÔRA encounter', () => {
-  it('loads the existing body only after a complete sequence and unlocks the achievement', async () => {
+  it('loads the encounter only after a complete sequence, shows Pixel MÔRA and unlocks the achievement', async () => {
     render(<EasterEggs />);
-    expect(bodyMounted).not.toHaveBeenCalled();
-    expect(loadBody).not.toHaveBeenCalled();
+    expect(loadEncounter).not.toHaveBeenCalled();
     await trigger();
+    expect(loadEncounter).toHaveBeenCalled();
     expect(screen.getByRole('status')).toHaveTextContent('Du hast mich gefunden.');
-    expect(screen.getByTestId('konami-body')).toBeInTheDocument();
+    expect(pixel()).toHaveAttribute('data-still', 'false');
+    // Only the final-set base layers, integer-scaled: no 3D canvas, nothing painted on.
+    expect(document.querySelector('canvas')).toBeNull();
+    const layers = [...pixel()!.querySelectorAll('img')].map(img => img.getAttribute('src'));
+    expect(layers).toEqual(['/mora/pixel/body.png', '/mora/pixel/light.png', '/mora/pixel/face.png', '/mora/pixel/eyes.png']);
+    expect((pixel() as HTMLElement).style.width).toBe('240px');
     expect(unlock).toHaveBeenCalledWith('konami');
   });
-  it.each(['motion', 'lite'])('uses a static fallback for %s without mounting 3D', async mode => {
+  it.each(['motion', 'lite'])('shows the same figure as a still image for %s', async mode => {
     if (mode === 'lite') document.documentElement.classList.add('lite');
     else vi.mocked(matchMedia).mockReturnValue({ matches: true,
       addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as MediaQueryList);
     render(<EasterEggs />);await trigger();
     expect(screen.getByRole('status')).toHaveTextContent('Du hast mich gefunden.');
-    expect(screen.getByAltText('SAIMÔR')).toBeInTheDocument();
-    expect(bodyMounted).not.toHaveBeenCalled();
-    expect(loadBody).not.toHaveBeenCalled();
+    expect(pixel()).toHaveAttribute('data-still', 'true');
+    fireEvent.click(screen.getByTestId('konami-figure'));
+    expect(pixel()).not.toHaveAttribute('data-hop');
   });
-  it('uses English copy and removes the overlay and its body after five seconds', async () => {
+  it('hops once when MÔRA is clicked, without closing', async () => {
+    render(<EasterEggs />);await trigger();
+    fireEvent.click(screen.getByTestId('konami-figure'));
+    expect(pixel()).toHaveAttribute('data-hop', 'true');
+    act(() => vi.advanceTimersByTime(600));
+    expect(pixel()).not.toHaveAttribute('data-hop');
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+  it('uses English copy and leaves softly after eight seconds without movement', async () => {
     pathname = '/en/mora';render(<EasterEggs />);await trigger();
     expect(screen.getByRole('status')).toHaveTextContent('You found me.');
-    act(() => vi.advanceTimersByTime(5000));
+    // The encounter mounts during trigger(), ~600 ms before it returns.
+    act(() => vi.advanceTimersByTime(6500));
+    expect(document.querySelector('[data-mora-konami]')).toHaveAttribute('data-leaving', 'false');
+    act(() => vi.advanceTimersByTime(1000));
+    expect(document.querySelector('[data-mora-konami]')).toHaveAttribute('data-leaving', 'true');
+    act(() => vi.advanceTimersByTime(450));
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('konami-body')).not.toBeInTheDocument();
+  });
+  it('stays while the visitor moves the pointer', async () => {
+    render(<EasterEggs />);await trigger();
+    for (let i = 0; i < 3; i++) {
+      act(() => vi.advanceTimersByTime(6000));
+      fireEvent.pointerMove(window, { clientX: 200 + i * 50, clientY: 300 });
+    }
+    expect(screen.getByRole('status')).toHaveTextContent('Du hast mich gefunden.');
+  });
+  it.each([
+    ['Esc', () => fireEvent.keyDown(window, { key: 'Escape' })],
+    ['the close button', () => fireEvent.click(screen.getByRole('button', { name: 'Schließen' }))],
+    ['a click outside', () => fireEvent.click(document.querySelector('[data-mora-konami]')!)],
+  ])('closes on %s', async (_, close) => {
+    render(<EasterEggs />);await trigger();
+    act(() => close());
+    act(() => vi.advanceTimersByTime(450));
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
   it('clears encounter timers and its key listener on unmount', async () => {
     const schedule = vi.spyOn(window, 'setTimeout');
     const clear = vi.spyOn(window, 'clearTimeout');
     const { unmount } = render(<EasterEggs />);await trigger();
-    const index = schedule.mock.calls.findIndex(([, delay]) => delay === 5000);
-    const timer = schedule.mock.results[index].value;
-    unmount();expect(clear).toHaveBeenCalledWith(timer);
+    const timers = [60000, 8000].map(delay => schedule.mock.results[schedule.mock.calls.findIndex(([, d]) => d === delay)].value);
+    unmount();
+    for (const timer of timers) expect(clear).toHaveBeenCalledWith(timer);
     unlock.mockClear();sequence();expect(unlock).not.toHaveBeenCalled();
   });
 });

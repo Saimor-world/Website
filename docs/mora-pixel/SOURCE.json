@@ -1,0 +1,12 @@
+{
+  "canonicalRepository": "Saimor-world/mora-ui",
+  "sourceCommit": "b2f2a991c95eb7979d67eee7760dabdd16a1c2e5",
+  "files": {
+    "public/mora/pixel/body.png": "89e1cae031bc1391ad5d1fb0900f179916e425ef02d9f2b312c48f99fdc343f3",
+    "public/mora/pixel/light.png": "f6731b260d4fc85bf4b775c3116a7a0cff120fff062699bfd82ba3f9d23d5d00",
+    "public/mora/pixel/face.png": "99786f6c2ccb1da6e89300294abb1277ae476bfe9592c644af5b5841ab1a05b8",
+    "public/mora/pixel/eyes.png": "75692bf0d6ca6dda9d1c59084e2a7758119db34c2bc53ad45470311759aed6c6",
+    "public/mora/pixel/eyes_closed.png": "39caf2b0eafad9b6a3f94dd22dc466e19b6b6fe136dc2956512c943dcfa9f53e"
+  },
+  "note": "Pixel MÔRA base layers (final set, no accessories). Do not edit mirrored files; change upstream and re-export."
+}

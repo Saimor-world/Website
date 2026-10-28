@@ -11,6 +11,7 @@ const MoraKonamiEncounter = dynamic(() => import('./MoraKonamiEncounter'), { ssr
 
 const LAST_VISIT_KEY = 'saimor-last-visit';
 const RETURN_CHECK_KEY = 'saimor-return-checked';
+const ENCOUNTER_MAX_MS = 60000;
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 
 function normalizePath(pathname: string) {
@@ -37,6 +38,10 @@ export default function EasterEggs() {
   }, []);
 
   const closeToast = useCallback(() => setNewAchievement(null), []);
+  const closeEncounter = useCallback(() => {
+    if (encounterTimer.current !== null) window.clearTimeout(encounterTimer.current);
+    encounterTimer.current = null;setEncounter(0);
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -51,9 +56,10 @@ export default function EasterEggs() {
         setEncounter(++encounterCount.current);
         if (encounterTimer.current !== null) window.clearTimeout(encounterTimer.current);
         unlock('konami');
+        // MÔRA leaves on its own (Esc, click outside, stillness); this is only a safety net.
         encounterTimer.current = window.setTimeout(() => {
           setEncounter(0);encounterTimer.current = null;
-        }, 5000);
+        }, ENCOUNTER_MAX_MS);
         return;
       }
 
@@ -125,7 +131,7 @@ export default function EasterEggs() {
 
   return (
     <>
-      {encounter ? <MoraKonamiEncounter key={encounter} locale={locale} /> : null}
+      {encounter ? <MoraKonamiEncounter key={encounter} locale={locale} onClose={closeEncounter} /> : null}
       <AchievementToast achievement={newAchievement} onClose={closeToast} locale={locale} />
       <AchievementButton />
     </>
