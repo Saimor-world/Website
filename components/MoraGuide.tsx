@@ -64,17 +64,23 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
     hopTimer.current = window.setTimeout(() => setMood('idle'), 620);
   };
 
-  // Where are we? Her greeting spot decides between "at home" and "docked"; stops decide what she says.
+  // Where are we? Her greeting spot decides between "at home" and "docked" (with hysteresis: dock only once
+  // it is fully gone, return from 15 % visible, so she never flickers at the edge).
+  // What she talks about is the section crossing a thin reading line at 40 % of the screen; none, no talk.
   useEffect(() => {
     const home = anchor.current;
     const watched = c.stops.map(s => document.getElementById(s.id)).filter((node): node is HTMLElement => Boolean(node));
     if (typeof IntersectionObserver === 'undefined') return;
-    // Two thresholds: a single 0.15 would never report the spot leaving the screen completely.
-    const homeSight = new IntersectionObserver(([entry]) => setHomeVisible(entry.isIntersecting && entry.intersectionRatio >= 0.15), { threshold: [0, 0.15] });
+    const homeSight = new IntersectionObserver(([entry]) => {
+      if (entry.intersectionRatio >= 0.15) setHomeVisible(true);
+      else if (!entry.isIntersecting) setHomeVisible(false);
+    }, { threshold: [0, 0.15] });
     if (home) homeSight.observe(home);
+    const onLine = new Set<string>();
     const stopSight = new IntersectionObserver(entries => {
-      for (const entry of entries) if (entry.isIntersecting) setStop(c.stops.findIndex(s => s.id === entry.target.id));
-    }, { rootMargin: '-45% 0px -45% 0px' });
+      for (const entry of entries) { if (entry.isIntersecting) onLine.add(entry.target.id); else onLine.delete(entry.target.id); }
+      setStop(c.stops.findIndex(s => onLine.has(s.id)));
+    }, { rootMargin: '-40% 0px -59% 0px' });
     watched.forEach(node => stopSight.observe(node));
     return () => { homeSight.disconnect(); stopSight.disconnect(); };
   }, [c.stops]);
@@ -83,8 +89,10 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
   useEffect(() => {
     if (paused) { setMood('idle'); setLook(0); return; }
     let last = window.scrollY, settle: number | undefined, queued = false;
+    // The browser restores the scroll position after a reload; that is not the visitor moving.
+    const calmUntil = performance.now() + 700;
     const onScroll = () => {
-      if (queued) return;
+      if (queued || performance.now() < calmUntil) { last = window.scrollY; return; }
       queued = true;
       requestAnimationFrame(() => {
         queued = false;
@@ -104,6 +112,19 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
 
   const current = stop >= 0 ? c.stops[stop] : undefined;
   const docked = phase !== 'greet' && !homeVisible;
+  const speaking = docked && talking && Boolean(current);
+
+  // Mark the section she is talking about, and let the page know she is docked (the achievement toast moves up).
+  useEffect(() => {
+    const section = speaking && current ? document.getElementById(current.id) : null;
+    section?.setAttribute('data-mora-focus', 'true');
+    return () => section?.removeAttribute('data-mora-focus');
+  }, [speaking, current]);
+  useEffect(() => {
+    if (!docked) return;
+    document.body.dataset.moraDock = 'true';
+    return () => { delete document.body.dataset.moraDock; };
+  }, [docked]);
   const sleeping = night && phase === 'greet';
   const figureMood: MoraMood = sleeping ? 'sleep' : mood === 'idle' && talking ? 'talk' : mood;
 
@@ -111,7 +132,7 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
     <button type="button" className={styles.figure} aria-label={c.poke} onClick={() => { hop(); if (phase === 'greet') setTalking(true); }}>
       <PixelMora scale={3} mood={docked ? 'idle' : figureMood} look={look} still={paused} />
     </button>
-    {phase === 'greet' && talking ? <div className={styles.bubble} role="status">
+    {mounted && phase === 'greet' && talking ? <div className={styles.bubble} role="status">
       <p>{sleeping ? c.sleepy : c.hello}</p>
       <div className={styles.actions}>
         <button type="button" className={styles.primary} onClick={() => choose('tour')}>{c.yes}</button>
@@ -121,7 +142,8 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
   </div>;
 
   const dock = docked && mounted ? createPortal(<aside className={styles.dock} aria-label={c.name} data-testid="mora-guide-dock">
-    {talking && current ? <div className={styles.dockBubble}>
+    {speaking && current ? <div className={styles.dockBubble} data-about={current.id}>
+      <p className={styles.about}>{c.about}: {current.label}</p>
       <p>{current.text}</p>
       <div className={styles.actions}>
         {current.action ? <Link className={styles.primary} href={current.action.href}>{current.action.label}</Link> : null}
@@ -130,7 +152,7 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
       <button type="button" className={styles.close} aria-label={c.close} onClick={() => { setTalking(false); setPhase('quiet'); try { window.localStorage.setItem(GUIDE_KEY, 'quiet'); } catch {} }}><X size={14} aria-hidden="true" /></button>
     </div> : null}
     <button type="button" className={styles.dockFigure} aria-label={c.poke} aria-expanded={talking} onClick={() => { hop(); setTalking(value => !value); }}>
-      <PixelMora scale={2} mood={mood} look={look} still={paused} />
+      <PixelMora scale={2} mood={mood} look={speaking && mood === 'idle' ? -1 : look} still={paused} />
     </button>
   </aside>, document.body) : null;
 

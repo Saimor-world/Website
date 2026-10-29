@@ -240,6 +240,8 @@ test('reduced motion lands every step at once; short viewport stays usable', asy
 
 test('homepage: MÔRA greets, guides the tour on request and stays quiet otherwise', async ({ page }, info) => {
   test.setTimeout(90000);
+  // MÔRA sleeps between 22:00 and 06:00 (own unit test); this journey checks her daytime greeting.
+  await page.clock.setFixedTime(new Date('2026-10-29T14:00:00'));
   for (const locale of ['de', 'en'] as const) {
     const de = locale === 'de';
     await visit(page, `/${locale}`); await consent(page);
@@ -261,7 +263,8 @@ test('homepage: MÔRA greets, guides the tour on request and stays quiet otherwi
     const dock = page.getByTestId('mora-guide-dock');
     await expect(dock).toBeVisible();
     await page.evaluate(() => document.getElementById('products')?.scrollIntoView({ block: 'start' }));
-    await expect(dock).toContainText(de ? 'Hier sind die Produkte.' : 'Here are the products.');
+    await expect(dock).toContainText(de ? 'ZU: PRODUKTE' : 'ON: PRODUCTS');
+    await expect(page.locator('#products')).toHaveAttribute('data-mora-focus', 'true');
     await noOverflow(page);
     await shot(page, info, `after-mora-tour-${locale}`);
     await dock.getByRole('button', { name: de ? 'Weiter' : 'Next' }).click();

@@ -3,7 +3,7 @@
  * DRAFT copy for Marius' approval before anything goes live: short, warm, honest.
  * Product statements only repeat what the site already says (no new claims).
  */
-export type GuideStop = { id: string; text: string; action?: { label: string; href: string } };
+export type GuideStop = { id: string; label: string; text: string; action?: { label: string; href: string } };
 
 export const GUIDE = {
   de: {
@@ -11,14 +11,14 @@ export const GUIDE = {
     hello: 'Hallo, ich bin MÔRA. Soll ich dir kurz zeigen, worum es hier geht?',
     sleepy: 'Oh, schon spät. Ich bin trotzdem da, wenn du magst.',
     yes: 'Ja, zeig mal', self: 'Ich schau selbst',
-    next: 'Weiter', close: 'Hinweise schließen', poke: 'MÔRA antippen',
+    next: 'Weiter', close: 'Hinweise schließen', poke: 'MÔRA antippen', about: 'ZU',
     stops: [
-      { id: 'system', text: 'Hier fängt es an: Dein Kontext kommt mit, statt jedes Mal neu erklärt zu werden.' },
-      { id: 'earth-horizon', text: 'Ein Ort für alles, was zusammengehört. Und für Creator gibt es YORI.' },
-      { id: 'blick', text: 'Alles antwortet. Ich zeige dir lieber, worauf du dich verlassen kannst.', action: { label: 'Deep View', href: '/mora/deep-view?from=portal' } },
-      { id: 'products', text: 'Hier sind die Produkte. Mit mir im OS fängst du am besten an.', action: { label: 'Zu MÔRA', href: '/mora' } },
-      { id: 'studio', text: 'Lieber mit Menschen reden? Das Studio hilft bei Workshops und Umsetzung.' },
-      { id: 'contact', text: 'Das war die Runde. Wenn du eine Frage hast, schreib uns einfach.', action: { label: 'Kontakt', href: '/de/kontakt' } },
+      { id: 'system', label: 'KONTEXT', text: 'Das ist die Grundidee: Was du einmal erklärst, bleibt da. Dateien, Termine und Nachrichten behalten ihren Zusammenhang.' },
+      { id: 'earth-horizon', label: 'ERDE', text: 'Das Geflecht unter der Erde zeigt, wie deine Dinge zusammenhängen. Der kleine Funke darin führt zu YORI, dem Raum für Creator.' },
+      { id: 'blick', label: 'DIE WELT DER KI', text: 'KI-Antworten klingen sicher. Hier geht es um die Frage, ob sie auch belegt sind. Im Deep View zeige ich dir, wie ich das sehe.', action: { label: 'Deep View', href: '/mora/deep-view?from=portal' } },
+      { id: 'products', label: 'PRODUKTE', text: 'Das sind die Welten: ich, MÔRA, im SAIMÔR OS, und YORI für Creator. Anfangen kannst du am besten bei mir.', action: { label: 'MÔRA im Detail', href: '/mora' } },
+      { id: 'studio', label: 'STUDIO', text: 'Lieber mit Menschen reden? Das Studio macht Beratung, Workshops und Umsetzung: Aus einer Frage wird ein nächster Schritt.' },
+      { id: 'contact', label: 'KONTAKT', text: 'Das war die Runde. Schreib uns deine Frage, daraus machen wir etwas Konkretes.', action: { label: 'Kontakt', href: '/de/kontakt' } },
     ] as GuideStop[],
   },
   en: {
@@ -26,14 +26,14 @@ export const GUIDE = {
     hello: 'Hi, I’m MÔRA. Want a quick look at what this is about?',
     sleepy: 'Oh, it’s late. I’m still here if you like.',
     yes: 'Yes, show me', self: 'I’ll look around',
-    next: 'Next', close: 'Close hints', poke: 'Tap MÔRA',
+    next: 'Next', close: 'Close hints', poke: 'Tap MÔRA', about: 'ON',
     stops: [
-      { id: 'system', text: 'This is where it starts: your context comes along instead of being explained again.' },
-      { id: 'earth-horizon', text: 'One place for everything that belongs together. And for creators, there is YORI.' },
-      { id: 'blick', text: 'Everything answers. I’d rather show you what you can rely on.', action: { label: 'Deep View', href: '/en/mora/deep-view?from=portal' } },
-      { id: 'products', text: 'Here are the products. Starting with me in the OS works best.', action: { label: 'To MÔRA', href: '/en/mora' } },
-      { id: 'studio', text: 'Rather talk to people? The Studio helps with workshops and implementation.' },
-      { id: 'contact', text: 'That’s the tour. If you have a question, just write to us.', action: { label: 'Contact', href: '/en/contact' } },
+      { id: 'system', label: 'CONTEXT', text: 'This is the core idea: what you explain once stays. Files, meetings and messages keep their context.' },
+      { id: 'earth-horizon', label: 'EARTH', text: 'The network below the earth shows how your things connect. The small spark in it leads to YORI, the space for creators.' },
+      { id: 'blick', label: 'THE WORLD OF AI', text: 'AI answers sound certain. This part asks whether they are also backed. In the Deep View I show you how I see it.', action: { label: 'Deep View', href: '/en/mora/deep-view?from=portal' } },
+      { id: 'products', label: 'PRODUCTS', text: 'These are the worlds: me, MÔRA, in SAIMÔR OS, and YORI for creators. The best place to start is with me.', action: { label: 'MÔRA in detail', href: '/en/mora' } },
+      { id: 'studio', label: 'STUDIO', text: 'Rather talk to people? The Studio does consulting, workshops and implementation: a question becomes a next step.' },
+      { id: 'contact', label: 'CONTACT', text: 'That’s the tour. Send us your question and we’ll turn it into something concrete.', action: { label: 'Contact', href: '/en/contact' } },
     ] as GuideStop[],
   },
 } as const;

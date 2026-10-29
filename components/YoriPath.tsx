@@ -7,14 +7,23 @@ import styles from './YoriPath.module.css';
 
 type Props = { locale: 'de' | 'en' };
 
-// A hidden crack of light among the roots. Nothing to see until you come close:
-// hover (desktop) or scrolling it slowly into the middle of the screen (touch).
+// A spark of light among the roots, drawn in art pixels like MÔRA and the universe.
+// Always faintly there; it wakes up when you come close: hover (desktop) or resting near the
+// middle of the screen (touch). Only transform and opacity move.
+const SPARK = [
+  '...#...',
+  '...#...',
+  '..###..',
+  '###O###',
+  '..###..',
+  '...#...',
+  '...#...',
+];
 const MOTES = [
-  { x: -14, y: -10, d: '0s' },
-  { x: 12, y: -16, d: '.6s' },
-  { x: 18, y: 6, d: '1.2s' },
-  { x: -8, y: 14, d: '1.8s' },
-  { x: 4, y: -24, d: '2.4s' },
+  { x: -14, y: -6, d: '0s' },
+  { x: 12, y: -12, d: '.7s' },
+  { x: 16, y: 8, d: '1.4s' },
+  { x: -9, y: 12, d: '2.1s' },
 ];
 
 export default function YoriPath({ locale }: Props) {
@@ -58,15 +67,14 @@ export default function YoriPath({ locale }: Props) {
         aria-label={de ? 'Ein anderer Weg: YORI' : 'Another path: YORI'}
       >
         <span className={styles.light} aria-hidden="true">
-          <svg className={styles.crack} viewBox="-30 -30 60 60" width="60" height="60">
-            <path className={styles.crackGlow} d="M-3 -22 L1 -11 L-2 -4 L3 3 L0 10 L2 19" />
-            <path className={styles.crackCore} d="M-3 -22 L1 -11 L-2 -4 L3 3 L0 10 L2 19" />
-            <path className={styles.crackCore} d="M-2 -4 L-9 -1 M3 3 L9 7" />
+          <svg className={styles.spark} viewBox="0 0 7 7" width="21" height="21" shapeRendering="crispEdges">
+            {SPARK.flatMap((row, y) => [...row].map((cell, x) => cell === '.' ? null
+              : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={cell === 'O' ? '#fff7dc' : '#f2c66b'} />))}
           </svg>
           {MOTES.map((m, i) => (
             <i key={i} className={styles.mote} style={{ left: `calc(50% + ${m.x}px)`, top: `calc(50% + ${m.y}px)`, animationDelay: m.d }} />
           ))}
-          <span className={styles.kanji}>縁</span>
+          <span className={styles.name}>YORI</span>
         </span>
       </a>
       {opening ? createPortal(<div className={styles.passage} aria-hidden="true" />, document.body) : null}

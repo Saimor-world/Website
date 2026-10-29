@@ -51,13 +51,22 @@ describe('MÔRA guides the homepage', () => {
     expect(scrolled).toHaveBeenCalledWith('earth-horizon');
     see('home', false); see('products', true);
     const dock = screen.getByTestId('mora-guide-dock');
-    expect(dock).toHaveTextContent('Hier sind die Produkte.');
-    expect(screen.getByRole('link', { name: 'Zu MÔRA' })).toHaveAttribute('href', '/mora');
+    expect(dock).toHaveTextContent('ZU: PRODUKTE');
+    expect(dock).toHaveTextContent('Das sind die Welten');
+    expect(screen.getByRole('link', { name: 'MÔRA im Detail' })).toHaveAttribute('href', '/mora');
+    // The section she talks about is marked; leaving the reading line clears both marker and talk.
+    expect(document.getElementById('products')).toHaveAttribute('data-mora-focus', 'true');
+    expect(document.body).toHaveAttribute('data-mora-dock', 'true');
+    see('products', false);
+    expect(document.getElementById('products')).not.toHaveAttribute('data-mora-focus');
+    expect(dock).not.toHaveTextContent('Das sind die Welten');
+    see('products', true);
     fireEvent.click(screen.getByRole('button', { name: 'Weiter' }));
     expect(scrolled).toHaveBeenLastCalledWith('studio');
     fireEvent.click(screen.getByRole('button', { name: 'Hinweise schließen' }));
     expect(window.localStorage.getItem(GUIDE_KEY)).toBe('quiet');
-    expect(dock).not.toHaveTextContent('Hier sind die Produkte.');
+    expect(dock).not.toHaveTextContent('Das sind die Welten');
+    expect(document.getElementById('products')).not.toHaveAttribute('data-mora-focus');
   });
 
   it('stays quiet when the visitor looks around alone, and answers a tap', () => {
@@ -72,13 +81,17 @@ describe('MÔRA guides the homepage', () => {
     expect(poke).toHaveAttribute('aria-expanded', 'false');
     fireEvent.click(poke);
     expect(poke).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByTestId('mora-guide-dock')).toHaveTextContent('worauf du dich verlassen kannst');
+    expect(screen.getByTestId('mora-guide-dock')).toHaveTextContent('ob sie auch belegt sind');
     expect(document.querySelector('[data-mood="hop"]')).not.toBeNull();
   });
 
   it('flies along while the page scrolls and looks the way it goes', () => {
     render(<Page />);
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { callback(0); return 1; });
+    // Scroll restoration right after load is ignored; a visitor scrolling later is not.
+    act(() => { window.dispatchEvent(new Event('scroll')); });
+    expect(document.querySelector('[data-pixel-mora]')).not.toHaveAttribute('data-mood', 'fly');
+    act(() => vi.advanceTimersByTime(800));
     act(() => { Object.defineProperty(window, 'scrollY', { value: 300, configurable: true }); window.dispatchEvent(new Event('scroll')); });
     const mora = document.querySelector('[data-pixel-mora]')!;
     expect(mora).toHaveAttribute('data-mood', 'fly');

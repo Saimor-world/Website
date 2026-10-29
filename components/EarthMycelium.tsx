@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type React from 'react';
 import styles from './EarthMycelium.module.css';
+import PixelMora from './pixel/PixelMora';
 import { isLiteMode } from '@/lib/lite-mode-script';
 
 type Point = { x: number; y: number };
@@ -417,7 +418,6 @@ const SPORES = Array.from({ length: 22 }, (_, index) => {
 });
 
 export default function EarthMycelium({ children }: { children?: ReactNode } = {}) {
-  const orbRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const [grow, setGrow] = useState<'idle' | 'armed' | 'on'>('idle');
   const [active, setActive] = useState(true);
@@ -446,39 +446,8 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    if (media?.matches || isLiteMode()) return undefined;
-    const scroller = document.scrollingElement || document.body;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const orb = orbRef.current;
-      const field = fieldRef.current;
-      if (!orb || !field) return;
-      if (isLiteMode()) return;
-      if (document.querySelector('input[name="world-motion"]:checked')) return;
-      const rect = field.getBoundingClientRect();
-      if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
-      const phone = window.matchMedia?.('(max-width: 700px)')?.matches;
-      const hub = rect.top + rect.height * (phone ? 0.61 : 0.25);
-      const drift = Math.max(-9, Math.min(9, (window.innerHeight * 0.48 - hub) * 0.05));
-      // Individual `translate` composes with the keyframed transform, so the bob stays on the compositor.
-      orb.style.translate = `0 ${drift.toFixed(1)}px`;
-    };
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-    update();
-    scroller.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      scroller.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
+  // No scroll-driven movement here: reading layout on every scroll frame made the underside stutter.
+
 
   return (
     <div className={styles.field} data-testid="earth-mycelium" data-grow={grow} data-active={active ? 'on' : 'off'} ref={fieldRef}>
@@ -548,13 +517,6 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
               <stop offset="82%" stopColor="#fff" stopOpacity="0.9" />
               <stop offset="100%" stopColor="#fff" stopOpacity="0.18" />
             </linearGradient>
-            <filter id="earthPhonePulseGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="1.8" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
             <mask id="earthPhoneMask">
               <rect width={VIEW_W} height={PHONE_H} fill="url(#earthPhoneFade)" />
             </mask>
@@ -610,7 +572,6 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
                 d={strand.d}
                 strokeWidth={Math.max(0.7, strand.w * 0.7)}
                 pathLength={160}
-                filter="url(#earthPhonePulseGlow)"
                 style={{ animationDelay: `${-index * 1.8}s`, animationDuration: `${7.4 + (index % 3) * 1.3}s` }}
               />
             ))}
@@ -635,11 +596,9 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
           ))}
         </span>
 
-        <div className={styles.moraOrb} ref={orbRef} role="img" aria-label="MÔRA">
+        <div className={styles.moraOrb} role="img" aria-label="MÔRA">
           <span className={styles.moraHalo} aria-hidden="true" />
-          <span className={styles.moraGlow} aria-hidden="true" />
-          <img className={styles.moraStone} src="/brand/mora-stone-200.webp" alt="" width={58} height={58} />
-          <span className={styles.moraSheen} aria-hidden="true" />
+          <PixelMora scale={2} look={0} still={!active} />
         </div>
         {children}
       </div>

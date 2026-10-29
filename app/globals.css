@@ -326,3 +326,8 @@ html.lite [class*="_mote"],
 html.lite [class*="pulseLayer"] {
   display: none !important;
 }
+
+/* MÔRA's homepage tour: the section she is talking about gets a quiet gold edge (paint only, no layout change). */
+[data-mora-focus="true"]{box-shadow:inset 4px 0 0 #d9b24c}
+/* While MÔRA is docked bottom-left, the phone achievement toast sits above her instead of on top of her. */
+@media (max-width: 1023px){body[data-mora-dock="true"] [data-achievement-toast]{bottom:7.5rem}}
