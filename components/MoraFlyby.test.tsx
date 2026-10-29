@@ -17,8 +17,11 @@ describe('MÔRA flies past the hero', () => {
     const flyby = screen.getByTestId('mora-flyby');
     expect(flyby).toHaveAttribute('aria-hidden', 'true');
     expect(flyby.querySelector('button, a')).toBeNull();
+    const images = document.querySelectorAll('img').length;
     fireEvent.animationEnd(flyby);
-    expect(screen.queryByTestId('mora-flyby')).toBeNull();
+    // Landed: hidden, but still in the DOM so later images keep their order on the page.
+    expect(flyby).toHaveAttribute('data-done', 'true');
+    expect(document.querySelectorAll('img')).toHaveLength(images);
     first.unmount();
     render(<Hero />);
     expect(screen.queryByTestId('mora-flyby')).toBeNull();
@@ -34,6 +37,6 @@ describe('MÔRA flies past the hero', () => {
     render(<Hero />);
     expect(screen.getByTestId('mora-flyby')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
-    expect(screen.queryByTestId('mora-flyby')).toBeNull();
+    expect(screen.getByTestId('mora-flyby')).toHaveAttribute('data-done', 'true');
   });
 });

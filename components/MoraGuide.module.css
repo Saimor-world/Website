@@ -29,6 +29,7 @@
 
 /* Flyover: once across the hero sky, transform only, in whole art-pixel steps. Not clickable. */
 .flyby{position:absolute;left:0;top:58%;z-index:1;pointer-events:none;animation:flyby 7s steps(70) 1.2s both}
+.flyby[data-done="true"]{display:none}
 @keyframes flyby{0%{transform:translate(-120px,40px)}35%{transform:translate(30vw,-10px)}70%{transform:translate(70vw,20px)}100%{transform:translate(calc(100vw + 40px),-30px)}}
 @media(max-width:700px){
   .greet{gap:10px;margin-top:22px}
