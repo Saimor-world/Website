@@ -1,0 +1,7 @@
+.pixel{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges}
+.sky{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:#05080c}
+.sky .pixel{left:0;top:0}
+.twinkle{animation:twinkle 3.2s steps(2) infinite}
+.sky[data-still="true"] .twinkle{animation:none;opacity:.6}
+@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.twinkle{animation:none;opacity:.6}}

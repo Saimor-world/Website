@@ -6,25 +6,20 @@
 .field[data-active="off"] *{animation-play-state:paused!important}
 .phoneNetwork,.spores{display:none}
 .phoneGlow,.phonePulse{fill:none;stroke-linecap:round}
-.glow{stroke-opacity:.16;filter:blur(.35px)}
+.glow{stroke-opacity:.16}
 .strand{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .jade{stroke:#9fd4b4;stroke-opacity:.72}
 .gold{stroke:#e6c98d;stroke-opacity:.64}
 .hair{stroke:#cfe8c8;stroke-opacity:.42}
-.pulse{fill:none;stroke:#e7f6ea;stroke-linecap:round;stroke-opacity:.9;stroke-dasharray:9 131;animation:sap 8.5s linear infinite}
-.pulse:nth-of-type(2){stroke:#e6c98d;animation-duration:11s;animation-delay:-4s}
-.pulse:nth-of-type(3){animation-duration:9.5s;animation-delay:-6.2s}
-.moraOrb{position:absolute;left:50%;top:25%;width:58px;height:58px;transform:translate(-50%,-50%);animation:moraBob 5.8s ease-in-out infinite;transform-origin:center center}
-.moraHalo,.moraGlow,.moraSheen{position:absolute;border-radius:50%;pointer-events:none}
-.moraHalo{inset:-48px;background:radial-gradient(circle,rgba(231,246,234,.2) 0%,rgba(198,226,184,.08) 38%,transparent 70%)}
-.moraGlow{inset:-18px;background:radial-gradient(circle,rgba(232,246,228,.55) 0%,rgba(143,205,176,.18) 42%,transparent 72%);opacity:.28;animation:moraArrive 8.5s ease-in-out infinite}
-.moraStone{position:relative;z-index:1;display:block;width:58px!important;height:58px!important;max-width:none!important;aspect-ratio:1;object-fit:contain;border-radius:50%;animation:moraBreathe 5.6s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(180,220,190,.28))}
-.moraSheen{inset:0;z-index:2;background:conic-gradient(from 0deg,transparent 0 38%,rgba(255,248,230,.32) 48%,transparent 58%);mix-blend-mode:soft-light;animation:moraSheen 9s linear infinite}
-@keyframes sap{to{stroke-dashoffset:-140}}
-@keyframes moraBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+/* Sap: dashes stay put, the whole pulse layer breathes in opacity (compositor only, no SVG repaint per frame). */
+.pulse{fill:none;stroke:#e7f6ea;stroke-linecap:round;stroke-opacity:.9;stroke-dasharray:9 131}
+.pulseLayer{will-change:opacity;animation:sapBreath 6s steps(6) infinite alternate}
+.pulse:nth-of-type(2){stroke:#e6c98d;stroke-dashoffset:-40}
+.pulse:nth-of-type(3){stroke-dashoffset:-90}
+.moraOrb{position:absolute;left:50%;top:25%;width:80px;height:80px;transform:translate(-50%,-50%);animation:moraBob 5.8s steps(6) infinite;will-change:transform}
+.moraHalo{position:absolute;border-radius:50%;pointer-events:none;inset:-36px;background:radial-gradient(circle,rgba(231,246,234,.2) 0%,rgba(198,226,184,.08) 38%,transparent 70%)}
+@keyframes sapBreath{from{opacity:.55}to{opacity:1}}
 @keyframes moraBob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 5px))}}
-@keyframes moraSheen{to{transform:rotate(360deg)}}
-@keyframes moraArrive{0%,74%,100%{opacity:.22}82%{opacity:.8}90%{opacity:.35}}
 @media(max-width:1024px){.field{top:27%}}
 @media(max-width:700px){
  .field{top:28%;bottom:10%;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,#000 0%,#000 90%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,#000 0%,#000 90%,transparent 100%)}
@@ -32,28 +27,24 @@
  .network{display:none}
  .phoneNetwork{display:block;width:100%;height:100%;overflow:visible}
  .phoneNetwork.pulseLayer{position:absolute;inset:0}
- .moraOrb{width:54px;height:54px;top:61%;animation-name:moraBobPhone;animation-duration:5.4s}
- .moraStone{width:54px!important;height:54px!important;animation-name:moraBreathePhone}
- .moraSheen{animation-duration:8s}
- .phoneGlow{stroke-opacity:.22;filter:blur(.7px)}
- .phoneBack{stroke-opacity:.3;filter:blur(1.15px)}
+ .moraOrb{width:80px;height:80px;top:61%;animation-name:moraBobPhone;animation-duration:5.4s}
+   .phoneGlow{stroke-opacity:.22}
+ .phoneBack{stroke-opacity:.3}
  .jade,.gold,.hair,.phoneGlow,.phonePulse,.phoneBack{vector-effect:non-scaling-stroke}
  .jade{stroke-opacity:.82}
  .gold{stroke-opacity:.76}
  .hair{stroke-opacity:.48}
- .phonePulse{stroke:#f4fbe8;stroke-opacity:.88;stroke-dasharray:14 146;animation:phoneSap 7.6s linear infinite}
+ .phonePulse{stroke:#f4fbe8;stroke-opacity:.88;stroke-dasharray:14 146}
  .spores{display:block;position:absolute;inset:0;overflow:hidden;pointer-events:none}
- .spores i{position:absolute;border-radius:50%;background:rgba(232,246,228,.7);box-shadow:0 0 8px rgba(198,226,184,.5);animation:sporeDrift 14s linear infinite}
- .spores i:nth-child(3n){background:rgba(230,201,141,.62);box-shadow:0 0 9px rgba(230,201,141,.4)}
+ .spores i{position:absolute;background:rgba(232,246,228,.7);will-change:transform,opacity;animation:sporeDrift 14s steps(28) infinite}
+ .spores i:nth-child(3n){background:rgba(230,201,141,.62)}
 }
 @keyframes moraBobPhone{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 14px))}}
-@keyframes moraBreathePhone{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-@keyframes phoneSap{to{stroke-dashoffset:-160}}
 @keyframes sporeDrift{0%{transform:translate3d(0,10px,0);opacity:0}14%{opacity:.7}72%{opacity:.45}100%{transform:translate3d(8px,-52px,0);opacity:0}}
 @media(prefers-reduced-motion:reduce){
- .pulse,.phonePulse{animation:none;stroke-dasharray:none;stroke-opacity:.45}
- .moraOrb,.moraStone,.moraSheen,.spores i{animation:none}
- .moraGlow{animation:none;opacity:.42}
+ .pulseLayer{animation:none}
+ .pulse,.phonePulse{stroke-dasharray:none;stroke-opacity:.45}
+ .moraOrb,.spores i{animation:none}
  .spores{display:none}
 }
 

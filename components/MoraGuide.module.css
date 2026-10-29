@@ -1,0 +1,41 @@
+/* MÔRA greets right below the hero, flies past in the hero sky once, and on request docks in the corner. */
+.greet{position:relative;display:flex;align-items:flex-start;gap:14px;margin-top:28px;pointer-events:auto}
+.figure{display:block;padding:0;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  filter:drop-shadow(0 0 18px #f6be5030)}
+.greet[data-docked="true"] .figure{opacity:.35}
+.figure:focus-visible,.dockFigure:focus-visible{outline:2px solid #e6c98d;outline-offset:4px}
+
+/* Pixel speech bubble: hard 2 px border, stepped corners, no blur. */
+.bubble,.dockBubble{position:relative;max-width:260px;padding:13px 15px;background:#0c1a15;color:#f3ecd6;font:500 14px/1.45 system-ui,sans-serif;
+  border:2px solid #d9b24c;box-shadow:4px 4px 0 #050c09;
+  clip-path:polygon(0 4px,4px 4px,4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px))}
+.bubble p,.dockBubble p{margin:0}
+.bubble{margin-top:6px;animation:pop .32s steps(4) both}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.primary,.ghost{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:0;cursor:pointer;font:600 12px/1 ui-monospace,monospace;letter-spacing:.03em}
+.primary{background:#d9b24c;color:#10241b}
+.ghost{background:transparent;color:#e8d9a8;box-shadow:inset 0 0 0 2px #d9b24c66}
+.primary:focus-visible,.ghost:focus-visible,.close:focus-visible{outline:2px solid #fff3cf;outline-offset:2px}
+
+.dock{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));z-index:60;
+  display:flex;flex-direction:row-reverse;align-items:flex-end;gap:10px;pointer-events:none;animation:arrive .4s steps(4) both;will-change:transform}
+.dock>*{pointer-events:auto}
+.dockBubble{max-width:min(270px,calc(100vw - 124px));padding-right:34px}
+.about{font:600 10px/1.2 ui-monospace,monospace!important;letter-spacing:.14em;color:#d9b24c;margin:0 0 6px!important}
+.close{position:absolute;right:4px;top:4px;display:grid;place-items:center;width:28px;height:28px;border:0;background:transparent;color:#e8d9a8;cursor:pointer}
+.dockFigure{display:block;padding:0;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+@keyframes arrive{from{opacity:0;transform:translateX(-24px)}}
+
+/* Flyover: once across the hero sky, transform only, in whole art-pixel steps. Not clickable. */
+.flyby{position:absolute;left:0;top:58%;z-index:1;pointer-events:none;animation:flyby 7s steps(70) 1.2s both}
+.flyby[data-done="true"]{display:none}
+@keyframes flyby{0%{transform:translate(-120px,40px)}35%{transform:translate(30vw,-10px)}70%{transform:translate(70vw,20px)}100%{transform:translate(calc(100vw + 40px),-30px)}}
+@media(max-width:700px){
+  .greet{gap:10px;margin-top:22px}
+  .bubble{max-width:calc(100vw - 186px);min-width:150px;font-size:13.5px}
+  .flyby{top:54%}
+}
+@media(max-width:380px){.greet{flex-direction:column}.bubble{max-width:calc(100vw - 48px)}}
+@media(prefers-reduced-motion:reduce){.bubble,.dock,.flyby{animation:none}.flyby{display:none}}

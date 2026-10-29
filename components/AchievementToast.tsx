@@ -49,7 +49,7 @@ export default function AchievementToast({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: 'easeOut' }}
-          className="pointer-events-none fixed inset-x-0 bottom-5 z-[10001] flex justify-center px-4 lg:inset-x-auto lg:bottom-[5.5rem] lg:right-6 lg:px-0"
+          data-achievement-toast className="pointer-events-none fixed inset-x-0 bottom-5 z-[10001] flex justify-center px-4 lg:inset-x-auto lg:bottom-[5.5rem] lg:right-6 lg:px-0"
         >
           <motion.div
             role="status"
