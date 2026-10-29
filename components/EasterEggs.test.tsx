@@ -53,7 +53,8 @@ describe('Konami MÔRA encounter', () => {
     // Only the final-set base layers, integer-scaled: no 3D canvas, nothing painted on.
     expect(document.querySelector('canvas')).toBeNull();
     const layers = [...pixel()!.querySelectorAll('img')].map(img => img.getAttribute('src'));
-    expect(layers).toEqual(['/mora/pixel/body.png', '/mora/pixel/light.png', '/mora/pixel/face.png', '/mora/pixel/eyes.png']);
+    expect(layers).toEqual(['/mora/pixel/body.png', '/mora/pixel/light.png', '/mora/pixel/face.png', '/mora/pixel/eyes.png',
+      '/mora/pixel/traits/neck-scarf.png', '/mora/pixel/traits/head-sprout.png', '/mora/pixel/traits/clip-moon.png']);
     expect((pixel() as HTMLElement).style.width).toBe('240px');
     expect(unlock).toHaveBeenCalledWith('konami');
   });

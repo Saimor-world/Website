@@ -6,7 +6,13 @@
     "public/mora/pixel/light.png": "f6731b260d4fc85bf4b775c3116a7a0cff120fff062699bfd82ba3f9d23d5d00",
     "public/mora/pixel/face.png": "99786f6c2ccb1da6e89300294abb1277ae476bfe9592c644af5b5841ab1a05b8",
     "public/mora/pixel/eyes.png": "75692bf0d6ca6dda9d1c59084e2a7758119db34c2bc53ad45470311759aed6c6",
-    "public/mora/pixel/eyes_closed.png": "39caf2b0eafad9b6a3f94dd22dc466e19b6b6fe136dc2956512c943dcfa9f53e"
+    "public/mora/pixel/eyes_closed.png": "39caf2b0eafad9b6a3f94dd22dc466e19b6b6fe136dc2956512c943dcfa9f53e",
+    "public/mora/pixel/eyes_l.png": "015f9a335d9c87dde653212287d5625fffaa3a73b11682f794acbcf61f6d23c9",
+    "public/mora/pixel/eyes_r.png": "81768b3cbdca4f3506e0fec24562a1b9b5a5b20e6c5252880e5e12648233b065",
+    "public/mora/pixel/traits/neck-scarf.png": "5840c6370387c3127fe1f071a834db17c5956a4cfc0f42fc6f1f2deaf73691ec",
+    "public/mora/pixel/traits/head-sprout.png": "63bfbf01153d7a382034fa1a3831d2fccd7c2220512c5af8407dbeed57a18ea5",
+    "public/mora/pixel/traits/clip-moon.png": "adc7ef1dece411d0161dee9d2008199deb16c5ab3055261624c3a28e6068fb3b"
   },
-  "note": "Pixel MÔRA base layers (final set, no accessories). Do not edit mirrored files; change upstream and re-export."
+  "note": "Pixel MÔRA base layers plus the mora-ui default wardrobe (scarf, sprout, moon clip) and the look-left/right eyes; traits and eyes_l/eyes_r copied byte-for-byte from traitsSourceCommit. Do not edit mirrored files; change upstream and re-export.",
+  "traitsSourceCommit": "a53c7a948a8f8006a8c71c3b36b026a7e64b1d2f"
 }
