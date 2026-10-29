@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, Sparkles } from 'lucide-react';
 
 import styles from './SystemWorldHome.module.css';
+import HeroMotionStage from './HeroMotionStage';
+import MoraGuide from './MoraGuide';
+import MoraFlyby from './MoraFlyby';
 import OrbitalScene from './OrbitalScene';
 import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
@@ -67,8 +70,7 @@ export default function SystemWorldHome({ locale }: Props) {
 
   return (
     <div className={styles.world} data-home-globe>
-      <section className={styles.hero} aria-labelledby="world-title">
-        <label className={styles.motionControl}><input type="checkbox" name="world-motion" aria-label={locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'} /><span className={styles.motionGlyph} aria-hidden="true">Ⅱ</span><span className={styles.motionText}>{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</span></label>
+      <HeroMotionStage locale={locale} className={styles.hero} labelledBy="world-title">
         <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="100vw" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
@@ -89,10 +91,11 @@ export default function SystemWorldHome({ locale }: Props) {
               </div></ResponsiveDetails>
             </div>
             <OrbitalScene />
+            <MoraFlyby />
           </div>
           <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><Link href="#blick">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
-      </section>
+      </HeroMotionStage>
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">
         <div className={styles.threshold}>
@@ -105,6 +108,7 @@ export default function SystemWorldHome({ locale }: Props) {
               <h2 id="inside-title"><span className={styles.desktopIntro}>{c.fieldTitle}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Dein Kontext. Mit dir verbunden.' : 'Your context. Always with you.'}</span></h2>
               <p className={styles.contextBody}><span className={styles.desktopIntro}>{c.saimorText}</span><span className={styles.mobileIntro}>{locale === 'de' ? 'Eine Welt für alles, was zusammengehört. Komm einen Schritt näher.' : 'A world for everything that belongs together. Take a step closer.'}</span></p>
               <Link data-testid="mobile-threshold-entry" className={styles.thresholdAction} href={`${locale === 'de' ? '' : '/en'}/mora/deep-view?from=portal`}>{locale === 'de' ? 'MÔRA begegnen' : 'Meet MÔRA'}<ArrowRight size={16} aria-hidden="true" /></Link>
+              <MoraGuide locale={locale} />
             </div>
             <div className={styles.contextStage}>
               <div className={styles.portalCanvas}>

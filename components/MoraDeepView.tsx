@@ -1,200 +1,175 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
-import MoraFocusStone, { type MoraFocusHandle } from './MoraFocusStone';
-import AmbientParticleField from './AmbientParticleField';
-import MoraPerspective from './MoraPerspective';
-import MoraAtmosphere from './MoraAtmosphere';
-import MoraUncertainty from './MoraUncertainty';
+import PixelMora from './pixel/PixelMora';
+import { PixelMoon, PixelPlanet, PixelSky } from './pixel/PixelWorld';
+import type { PlanetKind } from '@/lib/pixel/pixelArt';
+import { UNIVERSE } from '@/lib/mora-guide-copy';
 import styles from './MoraDeepView.module.css';
 
-type Scene = 'uncertainty' | 'mora' | 'clarity';
 type Props = { locale: 'de' | 'en' };
-const COPY = {
-  de: {
-    back: 'Zurück', world: 'DIE WELT DER KI', question: 'Alles antwortet.', doubt: 'Aber worauf kannst du dich verlassen?',
-    meet: 'MÔRA begegnen', name: 'MÔRA.', presence: 'Lass uns sehen, was zusammengehört.', look: 'Durch ihre Augen sehen',
-    reset: 'Noch einmal',
-    status: 'PRODUKTVORSCHAU · KEINE LIVE-DATEN', pause: 'Bewegung pausieren',
-  },
-  en: {
-    back: 'Back', world: 'THE WORLD OF AI', question: 'Everything answers.', doubt: 'But what can you rely on?',
-    meet: 'Meet MÔRA', name: 'MÔRA.', presence: 'Let’s see what belongs together.', look: 'See through her eyes',
-    reset: 'Experience again',
-    status: 'PRODUCT PREVIEW · NO LIVE DATA', pause: 'Pause motion',
-  },
-} as const;
+type Mode = 'welcome' | 'overview' | 'focus' | 'end';
 
-/** A cinematic passage from unfamiliar mist through MÔRA’s eyes into morning light.
- * Moving mist gives way to morning light. No fetching, live AI claims or invented face.
+/** Where each part of SAIMÔR sits on the map (percent of the stage) and how it is painted. */
+const BODIES: Record<string, { x: number; y: number; kind: PlanetKind; d: number; seed: number; folders?: number; activity?: number; open?: number; moons?: number }> = {
+  os: { x: 50, y: 44, kind: 'jade', d: 52, seed: 3, activity: 0.7, open: 3 },
+  files: { x: 18, y: 27, kind: 'ice', d: 22, seed: 11 },
+  work: { x: 80, y: 25, kind: 'ocean', d: 28, seed: 21, folders: 3, moons: 3 },
+  agents: { x: 22, y: 66, kind: 'gas', d: 22, seed: 31, folders: 1, moons: 1 },
+  security: { x: 79, y: 64, kind: 'desert', d: 18, seed: 4100 },
+};
+
+/**
+ * Deep View: a journey into the SAIMÔR universe with MÔRA (in her captain's hat) as the guide.
+ * The look is the OS pixel view: the same painter, sprites and colours, enlarged by whole numbers only.
+ * Motion is transform/opacity in CSS plus one 1.2 s surface step per visible planet; no frame loop, no WebGL.
  */
 export default function MoraDeepView({ locale }: Props) {
-  const c = COPY[locale];
-  const world = useRef<HTMLDivElement>(null);
-  const focusAmount = useRef(0);
-  const dawnAmount = useRef(0);
-  const chapter = useRef(-1);
-  const clearingLook = useRef({ x: 0, y: 0 });
-  const setChapter = useCallback((index: number) => { chapter.current = index; }, []);
-  const pointer = useRef({ x: 0, y: 0, energy: 0 });
-  const focusControl = useRef<MoraFocusHandle>(null);
-  const [focusing, setFocusing] = useState(false);
-  const [focusReset, setFocusReset] = useState(0);
-  const focusProgress = useCallback((amount: number) => { focusAmount.current = amount; world.current?.style.setProperty('--focus', String(amount)); }, []);
-  const look = (x: number, y: number) => {
-    pointer.current.x = x; pointer.current.y = y;
-    clearingLook.current.x = x; clearingLook.current.y = y;
-  };
-  const [entry, setEntry] = useState<'portal' | 'mora' | null>(null);
-  const [scene, setScene] = useState<Scene>('uncertainty');
+  const c = UNIVERSE[locale];
+  const [mode, setMode] = useState<Mode>('welcome');
+  const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [crossing, setCrossing] = useState(false);
-  const [morning, setMorning] = useState(false);
-  const [hurry, setHurry] = useState(false);
-  const arrive = useCallback(() => setMorning(true), []);
+  const [px, setPx] = useState(2);
+  const [entry, setEntry] = useState<'portal' | 'mora' | null>(null);
+  const [flying, setFlying] = useState(false);
+  const flight = useRef<number | undefined>(undefined);
   const heading = useRef<HTMLHeadingElement>(null);
-  const crossingTimer = useRef<number | undefined>(undefined);
-  const focusRequested = useRef(false);
+  const still = paused || reduced;
+  const stop = c.stops[index];
 
-  const go = (next: Scene) => {
-    look(0, 0);
-    focusProgress(next === 'clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
-    dawnAmount.current = 0;
-    setMorning(false);
-    setHurry(false);
-    window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname + window.location.search : `#${next}`);
-    window.dispatchEvent(new Event('hashchange'));
-    focusRequested.current = true;
-    setScene(next);
-  };
+  const fly = useCallback(() => {
+    if (still) return;
+    setFlying(true);
+    window.clearTimeout(flight.current);
+    flight.current = window.setTimeout(() => setFlying(false), 900);
+  }, [still]);
 
-  useEffect(() => {
-    if (!focusRequested.current) return;
-    const frame = window.requestAnimationFrame(() => {
-      heading.current?.focus({ preventScroll: true });
-      focusRequested.current = false;
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [scene]);
+  const show = useCallback((next: number, push = true) => {
+    setIndex(next); setMode('focus'); fly();
+    if (push) window.history.pushState(null, '', `#${c.stops[next].id}`);
+  }, [c.stops, fly]);
+  const overview = useCallback((push = true) => {
+    setMode('overview'); fly();
+    if (push && window.location.hash) window.history.pushState(null, '', window.location.pathname + window.location.search);
+  }, [fly]);
+  const next = () => (index < c.stops.length - 1 ? show(index + 1) : (setMode('end'), fly()));
+  const restart = () => { setIndex(0); setMode('welcome'); window.history.pushState(null, '', window.location.pathname + window.location.search); heading.current?.focus({ preventScroll: true }); };
 
   useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const wide = window.matchMedia?.('(min-width: 900px)');
+    const sync = () => { setReduced(Boolean(media?.matches)); setPx(wide?.matches ? 3 : 2); };
     const restore = () => {
-      focusProgress(window.location.hash === '#clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
-      dawnAmount.current = 0;
       const origin = new URLSearchParams(window.location.search).get('from');
       setEntry(origin === 'portal' || origin === 'mora' ? origin : null);
-      window.clearTimeout(crossingTimer.current);
-      setCrossing(false);
-      setMorning(false);
-      setHurry(false);
-      setScene(window.location.hash === '#clarity' ? 'clarity' : window.location.hash === '#mora' ? 'mora' : 'uncertainty');
+      const found = c.stops.findIndex(s => `#${s.id}` === window.location.hash);
+      if (found >= 0) { setIndex(found); setMode('focus'); } else setMode(current => (current === 'welcome' ? 'welcome' : 'overview'));
     };
-    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const syncMotion = () => setReduced(Boolean(media?.matches));
-    syncMotion();
-    restore();
+    sync(); restore();
+    media?.addEventListener?.('change', sync); wide?.addEventListener?.('change', sync);
     window.addEventListener('popstate', restore);
-    media?.addEventListener?.('change', syncMotion);
     return () => {
-      window.clearTimeout(crossingTimer.current);
-      window.removeEventListener('popstate', restore);
-      media?.removeEventListener?.('change', syncMotion);
+      media?.removeEventListener?.('change', sync); wide?.removeEventListener?.('change', sync);
+      window.removeEventListener('popstate', restore); window.clearTimeout(flight.current);
     };
-  }, [focusProgress]);
+  }, [c.stops]);
 
   useEffect(() => {
-    if (scene !== 'uncertainty' || paused || reduced) return;
-    let timer: number | undefined;
-    const schedule = () => {
-      window.clearTimeout(timer);
-      if (!document.hidden) timer = window.setTimeout(() => {
-        window.history.replaceState(null, '', '#mora');
-        setScene('mora');
-      }, 7200);
-    };
-    schedule();
-    document.addEventListener('visibilitychange', schedule);
-    return () => {
-      window.clearTimeout(timer);
-      document.removeEventListener('visibilitychange', schedule);
-    };
-  }, [scene, paused, reduced]);
-
-  const see = () => {
-    if (reduced || paused) { go('clarity'); return; }
-    setCrossing(true);
-    crossingTimer.current = window.setTimeout(() => {
-      setCrossing(false);
-      go('clarity');
-    }, 1150);
-  };
+    if (mode !== 'focus') return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') overview(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mode, overview]);
 
   const home = locale === 'de' ? '/de' : '/en';
   const product = locale === 'de' ? '/mora' : '/en/mora';
   const backHref = entry === 'portal' ? `${home}#system` : entry === 'mora' ? `${product}#deep-view` : home;
   const backLabel = entry === 'portal' ? (locale === 'de' ? 'Zurück zum Portal' : 'Back to the portal') : entry === 'mora' ? (locale === 'de' ? 'Zurück zu MÔRA' : 'Back to MÔRA') : c.back;
   const languageHref = `${locale === 'de' ? '/en/mora/deep-view' : '/mora/deep-view'}${entry ? `?from=${entry}` : ''}`;
+  const focused = mode === 'focus' ? stop : undefined;
+  const body = focused ? BODIES[focused.id] : undefined;
 
   return (
-    <div ref={world} className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing} data-focusing={focusing}
-      onPointerMove={event => {
-        if (paused || reduced) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        pointer.current.x = (event.clientX - bounds.left) / bounds.width * 2 - 1;
-        pointer.current.y = (event.clientY - bounds.top) / bounds.height * 2 - 1;
-      }}
-      onPointerDown={event => {
-        if (scene !== 'clarity' || paused || reduced) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        pointer.current = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: (event.clientY - bounds.top) / bounds.height * 2 - 1, energy: 1 };
-      }}>
-      <div className={styles.atmosphere} aria-hidden="true">
-        <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
-          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} look={clearingLook} />
-        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
-        <div className={styles.grain} />
-        <div className={styles.passage} />
-      </div>
+    <div className={styles.world} data-mode={mode} data-paused={paused} data-still={still} data-testid="deep-universe"
+      style={body ? { '--fx': `${body.x}%`, '--fy': `${body.y}%` } as CSSProperties : undefined}>
+      <PixelSky still={still} />
 
       <header className={styles.topbar}>
-        <Link href={backHref} className={styles.back}><ArrowLeft size={15} />{backLabel}</Link>
-        <span className={styles.mark}>SAIMÔR <span>/</span> {locale === 'de' ? 'MÔRAs Blick' : "MÔRA's View"}</span>
+        <Link href={backHref} className={styles.back}><ArrowLeft size={15} aria-hidden="true" />{backLabel}</Link>
+        <h1 ref={heading} tabIndex={-1} className={styles.title}>{c.title}</h1>
         <div className={styles.controls}>
           <Link className={styles.language} href={languageHref} aria-label={locale === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}>{locale === 'de' ? 'EN' : 'DE'}</Link>
-          <button type="button" className={styles.motion} onClick={() => setPaused(value => !value)} aria-label={c.pause} aria-pressed={paused}>{paused ? <Play size={14} /> : <Pause size={14} />}</button>
+          <button type="button" className={styles.motion} onClick={() => setPaused(value => !value)} aria-label={c.pause} aria-pressed={paused}>
+            {paused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
+          </button>
         </div>
       </header>
 
-      <section className={styles.stage} aria-label={locale === 'de' ? 'Deep View – Inszenierte Begegnung' : 'Deep View – Staged encounter'} aria-busy={crossing || focusing}>
-        {scene === 'uncertainty' ? (
-          <div key="opening" className={styles.intro} data-testid="deep-uncertainty">
-            <MoraUncertainty />
-            <p className={styles.eyebrow}>{c.world}</p>
-            <h1 ref={heading} tabIndex={-1}>{c.question}</h1>
-            <p className={styles.doubt}>{c.doubt}</p>
-            <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
+      <section className={styles.stage} aria-label={c.title}>
+        <div className={styles.map} data-testid="universe-map" aria-hidden={mode === 'focus'}>
+          <svg className={styles.orbits} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse cx="50" cy="44" rx="34" ry="13" /><ellipse cx="50" cy="44" rx="42" ry="22" />
+          </svg>
+          {c.stops.map((s, i) => {
+            const b = BODIES[s.id];
+            return <button key={s.id} type="button" className={styles.body} style={{ left: `${b.x}%`, top: `${b.y}%` }}
+              aria-label={`${s.title}: ${s.sub}`} data-body={s.id} tabIndex={mode === 'focus' ? -1 : 0} onClick={() => show(i)}>
+              <PixelPlanet kind={b.kind} diameter={b.d} seed={b.seed} px={px} still={still} folders={b.folders} activity={b.activity} open={b.open} />
+              {Array.from({ length: b.moons ?? 0 }, (_, m) => <span key={m} className={styles.miniOrbit} data-cheap-motion
+                style={{ '--r': `${b.d * px * 0.85 + 10 + m * 9}px`, '--t': `${18 + m * 7}s`, '--a': `${m * 130}deg` } as CSSProperties}>
+                <PixelMoon kind={b.kind} diameter={5 + (m % 2)} seed={b.seed + m} px={px} className={styles.miniMoon} />
+              </span>)}
+              <span className={styles.label} style={{ top: `calc(50% + ${b.d * px * 0.5 + 10}px)` }}>{s.title}<small>{s.sub}</small></span>
+            </button>;
+          })}
+        </div>
+
+        {focused && body ? <div key={focused.id} className={styles.focus} data-testid={`focus-${focused.id}`}>
+          <div className={styles.focusPlanet}>
+            <PixelPlanet kind={body.kind} diameter={Math.round(body.d * 2.4)} seed={body.seed} px={2} still={still} folders={body.folders} activity={body.activity} open={body.open} />
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} onChapter={setChapter} still={paused || reduced} /> : (
-          <div key="encounter" className={styles.encounter} data-testid="deep-mora">
-            <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
-              <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={reduced} disabled={crossing}
-                onProgress={focusProgress} onActive={setFocusing} onSettled={see} />
-            </div>
-            <div key={scene} className={styles.encounterText}>
-              <h1 ref={heading} tabIndex={-1}>{c.name}</h1>
-              <p className={styles.lead}>{c.presence}</p>
-              <button type="button" className={styles.primary} disabled={crossing || focusing} onClick={() => focusControl.current?.enter()}>{c.look}<ArrowRight size={17} /></button>
-            </div>
-          </div>
-        )}
+          {focused.moons?.map((moon, m) => <div key={moon} className={styles.focusMoon} data-moon={m}>
+            <PixelMoon kind={body.kind} diameter={14 + (m % 2) * 2} seed={body.seed + m} px={2} />
+            <span className={styles.label} style={{ top: '26px' }}>{moon}</span>
+          </div>)}
+          <p className={styles.focusTitle}>{focused.title}<small>{focused.sub}</small></p>
+        </div> : null}
       </section>
-      <footer className={styles.footer}>
-        <span className={styles.disclosure}>{c.status}</span>
-        {scene !== 'uncertainty' ? <button type="button" className={styles.replay} disabled={crossing} onClick={() => go('uncertainty')}><RotateCcw size={13} />{c.reset}</button> : null}
-      </footer>
+
+      <div className={styles.guide} data-testid="universe-guide">
+        <div className={styles.mora}>
+          <div className={styles.flight} data-flying={flying}>
+            <PixelMora scale={px === 3 ? 4 : 3} outfit="captain" mood={flying ? 'fly' : mode === 'welcome' ? 'talk' : 'idle'} look={mode === 'focus' ? -1 : 1} still={still} />
+          </div>
+        </div>
+        <div className={styles.bubble} role="status" key={`${mode}-${index}`}>
+          {mode === 'welcome' ? <>
+            <p>{c.welcome}</p>
+            <div className={styles.actions}>
+              <button type="button" className={styles.primary} onClick={() => show(0)}>{c.start}<ArrowRight size={13} aria-hidden="true" /></button>
+              <button type="button" className={styles.ghost} onClick={() => overview(false)}>{c.explore}</button>
+            </div>
+          </> : mode === 'focus' && stop ? <>
+            <p>{stop.text}</p>
+            <div className={styles.actions}>
+              {stop.action ? <Link className={styles.ghost} href={stop.action.href}>{stop.action.label}</Link> : null}
+              <button type="button" className={styles.primary} onClick={next}>{c.next}<ArrowRight size={13} aria-hidden="true" /></button>
+              <button type="button" className={styles.ghost} onClick={() => overview()}>{c.overview}</button>
+            </div>
+          </> : mode === 'end' ? <>
+            <p>{c.end}</p>
+            <div className={styles.actions}>
+              <Link className={styles.primary} href={c.endAction.href}>{c.endAction.label}</Link>
+              <button type="button" className={styles.ghost} onClick={restart}><RotateCcw size={13} aria-hidden="true" />{c.again}</button>
+            </div>
+          </> : <p className={styles.hint}>{locale === 'de' ? 'Tippe einen Planeten an.' : 'Tap a planet.'}</p>}
+        </div>
+      </div>
+
+      <footer className={styles.footer}><span>{c.status}</span></footer>
     </div>
   );
 }

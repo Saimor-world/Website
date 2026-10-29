@@ -99,7 +99,8 @@ a,
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  /* Exception: cheap hero motion (Pixel MÔRA) runs only after the visitor deliberately pressed play. */
+  *:not([data-motion="play"] [data-cheap-motion]), *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -297,10 +298,11 @@ html:has([data-home-globe]) footer[data-public-footer] {
 }
 
 /* ── Lite mode: set by lib/lite-mode-script.ts on weak hardware (software GPU, ≤4 cores, …).
-   Same look, but no blur, no endless motion, no parallax, lighter shadows. ── */
-html.lite *,
-html.lite *::before,
-html.lite *::after {
+   Same look, but no blur, no parallax, no costly endless motion, lighter shadows.
+   Cheap rotate-only motion on its own layer ([data-cheap-motion], e.g. Pixel MÔRA breathing in the hero) keeps running. ── */
+html.lite *:not([data-cheap-motion]),
+html.lite *:not([data-cheap-motion])::before,
+html.lite *:not([data-cheap-motion])::after {
   animation-iteration-count: 1 !important;
   animation-duration: 0.001s !important;
   animation-delay: 0s !important;

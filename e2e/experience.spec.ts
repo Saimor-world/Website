@@ -108,21 +108,12 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     const back = page.getByRole('link', { name: german ? 'Zurück zum Portal' : 'Back to the portal' });
     await expect(back).toHaveAttribute('href', `${home}#system`);
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    await page.getByRole('button', { name: german ? 'MÔRA begegnen' : 'Meet MÔRA', exact: true }).click();
-    await page.getByRole('button', { name: german ? 'Durch ihre Augen sehen' : 'See through her eyes', exact: true }).click();
-    await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
-    await page.getByRole('button', { name: german ? 'MÔRA kennenlernen' : 'Get to know MÔRA', exact: true }).click();
-    await expect(page.getByRole('heading', { name: german ? 'Klarheit beginnt mit Zusammenhang.' : 'Clarity begins with context.' })).toBeVisible();
-    await page.locator('article details summary').first().click();
-    await expect(page.getByText(german ? /Eigene Daten kommen über Quellen/ : /Your own data comes through sources/)).toBeVisible();
-    const chapterSummaries = page.locator('article details summary');
-    for (let chapter = 0; chapter < 3; chapter++) {
-      await chapterSummaries.nth(chapter).focus();
-      await expect(page.locator('canvas[data-scene="clearing"]')).toHaveAttribute('data-chapter', String(chapter));
-      await expect(page.locator('[data-guide-chapter]')).toHaveAttribute('data-guide-chapter', String(chapter));
-    }
+    await expect(page.getByRole('heading', { level: 1, name: german ? 'Das SAIMÔR-Universe' : 'The SAIMÔR universe' })).toBeVisible();
+    await page.getByRole('button', { name: german ? /Los geht/ : /Let’s go/ }).click();
+    await expect(page.getByTestId('focus-os')).toBeVisible();
+    for (let step = 0; step < 5; step++) await page.getByRole('button', { name: german ? /^Weiter/ : /^Next/ }).click();
     await noOverflow(page);
-    await shot(page, info, `after-mora-information-${locale}`);
+    await shot(page, info, `after-universe-end-${locale}`);
     const product = page.getByRole('link', { name: german ? 'MÔRA im OS entdecken' : 'Discover MÔRA in the OS', exact: true });
     await product.click();
     await expect(page).toHaveURL(new RegExp(`${german ? '/mora' : '/en/mora'}#im-os$`));
@@ -151,202 +142,135 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
   await expect(page.locator('#studio-title')).toBeVisible();
 });
 
-test('cinematic: deliberate passage, real face alignment, history and replay', async ({ page }, info) => {
-  test.setTimeout(info.project.name.startsWith('webkit') ? 150000 : 90000); // Software WebKit includes full-resolution optical captures and frame sampling.
+test('universe journey: MÔRA guides through the planets, history, pause and replay', async ({ page }, info) => {
+  test.setTimeout(info.project.name.startsWith('webkit') ? 150000 : 90000);
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
   await page.addInitScript(() => {
-    const qa = window as unknown as Window & { __waterFrames: number };
-    qa.__waterFrames = 0;
-    const clear = CanvasRenderingContext2D.prototype.clearRect;
-    CanvasRenderingContext2D.prototype.clearRect = function (...args) {
-      if (this.canvas.dataset.scene === 'clearing') qa.__waterFrames++;
-      return clear.apply(this, args);
-    };
+    const qa = window as unknown as Window & { __contexts: string[] };
+    qa.__contexts = [];
+    const get = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, ...rest: unknown[]) {
+      qa.__contexts.push(type); return (get as (...args: unknown[]) => RenderingContext | null).call(this, type, ...rest);
+    } as typeof HTMLCanvasElement.prototype.getContext;
   });
-  // Hold the opening while the test takes control; a slow software renderer
-  // must not let the legitimate 7.2 s intro advance race the first pause click.
-  await page.emulateMedia({ reducedMotion: 'reduce' });
   await visit(page, '/mora/deep-view');
   await consent(page);
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await shot(page, info, 'after-intro');
-  await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
-  await expect(page.locator('[data-face-state="rest"]')).toBeVisible();
-  // Measure both layers in one browser frame. Separate round-trips can span
-  // the encounter's parent translate animation on slow software WebKit.
-  const { face, stone } = await page.getByTestId('deep-mora').evaluate(element => {
-    const bounds = (child: Element | null) => {
-      if (!child) return null;
-      const { x, y, width, height } = child.getBoundingClientRect();
-      return { x, y, width, height };
-    };
-    return { face: bounds(element.querySelector('[data-face-state]')), stone: bounds(element.querySelector('img')) };
-  });
-  expect(face).not.toBeNull(); expect(stone).not.toBeNull();
-  for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(face![key] - stone![key])).toBeLessThan(1);
-  await shot(page, info, 'after-encounter');
-  // Inspect the actual closed blink, including its highlights, on both engines.
-  await page.locator('[data-face-state="rest"]').evaluate(element => {
-    for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) {
-        animation.pause(); animation.currentTime = 5320;
-      }
-    }
-  });
-  await expect(page.locator('[data-face-state] svg filter')).toHaveCount(0);
-  const lidScales = await page.locator('[data-face-state="rest"] [class*="eye_"]').evaluateAll(eyes => eyes.map(eye => new DOMMatrix(getComputedStyle(eye).transform).d));
-  expect(lidScales).toHaveLength(2);
-  lidScales.forEach(scale => expect(scale).toBeCloseTo(.065, 3));
-  // The shared screenshot helper disables animation, which resets the held lid.
-  // Preserve this deliberately paused CSS animation to capture the actual blink.
-  await page.screenshot({ path: info.outputPath('after-closed-blink.png'), animations: 'allow' });
-  await page.locator('[data-face-state="rest"]').evaluate(element => {
-    for (const animation of element.getAnimations({ subtree: true })) {
-      if ('animationName' in animation && /blink|lid/.test(String(animation.animationName))) animation.play();
-    }
-  });
-  const stablePoint = await page.getByRole('button', { name: 'MÔRA halten', exact: true }).boundingBox();
-  expect(stablePoint).not.toBeNull();
-  await page.mouse.move(stablePoint!.x + stablePoint!.width / 2, stablePoint!.y + stablePoint!.height / 2);
-  await page.mouse.down();
-  await expect(page.getByTestId('deep-clarity')).toBeVisible();
-  await page.mouse.up();
-  await expect(page).toHaveURL(/\/mora\/deep-view#clarity$/);
-  await expect(page.getByRole('heading', { name: 'Durch MÔRAs Augen' })).toBeFocused();
-  await expect(page.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveCount(0);
-  await expect(page.getByText(/PROJEKTCHAT|Wir starten morgen|Was belegt ist/)).toHaveCount(0);
+  await expect(page.getByTestId('pixel-sky')).toBeVisible();
+  await expect(page.locator('[data-pixel-mora][data-outfit="captain"]')).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('Willkommen an Bord.');
   await noOverflow(page);
-  await shot(page, info, 'after-mist');
-  const starfield = page.locator('canvas[data-scene="clearing"]');
-  await expect(starfield).toHaveAttribute('data-phase', 'water');
-  await expect.poll(() => page.locator('[data-dawn]').evaluate(element => Number(getComputedStyle(element).getPropertyValue('--dawn')))).toBeGreaterThan(.25);
-  await expect.poll(() => starfield.getAttribute('data-fade').then(value => Number(value))).toBeGreaterThan(0);
-  await shot(page, info, 'after-first-light-stars');
-  // Let the dawn finish naturally. Capturing first light may already span its
-  // remaining duration on software WebKit; the optional skip then disappears.
-  await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeFocused();
-  await expect(starfield).toHaveAttribute('data-phase', 'water-memory');
-  await expect.poll(() => starfield.getAttribute('data-fade').then(Number)).toBeGreaterThan(.3);
-  const waterBounds = await starfield.boundingBox();
-  await page.mouse.move(waterBounds!.x + waterBounds!.width * .53, waterBounds!.y + waterBounds!.height * .77);
-  await expect.poll(() => starfield.getAttribute('data-interaction').then(Number)).toBeGreaterThan(.1);
-  await shot(page, info, 'after-water-mycelium-hover');
-  const timing = await page.evaluate(async () => {
-    const qa = window as unknown as Window & { __waterFrames: number };
-    const before = qa.__waterFrames, start = performance.now(), timestamps: number[] = [];
-    await new Promise<void>(resolve => {
-      const sample = (now: number) => {
-        timestamps.push(now);
-        if (now - start >= 1500) resolve(); else requestAnimationFrame(sample);
-      };
-      requestAnimationFrame(sample);
-    });
-    const elapsed = timestamps.at(-1)! - start;
-    return { callbacks: timestamps.length, paintedFrames: qa.__waterFrames - before,
-      measuredFps: (qa.__waterFrames - before) * 1000 / elapsed,
-      maxFrameGapMs: Math.max(...timestamps.slice(1).map((time, i) => time - timestamps[i])),
-      note: 'Headless CI renderer; this measures this machine, not physical 120 Hz hardware.' };
-  });
-  await info.attach('water-frame-timing.json', { body: JSON.stringify(timing, null, 2), contentType: 'application/json' });
-  expect(timing.paintedFrames / timing.callbacks).toBeGreaterThan(.8);
-  await noOverflow(page);
-  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
-  await shot(page, info, 'after-clarity');
-  await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Klarheit beginnt mit Zusammenhang.' })).toBeFocused();
-  for (let chapter = 0; chapter < 3; chapter++) {
-    await page.locator('article details summary').nth(chapter).hover();
-    await expect(starfield).toHaveAttribute('data-chapter', String(chapter));
-    await expect(page.locator('[data-guide-chapter]')).toHaveAttribute('data-guide-chapter', String(chapter));
-    await shot(page, info, `after-mora-chapter-${chapter + 1}`);
+  await shot(page, info, 'after-universe-welcome');
+  // Pixel art stays sharp: every pixel canvas is drawn at a whole-number scale with nearest-neighbour rendering.
+  const pixels = await page.locator('canvas').evaluateAll(canvases => canvases.map(canvas => {
+    const element = canvas as HTMLCanvasElement;
+    // Layout width, not the bounding box: orbiting moons are rotated.
+    return { ratio: element.offsetWidth / element.width, rendering: getComputedStyle(element).imageRendering };
+  }));
+  expect(pixels.length).toBeGreaterThan(4);
+  for (const pixel of pixels) {
+    expect(Math.abs(pixel.ratio - Math.round(pixel.ratio))).toBeLessThan(.01);
+    expect(pixel.rendering).toMatch(/pixelated|crisp-edges/);
   }
-  await shot(page, info, 'after-mora-context');
-  await page.getByRole('button', { name: 'Lichtung genießen', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true })).toBeFocused();
-  // The morning is a place to explore, not a heading pasted on a still card.
-  const clearing = page.getByRole('region', { name: 'Die Lichtung erkunden' });
-  await expect(page.getByTestId('deep-clearing')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Klarheit.' })).toHaveCSS('width', '1px');
-  const landscape = page.locator('[data-parallax="-12"]');
-  const offset = (axis: 'x' | 'y') => landscape.evaluate((element, selected) => {
-    const value = getComputedStyle(element).transform;
-    if (value === 'none') return 0;
-    const matrix = new DOMMatrixReadOnly(value);
-    return selected === 'x' ? matrix.m41 : matrix.m42;
-  }, axis);
-  await clearing.press('Home');
-  await expect.poll(async () => Math.abs(await offset('x'))).toBeLessThan(.1);
-  await clearing.press('ArrowRight');
-  await expect.poll(() => offset('x')).toBeLessThan(-3);
-  await clearing.press('ArrowUp');
-  await expect.poll(() => offset('y')).toBeGreaterThan(1.8);
-  await shot(page, info, 'after-exploring');
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
-  const pausedTransform = await landscape.evaluate(element => getComputedStyle(element).transform);
-  await clearing.press('ArrowRight');
-  await expect(landscape).toHaveCSS('transform', pausedTransform);
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  await page.getByRole('button', { name: /Los geht/ }).click();
+  await expect(page).toHaveURL(/\/mora\/deep-view#os$/);
+  await expect(page.getByTestId('focus-os')).toBeVisible();
+  await shot(page, info, 'after-universe-os');
+  await page.getByRole('button', { name: /^Weiter/ }).click();
+  await page.getByRole('button', { name: /^Weiter/ }).click();
+  await expect(page.getByTestId('focus-work')).toContainText('KALENDER');
+  await shot(page, info, 'after-universe-work');
   await page.goBack();
-  await expect(page.getByRole('heading', { name: 'MÔRA.', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Noch einmal' }).click();
-  await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
+  await expect(page.getByTestId('focus-files')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('focus-files')).toHaveCount(0);
+  await page.getByRole('button', { name: 'AGENTS: im Hintergrund' }).click();
+  await expect(page.getByRole('status')).toContainText('Aktionen brauchen deine Freigabe');
+  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  await expect(page.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
+  await page.getByRole('button', { name: /^Weiter/ }).click();
+  await page.getByRole('button', { name: /^Weiter/ }).click();
+  await expect(page.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
+  await noOverflow(page);
+  await shot(page, info, 'after-universe-end');
+  await page.getByRole('button', { name: /Noch einmal/ }).click();
+  await expect(page.getByRole('status')).toContainText('Willkommen an Bord.');
+  const contexts = await page.evaluate(() => (window as unknown as Window & { __contexts: string[] }).__contexts);
+  expect(contexts.filter(type => /webgl/i.test(type))).toEqual([]);
   expect(exceptions).toEqual([]);
 });
 
-test('English cinematic passage opens the living clearing using normal motion', async ({ page }, info) => {
+test('English universe: planets, moons and the way into the OS', async ({ page }, info) => {
   test.setTimeout(90000);
   const exceptions: string[] = [];
   page.on('pageerror', error => exceptions.push(error.message));
-  await visit(page, '/en/mora/deep-view#mora');
-  await page.getByRole('button', { name: 'See through her eyes' }).click();
-  await expect(page.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeFocused();
-  await page.getByRole('button', { name: 'Let the light in', exact: true }).press('Enter');
-  await expect(page.getByRole('heading', { name: 'Clarity.' })).toBeFocused();
-  await page.getByRole('button', { name: 'Get to know MÔRA', exact: true }).click();
+  await visit(page, '/en/mora/deep-view#work');
+  await consent(page);
+  await expect(page.getByTestId('focus-work')).toContainText('CALENDAR');
+  await expect(page.getByRole('status')).toContainText('Meeting, mail and task sit side by side.');
+  await page.getByRole('button', { name: 'Overview', exact: true }).click();
+  await page.getByRole('button', { name: 'SECURITY: Check' }).click();
+  await expect(page.getByRole('link', { name: 'Security Check' })).toHaveAttribute('href', '/en/entry/security-check');
+  await page.getByRole('button', { name: /^Next/ }).click();
   await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
-  await expect(page.locator('[data-guide-ready="true"]')).toBeVisible();
-  await shot(page, info, 'after-morning-english');
+  await shot(page, info, 'after-universe-english');
   expect(exceptions).toEqual([]);
 });
 
-test('reduced motion has no timer, zoom or forced transition; short viewport stays usable', async ({ page }, info) => {
+test('reduced motion lands every step at once; short viewport stays usable', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: info.project.use.viewport?.width || 390, height: 620 });
   await visit(page, '/mora/deep-view');
   await consent(page);
-  await page.waitForTimeout(5100);
-  await expect(page.getByTestId('deep-uncertainty')).toBeVisible();
-  await page.getByRole('button', { name: 'MÔRA begegnen' }).click();
-  await page.getByRole('button', { name: 'Durch ihre Augen sehen' }).click();
-  await expect(page.getByTestId('deep-clarity')).toBeVisible();
-  await expect(page.locator('[data-dawn="morning"]')).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Klarheit.' })).toBeVisible();
+  await expect(page.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
+  const running = await page.getByTestId('deep-universe').evaluate(element =>
+    element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length);
+  expect(running).toBe(0);
+  await page.getByRole('button', { name: /Los geht/ }).click();
+  await expect(page.getByTestId('focus-os')).toBeVisible();
+  await expect(page.getByRole('button', { name: /^Weiter/ })).toBeInViewport();
   await noOverflow(page);
-  await shot(page, info, 'after-short-morning');
-  await page.getByRole('button', { name: 'MÔRA kennenlernen', exact: true }).click();
-  for (const chapter of await page.locator('article details summary').all()) await chapter.click();
-  const next = page.getByRole('link', { name: 'MÔRA im OS entdecken', exact: true });
-  await next.scrollIntoViewIfNeeded();
-  await expect(next).toBeVisible();
-  // Expanded content must not reveal the top/bottom edges of a section-sized veil.
-  const veil = page.getByTestId('clearing-veil');
-  const coverage = await veil.evaluate(element => ({ top: element.getBoundingClientRect().top,
-    bottom: element.getBoundingClientRect().bottom, viewport: innerHeight }));
-  expect(Math.abs(coverage.top)).toBeLessThan(1);
-  expect(Math.abs(coverage.bottom - coverage.viewport)).toBeLessThan(1);
-  const fogRepeats = await page.locator('[data-dawn] > div > i').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundRepeat));
-  expect(fogRepeats).toHaveLength(3);
-  expect(fogRepeats.every(repeat => repeat === 'no-repeat')).toBe(true);
+  await shot(page, info, 'after-short-reduced-universe');
+  for (let step = 0; step < 5; step++) await page.getByRole('button', { name: /^Weiter/ }).click();
+  await expect(page.getByRole('link', { name: 'MÔRA im OS entdecken' })).toBeInViewport();
   await noOverflow(page);
-  await shot(page, info, 'after-short-mora-context', true);
-  await page.getByRole('button', { name: 'Noch einmal' }).click();
-  await noOverflow(page);
-  await shot(page, info, 'after-short-reduced');
+  await shot(page, info, 'after-short-reduced-end');
+});
+
+test('homepage: MÔRA greets, guides the tour on request and stays quiet otherwise', async ({ page }, info) => {
+  test.setTimeout(90000);
+  for (const locale of ['de', 'en'] as const) {
+    const de = locale === 'de';
+    await visit(page, `/${locale}`); await consent(page);
+    await page.evaluate(() => localStorage.removeItem('saimor-mora-guide'));
+    await visit(page, `/${locale}`);
+    // The hero stays as it is: orbits, no parked MÔRA (she may only fly past).
+    const hero = page.locator('section[aria-labelledby="world-title"]');
+    await expect(page.getByTestId('hero-orbits')).toBeVisible();
+    await expect(hero.getByTestId('mora-guide')).toHaveCount(0);
+    await expect(hero.locator('[data-testid="mora-flyby"] button, [data-testid="mora-flyby"] a')).toHaveCount(0);
+    const greeting = page.locator('#system').getByTestId('mora-guide');
+    await greeting.scrollIntoViewIfNeeded();
+    await expect(greeting.locator('[data-pixel-mora]')).toBeVisible();
+    await expect(greeting.getByRole('status')).toContainText(de ? 'Hallo, ich bin MÔRA.' : 'Hi, I’m MÔRA.');
+    await expect(page.getByTestId('mora-guide-dock')).toHaveCount(0);
+    await noOverflow(page);
+    await shot(page, info, `after-mora-greeting-${locale}`);
+    await greeting.getByRole('button', { name: de ? 'Ja, zeig mal' : 'Yes, show me' }).click();
+    const dock = page.getByTestId('mora-guide-dock');
+    await expect(dock).toBeVisible();
+    await page.evaluate(() => document.getElementById('products')?.scrollIntoView({ block: 'start' }));
+    await expect(dock).toContainText(de ? 'Hier sind die Produkte.' : 'Here are the products.');
+    await noOverflow(page);
+    await shot(page, info, `after-mora-tour-${locale}`);
+    await dock.getByRole('button', { name: de ? 'Weiter' : 'Next' }).click();
+    await expect(dock).toContainText('Studio');
+    await dock.getByRole('button', { name: de ? 'Hinweise schließen' : 'Close hints' }).click();
+    await expect(dock.getByRole('button', { name: de ? 'MÔRA antippen' : 'Tap MÔRA' })).toHaveAttribute('aria-expanded', 'false');
+    await visit(page, `/${locale}`);
+    await expect(page.locator('#system').getByTestId('mora-guide').getByRole('status')).toHaveCount(0);
+  }
 });
 
 test('mobile navigation: escape, keyboard focus and readable entry', async ({ page }, info) => {
