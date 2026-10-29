@@ -1,0 +1,44 @@
+/* Stars → light → forest → river. Every moving property is transform or opacity on its own layer.
+   Each stage sets its end state; the animation only supplies the "from", so reduced motion and
+   pause land on a complete picture. Masks are static. */
+.scenery{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:#06110e;contain:strict}
+
+.stars{position:absolute;inset:-4%;width:108%;height:108%;opacity:1;animation:drift 90s linear infinite alternate}
+.stars[data-offscreen="true"]{animation-play-state:paused}
+
+.light{position:absolute;left:59%;top:43%;width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;border-radius:50%;
+  background:radial-gradient(circle,#fff6d6 0%,#f3dd9a 6%,#d9c27a66 16%,#6f8c5a26 36%,transparent 62%);opacity:.18;transform:scale(.08)}
+
+.look{position:absolute;inset:-5%;transition:translate 1.2s cubic-bezier(.2,.7,.2,1)}
+.river{position:absolute;inset:0;transform-origin:58% 78%}
+.rise{position:absolute;inset:0;opacity:0;transform:scale(.06);transform-origin:59% 43%}
+.forest{object-fit:cover;object-position:52% 46%}
+.water{position:absolute;left:0;right:0;top:62%;bottom:0;overflow:hidden;opacity:0;
+  -webkit-mask-image:radial-gradient(ellipse 60% 55% at 55% 40%,#000,transparent);mask-image:radial-gradient(ellipse 60% 55% at 55% 40%,#000,transparent)}
+.water::before{content:"";position:absolute;inset:-24px -40px;background:repeating-linear-gradient(178deg,transparent 0 13px,#fff3bf1c 14px,transparent 15px 24px);animation:water 9s linear infinite alternate}
+.shade{position:absolute;inset:0;background:linear-gradient(#06110e66,transparent 24%,transparent 68%,#06110e8c);opacity:.6}
+
+/* Light: the point of light grows out of the stars. */
+.scenery[data-stage="light"] .light{opacity:1;transform:scale(1);animation:kindle 1.2s cubic-bezier(.3,0,.2,1)}
+/* Forest: it emerges out of that light, which then gives way to the morning. */
+.scenery[data-stage="forest"] .rise,.scenery[data-stage="river"] .rise{opacity:1;transform:none;animation:emerge 3s cubic-bezier(.16,.8,.24,1)}
+.scenery[data-stage="forest"] .light{opacity:0;transform:scale(2.6);animation:bloom 2.4s ease-out}
+.scenery[data-stage="forest"] .stars,.scenery[data-stage="river"] .stars{opacity:0;animation:fade 2.4s ease-out}
+.scenery[data-stage="river"] .light{opacity:0}
+/* River: the view settles on the water. */
+.scenery[data-stage="river"] .river{transform:translateY(-6%) scale(1.18);animation:to-river 2.2s cubic-bezier(.45,0,.2,1)}
+.scenery[data-stage="river"] .water{opacity:1;animation:fade-in 2s ease-out}
+
+.scenery[data-still="true"] *,.scenery[data-still="true"] *::before{animation-play-state:paused!important}
+
+@keyframes drift{from{transform:translate3d(-1.5%,1%,0)}to{transform:translate3d(1.5%,-1%,0)}}
+@keyframes kindle{from{opacity:.18;transform:scale(.08)}}
+@keyframes bloom{from{opacity:1;transform:scale(1)}}
+@keyframes emerge{from{opacity:0;transform:scale(.06)}35%{opacity:1}}
+@keyframes fade{from{opacity:1}}
+@keyframes fade-in{from{opacity:0}}
+@keyframes to-river{from{transform:none}}
+@keyframes water{from{transform:translate3d(-20px,-8px,0)}to{transform:translate3d(20px,8px,0)}}
+
+@media(max-width:700px){.forest{object-position:64% 50%}.light{left:62%}}
+@media(prefers-reduced-motion:reduce){.scenery *,.scenery *::before{animation:none!important;transition:none!important}}

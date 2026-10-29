@@ -133,7 +133,7 @@ export default function MoraTeaser({ locale }: Props) {
             >
               <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,168,72,.58),transparent)]" />
               <Image
-                src="/images/mora_showcase.png"
+                src="/images/mora_showcase.webp"
                 alt="MÔRA semantic intelligence showcase"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"

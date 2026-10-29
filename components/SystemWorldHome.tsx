@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight, LogIn, Mic2, ShieldCheck, Sparkles } from 'lu
 
 import styles from './SystemWorldHome.module.css';
 import OrbitalScene from './OrbitalScene';
+import HeroMotionStage from './HeroMotionStage';
 import AiRealityTeaser from './AiRealityTeaser';
 import SaimorShowcase from './SaimorShowcase';
 import PortalExperience from './PortalExperience';
@@ -67,9 +68,8 @@ export default function SystemWorldHome({ locale }: Props) {
 
   return (
     <div className={styles.world} data-home-globe>
-      <section className={styles.hero} aria-labelledby="world-title">
-        <label className={styles.motionControl}><input type="checkbox" name="world-motion" aria-label={locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'} /><span className={styles.motionGlyph} aria-hidden="true">Ⅱ</span><span className={styles.motionText}>{locale === 'de' ? 'Bewegung pausieren' : 'Pause motion'}</span></label>
-        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={95} sizes="100vw" className={styles.heroImage} />
+      <HeroMotionStage locale={locale} className={styles.hero} labelledBy="world-title">
+        <Image src="/images/saimor-cosmos-layer.webp" alt="" fill priority quality={78} sizes="100vw" className={styles.heroImage} />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>{c.eyebrow}</p>
@@ -92,7 +92,7 @@ export default function SystemWorldHome({ locale }: Props) {
           </div>
           <div className={styles.sceneFooter}><span>{locale === 'de' ? 'EIN ORT · ALLES IM KONTEXT' : 'ONE PLACE · EVERYTHING IN CONTEXT'}</span><Link href="#blick">{c.scroll}<ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
-      </section>
+      </HeroMotionStage>
 
       <section id="system" className={styles.system} aria-labelledby="inside-title">
         <div className={styles.threshold}>

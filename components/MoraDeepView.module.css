@@ -1,7 +1,6 @@
-/* Mist, encounter, morning. */
+/* Stars, encounter, morning at the river. */
 .world{position:relative;isolation:isolate;display:flex;flex-direction:column;width:100%;min-height:100svh;overflow:clip;color:#f4f0e5;background:#0a1814}
 .atmosphere{position:absolute;z-index:-1;inset:0;pointer-events:none;overflow:hidden}
-.grain{position:absolute;inset:0;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23g)' opacity='.28' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px}
 .passage{position:absolute;inset:-50%;background:radial-gradient(ellipse at center,#9fcb9559,transparent 42%);opacity:0;transform:scale(.2);pointer-events:none}
 .world[data-crossing="true"] .passage{animation:cross-light 1.15s ease-in both}
 .world[data-crossing="true"] .presence{animation:through 1.15s cubic-bezier(.65,0,.95,.4) both}
@@ -61,7 +60,8 @@
 .world[data-scene="mora"] .presence::before{content:"";position:absolute;inset:-25%;border-radius:50%;background:radial-gradient(circle,#88bd7130,transparent 65%);animation:arrive 3s ease both;pointer-events:none}
 
 .stoneControl{border-radius:50%;padding:0;border:0;background:transparent;cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent;appearance:none}
-.stoneControl .stone{filter:brightness(calc(1 + var(--focus,0)*.13));transition:filter .3s}
+/* Holding brightens the stone through an opacity glow, never an animated filter. */
+.stoneControl::before{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,#f6e3a85c,transparent 66%);opacity:var(--focus,0);pointer-events:none}
 .holdHint{position:absolute;left:-20%;right:-20%;bottom:-20px;text-align:center;font-size:12px;letter-spacing:.04em;color:#cfdbc4;opacity:.65;pointer-events:none}
 .focusTrace{position:absolute;bottom:1%;left:38%;width:24%;height:1px;background:#e9d7a5;transform:scaleX(var(--focus,0));transform-origin:center;opacity:.65;pointer-events:none}
 .world[data-focusing="true"] .lead{opacity:.45;transition:opacity 1.2s}

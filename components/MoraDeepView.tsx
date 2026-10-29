@@ -4,13 +4,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
 import MoraFocusStone, { type MoraFocusHandle } from './MoraFocusStone';
-import AmbientParticleField from './AmbientParticleField';
 import MoraPerspective from './MoraPerspective';
-import MoraAtmosphere from './MoraAtmosphere';
+import DeepViewScenery, { type DeepViewStage } from './DeepViewScenery';
 import MoraUncertainty from './MoraUncertainty';
 import styles from './MoraDeepView.module.css';
 
 type Scene = 'uncertainty' | 'mora' | 'clarity';
+/** Clarity timeline (ms): light first, the forest grows out of it, then the view settles on the river. */
+const FOREST_AT = 1200, RIVER_AT = 4400, MORNING_AT = 6400;
 type Props = { locale: 'de' | 'en' };
 const COPY = {
   de: {
@@ -27,25 +28,21 @@ const COPY = {
   },
 } as const;
 
-/** A cinematic passage from unfamiliar mist through MÔRA’s eyes into morning light.
- * Moving mist gives way to morning light. No fetching, live AI claims or invented face.
+/** A cinematic passage from the stars through MÔRA’s eyes into morning light at the river.
+ * Transform/opacity only, timers instead of render loops. No fetching, live AI claims or invented face.
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = COPY[locale];
   const world = useRef<HTMLDivElement>(null);
-  const focusAmount = useRef(0);
-  const dawnAmount = useRef(0);
-  const chapter = useRef(-1);
-  const clearingLook = useRef({ x: 0, y: 0 });
-  const setChapter = useCallback((index: number) => { chapter.current = index; }, []);
-  const pointer = useRef({ x: 0, y: 0, energy: 0 });
+  const lookLayer = useRef<HTMLDivElement>(null);
+  const clock = useRef(0);
   const focusControl = useRef<MoraFocusHandle>(null);
   const [focusing, setFocusing] = useState(false);
   const [focusReset, setFocusReset] = useState(0);
-  const focusProgress = useCallback((amount: number) => { focusAmount.current = amount; world.current?.style.setProperty('--focus', String(amount)); }, []);
+  const focusProgress = useCallback((amount: number) => { world.current?.style.setProperty('--focus', String(amount)); }, []);
+  // A gentle look around the clearing: one CSS-transitioned translate, no render loop.
   const look = (x: number, y: number) => {
-    pointer.current.x = x; pointer.current.y = y;
-    clearingLook.current.x = x; clearingLook.current.y = y;
+    if (lookLayer.current) lookLayer.current.style.translate = `${(-x * 1.6).toFixed(2)}% ${(-y * 1).toFixed(2)}%`;
   };
   const [entry, setEntry] = useState<'portal' | 'mora' | null>(null);
   const [scene, setScene] = useState<Scene>('uncertainty');
@@ -54,7 +51,7 @@ export default function MoraDeepView({ locale }: Props) {
   const [crossing, setCrossing] = useState(false);
   const [morning, setMorning] = useState(false);
   const [hurry, setHurry] = useState(false);
-  const arrive = useCallback(() => setMorning(true), []);
+  const [stage, setStage] = useState<DeepViewStage>('stars');
   const heading = useRef<HTMLHeadingElement>(null);
   const crossingTimer = useRef<number | undefined>(undefined);
   const focusRequested = useRef(false);
@@ -62,7 +59,7 @@ export default function MoraDeepView({ locale }: Props) {
   const go = (next: Scene) => {
     look(0, 0);
     focusProgress(next === 'clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
-    dawnAmount.current = 0;
+    clock.current = 0;
     setMorning(false);
     setHurry(false);
     window.history.pushState(null, '', next === 'uncertainty' ? window.location.pathname + window.location.search : `#${next}`);
@@ -83,7 +80,7 @@ export default function MoraDeepView({ locale }: Props) {
   useEffect(() => {
     const restore = () => {
       focusProgress(window.location.hash === '#clarity' ? 1 : 0); setFocusing(false); setFocusReset(value => value + 1);
-      dawnAmount.current = 0;
+      clock.current = 0;
       const origin = new URLSearchParams(window.location.search).get('from');
       setEntry(origin === 'portal' || origin === 'mora' ? origin : null);
       window.clearTimeout(crossingTimer.current);
@@ -123,6 +120,23 @@ export default function MoraDeepView({ locale }: Props) {
     };
   }, [scene, paused, reduced]);
 
+  // Clarity: stage timers that stop while paused and resume where they left off.
+  useEffect(() => {
+    if (scene !== 'clarity') { clock.current = 0; setStage('stars'); return; }
+    const apply = (time: number) => {
+      setStage(time >= RIVER_AT ? 'river' : time >= FOREST_AT ? 'forest' : 'light');
+      if (time >= MORNING_AT) setMorning(true);
+    };
+    if (reduced || (paused && hurry)) { clock.current = MORNING_AT; apply(MORNING_AT); return; }
+    if (hurry) clock.current = Math.max(clock.current, MORNING_AT - 1200);
+    apply(clock.current);
+    if (paused) return;
+    const started = Date.now() - clock.current;
+    const timers = [FOREST_AT, RIVER_AT, MORNING_AT].filter(mark => mark > clock.current)
+      .map(mark => window.setTimeout(() => { clock.current = mark; apply(mark); }, mark - clock.current));
+    return () => { timers.forEach(timer => window.clearTimeout(timer)); clock.current = Math.min(MORNING_AT, Date.now() - started); };
+  }, [scene, paused, reduced, hurry]);
+
   const see = () => {
     if (reduced || paused) { go('clarity'); return; }
     setCrossing(true);
@@ -139,23 +153,9 @@ export default function MoraDeepView({ locale }: Props) {
   const languageHref = `${locale === 'de' ? '/en/mora/deep-view' : '/mora/deep-view'}${entry ? `?from=${entry}` : ''}`;
 
   return (
-    <div ref={world} className={styles.world} data-scene={scene} data-paused={paused} data-crossing={crossing} data-focusing={focusing}
-      onPointerMove={event => {
-        if (paused || reduced) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        pointer.current.x = (event.clientX - bounds.left) / bounds.width * 2 - 1;
-        pointer.current.y = (event.clientY - bounds.top) / bounds.height * 2 - 1;
-      }}
-      onPointerDown={event => {
-        if (scene !== 'clarity' || paused || reduced) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        pointer.current = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: (event.clientY - bounds.top) / bounds.height * 2 - 1, energy: 1 };
-      }}>
+    <div ref={world} className={styles.world} data-scene={scene} data-stage={stage} data-paused={paused} data-crossing={crossing} data-focusing={focusing}>
       <div className={styles.atmosphere} aria-hidden="true">
-        <MoraAtmosphere dawn={scene === 'clarity'} hurry={hurry} paused={paused}
-          reduced={reduced} onArrival={arrive} settling={focusAmount} progress={dawnAmount} look={clearingLook} />
-        <AmbientParticleField scene={scene === 'clarity' ? 'clearing' : 'mist'} paused={paused} reduced={reduced} focus={focusAmount} dawn={dawnAmount} pointer={pointer} chapter={chapter} />
-        <div className={styles.grain} />
+        <DeepViewScenery ref={lookLayer} stage={stage} still={paused || reduced} />
         <div className={styles.passage} />
       </div>
 
@@ -177,7 +177,7 @@ export default function MoraDeepView({ locale }: Props) {
             <p className={styles.doubt}>{c.doubt}</p>
             <button type="button" className={styles.quietAction} onClick={() => go('mora')}>{c.meet}<ArrowRight size={17} /></button>
           </div>
-        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} onChapter={setChapter} still={paused || reduced} /> : (
+        ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} still={paused || reduced} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
             <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={reduced} disabled={crossing}

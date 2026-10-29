@@ -18,36 +18,41 @@ const MoraFocusStone = forwardRef<MoraFocusHandle, Props>(function MoraFocusSton
   const amount = useRef(0);
   const completed = useRef(false);
   const [active, setActive] = useState(false);
+  const loop = useRef<() => void>(() => {});
   const begin = (next: 'hold' | 'auto') => {
     const c = current.current;
     if (completed.current || c.disabled) return;
     if (c.paused || c.reduced) { completed.current = true; c.onProgress(1); c.onSettled(); return; }
-    mode.current = next; setActive(true); c.onActive(true);
+    mode.current = next; setActive(true); c.onActive(true); loop.current();
   };
   const release = () => {
     if (mode.current !== 'hold' || completed.current) return;
     mode.current = 'idle'; setActive(false); current.current.onActive(false);
   };
   useImperativeHandle(ref, () => ({ enter: () => begin('auto') }));
+  // The frame loop runs only while the stone is held or still glowing down; idle, paused and
+  // finished stones schedule nothing.
   useEffect(() => {
-    let frame = 0, previous = performance.now();
-    const sync = () => { previous = performance.now(); };
+    let frame = 0, previous = 0;
     const draw = (now: number) => {
-      frame = requestAnimationFrame(draw);
-      const dt = Math.max(0, (now - previous) / 1000); previous = now;
+      frame = 0;
+      const dt = Math.min(.1, Math.max(0, (now - previous) / 1000)); previous = now;
       const c = current.current;
-      if (document.hidden || c.paused || c.reduced || completed.current) return;
+      if (c.paused || c.reduced || completed.current) return;
+      // A hidden tab holds the progress where it is and picks up again once visible.
+      if (document.hidden) { frame = requestAnimationFrame(draw); return; }
       const before = amount.current;
       amount.current = mode.current === 'idle' ? Math.max(0, before - dt * 1.5) : Math.min(1, before + dt / 2.8);
       if (before !== amount.current) c.onProgress(amount.current);
       if (amount.current === 1 && mode.current !== 'idle') {
-        completed.current = true; mode.current = 'idle'; setActive(false); c.onActive(false); c.onSettled();
+        completed.current = true; mode.current = 'idle'; setActive(false); c.onActive(false); c.onSettled(); return;
       }
+      if (mode.current !== 'idle' || amount.current > 0) frame = requestAnimationFrame(draw);
     };
-    document.addEventListener('visibilitychange', sync);
-    frame = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(frame); document.removeEventListener('visibilitychange', sync); };
+    loop.current = () => { if (!frame) { previous = performance.now(); frame = requestAnimationFrame(draw); } };
+    return () => { cancelAnimationFrame(frame); loop.current = () => {}; };
   }, []);
+  useEffect(() => { if (!props.paused && !props.reduced) loop.current(); }, [props.paused, props.reduced]);
   return <button type="button" className={`${styles.stoneStage} ${styles.stoneControl}`}
     aria-label={props.locale === 'de' ? 'MÔRA halten' : 'Hold MÔRA'} aria-busy={active}
     disabled={props.disabled} data-holding={active}

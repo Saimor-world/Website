@@ -24,14 +24,12 @@
 @media(min-width:768px){.utilityDisclosure>summary{display:none}}
 .sceneFooter{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 28px;margin-top:auto;padding-top:20px;font:12px/1.8 ui-monospace,monospace;letter-spacing:.12em;color:#e6eee3;text-shadow:0 1px 16px rgba(3,14,10,.8),0 0 24px rgba(3,14,10,.45)}
 .sceneFooter a{display:flex;align-items:center;gap:12px;min-height:44px}
-.motionGlyph{display:none}
-.motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:10px;color:#c6ceb9;font-size:12px;cursor:pointer;min-height:36px;padding:6px 12px;border-radius:20px;background:#0a271d99;border:1px solid #c6ceb933;backdrop-filter:blur(8px);transition:background .2s,border-color .2s}
+.motionControl{position:absolute;z-index:3;right:var(--gutter);top:112px;display:flex;align-items:center;gap:9px;color:#c6ceb9;font-size:12px;cursor:pointer;font-family:inherit;min-height:36px;padding:6px 12px;border-radius:20px;background:#0a271d99;border:1px solid #c6ceb955;transition:background .2s,border-color .2s}
 .motionControl:hover{background:#0a271dcc;border-color:#c6ceb955}
-.motionControl input{appearance:none;-webkit-appearance:none;width:36px;height:20px;border-radius:10px;background:#1a3d2e;border:1px solid #5a7a6a;cursor:pointer;position:relative;transition:background .2s,border-color .2s}
-.motionControl input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#c6ceb9;transition:transform .2s,background .2s}
-.motionControl input:checked{background:#d6a848;border-color:#d6a848}
-.motionControl input:checked::after{transform:translateX(16px);background:#fff}
-.world:has(input[name="world-motion"]:checked) *{animation-play-state:paused!important}
+.motionControl[aria-pressed="true"]{color:#f0dfb6;border-color:#d6a84899;background:#0a271dd9}
+.motionControl:focus-visible{outline:2px solid #e6c98d;outline-offset:4px}
+/* Pause freezes every hero animation in place (orbits, moons, sigil). */
+.hero[data-paused="true"] *{animation-play-state:paused!important}
 .system{position:relative;margin-top:-140px;background:transparent;scroll-margin-top:75px;pointer-events:none}
 .threshold{position:relative;z-index:2;isolation:isolate;background:transparent;overflow:visible;pointer-events:none}
 .forestImage{object-fit:cover;object-position:60% 58%;opacity:1;-webkit-mask-image:linear-gradient(180deg,transparent,#000 18%,#000 48%,rgba(0,0,0,.55) 62%,rgba(0,0,0,.16) 72%,transparent 82%);mask-image:linear-gradient(180deg,transparent,#000 18%,#000 48%,rgba(0,0,0,.55) 62%,rgba(0,0,0,.16) 72%,transparent 82%)}
@@ -76,7 +74,7 @@
  .primary{padding:12px 18px;min-height:48px;font-size:12px;gap:12px}.actions>.textLink{gap:7px;font-size:12px}
  .utilityDisclosure{margin-top:6px;max-width:330px}.utilityDisclosure>summary{display:flex;justify-content:flex-start;gap:10px;min-height:44px;font-size:12px;color:#c9d4bf}.utilityLinks{font-size:12px;gap:0 18px;margin:0;padding:4px 0 8px}.utilityLinks a{min-height:44px}
  .sceneFooter{font-size:12px;padding-bottom:4px;padding-top:12px;max-width:none;width:100%;flex-shrink:0;letter-spacing:.08em;justify-content:flex-start}.sceneFooter a{display:none}.sceneFooter span{display:block;white-space:nowrap}
- .motionControl{top:auto;bottom:56px;left:auto;right:16px;width:44px;min-height:44px;justify-content:center;border:1px solid #c6ceb94a;border-radius:50%;background:#0a271d66}.motionControl input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}.motionText{display:none}.motionGlyph{display:block;font-size:16px;line-height:1}.motionControl:has(input:focus-visible){outline:2px solid #e6c98d;outline-offset:4px}
+ .motionControl{top:auto;bottom:56px;left:auto;right:16px;width:44px;min-height:44px;padding:0;justify-content:center;border-radius:50%;background:#0a271dcc}.motionText{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
  .system{margin-top:0}
  .threshold{background:linear-gradient(180deg,#081e17 0%,#071b15 28%,rgba(6,17,14,.2) 52%,transparent 70%)}
  .thresholdInner{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:96px 22px 200px}
@@ -98,7 +96,7 @@
  .returnImage{object-position:50% 70%;filter:brightness(1.04) saturate(.98) contrast(1.01)}
 }
 @media(max-width:360px){.heroInner{padding-inline:18px}.heroGrid{padding-top:8px}.heroCopy h1{font-size:64px}.eyebrow{letter-spacing:.1em}.sceneFooter{letter-spacing:.06em}.thesis{font-size:22px}}
-@media(prefers-reduced-motion:reduce){.world *, .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.motionControl{display:none}}
+@media(prefers-reduced-motion:reduce){.world *:not([data-orbit]), .world *::before,.world *::after{animation:none!important;transition:none!important}.primary:hover{transform:none}.hero:not([data-motion="play"]) [data-orbit]{animation-play-state:paused!important}}
 .return{-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 260px);mask-image:linear-gradient(180deg,transparent 0%,#000 260px)}
 .blickWorld::after{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;pointer-events:none;height:300px;background:linear-gradient(180deg,rgba(6,17,14,0) 0%,rgba(6,17,14,.6) 22%,#0d1c16 44%,#3a4f43 62%,#9fb0a2 80%,#e4e8de 93%,#f6f4ec 100%)}
 @media (max-width:700px){.return{-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 160px);mask-image:linear-gradient(180deg,transparent 0%,#000 160px)}.blickWorld::after{height:170px}}

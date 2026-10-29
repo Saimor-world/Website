@@ -14,14 +14,16 @@
 @media(max-width:1280px){.scene{right:2%;top:16%;width:40%}}
 @media(max-width:1000px){.scene{right:0;top:16%;width:38%}}
 @media(max-width:700px){
- /* This scene is anchored to the hero, ABOVE its headline and earth horizon,
-    never to the text grid below the eyebrow. */
- .scene{right:21px;top:98px;width:clamp(90px,27vw,112px)}
- .moon{width:13px}
- .emerald{width:10px}
- .star{width:4px;height:4px}
- .sigil{width:43%}
+ /* Phone: the scene sits in the open sky below the copy, large enough to read as orbits
+    (184-236 px), and turns visibly: one revolution in 24-36 s. */
+ .scene{position:relative;right:auto;top:auto;width:clamp(184px,56vw,236px);margin:28px auto 0}
+ .aura{filter:none;background:radial-gradient(circle,#d8c58a2e 0%,#78a07c30 34%,transparent 70%)}
+ .outer{animation-duration:36s}
+ .middle{animation-duration:30s}
+ .inner{animation-duration:24s}
+ .moon{width:16px}
+ .emerald{width:12px}
+ .star{width:5px;height:5px}
+ .sigil{width:40%}
 }
-@media(prefers-reduced-motion:reduce){.orbit{animation:none;will-change:auto}}
-/* Phone: sit beside the wordmark, below the eyebrow, so the orb and its moons never cross text. */
-@media(max-width:700px){.scene{top:120px;right:18px;width:clamp(70px,18.5vw,80px)}}
+/* Reduced motion: the hero starts paused (HeroMotionStage) and the visitor may choose to play. */

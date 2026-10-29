@@ -126,7 +126,8 @@ describe('SystemWorldHome', () => {
     expect(footer).toBeTruthy();
     expect(hero?.contains(footer!)).toBe(true);
     expect(hero?.textContent).not.toMatch(/SAIMÔR Earth/);
-    expect(hero?.querySelector('button')).toBeFalsy();
+    // The only control in the hero is the motion toggle; Earth stays unnamed and not clickable.
+    expect(hero?.querySelector('button:not([aria-pressed])')).toBeFalsy();
     expect(screen.queryByRole('button', { name: /SAIMÔR Earth|Erde erkunden/ })).not.toBeInTheDocument();
     const horizon = screen.getByTestId('earth-horizon');
     expect(hero?.contains(horizon)).toBe(false);

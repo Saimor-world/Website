@@ -15,12 +15,18 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
   const controls = useRef({ chapter, still, interactive }); controls.current = { chapter, still, interactive };
   const engaged = useRef({ pointer: false, focus: false });
   const [ready, setReady] = useState(false);
+  const kick = useRef<() => void>(() => {});
   useEffect(() => {
     let frame = 0, previous = performance.now(), time = 0, x = .5, y = .85;
     const tail = Array.from({ length: 18 }, () => ({ x, y }));
     let previousChapter = -2;
+    // Still (paused, reduced motion) places the guide once and schedules nothing more.
     const draw = (now: number) => {
-      frame = requestAnimationFrame(draw);
+      frame = 0;
+      step(now);
+      if (!controls.current.still) frame = requestAnimationFrame(draw);
+    };
+    const step = (now: number) => {
       const dt = Math.min(.05, Math.max(0, (now - previous) / 1000)); previous = now;
       const c = controls.current;
       if (document.hidden) return;
@@ -68,9 +74,11 @@ export default function MoraWaterGuide({ chapter, still, label, onActivate, butt
       gradient.current?.setAttribute('x1', String(localX(tail[tail.length - 1].x)));
       gradient.current?.setAttribute('y1', String(localY(tail[tail.length - 1].y)));
     };
-    frame = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(frame);
+    kick.current = () => { if (!frame) { previous = performance.now(); frame = requestAnimationFrame(draw); } };
+    kick.current();
+    return () => { cancelAnimationFrame(frame); kick.current = () => {}; };
   }, []);
+  useEffect(() => kick.current(), [still, chapter]);
   return <div className={styles.flight} data-guide-chapter={chapter} data-still={still} data-passive={!interactive}>
     <span ref={stone} className={styles.position}>
     <svg className={styles.trace} viewBox="0 0 280 280" aria-hidden="true">

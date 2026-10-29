@@ -2,15 +2,15 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraDeepView from './MoraDeepView';
 
-vi.mock('./AmbientParticleField', () => ({ default: () => null }));
-vi.mock('./MoraAtmosphere', () => ({
-  default: ({ onArrival }: { onArrival: () => void }) => <button data-testid="morning-arrival" onClick={onArrival} />,
-}));
 vi.mock('next/image', () => ({
-  default: ({ alt = '', priority: _priority, ...props }: any) => <img alt={alt} {...props} />,
+  default: ({ alt = '', priority: _priority, fill: _fill, quality: _quality, ...props }: any) => <img alt={alt} {...props} />,
 }));
-beforeEach(() => { window.history.replaceState(null, '', '/mora/deep-view'); });
-afterEach(() => { cleanup(); vi.useRealTimers(); });
+beforeEach(() => {
+  window.history.replaceState(null, '', '/mora/deep-view');
+  vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
+  vi.stubGlobal('IntersectionObserver', class { observe() {} unobserve() {} disconnect() {} });
+});
+afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('MÔRA Deep View cinematic experience', () => {
   it('begins with a mysterious question and then reveals MÔRA with eyes, not a dashboard', () => {
@@ -30,7 +30,6 @@ describe('MÔRA Deep View cinematic experience', () => {
     expect(screen.queryByRole('link', { name: 'MÔRA im OS entdecken' })).not.toBeInTheDocument();
     expect(screen.queryByText(/Projektchat|Freigabe|Wir starten morgen/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Licht hereinlassen' }));
-    fireEvent.click(screen.getByTestId('morning-arrival'));
     expect(screen.getByRole('heading', { name: 'Klarheit.' })).toHaveFocus();
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA kennenlernen' }));
     expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
@@ -65,7 +64,6 @@ describe('MÔRA Deep View cinematic experience', () => {
     fireEvent.click(screen.getByRole('button', { name: 'See through her eyes' }));
     expect(screen.getByRole('heading', { name: 'Through MÔRA’s eyes' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Let the light in' }));
-    fireEvent.click(screen.getByTestId('morning-arrival'));
     expect(screen.getByRole('heading', { name: 'Clarity.' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Get to know MÔRA' }));
     expect(screen.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
@@ -86,6 +84,24 @@ describe('MÔRA Deep View cinematic experience', () => {
     fireEvent.click(screen.getByRole('button', { name: 'MÔRA begegnen' }));
     fireEvent.click(screen.getByRole('button', { name: 'Durch ihre Augen sehen' }));
     expect(screen.getByTestId('deep-clarity')).toBeInTheDocument();
+  });
+
+  it('lets the forest grow out of the light, then settles on the river and the morning', () => {
+    vi.useFakeTimers();
+    window.history.replaceState(null, '', '/mora/deep-view#clarity');
+    const { container } = render(<MoraDeepView locale="de" />);
+    const stage = () => container.querySelector('[data-stage]')?.getAttribute('data-stage');
+    expect(stage()).toBe('light');
+    act(() => vi.advanceTimersByTime(1200));
+    expect(stage()).toBe('forest');
+    fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
+    act(() => vi.advanceTimersByTime(10000));
+    expect(stage()).toBe('forest');
+    fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
+    act(() => vi.advanceTimersByTime(3200));
+    expect(stage()).toBe('river');
+    act(() => vi.advanceTimersByTime(2000));
+    expect(screen.getByRole('heading', { name: 'Klarheit.' })).toBeInTheDocument();
   });
 
   it('cancels the passage when browser history restores the encounter', () => {
