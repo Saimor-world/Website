@@ -39,7 +39,9 @@ export default function MoraDeepView({ locale }: Props) {
   const focusControl = useRef<MoraFocusHandle>(null);
   const [focusing, setFocusing] = useState(false);
   const [focusReset, setFocusReset] = useState(0);
-  const focusProgress = useCallback((amount: number) => { world.current?.style.setProperty('--focus', String(amount)); }, []);
+  const presence = useRef<HTMLDivElement>(null);
+  // --focus lives on the stone's own small subtree; set on the scene root it restyled everything per frame.
+  const focusProgress = useCallback((amount: number) => { presence.current?.style.setProperty('--focus', String(amount)); }, []);
   // A gentle look around the clearing: one CSS-transitioned translate, no render loop.
   const look = (x: number, y: number) => {
     if (lookLayer.current) lookLayer.current.style.translate = `${(-x * 1.6).toFixed(2)}% ${(-y * 1).toFixed(2)}%`;
@@ -179,7 +181,7 @@ export default function MoraDeepView({ locale }: Props) {
           </div>
         ) : scene === 'clarity' ? <MoraPerspective locale={locale} morning={morning} onLight={() => setHurry(true)} onLook={look} still={paused || reduced} /> : (
           <div key="encounter" className={styles.encounter} data-testid="deep-mora">
-            <div className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
+            <div ref={presence} className={styles.presence} aria-label={locale === 'de' ? 'MÔRAs leuchtende Augen' : 'MÔRA’s luminous eyes'}>
               <MoraFocusStone key={focusReset} ref={focusControl} locale={locale} paused={paused} reduced={reduced} disabled={crossing}
                 onProgress={focusProgress} onActive={setFocusing} onSettled={see} />
             </div>
