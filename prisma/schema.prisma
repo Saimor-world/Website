@@ -179,3 +179,19 @@ model WebsiteEvent {
   @@index([sessionId, createdAt])
   @@index([visitorId, createdAt])
 }
+
+model MoraCatch {
+  id        String    @id @default(cuid())
+  ticketId  String    @unique
+  origin    String
+  caughtAt  DateTime  @default(now())
+  ipHash    String
+  test      Boolean   @default(false)
+  name      String?
+  note      String?
+  status    String    @default("ticket") // ticket | visible | pending | hidden
+  enteredAt DateTime?
+
+  @@index([status, caughtAt])
+  @@index([ipHash, caughtAt])
+}

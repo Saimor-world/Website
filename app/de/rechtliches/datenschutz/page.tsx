@@ -59,6 +59,20 @@ export default function Page() {
             Sie können jederzeit unter contact@saimor.world Auskunft oder die sofortige Löschung verlangen.
           </p>
 
+          <h2 id="mora-faenger" className="text-2xl font-semibold mb-4 text-slate-800">MÔRA-Fängerliste</h2>
+          <p className="mb-6 text-slate-700">
+            Wenn Sie MÔRA auf einer Seite des .xyz-Universums fangen, speichern wir den Zeitpunkt des Fangs,
+            die Domain, auf der er passiert ist, und einen gekürzten, mit einem Geheimnis gehashten Wert Ihrer
+            IP-Adresse (nur zur Missbrauchsbegrenzung, keine Klar-IP). Tragen Sie sich freiwillig in die
+            öffentliche Fängerliste ein, speichern und veröffentlichen wir zusätzlich den angegebenen Namen
+            (bzw. ein Pseudonym, max. 32 Zeichen) und Ihre optionale Notiz (max. 140 Zeichen). Eine E-Mail-Adresse
+            wird nicht erhoben. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) bzw. für die
+            Missbrauchsbegrenzung unser berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO). Die Daten liegen in
+            unserer Datenbank (Neon Postgres). Einträge mit Links oder beleidigenden Inhalten werden
+            automatisch zurückgehalten. Löschung oder Ausblenden Ihres Eintrags erhalten Sie jederzeit über
+            contact@saimor.world.
+          </p>
+
           <h2 className="text-2xl font-semibold mb-4 text-slate-800">Externe Dienste</h2>
           <ul className="mb-6 text-slate-700 list-disc pl-6">
             <li><strong>Cal.com:</strong> Für Terminbuchungen. <a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:underline">Datenschutzerklärung von Cal.com</a></li>
