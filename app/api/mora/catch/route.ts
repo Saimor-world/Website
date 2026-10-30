@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
 
   const ts = Number(tok.split('.')[1]);
   const fresh = /^[a-z0-9]{4,80}\.\d{13}$/i.test(tok) && Math.abs(Date.now() - ts) < 10 * 60 * 1000;
+  if (fresh) frag.set('at', String(ts)); // catch moment: the 3:33 run is timed from here
   try {
     const ip = getClientIP(req);
     const lim = await catchLimiter.check(req, 'mora-catch:' + ip);
