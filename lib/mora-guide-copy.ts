@@ -40,15 +40,12 @@ export const GUIDE = {
 
 export type UniverseStop = { id: string; title: string; sub: string; text: string; moons?: string[]; action?: { label: string; href: string } };
 
-/** Deep View planets: the labels the homepage already uses for SAIMÔR's parts. */
+/** Deep View: three sentences for the film, then the lights above the forest (SAIMÔR's parts, as on the homepage). */
 export const UNIVERSE = {
   de: {
     title: 'Das SAIMÔR-Universe', back: 'Zurück', pause: 'Bewegung pausieren', status: 'PRODUKTVORSCHAU · KEINE LIVE-DATEN',
-    forest: 'Hier fängt es an: im Wald, am Wasser. Schau mit mir nach oben.', up: 'Nach oben',
-    light: 'Durch das Licht, hinauf. Gleich siehst du alles von oben.', onward: 'Weiter', skip: 'Direkt ins Universe',
-    welcome: 'Jeder Planet trägt ein Stück unserer Welt. Tippe einen an, er geht sofort auf.',
-    start: 'Los geht’s', explore: 'Selbst erkunden', next: 'Weiter', overview: 'Zur Übersicht', again: 'Noch einmal',
-    end: 'Das war die Runde. Im OS sehe ich deinen echten Stand, nicht nur eine Vorschau.',
+    film: ['Deine Arbeit ist kein Stapel. Sie ist eine lebendige Welt.', 'MÔRA kennt sie und hält sie zusammen.', 'Du siehst klar. Du entscheidest.'],
+    skip: 'Überspringen', hint: 'Tippe ein Licht an, es geht sofort auf', next: 'Weiter', overview: 'Zur Übersicht', again: 'Noch einmal',
     endAction: { label: 'MÔRA im OS entdecken', href: '/mora#im-os' },
     stops: [
       { id: 'os', title: 'SAIMÔR OS', sub: 'Erde · alles im Kontext', text: 'Hier kommt alles zusammen: Dateien, Arbeit und ich. Eigene Daten kommen nur über Quellen, die du verbindest.' },
@@ -60,11 +57,8 @@ export const UNIVERSE = {
   },
   en: {
     title: 'The SAIMÔR universe', back: 'Back', pause: 'Pause motion', status: 'PRODUCT PREVIEW · NO LIVE DATA',
-    forest: 'It starts here: in the forest, by the water. Look up with me.', up: 'Look up',
-    light: 'Through the light, upward. Soon you’ll see everything from above.', onward: 'Next', skip: 'Straight to the universe',
-    welcome: 'Every planet carries a piece of our world. Tap one and it opens right away.',
-    start: 'Let’s go', explore: 'Explore myself', next: 'Next', overview: 'Overview', again: 'Experience again',
-    end: 'That’s the tour. In the OS I see your real state, not just a preview.',
+    film: ['Your work is not a pile. It is a living world.', 'MÔRA knows it and holds it together.', 'You see clearly. You decide.'],
+    skip: 'Skip', hint: 'Tap a light, it opens right away', next: 'Next', overview: 'Overview', again: 'Experience again',
     endAction: { label: 'Discover MÔRA in the OS', href: '/en/mora#im-os' },
     stops: [
       { id: 'os', title: 'SAIMÔR OS', sub: 'Earth · all in context', text: 'Everything comes together here: files, work and me. Your own data only comes through sources you connect.' },
