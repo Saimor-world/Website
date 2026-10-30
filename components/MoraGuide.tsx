@@ -93,7 +93,8 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
     }, { threshold: [0, 0.15] });
     if (home) homeSight.observe(home);
     const hero = document.querySelector('[aria-labelledby="world-title"]');
-    const heroSight = new IntersectionObserver(([entry]) => setHeroVisible(entry.intersectionRatio > 0.2), { threshold: [0, 0.2, 0.4] });
+    // The hero counts only while it fills the bottom strip of the screen, where her corner is: there she flies through.
+    const heroSight = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting), { rootMargin: '-82% 0px 0px 0px' });
     if (hero) heroSight.observe(hero);
     const onLine = new Set<string>();
     const stopSight = new IntersectionObserver(entries => {

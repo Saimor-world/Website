@@ -7,9 +7,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/earth', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
-/** Deep View is a short film; skip lands on the lights above the forest. */
+/** Deep View is a short film; skip lands on the lights. Under reduced motion there is no film and no skip button. */
 async function skipFilm(page: Page, german = true) {
-  await page.getByRole('button', { name: german ? 'Überspringen' : 'Skip', exact: true }).click();
+  const world = page.getByTestId('deep-universe');
+  const skip = page.getByRole('button', { name: german ? 'Überspringen' : 'Skip', exact: true });
+  // Retried until hydrated: a click on the server-rendered button before hydration does nothing.
+  await expect(async () => {
+    if ((await world.getAttribute('data-step')) !== '3' && await skip.isVisible()) await skip.click({ timeout: 2000 });
+    await expect(world).toHaveAttribute('data-step', '3', { timeout: 1500 });
+  }).toPass({ timeout: 20000 });
 }
 async function visit(page: Page, route: string) {
   const response = await page.goto(route);
@@ -169,19 +175,22 @@ test('universe journey: the film runs by itself, pauses, skips, and every light 
   await expect(page.getByRole('status')).toContainText('Deine Arbeit ist kein Stapel.');
   await expect(page.locator('[data-pixel-mora]')).toBeVisible();
   await expect(page.locator('[data-pixel-mora] img').first()).toHaveCSS('image-rendering', 'pixelated');
+  // Screenshots can be slow; the film is paused for them and keeps its remaining time.
+  const pause = page.getByRole('button', { name: 'Bewegung pausieren' });
+  await pause.click();
   await noOverflow(page);
   await shot(page, info, 'after-deep-film-start');
+  await pause.click();
   // It runs by itself: the second sentence follows without a click.
   await expect(world).toHaveAttribute('data-step', '2', { timeout: 9000 });
   await expect(page.getByRole('status')).toContainText('MÔRA kennt sie und hält sie zusammen.');
-  await page.waitForTimeout(1500);
-  await shot(page, info, 'after-deep-film-middle');
-  // Pause holds it.
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  // Pause holds it (paused first, so a slow screenshot cannot let the film move on).
+  await pause.click();
   await expect(world).toHaveAttribute('data-still', 'true');
+  await shot(page, info, 'after-deep-film-middle');
   await page.waitForTimeout(7500);
   await expect(world).toHaveAttribute('data-step', '2');
-  await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
+  await pause.click();
   await skipFilm(page);
   await expect(world).toHaveAttribute('data-step', '3');
   await expect(page.getByRole('status')).toContainText('Du siehst klar. Du entscheidest.');
