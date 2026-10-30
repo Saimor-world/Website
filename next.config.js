@@ -51,6 +51,16 @@ const nextConfig = {
   },
 
   // === ROUTING ===
+  // .xyz portfolio (static, separate Vercel project) served under saimor.world/xyz
+  async rewrites() {
+    const XYZ = 'https://xyz-portfolio-marius-projects-20aa51eb.vercel.app'
+    return {
+      beforeFiles: [
+        { source: '/xyz', destination: `${XYZ}/xyz` },
+        { source: '/xyz/:path*', destination: `${XYZ}/xyz/:path*` },
+      ],
+    }
+  },
   async redirects() {
     return [
       {
