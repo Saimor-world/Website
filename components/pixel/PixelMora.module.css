@@ -8,11 +8,9 @@
 .mora[data-mood="talk"] .figure{animation:breathe 1.8s steps(4) infinite}
 .mora[data-mood="sleep"] .figure{animation-duration:6s}
 .mora[data-mood="sleep"] .light{opacity:.55;animation:none}
-.z{position:absolute;right:calc(var(--u)*-1);top:0;font:600 calc(var(--u)*4)/1 ui-monospace,monospace;color:#f4cc6ecc;animation:z 3s steps(6) infinite}
-.mora[data-still="true"] .figure,.mora[data-still="true"] .light,.mora[data-still="true"] .z{animation:none}
+.mora[data-still="true"] .figure,.mora[data-still="true"] .light{animation:none}
 @keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,.97)}}
 @keyframes glow{0%,100%{opacity:.65}50%{opacity:1}}
 @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(calc(var(--u)*-6))}70%{transform:translateY(calc(var(--u)*-2))}}
 @keyframes fly{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(calc(var(--u)*-2)) rotate(-8deg)}}
-@keyframes z{0%{opacity:0;transform:translateY(0)}50%{opacity:1}100%{opacity:0;transform:translateY(calc(var(--u)*-6))}}
-@media(prefers-reduced-motion:reduce){.figure,.light,.z{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.figure,.light{animation:none!important}}

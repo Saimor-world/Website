@@ -20,7 +20,7 @@ function Page({ locale = 'de' }: { locale?: 'de' | 'en' }) {
 }
 
 beforeEach(() => {
-  sights = []; window.localStorage.clear(); scrolled.mockClear();
+  sights = []; window.localStorage.clear(); window.localStorage.setItem('cookie_consent', 'essential'); scrolled.mockClear();
   vi.useFakeTimers();
   vi.setSystemTime(new Date('2026-10-29T14:00:00'));
   vi.stubGlobal('matchMedia', (query: string) => ({ matches: false, media: query, addEventListener() {}, removeEventListener() {} }));
@@ -35,6 +35,19 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('MÔRA guides the homepage', () => {
+  it('waits with her greeting until the cookie choice is made, unless tapped', () => {
+    window.localStorage.removeItem('cookie_consent');
+    const first = render(<Page />);
+    expect(screen.queryByRole('status')).toBeNull();
+    act(() => { window.localStorage.setItem('cookie_consent', 'essential'); window.dispatchEvent(new Event('saimor-consent-change')); });
+    expect(screen.getByRole('status')).toHaveTextContent('Hallo, ich bin MÔRA.');
+    first.unmount();
+    window.localStorage.removeItem('cookie_consent');
+    render(<Page />);
+    fireEvent.click(screen.getByRole('button', { name: 'MÔRA antippen' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Hallo, ich bin MÔRA.');
+  });
+
   it('greets below the hero with a real choice and nothing fixed on screen yet', () => {
     render(<Page />);
     expect(screen.getByRole('status')).toHaveTextContent('Hallo, ich bin MÔRA.');

@@ -22,7 +22,8 @@ const OUTFITS: Record<MoraOutfit, string[]> = {
 
 /**
  * Pixel MÔRA from the final set. Integer scaling only and plain <img> layers, so every art pixel stays sharp.
- * Moods change motion (CSS, transform only), never the drawing. `still` keeps her calm: open eyes, no motion.
+ * Moods change motion (CSS, transform only), never the drawing; sleep is closed eyes and slow breath.
+ * `still` keeps her calm: open eyes, no motion.
  */
 export default function PixelMora({ scale, outfit = 'default', mood = 'idle', look = 0, still = false, className, style }: {
   scale: number; outfit?: MoraOutfit; mood?: MoraMood; look?: MoraLook; still?: boolean; className?: string; style?: CSSProperties;
@@ -53,6 +54,5 @@ export default function PixelMora({ scale, outfit = 'default', mood = 'idle', lo
       {layers.map((layer, index) => <img key={index} src={`${SRC}${layer}.png`} alt="" draggable={false}
         className={`${styles.layer}${layer === 'light' ? ` ${styles.light}` : ''}`} width={size} height={size} />)}
     </span>
-    {mood === 'sleep' ? <span className={styles.z}>z</span> : null}
   </span>;
 }

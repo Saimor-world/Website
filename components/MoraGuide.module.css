@@ -17,7 +17,7 @@
 .ghost{background:transparent;color:#e8d9a8;box-shadow:inset 0 0 0 2px #d9b24c66}
 .primary:focus-visible,.ghost:focus-visible,.close:focus-visible{outline:2px solid #fff3cf;outline-offset:2px}
 
-.dock{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));z-index:60;
+.dock{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom),var(--consent-banner-height,0px));z-index:60;
   display:flex;flex-direction:row-reverse;align-items:flex-end;gap:10px;pointer-events:none;animation:arrive .4s steps(4) both;will-change:transform}
 .dock>*{pointer-events:auto}
 .dockBubble{max-width:min(270px,calc(100vw - 124px));padding-right:34px}

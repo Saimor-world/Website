@@ -30,6 +30,10 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
   const [homeVisible, setHomeVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [night, setNight] = useState(false);
+  // On a first visit the cookie banner owns the bottom of the screen; her greeting waits for that choice
+  // (or for a deliberate tap on her), so the two never cover each other.
+  const [consent, setConsent] = useState(false);
+  const [poked, setPoked] = useState(false);
   const anchor = useRef<HTMLDivElement>(null);
   const hopTimer = useRef<number | undefined>(undefined);
 
@@ -40,6 +44,10 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
     let stored: string | null = null;
     try { stored = window.localStorage.getItem(GUIDE_KEY); } catch {}
     if (stored === 'tour' || stored === 'quiet') { setPhase(stored); setTalking(stored === 'tour'); }
+    const readConsent = () => { try { setConsent(Boolean(window.localStorage.getItem('cookie_consent'))); } catch { setConsent(true); } };
+    readConsent();
+    window.addEventListener('saimor-consent-change', readConsent);
+    return () => window.removeEventListener('saimor-consent-change', readConsent);
   }, []);
 
   const choose = (next: Exclude<Phase, 'greet'>) => {
@@ -129,10 +137,10 @@ export default function MoraGuide({ locale }: { locale: 'de' | 'en' }) {
   const figureMood: MoraMood = sleeping ? 'sleep' : mood === 'idle' && talking ? 'talk' : mood;
 
   const home = <div ref={anchor} className={styles.greet} data-testid="mora-guide" data-phase={phase} data-docked={docked}>
-    <button type="button" className={styles.figure} aria-label={c.poke} onClick={() => { hop(); if (phase === 'greet') setTalking(true); }}>
+    <button type="button" className={styles.figure} aria-label={c.poke} onClick={() => { hop(); setPoked(true); if (phase === 'greet') setTalking(true); }}>
       <PixelMora scale={3} mood={docked ? 'idle' : figureMood} look={look} still={paused} />
     </button>
-    {mounted && phase === 'greet' && talking ? <div className={styles.bubble} role="status">
+    {mounted && phase === 'greet' && talking && (consent || poked) ? <div className={styles.bubble} role="status">
       <p>{sleeping ? c.sleepy : c.hello}</p>
       <div className={styles.actions}>
         <button type="button" className={styles.primary} onClick={() => choose('tour')}>{c.yes}</button>
