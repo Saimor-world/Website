@@ -113,6 +113,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               <Link className="transition hover:text-white/72" href={legal.privacy}>{c.privacy}</Link>
               <Link className="transition hover:text-white/72" href={legal.terms}>{c.terms}</Link>
               <Link className="transition hover:text-white/72" href={legal.refund}>{c.refund}</Link>
+              <a className="transition hover:text-white/72" href="https://xyz-portfolio-marius-projects-20aa51eb.vercel.app" target="_blank" rel="noopener">.xyz Universum</a>
             </div>
           </ResponsiveDetails>
         </div>
