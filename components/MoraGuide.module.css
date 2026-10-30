@@ -40,7 +40,7 @@
 @media(max-width:700px){
   .greet{gap:10px;margin-top:22px}
   .bubble{max-width:calc(100vw - 186px);min-width:150px;font-size:13.5px}
-  .flyby{top:clamp(96px,18vh,180px)}
+  .flyby{top:56%}
 }
 @media(max-width:380px){.greet{flex-direction:column}.bubble{max-width:calc(100vw - 48px)}}
 @media(prefers-reduced-motion:reduce){.bubble,.dock,.flyby{animation:none}.flyby{display:none}}
