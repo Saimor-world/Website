@@ -1,5 +1,6 @@
 /* A pixel spark among the roots (field-relative). Faint until approached, then it wakes up in whole steps. */
-.spot{--x:68%;--y:43%;position:absolute;z-index:3;left:var(--x);top:var(--y);width:72px;height:72px;margin:-36px 0 0 -36px;display:block;pointer-events:auto;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+/* On the YORI thread of the mycelium (YORI_SPOT in EarthMycelium.tsx). */
+.spot{--x:64%;--y:50%;position:absolute;z-index:3;left:var(--x);top:var(--y);width:72px;height:72px;margin:-36px 0 0 -36px;display:block;pointer-events:auto;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
 .light{position:absolute;inset:0;display:grid;place-items:center;opacity:.45;transform:scale(1);transition:opacity .4s steps(3),transform .4s steps(3)}
 .spark{image-rendering:pixelated;animation:twinkle 2.4s steps(2) infinite}
 .mote{position:absolute;width:3px;height:3px;background:#ffe2a0;opacity:0}
@@ -15,5 +16,5 @@
 @keyframes twinkle{0%,100%{opacity:.75}50%{opacity:1}}
 @keyframes mote{0%{opacity:0;transform:translateY(4px)}30%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}
 @keyframes iris{to{transform:scale(1)}}
-@media(max-width:700px){.spot{--x:30%;--y:74%}}
+@media(max-width:700px){.spot{--x:62%;--y:46%}}
 @media(prefers-reduced-motion:reduce){.light{transition:none}.spark,.mote{animation:none!important}.passage{animation:none;transform:scale(1)}}

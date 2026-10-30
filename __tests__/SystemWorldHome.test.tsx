@@ -137,7 +137,9 @@ describe('SystemWorldHome', () => {
     expect(horizon).not.toHaveTextContent('Konzept · keine Live-Karte');
     expect(horizon.querySelector('a[href="/earth"]')).toBeNull();
     expect(horizon.querySelector('[data-testid="earth-mycelium"]')).not.toBeNull();
-    expect(horizon.querySelector('[aria-label="MÔRA"]')).not.toBeNull();
+    // The underside is mycelium with a hidden YORI spark; MÔRA guides elsewhere, not from this photo.
+    expect(horizon.querySelector('[aria-label="MÔRA"]')).toBeNull();
+    expect(horizon.querySelector('[data-testid="yori-path"]')).not.toBeNull();
     expect(forest?.contains(horizon)).toBe(false);
     const cosmos = container.querySelectorAll('img[src="/images/saimor-cosmos-layer.webp"]');
     expect(cosmos).toHaveLength(2);

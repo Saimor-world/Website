@@ -1,428 +1,115 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type React from 'react';
 import styles from './EarthMycelium.module.css';
-import PixelMora from './pixel/PixelMora';
 import { isLiteMode } from '@/lib/lite-mode-script';
 
-type Point = { x: number; y: number };
-type Strand = {
-  d: string;
-  w: number;
-  tone: 'jade' | 'gold' | 'hair';
-  pulse?: boolean;
-  edge?: boolean;
-  depth?: 'back' | 'mid' | 'front';
-  opacity?: number;
-};
+/** Where the hidden YORI spark sits, as a share of the field (kept in sync with YoriPath.module.css). */
+export const YORI_SPOT = { desktop: { x: 0.64, y: 0.5 }, phone: { x: 0.62, y: 0.46 } };
 
-const MORA = { x: 600, y: 250 };
-// Where the hidden YORI light sits among the roots (keep in sync with YoriPath.module.css).
-const YORI_SPOT = { x: 816, y: 430 };
-const PHONE_YORI = { x: 360, y: 666 };
-const VIEW_W = 1200;
-const VIEW_H = 1000;
-const CREDIT = { x: 600, y: 368, rx: 240, ry: 46 };
+type Node = { x: number; y: number; w: number };
 
 function mulberry32(seed: number) {
   return () => {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-function mix(a: number, b: number, t: number) {
-  return a + (b - a) * t;
-}
-
-function limbY(x: number) {
-  const t = (x - 600) / 620;
-  return 18 + t * t * 64;
-}
-
-function pathThrough(points: Point[]) {
-  if (points.length < 2) return '';
-  let d = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
-  for (let i = 1; i < points.length - 1; i += 1) {
-    const midX = (points[i].x + points[i + 1].x) / 2;
-    const midY = (points[i].y + points[i + 1].y) / 2;
-    d += `Q${points[i].x.toFixed(1)} ${points[i].y.toFixed(1)} ${midX.toFixed(1)} ${midY.toFixed(1)}`;
+/**
+ * Hyphae grow from the Earth's edge downward, wander, branch and thin out; light sits on some junctions.
+ * Deterministic (same seed, same network), drawn once per width: threads into one canvas, light into another.
+ */
+function paint(threads: HTMLCanvasElement, lights: HTMLCanvasElement, width: number, height: number) {
+  const phone = width <= 700;
+  const scale = Math.min(window.devicePixelRatio || 1, 2);
+  const random = mulberry32(phone ? 11 : 7);
+  const t = threads.getContext('2d'), l = lights.getContext('2d');
+  if (!t || !l) return;
+  for (const [canvas, context] of [[threads, t], [lights, l]] as const) {
+    canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+    context.clearRect(0, 0, width, height);
   }
-  const last = points[points.length - 1];
-  d += `L${last.x.toFixed(1)} ${last.y.toFixed(1)}`;
-  return d;
-}
-
-function grow(
-  rng: () => number,
-  start: Point,
-  heading: number,
-  steps: number,
-  stepLen: number,
-  wiggle: number,
-  pull: Point | null,
-  stopAtMora = false,
-  avoidCredit = true,
-) {
-  const points: Point[] = [start];
-  let x = start.x;
-  let y = start.y;
-  let angle = heading;
-  for (let i = 0; i < steps; i += 1) {
-    angle += (rng() - 0.5) * wiggle;
-    if (pull) {
-      const desired = Math.atan2(pull.y - y, pull.x - x);
-      let delta = desired - angle;
-      while (delta > Math.PI) delta -= Math.PI * 2;
-      while (delta < -Math.PI) delta += Math.PI * 2;
-      const dist = Math.hypot(pull.x - x, pull.y - y);
-      angle += delta * (dist < 90 ? 0.55 : mix(0.1, 0.3, i / steps));
-    } else {
-      angle += (Math.PI / 2 - angle) * 0.04;
-    }
-    const len = stepLen * mix(0.7, 1.22, rng());
-    let nx = x + Math.cos(angle) * len;
-    let ny = y + Math.sin(angle) * len;
-    if (ny > VIEW_H - 16) break;
-    ny = Math.max(ny, limbY(nx) - 8);
-    if (avoidCredit) {
-      const dx = (nx - CREDIT.x) / CREDIT.rx;
-      const dy = (ny - CREDIT.y) / CREDIT.ry;
-      if (dx * dx + dy * dy < 1) {
-        nx += nx < CREDIT.x ? -36 : 36;
-        if (((nx - CREDIT.x) / CREDIT.rx) ** 2 + ((ny - CREDIT.y) / CREDIT.ry) ** 2 < 1) break;
+  t.lineCap = 'round';
+  const nodes: Node[] = [];
+  // The network runs almost to the end of the section, so the underside never ends in an empty black band.
+  const reach = height * 0.94;
+  const grow = (x: number, y: number, angle: number, w: number, depth: number, toward?: { x: number; y: number }) => {
+    let length = 0;
+    // Each hypha stops at its own depth, so the network frays out instead of ending on one line.
+    const end = toward ? reach : reach * (0.72 + random() * 0.26);
+    const limit = (phone ? 52 : 110) * depth + random() * (phone ? 50 : 80);
+    while (y < end && length < limit) {
+      const step = 3 + random() * 4;
+      if (toward) angle += (Math.atan2(toward.y - y, toward.x - x) - angle) * 0.18;
+      const nx = x + Math.cos(angle) * step, ny = y + Math.sin(angle) * step;
+      t.strokeStyle = `rgba(${206 + random() * 24},${226 + random() * 16},${196 + random() * 18},${Math.min(0.8, 0.22 + w * 0.32)})`;
+      t.lineWidth = Math.max(0.35, w);
+      t.beginPath(); t.moveTo(x, y); t.quadraticCurveTo((x + nx) / 2 + (random() - 0.5) * 3, (y + ny) / 2, nx, ny); t.stroke();
+      x = nx; y = ny; length += step;
+      if (toward && Math.hypot(toward.x - x, toward.y - y) < 4) break;
+      // Wander, but keep growing downward like hyphae under the soil.
+      angle += (random() - 0.5) * 0.5;
+      angle = Math.max(0.4, Math.min(Math.PI - 0.4, angle * 0.92 + (Math.PI / 2) * 0.08));
+      w *= 0.986;
+      if (!toward && depth > 1 && random() < 0.07) {
+        nodes.push({ x, y, w });
+        grow(x, y, angle + (random() < 0.5 ? -1 : 1) * (0.5 + random() * 0.7), w * 0.7, depth - 1);
       }
     }
-    if (nx < -30 || nx > VIEW_W + 30) break;
-    x = nx;
-    y = ny;
-    points.push({ x, y });
-    const hub = pull && stopAtMora ? pull : MORA;
-    if (stopAtMora && Math.hypot(x - hub.x, y - hub.y) < 18) {
-      points.push({ ...hub });
-      break;
-    }
-  }
-  return { points, heading: angle };
-}
-
-function buildStrands(): Strand[] {
-  const rng = mulberry32(0x9d2c18);
-  const strands: Strand[] = [];
-
-  const push = (points: Point[], w: number, tone: Strand['tone'], pulse?: boolean, edge?: boolean) => {
-    if (points.length < 2) return;
-    const d = pathThrough(points);
-    if (d.length > 12) strands.push({ d, w, tone, pulse, edge });
+    nodes.push({ x, y, w });
   };
-
-  const limbPoints = Array.from({ length: 72 }, (_, i) => {
-    const x = mix(-8, VIEW_W + 8, i / 71) + (rng() - 0.5) * 10;
-    return { x, y: limbY(x) + rng() * 6 };
-  });
-
-  limbPoints.forEach((origin, index) => {
-    const heading = Math.PI / 2 + (rng() - 0.5) * 1.35;
-    const hair = grow(rng, origin, heading, 4 + Math.floor(rng() * 4), 8, 0.88, null);
-    push(hair.points, mix(0.18, 0.42, rng()), index % 8 === 0 ? 'gold' : 'hair', false, true);
-    const along = grow(
-      rng,
-      origin,
-      (index % 2 === 0 ? 0.28 : Math.PI - 0.28) + (rng() - 0.5) * 0.4,
-      8,
-      12,
-      0.42,
-      null,
-    );
-    push(along.points, mix(0.22, 0.55, rng()), index % 5 === 0 ? 'gold' : 'hair', false, true);
-    along.points.slice(1).forEach((node) => {
-      if (rng() > 0.55) return;
-      const drop = grow(rng, node, Math.PI / 2 + (rng() - 0.5) * 0.8, 4, 9, 0.7, null);
-      push(drop.points, mix(0.16, 0.32, rng()), 'hair', false, true);
-    });
-  });
-
-  const trunks = [8, 14, 20, 26, 32, 36, 40, 46, 52, 58, 64].map((index) => limbPoints[index]);
-  trunks.forEach((origin, index) => {
-    const heading = Math.atan2(MORA.y - origin.y, MORA.x - origin.x) + (rng() - 0.5) * 0.7;
-    const trunk = grow(rng, origin, heading, 24, 12, 0.58, MORA, true);
-    const tone: Strand['tone'] = index % 3 === 0 ? 'gold' : 'jade';
-    const width = mix(1.25, 2.05, 1 - Math.abs(origin.x - MORA.x) / 640);
-    push(trunk.points, width, tone, index === 4 || index === 5 || index === 6);
-
-    const last = trunk.points[trunk.points.length - 1];
-    if (last && Math.hypot(last.x - MORA.x, last.y - MORA.y) > 20) {
-      const join = grow(rng, last, Math.atan2(MORA.y - last.y, MORA.x - last.x), 8, 12, 0.2, MORA, true);
-      if (join.points.length) {
-        join.points[join.points.length - 1] = { ...MORA };
-        push(join.points, mix(0.9, 1.4, rng()), tone, index === 5);
-      }
-    }
-
-    trunk.points.forEach((node, nodeIndex) => {
-      if (nodeIndex < 2 || nodeIndex > trunk.points.length - 3) return;
-      if (rng() > 0.38) return;
-      const dir = rng() > 0.5 ? 1 : -1;
-      const forkHeading = trunk.heading + dir * mix(0.55, 1.2, rng());
-      const fork = grow(
-        rng,
-        node,
-        forkHeading,
-        5 + Math.floor(rng() * 5),
-        11,
-        0.62,
-        rng() > 0.7 ? MORA : null,
-        rng() > 0.75,
-      );
-      push(fork.points, mix(0.28, 0.7, 1 - nodeIndex / trunk.points.length), rng() > 0.65 ? 'gold' : 'hair');
-      fork.points.slice(1, -1).forEach((side) => {
-        if (rng() > 0.6) return;
-        const twig = grow(rng, side, forkHeading + dir * mix(0.4, 0.9, rng()), 3 + Math.floor(rng() * 3), 9, 0.78, null);
-        push(twig.points, mix(0.16, 0.34, rng()), 'hair');
-      });
-    });
-  });
-
-  const wanderers = [2, 6, 10, 16, 22, 28, 34, 42, 48, 54, 60, 66, 70].map((index) => limbPoints[index]);
-  wanderers.forEach((origin, index) => {
-    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.35, 1.15, rng());
-    const root = grow(rng, origin, heading, 16, 14, 0.58, null);
-    push(root.points, mix(0.4, 0.9, rng()), index % 4 === 0 ? 'gold' : 'jade', false, true);
-    root.points.slice(2, -2).forEach((node) => {
-      if (rng() > 0.5) return;
-      const dir = rng() > 0.5 ? 1 : -1;
-      const fork = grow(rng, node, heading + dir * mix(0.5, 1.15, rng()), 5, 11, 0.7, null);
-      push(fork.points, mix(0.2, 0.45, rng()), 'hair', false, true);
-    });
-  });
-
-  for (let i = 0; i < 9; i += 1) {
-    const spread = mix(-0.95, 0.95, i / 8);
-    const start = { x: MORA.x + Math.sin(spread) * 10, y: MORA.y + 12 };
-    const root = grow(rng, start, Math.PI / 2 + spread * 0.7, 9, 16, 0.4, null);
-    push(root.points, mix(0.45, 1.05, 1 - Math.abs(spread)), i === 4 ? 'gold' : 'jade', i === 3);
-    root.points.slice(2, -1).forEach((node) => {
-      if (rng() > 0.58) return;
-      const dir = rng() > 0.5 ? 1 : -1;
-      const side = grow(rng, node, Math.PI / 2 + spread + dir * mix(0.45, 1, rng()), 4, 11, 0.65, null);
-      push(side.points, mix(0.18, 0.4, rng()), rng() > 0.7 ? 'gold' : 'hair');
-    });
+  // The Earth's edge is curved (deepest in the middle): every hypha starts on it, never in the sky.
+  const edge = (x: number) => { const u = (x / width) * 2 - 1; return height * (phone ? 0.03 : 0.07) * (1 - u * u) + 2; };
+  const roots = phone ? 10 : 14;
+  for (let i = 0; i < roots; i++) {
+    const x = width * (0.05 + (0.9 * (i + random() * 0.6)) / roots);
+    grow(x, edge(x) + random() * 4, Math.PI / 2 + (random() - 0.5) * 0.6, phone ? 0.9 + random() * 0.7 : 1.4 + random() * 1.1, 4);
   }
-
-  // A few fine golden roots that wander down to the hidden YORI light.
-  [44, 49, 53].forEach((index, n) => {
-    const origin = limbPoints[index];
-    const root = grow(rng, origin, Math.PI / 2 + (n - 1) * 0.35, 60, 12, 0.5, YORI_SPOT, true, false);
-    push(root.points, 0.9 - n * 0.15, 'gold', false, true);
-    root.points.slice(2, -3).forEach((node) => {
-      if (rng() > 0.4) return;
-      const twig = grow(rng, node, Math.PI / 2 + (rng() - 0.5) * 1.6, 4, 9, 0.8, null);
-      push(twig.points, 0.2, 'hair', false, true);
-    });
-  });
-
-  return strands;
-}
-
-const PHONE_MORA = { x: 600, y: 548 };
-const PHONE_H = 900;
-
-function phoneLimbY(x: number) {
-  const t = (x - 600) / 640;
-  return 2 + t * t * 96;
-}
-
-function pathOrganic(points: Point[]) {
-  if (points.length < 2) return '';
-  let d = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
-  for (let i = 1; i < points.length; i += 1) {
-    const prev = points[i - 1];
-    const point = points[i];
-    if (i === points.length - 1 || i % 4 === 0) {
-      d += `L${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
-      continue;
-    }
-    const cx = mix(prev.x, point.x, 0.52) + (i % 2 === 0 ? 4.2 : -4.2);
-    const cy = mix(prev.y, point.y, 0.48);
-    d += `Q${cx.toFixed(1)} ${cy.toFixed(1)} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+  // One hypha leads to the hidden YORI spark, so the spark sits on the network, not beside it.
+  const spot = phone ? YORI_SPOT.phone : YORI_SPOT.desktop;
+  const target = { x: width * spot.x, y: height * spot.y };
+  grow(target.x - width * 0.08, edge(target.x - width * 0.08), Math.PI / 2, phone ? 1.1 : 1.5, 1, target);
+  for (const node of nodes) {
+    if (random() > (phone ? 0.22 : 0.28)) continue;
+    l.fillStyle = random() < 0.4 ? 'rgba(242,198,107,.9)' : 'rgba(205,240,220,.85)';
+    l.beginPath(); l.arc(node.x, node.y, 1.1 + node.w, 0, Math.PI * 2); l.fill();
   }
-  return d;
 }
 
-function growPhone(
-  rng: () => number,
-  start: Point,
-  heading: number,
-  steps: number,
-  stepLen: number,
-  wiggle: number,
-  pull: Point | null,
-  stopAtMora = false,
-) {
-  const points: Point[] = [start];
-  let x = start.x;
-  let y = start.y;
-  let angle = heading;
-  for (let i = 0; i < steps; i += 1) {
-    angle += (rng() - 0.5) * wiggle;
-    if (rng() > 0.83) angle += (rng() > 0.5 ? 1 : -1) * mix(0.4, 1.05, rng());
-    if (pull) {
-      const desired = Math.atan2(pull.y - y, pull.x - x);
-      let delta = desired - angle;
-      while (delta > Math.PI) delta -= Math.PI * 2;
-      while (delta < -Math.PI) delta += Math.PI * 2;
-      const dist = Math.hypot(pull.x - x, pull.y - y);
-      angle += delta * (dist < 70 ? 0.48 : mix(0.05, 0.2, i / steps));
-    }
-    const len = stepLen * mix(0.42, 1.38, rng());
-    x += Math.cos(angle) * len;
-    y += Math.sin(angle) * len;
-    if (y > PHONE_H - 18 || x < -48 || x > VIEW_W + 48) break;
-    points.push({ x, y });
-    if (stopAtMora && pull && Math.hypot(x - pull.x, y - pull.y) < 16) {
-      points.push({ ...pull });
-      break;
-    }
-  }
-  return { points, heading: angle };
-}
-
-function slicePoints(points: Point[], from: number, to: number) {
-  const last = points.length - 1;
-  const a = Math.max(0, Math.floor(last * from));
-  const b = Math.min(last, Math.max(a + 2, Math.ceil(last * to)));
-  return points.slice(a, b + 1);
-}
-
-function buildPhoneStrands(): Strand[] {
-  const rng = mulberry32(0x7c3e21);
-  const strands: Strand[] = [];
-
-  const push = (
-    points: Point[],
-    w: number,
-    tone: Strand['tone'],
-    depth: NonNullable<Strand['depth']>,
-    extra?: Pick<Strand, 'pulse' | 'opacity'>,
-  ) => {
-    if (points.length < 2) return;
-    const d = pathOrganic(points);
-    if (d.length > 12) strands.push({ d, w, tone, depth, ...extra });
-  };
-
-  const taperTowardMora = (
-    points: Point[],
-    baseW: number,
-    tone: Strand['tone'],
-    pulse: boolean,
-  ) => {
-    push(points, Math.max(0.28, baseW * 0.16), 'hair', 'front', { opacity: 0.58, pulse });
-    push(slicePoints(points, 0, 0.78), baseW * 0.48, tone, 'mid', { opacity: 0.78 });
-    push(slicePoints(points, 0, 0.4), baseW, tone, 'mid', { opacity: 0.9 });
-  };
-
-  const backOrigins = [40, 160, 310, 470, 650, 810, 960, 1120];
-  backOrigins.forEach((x, index) => {
-    const origin = { x: x + (rng() - 0.5) * 28, y: phoneLimbY(x) + rng() * 10 };
-    const heading = Math.PI / 2 + (index % 2 === 0 ? -1 : 1) * mix(0.15, 0.7, rng());
-    const root = growPhone(rng, origin, heading, 9 + Math.floor(rng() * 5), 15, 0.92, null);
-    push(root.points, mix(0.22, 0.48, rng()), rng() > 0.55 ? 'gold' : 'hair', 'back', { opacity: 0.34 });
-    root.points.slice(2, -1).forEach((node) => {
-      if (rng() > 0.62) return;
-      const twig = growPhone(rng, node, heading + (rng() > 0.5 ? 0.8 : -0.8), 4, 11, 1.05, null);
-      push(twig.points, mix(0.16, 0.3, rng()), 'hair', 'back', { opacity: 0.26 });
-    });
-  });
-
-  const origins = [86, 270, 430, 600, 770, 990].map((x) => {
-    const px = x + (rng() - 0.5) * 18;
-    return { x: px, y: phoneLimbY(px) };
-  });
-
-  origins.forEach((origin, index) => {
-    const along = (index < 3 ? 1 : -1) * mix(14, 36, rng());
-    const sit = { x: origin.x + along * 0.4, y: phoneLimbY(origin.x + along * 0.4) + 3 };
-    const heading = Math.atan2(PHONE_MORA.y - sit.y, PHONE_MORA.x - sit.x) + (rng() - 0.5) * 0.38;
-    const trunk = growPhone(rng, sit, heading, 26, 15, 0.78, PHONE_MORA, true);
-    const points = [{ ...origin }, sit, ...trunk.points.slice(1)];
-    if (Math.hypot(points[points.length - 1].x - PHONE_MORA.x, points[points.length - 1].y - PHONE_MORA.y) < 36) {
-      points[points.length - 1] = { ...PHONE_MORA };
-    }
-    const width = mix(1.7, 2.55, 1 - Math.abs(origin.x - PHONE_MORA.x) / 700);
-    const tone: Strand['tone'] = index % 3 === 0 ? 'gold' : 'jade';
-    taperTowardMora(points, width, tone, index === 1 || index === 4);
-
-    points.forEach((node, nodeIndex) => {
-      if (nodeIndex < 3 || nodeIndex > points.length - 4) return;
-      if (rng() > 0.46) return;
-      const dir = rng() > 0.5 ? 1 : -1;
-      const fork = growPhone(
-        rng,
-        node,
-        trunk.heading + dir * mix(0.55, 1.25, rng()),
-        5 + Math.floor(rng() * 5),
-        11,
-        0.95,
-        rng() > 0.82 ? PHONE_MORA : null,
-        rng() > 0.88,
-      );
-      push(fork.points, mix(0.28, 0.7, 1 - nodeIndex / points.length), rng() > 0.7 ? 'gold' : 'hair', 'front', {
-        opacity: mix(0.35, 0.7, rng()),
-      });
-      fork.points.slice(1, -1).forEach((side) => {
-        if (rng() > 0.55) return;
-        const twig = growPhone(rng, side, trunk.heading + dir * mix(0.7, 1.3, rng()), 3, 9, 1.1, null);
-        push(twig.points, mix(0.16, 0.32, rng()), 'hair', rng() > 0.5 ? 'back' : 'front', { opacity: 0.4 });
-      });
-    });
-  });
-
-  // One fine golden root wandering down to the hidden YORI light.
-  [{ x: 230, bend: -38 }, { x: 430, bend: 30 }].forEach(({ x, bend }, n) => {
-    const a = { x, y: phoneLimbY(x) + 2 };
-    const pts: Point[] = [];
-    for (let i = 0; i <= 26; i += 1) {
-      const t = i / 26;
-      const lx = mix(a.x, PHONE_YORI.x, t) + Math.sin(t * Math.PI) * bend + (rng() - 0.5) * 14 * (1 - t);
-      const ly = mix(a.y, PHONE_YORI.y, t) + (rng() - 0.5) * 6;
-      pts.push({ x: lx, y: ly });
-    }
-    pts[pts.length - 1] = { ...PHONE_YORI };
-    push(pts, 0.8 - n * 0.25, 'gold', 'front', { opacity: 0.7 - n * 0.15 });
-    pts.slice(4, -4).forEach((node) => {
-      if (rng() > 0.3) return;
-      const twig = growPhone(rng, node, Math.PI / 2 + (rng() - 0.5) * 1.8, 3, 9, 1, null);
-      push(twig.points, 0.2, 'hair', 'front', { opacity: 0.4 });
-    });
-  });
-
-  return strands;
-}
-
-const STRANDS = buildStrands();
-const growDelay = (i: number, n: number) => ({ '--grow-delay': `${((i / n) * 1.6).toFixed(2)}s` }) as React.CSSProperties;
-const PHONE_STRANDS = buildPhoneStrands();
-const SPORES = Array.from({ length: 22 }, (_, index) => {
-  const rng = mulberry32(0x404 + index * 19);
-  return {
-    left: `${(6 + rng() * 88).toFixed(1)}%`,
-    top: `${(18 + rng() * 70).toFixed(1)}%`,
-    delay: `${(-rng() * 18).toFixed(1)}s`,
-    duration: `${(12 + rng() * 10).toFixed(1)}s`,
-    size: rng() > 0.68 ? 3 : 2,
-  };
-});
-
+/**
+ * Mycelium on the underside of the Earth: the closing part of the round world (hero top, portal inside,
+ * underside here). Painted once per width, no per-frame drawing; the light layer breathes in opacity only and
+ * pauses offscreen. A hidden YORI spark (children) sits on one of the threads.
+ */
 export default function EarthMycelium({ children }: { children?: ReactNode } = {}) {
   const fieldRef = useRef<HTMLDivElement>(null);
-  const [grow, setGrow] = useState<'idle' | 'armed' | 'on'>('idle');
+  const threadsRef = useRef<HTMLCanvasElement>(null);
+  const lightsRef = useRef<HTMLCanvasElement>(null);
   const [active, setActive] = useState(true);
+  const [grow, setGrow] = useState<'still' | 'armed' | 'on'>('still');
 
-  // Pause every loop (sap pulses, spores, MÔRA breathing) while the underside is offscreen.
+  useEffect(() => {
+    const field = fieldRef.current, threads = threadsRef.current, lights = lightsRef.current;
+    if (!field || !threads || !lights) return undefined;
+    let width = 0, timer = 0;
+    const draw = () => {
+      const bounds = field.getBoundingClientRect();
+      if (!bounds.width || Math.round(bounds.width) === width) return;
+      width = Math.round(bounds.width);
+      paint(threads, lights, bounds.width, bounds.height);
+    };
+    draw();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(() => { window.clearTimeout(timer); timer = window.setTimeout(draw, 150); });
+    observer.observe(field);
+    return () => { observer.disconnect(); window.clearTimeout(timer); };
+  }, []);
+
+  // Pause the breathing light while the underside is offscreen.
   useEffect(() => {
     const field = fieldRef.current;
     if (!field || typeof IntersectionObserver === 'undefined') return undefined;
@@ -431,7 +118,7 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
     return () => observer.disconnect();
   }, []);
 
-  // The roots grow out of the Earth edge the first time the underside comes into view.
+  // The network grows in once, the first time the underside comes into view.
   useEffect(() => {
     const field = fieldRef.current;
     if (!field || typeof IntersectionObserver === 'undefined') return undefined;
@@ -439,169 +126,18 @@ export default function EarthMycelium({ children }: { children?: ReactNode } = {
     setGrow('armed');
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
-      window.requestAnimationFrame(() => setGrow('on'));
+      setGrow('on');
       observer.disconnect();
     }, { threshold: 0.15 });
     observer.observe(field);
     return () => observer.disconnect();
   }, []);
 
-  // No scroll-driven movement here: reading layout on every scroll frame made the underside stutter.
-
-
   return (
-    <div className={styles.field} data-testid="earth-mycelium" data-grow={grow} data-active={active ? 'on' : 'off'} ref={fieldRef}>
-      <div className={styles.canvas}>
-        <svg className={styles.network} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="earthHyphaFade" x1="0" y1="0" x2="0" y2={VIEW_H} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0.12" />
-              <stop offset="9%" stopColor="#fff" stopOpacity="1" />
-              <stop offset="58%" stopColor="#fff" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#fff" stopOpacity="0.05" />
-            </linearGradient>
-            <mask id="earthHyphaMask">
-              <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
-            </mask>
-          </defs>
-
-          <g mask="url(#earthHyphaMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            {STRANDS.map((strand, index) => (
-              <path
-                key={`g-${index}`}
-                className={`${styles.glow} ${strand.edge ? styles.edge : ''}`}
-                d={strand.d}
-                stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-                strokeWidth={strand.w * 3.4}
-                pathLength={1}
-                style={growDelay(index, STRANDS.length)}
-              />
-            ))}
-            {STRANDS.map((strand, index) => (
-              <path
-                key={`s-${index}`}
-                className={`${styles.strand} ${styles[strand.tone]} ${strand.edge ? styles.edge : ''}`}
-                d={strand.d}
-                strokeWidth={strand.w}
-                pathLength={1}
-                style={growDelay(index, STRANDS.length)}
-              />
-            ))}
-          </g>
-        </svg>
-
-        <svg className={`${styles.network} ${styles.pulseLayer}`} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <mask id="earthHyphaMaskPulse">
-              <rect width={VIEW_W} height={VIEW_H} fill="url(#earthHyphaFade)" />
-            </mask>
-          </defs>
-          <g mask="url(#earthHyphaMaskPulse)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            {STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
-              <path
-                key={`p-${index}`}
-                className={styles.pulse}
-                d={strand.d}
-                strokeWidth={Math.max(1.05, strand.w * 0.65)}
-                pathLength={140}
-              />
-            ))}
-          </g>
-        </svg>
-
-        <svg className={styles.phoneNetwork} viewBox={`0 0 ${VIEW_W} ${PHONE_H}`} preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="earthPhoneFade" x1="0" y1="0" x2="0" y2={PHONE_H} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#fff" stopOpacity="0.72" />
-              <stop offset="4%" stopColor="#fff" stopOpacity="1" />
-              <stop offset="82%" stopColor="#fff" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#fff" stopOpacity="0.18" />
-            </linearGradient>
-            <mask id="earthPhoneMask">
-              <rect width={VIEW_W} height={PHONE_H} fill="url(#earthPhoneFade)" />
-            </mask>
-          </defs>
-          <g mask="url(#earthPhoneMask)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            {PHONE_STRANDS.filter((strand) => strand.depth === 'back').map((strand, index) => (
-              <path
-                key={`pb-${index}`}
-                className={`${styles.strand} ${styles[strand.tone]} ${styles.phoneBack}`}
-                d={strand.d}
-                strokeWidth={strand.w}
-                strokeOpacity={strand.opacity}
-                pathLength={1}
-                style={growDelay(index, PHONE_STRANDS.length)}
-              />
-            ))}
-            {PHONE_STRANDS.filter((strand) => strand.depth !== 'back' && strand.w >= 1.15).map((strand, index) => (
-              <path
-                key={`pg-${index}`}
-                className={styles.phoneGlow}
-                d={strand.d}
-                stroke={strand.tone === 'gold' ? '#e6c98d' : '#8fcdb0'}
-                strokeWidth={strand.w * 2.4}
-                pathLength={1}
-                style={growDelay(index, PHONE_STRANDS.length)}
-              />
-            ))}
-            {PHONE_STRANDS.filter((strand) => strand.depth !== 'back').map((strand, index) => (
-              <path
-                key={`ps-${index}`}
-                className={`${styles.strand} ${styles[strand.tone]}`}
-                d={strand.d}
-                strokeWidth={strand.w}
-                strokeOpacity={strand.opacity}
-                pathLength={1}
-                style={growDelay(index, PHONE_STRANDS.length)}
-              />
-            ))}
-          </g>
-        </svg>
-
-        <svg className={`${styles.phoneNetwork} ${styles.pulseLayer}`} viewBox={`0 0 ${VIEW_W} ${PHONE_H}`} preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <mask id="earthPhoneMaskPulse">
-              <rect width={VIEW_W} height={PHONE_H} fill="url(#earthPhoneFade)" />
-            </mask>
-          </defs>
-          <g mask="url(#earthPhoneMaskPulse)" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            {PHONE_STRANDS.filter((strand) => strand.pulse).map((strand, index) => (
-              <path
-                key={`pp-${index}`}
-                className={styles.phonePulse}
-                d={strand.d}
-                strokeWidth={Math.max(0.7, strand.w * 0.7)}
-                pathLength={160}
-                style={{ animationDelay: `${-index * 1.8}s`, animationDuration: `${7.4 + (index % 3) * 1.3}s` }}
-              />
-            ))}
-          </g>
-        </svg>
-
-        <span className={styles.spores} aria-hidden="true">
-          {SPORES.map((spore, index) => (
-            <i
-              key={index}
-              style={{
-                left: spore.left,
-                top: spore.top,
-                width: spore.size,
-                height: spore.size,
-                minWidth: spore.size,
-                minHeight: spore.size,
-                animationDelay: spore.delay,
-                animationDuration: spore.duration,
-              }}
-            />
-          ))}
-        </span>
-
-        <div className={styles.moraOrb} role="img" aria-label="MÔRA">
-          <span className={styles.moraHalo} aria-hidden="true" />
-          <PixelMora scale={2} look={0} still={!active} />
-        </div>
-        {children}
-      </div>
+    <div ref={fieldRef} className={styles.field} data-testid="earth-mycelium" data-active={active ? 'on' : 'off'} data-grow={grow}>
+      <canvas ref={threadsRef} className={styles.threads} aria-hidden="true" />
+      <canvas ref={lightsRef} className={styles.lights} aria-hidden="true" />
+      {children}
     </div>
   );
 }

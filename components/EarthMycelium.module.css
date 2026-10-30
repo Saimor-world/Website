@@ -1,55 +1,16 @@
-.field{position:absolute;z-index:2;inset:0;top:28%;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 78%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 78%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
+/* Mycelium under the Earth: two canvases painted once per width. Motion is opacity/transform only. */
+.field{position:absolute;z-index:2;inset:0;top:28%;pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
 .field::before{content:"";position:absolute;left:4%;right:4%;top:-2%;height:16%;background:radial-gradient(ellipse 90% 90% at 50% 40%,rgba(230,201,141,.18) 0%,rgba(143,205,176,.07) 42%,transparent 74%);pointer-events:none}
-.canvas{position:relative;width:100%;height:100%}
-.network{display:block;width:100%;height:100%;overflow:visible;will-change:transform}
-.pulseLayer{position:absolute;inset:0}
-.field[data-active="off"] *{animation-play-state:paused!important}
-.phoneNetwork,.spores{display:none}
-.phoneGlow,.phonePulse{fill:none;stroke-linecap:round}
-.glow{stroke-opacity:.16}
-.strand{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.jade{stroke:#9fd4b4;stroke-opacity:.72}
-.gold{stroke:#e6c98d;stroke-opacity:.64}
-.hair{stroke:#cfe8c8;stroke-opacity:.42}
-/* Sap: dashes stay put, the whole pulse layer breathes in opacity (compositor only, no SVG repaint per frame). */
-.pulse{fill:none;stroke:#e7f6ea;stroke-linecap:round;stroke-opacity:.9;stroke-dasharray:9 131}
-.pulseLayer{will-change:opacity;animation:sapBreath 6s steps(6) infinite alternate}
-.pulse:nth-of-type(2){stroke:#e6c98d;stroke-dashoffset:-40}
-.pulse:nth-of-type(3){stroke-dashoffset:-90}
-.moraOrb{position:absolute;left:50%;top:25%;width:80px;height:80px;transform:translate(-50%,-50%);animation:moraBob 5.8s steps(6) infinite;will-change:transform}
-.moraHalo{position:absolute;border-radius:50%;pointer-events:none;inset:-36px;background:radial-gradient(circle,rgba(231,246,234,.2) 0%,rgba(198,226,184,.08) 38%,transparent 70%)}
-@keyframes sapBreath{from{opacity:.55}to{opacity:1}}
-@keyframes moraBob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 5px))}}
-@media(max-width:1024px){.field{top:27%}}
-@media(max-width:700px){
- .field{top:28%;bottom:10%;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,#000 0%,#000 90%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(180deg,#000 0%,#000 90%,transparent 100%)}
- .canvas{width:118%;height:100%;margin-left:-9%}
- .network{display:none}
- .phoneNetwork{display:block;width:100%;height:100%;overflow:visible}
- .phoneNetwork.pulseLayer{position:absolute;inset:0}
- .moraOrb{width:80px;height:80px;top:61%;animation-name:moraBobPhone;animation-duration:5.4s}
-   .phoneGlow{stroke-opacity:.22}
- .phoneBack{stroke-opacity:.3}
- .jade,.gold,.hair,.phoneGlow,.phonePulse,.phoneBack{vector-effect:non-scaling-stroke}
- .jade{stroke-opacity:.82}
- .gold{stroke-opacity:.76}
- .hair{stroke-opacity:.48}
- .phonePulse{stroke:#f4fbe8;stroke-opacity:.88;stroke-dasharray:14 146}
- .spores{display:block;position:absolute;inset:0;overflow:hidden;pointer-events:none}
- .spores i{position:absolute;background:rgba(232,246,228,.7);will-change:transform,opacity;animation:sporeDrift 14s steps(28) infinite}
- .spores i:nth-child(3n){background:rgba(230,201,141,.62)}
-}
-@keyframes moraBobPhone{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 14px))}}
-@keyframes sporeDrift{0%{transform:translate3d(0,10px,0);opacity:0}14%{opacity:.7}72%{opacity:.45}100%{transform:translate3d(8px,-52px,0);opacity:0}}
-@media(prefers-reduced-motion:reduce){
- .pulseLayer{animation:none}
- .pulse,.phonePulse{stroke-dasharray:none;stroke-opacity:.45}
- .moraOrb,.spores i{animation:none}
- .spores{display:none}
-}
-
-/* Roots grow from the Earth edge (strokes use pathLength=1). */
-.field[data-grow="armed"] .strand,.field[data-grow="armed"] .glow,.field[data-grow="armed"] .phoneGlow{stroke-dasharray:1 1;stroke-dashoffset:1}
-.field[data-grow="armed"] .pulse,.field[data-grow="armed"] .phonePulse{opacity:0}
-.field[data-grow="on"] .strand,.field[data-grow="on"] .glow,.field[data-grow="on"] .phoneGlow{stroke-dasharray:1 1;stroke-dashoffset:0;transition:stroke-dashoffset 3.4s cubic-bezier(.3,.6,.2,1) var(--grow-delay,0s)}
-.field[data-grow="on"] .pulse,.field[data-grow="on"] .phonePulse{opacity:1;transition:opacity 1.2s ease 4s}
+.threads,.lights{position:absolute;inset:0;width:100%;height:100%}
+.lights{will-change:opacity;animation:breathe 5.5s steps(6) infinite alternate}
+.field[data-active="off"] .lights{animation-play-state:paused}
+/* Grow in once when first seen: a gentle drop from the Earth's edge. */
+.field[data-grow="armed"] .threads,.field[data-grow="armed"] .lights{opacity:0;transform:translateY(-14px);animation:none}
+.field[data-grow="on"] .threads{opacity:1;transform:none;transition:opacity 1.6s ease-out,transform 2.2s cubic-bezier(.2,.7,.2,1)}
+.field[data-grow="on"] .lights{transition:transform 2.2s cubic-bezier(.2,.7,.2,1)}
+@keyframes breathe{from{opacity:.5}to{opacity:1}}
+@media(max-width:700px){.field{top:30%}}
+@media(prefers-reduced-motion:reduce){.lights{animation:none;opacity:.8}.threads,.lights{transition:none!important}}
