@@ -36,6 +36,8 @@ describe('Pixel MÔRA (final set)', () => {
     expect(blinked).toBe(true);
     rerender(<PixelMora scale={2} mood="sleep" />);
     expect(layers()[3]).toBe('/mora/pixel/eyes_closed.png');
+    // No loose 'z' glyph next to the sprite: sleep is closed eyes and slow breath.
+    expect(figure().textContent).toBe('');
   });
   it('holds still with open eyes and no timers', () => {
     render(<PixelMora scale={2} look={1} still />);
