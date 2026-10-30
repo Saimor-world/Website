@@ -6,14 +6,15 @@ type Sight = { callback: IntersectionObserverCallback; targets: Element[] };
 let sights: Sight[] = [];
 const see = (id: string, visible: boolean) => act(() => {
   for (const sight of sights) for (const target of sight.targets)
-    if (target.id === id || (id === 'home' && target.getAttribute('data-testid') === 'mora-guide'))
+    if (target.id === id || (id === 'home' && target.getAttribute('data-testid') === 'mora-guide')
+      || (id === 'hero' && target.getAttribute('aria-labelledby') === 'world-title'))
       sight.callback([{ isIntersecting: visible, intersectionRatio: visible ? 1 : 0, target } as IntersectionObserverEntry], {} as IntersectionObserver);
 });
 const scrolled = vi.fn();
 
 function Page({ locale = 'de' }: { locale?: 'de' | 'en' }) {
   return <>
-    <section aria-labelledby="t"><h1 id="t">Saimôr</h1></section>
+    <section aria-labelledby="world-title"><h1 id="world-title">Saimôr</h1></section>
     <section id="system">system<MoraGuide locale={locale} /></section>
     {['earth-horizon', 'blick', 'products', 'studio', 'contact'].map(id => <section key={id} id={id}>{id}</section>)}
   </>;
@@ -86,6 +87,17 @@ describe('MÔRA guides the homepage', () => {
     const first = render(<Page />);
     fireEvent.click(screen.getByRole('button', { name: 'Ich schau selbst' }));
     expect(screen.queryByRole('status')).toBeNull();
+    // She flies to the bottom-left corner at once, while her greeting spot is still on screen, and stays there.
+    expect(screen.getByTestId('mora-guide-dock')).toBeInTheDocument();
+    expect(screen.getByTestId('mora-guide')).toHaveAttribute('data-phase', 'quiet');
+    expect(document.body).toHaveAttribute('data-mora-dock', 'true');
+    see('home', true);
+    expect(screen.getByTestId('mora-guide-dock')).toBeInTheDocument();
+    // Back in the hero, the corner stays empty: there she only flies through.
+    see('hero', true);
+    expect(screen.queryByTestId('mora-guide-dock')).toBeNull();
+    see('hero', false);
+    expect(screen.getByTestId('mora-guide-dock')).toBeInTheDocument();
     first.unmount();
     render(<Page />);
     expect(screen.queryByText(/Hallo, ich bin MÔRA/)).toBeNull();

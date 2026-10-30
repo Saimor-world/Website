@@ -16,13 +16,33 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
+/** The way up: forest, then the light, then the universe welcome. */
+const climb = (up = 'Nach oben', onward = 'Weiter') => {
+  fireEvent.click(screen.getByRole('button', { name: up }));
+  fireEvent.click(screen.getByRole('button', { name: onward }));
+};
+
 describe('MÔRA Deep View: the SAIMÔR universe', () => {
-  it('welcomes aboard with MÔRA in her captain hat and tours every planet to the OS', () => {
+  it('starts in the forest, rises through the light and welcomes into the universe of nature planets', () => {
     render(<MoraDeepView locale="de" />);
     expect(screen.getByRole('heading', { level: 1, name: 'Das SAIMÔR-Universe' })).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('Willkommen an Bord.');
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-mode', 'forest');
+    expect(screen.getByRole('status')).toHaveTextContent('Hier fängt es an: im Wald, am Wasser.');
+    expect(document.querySelector('[data-pixel-mora]')).toHaveAttribute('data-outfit', 'default');
+    expect(screen.queryAllByRole('button').filter(b => b.dataset.body)).toHaveLength(0);
+    fireEvent.click(screen.getByRole('button', { name: 'Nach oben' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Durch das Licht, hinauf.');
     expect(document.querySelector('[data-pixel-mora]')).toHaveAttribute('data-outfit', 'captain');
+    fireEvent.click(screen.getByRole('button', { name: 'Weiter' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Jeder Planet trägt ein Stück unserer Welt.');
     expect(screen.getAllByRole('button').filter(b => b.dataset.body)).toHaveLength(5);
+    expect([...document.querySelectorAll('[data-body] > canvas[data-biome]')].map(c => c.getAttribute('data-biome')))
+      .toEqual(['earth', 'forest', 'water', 'light', 'stone']);
+  });
+
+  it('tours every planet to the OS and replays from the welcome', () => {
+    render(<MoraDeepView locale="de" />);
+    climb();
     fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
     expect(screen.getByTestId('focus-os')).toBeInTheDocument();
     expect(window.location.hash).toBe('#os');
@@ -35,20 +55,27 @@ describe('MÔRA Deep View: the SAIMÔR universe', () => {
     expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
     expect(screen.getByText('PRODUKTVORSCHAU · KEINE LIVE-DATEN')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /Noch einmal/ }));
-    expect(screen.getByRole('status')).toHaveTextContent('Willkommen an Bord.');
+    expect(screen.getByRole('status')).toHaveTextContent('Jeder Planet trägt ein Stück unserer Welt.');
   });
 
   it('lets the visitor explore alone: tap a planet, see its moons, return with Escape or history', () => {
     render(<MoraDeepView locale="de" />);
+    climb();
     fireEvent.click(screen.getByRole('button', { name: 'Selbst erkunden' }));
     expect(screen.getByRole('status')).toHaveTextContent('Tippe einen Planeten an.');
-    fireEvent.click(screen.getByRole('button', { name: 'ARBEIT: Kalender · Inbox · Board' }));
+    fireEvent.click(screen.getByRole('button', { name: 'ARBEIT: Wasser · fließt' }));
     const work = screen.getByTestId('focus-work');
     for (const moon of ['KALENDER', 'INBOX', 'BOARD']) expect(work).toHaveTextContent(moon);
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByTestId('focus-work')).toBeNull();
     act(() => { window.history.replaceState(null, '', '#agents'); window.dispatchEvent(new PopStateEvent('popstate')); });
     expect(screen.getByTestId('focus-agents')).toBeInTheDocument();
+  });
+
+  it('lands a deep link on its planet without the journey', () => {
+    window.history.replaceState(null, '', '/mora/deep-view#work');
+    render(<MoraDeepView locale="de" />);
+    expect(screen.getByTestId('focus-work')).toBeInTheDocument();
   });
 
   it('keeps the portal origin and switches language', () => {
@@ -61,7 +88,9 @@ describe('MÔRA Deep View: the SAIMÔR universe', () => {
   it('speaks English', () => {
     render(<MoraDeepView locale="en" />);
     expect(screen.getByRole('heading', { level: 1, name: 'The SAIMÔR universe' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'WORK: Calendar · Inbox · Board' }));
+    expect(screen.getByRole('status')).toHaveTextContent('It starts here: in the forest, by the water.');
+    climb('Look up', 'Next');
+    fireEvent.click(screen.getByRole('button', { name: 'WORK: Water · flowing' }));
     expect(screen.getByRole('status')).toHaveTextContent('Meeting, mail and task sit side by side.');
     expect(screen.getByText('PRODUCT PREVIEW · NO LIVE DATA')).toBeInTheDocument();
   });
@@ -73,6 +102,7 @@ describe('MÔRA Deep View: the SAIMÔR universe', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
     expect(screen.getByRole('button', { name: 'Bewegung pausieren' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
+    climb();
     fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
     act(() => vi.advanceTimersByTime(5000));
     expect(vi.getTimerCount()).toBe(0);
@@ -85,6 +115,7 @@ describe('MÔRA Deep View: the SAIMÔR universe', () => {
     vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('reduce'), media: query, addEventListener() {}, removeEventListener() {} }));
     render(<MoraDeepView locale="de" />);
     expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
+    climb();
     fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
     expect(vi.getTimerCount()).toBe(0);
   });

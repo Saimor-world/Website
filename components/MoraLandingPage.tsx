@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
-import Image from 'next/image';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { FileText, CalendarDays, MessageSquare, Pause, Play } from 'lucide-react';
 import { DemoLaunchButton } from './DemoLaunchButton';
-import MoraOsFace from './MoraOsFace';
+import PixelMora from './pixel/PixelMora';
+import { BiomePlanet, PixelSky, type Biome } from './pixel/PixelWorld';
 import styles from './MoraLandingPage.module.css';
 
 type Props = { locale: 'de' | 'en'; children?: ReactNode };
@@ -13,10 +13,10 @@ const COPY = {
   de: {
     eyebrow: 'MÔRA · SAIMÔR OS',
     hero: ['Klarheit', 'im Wandel.'],
-    heroSub: 'Deine ruhige Begleitung für Fokus, Orientierung und innere Klarheit.',
+    heroSub: 'MÔRA kennt deinen Laden und denkt mit.',
     cta: 'MÔRA im OS erleben',
     threads: ['Dateien', 'Termine', 'Nachrichten'],
-    stone: 'MÔRA, der Jadestein mit Gesicht',
+    stone: 'MÔRA im Pixel-Himmel, umkreist von Dateien, Terminen und Nachrichten',
     pause: 'Hintergrundbewegung pausieren',
     resume: 'Hintergrundbewegung fortsetzen',
     featuresTitle: 'Aus Fragmenten wird Klarheit.',
@@ -42,10 +42,10 @@ const COPY = {
   en: {
     eyebrow: 'MÔRA · SAIMÔR OS',
     hero: ['Clarity', 'in change.'],
-    heroSub: 'Your calm companion for focus, orientation and inner clarity.',
+    heroSub: 'MÔRA knows your business and thinks along.',
     cta: 'Experience MÔRA in the OS',
     threads: ['Files', 'Meetings', 'Messages'],
-    stone: 'MÔRA, the jade stone with a face',
+    stone: 'MÔRA in the pixel sky, circled by files, meetings and messages',
     pause: 'Pause background motion',
     resume: 'Resume background motion',
     featuresTitle: 'From fragments to clarity.',
@@ -71,51 +71,33 @@ const COPY = {
 } as const;
 
 const ICONS = [FileText, CalendarDays, MessageSquare];
-// Gold threads from the stone (left) to the three signals (right), in a 600x400 box.
-const THREADS = Array.from({ length: 30 }, (_, i) => {
-  const target = i % 3;
-  const ty = 70 + target * 130;
-  const sy = 190 + ((i * 37) % 40) - 20;
-  const bend = ((i * 53) % 90) - 45;
-  return { d: `M 20 ${sy} C 180 ${sy + bend}, 330 ${ty - bend}, 560 ${ty}`, delay: (i * 0.37) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
-});
-// Phone: threads fall from the stone (top centre) to three signals in a row (bottom), 360x200 box.
-const THREADS_MOBILE = Array.from({ length: 12 }, (_, i) => {
-  const tx = 60 + (i % 3) * 120;
-  const sx = 165 + ((i * 29) % 30);
-  const bend = ((i * 41) % 70) - 35;
-  const sway = ((i * 67) % 90) - 45;
-  return { d: `M ${sx} 0 C ${sx + sway} 40, ${sx - bend * 1.6} 90, ${(sx + tx) / 2 + bend} 120 S ${tx + sway * 0.5} 170, ${tx} 190`, delay: (i * 0.41) % 4, w: 0.6 + ((i * 7) % 5) / 6 };
-});
-const PARTICLES = Array.from({ length: 40 }, (_, i) => ({
-  left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, size: 2.5 + ((i * 7) % 4) * 1.2, delay: `${(i * 0.7) % 9}s`, dur: `${9 + ((i * 5) % 8)}s`, gold: i % 3 !== 0,
-}));
+/** Files, meetings and messages circle MÔRA as small nature planets: forest, water and light. */
+const SIGNALS: { biome: Biome; d: number; angle: number }[] = [
+  { biome: 'forest', d: 20, angle: -150 },
+  { biome: 'water', d: 24, angle: -30 },
+  { biome: 'light', d: 18, angle: 90 },
+];
 
 export default function MoraLandingPage({ locale, children }: Props) {
   const c = COPY[locale];
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [wide, setWide] = useState(false);
 
   useEffect(() => {
     const m = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const sync = () => setReduced(m?.matches ?? false);
+    const w = window.matchMedia?.('(min-width: 901px)');
+    const sync = () => { setReduced(m?.matches ?? false); setWide(w?.matches ?? false); };
     sync();
-    m?.addEventListener?.('change', sync);
-    return () => m?.removeEventListener?.('change', sync);
+    m?.addEventListener?.('change', sync); w?.addEventListener?.('change', sync);
+    return () => { m?.removeEventListener?.('change', sync); w?.removeEventListener?.('change', sync); };
   }, []);
 
   const still = paused || reduced;
 
   return (
     <div className={styles.page} data-still={still}>
-      <div className={styles.sky} aria-hidden="true">
-        <div className={styles.stars} />
-        <div className={styles.nebula} />
-        <div className={styles.dust} />
-        {PARTICLES.map((p, i) => (
-          <span key={i} className={styles.particle} data-gold={p.gold} style={{ left: p.left, top: p.top, width: p.size, height: p.size, animationDelay: p.delay, animationDuration: p.dur }} />
-        ))}
-      </div>
+      <div className={styles.sky} aria-hidden="true"><PixelSky still={still} /></div>
 
       <section className={styles.hero} aria-labelledby="mora-hero-title">
         <div className={styles.copy}>
@@ -128,58 +110,23 @@ export default function MoraLandingPage({ locale, children }: Props) {
           <DemoLaunchButton locale={locale} label={c.cta} className={styles.cta} />
         </div>
 
+        {/* MÔRA in the pixel sky: the sprite at a whole-number scale, three nature planets on one slow orbit.
+            The ring turns in steps and each planet turns back, so labels stay upright; transform only. */}
         <div className={styles.stage}>
-          <svg className={styles.threadsMobile} viewBox="0 0 360 200" preserveAspectRatio="none" aria-hidden="true">
-            {THREADS_MOBILE.map((t, i) => (
-              <g key={i}>
-                <path d={t.d} stroke="#e9c46a" strokeOpacity=".45" strokeWidth={t.w} fill="none" />
-                <path d={t.d} className={styles.spark} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
-              </g>
-            ))}
-          </svg>
-          <svg className={styles.threads} viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="moraThread" x1="0" x2="1">
-                <stop offset="0" stopColor="#f3d58f" stopOpacity="0" />
-                <stop offset=".25" stopColor="#e9c46a" stopOpacity=".85" />
-                <stop offset="1" stopColor="#f3d58f" stopOpacity=".25" />
-              </linearGradient>
-            </defs>
-            {THREADS.map((t, i) => (
-              <g key={i}>
-                <path d={t.d} stroke="url(#moraThread)" strokeWidth={t.w * 1.4} fill="none" opacity=".9" className={styles.threadGlow} />
-              </g>
-            ))}
-          </svg>
-          <svg className={`${styles.threads} ${styles.sparkLayer}`} viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
-            {THREADS.map((t, i) => (
-              <g key={i}>
-                <path d={t.d} className={`${styles.spark} ${styles.sparkHalo}`} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
-                <path d={t.d} className={`${styles.spark} ${styles.sparkCore}`} pathLength={100} style={{ animationDelay: `${t.delay}s` }} />
-              </g>
-            ))}
-          </svg>
-          <ul className={styles.signals}>
+          <div className={styles.presence} role="img" aria-label={c.stone} data-mora-presence>
+            <PixelMora scale={wide ? 6 : 4} mood="talk" still={still} className={styles.mora} />
+          </div>
+          <ul className={styles.ring} data-cheap-motion aria-hidden="true">
             {c.threads.map((label, i) => {
-              const Icon = ICONS[i];
-              return (
-                <li key={label} style={{ top: `${17.5 + i * 32.5}%` }}>
-                  <Icon size={18} aria-hidden="true" />
-                  <span>{label}</span>
-                </li>
-              );
+              const signal = SIGNALS[i];
+              return <li key={label} className={styles.satellite} data-cheap-motion style={{ '--angle': `${signal.angle}deg` } as CSSProperties}>
+                <span className={styles.upright} data-cheap-motion>
+                  <BiomePlanet biome={signal.biome} diameter={signal.d} px={wide ? 3 : 2} still={still} />
+                  <span className={styles.signalLabel} style={{ top: `${(signal.d * (wide ? 3 : 2)) / 2 + 8}px` }}>{label}</span>
+                </span>
+              </li>;
             })}
           </ul>
-
-          <div className={styles.orbit} aria-hidden="true"><span /></div>
-          <div className={styles.float}>
-            <div className={styles.stone} role="img" aria-label={c.stone} data-mora-presence>
-              <span className={styles.halo} aria-hidden="true" />
-              <Image src="/brand/mora-stone-v1.png" alt="" width={504} height={504} priority draggable={false} className={styles.stoneImg} />
-              <MoraOsFace size={420} />
-              <span className={styles.sheen} aria-hidden="true" />
-            </div>
-          </div>
         </div>
 
         <button type="button" className={styles.pause} onClick={() => setPaused(p => !p)} aria-label={paused ? c.resume : c.pause}>

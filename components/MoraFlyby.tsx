@@ -30,6 +30,6 @@ export default function MoraFlyby() {
   if (state === 'none') return null;
   return <div className={styles.flyby} aria-hidden="true" data-testid="mora-flyby" data-done={state === 'done'} data-cheap-motion
     onAnimationEnd={event => { if (event.target === event.currentTarget) setState('done'); }}>
-    <PixelMora scale={2} mood="fly" look={1} still={state === 'done'} />
+    <PixelMora scale={3} mood="fly" look={1} still={state === 'done'} />
   </div>;
 }

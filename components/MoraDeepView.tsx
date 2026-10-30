@@ -2,33 +2,42 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUp, Pause, Play, RotateCcw } from 'lucide-react';
 import PixelMora from './pixel/PixelMora';
-import { PixelMoon, PixelPlanet, PixelSky } from './pixel/PixelWorld';
+import { BiomePlanet, PixelMoon, PixelSky, type Biome } from './pixel/PixelWorld';
 import type { PlanetKind } from '@/lib/pixel/pixelArt';
 import { UNIVERSE } from '@/lib/mora-guide-copy';
 import styles from './MoraDeepView.module.css';
 
 type Props = { locale: 'de' | 'en' };
-type Mode = 'welcome' | 'overview' | 'focus' | 'end';
-
-/** Where each part of SAIMÔR sits on the map (percent of the stage) and how it is painted. */
-const BODIES: Record<string, { x: number; y: number; kind: PlanetKind; d: number; seed: number; folders?: number; activity?: number; open?: number; moons?: number }> = {
-  os: { x: 50, y: 44, kind: 'jade', d: 52, seed: 3, activity: 0.7, open: 3 },
-  files: { x: 18, y: 27, kind: 'ice', d: 22, seed: 11 },
-  work: { x: 80, y: 25, kind: 'ocean', d: 28, seed: 21, folders: 3, moons: 3 },
-  agents: { x: 22, y: 66, kind: 'gas', d: 22, seed: 31, folders: 1, moons: 1 },
-  security: { x: 79, y: 64, kind: 'desert', d: 18, seed: 4100 },
-};
+type Mode = 'forest' | 'light' | 'welcome' | 'overview' | 'focus' | 'end';
 
 /**
- * Deep View: a journey into the SAIMÔR universe with MÔRA (in her captain's hat) as the guide.
+ * Where each part of SAIMÔR sits on the map (percent of the stage) and which piece of our world it carries:
+ * the OS the earth, files the forest, work the water, agents the light, security the stone. Moons keep the OS painter.
+ */
+const BODIES: Record<string, { x: number; y: number; biome: Biome; d: number; spin: number; seed: number; moon: PlanetKind; moons?: number }> = {
+  os: { x: 50, y: 44, biome: 'earth', d: 56, spin: 6 / 7, seed: 3, moon: 'jade' },
+  files: { x: 18, y: 27, biome: 'forest', d: 26, spin: 1 / 7, seed: 11, moon: 'ice' },
+  work: { x: 80, y: 25, biome: 'water', d: 30, spin: 0, seed: 21, moon: 'ocean', moons: 3 },
+  agents: { x: 22, y: 66, biome: 'light', d: 24, spin: 1 / 7, seed: 31, moon: 'gas', moons: 1 },
+  security: { x: 79, y: 64, biome: 'stone', d: 22, spin: 6 / 7, seed: 4100, moon: 'desert' },
+};
+
+/** The way up: forest and light come from the website's own pictures, reduced to a few colours on a coarse pixel grid. */
+const SCENES = [
+  { id: 'forest', portrait: '/images/pixel/forest-portrait.png', landscape: '/images/pixel/forest-landscape.png' },
+  { id: 'light', portrait: '/images/pixel/light-portrait.png', landscape: '/images/pixel/light-landscape.png' },
+] as const;
+
+/**
+ * Deep View: a journey with MÔRA from the forest by the water, up through the portal light, into the SAIMÔR universe.
  * The look is the OS pixel view: the same painter, sprites and colours, enlarged by whole numbers only.
  * Motion is transform/opacity in CSS plus one 1.2 s surface step per visible planet; no frame loop, no WebGL.
  */
 export default function MoraDeepView({ locale }: Props) {
   const c = UNIVERSE[locale];
-  const [mode, setMode] = useState<Mode>('welcome');
+  const [mode, setMode] = useState<Mode>('forest');
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -38,6 +47,7 @@ export default function MoraDeepView({ locale }: Props) {
   const flight = useRef<number | undefined>(undefined);
   const heading = useRef<HTMLHeadingElement>(null);
   const still = paused || reduced;
+  const journey = mode === 'forest' || mode === 'light';
   const stop = c.stops[index];
 
   const fly = useCallback(() => {
@@ -47,6 +57,7 @@ export default function MoraDeepView({ locale }: Props) {
     flight.current = window.setTimeout(() => setFlying(false), 900);
   }, [still]);
 
+  const go = useCallback((target: Mode) => { setMode(target); fly(); }, [fly]);
   const show = useCallback((next: number, push = true) => {
     setIndex(next); setMode('focus'); fly();
     if (push) window.history.pushState(null, '', `#${c.stops[next].id}`);
@@ -55,7 +66,7 @@ export default function MoraDeepView({ locale }: Props) {
     setMode('overview'); fly();
     if (push && window.location.hash) window.history.pushState(null, '', window.location.pathname + window.location.search);
   }, [fly]);
-  const next = () => (index < c.stops.length - 1 ? show(index + 1) : (setMode('end'), fly()));
+  const next = () => (index < c.stops.length - 1 ? show(index + 1) : go('end'));
   const restart = () => { setIndex(0); setMode('welcome'); window.history.pushState(null, '', window.location.pathname + window.location.search); heading.current?.focus({ preventScroll: true }); };
 
   useEffect(() => {
@@ -66,7 +77,8 @@ export default function MoraDeepView({ locale }: Props) {
       const origin = new URLSearchParams(window.location.search).get('from');
       setEntry(origin === 'portal' || origin === 'mora' ? origin : null);
       const found = c.stops.findIndex(s => `#${s.id}` === window.location.hash);
-      if (found >= 0) { setIndex(found); setMode('focus'); } else setMode(current => (current === 'welcome' ? 'welcome' : 'overview'));
+      // A deep link (#work) lands on its planet at once; without one, the journey or the welcome stays where it is.
+      if (found >= 0) { setIndex(found); setMode('focus'); } else setMode(current => (current === 'forest' || current === 'light' || current === 'welcome' ? current : 'overview'));
     };
     sync(); restore();
     media?.addEventListener?.('change', sync); wide?.addEventListener?.('change', sync);
@@ -91,11 +103,21 @@ export default function MoraDeepView({ locale }: Props) {
   const languageHref = `${locale === 'de' ? '/en/mora/deep-view' : '/mora/deep-view'}${entry ? `?from=${entry}` : ''}`;
   const focused = mode === 'focus' ? stop : undefined;
   const body = focused ? BODIES[focused.id] : undefined;
+  const hidden = journey || mode === 'focus';
 
   return (
     <div className={styles.world} data-mode={mode} data-paused={paused} data-still={still} data-testid="deep-universe"
       style={body ? { '--fx': `${body.x}%`, '--fy': `${body.y}%` } as CSSProperties : undefined}>
-      <PixelSky still={still} />
+      <PixelSky still={still || journey} />
+
+      <div className={styles.scenes} aria-hidden="true">
+        {SCENES.map(scene => <picture key={scene.id} className={styles.scene} data-scene={scene.id}>
+          <source media="(min-aspect-ratio: 1/1)" srcSet={scene.landscape} />
+          {/* Plain <img>: next/image would resample the coarse pixels and blur them. */}
+          <img src={scene.portrait} alt="" draggable={false} />
+        </picture>)}
+        <span className={styles.shaft} />
+      </div>
 
       <header className={styles.topbar}>
         <Link href={backHref} className={styles.back}><ArrowLeft size={15} aria-hidden="true" />{backLabel}</Link>
@@ -109,18 +131,18 @@ export default function MoraDeepView({ locale }: Props) {
       </header>
 
       <section className={styles.stage} aria-label={c.title}>
-        <div className={styles.map} data-testid="universe-map" aria-hidden={mode === 'focus'}>
+        <div className={styles.map} data-testid="universe-map" aria-hidden={hidden}>
           <svg className={styles.orbits} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             <ellipse cx="50" cy="44" rx="34" ry="13" /><ellipse cx="50" cy="44" rx="42" ry="22" />
           </svg>
           {c.stops.map((s, i) => {
             const b = BODIES[s.id];
             return <button key={s.id} type="button" className={styles.body} style={{ left: `${b.x}%`, top: `${b.y}%` }}
-              aria-label={`${s.title}: ${s.sub}`} data-body={s.id} tabIndex={mode === 'focus' ? -1 : 0} onClick={() => show(i)}>
-              <PixelPlanet kind={b.kind} diameter={b.d} seed={b.seed} px={px} still={still} folders={b.folders} activity={b.activity} open={b.open} />
+              aria-label={`${s.title}: ${s.sub}`} data-body={s.id} tabIndex={hidden ? -1 : 0} onClick={() => show(i)}>
+              <BiomePlanet biome={b.biome} diameter={b.d} spin={b.spin} px={px} still={still || journey} />
               {Array.from({ length: b.moons ?? 0 }, (_, m) => <span key={m} className={styles.miniOrbit} data-cheap-motion
                 style={{ '--r': `${b.d * px * 0.85 + 10 + m * 9}px`, '--t': `${18 + m * 7}s`, '--a': `${m * 130}deg` } as CSSProperties}>
-                <PixelMoon kind={b.kind} diameter={5 + (m % 2)} seed={b.seed + m} px={px} className={styles.miniMoon} />
+                <PixelMoon kind={b.moon} diameter={5 + (m % 2)} seed={b.seed + m} px={px} className={styles.miniMoon} />
               </span>)}
               <span className={styles.label} style={{ top: `calc(50% + ${b.d * px * 0.5 + 10}px)` }}>{s.title}<small>{s.sub}</small></span>
             </button>;
@@ -129,10 +151,10 @@ export default function MoraDeepView({ locale }: Props) {
 
         {focused && body ? <div key={focused.id} className={styles.focus} data-testid={`focus-${focused.id}`}>
           <div className={styles.focusPlanet}>
-            <PixelPlanet kind={body.kind} diameter={Math.round(body.d * 2.4)} seed={body.seed} px={2} still={still} folders={body.folders} activity={body.activity} open={body.open} />
+            <BiomePlanet biome={body.biome} diameter={Math.round(body.d * 2.2)} spin={body.spin} px={2} still={still} />
           </div>
           {focused.moons?.map((moon, m) => <div key={moon} className={styles.focusMoon} data-moon={m}>
-            <PixelMoon kind={body.kind} diameter={14 + (m % 2) * 2} seed={body.seed + m} px={2} />
+            <PixelMoon kind={body.moon} diameter={14 + (m % 2) * 2} seed={body.seed + m} px={2} />
             <span className={styles.label} style={{ top: '26px' }}>{moon}</span>
           </div>)}
           <p className={styles.focusTitle}>{focused.title}<small>{focused.sub}</small></p>
@@ -142,11 +164,23 @@ export default function MoraDeepView({ locale }: Props) {
       <div className={styles.guide} data-testid="universe-guide">
         <div className={styles.mora}>
           <div className={styles.flight} data-flying={flying}>
-            <PixelMora scale={px === 3 ? 4 : 3} outfit="captain" mood={flying ? 'fly' : mode === 'welcome' ? 'talk' : 'idle'} look={mode === 'focus' ? -1 : 1} still={still} />
+            <PixelMora scale={px === 3 ? 4 : 3} outfit={mode === 'forest' ? 'default' : 'captain'}
+              mood={flying || mode === 'light' ? 'fly' : mode === 'welcome' || mode === 'forest' ? 'talk' : 'idle'}
+              look={mode === 'focus' ? -1 : mode === 'forest' ? 0 : 1} still={still} />
           </div>
         </div>
         <div className={styles.bubble} role="status" key={`${mode}-${index}`}>
-          {mode === 'welcome' ? <>
+          {mode === 'forest' ? <>
+            <p>{c.forest}</p>
+            <div className={styles.actions}>
+              <button type="button" className={styles.primary} onClick={() => go('light')}>{c.up}<ArrowUp size={13} aria-hidden="true" /></button>
+            </div>
+          </> : mode === 'light' ? <>
+            <p>{c.light}</p>
+            <div className={styles.actions}>
+              <button type="button" className={styles.primary} onClick={() => go('welcome')}>{c.onward}<ArrowRight size={13} aria-hidden="true" /></button>
+            </div>
+          </> : mode === 'welcome' ? <>
             <p>{c.welcome}</p>
             <div className={styles.actions}>
               <button type="button" className={styles.primary} onClick={() => show(0)}>{c.start}<ArrowRight size={13} aria-hidden="true" /></button>

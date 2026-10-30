@@ -7,6 +7,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 const routes = ['/de', '/en', '/mora', '/en/mora', '/studio', '/en/studio', '/yori', '/en/yori', '/earth', '/de/kontakt', '/en/contact', '/de/einstieg/security-check', '/en/entry/security-check'];
+/** Deep View starts in the forest: up through the light, then the universe welcome. */
+async function climb(page: Page, german = true) {
+  await page.getByRole('button', { name: german ? 'Nach oben' : 'Look up' }).click();
+  await page.getByRole('button', { name: german ? 'Weiter' : 'Next', exact: true }).click();
+}
 async function visit(page: Page, route: string) {
   const response = await page.goto(route);
   await expect(page.locator('html')).toHaveAttribute('data-public-ready', 'true');
@@ -110,6 +115,7 @@ test('homepage portal leads through MÔRA into the OS product and back in DE/EN'
     await expect(back).toHaveAttribute('href', `${home}#system`);
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await expect(page.getByRole('heading', { level: 1, name: german ? 'Das SAIMÔR-Universe' : 'The SAIMÔR universe' })).toBeVisible();
+    await climb(page, german);
     await page.getByRole('button', { name: german ? /Los geht/ : /Let’s go/ }).click();
     await expect(page.getByTestId('focus-os')).toBeVisible();
     for (let step = 0; step < 5; step++) await page.getByRole('button', { name: german ? /^Weiter/ : /^Next/ }).click();
@@ -158,9 +164,26 @@ test('universe journey: MÔRA guides through the planets, history, pause and rep
   await visit(page, '/mora/deep-view');
   await consent(page);
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toHaveCount(0);
-  await expect(page.getByTestId('pixel-sky')).toBeVisible();
+  await expect(page.getByTestId('pixel-sky')).toBeAttached();
+  // Step 1, forest: MÔRA in her everyday outfit by the water, the scene in coarse pixels.
+  await expect(page.getByTestId('deep-universe')).toHaveAttribute('data-mode', 'forest');
+  await expect(page.locator('[data-pixel-mora][data-outfit="default"]')).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('Hier fängt es an: im Wald, am Wasser.');
+  const forest = page.locator('[data-scene="forest"] img');
+  await expect(forest).toHaveCSS('image-rendering', 'pixelated');
+  expect(await forest.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeLessThanOrEqual(200);
+  await noOverflow(page);
+  await shot(page, info, 'after-universe-forest');
+  // Step 2, light: she rises with the captain's hat.
+  await page.getByRole('button', { name: 'Nach oben' }).click();
+  await expect(page.getByRole('status')).toContainText('Durch das Licht, hinauf.');
   await expect(page.locator('[data-pixel-mora][data-outfit="captain"]')).toBeVisible();
-  await expect(page.getByRole('status')).toContainText('Willkommen an Bord.');
+  await shot(page, info, 'after-universe-light');
+  // Step 3, the universe of nature planets.
+  await page.getByRole('button', { name: 'Weiter', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Jeder Planet trägt ein Stück unserer Welt.');
+  await expect(page.locator('[data-body] canvas[data-biome]')).toHaveCount(5);
+  await page.waitForTimeout(1200); // the map has risen into place
   await noOverflow(page);
   await shot(page, info, 'after-universe-welcome');
   // Pixel art stays sharp: every pixel canvas is drawn at a whole-number scale with nearest-neighbour rendering.
@@ -186,7 +209,7 @@ test('universe journey: MÔRA guides through the planets, history, pause and rep
   await expect(page.getByTestId('focus-files')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByTestId('focus-files')).toHaveCount(0);
-  await page.getByRole('button', { name: 'AGENTS: im Hintergrund' }).click();
+  await page.getByRole('button', { name: 'AGENTS: Licht · im Hintergrund' }).click();
   await expect(page.getByRole('status')).toContainText('Aktionen brauchen deine Freigabe');
   await page.getByRole('button', { name: 'Bewegung pausieren' }).click();
   await expect(page.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
@@ -196,7 +219,7 @@ test('universe journey: MÔRA guides through the planets, history, pause and rep
   await noOverflow(page);
   await shot(page, info, 'after-universe-end');
   await page.getByRole('button', { name: /Noch einmal/ }).click();
-  await expect(page.getByRole('status')).toContainText('Willkommen an Bord.');
+  await expect(page.getByRole('status')).toContainText('Jeder Planet trägt ein Stück unserer Welt.');
   const contexts = await page.evaluate(() => (window as unknown as Window & { __contexts: string[] }).__contexts);
   expect(contexts.filter(type => /webgl/i.test(type))).toEqual([]);
   expect(exceptions).toEqual([]);
@@ -211,7 +234,7 @@ test('English universe: planets, moons and the way into the OS', async ({ page }
   await expect(page.getByTestId('focus-work')).toContainText('CALENDAR');
   await expect(page.getByRole('status')).toContainText('Meeting, mail and task sit side by side.');
   await page.getByRole('button', { name: 'Overview', exact: true }).click();
-  await page.getByRole('button', { name: 'SECURITY: Check' }).click();
+  await page.getByRole('button', { name: 'SECURITY: Stone · Check' }).click();
   await expect(page.getByRole('link', { name: 'Security Check' })).toHaveAttribute('href', '/en/entry/security-check');
   await page.getByRole('button', { name: /^Next/ }).click();
   await expect(page.getByRole('link', { name: 'Discover MÔRA in the OS' })).toHaveAttribute('href', '/en/mora#im-os');
@@ -228,6 +251,7 @@ test('reduced motion lands every step at once; short viewport stays usable', asy
   const running = await page.getByTestId('deep-universe').evaluate(element =>
     element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length);
   expect(running).toBe(0);
+  await climb(page);
   await page.getByRole('button', { name: /Los geht/ }).click();
   await expect(page.getByTestId('focus-os')).toBeVisible();
   await expect(page.getByRole('button', { name: /^Weiter/ })).toBeInViewport();
@@ -275,6 +299,30 @@ test('homepage: MÔRA greets, guides the tour on request and stays quiet otherwi
     await visit(page, `/${locale}`);
     await expect(page.locator('#system').getByTestId('mora-guide').getByRole('status')).toHaveCount(0);
   }
+  // "Look myself": she flies to the bottom-left corner at once and stays there, clear of the discoveries.
+  await page.evaluate(() => localStorage.removeItem('saimor-mora-guide'));
+  await visit(page, '/de');
+  const greeting = page.locator('#system').getByTestId('mora-guide');
+  await greeting.scrollIntoViewIfNeeded();
+  await greeting.getByRole('button', { name: 'Ich schau selbst' }).click();
+  const dock = page.getByTestId('mora-guide-dock');
+  await expect(dock).toBeVisible();
+  await page.waitForTimeout(1300); // landed
+  const viewport = page.viewportSize()!;
+  const box = (await dock.boundingBox())!;
+  expect(box.x).toBeLessThan(40);
+  expect(viewport.height - (box.y + box.height)).toBeLessThan(48);
+  const discoveries = page.locator('button[aria-label*="entdeckt"]').filter({ visible: true });
+  for (const other of await discoveries.all()) {
+    const b = (await other.boundingBox())!;
+    expect(box.x + box.width <= b.x || b.x + b.width <= box.x || box.y + box.height <= b.y || b.y + b.height <= box.y).toBe(true);
+  }
+  await page.evaluate(() => document.getElementById('products')?.scrollIntoView({ block: 'start' }));
+  await expect(dock).toBeVisible();
+  await shot(page, info, 'after-mora-quiet-dock');
+  // Over the hero the corner stays empty: there she only flies through.
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(dock).toHaveCount(0);
 });
 
 test('mobile navigation: escape, keyboard focus and readable entry', async ({ page }, info) => {

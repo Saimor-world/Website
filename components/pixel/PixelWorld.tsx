@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
-  makeStars, paintMoon, paintNebula, paintPlanet, paintStars, planetCanvasSize, planetGeometry,
-  type Bitmap, type PlanetKind,
+  bayer, makeStars, paintMoon, paintNebula, paintPlanet, paintStars, planetCanvasSize, planetGeometry,
+  type Bitmap, type Geometry, type PlanetKind,
 } from '@/lib/pixel/pixelArt';
 import styles from './PixelWorld.module.css';
 
@@ -89,4 +89,79 @@ export function PixelSky({ still }: { still: boolean }) {
     <canvas ref={stars} className={styles.pixel} style={size} />
     <canvas ref={twinkle} className={`${styles.pixel} ${styles.twinkle}`} style={size} data-cheap-motion />
   </div>;
+}
+
+/** Nature biomes for the planets: surfaces taken from the website's own photos (public/images/pixel/biome-*.png). */
+export type Biome = 'forest' | 'water' | 'earth' | 'light' | 'stone';
+const RIM: Record<Biome, [number, number, number]> = {
+  forest: [120, 200, 140], water: [120, 190, 230], earth: [230, 200, 130], light: [255, 220, 150], stone: [180, 180, 190],
+};
+const biomeTextures = new Map<Biome, Promise<ImageData | null>>();
+function biomeTexture(biome: Biome) {
+  let texture = biomeTextures.get(biome);
+  if (!texture) {
+    texture = new Promise(resolve => {
+      if (typeof Image === 'undefined') { resolve(null); return; }
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas'); canvas.width = image.width; canvas.height = image.height;
+        const context = canvas.getContext('2d');
+        if (!context) { resolve(null); return; }
+        context.drawImage(image, 0, 0);
+        resolve(context.getImageData(0, 0, image.width, image.height));
+      };
+      image.onerror = () => resolve(null);
+      image.src = `/images/pixel/biome-${biome}.png`;
+    });
+    biomeTextures.set(biome, texture);
+  }
+  return texture;
+}
+
+/** The biome wrapped on the OS sphere: same geometry and light, stepped (dithered) terminator, soft rim. */
+function paintBiome(texture: ImageData, geometry: Geometry, rim: [number, number, number], spin: number): Bitmap {
+  const { S, mask, nx, ny, nz, lam } = geometry;
+  const data = new Uint8ClampedArray(S * S * 4);
+  const fold = (v: number) => { const f = ((v % 2) + 2) % 2; return f > 1 ? 2 - f : f; };
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+    const i = y * S + x;
+    if (!mask[i]) continue;
+    const lon = Math.atan2(nx[i], nz[i]) / (Math.PI * 2) + 0.5 + spin;
+    const lat = Math.asin(Math.max(-1, Math.min(1, ny[i]))) / Math.PI + 0.5;
+    const t = (Math.floor(lat * (texture.height - 1)) * texture.width + Math.floor(fold(lon * 2) * (texture.width - 1))) * 4;
+    const level = Math.max(0.12, Math.floor((0.3 + lam[i]) * 4 + (bayer(x, y) - 0.5)) / 4);
+    const edge = Math.max(0, 1 - nz[i] - 0.55) * 0.9;
+    for (let k = 0; k < 3; k++) data[i * 4 + k] = Math.min(255, texture.data[t + k] * level * 1.15 + rim[k] * edge);
+    data[i * 4 + 3] = 255;
+  }
+  return { w: S, h: S, data };
+}
+
+/** A nature planet: its surface turns one step every 1.2 s, only while visible and not still. */
+export function BiomePlanet({ biome, diameter, spin = 0, px, still, className, style }: {
+  biome: Biome; diameter: number; spin?: number; px: number; still: boolean; className?: string; style?: CSSProperties;
+}) {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const geometry = useMemo(() => planetGeometry({ kind: 'rock', d: diameter, seed: 1, light: LIGHT }), [diameter]);
+  const size = geometry.S * px;
+  useEffect(() => {
+    let alive = true, frame = 0, visible = true, timer = 0;
+    let texture: ImageData | null = null;
+    const sight = typeof IntersectionObserver === 'undefined' || !canvas.current ? null
+      : new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    if (sight && canvas.current) sight.observe(canvas.current);
+    void biomeTexture(biome).then(loaded => {
+      if (!alive || !loaded) return;
+      texture = loaded;
+      draw(canvas.current, paintBiome(loaded, geometry, RIM[biome], spin));
+      if (still) return;
+      timer = window.setInterval(() => {
+        if (!texture || document.hidden || !visible) return;
+        frame += 1; draw(canvas.current, paintBiome(texture, geometry, RIM[biome], spin + frame * 0.035));
+      }, 1200);
+    });
+    return () => { alive = false; window.clearInterval(timer); sight?.disconnect(); };
+  }, [biome, geometry, spin, still]);
+  return <canvas ref={canvas} className={`${styles.pixel}${className ? ` ${className}` : ''}`} data-biome={biome} aria-hidden="true"
+    style={{ ...style, width: size, height: size, marginLeft: -size / 2, marginTop: -size / 2 }} />;
 }
