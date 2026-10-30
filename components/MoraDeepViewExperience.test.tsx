@@ -2,53 +2,81 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MoraDeepView from './MoraDeepView';
 
+// eslint-disable-next-line @next/next/no-img-element
+vi.mock('next/image', () => ({ default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} /> }));
+
 const contexts: string[] = [];
 const frames = vi.fn();
+const motion = (reduce: boolean) => vi.stubGlobal('matchMedia', (query: string) => ({
+  matches: reduce && query.includes('reduce'), media: query, addEventListener() {}, removeEventListener() {},
+}));
 beforeEach(() => {
   window.history.replaceState(null, '', '/mora/deep-view');
   contexts.length = 0; frames.mockClear();
-  vi.stubGlobal('matchMedia', (query: string) => ({ matches: false, media: query, addEventListener() {}, removeEventListener() {} }));
-  vi.stubGlobal('IntersectionObserver', class { observe() {} unobserve() {} disconnect() {} });
-  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames(); return 1; });
+  motion(false);
+  vi.stubGlobal('requestAnimationFrame', () => { frames(); return 1; });
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(function (type: string) {
     contexts.push(type); return null;
   } as never);
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-describe('MÔRA Deep View: the SAIMÔR universe', () => {
-  it('welcomes aboard with MÔRA in her captain hat and tours every planet to the OS', () => {
+const lights = () => screen.queryAllByRole('button').filter(b => b.dataset.body);
+
+describe('MÔRA Deep View: one world of forest, water and stars', () => {
+  it('runs by itself through three sentences and ends with five glass lights above the forest', () => {
+    vi.useFakeTimers();
     render(<MoraDeepView locale="de" />);
     expect(screen.getByRole('heading', { level: 1, name: 'Das SAIMÔR-Universe' })).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('Willkommen an Bord.');
-    expect(document.querySelector('[data-pixel-mora]')).toHaveAttribute('data-outfit', 'captain');
-    expect(screen.getAllByRole('button').filter(b => b.dataset.body)).toHaveLength(5);
-    fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
-    expect(screen.getByTestId('focus-os')).toBeInTheDocument();
-    expect(window.location.hash).toBe('#os');
-    for (const id of ['files', 'work', 'agents', 'security']) {
-      fireEvent.click(screen.getByRole('button', { name: /Weiter/ }));
-      expect(screen.getByTestId(`focus-${id}`)).toBeInTheDocument();
-    }
-    expect(screen.getByRole('link', { name: 'Security Check' })).toHaveAttribute('href', '/de/einstieg/security-check');
-    fireEvent.click(screen.getByRole('button', { name: /Weiter/ }));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '1');
+    expect(screen.getByRole('status')).toHaveTextContent('Deine Arbeit ist kein Stapel. Sie ist eine lebendige Welt.');
+    expect(document.querySelector('[data-pixel-mora]')).toHaveAttribute('data-outfit', 'default');
+    expect(lights()).toHaveLength(0);
+    act(() => vi.advanceTimersByTime(6000));
+    expect(screen.getByRole('status')).toHaveTextContent('MÔRA kennt sie und hält sie zusammen.');
+    act(() => vi.advanceTimersByTime(6500));
+    expect(screen.getByRole('status')).toHaveTextContent('Du siehst klar. Du entscheidest.');
+    expect(screen.queryByRole('button', { name: 'Überspringen' })).toBeNull();
+    expect(lights()).toHaveLength(5);
+    expect([...document.querySelectorAll('[data-body] [data-glass]')].map(p => p.getAttribute('data-glass')))
+      .toEqual(['earth', 'forest', 'water', 'light', 'stone']);
+    // Every light is mirrored in the stream.
+    expect(document.querySelectorAll('[data-glass]')).toHaveLength(10);
     expect(screen.getByRole('link', { name: 'MÔRA im OS entdecken' })).toHaveAttribute('href', '/mora#im-os');
     expect(screen.getByText('PRODUKTVORSCHAU · KEINE LIVE-DATEN')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /Noch einmal/ }));
-    expect(screen.getByRole('status')).toHaveTextContent('Willkommen an Bord.');
   });
 
-  it('lets the visitor explore alone: tap a planet, see its moons, return with Escape or history', () => {
+  it('skips straight to the lights and replays from the start', () => {
     render(<MoraDeepView locale="de" />);
-    fireEvent.click(screen.getByRole('button', { name: 'Selbst erkunden' }));
-    expect(screen.getByRole('status')).toHaveTextContent('Tippe einen Planeten an.');
-    fireEvent.click(screen.getByRole('button', { name: 'ARBEIT: Kalender · Inbox · Board' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Überspringen' }));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '3');
+    fireEvent.click(screen.getByRole('button', { name: /Noch einmal/ }));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '1');
+  });
+
+  it('opens a light at once, tours on, and returns with Escape or history', () => {
+    render(<MoraDeepView locale="de" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Überspringen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'ARBEIT: Wasser · fließt' }));
     const work = screen.getByTestId('focus-work');
     for (const moon of ['KALENDER', 'INBOX', 'BOARD']) expect(work).toHaveTextContent(moon);
-    fireEvent.keyDown(window, { key: 'Escape' });
-    expect(screen.queryByTestId('focus-work')).toBeNull();
-    act(() => { window.history.replaceState(null, '', '#agents'); window.dispatchEvent(new PopStateEvent('popstate')); });
+    expect(window.location.hash).toBe('#work');
+    expect(screen.getByRole('status')).toHaveTextContent('Termin, Mail und Aufgabe liegen nebeneinander.');
+    fireEvent.click(screen.getByRole('button', { name: /Weiter/ }));
     expect(screen.getByTestId('focus-agents')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Weiter/ }));
+    expect(screen.getByRole('link', { name: 'Security Check' })).toHaveAttribute('href', '/de/einstieg/security-check');
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByTestId('focus-security')).toBeNull();
+    act(() => { window.history.replaceState(null, '', '#files'); window.dispatchEvent(new PopStateEvent('popstate')); });
+    expect(screen.getByTestId('focus-files')).toBeInTheDocument();
+  });
+
+  it('lands a deep link on its light without the film', () => {
+    window.history.replaceState(null, '', '/mora/deep-view#work');
+    render(<MoraDeepView locale="de" />);
+    expect(screen.getByTestId('focus-work')).toBeInTheDocument();
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '3');
   });
 
   it('keeps the portal origin and switches language', () => {
@@ -61,31 +89,37 @@ describe('MÔRA Deep View: the SAIMÔR universe', () => {
   it('speaks English', () => {
     render(<MoraDeepView locale="en" />);
     expect(screen.getByRole('heading', { level: 1, name: 'The SAIMÔR universe' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'WORK: Calendar · Inbox · Board' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Your work is not a pile. It is a living world.');
+    fireEvent.click(screen.getByRole('button', { name: 'Skip' }));
+    fireEvent.click(screen.getByRole('button', { name: 'WORK: Water · flowing' }));
     expect(screen.getByRole('status')).toHaveTextContent('Meeting, mail and task sit side by side.');
-    expect(screen.getByText('PRODUCT PREVIEW · NO LIVE DATA')).toBeInTheDocument();
   });
 
-  it('never asks for WebGL or schedules animation frames; paused, nothing ticks at all', () => {
+  it('pause holds the film; nothing asks for WebGL or schedules animation frames', () => {
     vi.useFakeTimers();
     render(<MoraDeepView locale="de" />);
-    expect(contexts.some(type => /webgl/i.test(type))).toBe(false);
+    act(() => vi.advanceTimersByTime(3000));
     fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
     expect(screen.getByRole('button', { name: 'Bewegung pausieren' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
-    fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
-    act(() => vi.advanceTimersByTime(5000));
+    act(() => vi.advanceTimersByTime(20000));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '1');
     expect(vi.getTimerCount()).toBe(0);
+    // Resumed, the film keeps the time it had left (3 of 6 s).
+    fireEvent.click(screen.getByRole('button', { name: 'Bewegung pausieren' }));
+    act(() => vi.advanceTimersByTime(3100));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '2');
     expect(frames).not.toHaveBeenCalled();
     expect(contexts.some(type => /webgl/i.test(type))).toBe(false);
   });
 
-  it('starts calm under reduced motion: no surface steps, no flights', () => {
+  it('starts at the lights under reduced motion: no film, no timers', () => {
     vi.useFakeTimers();
-    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('reduce'), media: query, addEventListener() {}, removeEventListener() {} }));
+    motion(true);
     render(<MoraDeepView locale="de" />);
     expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-still', 'true');
-    fireEvent.click(screen.getByRole('button', { name: /Los geht/ }));
+    expect(screen.getByTestId('deep-universe')).toHaveAttribute('data-step', '3');
+    expect(lights()).toHaveLength(5);
     expect(vi.getTimerCount()).toBe(0);
   });
 });

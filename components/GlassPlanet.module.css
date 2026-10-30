@@ -1,0 +1,22 @@
+/* Glass planet: inner world, glass tint, depth shading, gloss and rim. Everything is static paint except a slow
+   drift of the inner world (transform), so a planet costs one composited layer at most. */
+.planet{position:relative;display:block;width:var(--d);height:var(--d);flex:none}
+.halo{position:absolute;inset:calc(var(--d)*-.85);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(var(--tint),.4) 0,rgba(var(--tint),.17) 30%,rgba(var(--tint),.05) 52%,rgba(var(--tint),0) 68%)}
+.sphere{position:absolute;inset:0;border-radius:50%;overflow:hidden;isolation:isolate;
+  box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 calc(var(--d)*.32) rgba(var(--tint),.5),0 calc(var(--d)*.06) calc(var(--d)*.2) rgba(0,0,0,.45)}
+/* The inner world sits a little larger than the sphere, so its slow drift never shows an edge. */
+.world{position:absolute;inset:-12%;background-size:cover;background-position:center;animation:drift 38s ease-in-out infinite alternate}
+.tint{position:absolute;inset:0;background:radial-gradient(circle at 38% 32%,rgba(var(--tint),.08) 0,rgba(var(--tint),.32) 55%,rgba(var(--tint),.62) 100%);mix-blend-mode:soft-light}
+/* Depth: shade toward the lower right, light caught on the far inner edge (glass refraction). */
+.depth{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 72% 80%,rgba(var(--tint),.55) 0,rgba(var(--tint),0) 30%),
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,0) 26%,rgba(2,8,14,.32) 60%,rgba(2,6,12,.82) 100%)}
+/* Gloss: one bright reflection, a soft window light, and a fine rim catching the light on the upper left. */
+.gloss{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(ellipse 24% 15% at 33% 22%,rgba(255,255,255,.9) 0,rgba(255,255,255,.35) 45%,rgba(255,255,255,0) 100%),
+    radial-gradient(ellipse 46% 32% at 40% 30%,rgba(255,255,255,.16) 0,rgba(255,255,255,0) 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset calc(var(--d)*.03) calc(var(--d)*.04) calc(var(--d)*.06) rgba(255,255,255,.28),inset 0 0 calc(var(--d)*.12) rgba(var(--tint),.5)}
+.planet[data-still="true"] .world{animation:none}
+@keyframes drift{from{transform:translate(-4%,-2%)}to{transform:translate(4%,2%)}}
+@media(prefers-reduced-motion:reduce){.world{animation:none}}

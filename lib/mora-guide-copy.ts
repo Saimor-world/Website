@@ -40,34 +40,32 @@ export const GUIDE = {
 
 export type UniverseStop = { id: string; title: string; sub: string; text: string; moons?: string[]; action?: { label: string; href: string } };
 
-/** Deep View planets: the labels the homepage already uses for SAIMÔR's parts. */
+/** Deep View: three sentences for the film, then the lights above the forest (SAIMÔR's parts, as on the homepage). */
 export const UNIVERSE = {
   de: {
     title: 'Das SAIMÔR-Universe', back: 'Zurück', pause: 'Bewegung pausieren', status: 'PRODUKTVORSCHAU · KEINE LIVE-DATEN',
-    welcome: 'Willkommen an Bord. Jeder Planet ist ein Teil deiner Arbeit. Tippe einen an, ich fliege mit.',
-    start: 'Los geht’s', explore: 'Selbst erkunden', next: 'Weiter', overview: 'Zur Übersicht', again: 'Noch einmal',
-    end: 'Das war die Runde. Im OS sehe ich deinen echten Stand, nicht nur eine Vorschau.',
+    film: ['Deine Arbeit ist kein Stapel. Sie ist eine lebendige Welt.', 'MÔRA kennt sie und hält sie zusammen.', 'Du siehst klar. Du entscheidest.'],
+    skip: 'Überspringen', hint: 'Tippe ein Licht an, es geht sofort auf', next: 'Weiter', overview: 'Zur Übersicht', again: 'Noch einmal',
     endAction: { label: 'MÔRA im OS entdecken', href: '/mora#im-os' },
     stops: [
-      { id: 'os', title: 'SAIMÔR OS', sub: 'ein Ort · alles im Kontext', text: 'Hier kommt alles zusammen: Dateien, Arbeit und ich. Eigene Daten kommen nur über Quellen, die du verbindest.' },
-      { id: 'files', title: 'DATEIEN', sub: 'im Zusammenhang', text: 'Dateien bleiben bei dem, wozu sie gehören, statt in Ordnern zu verschwinden.' },
-      { id: 'work', title: 'ARBEIT', sub: 'Kalender · Inbox · Board', moons: ['KALENDER', 'INBOX', 'BOARD'], text: 'Termin, Mail und Aufgabe liegen nebeneinander. Was zusammengehört, wird sichtbar.' },
-      { id: 'agents', title: 'AGENTS', sub: 'im Hintergrund', text: 'Manches läuft im Hintergrund. Was wirklich passiert, entscheidest du: Aktionen brauchen deine Freigabe.' },
-      { id: 'security', title: 'SECURITY', sub: 'Check', text: 'Fang mit etwas Echtem an: deine Domain, ein Security Report, das erste Objekt im OS.', action: { label: 'Security Check', href: '/de/einstieg/security-check' } },
+      { id: 'os', title: 'SAIMÔR OS', sub: 'Erde · alles im Kontext', text: 'Hier kommt alles zusammen: Dateien, Arbeit und ich. Eigene Daten kommen nur über Quellen, die du verbindest.' },
+      { id: 'files', title: 'DATEIEN', sub: 'Wald · gewachsen', text: 'Dateien bleiben bei dem, wozu sie gehören, statt in Ordnern zu verschwinden.' },
+      { id: 'work', title: 'ARBEIT', sub: 'Wasser · fließt', moons: ['KALENDER', 'INBOX', 'BOARD'], text: 'Termin, Mail und Aufgabe liegen nebeneinander. Was zusammengehört, wird sichtbar.' },
+      { id: 'agents', title: 'AGENTS', sub: 'Licht · im Hintergrund', text: 'Manches läuft im Hintergrund. Was wirklich passiert, entscheidest du: Aktionen brauchen deine Freigabe.' },
+      { id: 'security', title: 'SECURITY', sub: 'Stein · Check', text: 'Fang mit etwas Echtem an: deine Domain, ein Security Report, das erste Objekt im OS.', action: { label: 'Security Check', href: '/de/einstieg/security-check' } },
     ] as UniverseStop[],
   },
   en: {
     title: 'The SAIMÔR universe', back: 'Back', pause: 'Pause motion', status: 'PRODUCT PREVIEW · NO LIVE DATA',
-    welcome: 'Welcome aboard. Every planet is a part of your work. Tap one and I’ll fly along.',
-    start: 'Let’s go', explore: 'Explore myself', next: 'Next', overview: 'Overview', again: 'Experience again',
-    end: 'That’s the tour. In the OS I see your real state, not just a preview.',
+    film: ['Your work is not a pile. It is a living world.', 'MÔRA knows it and holds it together.', 'You see clearly. You decide.'],
+    skip: 'Skip', hint: 'Tap a light, it opens right away', next: 'Next', overview: 'Overview', again: 'Experience again',
     endAction: { label: 'Discover MÔRA in the OS', href: '/en/mora#im-os' },
     stops: [
-      { id: 'os', title: 'SAIMÔR OS', sub: 'one place · all in context', text: 'Everything comes together here: files, work and me. Your own data only comes through sources you connect.' },
-      { id: 'files', title: 'FILES', sub: 'in context', text: 'Files stay with what they belong to instead of disappearing into folders.' },
-      { id: 'work', title: 'WORK', sub: 'Calendar · Inbox · Board', moons: ['CALENDAR', 'INBOX', 'BOARD'], text: 'Meeting, mail and task sit side by side. What belongs together becomes visible.' },
-      { id: 'agents', title: 'AGENTS', sub: 'in the background', text: 'Some things run in the background. What really happens is your call: actions need your approval.' },
-      { id: 'security', title: 'SECURITY', sub: 'Check', text: 'Start with something real: your domain, a security report, the first object in the OS.', action: { label: 'Security Check', href: '/en/entry/security-check' } },
+      { id: 'os', title: 'SAIMÔR OS', sub: 'Earth · all in context', text: 'Everything comes together here: files, work and me. Your own data only comes through sources you connect.' },
+      { id: 'files', title: 'FILES', sub: 'Forest · grown', text: 'Files stay with what they belong to instead of disappearing into folders.' },
+      { id: 'work', title: 'WORK', sub: 'Water · flowing', moons: ['CALENDAR', 'INBOX', 'BOARD'], text: 'Meeting, mail and task sit side by side. What belongs together becomes visible.' },
+      { id: 'agents', title: 'AGENTS', sub: 'Light · in the background', text: 'Some things run in the background. What really happens is your call: actions need your approval.' },
+      { id: 'security', title: 'SECURITY', sub: 'Stone · Check', text: 'Start with something real: your domain, a security report, the first object in the OS.', action: { label: 'Security Check', href: '/en/entry/security-check' } },
     ] as UniverseStop[],
   },
 } as const;

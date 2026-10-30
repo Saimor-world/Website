@@ -1,70 +1,119 @@
-/* Deep View: the SAIMÔR universe in the OS pixel look. Only transform/opacity move; masks and filters stay static.
-   Pause and reduced motion freeze the ambient motion and land every transition on its end state at once. */
-.world{position:relative;isolation:isolate;display:flex;flex-direction:column;min-height:100svh;overflow:clip;color:#f3ecd6;background:#05080c}
-.world>*:not(:first-child){position:relative;z-index:1}
-
-.topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;min-height:76px;padding:env(safe-area-inset-top) clamp(18px,4vw,56px) 0}
-.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:#e4ead8;justify-self:start}
-.title{margin:0;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#efe6c4;text-align:center;outline:none}
-.controls{display:flex;justify-self:end;align-items:center}
-.language,.motion{display:grid;place-items:center;min-width:44px;min-height:44px;color:#e7ecd8;font:500 13px ui-monospace,monospace;background:transparent;border:0;cursor:pointer}
-.motion[aria-pressed="true"]{color:#f0dfb6}
+/* Deep View: one world where forest, water and stars merge. A short film in three steps, then the lights.
+   Only transform and opacity move; tints, masks and blur are static paint. Pause and reduced motion freeze it. */
+.world{position:relative;isolation:isolate;height:100svh;min-height:540px;overflow:hidden;color:#f1ead6;background:#04070a}
 .world a:focus-visible,.world button:focus-visible{outline:2px solid #e6c98d;outline-offset:3px}
 
-.stage{position:relative;flex:1;width:100%;max-width:1100px;margin:0 auto;min-height:clamp(340px,56svh,640px)}
-.map{position:absolute;inset:0;transform-origin:var(--fx,50%) var(--fy,50%);transition:transform .7s cubic-bezier(.5,0,.2,1),opacity .5s}
-.world[data-mode="focus"] .map{transform:scale(2.6);opacity:0;pointer-events:none}
-.orbits{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.orbits ellipse{fill:none;stroke:#d9c48f30;stroke-width:1;stroke-dasharray:3 5;vector-effect:non-scaling-stroke}
+/* The scene: the website's forest stream, graded into night; stars in the canopy and in the water. */
+.scene{position:absolute;inset:0;z-index:0}
+.forest{object-fit:cover;object-position:60% 50%}
+@media(min-aspect-ratio:1/1){.forest{object-position:50% 50%}}
+.tint{position:absolute;inset:0;background:rgba(52,74,120,.6);mix-blend-mode:multiply}
+.night{position:absolute;inset:0;background:#030812;opacity:.3;transition:opacity 3s ease}
+.world[data-step="2"] .night{opacity:.38}
+.world[data-step="3"] .night{opacity:.45}
+.moon{position:absolute;inset:0;background:radial-gradient(circle at 74% 14%,rgba(150,190,230,.26),rgba(150,190,230,0) 55%);mix-blend-mode:screen}
+.stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.twinkle{animation:twinkle 3.4s ease-in-out infinite alternate}
+/* Middle: stardust lifts off the water toward the lights. */
+.dust{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffe6b0;box-shadow:0 0 6px 2px rgba(255,220,150,.55);animation:rise 5s linear infinite both}
 
-/* A planet is a 64 px touch target centred on its map point; the canvas, moons and label hang off its centre. */
-.body{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;color:inherit}
-.body>canvas{left:50%;top:50%}
-.body:hover .label,.body:focus-visible .label{color:#fff3cf}
-.label{position:absolute;left:50%;transform:translateX(-50%);font:600 10px/1.25 ui-monospace,monospace;letter-spacing:.12em;color:#efe3bd;text-align:center;white-space:nowrap;text-shadow:0 1px 0 #000;pointer-events:none}
-.label small{display:block;font-weight:400;letter-spacing:.03em;color:#b9c7b8;font-size:10px;margin-top:2px}
-.miniOrbit{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a));animation:orbit var(--t) steps(60) infinite}
-.miniMoon{left:var(--r);top:0}
+/* Reflections in the stream: the same glass planet upside down, squeezed, softly blurred and broken into ripples. */
+.reflection{position:absolute;width:0;height:0;opacity:0;transform:scaleY(-.72);filter:blur(1.2px);transition:opacity 2.6s ease}
+.shine{position:absolute;left:calc(var(--d)*-1.1);top:calc(var(--d)*-.9);width:calc(var(--d)*2.2);height:calc(var(--d)*1.8);border-radius:50%;
+  background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(var(--tint),.5) 0,rgba(var(--tint),.18) 45%,rgba(var(--tint),0) 72%)}
+.reflection .float>span{margin:calc(var(--d)*-.5) 0 0 calc(var(--d)*-.5);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 70%,transparent 100%),repeating-linear-gradient(180deg,#000 0,rgba(0,0,0,.5) 3px,#000 6px),linear-gradient(180deg,rgba(0,0,0,.55),#000);
+  mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 70%,transparent 100%),repeating-linear-gradient(180deg,#000 0,rgba(0,0,0,.5) 3px,#000 6px),linear-gradient(180deg,rgba(0,0,0,.55),#000);
+  -webkit-mask-composite:source-in,source-in;mask-composite:intersect,intersect}
+.reflection .float{animation-direction:alternate-reverse}
+.world[data-step="2"] .reflection{opacity:.5}
+.world[data-step="3"] .reflection{opacity:1}
+.world[data-focus="true"] .reflection{opacity:.25}
 
-.focus{position:absolute;inset:0;transform-origin:var(--fx,50%) var(--fy,50%);animation:arrive .7s cubic-bezier(.2,.7,.2,1) both}
-.focusPlanet{position:absolute;left:50%;top:48%}
-.focusMoon{position:absolute;animation:bob 4s steps(4) infinite alternate}
-.focusMoon[data-moon="0"]{left:18%;top:20%}
-.focusMoon[data-moon="1"]{left:82%;top:17%;animation-delay:-1.3s}
-.focusMoon[data-moon="2"]{left:78%;top:82%;animation-delay:-2.6s}
-.focusTitle{position:absolute;left:0;right:0;top:3%;margin:0;text-align:center;font:600 12px/1.3 ui-monospace,monospace;letter-spacing:.16em;color:#efe3bd}
-.focusTitle small{display:block;font-weight:400;letter-spacing:.04em;color:#b9c7b8;margin-top:3px}
+/* Top bar: back, title, language, skip, pause; the film's progress below. */
+.topbar{position:absolute;left:0;right:0;top:0;z-index:6;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;
+  padding:env(safe-area-inset-top) clamp(16px,4vw,48px) 0;min-height:64px;background:linear-gradient(180deg,rgba(3,8,14,.55),rgba(3,8,14,0))}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:#e4ead8;justify-self:start}
+.title{margin:0;font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#efe6c4;text-align:center;outline:none}
+.controls{display:flex;justify-self:end;align-items:center;gap:6px}
+.language,.motion{display:grid;place-items:center;min-width:44px;min-height:44px;color:#e7ecd8;font:500 13px ui-monospace,monospace;background:transparent;border:0;cursor:pointer}
+.motion[aria-pressed="true"]{color:#f0dfb6}
+.skip{position:absolute;z-index:6;right:clamp(16px,4vw,48px);bottom:max(10px,env(safe-area-inset-bottom));min-height:40px;padding:0 15px;border-radius:999px;border:1px solid rgba(230,234,216,.38);background:rgba(3,8,14,.3);color:#e9ecdc;font:600 11px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.progress{grid-column:1/-1;display:flex;gap:6px;padding:4px 0 0}
+.progress i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.16);overflow:hidden}
+.progress b{display:block;height:100%;background:#e6c98d;transform-origin:left;transform:scaleX(0)}
+.progress b[data-state="done"]{transform:none}
+.progress b[data-state="active"]{animation:fill linear forwards}
+.world[data-still="true"] .progress b{animation-play-state:paused}
 
-/* MÔRA and her speech bubble: welcome and overview on the left, focus on the right (she looks at the planet). */
-.guide{display:flex;align-items:flex-end;gap:12px;width:100%;max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,56px) 10px}
-.world[data-mode="focus"] .guide{flex-direction:row-reverse}
-.mora{flex:none;animation:enter .8s steps(8) both}
-.flight[data-flying="true"]{animation:swoop .9s steps(9)}
-.bubble{position:relative;flex:1 1 auto;max-width:360px;min-width:0;padding:12px 14px;background:#0c1a15;color:#f3ecd6;font:500 14px/1.45 system-ui,sans-serif;
+/* The stage holds the lights, MÔRA, the sentences and an opened light; its size is the unit for their paths. */
+.stage{position:absolute;inset:0;z-index:2;container-type:size}
+.light{position:absolute;width:var(--d);height:var(--d);margin:calc(var(--d)*-.5) 0 0 calc(var(--d)*-.5);padding:0;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;
+  opacity:0;transform:translateY(var(--rise)) scale(.2);transition:transform 2.8s cubic-bezier(.3,.6,.2,1),opacity 1.8s ease;pointer-events:none}
+.light::before{content:"";position:absolute;inset:-12px;border-radius:50%}
+.world[data-step="2"] .light{opacity:.85;transform:translateY(calc(var(--rise)*.4)) scale(.55)}
+.world[data-step="3"] .light{opacity:1;transform:none;pointer-events:auto}
+.world[data-focus="true"] .light{opacity:0;pointer-events:none;transition-duration:.35s}
+.float{display:block;animation:bob 6s ease-in-out infinite alternate}
+.label{position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 1s ease .9s;
+  font:600 10px/1.25 ui-monospace,monospace;letter-spacing:.14em;color:#f4e8c4;text-shadow:0 1px 6px #000;text-align:center}
+.label small{display:block;margin-top:2px;font-weight:500;letter-spacing:.04em;color:#c9d6c5}
+.world[data-step="3"] .label{opacity:1}
+.light:hover .label,.light:focus-visible .label{color:#fff6da}
+
+/* MÔRA travels between her spots by transform only. */
+.mora{position:absolute;left:0;top:0;z-index:5;line-height:0;transform:translate(calc(var(--mx)*100cqw - 50%),calc(var(--my)*100cqh - 50%));transition:transform 2.6s cubic-bezier(.4,0,.2,1)}
+.mora::before{content:"";position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(circle,rgba(246,190,80,.22),rgba(246,190,80,0) 65%);pointer-events:none}
+
+/* The three sentences. */
+.message{position:absolute;left:24px;right:24px;top:70%;z-index:4;text-align:center;animation:appear 1.2s ease both}
+.world[data-step="1"] .message{top:22%}
+.message p{margin:0 auto;max-width:15em;font:400 31px/1.12 "Cormorant Garamond",Georgia,serif;letter-spacing:-.01em;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.8)}
+.message small{display:block;margin-top:12px;font:600 10.5px/1.4 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#e6c98d}
+.endActions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
+.cta,.again{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px;border-radius:999px;font:600 13px/1 system-ui,sans-serif;cursor:pointer}
+.cta{background:#efe3bf;color:#13241b;border:0}
+.again{background:transparent;color:#efe3bf;border:1px solid rgba(239,227,191,.45)}
+
+/* An opened light: it comes forward fast from where it hung, MÔRA explains in her bubble. */
+.focus{position:absolute;inset:0;z-index:4;transform-origin:var(--fx,50%) var(--fy,40%);background:radial-gradient(circle at 50% 36%,rgba(3,8,14,.2),rgba(3,8,14,.62) 70%);animation:arrive .45s cubic-bezier(.2,.7,.2,1) both}
+.focusPlanet{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%)}
+.focusMoon{position:absolute;transform:translate(-50%,-50%);text-align:center}
+.focusMoon[data-moon="0"]{left:17%;top:26%}
+.focusMoon[data-moon="1"]{left:83%;top:24%}
+.focusMoon[data-moon="2"]{left:80%;top:52%}
+.moonLabel{display:block;margin-top:8px;font:600 10px/1 ui-monospace,monospace;letter-spacing:.14em;color:#f4e8c4;text-shadow:0 1px 6px #000}
+.focusTitle{position:absolute;left:0;right:0;top:12%;margin:0;text-align:center;font:600 12px/1.3 ui-monospace,monospace;letter-spacing:.16em;color:#efe3bd}
+.focusTitle small{display:block;margin-top:3px;font-weight:400;letter-spacing:.04em;color:#b9c7b8}
+.bubble{position:absolute;z-index:5;left:128px;right:16px;bottom:62px;padding:12px 14px;background:#0c1a15;color:#f3ecd6;font:500 14px/1.45 system-ui,sans-serif;
   border:2px solid #d9b24c;box-shadow:4px 4px 0 #050c09;animation:pop .32s steps(4) both;
   clip-path:polygon(0 4px,4px 4px,4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px))}
 .bubble p{margin:0}
-.hint{color:#d6dcc9}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
 .primary,.ghost{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:0;cursor:pointer;font:600 12px/1 ui-monospace,monospace;letter-spacing:.03em}
 .primary{background:#d9b24c;color:#10241b}
 .ghost{background:transparent;color:#e8d9a8;box-shadow:inset 0 0 0 2px #d9b24c66}
 
-.footer{display:flex;justify-content:flex-start;min-height:52px;align-items:center;padding:0 clamp(18px,4vw,56px) max(12px,env(safe-area-inset-bottom));font:500 11px/1.6 ui-monospace,monospace;letter-spacing:.06em;color:#cfd6c0}
+.footer{position:absolute;left:clamp(16px,4vw,48px);bottom:max(14px,env(safe-area-inset-bottom));z-index:3;font:500 10px/1.4 ui-monospace,monospace;letter-spacing:.08em;color:rgba(207,214,192,.72)}
 
-.world[data-still="true"] .miniOrbit,.world[data-still="true"] .focusMoon{animation-play-state:paused}
-.world[data-still="true"] .focus,.world[data-still="true"] .bubble,.world[data-still="true"] .mora,.world[data-still="true"] .flight{animation:none}
-.world[data-still="true"] .map{transition:none}
+.world[data-still="true"] .float,.world[data-still="true"] .twinkle,.world[data-still="true"] .dust{animation-play-state:paused}
 
-@keyframes orbit{to{rotate:360deg}}
-@keyframes bob{to{transform:translateY(-6px)}}
-@keyframes arrive{from{opacity:0;transform:scale(.35)}}
+@keyframes twinkle{from{opacity:.35}to{opacity:1}}
+@keyframes rise{0%{opacity:0;transform:translateY(0)}15%{opacity:1}100%{opacity:0;transform:translateY(-34vh)}}
+@keyframes bob{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
+@keyframes fill{to{transform:scaleX(1)}}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}}
+@keyframes arrive{from{opacity:0;transform:scale(.6)}}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}}
-@keyframes enter{from{opacity:0;transform:translate(-48px,24px)}}
-@keyframes swoop{0%{transform:translateY(0)}40%{transform:translate(10px,-14px)}100%{transform:translateY(0)}}
 
-@media(min-width:900px){.title{font-size:12px}.label{font-size:11px}.bubble{font-size:15px;max-width:420px}.stage{min-height:min(64svh,680px)}}
+@media(min-width:900px){
+  .title{font-size:12px}.label{font-size:11px}
+  .message{top:72%}
+  .world[data-step="1"] .message{top:24%}
+  .message p{font-size:44px}
+  .bubble{left:36%;right:auto;max-width:440px;bottom:88px;font-size:15px}
+}
 /* Phone: the site-wide sound button sits top centre, so the title takes its own line below the bar. */
-@media(max-width:700px){.topbar{grid-template-columns:1fr auto;row-gap:0}.title{grid-column:1/-1;grid-row:2;padding:12px 0 4px}}
-@media(max-width:420px){.back{font-size:12px}.title{letter-spacing:.1em}.bubble{font-size:13.5px}}
-@media(prefers-reduced-motion:reduce){.world *{animation:none!important;transition:none!important}}
+@media(max-width:700px){.topbar{grid-template-columns:1fr auto}.title{grid-column:1/-1;grid-row:2;padding:6px 0 0}}
+@media(max-width:380px){.message p{font-size:27px}.skip{padding:0 10px}}
+@media(prefers-reduced-motion:reduce){.world *,.world *::before{animation:none!important;transition:none!important}}

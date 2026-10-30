@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CalendarDays, CircleCheck, FileText, Pause, Play } from 'lucide-react';
+import { ArrowRight, Pause, Play } from 'lucide-react';
 import type { MoraMood } from './MoraCharacter';
+import PixelMora from './pixel/PixelMora';
+import { BiomePlanet, type Biome } from './pixel/PixelWorld';
 import styles from './MoraProductPage.module.css';
 
 type Props = { locale: 'de' | 'en' };
@@ -34,9 +36,9 @@ const COPY = {
     exampleTitle: 'Drei Signale. Eine Arbeitslage.',
     exampleBody: 'Ein Dokument wurde geändert. Ein Termin rückt näher. Eine Freigabe fehlt. Statt drei Apps und einen Chat neu zusammenzusetzen, bleibt daraus eine gemeinsame Lage.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'Die Welt durch MÔRAs Augen.',
-    deepText: 'Vom Nebel in eine Lichtung. Begegne MÔRA, sieh durch ihre Augen und entdecke, wie aus vorhandenem Kontext Orientierung für die Arbeit werden kann.',
-    deepCta: 'MÔRA begegnen',
+    deepTitle: 'Vom Wald ins SAIMÔR-Universe.',
+    deepText: 'Mit MÔRA vom Wasser im Wald durch das Licht nach oben. Jeder Planet trägt ein Stück unserer Welt und zeigt einen Teil von SAIMÔR.',
+    deepCta: 'Mitkommen',
   },
   en: {
     file: 'Files',
@@ -63,21 +65,28 @@ const COPY = {
     exampleTitle: 'Three signals. One working state.',
     exampleBody: 'A document changed. A meeting is getting closer. An approval is missing. Instead of rebuilding the situation across three apps and a chat, it stays one coherent state.',
     deepEyebrow: 'DEEP VIEW',
-    deepTitle: 'The world through MÔRA’s eyes.',
-    deepText: 'From mist into a clearing. Meet MÔRA, see through her eyes and discover how existing context can become orientation for your work.',
-    deepCta: 'Meet MÔRA',
+    deepTitle: 'From the forest into the SAIMÔR universe.',
+    deepText: 'With MÔRA from the water in the forest up through the light. Every planet carries a piece of our world and shows a part of SAIMÔR.',
+    deepCta: 'Come along',
   },
 };
+
+/** The three signals as small nature planets, the same as in the hero and the Deep View. */
+const NODES: Biome[] = ['forest', 'water', 'light'];
 
 export default function MoraProductPage({ locale }: Props) {
   const c = COPY[locale];
   const [context, setContext] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
     const visibility = () => setHidden(document.hidden);
-    visibility(); document.addEventListener('visibilitychange', visibility);
-    return () => document.removeEventListener('visibilitychange', visibility);
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const motion = () => setReduced(Boolean(media?.matches));
+    visibility(); motion();
+    document.addEventListener('visibilitychange', visibility); media?.addEventListener?.('change', motion);
+    return () => { document.removeEventListener('visibilitychange', visibility); media?.removeEventListener?.('change', motion); };
   }, []);
   const still = paused || hidden;
   const deepHref = `${locale === 'de' ? '/mora/deep-view' : '/en/mora/deep-view'}?from=mora`;
@@ -95,12 +104,15 @@ export default function MoraProductPage({ locale }: Props) {
           <div className={styles.contextBlock}>
             <div className={styles.contextMap} role="group" aria-label={c.contextHint}>
               <div className={styles.orbit} aria-hidden="true" />
-              <div className={styles.characterStage} aria-hidden="true"><span className={styles.core} /></div>
-              <ContextNode active={context === 0} onClick={() => { setContext(0); }} className={styles.files} icon={<FileText size={15} />} label={c.file} />
-              <ContextNode active={context === 1} onClick={() => { setContext(1); }} className={styles.calendar} icon={<CalendarDays size={15} />} label={c.calendar} />
-              <ContextNode active={context === 2} onClick={() => { setContext(2); }} className={styles.openWork} icon={<CircleCheck size={15} />} label={c.open} />
+              {/* MÔRA between the three signals, looking at the one you chose. */}
+              <div className={styles.characterStage} aria-hidden="true">
+                <PixelMora scale={3} mood="talk" look={context === 0 ? -1 : 1} still={still || reduced} />
+              </div>
+              {[c.file, c.calendar, c.open].map((label, i) => <ContextNode key={label} active={context === i} onClick={() => setContext(i)}
+                className={[styles.files, styles.calendar, styles.openWork][i]} label={label}
+                icon={<span className={styles.planetDot}><BiomePlanet biome={NODES[i]} diameter={12} px={2} still={still || reduced} /></span>} />)}
             </div>
-            <div className={styles.contextReadout} aria-live="polite" data-testid="mora-context-preview">
+            <div className={`${styles.contextReadout} ${styles.bubble}`} aria-live="polite" data-testid="mora-context-preview">
               <span>{c.sample}</span>
               <h3>{c.contexts[context][0]}</h3>
               <p>{c.contexts[context][1]}</p>
@@ -117,6 +129,7 @@ export default function MoraProductPage({ locale }: Props) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_45%,rgba(104,190,155,.12),transparent_26%)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-3xl text-center [&_p]:mx-auto">
           <div>
+            <div className={styles.deepMora} aria-hidden="true"><PixelMora scale={3} outfit="captain" mood="fly" still={still || reduced} /></div>
             <p className="font-mono text-[12px] font-semibold tracking-[.2em] text-[#e0bd67]/85">{c.deepEyebrow}</p>
             <h2 className="mt-5 font-serif text-5xl font-light leading-[.92] tracking-[-.045em] sm:text-7xl">{c.deepTitle}</h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#dce9e0]/80 sm:text-base">{c.deepText}</p>
