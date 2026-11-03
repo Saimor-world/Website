@@ -23,7 +23,7 @@ const COPY = {
     regionsText: 'Live aus earth.saimor.world. Jede Aussage ist markiert als belegt, eingeschätzt oder geplant.',
     places: 'Orte',
     open: 'In Earth öffnen',
-    seedTitle: 'Der Funke hört zu.',
+    seedTitle: 'Der Funke',
     seedText: 'Earth hat eine eigene Intelligenz: den Funken. Er wandert durch das Wurzelnetz, verbindet Erinnerungen mit Orten und zeigt, woher jedes Wissen stammt.',
     stories: [
       { type: 'Erinnerung', title: 'Der alte Leuchtturm', text: 'Eine Familie erzählt, wie der Leuchtturm über Generationen zum Treffpunkt wurde.', icon: History },
@@ -53,7 +53,7 @@ const COPY = {
     regionsText: 'Live from earth.saimor.world. Every statement is marked as evidenced, estimated or planned.',
     places: 'places',
     open: 'Open in Earth',
-    seedTitle: 'The Spark is listening.',
+    seedTitle: 'The Spark',
     seedText: 'Earth has its own intelligence: the Spark. It travels through the root network, connects memories to places and shows where every piece of knowledge comes from.',
     stories: [
       { type: 'Memory', title: 'The old lighthouse', text: 'A family tells how the lighthouse became a meeting point across generations.', icon: History },

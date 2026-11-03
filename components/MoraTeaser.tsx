@@ -53,9 +53,8 @@ export default function MoraTeaser({ locale }: Props) {
             </div>
 
             <div className="space-y-4">
-              <p className="font-mono text-[12px] font-bold tracking-[.42em] text-[var(--world-gold)]">MÔRA</p>
               <h2 className="text-5xl font-light leading-none sm:text-7xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                {t('Sie hört zu.', 'She listens.')}
+                MÔRA
               </h2>
               <p className="text-sm uppercase tracking-[0.2em] text-[var(--world-mora-mist)]/72">
                 {t('Die Intelligenz im Saimôr Betriebssystem', 'The intelligence inside the Saimôr operating system')}

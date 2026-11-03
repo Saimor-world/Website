@@ -72,7 +72,6 @@ export default function MoraPageClient() {
             </div>
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter leading-[0.95]" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              <span className="block opacity-90">Sie hört zu.</span>
               <span className="block italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500">
                 Sie erinnert sich.
               </span>
@@ -261,7 +260,6 @@ export default function MoraPageClient() {
               >
                 <h3 className="text-2xl font-light mb-4 text-purple-300" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Embodied Agent</h3>
                 <p className="text-sm text-white/40 leading-relaxed">
-                  Sie ist kein Chatbot. Sie ist ein <span className="text-white/60">lebendiger Teil deines Workflows</span>.
                   Sie beobachtet, antizipiert und handelt proaktiv.
                 </p>
               </motion.div>
