@@ -1,0 +1,410 @@
+/* SAIMÔR – Website mit Raumgefühl (Ruhe-V1) */
+
+:root {
+  --bg-deep: #080d0b;
+  --bg-surface: #0f1613;
+  --text-primary: #edf3ef;
+  --text-secondary: #9db2a4;
+  --text-muted: #6b8072;
+  --accent-stone: #5d7c54;
+  --border-quiet: rgba(141, 164, 148, 0.18);
+}
+
+.ruhe-container {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ========================================================= */
+/* 1. ABSCHNITT: ANKUNFT (100vh)                            */
+/* ========================================================= */
+.section-arrival {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.arrival-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.arrival-mist-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(8, 13, 11, 0.1) 0%, rgba(8, 13, 11, 0.6) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* MÔRA Flug: Ruhiger, eleganter Einflug, danach still */
+.mora-flight-track {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.mora-flight-actor {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: moraGlideIn 6.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+}
+
+.mora-jade-actor {
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes moraGlideIn {
+  0% {
+    opacity: 0;
+    transform: translate(-180%, -90%) scale(0.7) rotate(-8deg);
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-45%, -45%) scale(1.03) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mora-flight-actor {
+    animation: none;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.arrival-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-top: 180px;
+}
+
+.arrival-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  color: #f7faf8;
+  margin: 0;
+  line-height: 1.1;
+  text-indent: 0.35em; /* Optischer Ausgleich für Tracking */
+}
+
+.arrival-claim {
+  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  font-weight: 300;
+}
+
+.arrival-scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0.4;
+}
+
+.scroll-line {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--text-secondary) 0%, transparent 100%);
+}
+
+/* ========================================================= */
+/* ALLGEMEINE ABSCHNITTE                                    */
+/* ========================================================= */
+.ruhe-section {
+  position: relative;
+  padding: 6rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.section-inner {
+  width: 100%;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 1.25rem;
+}
+
+.section-paragraph {
+  font-size: 1.125rem; /* 18px Fließtext für hervorragende Lesbarkeit */
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 580px;
+}
+
+.ruhe-text-link {
+  display: inline-block;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid var(--border-quiet);
+  padding-bottom: 0.2rem;
+  transition: all 0.2s ease;
+}
+
+.ruhe-text-link:hover {
+  border-color: var(--text-primary);
+  color: #ffffff;
+}
+
+.section-img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  /* Keine Farbschleier/Filter */
+}
+
+/* ========================================================= */
+/* 2. ABSCHNITT: STUDIO                                     */
+/* ========================================================= */
+.section-studio {
+  background-color: var(--bg-deep);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.studio-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.studio-image-frame {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ========================================================= */
+/* 3. ABSCHNITT: SAIMÔR OS                                  */
+/* ========================================================= */
+.section-os {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.os-text-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.os-lead {
+  max-width: 650px;
+}
+
+.os-image-frame {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-quiet);
+}
+
+/* ========================================================= */
+/* 4. ABSCHNITT: YORI & ORIGIN                              */
+/* ========================================================= */
+.section-creations {
+  background-color: var(--bg-deep);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.creations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+}
+
+.creation-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.creation-media {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background-color: #0b110f;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.origin-interactive {
+  cursor: pointer;
+}
+
+.origin-interactive:hover {
+  transform: scale(1.02);
+}
+
+.origin-interactive.is-zoomed {
+  transform: scale(1.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85);
+  z-index: 20;
+}
+
+.origin-zoom-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.creation-title {
+  font-size: 1.85rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+/* ========================================================= */
+/* 5. ABSCHNITT: KONTAKT + FUSSBEREICH                      */
+/* ========================================================= */
+.section-contact {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-quiet);
+  padding-bottom: 3rem;
+}
+
+.contact-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.contact-sub {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.contact-email {
+  display: inline-block;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-quiet);
+  padding-bottom: 0.35rem;
+  transition: border-color 0.2s ease;
+}
+
+.contact-email:hover {
+  border-color: var(--text-primary);
+}
+
+.ruhe-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-quiet);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-brand {
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legal-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.legal-link:hover {
+  color: var(--text-secondary);
+}
+
+.legal-sep {
+  opacity: 0.4;
+}
+
+/* ========================================================= */
+/* RESPONSIVE (MOBILE)                                      */
+/* ========================================================= */
+@media (max-width: 860px) {
+  .ruhe-section {
+    padding: 4.5rem 1.25rem;
+  }
+  
+  .studio-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .creations-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .ruhe-footer-bar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

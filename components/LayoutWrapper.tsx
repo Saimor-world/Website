@@ -21,7 +21,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // (~1024px) and pulls the operator out of the room — same rationale as YORI.
   const isOwnerSurface = Boolean(pathname?.startsWith('/owner'));
   const isEncounter = pathname === '/mora/deep-view' || pathname === '/en/mora/deep-view';
-  const isImmersive = isYori || isClientWorld || isOwnerSurface || isEncounter;
+  const isHomeRoom = pathname === '/' || pathname === '/de' || pathname === '/en';
+  const isImmersive = isYori || isClientWorld || isOwnerSurface || isEncounter || isHomeRoom;
 
   useEffect(() => {
     if (isClientWorld || isOwnerSurface) return;
