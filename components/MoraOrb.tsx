@@ -14,7 +14,7 @@ import type { CSSProperties } from 'react';
  *   dream  - a slow jade breath, light wanders across the stone
  *   speak  - brighter pulse, a gold ring ripples outwards
  */
-export type MoraOrbState = 'rest' | 'dream' | 'speak';
+export type MoraOrbState = 'rest' | 'greet' | 'listen' | 'think' | 'work' | 'done' | 'need' | 'dream' | 'speak';
 
 type Props = {
   size?: number;
@@ -57,12 +57,26 @@ export default function MoraOrb({ size = 160, state = 'rest', className = '', la
         .mora-orb .mora-orb-sheen{position:absolute;inset:9%;z-index:2;border-radius:9999px;overflow:hidden;opacity:0;mix-blend-mode:screen;transition:opacity .8s ease;pointer-events:none}
         .mora-orb .mora-orb-sheen::before{content:"";position:absolute;inset:-35%;background:radial-gradient(circle at 34% 30%,rgba(214,255,232,.34),transparent 30%)}
         .mora-orb .mora-orb-ripple{position:absolute;inset:4%;z-index:0;border-radius:9999px;border:1px solid rgba(233,200,120,.55);opacity:0;pointer-events:none}
+        .mora-orb[data-state="greet"] .mora-orb-aura{opacity:.65;animation:moraAura 5s ease-in-out infinite}
+        .mora-orb[data-state="greet"] .mora-orb-sheen{opacity:.55}
+        .mora-orb[data-state="listen"] .mora-orb-aura{opacity:.55;animation:moraAura 7s ease-in-out infinite}
+        .mora-orb[data-state="listen"] .mora-orb-sheen{opacity:.3}
+        .mora-orb[data-state="listen"] .mora-orb-ripple{opacity:.35;animation:moraRipple 3.6s ease-out infinite}
+        .mora-orb[data-state="think"] .mora-orb-aura,
         .mora-orb[data-state="dream"] .mora-orb-aura{opacity:.6;animation:moraAura 6s ease-in-out infinite}
+        .mora-orb[data-state="think"] .mora-orb-sheen,
         .mora-orb[data-state="dream"] .mora-orb-sheen{opacity:.8}
+        .mora-orb[data-state="think"] .mora-orb-sheen::before,
         .mora-orb[data-state="dream"] .mora-orb-sheen::before{animation:moraSheen 14s linear infinite}
+        .mora-orb[data-state="work"] .mora-orb-aura{opacity:.78;animation:moraAura 3.4s ease-in-out infinite}
+        .mora-orb[data-state="work"] .mora-orb-sheen{opacity:.6}
+        .mora-orb[data-state="done"] .mora-orb-aura,
         .mora-orb[data-state="speak"] .mora-orb-aura{opacity:.95;animation:moraAura 2.4s ease-in-out infinite}
+        .mora-orb[data-state="done"] .mora-orb-sheen,
         .mora-orb[data-state="speak"] .mora-orb-sheen{opacity:.45}
+        .mora-orb[data-state="done"] .mora-orb-ripple,
         .mora-orb[data-state="speak"] .mora-orb-ripple{animation:moraRipple 2.4s ease-out infinite}
+        .mora-orb[data-state="need"] .mora-orb-aura{opacity:.85;animation:moraAura 2.8s ease-in-out infinite}
         @keyframes moraAura{0%,100%{transform:scale(.94)}50%{transform:scale(1.06)}}
         @keyframes moraSheen{to{transform:rotate(360deg)}}
         @keyframes moraRipple{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.35)}}

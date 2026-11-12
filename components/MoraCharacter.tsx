@@ -5,8 +5,19 @@ import MoraOrb from './MoraOrb';
 import MoraOsFace from './MoraOsFace';
 import styles from './MoraCharacter.module.css';
 
-export type MoraMood = 'rest' | 'dream' | 'speak' | 'listen';
-const FACE = { rest: 'rest', dream: 'think', speak: 'done', listen: 'listen' } as const;
+export type MoraOsMood = 'greet' | 'rest' | 'listen' | 'think' | 'work' | 'done' | 'need';
+export type MoraMood = MoraOsMood | 'dream' | 'speak';
+const FACE = {
+  greet: 'greet',
+  rest: 'rest',
+  listen: 'listen',
+  think: 'think',
+  work: 'work',
+  done: 'done',
+  need: 'need',
+  dream: 'think',
+  speak: 'done',
+} as const;
 
 /** The original jade artwork and the same A4 light-face used in the OS. */
 export default function MoraCharacter({ size = 240, state = 'rest', paused = false, priority = false, className = '', label = 'MÔRA' }: {
@@ -22,7 +33,7 @@ export default function MoraCharacter({ size = 240, state = 'rest', paused = fal
   }, []);
   return <span ref={root} data-mora-character data-mood={state} data-still={paused || !visible}
     className={`${styles.character} ${className}`} style={{ '--character-size': `${size}px` } as CSSProperties}>
-    <MoraOrb size={size} state={state === 'listen' ? 'dream' : state} className={styles.stone} priority={priority} label={label} />
+    <MoraOrb size={size} state={state} className={styles.stone} priority={priority} label={label} />
     <MoraOsFace size={size} state={FACE[state]} />
   </span>;
 }

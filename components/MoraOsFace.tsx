@@ -19,6 +19,7 @@ const SMILE: Record<FaceState, boolean> = {
 };
 const R = 43;
 const C = 50;
+const FACE_LIFT = .14 * R;
 
 export default function MoraOsFace({ size = 290, state: forced }: { size?: number; state?: FaceState }) {
   const [greeting, setGreeting] = useState(true);
@@ -31,7 +32,7 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
   const arcs = (state === 'greet' || state === 'done') && size >= 64;
   const tiny = size < 64;
   const ex = .34 * R;
-  const ey = C + .16 * R + (state === 'work' ? .05 * R : state === 'think' ? -.03 * R : 0);
+  const ey = C + .16 * R - FACE_LIFT + (state === 'work' ? .05 * R : state === 'think' ? -.03 * R : 0);
   const rx = .165 * R;
   const ry = RY[state] * R;
   const warm = state === 'need' ? '255,219,140' : '204,255,224';
@@ -59,7 +60,7 @@ export default function MoraOsFace({ size = 290, state: forced }: { size?: numbe
       {!arcs && <path className={styles.lid} d={`M ${x - rx * .72} ${ey} Q ${x} ${ey + ry * .22} ${x + rx * .72} ${ey}`} stroke={`rgb(${warm})`} strokeWidth={rx * .15} fill="none" />}
     </g>;
   };
-  const smileY = C + .44 * R - .1 * R;
+  const smileY = C + .44 * R - .1 * R - FACE_LIFT;
   const smile = `M ${C - .11 * R} ${smileY} Q ${C} ${smileY + .13 * R} ${C + .11 * R} ${smileY}`;
 
   return (

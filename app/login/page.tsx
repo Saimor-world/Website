@@ -112,17 +112,19 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#050b09] text-white px-5 py-10 sm:px-8 flex items-center">
+    <main className="min-h-screen bg-[#050b09] text-white px-5 pt-24 pb-12 sm:px-8 sm:pt-28 flex items-center">
       <div className="mx-auto w-full max-w-5xl grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <section className="space-y-7 max-w-xl">
-          <Link href={isEn ? "/en" : "/de"} className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            {L('Zurück zu Saimôr', 'Back to Saimôr')}
-          </Link>
+          <div className="flex flex-col items-start gap-4">
+            <Link href={isEn ? "/en" : "/de"} className="inline-flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors">
+              <ArrowLeft className="w-4 h-4" />
+              {L('Zurück zu Saimôr', 'Back to Saimôr')}
+            </Link>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-emerald-100/60">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            {L('Persönlicher Zugang', 'Personal access')}
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-emerald-100/60">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              {L('Persönlicher Zugang', 'Personal access')}
+            </div>
           </div>
 
           <div className="space-y-4">
