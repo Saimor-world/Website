@@ -1,6 +1,6 @@
 /* SAIMÔR – Website mit Raumgefühl (Ruhe-V1) */
 
-:root {
+.ruhe-container {
   --bg-deep: #080d0b;
   --bg-surface: #0f1613;
   --text-primary: #edf3ef;
@@ -382,6 +382,20 @@
 
 .legal-sep {
   opacity: 0.4;
+}
+
+.ruhe-preview-label { color: var(--text-muted); text-align: center; font-size: .8rem; margin-top: .75rem; }
+.ruhe-entry-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
+.ruhe-container button.creation-media { display: block; width: 100%; padding: 0; border: 0; background: transparent; }
+.ruhe-container :is(a, button):focus-visible { outline: 2px solid #d8f5e8; outline-offset: 5px; }
+.footer-legal { flex-wrap: wrap; justify-content: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ruhe-container *, .ruhe-container *::before, .ruhe-container *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ========================================================= */

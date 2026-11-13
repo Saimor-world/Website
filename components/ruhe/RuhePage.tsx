@@ -11,6 +11,7 @@ interface RuhePageProps {
 
 export default function RuhePage({ locale = 'de' }: RuhePageProps) {
   const [originZoom, setOriginZoom] = useState(false);
+  const L = (de: string, en: string) => locale === 'en' ? en : de;
 
   return (
     <div className="ruhe-container">
@@ -41,7 +42,7 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
         {/* Reiner Titel & Claim: Keine Buttons, kein Textschwall */}
         <div className="arrival-content">
           <h1 className="arrival-title font-serif">SAIMÔR</h1>
-          <p className="arrival-claim">Klarheit im Wandel</p>
+          <p className="arrival-claim">{L('Klarheit im Wandel', 'Clarity through change')}</p>
         </div>
 
         <div className="arrival-scroll-indicator" aria-hidden="true">
@@ -58,7 +59,7 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
             <div className="studio-image-frame">
               <Image unoptimized
                 src="/ruhe/studio-kontor.webp"
-                alt="Studio Kontor Arbeitsplatz"
+                alt={L('Studio Kontor Arbeitsplatz', 'Studio workspace')}
                 width={800}
                 height={500}
                 className="section-img"
@@ -66,11 +67,10 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
             </div>
             <div className="studio-text-block">
               <span className="section-label">STUDIO</span>
-              <h2 className="section-title font-serif">Systeme mit Haltung.</h2>
+              <h2 className="section-title font-serif">{L('Systeme mit Haltung.', 'Systems with purpose.')}</h2>
               <p className="section-paragraph">
-                Wir klären den Zusammenhang deiner Arbeitsumgebung, bevor Software gebaut wird. 
-                Gemeinsam schaffen wir ruhige Systeme, die Daten, Kommunikation und KI nahtlos verbinden 
-                – verlässlich, nachvollziehbar und ohne Medienbrüche.
+                {L('Wir klären den Zusammenhang deiner Arbeitsumgebung, bevor Software gebaut wird. Gemeinsam schaffen wir ruhige Systeme, die Daten, Kommunikation und KI verbinden – verlässlich und nachvollziehbar.',
+                  'We understand your working environment before building software. Together, we create calm systems that connect data, communication and AI with clarity and accountability.')}
               </p>
               <div className="studio-contact-line">
                 <a href="mailto:hi@saimor.world" className="ruhe-text-link">
@@ -90,20 +90,25 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
           <div className="os-block">
             <div className="os-text-center">
               <span className="section-label">SAIMÔR OS</span>
-              <h2 className="section-title font-serif">Vier Domänen. Ein Universum.</h2>
+              <h2 className="section-title font-serif">{L('Deine Arbeit. Ein Universum.', 'Your work. One universe.')}</h2>
               <p className="section-paragraph os-lead">
-                Eine Arbeitsstation, die Organisationen in klaren Räumen verbindet: 
-                R&D, Product, Growth und Intelligence.
+                {L('Ein räumlicher Arbeitsplatz für Aufgaben, Wissen und Zusammenarbeit. MÔRA hält den Kontext und schlägt nächste Schritte vor. Du entscheidest.',
+                  'A spatial workspace for tasks, knowledge and collaboration. MÔRA keeps the context and suggests next steps. You decide.')}
               </p>
             </div>
             <div className="os-image-frame">
               <Image unoptimized
                 src="/ruhe/os-universe.webp"
-                alt="SAIMÔR OS Universum mit Planeten"
+                alt={L('SAIMÔR OS Universum mit Planeten', 'SAIMÔR OS universe with planets')}
                 width={1200}
                 height={675}
                 className="section-img os-preview-img"
               />
+            </div>
+            <p className="ruhe-preview-label">{L('Produktvorschau', 'Product preview')}</p>
+            <div className="ruhe-entry-links">
+              <Link href={locale === 'en' ? '/en/mora/deep-view' : '/mora/deep-view'} className="ruhe-text-link">{L('MÔRA entdecken →', 'Discover MÔRA →')}</Link>
+              <Link href={locale === 'en' ? '/en/entry/security-check' : '/de/einstieg/security-check'} className="ruhe-text-link">Security Check →</Link>
             </div>
           </div>
         </div>
@@ -121,7 +126,7 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
               <div className="creation-media">
                 <Image unoptimized
                   src="/ruhe/yori-house.webp"
-                  alt="YORI Haus im Morgennebel"
+                  alt={L('YORI Haus im Morgennebel', 'YORI house in the morning mist')}
                   width={600}
                   height={400}
                   className="section-img"
@@ -131,47 +136,48 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
                 <span className="section-label">CREATOR HOUSE</span>
                 <h3 className="creation-title font-serif">YORI</h3>
                 <p className="section-paragraph">
-                  Das Backstage-Haus für Mentorinnen und Begleiterinnen. 
-                  Echte Räume für Sitzungen, Notizen und Buchungen, ohne Formular-Hektik.
+                  {L('Ein Creative House für Mentorinnen und Begleiterinnen. Die Hausvorschau zeigt Räume für Sitzungen, Notizen und die eigene Arbeit.',
+                    'A Creative House for mentors and guides. The house preview explores rooms for sessions, notes and your own work.')}
                 </p>
                 <a 
-                  href="https://yori-raum.vercel.app/luana" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                  href={locale === 'en' ? '/en/yori' : '/yori'}
                   className="ruhe-text-link"
                 >
-                  YORI erkunden →
+                  {L('YORI erkunden →', 'Explore YORI →')}
                 </a>
               </div>
             </div>
 
             {/* ORIGIN // 001 */}
             <div className="creation-col">
-              <div 
+              <button type="button"
                 className={`creation-media origin-interactive ${originZoom ? 'is-zoomed' : ''}`}
-                onClick={() => setOriginZoom(!originZoom)}
-                title="Klick zum Vergrößern"
+                onClick={() => setOriginZoom(zoom => !zoom)}
+                aria-pressed={originZoom}
+                aria-label={originZoom ? L('ORIGIN verkleinern', 'Zoom out of ORIGIN') : L('ORIGIN vergrößern', 'Zoom into ORIGIN')}
               >
                 <Image unoptimized
                   src="/ruhe/origin-001.webp"
-                  alt="ORIGIN // 001 Quarz-Basalt-Relikt"
+                  alt={L('ORIGIN // 001 Quarz-Basalt-Relikt', 'ORIGIN // 001 quartz and basalt study')}
                   width={600}
                   height={400}
                   className="section-img origin-img"
                 />
-              </div>
+              </button>
               <div className="creation-info">
                 <span className="section-label">DIGITAL ARTEFACT</span>
                 <h3 className="creation-title font-serif">ORIGIN // 001</h3>
                 <p className="section-paragraph">
-                  Persistente architektonische Relikte: Basaltischer Stein, gewachsenes Quarz 
-                  und verifizierte XRPL-Provenienz. 111 Unikate.
+                  {L('Ein architektonisches Relikt aus Basalt, Quarz und Metall. Geplante Edition: 111 Artefakte. ORIGIN // 001 ist die erste Studie.',
+                    'An architectural relic of basalt, quartz and metal. Planned edition: 111 artefacts. ORIGIN // 001 is the first study.')}
                 </p>
                 <button 
-                  onClick={() => setOriginZoom(!originZoom)} 
+                  type="button"
+                  onClick={() => setOriginZoom(zoom => !zoom)}
+                  aria-expanded={originZoom}
                   className="ruhe-text-link origin-zoom-btn"
                 >
-                  {originZoom ? '← Verkleinern' : 'Artefakt betrachten →'}
+                  {originZoom ? L('← Verkleinern', '← Zoom out') : L('Artefakt betrachten →', 'View the artefact →')}
                 </button>
               </div>
             </div>
@@ -185,9 +191,9 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
       {/* ========================================================= */}
       <footer className="ruhe-section section-contact">
         <div className="section-inner max-w-4xl text-center">
-          <span className="section-label">GESPRÄCH</span>
-          <h2 className="contact-heading font-serif">Gute Systeme beginnen mit einer guten Frage.</h2>
-          <p className="contact-sub">Was soll einfacher werden?</p>
+          <span className="section-label">{L('GESPRÄCH', 'CONVERSATION')}</span>
+          <h2 className="contact-heading font-serif">{L('Gute Systeme beginnen mit einer guten Frage.', 'Good systems start with a good question.')}</h2>
+          <p className="contact-sub">{L('Was soll einfacher werden?', 'What should become simpler?')}</p>
           <div className="contact-action">
             <a href="mailto:hi@saimor.world" className="contact-email font-serif">
               hi@saimor.world
@@ -197,12 +203,14 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
           <div className="ruhe-footer-bar">
             <span className="footer-brand">SAIMÔR</span>
             <div className="footer-legal">
-              <Link href="/de/rechtliches/impressum" className="legal-link">
-                Impressum
+              <Link href="/login" className="legal-link">{L('Zugang', 'Sign in')}</Link>
+              <Link href={locale === 'en' ? '/de' : '/en'} className="legal-link" hrefLang={locale === 'en' ? 'de' : 'en'}>{L('English', 'Deutsch')}</Link>
+              <Link href={`/${locale}/${locale === 'en' ? 'legal/imprint' : 'rechtliches/impressum'}`} className="legal-link">
+                {L('Impressum', 'Imprint')}
               </Link>
               <span className="legal-sep">·</span>
-              <Link href="/de/rechtliches/datenschutz" className="legal-link">
-                Datenschutz
+              <Link href={`/${locale}/${locale === 'en' ? 'legal/privacy' : 'rechtliches/datenschutz'}`} className="legal-link">
+                {L('Datenschutz', 'Privacy')}
               </Link>
             </div>
           </div>
