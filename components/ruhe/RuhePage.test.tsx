@@ -8,7 +8,7 @@ describe('Ruhe home product journey', () => {
   it('keeps public product, sign-in and Security Check routes reachable without a private pilot link', () => {
     const { container } = render(<RuhePage locale="de" />);
     expect(screen.getByRole('link', { name: 'YORI erkunden →' })).toHaveAttribute('href', '/yori');
-    expect(screen.getByRole('link', { name: 'MÔRA entdecken →' })).toHaveAttribute('href', '/mora/deep-view');
+    expect(screen.getByRole('link', { name: 'MÔRA entdecken →' })).toHaveAttribute('href', '/mora/deep-view?from=portal');
     expect(screen.getByRole('link', { name: 'Security Check →' })).toHaveAttribute('href', '/de/einstieg/security-check');
     expect(screen.getByRole('link', { name: 'Zugang' })).toHaveAttribute('href', '/login');
     expect(container.textContent).toContain('Produktvorschau');

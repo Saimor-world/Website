@@ -85,7 +85,9 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
       {/* ========================================================= */}
       {/* 3. ABSCHNITT: SAIMÔR OS                                  */}
       {/* ========================================================= */}
-      <section className="ruhe-section section-os" id="os">
+      <section className="ruhe-section section-os" id="system">
+        <span id="os" className="ruhe-anchor" aria-hidden="true" />
+        <span id="products" className="ruhe-anchor" aria-hidden="true" />
         <div className="section-inner max-w-5xl">
           <div className="os-block">
             <div className="os-text-center">
@@ -107,7 +109,7 @@ export default function RuhePage({ locale = 'de' }: RuhePageProps) {
             </div>
             <p className="ruhe-preview-label">{L('Produktvorschau', 'Product preview')}</p>
             <div className="ruhe-entry-links">
-              <Link href={locale === 'en' ? '/en/mora/deep-view' : '/mora/deep-view'} className="ruhe-text-link">{L('MÔRA entdecken →', 'Discover MÔRA →')}</Link>
+              <Link href={locale === 'en' ? '/en/mora/deep-view?from=portal' : '/mora/deep-view?from=portal'} className="ruhe-text-link">{L('MÔRA entdecken →', 'Discover MÔRA →')}</Link>
               <Link href={locale === 'en' ? '/en/entry/security-check' : '/de/einstieg/security-check'} className="ruhe-text-link">Security Check →</Link>
             </div>
           </div>
